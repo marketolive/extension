@@ -1,3 +1,7 @@
+/*****************************************************************************************
+Relevant for both
+*****************************************************************************************/
+
 console.log('Plugin Loading MarketoDemo Complete');
 console.log('MarketoDemo Script Executing...');
 
@@ -43,7 +47,12 @@ if (res == true && url_cnt[3] !== 'mobile') {
 	loadDashboard();	
 }
 
-//Set User Cookie
+
+/**************************************************************************************
+Arrash
+**************************************************************************************/
+
+//Set User Cookie - dictates which pod the user is in
 function setCookie(cname, cvalue, exdays, domain) {
 	var d = new Date();
 	d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));	
@@ -67,13 +76,19 @@ function getCookie(cname) {
 }
 //Check User Cookie
 function checkCookie(cname) {
-	var user_information = getCookie(cname);
-	if (user_information != "") {		
-		return true;
-	} else {		
-		return false;
-	}
+//	var user_information = getCookie(cname);
+    return getCookie(cname) != "";
+//	if (user_information != "") {		
+//		return true;
+//	} else {		
+//		return false;
+//	}
 }
+
+/**************************************************************************************
+N/A
+**************************************************************************************/
+
 //<---- Load Marketo Dashboard Data Script
 function loadDashboard() {
 	var jscript_lib = document.createElement('script');
@@ -81,8 +96,17 @@ function loadDashboard() {
 	jscript_lib.setAttribute('src', '//marketolive.com/plugin/remote_data.js');
 	document.getElementsByTagName('head')[0].appendChild(jscript_lib);
 }
+
+/**************************************************************************************
+Arrash
+**************************************************************************************/
+
 //<---- These functions add the demo button functionality to the Marketo Analyzers
 //<---- This function gets the current URLs of each Analyzer and sets the onclick location 
+
+// id represents the state that the button should be in. When it is clicked, the function is
+// called again with a different state which adjusts the display properties. The identifier
+// of the analyzer MAY differ between pods
 function showAnalyzer(id) {
 	//console.log(current_pod);
 	if (current_pod == 'app-sjp') {
@@ -199,7 +223,7 @@ function loadStyle_analyzers() {
 						"#analyzerPrev:hover {cursor: pointer; background: url('https://marketolive.com/m/b2b/wp-content/themes/Nimble-child/images/left_arrow_orange.png') no-repeat scroll 0 0 / 40px auto rgba(0, 0, 0, 0);}" + 
 						"#analyzerNext {float: right; height: 40px; width: 40px; background: url('https://marketolive.com/m/b2b/wp-content/themes/Nimble-child/images/right_arrow.png') no-repeat scroll 0 0 / 40px auto rgba(0, 0, 0, 0);}" +
 						"#analyzerNext:hover {cursor: pointer; background: url('https://marketolive.com/m/b2b/wp-content/themes/Nimble-child/images/right_arrow_orange.png') no-repeat scroll 0 0 / 40px auto rgba(0, 0, 0, 0);}"						
-					);
+					); // Try referencing a stylesheet instead?
 	style.appendChild(style_data);
 	document.getElementsByTagName('head')[0].appendChild(style);
 }
@@ -222,6 +246,11 @@ function loadScript_analyzers() {
 	script.appendChild(script_data);
 	document.getElementsByTagName('head')[0].appendChild(script);
 }
+
+/**************************************************************************************
+Andy
+**************************************************************************************/
+
 //<---- This function prevents smart campaigns from saving 
 function prevent_autosave_smartcampaigns(scArray) {
 	//Prevent Auto Save for Smart Campaigns - Smart Lists and Flows
@@ -497,6 +526,13 @@ function prevent_so_approval(soArray) {
 		};
 	}
 }
+
+/**************************************************************************************
+Andy
+**************************************************************************************/
+
+// These gray out options on the right click menu in Marketing Activites and stuff
+
 //<---- This function limits the capabilities of the new menu in the default workspace
 function update_n_menus() {
 	Mkt.app.MarketingActivities.Toolbar.getNewMenuButton = function() {
@@ -514,7 +550,7 @@ function update_n_menus() {
 		};
 	}; 
 }
-//<---- This function limits the capabilities of the new menu in the default workspace
+//<---- This function limits the capabilities of the new event menu in the default workspace
 function update_ne_menus() {
 	Mkt.app.MarketingActivities.Toolbar.getNewEventMenuButton = function() {
 		return {
@@ -688,8 +724,21 @@ function update_sl_menus() {
 		return menu;
 	}
 }
+
+/**************************************************************************************************
+Delete this and see what happens? Both
+**************************************************************************************************/
+
+// We think he's running through all of the <a href> tags and doing something.
+// Pretty sure this entire section just deep-links the Calendar tile
+// WTF-isms
+    // var targetElements = Array.prototype.slice.call(matchingElements);
+    // When does this get called?
+
+
 //<---- This function udpates the calendar tile in My Marketo in the default workspace
 function update_calendar(var_cal_view) {
+    // LOL
 	var cal_view = var_cal_view;
 	var cal_url = 'https://'+current_pod+'.marketo.com/';
 	var matchingElements = [];
@@ -703,8 +752,9 @@ function update_calendar(var_cal_view) {
 	}
 	var targetElements = Array.prototype.slice.call(matchingElements);
 	var cal_hash = '#CAL';
+    // Fix this syntax
 	for (var j = 0, o = targetElements.length; j < o; j++) {
-		if (targetElements[j].hash === cal_hash) {
+        if (targetElements[j].hash === cal_hash) {
 			targetEl = targetElements[j];
 			break;
 		}
@@ -716,6 +766,11 @@ function update_calendar(var_cal_view) {
 		targetEl.setAttribute('href', cal_url+cal_view);	
 	}
 }
+
+/*****************************************************************************************************
+Andy
+*****************************************************************************************************/
+
 //<---- This function prevents renaming assets in the default workspace
 function prevent_renaming_assets() {
 	var originalFn1 = Mkt.widgets.CanvasHeader.prototype.startEdit;
@@ -924,7 +979,14 @@ function prevent_nurture_rename() {
 		form.updateRecord();
 	}	
 }
+
+/****************************************************************************************************
+Andy
+****************************************************************************************************/
+
 //<---- This function constrains the ability to add content outside of the target nurture program
+
+// Not entirely sure what this actually prevents??? Delete and find out
 function constrain_nurture(program_ids) {
 	var ceArray = program_ids;
 	Ext4.override(Mkt3.controller.leadNurture.Content, {
@@ -953,12 +1015,13 @@ function limit_nurture_programs() {
 		var node = rootNode.cascade(function() {
 			var attr = this.attributes;
 			if (attr && attr.xtra) {
-				if (attr.xtra.compType == compType && attr.xtra.accessZoneId == MktCanvas.activeTab.config.accessZoneId) {
+				if (attr.xtra.compType == compType && attr.xtra.accessZoneId == MktCanvas.activeTab.config.accessZoneId)                 {
 					matches.push(this);
 				}
 			}
 		}, undefined, [compType]);
 		//console.log(matches.length);
+        // LOL
 		if (matches.length >= 3) {
 			limit_exceeded = true;
 		}
@@ -977,6 +1040,11 @@ function limit_nurture_programs() {
 		}
 	}
 }
+
+/********************************************************************************************
+Andy
+********************************************************************************************/
+
 //<---- This function prevents the cloning of any asset in the default workspace
 function prevent_asset_cloning() {
 	var myMsg = 'Demo Only';
@@ -1090,7 +1158,14 @@ function prevent_asset_cloning() {
 	});
 */
 }
+
+/*****************************************************************************************
+Arrash
+*****************************************************************************************/
+
 //<---- This function adds new javascript functionality to the marketo login screen
+
+// Stylesheet instead?
 function loadScript_login() {
 	var script = document.createElement('script');
 	script.setAttribute('type', 'text/javascript');
@@ -1158,7 +1233,7 @@ function loadScript_login() {
 	script.appendChild(script_data);
 	document.getElementsByTagName('head')[0].appendChild(script);
 }
-//<---- This function adds new html content to the marketo login page
+//<---- This function adds new html content to the marketo login page - the industry drop-down
 function loadHtml_login() {
 	var html_tr_1 = document.createElement('tr');
 	var html_td_1 = document.createElement('td');
@@ -1272,6 +1347,7 @@ function subDetection() {
 		return false;
 	}else{
 		subType = document.getElementById('subscription').value;
+        // LOL
 		if (subType == '' || subType == undefined || subType == null) {
 			return false;
 		}else{
@@ -1279,7 +1355,8 @@ function subDetection() {
 		}
 	}
 }
-//<---- Check for subscription customization
+//<---- Check for subscription customization -- ?
+// This just checks to see if the subscription menu is on the screen
 function subDisplay() {
 	var object_state = document.getElementById("subscription").style.display;
 	console.log(object_state);
@@ -1290,6 +1367,7 @@ function subDisplay() {
 		return false;
 	}
 }
+
 //<---- Get the input values for the current user and subscription
 function authenticUser() {
 	var username = document.getElementById('loginUsername').value;
@@ -1314,14 +1392,18 @@ function forgotPassword() {
 	}
 }
 
+
+// ?????
 function inIframe() {
     try {
         return window.self !== window.top;
     } catch (e) {
+        // LOL
         return true;
     }
 }
 
+// ???????
 function cleanLogin() {
 	function hideElementByClassName(className, element) {
 		var elements = document.getElementsByClassName(className);
@@ -1337,10 +1419,10 @@ function cleanLogin() {
 		if (targetObject.nextElementSibling == null) {
 			location.reload();
 		}else{
-		targetObject.nextElementSibling.style.display = 'none';
-		targetObject.style.position = 'absolute';
-		targetObject.style.top = '0';
-		targetObject.style.left = '0';
+            targetObject.nextElementSibling.style.display = 'none';
+            targetObject.style.position = 'absolute';
+            targetObject.style.top = '0';
+            targetObject.style.left = '0';
 		}
 	}
 	hideMyElement(targetObject);
@@ -1370,6 +1452,10 @@ function checkErrorState() {
 		return true;
 	}
 }
+
+/*****************************************************************************************
+Arrash
+*****************************************************************************************/
 
 function interceptLogin(type) {
 	var demoUser, demoType, demoSub, currentError;
@@ -1460,6 +1546,7 @@ function interceptLogin(type) {
 					text : currentError
 				}, mkto_app_url);
 				//loadHtml_loginError(state, message);
+                // LOL
 				console.log('Something Else Happened?');
 			}
 		}
@@ -1546,6 +1633,10 @@ function interceptLogin(type) {
 	}
 }
 
+/*****************************************************************************************
+Andy
+*****************************************************************************************/
+
 function protectMarketingActivities(cal, sc, em, lp, fm, so, ce) {
 	window.Mkt3 && Mkt3.onLaunch(function() {
 		update_calendar(cal);
@@ -1582,6 +1673,10 @@ function protectMarketingActivities(cal, sc, em, lp, fm, so, ce) {
 	});
 }
 
+/*****************************************************************************************
+Arrash
+*****************************************************************************************/
+
 function demonstrationAdministrator() {
 	window.Mkt3 && Mkt3.onLaunch(function() {
 		var myMsg = 'Warning!';
@@ -1595,6 +1690,10 @@ function demonstrationAdministrator() {
 		admin_messageBox.show
 	});
 }
+
+/*****************************************************************************************
+Arrash
+*****************************************************************************************/
 
 var loginScreen = document.getElementById("login-container");
 var ghostLoginURL = 'https://login.marketo.com/homepage/malogin';
@@ -1660,6 +1759,11 @@ else{
 		})();
 	}
 }
+
+/*****************************************************************************************
+Arrash
+*****************************************************************************************/
+
 function emailDeliverability(field1, field2) {
 	var username = document.getElementById(field1);
 	var password = document.getElementById(field2);
@@ -1701,12 +1805,14 @@ function emailDeliverability(field1, field2) {
 	password.value = 'marketo17';
 	document.getElementsByTagName('button')[0].click();
 }
+
 function removeSettings() {
 	document.getElementById('tour-account-anchor').style.display = 'none';
 	var el = document.getElementsByClassName('box');
 	console.log(el);
 	el[1].style.display = 'none';
 }
+
 function removeDesignDelete() {
 	var matchingElements = [];
 	var targetEl; 
@@ -1731,6 +1837,7 @@ function removeDesignDelete() {
 		targetEl.style.display = 'none';	
 	}
 }
+
 function removeInboxDelete() {
 	var inputs = document.getElementsByTagName('input');
 	for (var i = 0; i < inputs.length; i++) {
@@ -1769,6 +1876,11 @@ if (domain == '250ok.com') {
 		removeInboxDelete();
 	}
 }
+
+/*****************************************************************************************
+Arrash
+*****************************************************************************************/
+
 if (domain == 'go.app.io') {
 	$ = jQuery.noConflict();
 	$(document).ready(function() {
@@ -1778,6 +1890,10 @@ if (domain == 'go.app.io') {
 		});
 	});
 }
+
+/*****************************************************************************************
+Both
+*****************************************************************************************/
 
 var mkto_live_admin_user = ['admin@mktodemoaccount106.com', 'admin@mktodemoaccount106a.com', 'admin@mktodemoaccount106b.com'];
 
@@ -1900,6 +2016,10 @@ if (cust_prefix == 'mktodemoaccount106' && isAdminUser == false) {
 		});
 	}
 }
+
+/*****************************************************************************************
+*****************************************************************************************/
+
 else if (cust_prefix == 'mktodemoaccount106' && isAdminUser == true) {
 	demonstrationAdministrator();
 }
@@ -2022,6 +2142,10 @@ if (cust_prefix == 'mktodemoaccount106a' && isAdminUser == false) {
 		});
 	}
 }
+
+/*****************************************************************************************
+*****************************************************************************************/
+
 else if (cust_prefix == 'mktodemoaccount106a' && isAdminUser == true) {
 	demonstrationAdministrator();
 }
@@ -2146,6 +2270,11 @@ if (cust_prefix == 'mktodemoaccount106b' && isAdminUser == false) {
 		});
 	}
 }
+
+/*****************************************************************************************
+Both
+*****************************************************************************************/
+
 else if (cust_prefix == 'mktodemoaccount106b' && isAdminUser == true) {
 	demonstrationAdministrator();
 }
