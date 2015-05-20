@@ -1,0 +1,10 @@
+[07-Sep-2014 09:36:11 America/Denver] PHP Notice:  Undefined variable: response in /home4/marketos/public_html/m/index.php on line 41
+[07-Sep-2014 09:40:40 America/Denver] PHP Warning:  Cannot modify header information - headers already sent by (output started at /home4/marketos/public_html/m/index.php:154) in /home4/marketos/public_html/m/index.php on line 155
+[07-Sep-2014 09:43:47 America/Denver] PHP Warning:  Cannot modify header information - headers already sent by (output started at /home4/marketos/public_html/m/index.php:154) in /home4/marketos/public_html/m/index.php on line 155
+[07-Sep-2014 10:07:56 America/Denver] PHP Warning:  Cannot modify header information - headers already sent by (output started at /home4/marketos/public_html/m/index.php:159) in /home4/marketos/public_html/m/index.php on line 160
+[07-Sep-2014 10:11:14 America/Denver] PHP Warning:  Cannot modify header information - headers already sent by (output started at /home4/marketos/public_html/m/index.php:159) in /home4/marketos/public_html/m/index.php on line 160
+[07-Sep-2014 10:11:29 America/Denver] PHP Warning:  Cannot modify header information - headers already sent by (output started at /home4/marketos/public_html/m/index.php:159) in /home4/marketos/public_html/m/index.php on line 160
+[07-Sep-2014 10:13:09 America/Denver] PHP Warning:  Cannot modify header information - headers already sent by (output started at /home4/marketos/public_html/m/index.php:159) in /home4/marketos/public_html/m/index.php on line 160
+[07-Sep-2014 10:13:37 America/Denver] PHP Warning:  Cannot modify header information - headers already sent by (output started at /home4/marketos/public_html/m/index.php:159) in /home4/marketos/public_html/m/index.php on line 160
+[07-Sep-2014 10:13:52 America/Denver] PHP Warning:  Cannot modify header information - headers already sent by (output started at /home4/marketos/public_html/m/index.php:159) in /home4/marketos/public_html/m/index.php on line 160
+[07-Sep-2014 12:36:15 America/Denver] PHP Parse error:  syntax error, unexpected end of file in /home4/marketos/public_html/m/index.php on line 225

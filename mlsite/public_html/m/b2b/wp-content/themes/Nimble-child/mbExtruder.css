@@ -1,0 +1,160 @@
+/*
+ * ******************************************************************************
+ *  jquery.mb.components
+ *  file: mbExtruder.css
+ *
+ *  Copyright (c) 2001-2013. Matteo Bicocchi (Pupunzi);
+ *  Open lab srl, Firenze - Italy
+ *  email: matteo@open-lab.com
+ *  site: 	http://pupunzi.com
+ *  blog:	http://pupunzi.open-lab.com
+ * 	http://open-lab.com
+ *
+ *  Licences: MIT, GPL
+ *  http://www.opensource.org/licenses/mit-license.php
+ *  http://www.gnu.org/licenses/gpl.html
+ *
+ *  last modified: 04/01/13 17.13
+ *  *****************************************************************************
+ */
+
+.containerside{height:100%;
+}
+
+#loading-image{
+	background-image:url('./images/loading.gif');
+	height:100%;
+	background-repeat: no-repeat;
+	margin-top: 232px;
+	margin-left: 97px;
+}
+
+#loadtext{
+	color:white;
+	position: absolute;
+	margin-top: 100px;
+	margin-left: -33px;
+}
+
+.extruder{position:fixed;
+		  cursor:default;
+}
+
+.extruder .header{height:27px
+}
+
+.extruder .content{display:none;
+				   background:#000
+}
+
+.extruder.left.a .content{
+	border-right:5px solid #f7941e;
+	background-color:rgba(85, 82, 141, 0.96);
+	border-top:5px solid #f7941e;
+	border-bottom:5px solid #f7941e;
+	border-top-right-radius:4px;
+	border-bottom-right-radius:4px;
+}
+
+
+.extruder.left.a .flap .flapLabel{
+	visibility:hidden;
+	/*background:#f7941e;*/
+}
+	
+
+.extruder.left{height:100%;
+}
+
+.extruder.left.open .content{-moz-box-shadow:2px 0 5px #999;
+							 -webkit-box-shadow:2px 0 5px #999;
+							 box-shadow:2px 0 5px #999
+}
+
+.extruder.left .content{border-right:3px solid #000
+}
+
+.extruder.left .ext_wrapper{height:100%
+}
+
+.extruder.left .footer{display:none
+}
+
+.extruder.left .flap{font-size:18px;
+					 color:white;
+					 top:0;
+					 height:50px;
+					 padding:10px 0 10px 10px;
+					 margin-right:-55px;
+					 width:30px;
+					 position:absolute;
+					 right:0;
+}
+.extruder.left.a .flap{
+					font-size:18px;
+					color:white;
+					top:0;
+					padding:10px 0 10px 10px;
+					width:60px;
+					background:url('./popoutlogo/marketocirclesprite.png');
+					background-repeat:no-repeat;
+					background-size:100%;
+					position:absolute;
+					right:0;
+					z-index: 100;
+					font-size:18px;
+}
+
+.extruder.left.a .flap:hover{
+					font-size:18px;
+					color:white;
+					top:0;
+					padding:10px 0 10px 10px;
+					width:60px;
+					background:url('./popoutlogo/marketocirclesprite.png') 0px -69px;
+					background-repeat:no-repeat;
+					background-size:100%;
+					position:absolute;
+					right:0;
+					z-index: 100;
+					font-size:18px;
+					cursor:pointer;
+}
+
+.extruder .text{background:#222;
+				font:14px/16px Arial,Helvetica,sans-serif;
+				color:gray;padding:10px;
+				border-bottom:1px solid #333;
+				text-shadow:2px 2px 2px #333
+}
+
+.extruder .settingsBtn{display:block;
+					   position:absolute;
+					   width:36px;
+					   height:36px;
+					   background:url("../elements/settingsBtn.png") no-repeat bottom;
+					   cursor:pointer;
+					   right:-3px;
+					   top:-4px
+}
+
+#reloadforreal {
+	text-decoration:none;
+	width:85px;
+}
+
+#reloadforrealbutton {
+	padding:10px;
+	text-align:center;
+	border-radius:5px;
+	border:1px solid #F2F2F2;
+	width:85px;
+	text-decoration:none;
+	color:#F2F2F2;
+}
+
+#reloadforrealbutton:hover {
+	color:#F2F2F2;
+	border:1px solid #F7931D;
+	background-color:#F7931D;
+}
