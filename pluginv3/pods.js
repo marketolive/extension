@@ -37,8 +37,8 @@ var PODS = function() {
         }
     };
     
-    var test = new Pod("app-sjp");
-    window.open(test.intelligentNurturing);
+//    var test = new Pod("app-sjp");
+//    window.open(test.intelligentNurturing);
     //console.log(test.id);
     
 }();
