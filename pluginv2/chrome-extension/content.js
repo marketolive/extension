@@ -2,8 +2,10 @@ function loadScript(name) { //demo or live
 	var jscript_lib_demo = document.createElement('script');
 	jscript_lib_demo.setAttribute('id', 'mkto_demo_script');
 	jscript_lib_demo.setAttribute('type', 'text/javascript');
-	jscript_lib_demo.setAttribute('src', 'marketo_'+name+'_v2.js');
-	document.getElementsByTagName('head')[0].appendChild(jscript_lib_demo);
+//	jscript_lib_demo.setAttribute('src', 'marketo_'+name+'_v2.js');
+	jscript_lib_demo.setAttribute('src', '/pluginv2/marketo_'+name+'_v2.js');
+    console.log("Loading Live script");
+    document.getElementsByTagName('head')[0].appendChild(jscript_lib_demo);
 }
 
 function setCookie(cname, cvalue, exdays, domain, secure) {
@@ -59,8 +61,13 @@ port.onMessage.addListener(function(message, sender) {
 	setCookie('userPod', user_pod, 365, '.marketo.com', true);	
 }); 
 
+mkto_live = 0; // <-------------------------------------------------------------------
+mkto_app = false; // <-----------------------------------------------------------------
+mkto_email = 1; // <-----------------------------------------------------------------
+
 if (mkto_live == 0) {
 	loadScript('live');
+    loadScript('demo');
 	console.log('PLUGIN : MarketoLive is Active');
 
 	window.addEventListener('message', function(event) {

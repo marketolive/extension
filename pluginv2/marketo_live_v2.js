@@ -45,6 +45,8 @@ var subdomainMatch = /([([a-z0-9][a-z0-9-]+[a-z0-9]\.marketo\.com)/;
 var patt = new RegExp(subdomainMatch);
 var res = patt.test(current_url);
 
+res = true; // <---------------------------------------------------------------
+
 // Define Stylesheet for User Information Dialog
 function userInfo_style() {
 	var style = document.createElement('style');
@@ -595,6 +597,8 @@ function loadLoginFrame() {
 }
 var pluginStatus;
 var detectedPrefix;
+
+domain = 'marketolive.com';
 
 if (domain == 'marketolive.com') {
 	$ = jQuery.noConflict();
