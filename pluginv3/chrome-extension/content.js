@@ -2,7 +2,7 @@ function loadScript(name) { //demo or live
 	var jscript_lib_demo = document.createElement('script');
 	jscript_lib_demo.setAttribute('id', 'mkto_demo_script');
 	jscript_lib_demo.setAttribute('type', 'text/javascript');
-	jscript_lib_demo.setAttribute('src', 'marketo_'+name+'_v2.js');
+	jscript_lib_demo.setAttribute('src', name);
 	document.getElementsByTagName('head')[0].appendChild(jscript_lib_demo);
 }
 
@@ -60,7 +60,7 @@ port.onMessage.addListener(function(message, sender) {
 }); 
 
 if (mkto_live == 0) {
-	loadScript('live');
+	loadScript('marketo-live.js');
 	console.log('PLUGIN : MarketoLive is Active');
 
 	window.addEventListener('message', function(event) {
@@ -88,6 +88,11 @@ if (mkto_live == 0) {
 			}	
 		}
 	}, false);
+}
+
+if (window.location.href == "http://cloud4.insightera.com/demo/")
+{
+    loadScript("https://www.marketolive.com/dev/pluginv3/marketo-live.js");
 }
 
 if (mkto_app == true || mkto_email == 0) {
