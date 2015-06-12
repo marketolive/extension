@@ -1,0 +1,27 @@
+{
+   "background": {
+      "persistent": false,
+      "scripts": [ "background.js" ]
+   },
+   "browser_action": {
+      "default_icon": "images/mkto_logo_enable.png",
+      "default_title": "MarketoLive"
+   },
+   "content_scripts": [ {
+      "all_frames": true,
+      "js": [ "content.js" ],
+      "matches": [ "*://marketolive.com/*", "*://*.marketo.com/*", "*://go.app.io/*", "https://250ok.com/*" ]
+   } ],
+   "description": "This is the test version of the plugin.",
+   "icons": {
+      "128": "images/mkto_logo_enable.png",
+      "16": "images/mkto_logo_enable.png",
+      "48": "images/mkto_logo_enable.png"
+   },
+  // "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEArwwPgvsjpdqo1M1FzpibYLsx7l6fpm23FJJquNNCbVmOwBvURJ178QxP7PBQHK/n+EJgOd7oO447DoHmuGcDQe7KF1TZfJeoOS4pT8bMNL02JbqbQjjfwCbTDPZjPGtqH2lFCpmmjtdti5K/+3CtsBKCPSDrkPCRtMbhlA86t/b8ypIFE62O7UsWI0wKdhmDh5aNoKMV99AXEZ74suhymSnT3Bvr86Au7lOi/wl/Bi5o9KRTHhmYgf30fokuSAlVB+uHIfboJMGLpVIYz6ap3me3Ha7FG5r9mhPk1udDgarBxoL02EVXyA7tKME9F3+CacFwbl5PmEescmkgur+sSQIDAQAB",
+   "manifest_version": 2,
+   "name": "MarketoLiveTest",
+   "permissions": [ "tabs", "cookies", "*://marketolive.com/*", "*://*.marketo.com/*", "*://go.app.io/*", "https://250ok.com/*" ],
+   "update_url": "https://clients2.google.com/service/update2/crx",
+   "version": "2.0"
+}
