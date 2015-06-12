@@ -1,6 +1,6 @@
 // TODO: add error check for invalid pod
 
-var PODS = function() {
+//var PODS = {
     
     var Pod = function(id) {
         this.id =                   id;
@@ -10,7 +10,7 @@ var PODS = function() {
         this.actionableInsight =    "https://mkto-si.na10.visual.force.com/apex/mkto_si__Dashboard";
         this.marketingROI =         this.appUrl+"#AR1559A1";
         this.replicateSuccess =     this.appUrl+"#MF6429A1";
-        this.seo =                  "https://seo.marketo.com/";
+        this.searchOptimization =   "https://seo.marketo.com/";
         this.personalization =      "http://marketolive.com/m/b2b/rtp/";
         this.emailDeliverability =  "https://250ok.com/login";
         this.flexibleReporting =    this.appUrl+"#AH0A1ZN17";
@@ -41,4 +41,4 @@ var PODS = function() {
 //    window.open(test.intelligentNurturing);
     //console.log(test.id);
     
-}();
+//}

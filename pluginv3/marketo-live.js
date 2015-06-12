@@ -17,9 +17,8 @@ var LIVE = function () {
             @param pod {PODS.Pod} - The pod object that stores all of the
                                     user's links for that subscription.s
         */
-        var insertDeepLinks() = function(pod) {
-            console.log(current_pod);
-            $(".use-case").click(function (e) {
+        var insertDeepLinks = function(pod) {
+            $(".marketo-live-option").click(function (e) {
                 e.preventDefault();
                 window.open(pod[$(this).context.id]);
             });
@@ -39,20 +38,24 @@ var LIVE = function () {
             });
         }
         
-        var getCookie = function(cookieField) {
-            var name = cname + "=";
-            var ca = document.cookie.split(';');
-            for (var i = 0; i < ca.length; i++) {
-                var c = ca[i].trim();
-                if (c.indexOf(name) == 0)
-                    return c.substring(name.length, c.length);
-            }
-            return "";
+        var getCookie = function(cname) {
+            return "app-sjp";
+//            var name = cname + "=";
+//            var ca = document.cookie.split(';');
+//            for (var i = 0; i < ca.length; i++) {
+//                var c = ca[i].trim();
+//                if (c.indexOf(name) == 0)
+//                    return c.substring(name.length, c.length);
+//            }
+//            return "";
         }
         
-        pod = new PODS.Pod(getCookie("userPod"));
+        pod = new Pod(getCookie("userPod"));
+        console.log(pod);
 
         $(document).ready(function() { 
+            console.log("Document Ready");
+            insertDeepLinks(pod);
             /*
             this whole object won't exist. Mix with Andy's code. Not putting comments...
             except the fact that this will be an array with an object inside of it that
