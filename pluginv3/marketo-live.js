@@ -13,10 +13,12 @@ var LIVE = function () {
         /**
             This function injects the deep links onto the homepage based
             on which pod that the user is in.
+            
+            @param pod {PODS.Pod} - The pod object that stores all of the
+                                    user's links for that subscription.s
         */
-        var insertDeepLinks() = function () {
+        var insertDeepLinks() = function(pod) {
             console.log(current_pod);
-            //    var pod = new PODS.Pod(current_pod);
             $(".use-case").click(function (e) {
                 e.preventDefault();
                 window.open(pod[$(this).context.id]);
@@ -28,7 +30,7 @@ var LIVE = function () {
             we only have one account for the whole team, everyone needs
             to use the same set of credentials.
         */
-        var emailDeliverabilityLogin = function () {
+        var emailDeliverabilityLogin = function() {
             $(document).ready(function () {
                 $.getJSON("deliverability-login.json", function (login) {
                     $("#email").value = login.username;
@@ -36,4 +38,20 @@ var LIVE = function () {
                 });
             });
         }
+        
+        var getCookie = function(cookieField) {
+            var name = cname + "=";
+            var ca = document.cookie.split(';');
+            for (var i = 0; i < ca.length; i++) {
+                var c = ca[i].trim();
+                if (c.indexOf(name) == 0)
+                    return c.substring(name.length, c.length);
+            }
+            return "";
+        }
+        
+        pod = new PODS.Pod(getCookie("userPod"));
+        $(document).ready(function() {
+            insertDeepLinks(pod);
+        });
 }();
