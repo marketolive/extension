@@ -90,9 +90,25 @@ if (mkto_live == 0) {
 	}, false);
 }
 
+// TODO: Fix this. Add HTML injection functions here.
 if (window.location.href == "http://cloud4.insightera.com/demo/")
 {
-    loadScript("https://www.marketolive.com/dev/pluginv3/marketo-live.js");
+    var rtpToMarketo = function () {
+        var jscript_lib = document.createElement('link');
+        jscript_lib.setAttribute('rel', 'import');
+        jscript_lib.setAttribute('href', 'https://www.marketolive.com/dev/pluginv3/html/turner-rtp.html');
+        document.getElementsByTagName('head')[0].appendChild(jscript_lib);
+        var link = document.querySelector('link[rel="import"]');
+        link.addEventListener('load', function (e) {
+            var importedDoc = link.import,
+                el = importedDoc.querySelector('#marketo-return-button-container');
+            console.log(el);
+            document.body.appendChild(el.cloneNode(true));
+            $("#marketo-return-button-inner-container").bind("click", function (e) {
+                location.href = 'https://sjrtp6.marketo.com/app/editReaction.do?reactionId=750';
+            });
+        });
+    }();
 }
 
 if (mkto_app == true || mkto_email == 0) {
