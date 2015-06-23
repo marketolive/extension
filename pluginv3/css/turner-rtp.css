@@ -16,8 +16,9 @@
   color: #5a54a4;
   font-size: 18px;
   border-radius: 5px;
+  cursor: pointer;
 }
 
 #market-return-button{
-  padding-top: 5px;
+  padding-top: 10px;
 }

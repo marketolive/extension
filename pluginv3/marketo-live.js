@@ -173,20 +173,15 @@ LIVE.Analyzer = function (pod) {
  **************************************************************************************/
 
 LIVE.Analyzer.prototype.showAnalyzer = function () {
-    var jscript_lib = document.createElement('link');
-    jscript_lib.setAttribute('rel', 'import');
-    jscript_lib.setAttribute('href', 'https://www.marketolive.com/dev/pluginv3/html/analyzer.html');
-    document.getElementsByTagName('head')[0].appendChild(jscript_lib);
-    var link = document.querySelector('link[rel="import"]');
-    link.addEventListener('load', function (e) {
-        var importedDoc = link.import,
-            el = importedDoc.querySelector('.analyzer-container');
-        document.body.appendChild(el.cloneNode(true));
-        $("#modeler,#success-path-analyzer,#opportunity-influence-analyzer,#program-analyzer").bind("click", function (e) {
-            this.chooseAnalyzer(e.target);
-        }.bind(this));
-        updateCSS(this.pod);
-    }.bind(this));
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open( "GET", "http://marketolive.com/dev/pluginv3/html/analyzer.html", false );
+    xmlHttp.send( null );
+    var pageLoaded = function(){
+        var newElement = document.createElement('div');
+        newElement.innerHTML = xmlHttp.responseText;
+        document.body.appendChild(newElement);
+    }
+    window.onload = pageLoaded();
 }
 
 //we're going to create an instance of the analyzer
@@ -235,6 +230,7 @@ LIVE.Analyzer.prototype.chooseAnalyzer = function (ele) {
  **************************************************************************************/
 
 // CORS is blocking this. Might need to do inline.
+/*
 LIVE.rtpToMarketo = function () {
     var jscript_lib = document.createElement('link');
     jscript_lib.setAttribute('rel', 'import');
@@ -251,6 +247,7 @@ LIVE.rtpToMarketo = function () {
         });
     });
 }
+*/
 
 //we're going to create an instance of the analyzer
 //and then call showAnalyzer to actually build out the template and CSS onto the page
