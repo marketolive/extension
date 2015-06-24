@@ -1,4 +1,5 @@
-MktPage.validateDemoPlugin = function() {console.log("overwritten")}
+console.log("script loading");
+MktPage.validateDemoPlugin = function() {console.log("overwritten");}
 
 /**************************************************************************************
  *
