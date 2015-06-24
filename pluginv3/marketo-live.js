@@ -1,3 +1,5 @@
+MktPage.validateDemoPlugin = function() {console.log("overwritten")}
+
 /**************************************************************************************
  *
  *  This module contains all of the functionality needed for the
