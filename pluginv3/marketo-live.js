@@ -1,5 +1,6 @@
 console.log("script loading");
 
+
 /**************************************************************************************
  *
  *  This module contains all of the functionality needed for the
@@ -261,7 +262,7 @@ LIVE.rtpToMarketo = function () {
 
 //we're going to create an instance of the analyzer
 //and then call showAnalyzer to actually build out the template and CSS onto the page
-$(document).ready(function () {
+window.onload = function () {
     var podString = LIVE.getCookie("userPod");
     if (!podString)
     {
