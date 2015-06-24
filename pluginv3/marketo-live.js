@@ -88,7 +88,7 @@ LIVE.setCookie = function (cookieField, cookieValue, expiresIn) {
         expires;
     d.setTime(d.getTime() + (expiresIn*24*60*60*1000));
     expires = "expires="+d.toUTCString();
-    document.cookie = cname + "=" + cvalue + "; " + expires;
+    document.cookie = cookieField + "=" + cookieValue + "; " + expires;
 }
 
 // TODO: Separate RTP code?
@@ -263,11 +263,12 @@ $(document).ready(function () {
     var podString = LIVE.getCookie("userPod");
     if (!podString)
     {
-        LIVE.setCookie("userPod", "app-sjp", 365);
+        podString = "app-sjp";
+        LIVE.setCookie("userPod", podString, 365);
     }
+    
     pod = new PODS.Pod();
     if (window.location.href.search("#RCM39A1") != -1 ||
-        window.location.href.search("#RCM5A1!") != -1 ||
         window.location.href.search("#RCM5A1!") != -1 ||
         window.location.href.search("#AR1559A1") != -1)
         LIVE.Analyzer.prototype.chooseAnalyzer();
