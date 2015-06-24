@@ -275,7 +275,7 @@ window.onload = function () {
     if (window.location.href.search("#RCM39A1") != -1 ||
         window.location.href.search("#RCM5A1!") != -1 ||
         window.location.href.search("#AR1559A1") != -1)
-        LIVE.Analyzer.prototype.chooseAnalyzer();
+        LIVE.Analyzer.prototype.showAnalyzer();
     if (window.location.href.search(".marketo.com") != -1)
     {
         MktPage.validateDemoPlugin = function() {console.log("overwritten");}

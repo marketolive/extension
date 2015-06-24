@@ -24,8 +24,6 @@ function checkForValidUrl(tabId, changeInfo, tab) {
     chrome.browserAction.enable(tabId);
 
 	if (mkto_live == 0 || mkto_app == true || /*mkto_mobile == 0 ||*/ mkto_email == 0) {
-
-
 		getCookies('https://*.marketo.com', 'mkto_pod', function(id) {
 			var cookie_pod_value = id;
 			var user_pod_value = cookie_pod_value.split('.');
