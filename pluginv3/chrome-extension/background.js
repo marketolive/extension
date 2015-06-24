@@ -21,9 +21,10 @@ function checkForValidUrl(tabId, changeInfo, tab) {
 	var mkto_app = match.test(current_url);
 	var mkto_live = current_url.indexOf('https://marketolive.com');
 	var mkto_email = current_url.indexOf('https://250ok.com/login');
+    chrome.browserAction.enable(tabId);
 
 	if (mkto_live == 0 || mkto_app == true || /*mkto_mobile == 0 ||*/ mkto_email == 0) {
-		chrome.browserAction.enable(tabId);
+
 
 		getCookies('https://*.marketo.com', 'mkto_pod', function(id) {
 			var cookie_pod_value = id;

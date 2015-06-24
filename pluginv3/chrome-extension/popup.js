@@ -10,19 +10,14 @@
  *  @function
  *
  **************************************************************************************/
-//window.onload = function () {
-//    tags = document.getElementsByClassName("link");
-//    // getElementsByClassName() returns an array, so the click
-//    // listener needs to be added to each one individually.
-//    for (var ii = 0; ii < tags.length; ++ii) {
-//        tags[ii].onclick = function () {
-//            window.open(this.href);
-//        }
-//    }
-//}
-$(document).ready(function() {
-   $('body').on('click', 'a', function() {
-     chrome.tabs.create({url: $(this).attr('href')});
-     return false;
-   });
-});
+window.onload = function () {
+   tags = document.getElementsByClassName("link");
+   // getElementsByClassName() returns an array, so the click
+   // listener needs to be added to each one individually.
+   for (var ii = 0; ii < tags.length; ++ii) {
+       tags[ii].onclick = function () {
+           chrome.tabs.create({ url: this.href, selected : true });
+           //window.open(this.href);
+       }
+   }
+}
