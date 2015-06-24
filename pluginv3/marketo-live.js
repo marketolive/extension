@@ -75,7 +75,7 @@ LIVE.getCookie = function (cookieField) {
     var name = cookieField + "=",
         cookies = document.cookie.split(';'),
         currentCookie;
-    for (var ii = 0; ii < ca.length; ++ii) {
+    for (var ii = 0; ii < cookies.length; ++ii) {
         var currentCookie = cookies[ii].trim();
         if (currentCookie.indexOf(name) == 0)
             return currentCookie.substring(name.length, currentCookie.length);
