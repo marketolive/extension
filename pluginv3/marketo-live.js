@@ -267,7 +267,8 @@ $(document).ready(function () {
         LIVE.setCookie("userPod", podString, 365);
     }
     
-    pod = new PODS.Pod();
+    pod = new PODS.Pod(podString);
+    LIVE.insertDeepLinks(pod);
     if (window.location.href.search("#RCM39A1") != -1 ||
         window.location.href.search("#RCM5A1!") != -1 ||
         window.location.href.search("#AR1559A1") != -1)
