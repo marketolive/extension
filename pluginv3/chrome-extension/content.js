@@ -60,7 +60,7 @@ port.onMessage.addListener(function(message, sender) {
 }); 
 
 if (mkto_live == 0) {
-	loadScript('marketo-live.js');
+	loadScript('../pluginv3/marketo-live.js');
 	console.log('PLUGIN : MarketoLive is Active');
 
 	window.addEventListener('message', function(event) {

@@ -106,8 +106,8 @@ LIVE.getCookie = function (cookieField) {
  **************************************************************************************/
 
 LIVE.urlCheck = function (pod) {
-    var location = window.location.href,
-    for (var y = 0; y < pod.valueSet.length; y++) {
+    var location = window.location.href;
+    for(var y = 0; y < pod.valueSet.length; y++){
         if (location.indexOf(pod.valueSet[y].url) != -1)
             return pod.valueSet[y].position;
     }
@@ -252,11 +252,10 @@ LIVE.rtpToMarketo = function () {
 //we're going to create an instance of the analyzer
 //and then call showAnalyzer to actually build out the template and CSS onto the page
 $(document).ready(function () {
-    pod = new PODS.Pod(LIVE.getCookie("userPod")) {
+    pod = new PODS.Pod(LIVE.getCookie("userPod"));
     if (window.location.href.search("#RCM39A1") != -1 ||
-        window.location.href.search("#RCM5A1!") != -1
-        window.location.href.search("#RCM5A1!") != -1
+        window.location.href.search("#RCM5A1!") != -1 ||
+        window.location.href.search("#RCM5A1!") != -1 ||
         window.location.href.search("#AR1559A1") != -1)
         LIVE.Analyzer.prototype.chooseAnalyzer();
-    }
 });
