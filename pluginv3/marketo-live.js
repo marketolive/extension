@@ -83,6 +83,14 @@ LIVE.getCookie = function (cookieField) {
     return null;
 }
 
+LIVE.setCookie = function (cookieField, cookieValue, expiresIn) {
+    var d = new Date(),
+        expires;
+    d.setTime(d.getTime() + (expiresIn*24*60*60*1000));
+    expires = "expires="+d.toUTCString();
+    document.cookie = cname + "=" + cvalue + "; " + expires;
+}
+
 // TODO: Separate RTP code?
 //    pod = new Pod(getCookie("userPod"));
 //    console.log(pod);
@@ -252,7 +260,12 @@ LIVE.rtpToMarketo = function () {
 //we're going to create an instance of the analyzer
 //and then call showAnalyzer to actually build out the template and CSS onto the page
 $(document).ready(function () {
-    pod = new PODS.Pod(LIVE.getCookie("userPod"));
+    var podString = LIVE.getCookie("userPod");
+    if (!podString)
+    {
+        LIVE.setCookie("userPod", "app-sjp", 365);
+    }
+    pod = new PODS.Pod();
     if (window.location.href.search("#RCM39A1") != -1 ||
         window.location.href.search("#RCM5A1!") != -1 ||
         window.location.href.search("#RCM5A1!") != -1 ||
