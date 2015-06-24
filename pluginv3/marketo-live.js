@@ -119,8 +119,11 @@ LIVE.setCookie = function (cookieField, cookieValue, expiresIn) {
 LIVE.urlCheck = function (pod) {
     var location = window.location.href;
     for(var y = 0; y < pod.valueSet.length; y++){
-        if (location.indexOf(pod.valueSet[y].url) != -1)
+        if (location.indexOf(pod.valueSet[y].url) != -1){
+            console.log(pod.valueSet[y].position, pod.valueSet[y].url);
+            debugger;
             return pod.valueSet[y].position;
+        }
     }
 }
 
@@ -139,6 +142,7 @@ LIVE.urlCheck = function (pod) {
  **************************************************************************************/
 
 LIVE.updateCSS = function (pod) {
+    debugger;
     var currentPosition = LIVE.urlCheck(pod);
     currentPosition = '#' + currentPosition;
     $(currentPosition).parent().css('display', 'block');
@@ -185,12 +189,13 @@ LIVE.Analyzer = function (pod) {
 
 LIVE.Analyzer.prototype.showAnalyzer = function () {
     var xmlHttp = new XMLHttpRequest();
-    xmlHttp.open( "GET", "http://marketolive.com/dev/pluginv3/html/analyzer.html", false );
+    xmlHttp.open( "GET", "https://marketolive.com/dev/pluginv3/html/analyzer.html", false );
     xmlHttp.send( null );
     var pageLoaded = function(){
         var newElement = document.createElement('div');
         newElement.innerHTML = xmlHttp.responseText;
         document.body.appendChild(newElement);
+        LIVE.updateCSS();
     }
     window.onload = pageLoaded();
 }
@@ -275,7 +280,7 @@ window.onload = function () {
     if (window.location.href.search("#RCM39A1") != -1 ||
         window.location.href.search("#RCM5A1!") != -1 ||
         window.location.href.search("#AR1559A1") != -1)
-        LIVE.Analyzer.prototype.chooseAnalyzer();
+        LIVE.Analyzer.prototype.showAnalyzer();
     if (window.location.href.search(".marketo.com") != -1)
     {
         MktPage.validateDemoPlugin = function() {console.log("overwritten");}
