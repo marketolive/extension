@@ -1,3 +1,5 @@
+LIVE_SCRIPT_LOCATION = "https://marketolive.com/dev/pluginv3/marketo-live.js";
+
 function loadScript(name) { //demo or live
 	var jscript_lib_demo = document.createElement('script');
 	jscript_lib_demo.setAttribute('id', 'mkto_demo_script');
@@ -60,7 +62,7 @@ port.onMessage.addListener(function(message, sender) {
 }); 
 
 if (mkto_live == 0) {
-	loadScript('../pluginv3/marketo-live.js');
+	loadScript(LIVE_SCRIPT_LOCATION);
 	console.log('PLUGIN : MarketoLive is Active');
 
 	window.addEventListener('message', function(event) {
@@ -104,7 +106,7 @@ if (window.location.href == "http://cloud4.insightera.com/demo/")
 }
 
 if (mkto_app == true || mkto_email == 0) {
-	loadScript('demo');
+	loadScript(LIVE_SCRIPT_LOCATION);
 	console.log('PLUGIN : MarketoDemo is Active');
 	
 	port.onMessage.addListener(function(message, sender) {
