@@ -280,4 +280,4 @@ window.onload = function () {
     {
         MktPage.validateDemoPlugin = function() {console.log("overwritten");}
     }
-});
+}
