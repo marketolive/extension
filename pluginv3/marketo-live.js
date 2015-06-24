@@ -1,5 +1,4 @@
 console.log("script loading");
-MktPage.validateDemoPlugin = function() {console.log("overwritten");}
 
 /**************************************************************************************
  *
@@ -276,4 +275,8 @@ $(document).ready(function () {
         window.location.href.search("#RCM5A1!") != -1 ||
         window.location.href.search("#AR1559A1") != -1)
         LIVE.Analyzer.prototype.chooseAnalyzer();
+    if (false)
+    {
+        MktPage.validateDemoPlugin = function() {console.log("overwritten");}
+    }
 });
