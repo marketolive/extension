@@ -121,7 +121,6 @@ LIVE.urlCheck = function (pod) {
     for(var y = 0; y < pod.valueSet.length; y++){
         if (location.indexOf(pod.valueSet[y].url) != -1){
             console.log(pod.valueSet[y].position, pod.valueSet[y].url);
-            debugger;
             return pod.valueSet[y].position;
         }
     }
@@ -142,67 +141,16 @@ LIVE.urlCheck = function (pod) {
  **************************************************************************************/
 
 LIVE.updateCSS = function (pod) {
-    debugger;
     var currentPosition = LIVE.urlCheck(pod);
     currentPosition = '#' + currentPosition;
     $(currentPosition).parent().css('display', 'block');
     $(currentPosition).parent().siblings().css('display', 'none');
     $(currentPosition).removeClass('analyzer-button').addClass('analyzer-title');
     $(currentPosition).siblings().removeClass('analyzer-title').addClass('analyzer-button');
+    $("#modeler,#success-path-analyzer,#opportunity-influence-analyzer,#program-analyzer").bind("click", function (e) {
+               LIVE.chooseAnalyzer(e.target, pod);
+    });
 }
-
-/**************************************************************************************
- *
- *  main object that will pass the variables for which analyzer should be present using
- *  currPosition as the current position in the object array.
- *
- *  @Author Arrash
- *
- *  @class
- *
- *  @namespace Analyzer.currPosition
- *  @namespace Analyzer.url
- *
- **************************************************************************************/
-
-LIVE.Analyzer = function (pod) {
-    this.currPosition = 0;
-    this.pod = pod;
-}
-
-/**************************************************************************************
- *
- *  this method will insert an HTML template and a CSS sheet inside the template directly
- *  into the header of the Marketo page. It accomplishes this using "Import" and runs
- *  asynchronously. It will then bind the 'prev' and 'next' elements with a click function
- *  so that whenever theyre clicked it will call chooseAnalyzer and pass the element clicked
- *
- *  @Author Arrash
- *
- *  @function
- *
- *  @namespace link
- *  @namespace importedDoc
- *  @namespace el
- *
- **************************************************************************************/
-
-LIVE.Analyzer.prototype.showAnalyzer = function () {
-    var xmlHttp = new XMLHttpRequest();
-    xmlHttp.open( "GET", "https://marketolive.com/dev/pluginv3/html/analyzer.html", false );
-    xmlHttp.send( null );
-    var pageLoaded = function(){
-        var newElement = document.createElement('div');
-        newElement.innerHTML = xmlHttp.responseText;
-        document.body.appendChild(newElement);
-        LIVE.updateCSS();
-    }
-    window.onload = pageLoaded();
-}
-
-//we're going to create an instance of the analyzer
-//and then call showAnalyzer to actually build out the template and CSS onto the page
-
 
 /**************************************************************************************
  *
@@ -219,14 +167,16 @@ LIVE.Analyzer.prototype.showAnalyzer = function () {
  *
  **************************************************************************************/
 
-LIVE.Analyzer.prototype.chooseAnalyzer = function (ele) {
-    var id = ele.id;
+LIVE.chooseAnalyzer = function (ele, pod) {
+    var id = ele.id,
+        currPosition;
     //updates the currPosition based on the div selected
-    for (var x = 0; x < this.pod.valueSet.length; x++) {
-        if (id == this.pod.valueSet[x].position)
-            this.currPosition = x;
+    for (var x = 0; x < pod.valueSet.length; x++) {
+        if (id == pod.valueSet[x].position)
+            currPosition = x;
     }
-    window.location = 'https://' + currentPod + '.marketo.com/' + this.pod.valueSet[this.currPosition];
+    console.log();
+    window.location = pod.valueSet[currPosition].url;
 }
 
 /**************************************************************************************
@@ -268,21 +218,32 @@ LIVE.rtpToMarketo = function () {
 //we're going to create an instance of the analyzer
 //and then call showAnalyzer to actually build out the template and CSS onto the page
 window.onload = function () {
+    console.log("window loaded");
     var podString = LIVE.getCookie("userPod");
     if (!podString)
     {
         podString = "app-sjp";
         LIVE.setCookie("userPod", podString, 365);
     }
-    
     pod = new PODS.Pod(podString);
-    LIVE.insertDeepLinks(pod);
-    if (window.location.href.search("#RCM39A1") != -1 ||
-        window.location.href.search("#RCM5A1!") != -1 ||
-        window.location.href.search("#AR1559A1") != -1)
-        LIVE.Analyzer.prototype.showAnalyzer();
+    
+    if (window.location.href.search("marketolive.com" != -1)) {
+        LIVE.insertDeepLinks(pod);
+    }
+
+    console.log(window.location.href);
     if (window.location.href.search(".marketo.com") != -1)
     {
-        MktPage.validateDemoPlugin = function() {console.log("overwritten");}
+        console.log("About to overwrite");
+                    MktPage.validateDemoPlugin = function() {console.log("overwritten")}
+        setTimeout(function() {
+            MktPage.demoPluginWindow.hide();
+        }, 3000);
+    }
+        
+    if (window.location.href.search("#RCM39A1") != -1 ||
+        window.location.href.search("#RCM5A1!") != -1 ||
+        window.location.href.search("#AR1559A1") != -1) {
+        LIVE.updateCSS(pod);
     }
 }
