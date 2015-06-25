@@ -98,7 +98,6 @@ Analyzer.prototype.showAnalyzer = function () {
 }
 
 
-
 var current_url = location.href;
 var appMatch = /([([a-z0-9][a-z0-9-]+[a-z0-9]\.marketo\.com)/g;
 var match = new RegExp(appMatch);
@@ -107,6 +106,13 @@ var mkto_live = current_url.indexOf('https://marketolive.com');
 var mkto_mobile = current_url.indexOf('https://go.app.io');
 var mkto_email = current_url.indexOf('https://250ok.com/login');
 console.log('Plugin Loading MarketoLive Scripts...');
+
+
+if (window.location.href.search("marketo.com") != -1 ||
+   window.location.href.search("marketolive.com") != -1) {
+        loadScript(POD_SCRIPT_LOCATION);
+        loadScript(LIVE_SCRIPT_LOCATION);
+}
 
 var port = chrome.runtime.connect({
     name: "mycontentscript"
@@ -119,9 +125,8 @@ port.onMessage.addListener(function (message, sender) {
 });
 
 if (mkto_live == 0) {
-    loadScript(LIVE_SCRIPT_LOCATION);
     console.log('PLUGIN : MarketoLive is Active');
-
+    
     window.addEventListener('message', function (event) {
         if (event.data.type && event.data.type == 'PageMsg') {
             pageStatus = event.data.text;
@@ -165,8 +170,6 @@ if (window.location.href.search("#RCM39A1") != -1 ||
     window.location.href.search("#RCM5A1!") != -1 ||
     window.location.href.search("#AR1559A1") != -1) {
     loadScript("https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js");
-    loadScript(LIVE_SCRIPT_LOCATION);
-    loadScript(POD_SCRIPT_LOCATION);
     console.log("About to show Analyzer");
     Analyzer.prototype.showAnalyzer();
 } 
@@ -176,7 +179,7 @@ else {
 
 
 if (mkto_app == true || mkto_email == 0) {
-    loadScript(LIVE_SCRIPT_LOCATION);
+
     console.log('PLUGIN : MarketoDemo is Active');
 
     port.onMessage.addListener(function (message, sender) {
