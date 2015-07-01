@@ -467,11 +467,18 @@ window.onload = function () {
                         response.success = true;
 
                         var tokenBlob = JSON.parse(options.params.data);
-                        tokenBlob['token'] = tokenBlob['token'].replace(/\s/g, "");
-                        //                        localStorage.setItem(tokenBlob['token'], tokenBlob['value']);
-                        LIVE.setCookie(tokenBlob['token'], tokenBlob['value']);
-                        //console.log(tokenBlob['token']);
-                        //console.log(tokenBlob['value']);
+                        console.log(options.params.data);
+                        console.log(tokenBlob.length);
+                        
+                        if(tokenBlob.length != null){
+                            tokenBlob[tokenBlob.length-1].token = tokenBlob[tokenBlob.length-1].token.replace(/\s/g, "");
+                            LIVE.setCookie(tokenBlob[tokenBlob.length-1].token, tokenBlob[tokenBlob.length-1].value);
+
+                        }
+                        else{
+                            tokenBlob['token'] = tokenBlob['token'].replace(/\s/g, "");
+                            LIVE.setCookie(tokenBlob['token'], tokenBlob['value']);
+                        }
 
                         // This is the hook to the Phone home message and navigating to login upong session timeout
                         //this.fireEvent('loadexception', proxy, reader, response);
