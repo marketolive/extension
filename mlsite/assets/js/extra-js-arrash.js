@@ -307,19 +307,25 @@ function getPicklistValue(chosenStep){
 $( document ).ready(function() {
   $('#marketo-live-home').animate({'top' : '30%'}, 600);
   $('#marketo-live-home-option').animate({'margin-bottom' : '5%'}, 600);
-  /*
+  
 	var help = document.getElementById('help-link');
 	
-	$('#help-link').click(function(){
-		var bkg = document.getElementsByClassName('help-cover');
-		var container = document.getElementsByClassName('help-center-container');
-		var centerbox = document.getElementsByClassName('help-center-box');
-		$(centerbox).animate({
-    	'margin-top': '125px',
-  		}, 400, function() {
-  	});
-		$(bkg).css('display','block');
-		$(container).css('display','block');
+	$("#first-option, #goAgile").click(function(){
+		var userPodCookie = getCookie("userPod");
+		if(userPodCookie == null){
+			var bkg = document.getElementsByClassName('help-cover');
+			var container = document.getElementsByClassName('help-center-container');
+			var centerbox = document.getElementsByClassName('help-center-box');
+			$(centerbox).animate({
+	    	'margin-top': '125px',
+	  		}, 400, function() {
+	  	});
+			$(bkg).css('display','block');
+			$(container).css('display','block');
+		}
+		else{
+			window.location.href = "https://www.marketolive.com/m2/go-agile/business.html";
+		}
 	});
 	
 	$('.cancel-help').click(function(){
@@ -328,7 +334,94 @@ $( document ).ready(function() {
 		$(bkg).css('display','none');
 		$(container).css('display','none');
 	});
-	
+
+	$('.subscription-drop-down-container').click(function(){
+		var bkg = document.getElementsByClassName('subscription-drop-down-container');
+		var container = document.getElementsByClassName('subscription-drop-down-value-container');
+		$(bkg).css('display','none');
+		$(container).css('display','block');
+	});
+
+	function getCookie(name) {
+	  var value = "; " + document.cookie;
+	  var parts = value.split("; " + name + "=");
+	  if (parts.length == 2) return parts.pop().split(";").shift();
+	}
+
+	$('#login').click(function(){
+		var loginContainer = document.getElementsByClassName('help-center-container');
+		var gifCenterContainer = document.getElementsByClassName('gif-center-container');
+		var loadingGif = document.getElementById('loading-gif');
+		var incorrectCreds = document.getElementsByClassName('incorrect-creds');
+		var container = document.getElementsByClassName('help-center-container');
+
+		$(loginContainer).css('display','none');
+		$(gifCenterContainer).css('display','block');
+
+		var username = document.getElementById("username").value;
+		var password = document.getElementById("password").value;
+		var podArray = ['app-ab07', 'app-sjp', 'app-ab08'];
+		//var subscription = document.getElementById('subscription').innerHTML;
+		for(var x = 0; x < podArray.length; x++){
+			var url = 'https://'+podArray[x]+'.marketo.com/user/login/?username='+username+'&passwd='+password;
+			//var encodedParam = encodeURIComponent(url);
+			ifrm = document.createElement("IFRAME"); 
+			ifrm.setAttribute("src", url); 
+			ifrm.style.display = 'none'; 
+			ifrm.style.height = 480+"px"; 
+			ifrm.style.width = 480+"px"; 
+			document.body.appendChild(ifrm); 
+		}
+		
+		//var x = 0;
+		var podExists = false;
+
+			setTimeout(function(){ 
+				//loadingGif.src = 'assets/img/moving-marketolive-'+y+'.png';
+				var cookie = getCookie("userPod");
+				//console.log(cookie);
+				/*
+				if(x == 8){
+					$(loginContainer).css('display','block');
+					$(gifCenterContainer).css('display','none');
+					podExists = true;
+				}
+				*/
+				if(cookie != null){
+					console.log("it got the userPod");
+					window.location.href = "https://marketolive.com/m2/go-agile/business.html";
+					podExists = true;
+				}
+				else{
+					$(loginContainer).css('display','block');
+					$(gifCenterContainer).css('display','none');		
+					$(incorrectCreds).css('display','block');			
+				}
+			}, 10000);
+			//else{
+			//	x++;
+			//}
+			//console.log(x);
+
+		//var bkg = document.getElementsByClassName('subscription-drop-down-container');
+		//var container = document.getElementsByClassName('subscription-drop-down-value-container');
+		//$(bkg).css('display','none');
+		//$(container).css('display','block');
+	});
+
+	$('.subscription-drop-down-value').click(function(){
+		var value = this.innerHTML;
+		var bkg = document.getElementsByClassName('subscription-drop-down-container');
+		var innerSubVal = document.getElementById('subscription');
+		console.log(innerSubVal.innerHTML);
+		var container = document.getElementsByClassName('subscription-drop-down-value-container');
+		console.log(innerSubVal);
+		innerSubVal.innerHTML = value;
+		console.log(innerSubVal.innerHTML);
+		$(bkg).css('display','block');
+		$(container).css('display','none');
+	});
+	/*
 	$("#request-login, #report-a-bug, #submit-feature-request").click(function(){		 
 	  switch (this.id){
 		  case 'request-login':
