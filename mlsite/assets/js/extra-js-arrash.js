@@ -38,32 +38,6 @@ function hideTitle(image){
 	var imageTitleChosen = document.getElementById(image);
 	//$(imageTitleChosen).hide( "slow");
 }
-/*
-Old one
-function show_picklist(section){
-	var values = [];
-	var sectionSelected = section;
-	var bool = true;
-	var x = 1;
-	while(bool){
-		var y = x+1;
-		var originalElementString = sectionSelected + '-picklist-value-';
-		var elementString = originalElementString + x.toString();
-		var nextElementString = originalElementString + y.toString();
-		var elementId = document.getElementById(elementString);
-		if(x == 2)
-			$(elementId).delay(300).show(500);
-		else if(x == 3)
-			$(elementId).delay(600).show(500);
-		else{
-			$(elementId).show(500);				
-		}
-		if(!document.getElementById(nextElementString))
-			bool = false;
-		x++;
-	}
-}
-*/
 
 function show_picklist1(section){
 	var values = [];
@@ -85,59 +59,6 @@ function show_picklist1(section){
 		x++;
 	}
 }
-/*
-Old one
-
-function picklist_chosen(chosenStep){
-	var currValues = getPicklistValue(chosenStep);
-
-	//variables for values
-	var stepChosen = currValues.step + '-picklist-drop-down-value-' + currValues.number;
-	var stepContainerChosen = currValues.step + '-picklist-value-' + currValues.number;
-	var stepWords = currValues.step + '-words-' + currValues.number;
-	var stepImage = currValues.step + '-image-' + currValues.number;
-
-	//define the values, first of the picklist, then of the image and words
-	var step = document.getElementById(chosenStep).innerHTML;
-	var stepChosen = document.getElementById(stepChosen);
-	var stepWords = document.getElementById(stepWords);
-	var stepImage = document.getElementById(stepImage);
-	var stepContainerChosen = document.getElementById(stepContainerChosen);
-
-	//change the images and words appearing
-	picklistChosenId.style.display = 'block';
-	document.getElementById('dd-value').innerHTML = step;
-	for(var a = 1; a < 5; a++){
-		if(a == currValues.number){
-			stepContainerChosen.style.display = 'none';
-			$(stepWords).fadeTo(2000,1);
-			$(stepImage).fadeTo(2000,1);
-		}
-		else{
-			var notStepContainerChosen = currValues.step + '-picklist-value-' + a;
-			if(document.getElementById(notStepContainerChosen)){
-				var notStepWords = currValues.step + '-words-' + a;
-				var notStepImage = currValues.step + '-image-' + a;
-				notStepContainerChosen = document.getElementById(notStepContainerChosen);
-				notStepWords = document.getElementById(notStepWords);
-				notStepImage = document.getElementById(notStepImage);
-				notStepContainerChosen.style.display = 'none';
-				notStepWords.style.display = 'none';
-				notStepImage.style.display = 'none';
-			}
-			else{
-				break;
-			}
-		}
-
-	}
-
-	//change words and image
-	//make the picklist disappear
-}
-*/
-
-//bubbles
 
 function bubble_hover(chosenStep){
 	var currValues = getPicklistValue(chosenStep);
@@ -305,6 +226,40 @@ function getPicklistValue(chosenStep){
 }
 
 $( document ).ready(function() {
+	var engagementWords = [
+		'With Marketo Mobile Engagement, designing and delivering push notifications and in-app messages is as simple as creating an email.', 
+		'Beacon technology allows Mobile Apps to understand their position on a micro-local scale, and deliver hyper-contextual content to users based on location. This means users can be messaged when they pass by a location with a beacon',
+		'In-app messaging allows you to deliver engaging and relevant messages to your users.  As soon as your users open your app, they will see their personalized message.',
+		'Close the loop by synchronizing purchase data back to Marketo to report on how impactful each mobile campaign is to  your overall Marketing strategy.'
+	]
+
+	var updateTime = function(){
+		setInterval(function(){
+			var d = new Date();
+			var hour = d.getHours();
+			if(hour > 12)
+				hour = hour - 12;
+			var mins = d.getMinutes();
+			if(mins < 10)
+				mins = '0' + mins;
+			var day = d.getDate();
+			console.log(mins);
+			var time = hour + ':' + mins;
+			var dayNames = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+			var monthNames = ["January", "February", "March", "April", "May", "June",
+		  	"July", "August", "September", "October", "November", "December"
+			];
+			var month = monthNames[d.getMonth()];
+			var dayOfWeek = dayNames[d.getDay()-1];
+			var date = dayOfWeek + ' ' + day + ' ' + month;	
+			document.getElementById('android-time').innerHTML = time;
+			document.getElementById('android-date').innerHTML = date;
+		}, 200);
+	}
+
+	updateTime();
+
+
   $('#marketo-live-home').animate({'top' : '30%'}, 600);
   $('#marketo-live-home-option').animate({'margin-bottom' : '5%'}, 600);
   
@@ -345,7 +300,8 @@ $( document ).ready(function() {
 	function getCookie(name) {
 	  var value = "; " + document.cookie;
 	  var parts = value.split("; " + name + "=");
-	  if (parts.length == 2) return parts.pop().split(";").shift();
+	  if (parts.length == 2) 
+	  	return parts.pop().split(";").shift();
 	}
 
 	$('#login').click(function(){
@@ -377,36 +333,19 @@ $( document ).ready(function() {
 		var podExists = false;
 
 			setTimeout(function(){ 
-				//loadingGif.src = 'assets/img/moving-marketolive-'+y+'.png';
 				var cookie = getCookie("userPod");
-				//console.log(cookie);
-				/*
-				if(x == 8){
-					$(loginContainer).css('display','block');
-					$(gifCenterContainer).css('display','none');
-					podExists = true;
-				}
-				*/
 				if(cookie != null){
 					console.log("it got the userPod");
 					window.location.href = "https://marketolive.com/m2/go-agile/business.html";
 					podExists = true;
 				}
 				else{
+					console.log(cookie);
 					$(loginContainer).css('display','block');
 					$(gifCenterContainer).css('display','none');		
 					$(incorrectCreds).css('display','block');			
 				}
-			}, 10000);
-			//else{
-			//	x++;
-			//}
-			//console.log(x);
-
-		//var bkg = document.getElementsByClassName('subscription-drop-down-container');
-		//var container = document.getElementsByClassName('subscription-drop-down-value-container');
-		//$(bkg).css('display','none');
-		//$(container).css('display','block');
+			}, 20000);
 	});
 
 	$('.subscription-drop-down-value').click(function(){
@@ -421,51 +360,6 @@ $( document ).ready(function() {
 		$(bkg).css('display','block');
 		$(container).css('display','none');
 	});
-	/*
-	$("#request-login, #report-a-bug, #submit-feature-request").click(function(){		 
-	  switch (this.id){
-		  case 'request-login':
-		    window.location = "mailto:?to=marketolive@marketo.com&subject=I Demand a Login";
-				var bkg = document.getElementsByClassName('help-cover');
-				var container = document.getElementsByClassName('help-center-container');
-				$(bkg).css('display','none');
-				$(container).css('display','none');
-		    break;
-		  case 'report-a-bug':
-		    window.location = "mailto:?to=marketolive@marketo.com&subject=Houston, Theres a Problem...";
-				var bkg = document.getElementsByClassName('help-cover');
-				var container = document.getElementsByClassName('help-center-container');
-				$(bkg).css('display','none');
-				$(container).css('display','none');		    
-		    break;
-		  case 'submit-feature-request':
-		   	window.location = "mailto:?to=marketolive@marketo.com&subject=This Would Be Cool";
-				var bkg = document.getElementsByClassName('help-cover');
-				var container = document.getElementsByClassName('help-center-container');
-				$(bkg).css('display','none');
-				$(container).css('display','none');
-		    break;
-		  default:
-		    break;
-		}
-	});
-
-	$("#request-login, #report-a-bug, #submit-feature-request").hover(function() {
-		var siblings = $(this).siblings('.help-option-container');
-		for(var x = 0; x < siblings.length; x++){
-			$(siblings[x]).css('color','#5a54a4');
-			var idName = siblings[x].id + '-img';
-			var child = document.getElementById(idName);
-			var imgChildEl = '../m2/assets/img/' + idName + '-purp.png';
-			$(child).attr('src', imgChildEl);
-		}
-		$(this).css('color','#f79733');
-		var chosenName = this.id + '-img';
-		var chosenChild = document.getElementById(chosenName);
-		var imgChosenEl = '../m2/assets/img/' + this.id + '-img-orange.png';
-		$(chosenChild).attr('src', imgChosenEl);
-	});
-	*/
 	$("#diy-design-guide-option, #powerful-automation-guide-option, #intelligent-nurturing-guide-option, #actionable-insight-guide-option, #marketing-roi-guide-option, #replicate-success-guide-option, #search-optimization-guide-option, #personalization-guide-option, #calendar-guide-option, #funnel-analysis-guide-option, #email-deliverability-guide-option, #flexible-reporting-guide-option, #marketo-moments-guide-option, #mobile-sales-insight-guide-option, #mobile-engagement-guide-option").hover(function() {
 		var siblings = document.getElementsByClassName('marketo-live-guide-option');
 		for(var x = 0; x < siblings.length; x++){
@@ -480,5 +374,170 @@ $( document ).ready(function() {
 		var chosenChild = document.getElementsByClassName(chosenName);
 		var imgChosenEl = '../assets/img/' + this.id + '-img-orange.png';
 		$(chosenChild).attr('src', imgChosenEl);
+	});
+
+	$("#push").click(function() {
+		var pushNotification = document.querySelector('#message-body');
+		//document.getElementById('image-overlay').src = '../assets/img/mme-push-1.png';
+		$('.push-notification-container').css('display','none');
+		$('.phone-buttons-container').css('display','inline-block');
+		if(pushNotification.value != ''){
+			document.getElementById('push-words').innerHTML = pushNotification.value;
+		}
+		else{
+			document.getElementById('push-words').innerHTML = 'Looking for a great pediatrician?';
+		}
+		$('#push-image').fadeIn( "slow", function() {
+  	});
+		$('#push-words').fadeIn( "slow", function() {
+  	});
+	});	
+	$("#open-sidebar").click(function() {
+		$('#open-sidebar').css('display','none');
+		$('.sidebar-container').css('display', 'block');
+		setTimeout(function(){
+			$('.sidebar-inner-container').css('display','block');
+		}, 500);
+		$('.sidebar-container').animate({
+	    width: '200px'
+	  }, 500, function() {
+    	console.log('displaying sidebar');
+  	});
+		$('#main-phone-container').animate({
+	    left: '215px'
+	  }, 500, function() {
+    	console.log('displaying sidebar');
+  	});	
+	});	
+	$("#close-sidebar").click(function() {
+		console.log("closing");
+		$('.sidebar-inner-container').css('display','none');
+		$('.sidebar-container').animate({
+	    width: '0px'
+	  	}, 500, function() {
+    	console.log('closing sidebar');
+  	});
+		$('#main-phone-container').animate({
+	    left: '15px'
+	  	}, 500, function() {
+    	console.log('closing sidebar');
+  	});	
+		setTimeout(function(){
+			$('#open-sidebar').css('display','block');
+		}, 500);
+	});
+	$("#push-notification,#in-mall,#in-store,#at-product").click(function() {
+		console.log("closing");
+		$('.sidebar-inner-container').css('display','none');
+		$('.sidebar-container').animate({
+	    width: '0px'
+	  	}, 500, function() {
+    	console.log('closing sidebar');
+  	});
+		$('#main-phone-container').animate({
+	    left: '15px'
+	  	}, 500, function() {
+    	console.log('closing sidebar');
+  	});	
+		setTimeout(function(){
+			$('#open-sidebar').css('display','block');
+		}, 500);
+		switch(this.id){
+			case 'push-notification' :
+				document.getElementById('section-description').innerHTML = engagementWords[0];
+				$('#mme').attr("class","mme-bkg");
+				$('.push-notification-container').css('display','block');
+				$('.phone-buttons-container').css('display','none');				
+				document.getElementById('image-overlay').src = '../assets/img/mme-push-0.png';
+				$('#message-title').css('display','block');
+				$('#message-body').css('display','block');
+				break;
+			case 'in-mall' :
+				document.getElementById('section-description').innerHTML = engagementWords[1];
+				$('#mme').attr("class","mme-bkg-2");
+				$('.push-notification-container').css('display','none');
+				$('.phone-buttons-container').css('display','block');	
+				$('#message-title').css('display','none');
+				$('#message-body').css('display','none');
+				break;
+			case 'in-store' :
+				document.getElementById('section-description').innerHTML = engagementWords[2];
+				$('#mme').attr("class","mme-bkg-3");
+				$('.push-notification-container').css('display','none');
+				$('.phone-buttons-container').css('display','block');		
+				$('#message-title').css('display','none');
+				$('#message-body').css('display','none');
+				break;
+			case 'at-product' :
+				document.getElementById('section-description').innerHTML = engagementWords[3];
+				$('#mme').attr("class","mme-bkg-4");
+				$('.push-notification-container').css('display','none');
+				$('.phone-buttons-container').css('display','block');	
+				$('#message-title').css('display','none');
+				$('#message-body').css('display','none');
+				break;
+			default :
+				console.log("went to default");
+				break;
+		}
+	});
+	$("#back-phone-button, #next-phone-button").click(function() {
+		var className = $('#mme').attr('class').split(' ')[0];
+		console.log(className);
+		switch(className){
+			case 'mme-bkg' :
+				if(this.id == 'back-phone-button'){}
+				else{
+					document.getElementById('section-description').innerHTML = engagementWords[1];
+					$('#mme').attr("class","mme-bkg-2");
+					$('.push-notification-container').css('display','none');
+					$('#message-title').css('display','none');
+					$('#message-body').css('display','none');
+				}
+				//$('#mme').attr("class","mme-bkg");
+				//document.getElementById('image-overlay').src = '../assets/img/mme-push-0.png';
+				break;
+			case 'mme-bkg-2' :
+				if(this.id == 'back-phone-button'){
+					document.getElementById('section-description').innerHTML = engagementWords[0];
+					$('#mme').attr("class","mme-bkg");
+					$('.push-notification-container').css('display','block');
+					$('.phone-buttons-container').css('display','none');
+					$('#message-title').css('display','block');
+					$('#message-body').css('display','block');
+				}
+				else{
+					document.getElementById('section-description').innerHTML = engagementWords[2];
+					$('#mme').attr("class","mme-bkg-3");
+				}
+				break;
+			case 'mme-bkg-3' :
+				if(this.id == 'back-phone-button'){
+					document.getElementById('section-description').innerHTML = engagementWords[1];
+					$('#mme').attr("class","mme-bkg-2");
+				}
+				else{
+					document.getElementById('section-description').innerHTML = engagementWords[3];
+					$('#mme').attr("class","mme-bkg-4");
+				}
+				break;
+			case 'mme-bkg-4' :
+				if(this.id == 'back-phone-button'){
+					document.getElementById('section-description').innerHTML = engagementWords[2];
+					$('#mme').attr("class","mme-bkg-3");
+				}
+				else{
+					document.getElementById('section-description').innerHTML = engagementWords[0];
+					$('#mme').attr("class","mme-bkg");
+					$('#message-title').css('display','block');
+					$('#message-body').css('display','block');
+					$('.push-notification-container').css('display','block');
+					$('.phone-buttons-container').css('display','none');
+				}
+				break;
+			default :
+				console.log("went to default");
+				break;
+		}
 	});
 });

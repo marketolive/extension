@@ -1,3 +1,31 @@
+#main-phone-container{
+	width: 100%;
+	height: 780px; 
+	top: 67px; 
+	position: relative; 
+	left: 15px; 
+	margin:0px auto; 
+	text-align: center;
+}
+
+#main-inner-phone-container{
+	width: 800px;
+	margin: 25px auto 0px auto; 
+	display: inline-block;
+}
+
+#android-background{
+}
+
+.movement-and-description{
+	float: left;
+	margin-top: 50px;
+}
+
+#phone{
+	width: 350px;
+}
+
 .help-button{
 	float: right;
 }
@@ -42,6 +70,10 @@
   padding: 17px 0px 0px 17px;
   border-bottom: 2px solid rgba(88, 82, 161, 1);
   color: #5a54a4;
+}
+
+.sidebar:hover {
+  font-weight: 400;
 }
 
 .form-submit{
@@ -597,6 +629,7 @@
   text-transform: capitalize;
   padding-top: 10px;
   cursor: pointer;
+  margin-top: 25px;
 }
 .app-description-box-container{
 	width: 100%;
@@ -765,4 +798,205 @@ header{
 #goAgile, #first-option{
 	display: none;
 	cursor: pointer;
+}
+
+.mm-width{
+	width: 400px;
+}
+#android-container{
+	display: inline-block;
+	position: relative;
+}
+#android-image-overlay{
+	position: absolute;
+  z-index: 10;
+  top: 63px;
+  left: 15px;
+}
+#image-overlay{
+	width: 320px;
+	position: absolute;
+	z-index: 1;
+}
+#store{
+	width: 350px;
+}
+.mme-bkg{
+	width: 100%;
+	background: url('../img/mme-0.jpg') no-repeat center center fixed;
+	background-repeat: no-repeat;
+	  -webkit-background-size: cover;
+	  -moz-background-size: cover;
+	  -o-background-size: cover;
+	  background-size: cover;	
+}
+.mme-bkg-1{
+	width: 100%;
+	background: url('../img/mme-1.jpg') no-repeat center center fixed;
+	background-repeat: no-repeat;
+	  -webkit-background-size: cover;
+	  -moz-background-size: cover;
+	  -o-background-size: cover;
+	  background-size: cover;	
+}
+.mme-bkg-2{
+	width: 100%;
+	background: url('../img/mme-2.jpg') no-repeat center center fixed;
+	background-repeat: no-repeat;
+	  -webkit-background-size: cover;
+	  -moz-background-size: cover;
+	  -o-background-size: cover;
+	  background-size: cover;	
+}
+.mme-bkg-3{
+	width: 100%;
+	background: url('../img/mme-3.jpg') no-repeat center center fixed;
+	background-repeat: no-repeat;
+	  -webkit-background-size: cover;
+	  -moz-background-size: cover;
+	  -o-background-size: cover;
+	  background-size: cover;	
+}
+.mme-bkg-4{
+	width: 100%;
+	background: url('../img/mme-4.jpg') no-repeat center center fixed;
+	background-repeat: no-repeat;
+	  -webkit-background-size: cover;
+	  -moz-background-size: cover;
+	  -o-background-size: cover;
+	  background-size: cover;	
+}
+.sidebar-container{
+	position: absolute;
+	left: 0;
+	height: 100vh;
+	background-color: #505050;
+	top: 60px;
+   -moz-box-shadow:    inset -1px 0px 8px #000000;
+   -webkit-box-shadow: inset -1px 0px 8px #000000;
+   box-shadow:         inset -1px 0px 8px #000000;
+   display: none;
+   width: 0px;
+}
+.sidebar-inner-container{
+	padding-left: 15px;
+	padding-top: 50px;
+	color: #fff;
+	font-size: 14px;
+	text-transform: uppercase;
+	font-weight: 200;
+	display: none;
+}
+.sidebar{
+	font-size: 14px;
+	cursor: pointer;
+}
+.sidebar-title{
+	font-size: 16px;
+}
+.close-sidebar-container{
+	display: inline-block;
+	width: 100%;
+	margin-bottom: 15px;
+}
+#close-sidebar{	
+	float: right;
+	border-top-left-radius: 5px;
+	border-bottom-left-radius: 5px;
+	background-color: #808080;
+	color: #fff;
+	font-size: 24px;
+	padding: 5px 10px 5px 10px;
+	font-weight: 100;
+	cursor: pointer;
+}
+#open-sidebar{	
+	border-top-right-radius: 5px;
+	border-bottom-right-radius: 5px;
+	background-color: #808080;
+	color: #fff;
+	font-size: 24px;
+	padding: 5px 10px 5px 10px;
+	font-weight: 100;
+	cursor: pointer;
+}
+.open-sidebar-main-container{
+	position: absolute;
+	top: 200px;
+	left: 0px;
+	z-index: 5;
+}
+.phone-buttons-container{
+	width: 100%;
+	font-size: 24px;
+	display: none;
+	margin-top: 25px;
+}
+.phone-button{
+	height: 50px;
+  text-align: center;
+  color: #fff;
+  background-color: #5a54a4;
+  float: left;
+  border-radius: 5px;
+  font-weight: 200;
+  cursor: pointer;
+  padding-top: 8px;
+}
+.next-button{
+	width: 87%;
+}
+.back-button{
+	width: 10%;
+	margin-right: 10px;
+}
+#push-image{
+	position: absolute;
+  z-index: 4;
+  top: 170px;	
+  display: none;
+}
+#image-push{
+	width: 320px;
+}
+#android-time-container{
+	position: absolute;
+	z-index: 5;
+	top: 45px;
+	width: 320px;
+	color: #fff;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-weight: 100;
+}
+#android-time{
+	font-family: "Roboto";
+	font-size: 72px;
+}
+#android-date{
+	font-size: 16px;
+	margin-top: -10px;
+}
+.input-body{
+	margin-top: 10px;
+	width: 100%;
+	height: 45px;
+	background-color: #f2f2f2;
+	border: none;
+	border-bottom: 1px solid #c2c2c2;
+}
+#push-words{
+	position: absolute;
+  z-index: 8;
+  font-family: helvetica;
+  color: #fff;
+  width: 260px;
+  top: 200px;
+  /* left: 10px; */
+  font-size: 14px;
+  font-weight: 400;
+  padding-right: 15px;
+  left: 58px;
+  display: none;
+  text-align: left;
+  line-height: 1;
 }
