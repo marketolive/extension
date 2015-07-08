@@ -233,32 +233,6 @@ $( document ).ready(function() {
 		'Close the loop by synchronizing purchase data back to Marketo to report on how impactful each mobile campaign is to  your overall Marketing strategy.'
 	]
 
-	var updateTime = function(){
-		setInterval(function(){
-			var d = new Date();
-			var hour = d.getHours();
-			if(hour > 12)
-				hour = hour - 12;
-			var mins = d.getMinutes();
-			if(mins < 10)
-				mins = '0' + mins;
-			var day = d.getDate();
-			console.log(mins);
-			var time = hour + ':' + mins;
-			var dayNames = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
-			var monthNames = ["January", "February", "March", "April", "May", "June",
-		  	"July", "August", "September", "October", "November", "December"
-			];
-			var month = monthNames[d.getMonth()];
-			var dayOfWeek = dayNames[d.getDay()-1];
-			var date = dayOfWeek + ' ' + day + ' ' + month;	
-			document.getElementById('android-time').innerHTML = time;
-			document.getElementById('android-date').innerHTML = date;
-		}, 200);
-	}
-
-	updateTime();
-
 
   $('#marketo-live-home').animate({'top' : '30%'}, 600);
   $('#marketo-live-home-option').animate({'margin-bottom' : '5%'}, 600);
@@ -425,6 +399,61 @@ $( document ).ready(function() {
 		setTimeout(function(){
 			$('#open-sidebar').css('display','block');
 		}, 500);
+	});
+	$("#push-notification,#in-mall,#in-store,#at-product").click(function() {
+		console.log("closing");
+		$('.sidebar-inner-container').css('display','none');
+		$('.sidebar-container').animate({
+	    width: '0px'
+	  	}, 500, function() {
+    	console.log('closing sidebar');
+  	});
+		$('#main-phone-container').animate({
+	    left: '15px'
+	  	}, 500, function() {
+    	console.log('closing sidebar');
+  	});	
+		setTimeout(function(){
+			$('#open-sidebar').css('display','block');
+		}, 500);
+		switch(this.id){
+			case 'push-notification' :
+				document.getElementById('section-description').innerHTML = engagementWords[0];
+				$('#mme').attr("class","mme-bkg");
+				$('.push-notification-container').css('display','block');
+				$('.phone-buttons-container').css('display','none');				
+				document.getElementById('image-overlay').src = '../assets/img/mme-push-0.png';
+				$('#message-title').css('display','block');
+				$('#message-body').css('display','block');
+				break;
+			case 'in-mall' :
+				document.getElementById('section-description').innerHTML = engagementWords[1];
+				$('#mme').attr("class","mme-bkg-2");
+				$('.push-notification-container').css('display','none');
+				$('.phone-buttons-container').css('display','block');	
+				$('#message-title').css('display','none');
+				$('#message-body').css('display','none');
+				break;
+			case 'in-store' :
+				document.getElementById('section-description').innerHTML = engagementWords[2];
+				$('#mme').attr("class","mme-bkg-3");
+				$('.push-notification-container').css('display','none');
+				$('.phone-buttons-container').css('display','block');		
+				$('#message-title').css('display','none');
+				$('#message-body').css('display','none');
+				break;
+			case 'at-product' :
+				document.getElementById('section-description').innerHTML = engagementWords[3];
+				$('#mme').attr("class","mme-bkg-4");
+				$('.push-notification-container').css('display','none');
+				$('.phone-buttons-container').css('display','block');	
+				$('#message-title').css('display','none');
+				$('#message-body').css('display','none');
+				break;
+			default :
+				console.log("went to default");
+				break;
+		}
 	});
 	$("#push-notification,#in-mall,#in-store,#at-product").click(function() {
 		console.log("closing");
