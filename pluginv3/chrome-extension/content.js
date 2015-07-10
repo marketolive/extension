@@ -115,6 +115,7 @@ if (window.location.href.search("marketo.com") != -1 ||
         setTimeout(function(){}, 100);
     }
         MktPage.validateDemoPlugin = function(){};
+		MktPage.demoPluginWindow.hide();
         loadScript(POD_SCRIPT_LOCATION);
         loadScript(LIVE_SCRIPT_LOCATION);
 }
