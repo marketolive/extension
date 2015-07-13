@@ -61,7 +61,7 @@
   border-bottom: 2px solid #DDDDDD;
 }
  
-.subscription-drop-down-container:focus, input[type=text]:focus, input[type=password]:focus, textarea:focus {
+.subscription-drop-down-container:focus, input[type=text]:focus, input[type=password]:focus {
   padding: 0px 0px 0px 17px;
   border-bottom: 2px solid rgba(88, 82, 161, 1);
 }

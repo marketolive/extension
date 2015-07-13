@@ -1,4 +1,19 @@
 $(document).ready(function(){
+  function getCookie(name) {
+    var value = "; " + document.cookie;
+    var parts = value.split("; " + name + "=");
+    if (parts.length == 2) return parts.pop().split(";").shift();
+  }
+  var updateDemoButton = function(){
+    console.log("test1");
+    var pod = getCookie("userPod");
+    console.log(pod);
+    if(pod === 'app-sjp'){
+      $("a[href='nothing']").attr('href', 'https://app-sjp.marketo.com/#SL1094330B2')
+      console.log($('#demo-in-marketo').href);
+    }
+  }
+  updateDemoButton();
   setTimeout(function(){
     $('#adbridge-two').animate({'margin-left':'-17%'},1000);
   },500);

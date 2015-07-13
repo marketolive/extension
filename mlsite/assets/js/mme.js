@@ -1,5 +1,15 @@
 $( document ).ready(function() {
-
+  function getCookie(name) {
+    var value = "; " + document.cookie;
+    var parts = value.split("; " + name + "=");
+    if (parts.length == 2) return parts.pop().split(";").shift();
+  }
+  var updateDemoButton = function(){
+    var pod = getCookie("userPod");
+    if(pod === 'app-sjp')
+      $("a[href='nothing']").attr('href', 'https://app-sjp.marketo.com/#SL1094330B2')
+  }
+  updateDemoButton();
   var updateTime = function(){
     setInterval(function(){
       var d = new Date();
