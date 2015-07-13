@@ -366,16 +366,6 @@ window.onload = function () {
         LIVE.insertDeepLinks(pod);
     }
 
-    if (window.location.href.search("marketo.com") != -1) {
-        console.log("About to overwrite");
-        MktPage.validateDemoPlugin = function () {
-            console.log("overwritten")
-        }
-        setTimeout(function () {
-            MktPage.demoPluginWindow.hide();
-        }, 3000);
-    }
-
     if (window.location.href.search("#RCM39B2") != -1 ||
         window.location.href.search("#RCM5A1!") != -1 ||
         window.location.href.search("#AR1559A1") != -1 ||

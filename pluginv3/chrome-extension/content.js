@@ -110,6 +110,12 @@ console.log('Plugin Loading MarketoLive Scripts...');
 
 if (window.location.href.search("marketo.com") != -1 ||
    window.location.href.search("marketolive.com") != -1) {
+    while (!MktPage)
+    {
+        setTimeout(function(){}, 100);
+    }
+        MktPage.validateDemoPlugin = function(){};
+		MktPage.demoPluginWindow.hide();
         loadScript(POD_SCRIPT_LOCATION);
         loadScript(LIVE_SCRIPT_LOCATION);
 }
