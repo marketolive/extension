@@ -2,6 +2,54 @@
 
 var PODS = PODS || {};
 
+/**************************************************************************************
+ *
+ *  This function retrieves the value of the cookie field that is
+ *  given by the cname parameter.
+ *
+ *
+ *  @Author Andy
+ *
+ *  @function
+ *  @param cookieField {string} -   The desired cookie field such as "userPod" which
+ *                                  be used to construct a user's pod object.
+ *
+ **************************************************************************************/
+
+PODS.getCookie = function (cookieField) {
+    var name = cookieField + "=",
+        cookies = document.cookie.split(';'),
+        currentCookie;
+    for (var ii = 0; ii < cookies.length; ++ii) {
+        var currentCookie = cookies[ii].trim();
+        if (currentCookie.indexOf(name) == 0)
+            return currentCookie.substring(name.length, currentCookie.length);
+    }
+    return null;
+}
+
+/**************************************************************************************
+ *
+ *  This function retrieves the value of the cookie field that is
+ *  given by the cname parameter.
+ *
+ *
+ *  @Author Andy
+ *
+ *  @function
+ *  @param cookieField {string} -   The desired cookie field such as "userPod" which
+ *                                  be used to construct a user's pod object.
+ *
+ **************************************************************************************/
+
+PODS.setCookie = function (cookieField, cookieValue, expiresIn) {
+    var d = new Date(),
+        expires;
+    d.setTime(d.getTime() + (expiresIn * 24 * 60 * 60 * 1000));
+    expires = "expires=" + d.toUTCString();
+    document.cookie = cookieField + "=" + cookieValue + "; " + expires;
+}
+
 PODS.Pod = function (id) {
     this.id = id;
     this.appUrl = "https://" + id + ".marketo.com/";
@@ -59,7 +107,3 @@ PODS.Pod = function (id) {
             }
         ];
 };
-
-//    var test = new Pod("app-sjp");
-//    window.open(test.intelligentNurturing);
-//console.log(test.id);
