@@ -234,7 +234,7 @@ $( document ).ready(function() {
 	]
 
 
-  $('#marketo-live-home').animate({'top' : '30%'}, 600);
+  $('#marketo-live-home').animate({'top' : '10%'}, 600);
   $('#marketo-live-home-option').animate({'margin-bottom' : '5%'}, 600);
   
 	var help = document.getElementById('help-link');
