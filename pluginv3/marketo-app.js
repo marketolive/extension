@@ -2,6 +2,23 @@ console.log("Demo script loading...");
 
 /**************************************************************************************
  *
+ *  Global Constants
+ *
+ **************************************************************************************/
+
+var currentUrl = window.location.href,
+    mktoAppDomain = "^https:\/\/app-[a-z0-9]+\.marketo\.com",
+    mktoLiveDomain = "^https:\/\/marketolive.com",
+    mktoLoginDomain = "^https:\/\/login\.marketo\.com",
+    mktoAppLoginDomain = "^https:\/\/app\.marketo\.com",
+    mktoDesigner = "^https:\/\/.*\.marketodesigner\.com/",
+    mktoWizard = mktoAppDomain+"/m#",
+    rtpDemoDomain = "^http://sjrtp1.marketo.com/demo/$|^http://cloud4.insightera.com/demo/$",
+    emailDeliverabilityDomain = "^https:\/\/250ok.com/",
+    isMktoLiveInstance = false;
+
+/**************************************************************************************
+ *
  *  This module contains all of the functionality needed for the
  *  manipulation of the Marekto GUI. It handles the overwriting needed
  *  to overlay the MarketoLive functionality onto the Marketo product. It
@@ -175,24 +192,22 @@ DEMO.limitNurturePrograms = function () {
 
 DEMO.demo = function (pod) {
 
-    var currentUrl = window.location.href;
-
     // Powerful Automation
     if (currentUrl.search(mktoAppDomain + "/#SC") != -1) {
         DEMO.disableAutoSave();
     }
 
     // Marketing ROI, Funnel Analysis
-    else if (currentUrl.search(mktoAppDomain + "/#RCM39B2") != -1 ||
-        currentUrl.search(mktoAppDomain + "/#RCM5A1") != -1 ||
-        currentUrl.search(mktoAppDomain + "/#AR1559A1") != -1 ||
-        currentUrl.search(mktoAppDomain + "/#AR1682A1") != -1) {
+    else if (currentUrl.search(mktoAppDomain + "/#RCM39B2") != -1 
+    || currentUrl.search(mktoAppDomain + "/#RCM5A1") != -1 
+    || currentUrl.search(mktoAppDomain + "/#AR1559A1") != -1 
+    || currentUrl.search(mktoAppDomain + "/#AR1682A1") != -1) {
         DEMO.updateCSS(pod);
     }
 
     // DIY Design
-    else if (currentUrl.search(".marketodesigner.com") != -1 ||
-        currentUrl.search(".marketo.com/m#") != -1) {
+    else if (currentUrl.search(mktoDesigner) != -1 
+    || currentUrl.search(mktoWizard) != -1) {
         console.log("Should be disabling editor stuff");
         Mkt3.data.Store.prototype.sync = function () {};
         Ext4.data.Model.prototype.destroy = function () {};
@@ -204,14 +219,6 @@ DEMO.demo = function (pod) {
  *  Main
  *  
  **************************************************************************************/
-
-var mktoAppDomain = "^https:\/\/app-[a-z0-9]+\.marketo\.com",
-    mktoLiveDomain = "^https:\/\/marketolive.com",
-    mktoLoginDomain = "^https:\/\/login\.marketo\.com",
-    mktoAppLoginDomain = "^https:\/\/app\.marketo\.com",
-    rtpDemoDomain = "^http://sjrtp1.marketo.com/demo/$|^http://cloud4.insightera.com/demo/$",
-    emailDeliverabilityDomain = "^https:\/\/250ok.com/",
-    isMktoLiveInstance = false;
 
 if (window.location.href.search(mktoAppDomain) != -1 && window.location.href.search(mktoLoginDomain) == -1 && window.location.href.search(mktoAppLoginDomain) == -1) {
     //console.log("Location: Marketo URL");
