@@ -1,6 +1,6 @@
-var LIVE_SCRIPT_LOCATION = "https://marketolive.com/dev/pluginv3/marketo-live.js",
-    DEMO_SCRIPT_LOCATION = "https://marketolive.com/dev/pluginv3/marketo-demo.js",
-    POD_SCRIPT_LOCATION = "https://marketolive.com/dev/pluginv3/pods.js",
+var LIVE_SCRIPT_LOCATION = "https://marketolive.com/dev/pluginv4/marketo-live.js",
+    APP_SCRIPT_LOCATION = "https://marketolive.com/dev/pluginv4/marketo-app.js",
+    POD_SCRIPT_LOCATION = "https://marketolive.com/dev/pluginv4/pods.js",
     currentUrl = window.location.href,
     loadScript,
     getCookie,
@@ -24,16 +24,27 @@ setCookie = function (cookieField, cookieValue, expiresIn) {
 
 
 getCookie = function (cookieField) {
-        var name = cookieField + "=",
-            cookies = document.cookie.split(';'),
-            currentCookie;
-        for (var ii = 0; ii < cookies.length; ++ii) {
-            var currentCookie = cookies[ii].trim();
-            if (currentCookie.indexOf(name) == 0)
-                return currentCookie.substring(name.length, currentCookie.length);
-        }
-        return null;
+    var name = cookieField + "=",
+        cookies = document.cookie.split(';'),
+        currentCookie;
+    for (var ii = 0; ii < cookies.length; ++ii) {
+        var currentCookie = cookies[ii].trim();
+        if (currentCookie.indexOf(name) == 0)
+            return currentCookie.substring(name.length, currentCookie.length);
     }
+    return null;
+}
+
+chrome.extension.onMessage.addListener(function (request, sender, sendResponse) {
+    switch (request.action) {
+        case "priv":
+            {
+                setCookie("priv", request.priv.editPrivileges, 1, "www.marketo.com", "yes");
+                localStorage.setItem("priv", request.priv.editPrivileges);
+                break;
+            }
+    }
+});
 
 /**************************************************************************************
  *
@@ -90,45 +101,50 @@ Analyzer.prototype.showAnalyzer = function () {
 
 window.onload = function () {
 
-//<<<<<<< Updated upstream
-//var current_url = location.href;
-//var appMatch = /([([a-z0-9][a-z0-9-]+[a-z0-9]\.marketo\.com)/g;
-//var match = new RegExp(appMatch);
-//var mkto_app = match.test(current_url);
-//var mkto_live = current_url.indexOf('https://marketolive.com');
-//var mkto_mobile = current_url.indexOf('https://go.app.io');
-//var mkto_email = current_url.indexOf('https://250ok.com/login');
-//console.log('Plugin Loading MarketoLive Scripts...');
-//
-//
-//if (window.location.href.search("marketo.com") != -1 ||
-//   window.location.href.search("marketolive.com") != -1) {
-//    while (!MktPage)
-//    {
-//        setTimeout(function(){}, 100);
-//    }
-//        MktPage.validateDemoPlugin = function(){};
-//		MktPage.demoPluginWindow.hide();
-//        loadScript(POD_SCRIPT_LOCATION);
-//=======
-    if (currentUrl.search("marketo.com") != -1) {
-        loadScript(DEMO_SCRIPT_LOCATION);
-    } else if (currentUrl.search("marketolive.com") != -1) {
-//>>>>>>> Stashed changes
+    //var current_url = location.href;
+    //var appMatch = /([([a-z0-9][a-z0-9-]+[a-z0-9]\.marketo\.com)/g;
+    //var match = new RegExp(appMatch);
+    //var mkto_app = match.test(current_url);
+    //var mkto_live = current_url.indexOf('https://marketolive.com');
+    //var mkto_mobile = current_url.indexOf('https://go.app.io');
+    //var mkto_email = current_url.indexOf('https://250ok.com/login');
+    //console.log('Plugin Loading MarketoLive Scripts...');
+    //
+    //
+
+    var mktoAppDomain = "^https:\/\/app-[a-z0-9]+\.marketo\.com",
+        mktoLiveDomain = "^https:\/\/marketolive.com",
+        mktoLoginDomain = "^https:\/\/login\.marketo\.com",
+        mktoAppLoginDomain = "^https:\/\/app\.marketo\.com",
+        rtpDemoDomain = "^http://sjrtp1.marketo.com/demo/$|^http://cloud4.insightera.com/demo/$",
+        emailDeliverabilityDomain = "^https:\/\/250ok.com/";
+
+    if (currentUrl.search(mktoAppDomain) != -1 && currentUrl.search(mktoLoginDomain) == -1 && currentUrl.search(mktoAppLoginDomain) == -1) {
+        window.mkto_live_plugin_state = true;
+        loadScript(POD_SCRIPT_LOCATION);
+        loadScript(APP_SCRIPT_LOCATION);
+        // Double check that this if statement works
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        //        if (MktPage.savedState.custPrefix.search("mktodemoaccount") != -1 && (MktPage.userid.search("\.demo@marketo\.com") != -1 || MktPage.userid.search("admin@mktodemoaccount") != -1)) {
+        //            loadScript(POD_SCRIPT_LOCATION);
+        //            loadScript(APP_SCRIPT_LOCATION);
+        //        }
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    } 
+    else if (currentUrl.search(mktoLiveDomain) != -1) {
+        var port = chrome.runtime.connect({
+            name: "mycontentscript"
+        });
+        port.onMessage.addListener(function (message, sender) {
+            user_pod = message.greeting;
+            setCookie('userPod', user_pod, 365, '.marketolive.com', true);
+            setCookie('userPod', user_pod, 365, '.marketo.com', true);
+        });
+        loadScript(POD_SCRIPT_LOCATION);
         loadScript(LIVE_SCRIPT_LOCATION);
-    }
-
-    var port = chrome.runtime.connect({
-        name: "mycontentscript"
-    });
-
-    port.onMessage.addListener(function (message, sender) {
-        user_pod = message.greeting;
-        setCookie('userPod', user_pod, 365, '.marketolive.com', true);
-        setCookie('userPod', user_pod, 365, '.marketo.com', true);
-    });
-
-    if (currentUrl == "http://cloud4.insightera.com/demo/") {
+    } 
+    else if (currentUrl.search(rtpDemoDomain)) {
         var xmlHttp = new XMLHttpRequest();
         xmlHttp.open("GET", "https://marketolive.com/dev/pluginv3/html/turner-rtp.html", false);
         xmlHttp.send(null);
@@ -138,15 +154,12 @@ window.onload = function () {
             document.getElementById("advanced").appendChild(newElement);
         }
         window.onload = pageLoaded();
-    }
-
-    if (currentUrl.search("#RCM39A1") != -1 ||
-        currentUrl.search("#RCM5A1!") != -1 ||
-        currentUrl.search("#AR1559A1") != -1) {
-        loadScript("https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js");
+    } 
+    else if (currentUrl.search(mktoAppDomain + "/#RCM39A1") != -1 ||
+        currentUrl.search(mktoAppDomain + "/#RCM5A1!") != -1 ||
+        currentUrl.search(mktoAppDomain + "/#AR1559A1") != -1) {
+        //        loadScript("https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js");
         console.log("About to show Analyzer");
         Analyzer.prototype.showAnalyzer();
-    } else {
-        console.log("You spelled the URL wrong");
     }
 }

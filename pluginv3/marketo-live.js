@@ -61,8 +61,6 @@ LIVE.emailDeliverabilityLogin = function () {
     });
 }
 
-
-
 //we're going to create an instance of the analyzer
 //and then call showAnalyzer to actually build out the template and CSS onto the page
 window.onload = function () {
