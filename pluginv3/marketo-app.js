@@ -12,7 +12,7 @@ var currentUrl = window.location.href,
     mktoLoginDomain = "^https:\/\/login\.marketo\.com",
     mktoAppLoginDomain = "^https:\/\/app\.marketo\.com",
     mktoDesigner = "^https:\/\/.*\.marketodesigner\.com/",
-    mktoWizard = mktoAppDomain+"/m#",
+    mktoWizard = mktoAppDomain + "/m#",
     rtpDemoDomain = "^http://sjrtp1.marketo.com/demo/$|^http://cloud4.insightera.com/demo/$",
     emailDeliverabilityDomain = "^https:\/\/250ok.com/",
     isMktoLiveInstance = false;
@@ -31,7 +31,7 @@ var currentUrl = window.location.href,
  *
  **************************************************************************************/
 
-var DEMO = DEMO || {}
+var APP = APP || {}
 
 /**************************************************************************************
  *  
@@ -45,10 +45,11 @@ var DEMO = DEMO || {}
  *
  **************************************************************************************/
 
-DEMO.disableSmartCampaignSaving = function () {
-	console.log("Disabling: Saving for Smart Campaigns");
+APP.disableSmartCampaignSaving = function() {
+    	console.log("Disabling: Saving for Smart Campaigns");
+
     Mkt.widgets.DataPanelManager.prototype.save =
-        function (cause, dp, acceptUpdates) {
+        function(cause, dp, acceptUpdates) {
             this._updateDataPanelOrder(true);
         }
 }
@@ -64,7 +65,7 @@ DEMO.disableSmartCampaignSaving = function () {
  *
  **************************************************************************************/
 
-DEMO.disableEditorSaving = function () {
+APP.disableEditorSaving = function () {
 	console.log("Disabling: Saving for Editors");
 	Mkt3.data.Store.prototype.sync = function () {};
 	Ext4.data.Model.prototype.destroy = function () {};
@@ -87,7 +88,7 @@ DEMO.disableEditorSaving = function () {
  *
  **************************************************************************************/
 
-DEMO.urlCheck = function (pod) {
+APP.urlCheck = function(pod) {
     var location = window.location.href;
     for (var y = 0; y < pod.valueSet.length; y++) {
         if (location == pod.valueSet[y].url) {
@@ -110,16 +111,16 @@ DEMO.urlCheck = function (pod) {
  *
  **************************************************************************************/
 
-DEMO.updateCSS = function (pod) {
+APP.updateCSS = function(pod) {
     $j = jQuery.noConflict();
-    var currentPosition = DEMO.urlCheck(pod);
+    var currentPosition = APP.urlCheck(pod);
     currentPosition = '#' + currentPosition;
     $j(currentPosition).parent().css('display', 'block');
     $j(currentPosition).parent().siblings().css('display', 'none');
     $j(currentPosition).removeClass('analyzer-button').addClass('analyzer-title');
     $j(currentPosition).siblings().removeClass('analyzer-title').addClass('analyzer-button');
-    $j("#modeler,#success-path-analyzer,#opportunity-influence-analyzer,#program-analyzer").bind("click", function (e) {
-        DEMO.chooseAnalyzer(e.target, pod);
+    $j("#modeler,#success-path-analyzer,#opportunity-influence-analyzer,#program-analyzer").bind("click", function(e) {
+        APP.chooseAnalyzer(e.target, pod);
     });
 }
 
@@ -138,7 +139,7 @@ DEMO.updateCSS = function (pod) {
  *
  **************************************************************************************/
 
-DEMO.chooseAnalyzer = function (ele, pod) {
+APP.chooseAnalyzer = function(ele, pod) {
     var id = ele.id,
         currPosition;
     //updates the currPosition based on the div selected
@@ -147,24 +148,24 @@ DEMO.chooseAnalyzer = function (ele, pod) {
             currPosition = x;
     }
     window.location = pod.valueSet[currPosition].url;
-    DEMO.updateCSS(pod);
+    APP.updateCSS(pod);
 }
 
-DEMO.discardLandingPageDrafts(lpIds) {
-	console.log("Discarding: Landing Page drafts");
+APP.discardLandingPageDrafts = function(lpIds) {
+    console.log("Discarding: Landing Page drafts");
     mktLPLManager.doModifyPages('revert', lpIds);
 }
 
 //<---- This function limits the capability to create more than 3 nurture programs in the target workspace
-DEMO.limitNurturePrograms = function () {
+APP.limitNurturePrograms = function() {
     var myMsg = 'Demo Only';
     var originalFn = Mkt.apps.marketingEvent.MarketingEventForm.prototype.beforeSubmitCallback;
-    Mkt.apps.marketingEvent.MarketingEventForm.prototype.beforeSubmitCallback = function () {
+    Mkt.apps.marketingEvent.MarketingEventForm.prototype.beforeSubmitCallback = function() {
         var limit_exceeded = false,
             rootNode = MktExplorer.boundTree.root,
             compType = "Nurture Program",
             matches = [],
-            node = rootNode.cascade(function () {
+            node = rootNode.cascade(function() {
                 var attr = this.attributes;
                 if (attr && attr.xtra) {
                     if (attr.xtra.compType == compType && attr.xtra.accessZoneId == MktCanvas.activeTab.config.accessZoneId) {
@@ -209,20 +210,20 @@ DEMO.limitNurturePrograms = function () {
  *
  **************************************************************************************/
 
-DEMO.demo = function (pod) {
+APP.demo = function(pod) {
 
     // Marketing ROI, Funnel Analysis
     if (currentUrl.search(mktoAppDomain + "/#RCM39B2") != -1 
     || currentUrl.search(mktoAppDomain + "/#RCM5A1") != -1 
     || currentUrl.search(mktoAppDomain + "/#AR1559A1") != -1 
     || currentUrl.search(mktoAppDomain + "/#AR1682A1") != -1) {
-        DEMO.updateCSS(pod);
+        APP.updateCSS(pod);
     }
 
     // DIY Design (Emails, Forms, Push Notifications, Social Apps)
     else if (currentUrl.search(mktoDesigner) != -1 
     || currentUrl.search(mktoWizard) != -1) {
-        DEMO.disableEditorSaving;
+        APP.disableEditorSaving;
     }
 }
 
@@ -235,17 +236,17 @@ DEMO.demo = function (pod) {
 if (window.location.href.search(mktoAppDomain) != -1 && window.location.href.search(mktoLoginDomain) == -1 && window.location.href.search(mktoAppLoginDomain) == -1) {
     //console.log("Location: Marketo URL");
     window.mkto_live_plugin_state = true;
-    var isMktPageInterval = window.setInterval(function () {
+    var isMktPageInterval = window.setInterval(function() {
         //console.log("MktPage = "+typeof(MktPage));
-        if (typeof (MktPage) !== "undefined") {
+        if (typeof(MktPage) !== "undefined") {
             if (MktPage.savedState.custPrefix.search("mktodemoaccount") != -1 && (MktPage.userid.search("\.demo@marketo\.com") != -1 || MktPage.userid.search("admin@mktodemoaccount") != -1)) {
                 console.log("Overwriting: MktPage.validateDemoPlugin");
-                MktPage.demoPluginWindow.hide();
-                MktPage.validateDemoPlugin = function () {};
+               // MktPage.demoPluginWindow.hide();
+                MktPage.validateDemoPlugin = function() {};
                 isMktoLiveInstance = true;
 				
 				// Powerful Automation
-				DEMO.disableSmartCampaignSaving();
+				APP.disableSmartCampaignSaving();
 
                 var pod = new PODS.Pod(PODS.getCookie("userPod")),
 					lpIds = {};
@@ -265,20 +266,19 @@ if (window.location.href.search(mktoAppDomain) != -1 && window.location.href.sea
                         break;
                     case "mktodemoaccount106b":
                         // Landing Page
-                        lpIds["dpageid_10760"] = "dpageid_10760;
+                        lpIds["dpageid_10760"] = "dpageid_10760";
 						// Responsive Landing Page
                         lpIds["dpageid_10762"] = "dpageid_10762";
                         break;
                 }
 
                 // DIY Design (Landing Pages)
-				DEMO.discardLandingPageDrafts(lpIds);
-				
-                DEMO.limitNurturePrograms();
-                DEMO.demo(pod);
+                APP.discardLandingPageDrafts(lpIds);
+                APP.limitNurturePrograms();
+                APP.demo(pod);
 
-                window.onhashchange = function () {
-                    DEMO.demo(pod);
+                window.onhashchange = function() {
+                    APP.demo(pod);
                 }
             }
             window.clearInterval(isMktPageInterval);
