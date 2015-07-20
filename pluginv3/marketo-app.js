@@ -1,4 +1,4 @@
-console.log("Demo script loading...");
+console.log("Loading: Marketo App script");
 
 /**************************************************************************************
  *
@@ -35,9 +35,9 @@ var DEMO = DEMO || {}
 
 /**************************************************************************************
  *  
- *  This function disables auto-save of Smart Campaigns while maintaining the
- *  correct order of the steps. I.E. The old bug where a flow step shows as 'undefined'
- *  will be erradicated.
+ *  This function disables saving of Smart Campaigns while maintaining the correct 
+ *  order of the steps (the previous bug where a flow step shows as 'undefined' has  
+ *  been eradicated).
  *
  *  @Author Brian
  *
@@ -45,11 +45,29 @@ var DEMO = DEMO || {}
  *
  **************************************************************************************/
 
-DEMO.disableAutoSave = function () {
+DEMO.disableSmartCampaignSaving = function () {
+	console.log("Disabling: Saving for Smart Campaigns");
     Mkt.widgets.DataPanelManager.prototype.save =
         function (cause, dp, acceptUpdates) {
             this._updateDataPanelOrder(true);
         }
+}
+
+/**************************************************************************************
+ *  
+ *  This function disables saving for the Editors (emails, forms, push notifications, 
+ *  and social apps).
+ *
+ *  @Author Brian
+ *
+ *  @function
+ *
+ **************************************************************************************/
+
+DEMO.disableEditorSaving = function () {
+	console.log("Disabling: Saving for Editors");
+	Mkt3.data.Store.prototype.sync = function () {};
+	Ext4.data.Model.prototype.destroy = function () {};
 }
 
 /**************************************************************************************
@@ -133,6 +151,7 @@ DEMO.chooseAnalyzer = function (ele, pod) {
 }
 
 DEMO.discardLandingPageDrafts(lpIds) {
+	console.log("Discarding: Landing Page drafts");
     mktLPLManager.doModifyPages('revert', lpIds);
 }
 
@@ -192,25 +211,18 @@ DEMO.limitNurturePrograms = function () {
 
 DEMO.demo = function (pod) {
 
-    // Powerful Automation
-    if (currentUrl.search(mktoAppDomain + "/#SC") != -1) {
-        DEMO.disableAutoSave();
-    }
-
     // Marketing ROI, Funnel Analysis
-    else if (currentUrl.search(mktoAppDomain + "/#RCM39B2") != -1 
+    if (currentUrl.search(mktoAppDomain + "/#RCM39B2") != -1 
     || currentUrl.search(mktoAppDomain + "/#RCM5A1") != -1 
     || currentUrl.search(mktoAppDomain + "/#AR1559A1") != -1 
     || currentUrl.search(mktoAppDomain + "/#AR1682A1") != -1) {
         DEMO.updateCSS(pod);
     }
 
-    // DIY Design
+    // DIY Design (Emails, Forms, Push Notifications, Social Apps)
     else if (currentUrl.search(mktoDesigner) != -1 
     || currentUrl.search(mktoWizard) != -1) {
-        console.log("Should be disabling editor stuff");
-        Mkt3.data.Store.prototype.sync = function () {};
-        Ext4.data.Model.prototype.destroy = function () {};
+        DEMO.disableEditorSaving;
     }
 }
 
@@ -231,9 +243,12 @@ if (window.location.href.search(mktoAppDomain) != -1 && window.location.href.sea
                 MktPage.demoPluginWindow.hide();
                 MktPage.validateDemoPlugin = function () {};
                 isMktoLiveInstance = true;
+				
+				// Powerful Automation
+				DEMO.disableSmartCampaignSaving();
 
                 var pod = new PODS.Pod(PODS.getCookie("userPod")),
-                    lpIds = {};
+					lpIds = {};
 
                 switch (MktPage.savedState.custPrefix) {
                     case "mktodemoaccount106":
@@ -251,12 +266,14 @@ if (window.location.href.search(mktoAppDomain) != -1 && window.location.href.sea
                     case "mktodemoaccount106b":
                         // Landing Page
                         lpIds["dpageid_10760"] = "dpageid_10760;
-                            // Responsive Landing Page
+						// Responsive Landing Page
                         lpIds["dpageid_10762"] = "dpageid_10762";
                         break;
                 }
 
-                DEMO.discardLandingPageDrafts(lpIds);
+                // DIY Design (Landing Pages)
+				DEMO.discardLandingPageDrafts(lpIds);
+				
                 DEMO.limitNurturePrograms();
                 DEMO.demo(pod);
 
