@@ -6,7 +6,7 @@ var LIVE_SCRIPT_LOCATION = "https://marketolive.com/dev/plugin-bcf/marketo-live.
     getCookie,
     setCookie;
 
-
+console.log("Running: Content");
 
 loadScript = function (name) {
     var jscript_lib_demo = document.createElement('script');
@@ -100,6 +100,9 @@ Analyzer.prototype.showAnalyzer = function () {
 }
 
 window.onload = function () {
+    
+    console.log("Window: Loaded");
+
 
     //var current_url = location.href;
     //var appMatch = /([([a-z0-9][a-z0-9-]+[a-z0-9]\.marketo\.com)/g;
@@ -117,13 +120,24 @@ window.onload = function () {
         mktoLoginDomain = "^https:\/\/login\.marketo\.com",
         mktoAppLoginDomain = "^https:\/\/app\.marketo\.com",
         rtpDemoDomain = "^http://sjrtp1.marketo.com/demo/$|^http://cloud4.insightera.com/demo/$",
-        emailDeliverabilityDomain = "^https:\/\/250ok.com/";
+        emailDeliverabilityDomain = "^https:\/\/250ok.com/",
+        mktoDesignerDomain = "^https:\/\/[a-z0-9]+-[a-z0-9]+\.marketodesigner\.com",
+        mktoEmailDesigner = mktoDesignerDomain + "/ds",
+        mktoLandingPageDesigner = mktoDesignerDomain + "/lpeditor/",
+        mktoWizard = mktoAppDomain + "/m#";
 
     if (currentUrl.search(mktoAppDomain) != -1 && currentUrl.search(mktoLoginDomain) == -1 && currentUrl.search(mktoAppLoginDomain) == -1) {
         window.mkto_live_plugin_state = true;
         loadScript(POD_SCRIPT_LOCATION);
         loadScript(APP_SCRIPT_LOCATION);
         // Double check that this if statement works
+    }
+       
+    else if (currentUrl.search(mktoEmailDesigner) != -1 
+    || currentUrl.search(mktoWizard) != -1) {
+        console.log("Window: Designer/Wizard");
+        loadScript(APP_SCRIPT_LOCATION);  
+    }
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //        if (MktPage.savedState.custPrefix.search("mktodemoaccount") != -1 && (MktPage.userid.search("\.demo@marketo\.com") != -1 || MktPage.userid.search("admin@mktodemoaccount") != -1)) {
         //            loadScript(POD_SCRIPT_LOCATION);
@@ -131,7 +145,6 @@ window.onload = function () {
         //        }
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    } 
     else if (currentUrl.search(mktoLiveDomain) != -1) {
         var port = chrome.runtime.connect({
             name: "mycontentscript"

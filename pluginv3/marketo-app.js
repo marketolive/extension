@@ -223,7 +223,7 @@ APP.demo = function(pod) {
     // DIY Design (Emails, Forms, Push Notifications, Social Apps)
     else if (currentUrl.search(mktoDesigner) != -1 
     || currentUrl.search(mktoWizard) != -1) {
-        APP.disableEditorSaving;
+        APP.disableEditorSaving();
     }
 }
 
