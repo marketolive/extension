@@ -11,7 +11,9 @@ var currentUrl = window.location.href,
     mktoLiveDomain = "^https:\/\/marketolive.com",
     mktoLoginDomain = "^https:\/\/login\.marketo\.com",
     mktoAppLoginDomain = "^https:\/\/app\.marketo\.com",
-    mktoDesigner = "^https:\/\/.*\.marketodesigner\.com/",
+    mktoDesignerDomain = "^https:\/\/[a-z0-9]+-[a-z0-9]+\.marketodesigner\.com",
+    mktoEmailDesigner = mktoDesignerDomain + "/ds",
+    mktoLandingPageDesigner = mktoDesignerDomain + "/lpeditor/",
     mktoWizard = mktoAppDomain + "/m#",
     rtpDemoDomain = "^http://sjrtp1.marketo.com/demo/$|^http://cloud4.insightera.com/demo/$",
     emailDeliverabilityDomain = "^https:\/\/250ok.com/",
@@ -211,6 +213,8 @@ APP.limitNurturePrograms = function() {
  **************************************************************************************/
 
 APP.demo = function(pod) {
+    
+    console.log("Running: APP.demo()");
 
     // Marketing ROI, Funnel Analysis
     if (currentUrl.search(mktoAppDomain + "/#RCM39B2") != -1 
@@ -219,12 +223,7 @@ APP.demo = function(pod) {
     || currentUrl.search(mktoAppDomain + "/#AR1682A1") != -1) {
         APP.updateCSS(pod);
     }
-
-    // DIY Design (Emails, Forms, Push Notifications, Social Apps)
-    else if (currentUrl.search(mktoDesigner) != -1 
-    || currentUrl.search(mktoWizard) != -1) {
-        APP.disableEditorSaving();
-    }
+    
 }
 
 /**************************************************************************************
@@ -233,7 +232,7 @@ APP.demo = function(pod) {
  *  
  **************************************************************************************/
 
-if (window.location.href.search(mktoAppDomain) != -1 && window.location.href.search(mktoLoginDomain) == -1 && window.location.href.search(mktoAppLoginDomain) == -1) {
+if (window.location.href.search(mktoAppDomain) != -1 && window.location.href.search(mktoLoginDomain) == -1 && window.location.href.search(mktoAppLoginDomain) == -1 && window.location.href.search(mktoWizard) == -1) {
     //console.log("Location: Marketo URL");
     window.mkto_live_plugin_state = true;
     var isMktPageInterval = window.setInterval(function() {
@@ -284,4 +283,11 @@ if (window.location.href.search(mktoAppDomain) != -1 && window.location.href.sea
             window.clearInterval(isMktPageInterval);
         }
     }, 0);
+}
+
+// DIY Design (Emails, Forms, Push Notifications, Social Apps)
+else if (currentUrl.search(mktoEmailDesigner) != -1 
+|| currentUrl.search(mktoWizard) != -1) {
+    console.log("Disabling: Saving for Editors");
+    APP.disableEditorSaving();
 }
