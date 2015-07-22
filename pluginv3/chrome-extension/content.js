@@ -7,26 +7,35 @@ var LIVE_SCRIPT_LOCATION = "https://marketolive.com/dev/plugin-bcf/marketo-live.
 	COLORPICKER_SCRIPT_LOCATION = "https://marketolive.com/m2_update/assets/js/colorpicker.js",
 	DELIVERABILITY_TOOLS_SCRIPT_LOCATION = "https://marketolive.com/dev/plugin-bcf/deliverability-tools.js",
     currentUrl = window.location.href,
-				 loadScript,
-				 getCookie,
-				 setCookie;
-	
-var port = chrome.runtime.connect({
-    //name : "mycontentscript"
-});
-
-port.onMessage.addListener(function(message, sender) {
-    setCookie("userPod", message.greeting, 365, ".marketolive.com", true);
-    setCookie("userPod", message.greeting, 365, ".marketo.com", true);
-});
+	loadScript,
+	getCookie,
+	setCookie,
+	mktoAppDomain = "^https:\/\/app-[a-z0-9]+\.marketo\.com",
+	mktoAppMatch = "https://app-*.marketo.com",
+	mktoLiveDomain = "^https:\/\/marketolive.com",
+	mktoLiveMatch = "https://marketolive.com/*",
+	mktoLoginDomain = "^https:\/\/login\.marketo\.com",
+	mktoAppLoginDomain = "^https:\/\/app\.marketo\.com",
+	mktoDesignerDomain = "^https:\/\/[a-z0-9]+-[a-z0-9]+\.marketodesigner\.com",
+	mktoDesignerMatch = "https://*.marketodesigner.com/*",
+	mktoEmailDesigner = mktoDesignerDomain + "/ds",
+	mktoLandingPageDesigner = mktoDesignerDomain + "/lpeditor/",
+	mktoWizard = mktoAppDomain + "/m#",
+	rtpDemoDomain = "^http:\/\/sjrtp1.marketo.com\/demo\/$|^http:\/\/cloud4.insightera.com\/demo\/$",
+	emailDeliverabilityDomain = "^https:\/\/250ok.com/",
+	colorPickerPage = "color-picker\.html$";
 
 loadScript = function(name) {
+	console.log("Content > Loading: Script");
+	
     var jscript_lib_demo = document.createElement("script");
     jscript_lib_demo.setAttribute("src", name);
     document.getElementsByTagName("head")[0].appendChild(jscript_lib_demo);
 }
 
 setCookie = function(cookieField, cookieValue, expiresIn) {
+	console.log("Content > Setting: Cookie");
+	
     var d = new Date(),
 			expires;
     d.setTime(d.getTime() + (expiresIn * 24 * 60 * 60 * 1000));
@@ -35,6 +44,8 @@ setCookie = function(cookieField, cookieValue, expiresIn) {
 }
 
 getCookie = function(cookieField) {
+	console.log("Content > Getting: Cookie");
+	
     var name = cookieField + "=",
         cookies = document.cookie.split(';'),
         currentCookie;
@@ -59,6 +70,8 @@ getCookie = function(cookieField) {
  **************************************************************************************/
 
 Analyzer = function(pod) {
+	console.log("Content > Constructor: Analyzer");
+	
     this.currPosition = 0;
     this.pod = pod;
 }
@@ -101,40 +114,8 @@ chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
 	}
 });
 
-if (window.location.href.search("marketolive") != -1) {
-	var color = getCookie('color');
-	if (color)
-		chrome.runtime.sendMessage({action: "colorVal", color : color}, function(response) {});
-}
-
-if (window.location.href.search("color-picker.html") != -1) {
-    window.onload = function() {
-        loadScript(COLORPICKER_SCRIPT_LOCATION);
-    }
-}
-
-if (window.location.href == "https://na-sjp.marketodesigner.com/ds?explictHostname=app-sjp.marketo.com#EME15464") {
-	window.onload = function() {
-		loadScript(DESIGNER_SCRIPT_LOCATION);
-	}
-}
-
 window.onload = function() {
     console.log("Content > Window: Loaded");
-
-    var mktoAppDomain = "^https:\/\/app-[a-z0-9]+\.marketo\.com",
-		mktoAppMatch = "https://app-*.marketo.com",
-		mktoLiveDomain = "^https:\/\/marketolive.com",
-		mktoLiveMatch = "https://marketolive.com/*",
-		mktoLoginDomain = "^https:\/\/login\.marketo\.com",
-		mktoAppLoginDomain = "^https:\/\/app\.marketo\.com",
-		mktoDesignerDomain = "^https:\/\/[a-z0-9]+-[a-z0-9]+\.marketodesigner\.com",
-		mktoDesignerMatch = "https://*.marketodesigner.com/*",
-		mktoEmailDesigner = mktoDesignerDomain + "/ds",
-		mktoLandingPageDesigner = mktoDesignerDomain + "/lpeditor/",
-		mktoWizard = mktoAppDomain + "/m#",
-		rtpDemoDomain = "^http:\/\/sjrtp1.marketo.com\/demo\/$|^http:\/\/cloud4.insightera.com\/demo\/$",
-		emailDeliverabilityDomain = "^https:\/\/250ok.com/";
 
     if (currentUrl.search(mktoAppDomain) != -1
 	&& currentUrl.search(mktoEmailDesigner) == -1) {
@@ -144,34 +125,47 @@ window.onload = function() {
         loadScript(POD_SCRIPT_LOCATION);
         loadScript(APP_SCRIPT_LOCATION);
     }
+	
     else if (currentUrl.search(mktoEmailDesigner) != -1
     || currentUrl.search(mktoWizard) != -1) {
         console.log("Content > Location: Designer/Wizard");
 		
-        loadScript(APP_SCRIPT_LOCATION);  
+        loadScript(APP_SCRIPT_LOCATION);
+		// Need to load script only for #EME15464
+		if (currentUrl.search(mktoEmailDesigner) != -1 {
+			loadScript(DESIGNER_SCRIPT_LOCATION)
+		}
     }
+	
     else if (currentUrl.search(mktoLiveDomain) != -1) {
 		console.log("Content > Location: MarketoLive");
 		
         var port = chrome.runtime.connect({
-            name: "mycontentscript"
+			name: "mycontentscript"
         });
         port.onMessage.addListener(function(message, sender) {
             user_pod = message.greeting;
             setCookie('userPod', user_pod, 365, '.marketolive.com', true);
             setCookie('userPod', user_pod, 365, '.marketo.com', true);
         });
+		var color = getCookie('color');
+		if (color) {
+			chrome.runtime.sendMessage({action: "colorVal", color : color}, function(response) {});
+		}
         loadScript(POD_SCRIPT_LOCATION);
         loadScript(LIVE_SCRIPT_LOCATION);
     }
+	
 	else if (currentUrl.search(mktoAppDomain + "/#RCM39A1") != -1
+	console.log("Content > Location: Analytics");
+	
 	|| currentUrl.search(mktoAppDomain + "/#RCM5A1!") != -1
 	|| currentUrl.search(mktoAppDomain + "/#AR1559A1") != -1) {
         console.log("Content > Location: Analyzers");
 		
-		//loadScript("https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js");
         Analyzer.prototype.showAnalyzer();
     }
+	
     else if (currentUrl.search(rtpDemoDomain) != -1) {
 		console.log("Content > Location: RTP Demo");
 		
@@ -185,7 +179,16 @@ window.onload = function() {
         }
         window.onload = pageLoaded();
     }
+	
 	else if (currentUrl.search("250ok.com/")) {
+		console.log("Content > Location: Deliverability Tools");
+		
 		loadScript(DELIVERABILITY_TOOLS_SCRIPT_LOCATION);
 	}
+	
+	else if (currentUrl.search(colorPickerPage) != -1) {
+		console.log("Content > Location: Color Picker");
+		
+		loadScript(COLORPICKER_SCRIPT_LOCATION);
+    }
 }
