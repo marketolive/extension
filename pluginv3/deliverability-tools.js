@@ -1,3 +1,5 @@
+console.log("Deliverability > Running");
+
 /**************************************************************************************
  *
  *  This module contains all of the functionality needed for preventing unwanted

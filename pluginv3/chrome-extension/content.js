@@ -7,9 +7,6 @@ var LIVE_SCRIPT_LOCATION = "https://marketolive.com/dev/plugin-bcf/marketo-live.
 	COLORPICKER_SCRIPT_LOCATION = "https://marketolive.com/m2_update/assets/js/colorpicker.js",
 	DELIVERABILITY_TOOLS_SCRIPT_LOCATION = "https://marketolive.com/dev/plugin-bcf/deliverability-tools.js",
     currentUrl = window.location.href,
-	loadScript,
-	getCookie,
-	setCookie,
 	mktoAppDomain = "^https:\/\/app-[a-z0-9]+\.marketo\.com",
 	mktoAppMatch = "https://app-*.marketo.com",
 	mktoLiveDomain = "^https:\/\/marketolive.com",
@@ -23,7 +20,10 @@ var LIVE_SCRIPT_LOCATION = "https://marketolive.com/dev/plugin-bcf/marketo-live.
 	mktoWizard = mktoAppDomain + "/m#",
 	rtpDemoDomain = "^http:\/\/sjrtp1.marketo.com\/demo\/$|^http:\/\/cloud4.insightera.com\/demo\/$",
 	emailDeliverabilityDomain = "^https:\/\/250ok.com/",
-	colorPickerPage = "color-picker\.html$";
+	colorPickerPage = "\/color-picker\.html$",
+	loadScript,
+	getCookie,
+	setCookie;
 
 loadScript = function(name) {
 	console.log("Content > Loading: Script");
@@ -178,7 +178,7 @@ window.onload = function() {
         window.onload = pageLoaded();
     }
 	
-	else if (currentUrl.search("250ok.com/")) {
+	else if (currentUrl.search("250ok\.com\/") != -1) {
 		console.log("Content > Location: Deliverability Tools");
 		
 		loadScript(DELIVERABILITY_TOOLS_SCRIPT_LOCATION);
