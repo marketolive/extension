@@ -5,7 +5,7 @@ var LIVE_SCRIPT_LOCATION = "https://marketolive.com/dev/plugin-bcf/marketo-live.
     POD_SCRIPT_LOCATION = "https://marketolive.com/dev/plugin-bcf/pods.js",
 	DESIGNER_SCRIPT_LOCATION = "https://marketolive.com/m2_update/v3/designer.js",
 	COLORPICKER_SCRIPT_LOCATION = "https://marketolive.com/m2_update/assets/js/colorpicker.js",
-	DELIVERABILITY_TOOLS_LOCATION = "https://marketolive.com/dev/plugin-bcf/deliverability-tools.js",
+	DELIVERABILITY_TOOLS_SCRIPT_LOCATION = "https://marketolive.com/dev/plugin-bcf/deliverability-tools.js",
     currentUrl = window.location.href,
 				 loadScript,
 				 getCookie,
