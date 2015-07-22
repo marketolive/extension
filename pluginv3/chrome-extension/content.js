@@ -132,7 +132,7 @@ window.onload = function() {
 		
         loadScript(APP_SCRIPT_LOCATION);
 		// Need to load script only for #EME15464
-		if (currentUrl.search(mktoEmailDesigner) != -1 {
+		if (currentUrl.search(mktoEmailDesigner) != -1) {
 			loadScript(DESIGNER_SCRIPT_LOCATION)
 		}
     }
@@ -157,8 +157,6 @@ window.onload = function() {
     }
 	
 	else if (currentUrl.search(mktoAppDomain + "/#RCM39A1") != -1
-	console.log("Content > Location: Analytics");
-	
 	|| currentUrl.search(mktoAppDomain + "/#RCM5A1!") != -1
 	|| currentUrl.search(mktoAppDomain + "/#AR1559A1") != -1) {
         console.log("Content > Location: Analyzers");
