@@ -15,7 +15,7 @@
  *
  **************************************************************************************/
 
-var DELIVERABILITY = DEVLIVERABILITY || {}
+var DELIVERABILITY = DEVLIVERABILITY || {};
 
 /**************************************************************************************
  *  
@@ -49,7 +49,7 @@ DELIVERABILITY.login = function () {
  *
  **************************************************************************************/
 
-DELIVERABILITY.removeSettingsMenu () {
+DELIVERABILITY.removeSettingsMenu = function () {
     $(".dropdown").each(function () {
         $(this).remove();
     });
@@ -128,6 +128,18 @@ DELIVERABILITY.removeGenericButton = function (buttons, property, target) {
     }
 }
 
+/**************************************************************************************
+ *  
+ *  This function removes the delete buttons from a campaign's page. The button
+ *  only appears if you click on one of the checkboxes. This function should only 
+ *  be called in the /app/inbox-informant/campaign/ section of the app.
+ *
+ *  @Author Andy
+ *
+ *  @function
+ *
+ **************************************************************************************/
+
 DELIVERABILITY.removeInboxDrillDownDeleteButtons = function () {
     DELIVERABILITY.removeGenericButton($("button"), "value", "delete");
 }
@@ -179,3 +191,31 @@ DELIVERABILITY.removeReportSaveButton = function () {
     DELIVERABILITY.removeGenericButton($(".btn.btn-success"), "value", "Run and Save");
 }
 
+/**************************************************************************************
+ *  
+ *  Main
+ *
+ **************************************************************************************/
+
+currentUrl = window.location.href;
+DELIVERABILITY.removeSettingsMenu();
+
+if (currentUrl.search("^https:\/\/250ok.com\/login$") != -1) {
+    DELIVERABILITY.login();
+}
+else if (currentUrl.search("\/app\/design-informant$") != -1) {
+    DELIVERABILITY.removeCreateTestButton();
+}
+else if (currentUrl.search("\/app\/design-informant\/[0-9a-zA-Z]+$") != -1) {
+    DELIVERABILITY.removeDesignDeleteButton();
+}
+else if (currentUrl.search("\/app\/inbox-informant$") != -1) {
+    DELIVERABILITY.removeInboxDeleteButton();
+    DELIVERABILITY.removeManageProfilesButton();
+}
+else if (currentUrl.search("app\/inbox-informant\/campaign\/[0-9a-zA-Z]+$") != -1) {
+    DELIVERABILITY.removeInboxDrillDownDeleteButtons();
+}
+else if(currentUrl.search("\/app\/reports\/report\/custom\/build$") != -1) {
+    DELIVERABILITY.removeReportSaveButton();
+}

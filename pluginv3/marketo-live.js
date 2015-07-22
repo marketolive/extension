@@ -41,9 +41,10 @@ LIVE.insertDeepLinks = function (pod) {
 
 /**************************************************************************************
  *
- *  This function inserts the login credentials for 250ok. Since
- *  we only have one account for the whole team, everyone needs
- *  to use the same set of credentials.
+ *  This function displays a message to the user if he or she does not have a userPod
+ *  cookie. Since the deeplinks will not work until after the first login, the user
+ *  must be forced through the login page. The message instructs the user to login to 
+ *  Marketo, and then return to refresh the page.
  *
  *
  *  @Author Andy
@@ -52,29 +53,25 @@ LIVE.insertDeepLinks = function (pod) {
  *
  **************************************************************************************/
 
-LIVE.emailDeliverabilityLogin = function () {
-    $(document).ready(function () {
-        $.getJSON("deliverability-login.json", function (login) {
-            $("#email").value = login.username;
-            $("#password").value = login.password;
-        });
-    });
+LIVE.displayLoginMessage() {
+    // TODO
 }
 
-//we're going to create an instance of the analyzer
-//and then call showAnalyzer to actually build out the template and CSS onto the page
+/**************************************************************************************
+ *
+ *  Main
+ *
+ **************************************************************************************/
+
 window.onload = function () {
     console.log("window loaded");
-//    var podString = PODS.getCookie("userPod");
-    // TODO: Fix this to accommodate for first time login
-    /*********************************************************************
+    var podString = PODS.getCookie("userPod");
     if (!podString) {
-        podString = "app-sjp";
-        PODS.setCookie("userPod", podString, 365);
+        LIVE.displayLoginMessage();
+        return;
     }
-    *********************************************************************/
     
-    var pod = new PODS.Pod(PODS.getCookie("userPod"));
+    var pod = new PODS.Pod(podString);
     if (window.location.href.search("marketolive.com") != -1) {
         LIVE.insertDeepLinks(pod);
     }
