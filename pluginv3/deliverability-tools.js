@@ -28,6 +28,8 @@ var DELIVERABILITY = DELIVERABILITY || {};
  **************************************************************************************/
 
 DELIVERABILITY.login = function () {
+    console.log("Deliverability > Login: App");
+    
     // jQuery returns an array even though an id is selected, which
     // is why there is a [0] on the email and password selectors.
     $("#email")[0].value = "reade.demo@marketo.com";
@@ -50,6 +52,8 @@ DELIVERABILITY.login = function () {
  **************************************************************************************/
 
 DELIVERABILITY.removeSettingsMenu = function () {
+    console.log("Deliverability > Removing: Settings Menu");
+
     $(".dropdown").each(function () {
         $(this).remove();
     });
@@ -68,6 +72,8 @@ DELIVERABILITY.removeSettingsMenu = function () {
  **************************************************************************************/
 
 DELIVERABILITY.removeCreateTestButton = function () {
+    console.log("Deliverability > Removing: Create Test Button");
+    
     $("#tour-design-add-anchor").remove();
 }
 
@@ -86,6 +92,8 @@ DELIVERABILITY.removeCreateTestButton = function () {
  **************************************************************************************/
 
 DELIVERABILITY.removeInboxDeleteButton = function () {
+    console.log("Deliverability > Removing: Inbox Delete Button");
+
     $("#btndelete").remove();
 }
 
@@ -108,11 +116,10 @@ DELIVERABILITY.removeInboxDeleteButton = function () {
  *
  **************************************************************************************/
 
-DELIVERABILITY.removeGenericButton = function (buttons, property, target) {
-    
+DELIVERABILITY.removeGenericButton = function (buttons, property, target) {    
     // If buttons is empty, than the selector must be mmalformed.
     if (buttons.length == 0) {
-        console.log("DELIVERABILITY: removeGenericButton() received an empty selector.");
+        console.log("Deliverability > Error: removeGenericButton() received an empty selector.");
         return;
     }
     
@@ -141,6 +148,8 @@ DELIVERABILITY.removeGenericButton = function (buttons, property, target) {
  **************************************************************************************/
 
 DELIVERABILITY.removeInboxDrillDownDeleteButtons = function () {
+    console.log("Deliverability > Removing: Campaign Delete Buttons");
+
     DELIVERABILITY.removeGenericButton($("button"), "value", "delete");
 }
 
@@ -157,6 +166,8 @@ DELIVERABILITY.removeInboxDrillDownDeleteButtons = function () {
  **************************************************************************************/
 
 DELIVERABILITY.removeDesignDeleteButton = function () {
+    console.log("Deliverability > Removing: Design Delete Button");
+
     DELIVERABILITY.removeGenericButton($(".btn.btn-default.pull-right.vertspacerx2.spacerx2"), "href", "action=delete");
 }
 
@@ -172,6 +183,8 @@ DELIVERABILITY.removeDesignDeleteButton = function () {
  **************************************************************************************/
 
 DELIVERABILITY.removeManageProfilesButton = function () {
+    console.log("Deliverability > Removing: Manage Profiles Button");
+
     DELIVERABILITY.removeGenericButton($(".btn.btn-sm.btn-success.vertspacerx2.spacer"), "href", "/app/inbox-informant/profiles");
 }
 
@@ -188,6 +201,8 @@ DELIVERABILITY.removeManageProfilesButton = function () {
  **************************************************************************************/
 
 DELIVERABILITY.removeReportSaveButton = function () {
+    console.log("Deliverability > Removing: Run and Save Button");
+
     DELIVERABILITY.removeGenericButton($(".btn.btn-success"), "value", "Run and Save");
 }
 
