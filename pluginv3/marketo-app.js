@@ -65,8 +65,9 @@ APP.disableDemoPluginCheck = function() {
  **************************************************************************************/
 
 APP.overrideDeliverabilityToolsTile = function() {
-	$j = jQuery().noConflict();
-	$j("#homeTile-1036-btnEl").href = "https://250ok.com/login";
+	console.log("Marketo App > Overriding: Deliverability Tools Tile");
+	
+	document.getElementById("homeTile-1036-btnEl").href = "https://250ok.com/login";
 }
 
 /**************************************************************************************
@@ -610,16 +611,20 @@ if (currentUrl.search(mktoAppDomain) != -1
 			|| MktPage.userid.search("^admin@mktodemoaccount") != -1)) {
 				console.log("Marketo App > Location: MarketoLive Instance");
 				
-				// Storing previous Workspace ID
-				var prevWorkspaceId = MktCanvas.activeTab.config.accessZoneId;
-				
 				// Disabling Demo Plugin Check
 				// MktPage.demoPluginWindow.hide();
 				APP.disableDemoPluginCheck();
 				
+				
+				
 				// Email Deliverability
-				if (currentUrl.search(mktoAppDomain + "/#MM0A1")) {
+				if (currentUrl.search(mktoAppDomain + "/#MM0A1") != -1) {
 					APP.overrideDeliverabilityToolsTile();
+				}
+				
+				else {
+					// Storing previous Workspace ID
+					var prevWorkspaceId = MktCanvas.activeTab.config.accessZoneId;
 				}
 
                 var lpIds = {};
