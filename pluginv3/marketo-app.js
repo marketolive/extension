@@ -615,16 +615,30 @@ if (currentUrl.search(mktoAppDomain) != -1
 				// MktPage.demoPluginWindow.hide();
 				APP.disableDemoPluginCheck();
 				
-				
-				
 				// Email Deliverability
 				if (currentUrl.search(mktoAppDomain + "/#MM0A1") != -1) {
 					APP.overrideDeliverabilityToolsTile();
 				}
 				
-				else {
+				if (currentUrl.search(mktoEmailDesigner) == -1 
+				&& currentUrl.search(mktoWizard) == -1) {
 					// Storing previous Workspace ID
-					var prevWorkspaceId = MktCanvas.activeTab.config.accessZoneId;
+					if (currentUrl.search(mktoAppDomain + "/#MM0A1") == -1) {
+						var prevWorkspaceId = MktCanvas.activeTab.config.accessZoneId;
+					}
+					// DIY Design (Landing Pages)
+					APP.discardLandingPageDrafts(lpIds);
+					
+					// Limiting Nurture Programs
+					APP.limitNurturePrograms();
+					
+					// Disabling New Smart Campaign, New Local Asset, New Folder, and Delete
+					APP.disableProgramActionsMenu();
+				}
+				
+				else {
+					// DIY Design (Emails, Forms, Push Notifications, Social Apps)
+					APP.disableEditorSaving();
 				}
 
                 var lpIds = {};
@@ -651,15 +665,6 @@ if (currentUrl.search(mktoAppDomain) != -1
 					default:
 						break;
                 }
-
-                // DIY Design (Landing Pages)
-                APP.discardLandingPageDrafts(lpIds);
-				
-				// Disabling New Smart Campaign, New Local Asset, New Folder, and Delete
-				APP.disableProgramActionsMenu();
-				
-				// Limiting Nurture Programs
-                APP.limitNurturePrograms();
 				
 				// Marketing ROI, Funnel Analysis
 				if (currentUrl.search(mktoAppDomain + "/#RCM39B2") != -1 
@@ -668,27 +673,24 @@ if (currentUrl.search(mktoAppDomain) != -1
 				|| currentUrl.search(mktoAppDomain + "/#AR1682A1") != -1) {
 					APP.injectAnalyzerNavBar();
 				}
-				
-				// DIY Design (Emails, Forms, Push Notifications, Social Apps)
-				else if (currentUrl.search(mktoEmailDesigner) != -1 
-				|| currentUrl.search(mktoWizard) != -1) {
-					APP.disableEditorSaving();
-				}
 
                 window.onhashchange = function() {
 					console.log("Window: Hash Changed");
 					
-					var currWorkspaceId = MktCanvas.activeTab.config.accessZoneId;
-					if (currWorkspaceId == prevWorkspaceId) {
-					}
-					else if (currWorkspaceId == 1) {
-						// Powerful Automation
-						APP.disableSmartCampaignSaving();
-						APP.enableSmartCampaignCanvas();
-					}
-					else {
-						// Enable Smart Campaign Saving for their Workspace
-						APP.enableSmartCampaignSaving();
+					if (currentUrl.search(mktoEmailDesigner) == -1 
+					&& currentUrl.search(mktoWizard) == -1) {
+						var currWorkspaceId = MktCanvas.activeTab.config.accessZoneId;
+						if (currWorkspaceId == prevWorkspaceId) {
+						}
+						else if (currWorkspaceId == 1) {
+							// Powerful Automation
+							APP.disableSmartCampaignSaving();
+							APP.enableSmartCampaignCanvas();
+						}
+						else {
+							// Enable Smart Campaign Saving for their Workspace
+							APP.enableSmartCampaignSaving();
+						}
 					}
 					// Marketing ROI, Funnel Analysis
 					if (currentUrl.search(mktoAppDomain + "/#RCM39B2") != -1 
