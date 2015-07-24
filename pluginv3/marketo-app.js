@@ -663,7 +663,7 @@ APP.overlayLandingPageDesigner = function() {
 
 	if (company != "turner") {
 		logo = "https://logo.clearbit.com/" + company;
-		companyName = company.substring(0, company.indexOf(".");
+		companyName = company.substring(0, company.indexOf("."));
 	}
 	document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("lp-logo").src = logo;
 	document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("background-color").style.backgroundColor = color;
@@ -716,12 +716,13 @@ if (currentUrl.search(mktoAppDomain) != -1
 					APP.disableProgramActionsMenu();
 				}
 				
-				else if (currentUrl.search(mktoLandingPageDesigner) != -1 {
+				else if (currentUrl.search(mktoLandingPageDesigner) != -1) {
 					// Overlay Landing Page Designer w/ Company Logo and Color
-					APP.overlayLandingPageDesigner();
+					//APP.overlayLandingPageDesigner();
 				}
 				
 				else {
+					console.log("Marketo App > Location: Assets");
 					// DIY Design (Emails, Forms, Push Notifications, Social Apps)
 					var currAssetZoneId;
 					switch (Mkt3.DL.dl.dlCompCode) {
@@ -739,11 +740,12 @@ if (currentUrl.search(mktoAppDomain) != -1
 							break;
 						case "FOE":
 							Ext4.getStore('Form').load({
-								filters: [{property: 'id', value: Mkt3.DL.dl.compId;}],
+								filters: [{property: 'id', value: Mkt3.DL.dl.compId}],
 								callback: function(records) {
 									records.forEach(
 										function(record) {
 											currAssetZoneId = record.get('zoneId');
+											console.log(currAssetZoneId);
 										}
 									);
 								}
@@ -751,7 +753,7 @@ if (currentUrl.search(mktoAppDomain) != -1
 							break;
 						case "MPNE":
 							Ext4.getStore('MobilePushNotification').load({
-								filters: [{property: 'id', value: Mkt3.DL.dl.compId;}],
+								filters: [{property: 'id', value: Mkt3.DL.dl.compId}],
 								callback: function(records) {
 									records.forEach(
 										function(record) {
@@ -763,7 +765,7 @@ if (currentUrl.search(mktoAppDomain) != -1
 							break;
 						case "SOAE":
 							Ext4.getStore('SocialApp').load({
-								filters: [{property: 'id', value: Mkt3.DL.dl.compId;}],
+								filters: [{property: 'id', value: Mkt3.DL.dl.compId}],
 								callback: function(records) {
 									records.forEach(
 										function(record) {
@@ -774,14 +776,16 @@ if (currentUrl.search(mktoAppDomain) != -1
 								}
 							});
 							break;
+						default:
+							break;
 					}
 					
-					if (currAssetZoneId  == "1") {
+					if (currAssetZoneId  == 1) {
 						APP.disableEditorSaving();
 					}
 					
 					// Overlay Email Designer w/ Company Logo and Color
-					APP.overlayEmailDesigner();
+					//APP.overlayEmailDesigner();
 				}
 
                 var lpIds = {};
