@@ -30,12 +30,41 @@ var currentUrl = window.location.href,
     mktoEmailDesigner = mktoDesignerDomain + "/ds",
     mktoLandingPageDesigner = mktoDesignerDomain + "/lpeditor/",
     mktoWizard = mktoAppDomain + "/m#",
+	mktoFormWizard = mktoAppDomain + "FOE",
+	mktoSocialAppWizard = mktoAppDomain + "SOAE",
     rtpDemoDomain = "^http:\/\/sjrtp1.marketo.com\/demo\/$|^http:\/\/cloud4.insightera.com\/demo\/$",
     emailDeliverabilityDomain = "^https:\/\/250ok.com/",
     isMktoLiveInstance = false,
 	pod;
 
 var APP = APP || {};
+
+/**************************************************************************************
+ *  
+ *  This function gets the cookie for the specified user pod.
+ *
+ *  @Author Andy
+ *
+ *  @function
+ *
+ *  @param {String} cookieField - Represents the user's pod.
+ *
+ **************************************************************************************/
+
+APP.getCookie = function(cookieField) {
+	console.log ("Marketo App > Getting: Cookie");
+	
+	var name = cookieField + "=",
+	cookies = document.cookie.split(';'),
+	currentCookie;
+	for (var ii = 0; ii < cookies.length; ++ii) {
+		var currentCookie = cookies[ii].trim();
+		if (currentCookie.indexOf(name) == 0) {
+			return currentCookie.substring(name.length, currentCookie.length);
+		}
+	}
+	return null;
+}
 
 /**************************************************************************************
  *  
@@ -591,6 +620,58 @@ APP.disableEditorSaving = function() {
 }
 
 /**************************************************************************************
+ *  
+ *  This function overlays the email designer with the submitted company logo and 
+ *  color.
+ *
+ *  @Author Arrash
+ *
+ *  @function
+ *
+ **************************************************************************************/
+
+APP.overlayEmailDesigner = function() {
+	console.log("Marketo App > Overlaying: Email Designer");
+	
+	var company = APP.getCookie('company'),
+	color = APP.getCookie('color'),
+	logo = "http://marketolive.com/m2_update/assets/img/turner-tech-white.png";
+	if (company != "turner") {
+		logo = "https://logo.clearbit.com/" + company;
+	}
+	document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("logo-bkg").style.backgroundColor = color;
+	document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("301593").style.backgroundColor = color;
+	document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("logo-swap").src = logo;
+}
+
+/**************************************************************************************
+ *  
+ *  This function overlays the landing page designer with the submitted company logo 
+ *  and color.
+ *
+ *  @Author Arrash
+ *
+ *  @function
+ *
+ **************************************************************************************/
+
+APP.overlayLandingPageDesigner = function() {
+	var company = APP.getCookie('company'),
+	color = APP.getCookie('color'),
+	companyName = "turner",
+	logo = "http://marketolive.com/m2_update/assets/img/turner-tech-green.png";
+
+	if (company != "turner") {
+		logo = "https://logo.clearbit.com/" + company;
+		companyName = company.substring(0, company.indexOf("."));
+	}
+	document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("lp-logo").src = logo;
+	document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("background-color").style.backgroundColor = color;
+	document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("bigger-background").style.backgroundColor = color;
+	document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("sub-title").innerHTML = companyName + " invites you to join:";
+}
+
+/**************************************************************************************
  *
  *  Main
  *  
@@ -619,7 +700,6 @@ if (currentUrl.search(mktoAppDomain) != -1
 				if (currentUrl.search(mktoAppDomain + "/#MM0A1") != -1) {
 					APP.overrideDeliverabilityToolsTile();
 				}
-				
 				if (currentUrl.search(mktoEmailDesigner) == -1 
 				&& currentUrl.search(mktoWizard) == -1) {
 					// Storing previous Workspace ID
@@ -636,9 +716,49 @@ if (currentUrl.search(mktoAppDomain) != -1
 					APP.disableProgramActionsMenu();
 				}
 				
+				else if (currentUrl.search(mktoLandingPageDesigner) != -1) {
+					// Overlay Landing Page Designer w/ Company Logo and Color
+					//APP.overlayLandingPageDesigner();
+				}
+				
 				else {
+					console.log("Marketo App > Location: Assets");                    
 					// DIY Design (Emails, Forms, Push Notifications, Social Apps)
-					APP.disableEditorSaving();
+					var currAssetZoneId,
+                        loadParameters = {
+                                            filters: [{property: 'id', value: Mkt3.DL.dl.compId}],
+                                            async: false,
+                                            callback: function(records) {
+                                                records.forEach(
+                                                    function(record) {
+                                                        currAssetZoneId = record.get('zoneId');
+                                                        if (currAssetZoneId  == 1) {
+                                                            APP.disableEditorSaving();
+                                                        }
+                                                    }
+                                                );
+                                            }
+                                         }
+                            
+					switch (Mkt3.DL.dl.dlCompCode) {
+						case "EME":
+							Ext4.getStore('Email').load(loadParameters);
+							break;
+						case "FOE":
+							Ext4.getStore('Form').load(loadParameters);
+							break;
+						case "MPNE":
+							Ext4.getStore('MobilePushNotification').load(loadParameters);
+							break;
+						case "SOAE":
+							Ext4.getStore('SocialApp').load(loadParameters);
+							break;
+						default:
+							currAssetZoneId = -1;
+                    }
+					
+					// Overlay Email Designer w/ Company Logo and Color
+					//APP.overlayEmailDesigner();
 				}
 
                 var lpIds = {};
