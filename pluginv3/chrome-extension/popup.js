@@ -10,14 +10,71 @@
  *  @function
  *
  **************************************************************************************/
-window.onload = function () {
-   tags = document.getElementsByClassName("link");
-   // getElementsByClassName() returns an array, so the click
-   // listener needs to be added to each one individually.
-   for (var ii = 0; ii < tags.length; ++ii) {
-       tags[ii].onclick = function () {
-           chrome.tabs.create({ url: this.href, selected : true });
-           //window.open(this.href);
+ 
+console.log("Popup > Running");
+
+window.onload = function() {
+	var background = chrome.extension.getBackgroundPage(),
+	    priv = "false",
+        tags = document.getElementsByClassName("link"),
+		submit = document.getElementById('company-submit'),
+		toggle = document.getElementById('option-toggle'),
+		clear = document.getElementById('clear-submit'),
+		settings = document.getElementById('settings'),
+		close = document.getElementById('close'),
+		data = {'company' : 'turner'};
+	
+	chrome.storage.sync.get(["editPrivileges"], function(storage) {
+		console.log(storage.editPrivileges);
+		priv = storage.editPrivileges;
+	});
+	
+	// getElementsByClassName() returns an array, so the click
+	// listener needs to be added to each one individually.
+	for (var ii = 0; ii < tags.length; ++ii) {
+		tags[ii].onclick = function () {
+			chrome.tabs.create({ url: this.href, selected : true });
        }
+	}
+
+	settings.onclick = function() {		
+		document.getElementById('settings-container').style.display = "block";
+		document.getElementById('status').style.display = "block";
+		if (priv == "true") {
+			document.getElementById('toggle').src = "https://marketolive.com/m2_update/assets/img/toggle-on.png";
+			document.getElementById('button-display').style.display = "inline-block";
+		}
+		else {
+			document.getElementById('toggle').src = "https://marketolive.com/m2_update/assets/img/toggle-off.png"; 
+			document.getElementById('button-display').style.display = "inline-block";
+		}    
+	}
+
+	close.onclick = function() {
+		document.getElementById('settings-container').style.display = "none";   
+	}
+
+	clear.onclick = function() {
+		background.submitCompany(data);     
+	}
+	
+	submit.onclick = function() {
+		if (document.querySelector('#name-entered').value != "") {
+			background.submitCompany({'company': document.querySelector('#name-entered').value});
+		}
+		else {
+			console.log("Popup > Error: Submitting Company");
+		}
    }
+   
+   toggle.onclick = function() {
+		if (priv == "false") {
+			document.getElementById('toggle').src = "https://marketolive.com/m2_update/assets/img/toggle-on.png";
+			background.savePriv({'editPrivileges' : "true"});
+		}
+		else {
+			document.getElementById('toggle').src = "https://marketolive.com/m2_update/assets/img/toggle-off.png";
+			background.savePriv({'editPrivileges' : "false"});
+		}
+	}
 }

@@ -1,4 +1,4 @@
-console.log("Pod script is loading");
+console.log("Pods > Running");
 
 // TODO: add error check for invalid pod, make sure that replicateSuccess is the same for all pods
 
@@ -18,14 +18,15 @@ var PODS = PODS || {};
  *
  **************************************************************************************/
 
-PODS.getCookie = function (cookieField) {
+PODS.getCookie = function(cookieField) {
     var name = cookieField + "=",
         cookies = document.cookie.split(';'),
         currentCookie;
     for (var ii = 0; ii < cookies.length; ++ii) {
         var currentCookie = cookies[ii].trim();
-        if (currentCookie.indexOf(name) == 0)
+        if (currentCookie.indexOf(name) == 0) {
             return currentCookie.substring(name.length, currentCookie.length);
+		}
     }
     return null;
 }
@@ -44,24 +45,22 @@ PODS.getCookie = function (cookieField) {
  *
  **************************************************************************************/
 
-PODS.setCookie = function (cookieField, cookieValue, expiresIn) {
+PODS.setCookie = function(cookieField, cookieValue, expiresIn) {
     var d = new Date(),
-        expires;
+	    expires;
     d.setTime(d.getTime() + (expiresIn * 24 * 60 * 60 * 1000));
     expires = "expires=" + d.toUTCString();
     document.cookie = cookieField + "=" + cookieValue + "; " + expires;
 }
 
-PODS.Pod = function (id) {
+PODS.Pod = function(id) {
     this.id = id;
     this.appUrl = "https://" + id + ".marketo.com/";
     this.diyDesign = this.appUrl + "#PG4217A1";
     this.powerfulAutomation = this.appUrl + "#SC14945A1";
     this.actionableInsight = "https://mkto-si.na10.visual.force.com/apex/mkto_si__Dashboard";
     this.marketingROI = this.appUrl + "#AR1559A1!";
-    //    this.replicateSuccess = this.appUrl + "#MF6429A1";
     this.replicateSuccess = this.appUrl + "#ME4220A1";
-
     this.searchOptimization = "https://seo.marketo.com/";
     this.personalization = "http://marketolive.com/m/b2b/rtp/";
     this.emailDeliverability = "https://250ok.com/login";
