@@ -722,6 +722,7 @@ if (currentUrl.search(mktoAppDomain) != -1
 				}
 				
 				else {
+<<<<<<< HEAD
 					console.log("Marketo App > Location: Assets");
 					// DIY Design (Emails, Forms, Push Notifications, Social Apps)
 					var currAssetZoneId;
@@ -783,6 +784,42 @@ if (currentUrl.search(mktoAppDomain) != -1
 					if (currAssetZoneId  == 1) {
 						APP.disableEditorSaving();
 					}
+=======
+					console.log("Marketo App > Location: Assets");                    
+					// DIY Design (Emails, Forms, Push Notifications, Social Apps)
+					var currAssetZoneId,
+                        loadParameters = {
+                                            filters: [{property: 'id', value: Mkt3.DL.dl.compId}],
+                                            async: false,
+                                            callback: function(records) {
+                                                records.forEach(
+                                                    function(record) {
+                                                        currAssetZoneId = record.get('zoneId');
+                                                        if (currAssetZoneId  == 1) {
+                                                            APP.disableEditorSaving();
+                                                        }
+                                                    }
+                                                );
+                                            }
+                                         }
+                            
+					switch (Mkt3.DL.dl.dlCompCode) {
+						case "EME":
+							Ext4.getStore('Email').load(loadParameters);
+							break;
+						case "FOE":
+							Ext4.getStore('Form').load(loadParameters);
+							break;
+						case "MPNE":
+							Ext4.getStore('MobilePushNotification').load(loadParameters);
+							break;
+						case "SOAE":
+							Ext4.getStore('SocialApp').load(loadParameters);
+							break;
+						default:
+							currAssetZoneId = -1;
+                    }
+>>>>>>> origin/refactoring
 					
 					// Overlay Email Designer w/ Company Logo and Color
 					//APP.overlayEmailDesigner();
