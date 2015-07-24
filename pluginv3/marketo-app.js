@@ -30,6 +30,8 @@ var currentUrl = window.location.href,
     mktoEmailDesigner = mktoDesignerDomain + "/ds",
     mktoLandingPageDesigner = mktoDesignerDomain + "/lpeditor/",
     mktoWizard = mktoAppDomain + "/m#",
+	mktoFormWizard = mktoAppDomain + "FOE",
+	mktoSocialAppWizard = mktoAppDomain + "SOAE",
     rtpDemoDomain = "^http:\/\/sjrtp1.marketo.com\/demo\/$|^http:\/\/cloud4.insightera.com\/demo\/$",
     emailDeliverabilityDomain = "^https:\/\/250ok.com/",
     isMktoLiveInstance = false,
@@ -721,7 +723,62 @@ if (currentUrl.search(mktoAppDomain) != -1
 				
 				else {
 					// DIY Design (Emails, Forms, Push Notifications, Social Apps)
-					APP.disableEditorSaving();
+					var currAssetZoneId;
+					switch (Mkt3.DL.dl.dlCompCode) {
+						case "EME":
+							Ext4.getStore('Email').load({
+								filters: [{property: 'id', value: Mkt3.DL.dl.compId}],
+								callback: function(records) {
+									records.forEach(
+										function(record) {
+											currAssetZoneId = record.get('zoneId');
+										}
+									);
+								}
+							});
+							break;
+						case "FOE":
+							Ext4.getStore('Form').load({
+								filters: [{property: 'id', value: Mkt3.DL.dl.compId;}],
+								callback: function(records) {
+									records.forEach(
+										function(record) {
+											currAssetZoneId = record.get('zoneId');
+										}
+									);
+								}
+							});
+							break;
+						case "MPNE":
+							Ext4.getStore('MobilePushNotification').load({
+								filters: [{property: 'id', value: Mkt3.DL.dl.compId;}],
+								callback: function(records) {
+									records.forEach(
+										function(record) {
+											currAssetZoneId = record.get('zoneId');
+										}
+									);
+								}
+							});
+							break;
+						case "SOAE":
+							Ext4.getStore('SocialApp').load({
+								filters: [{property: 'id', value: Mkt3.DL.dl.compId;}],
+								callback: function(records) {
+									records.forEach(
+										function(record) {
+											console.log(record.get('name'));
+											currAssetZoneId = record.get('zoneId');
+										}
+									);
+								}
+							});
+							break;
+					}
+					
+					if (currAssetZoneId  == "1") {
+						APP.disableEditorSaving();
+					}
 					
 					// Overlay Email Designer w/ Company Logo and Color
 					APP.overlayEmailDesigner();

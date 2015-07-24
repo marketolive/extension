@@ -3,7 +3,6 @@ console.log("Content > Running");
 var LIVE_SCRIPT_LOCATION = "https://marketolive.com/dev/plugin-bcf/marketo-live.js",
     APP_SCRIPT_LOCATION = "https://marketolive.com/dev/plugin-bcf/marketo-app.js",
     POD_SCRIPT_LOCATION = "https://marketolive.com/dev/plugin-bcf/pods.js",
-	DESIGNER_SCRIPT_LOCATION = "https://marketolive.com/m2_update/v3/designer.js",
 	COLORPICKER_SCRIPT_LOCATION = "https://marketolive.com/m2_update/assets/js/colorpicker.js",
 	DELIVERABILITY_TOOLS_SCRIPT_LOCATION = "https://marketolive.com/dev/plugin-bcf/deliverability-tools.js",
     currentUrl = window.location.href,
@@ -131,10 +130,6 @@ window.onload = function() {
         console.log("Content > Location: Designer/Wizard");
 		
         loadScript(APP_SCRIPT_LOCATION);
-		// Need to load script only for #EME15464
-		if (currentUrl.search(mktoEmailDesigner) != -1) {
-			loadScript(DESIGNER_SCRIPT_LOCATION)
-		}
     }
 	
     else if (currentUrl.search(mktoLiveDomain) != -1) {
