@@ -1,7 +1,3 @@
-console.log("script loading");
-
-// Default Workspace Check: MktCanvas.activeTab.config.accessZoneId == 1
-
 /**************************************************************************************
  *
  *  This module contains all of the functionality needed for the
@@ -16,6 +12,11 @@ console.log("script loading");
  *  @namespace
  *
  **************************************************************************************/
+console.log("Marketo Live > Running");
+
+var currentUrl = window.location.href,
+	mktoLiveDomain = "^https:\/\/marketolive.com",
+	mktoLiveMatch = "https://marketolive.com/*";
 
 var LIVE = LIVE || {};
 
@@ -33,8 +34,10 @@ var LIVE = LIVE || {};
  *
  **************************************************************************************/
 
-LIVE.insertDeepLinks = function (pod) {
-    $(".marketo-live-option").click(function (e) {
+LIVE.insertDeepLinks = function(pod) {
+	console.log("Marketo Live > Inserting: Deep Links");
+	
+    $(".marketo-live-option").click(function(e) {
         window.open(pod[$(this).context.id]);
     });
 }
@@ -53,7 +56,7 @@ LIVE.insertDeepLinks = function (pod) {
  *
  **************************************************************************************/
 
-LIVE.displayLoginMessage() {
+LIVE.displayLoginMessage = function() {
     // TODO
 }
 
@@ -63,8 +66,8 @@ LIVE.displayLoginMessage() {
  *
  **************************************************************************************/
 
-window.onload = function () {
-    console.log("window loaded");
+window.onload = function() {
+    console.log("Marketo Live > Loaded: Window");
     var podString = PODS.getCookie("userPod");
     if (!podString) {
         LIVE.displayLoginMessage();
@@ -72,7 +75,7 @@ window.onload = function () {
     }
     
     var pod = new PODS.Pod(podString);
-    if (window.location.href.search("marketolive.com") != -1) {
+    if (currentUrl.search(mktoLiveDomain) != -1) {
         LIVE.insertDeepLinks(pod);
     }
 }
