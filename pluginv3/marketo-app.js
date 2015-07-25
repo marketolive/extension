@@ -658,6 +658,8 @@ APP.overlayEmailDesigner = function() {
  **************************************************************************************/
 
 APP.overlayLandingPageDesigner = function() {
+	console.log("Marketo App > Overlaying: Landing Page Designer");
+	
 	var company = APP.getCookie('company'),
 	color = APP.getCookie('color'),
 	companyName = "turner",
@@ -796,18 +798,24 @@ if (currentUrl.search(mktoAppDomain) != -1
 
                 switch (MktPage.savedState.custPrefix) {
                     case "mktodemoaccount106":
+						// Custom Landing Page
+						lpIds["dpageid_11381"] = "dpageid_11381";
                         // Landing Page
                         lpIds["dpageid_8703"] = "dpageid_8703";
                         // Responsive Landing Page
                         lpIds["dpageid_11291"] = "dpageid_11291";
                         break;
                     case "mktodemoaccount106a":
+						// Custom Landing Page
+						lpIds["dpageid_11381"] = "dpageid_11381";
                         // Landing Page
                         lpIds["dpageid_8703"] = "dpageid_8703";
                         // Responsive Landing Page
                         lpIds["dpageid_10454"] = "dpageid_10454";
                         break;
                     case "mktodemoaccount106b":
+						// Custom Landing Page
+						lpIds["dpageid_11381"] = "dpageid_11381";
                         // Landing Page
                         lpIds["dpageid_10760"] = "dpageid_10760";
 						// Responsive Landing Page
