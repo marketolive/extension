@@ -707,12 +707,14 @@ if (currentUrl.search(mktoAppDomain) != -1
         if (typeof(MktPage) !== "undefined") {
 			console.log("Marketo App > Location: Marketo Page");
 			
-            if (MktPage.savedState.custPrefix.search("^mktodemoaccount") != -1
-			&& (MktPage.userid.search("\.demo@marketo\.com$") != -1
-			|| MktPage.userid.search("^admin@mktodemoaccount") != -1)) {
+            var accountString = MktPage.savedState.custPrefix,
+				userId = MktPage.userid;
+			if (accountString.search("^mktodemoaccount") != -1
+			&& (userId.search("\.demo@marketo\.com$") != -1
+			|| userId.search("^admin@mktodemoaccount") != -1)) {
 				console.log("Marketo App > Location: MarketoLive Instance");
 				
-				if (MktPage.userid.search("^admin@mktodemoaccount") != -1) {
+				if (userId.search("^admin@mktodemoaccount") != -1) {
 					console.log("Marketo App > User: Admin");
 					
 					// Disabling Demo Plugin Check
@@ -725,37 +727,6 @@ if (currentUrl.search(mktoAppDomain) != -1
 					prevWorkspaceId;
 				// Disabling Demo Plugin Check
 				APP.disableDemoPluginCheck();
-				
-				// Setting the Landing Page Draft IDs to Discard
-				var lpIds = {};
-                switch (MktPage.savedState.custPrefix) {
-                    case "mktodemoaccount106":
-						// Custom Landing Page
-						lpIds["dpageid_11381"] = "dpageid_11381";
-                        // Landing Page
-                        lpIds["dpageid_8703"] = "dpageid_8703";
-                        // Responsive Landing Page
-                        lpIds["dpageid_11291"] = "dpageid_11291";
-                        break;
-                    case "mktodemoaccount106a":
-						// Custom Landing Page
-						lpIds["dpageid_11381"] = "dpageid_11381";
-                        // Landing Page
-                        lpIds["dpageid_8703"] = "dpageid_8703";
-                        // Responsive Landing Page
-                        lpIds["dpageid_10454"] = "dpageid_10454";
-                        break;
-                    case "mktodemoaccount106b":
-						// Custom Landing Page
-						lpIds["dpageid_11381"] = "dpageid_11381";
-                        // Landing Page
-                        lpIds["dpageid_10760"] = "dpageid_10760";
-						// Responsive Landing Page
-                        lpIds["dpageid_10762"] = "dpageid_10762";
-                        break;
-					default:
-						break;
-                }
 				
 				// Getting the URL fragment, the part after the #
 				currUrlFragment = Mkt3.DL.getDlToken();
@@ -770,6 +741,7 @@ if (currentUrl.search(mktoAppDomain) != -1
 				&& currUrlFragment.search("^" + mktoFormWizardFragment) == -1
 				&& currUrlFragment.search("^" + mktoMobilePushNotificationWizardFragment) == -1
 				&& currUrlFragment.search("^" + mktoSocialAppWizardFragment) == -1) {
+					
 					// Storing previous Workspace ID
 					if (currUrlFragment != mktoMyMarketoFragment) {
 						prevWorkspaceId = MktCanvas.activeTab.config.accessZoneId;
@@ -779,6 +751,52 @@ if (currentUrl.search(mktoAppDomain) != -1
 							APP.enableSmartCampaignCanvas();	
 						}
 					}
+					
+					// Marketing ROI, Funnel Analysis
+					if (currUrlFragment == "RCM39B2"
+					|| currUrlFragment == "RCM39B2!"
+					|| currUrlFragment == "RCM5A1"
+					|| currUrlFragment == "RCM5A1!"
+					|| currUrlFragment == "AR1559A1"
+					|| currUrlFragment == "AR1559A1!"
+					|| currUrlFragment == "AR1682A1"
+					|| currUrlFragment == "AR1682A1!") {
+						console.log("Marketo App > Location: Analytics");
+								
+						APP.injectAnalyzerNavBar();
+					}
+					
+					// Setting the Landing Page draft IDs to discard
+					var lpIds = {};
+					switch (accountString) {
+						case "mktodemoaccount106":
+							// Custom Landing Page
+							lpIds["dpageid_11381"] = "dpageid_11381";
+							// Landing Page
+							lpIds["dpageid_8703"] = "dpageid_8703";
+							// Responsive Landing Page
+							lpIds["dpageid_11291"] = "dpageid_11291";
+							break;
+						case "mktodemoaccount106a":
+							// Custom Landing Page
+							lpIds["dpageid_11381"] = "dpageid_11381";
+							// Landing Page
+							lpIds["dpageid_8703"] = "dpageid_8703";
+							// Responsive Landing Page
+							lpIds["dpageid_10454"] = "dpageid_10454";
+							break;
+						case "mktodemoaccount106b":
+							// Custom Landing Page
+							lpIds["dpageid_11381"] = "dpageid_11381";
+							// Landing Page
+							lpIds["dpageid_10760"] = "dpageid_10760";
+							// Responsive Landing Page
+							lpIds["dpageid_10762"] = "dpageid_10762";
+							break;
+						default:
+							break;
+					}
+					
 					// DIY Design (Landing Pages)
 					APP.discardLandingPageDrafts(lpIds);
 					
@@ -790,10 +808,12 @@ if (currentUrl.search(mktoAppDomain) != -1
 				}
 				
 				else if (currUrlFragment.search("^" + mktoLandingPageDesignerFragment) != -1) {
+					console.log("Marketo App > Location: Landing Page Designer");
+					
 					// Disabling System Error Message for sync conflicts
 					APP.disableSystemErrorMessage();
 					
-					// Overlay Landing Page Designer w/ Company Logo and Color
+					// Overlay Landing Page Designer w/ company logo and color
 					switch (currUrlFragment) {
 						case "LPE11381":
 							APP.overlayLandingPageDesigner();
@@ -807,7 +827,8 @@ if (currentUrl.search(mktoAppDomain) != -1
 				}
 				
 				else {
-					console.log("Marketo App > Location: Designers/Wizards");                    
+					console.log("Marketo App > Location: Designers/Wizards");
+					
 					// DIY Design (Emails, Forms, Push Notifications, Social Apps)
 					var currAssetZoneId,
                         loadParameters = {
@@ -828,7 +849,6 @@ if (currentUrl.search(mktoAppDomain) != -1
 					switch (Mkt3.DL.dl.dlCompCode) {
 						case mktoEmailDesignerFragment:
 							Ext4.getStore('Email').load(loadParameters);
-							
 							// Overlay Email Designer w/ Company Logo and Color
 							switch (currUrlFragment) {
 								case "EME15464":
@@ -851,23 +871,10 @@ if (currentUrl.search(mktoAppDomain) != -1
 							currAssetZoneId = -1;
                     }
 				}
-				
-				// Marketing ROI, Funnel Analysis
-				if (currUrlFragment == "RCM39B2"
-				|| currUrlFragment == "RCM39B2!"
-				|| currUrlFragment == "RCM5A1"
-				|| currUrlFragment == "RCM5A1!"
-				|| currUrlFragment == "AR1559A1"
-				|| currUrlFragment == "AR1559A1!"
-				|| currUrlFragment == "AR1682A1"
-				|| currUrlFragment == "AR1682A1!") {
-					console.log("Marketo App > Location: Analytics");
-							
-					APP.injectAnalyzerNavBar();
-				}
 
                 window.onhashchange = function() {
 					console.log("Window: Hash Changed");
+					
 					// Getting the URL fragment, the part after the #
 					currUrlFragment = Mkt3.DL.getDlToken();
 					
@@ -877,33 +884,37 @@ if (currentUrl.search(mktoAppDomain) != -1
 					&& currUrlFragment.search("^" + mktoMobilePushNotificationWizardFragment) == -1
 					&& currUrlFragment.search("^" + mktoSocialAppWizardFragment) == -1
 					&& currUrlFragment != mktoMyMarketoFragment) {
+						
 						var currWorkspaceId = MktCanvas.activeTab.config.accessZoneId;
 						if (currWorkspaceId == prevWorkspaceId) {
 						}
+						
 						else if (currWorkspaceId == 1) {
 							// Powerful Automation
 							APP.disableSmartCampaignSaving();
 							APP.enableSmartCampaignCanvas();
 							prevWorkspaceId = currWorkspaceId;
 						}
+						
 						else {
 							// Enable Smart Campaign Saving for their Workspace
 							APP.enableSmartCampaignSaving();
 							prevWorkspaceId = currWorkspaceId;
 						}
-					}
-					// Marketing ROI, Funnel Analysis
-					if (currUrlFragment == "RCM39B2"
-					|| currUrlFragment == "RCM39B2!"
-					|| currUrlFragment == "RCM5A1"
-					|| currUrlFragment == "RCM5A1!"
-					|| currUrlFragment == "AR1559A1"
-					|| currUrlFragment == "AR1559A1!"
-					|| currUrlFragment == "AR1682A1"
-					|| currUrlFragment == "AR1682A1!") {
-						console.log("Marketo App > Location: Analytics");
-							
-						APP.injectAnalyzerNavBar();
+						
+						// Marketing ROI, Funnel Analysis
+						if (currUrlFragment == "RCM39B2"
+						|| currUrlFragment == "RCM39B2!"
+						|| currUrlFragment == "RCM5A1"
+						|| currUrlFragment == "RCM5A1!"
+						|| currUrlFragment == "AR1559A1"
+						|| currUrlFragment == "AR1559A1!"
+						|| currUrlFragment == "AR1682A1"
+						|| currUrlFragment == "AR1682A1!") {
+							console.log("Marketo App > Location: Analytics");
+								
+							APP.injectAnalyzerNavBar();
+						}
 					}
                 }
             }
