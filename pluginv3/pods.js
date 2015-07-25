@@ -19,16 +19,18 @@ var PODS = PODS || {};
  **************************************************************************************/
 
 PODS.getCookie = function(cookieField) {
-    var name = cookieField + "=",
-        cookies = document.cookie.split(';'),
-        currentCookie;
-    for (var ii = 0; ii < cookies.length; ++ii) {
-        var currentCookie = cookies[ii].trim();
-        if (currentCookie.indexOf(name) == 0) {
-            return currentCookie.substring(name.length, currentCookie.length);
+	console.log ("Pods > Getting: Cookie");
+	
+	var name = cookieField + "=",
+	cookies = document.cookie.split(';'),
+	currentCookie;
+	for (var ii = 0; ii < cookies.length; ++ii) {
+		var currentCookie = cookies[ii].trim();
+		if (currentCookie.indexOf(name) == 0) {
+			return currentCookie.substring(name.length, currentCookie.length);
 		}
-    }
-    return null;
+	}
+	return null;
 }
 
 /**************************************************************************************
@@ -46,6 +48,8 @@ PODS.getCookie = function(cookieField) {
  **************************************************************************************/
 
 PODS.setCookie = function(cookieField, cookieValue, expiresIn) {
+	console.log("Pods > Setting Cookie");
+	
     var d = new Date(),
 	    expires;
     d.setTime(d.getTime() + (expiresIn * 24 * 60 * 60 * 1000));
@@ -54,6 +58,8 @@ PODS.setCookie = function(cookieField, cookieValue, expiresIn) {
 }
 
 PODS.Pod = function(id) {
+	console.log("Pods > Identifying: User Pod");
+	
     this.id = id;
     this.appUrl = "https://" + id + ".marketo.com/";
     this.diyDesign = this.appUrl + "#PG4217A1";

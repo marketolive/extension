@@ -87,6 +87,22 @@ APP.disableDemoPluginCheck = function() {
 
 /**************************************************************************************
  *  
+ *  This function disables the system error message for sync errors on Landing Pages.
+ *
+ *  @Author Brian Fisher
+ *
+ *  @function
+ *
+ **************************************************************************************/
+
+APP.disableSystemErrorMessage = function() {
+	console.log("Marketo App > Disabling: System Error Message");
+	
+	MktMessage.showSystemError = function() {};
+}
+
+/**************************************************************************************
+ *  
  *  This function overrides the target link for the Deliverability Tools tile.
  *
  *  @Author Brian Fisher
@@ -735,6 +751,9 @@ if (currentUrl.search(mktoAppDomain) != -1
 				}
 				
 				else if (currUrlFragment.search("^" + mktoLandingPageDesignerFragment) != -1) {
+					// Disabling System Error Message for sync conflicts
+					APP.disableSystemErrorMessage();
+					
 					// Overlay Landing Page Designer w/ Company Logo and Color
 					switch (currUrlFragment) {
 						case "LPE11381":
