@@ -117,7 +117,8 @@ window.onload = function() {
     console.log("Content > Window: Loaded");
 
     if (currentUrl.search(mktoAppDomain) != -1
-	&& currentUrl.search(mktoEmailDesigner) == -1) {
+	&& currentUrl.search(mktoDesignerDomain) == -1
+	&& currentUrl.search(mktoWizard) == -1) {
 		console.log("Content > Location: Marketo App");
 		
         window.mkto_live_plugin_state = true;
@@ -125,7 +126,7 @@ window.onload = function() {
         loadScript(APP_SCRIPT_LOCATION);
     }
 	
-    else if (currentUrl.search(mktoEmailDesigner) != -1
+    else if (currentUrl.search(mktoDesignerDomain) != -1
     || currentUrl.search(mktoWizard) != -1) {
         console.log("Content > Location: Designer/Wizard");
 		

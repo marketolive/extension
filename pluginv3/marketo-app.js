@@ -698,7 +698,7 @@ APP.overlayLandingPageDesigner = function() {
  **************************************************************************************/
 
 if (currentUrl.search(mktoAppDomain) != -1
-|| currentUrl.search(mktoEmailDesigner) != -1
+|| currentUrl.search(mktoDesignerDomain) != -1
 || currentUrl.search(mktoWizard) != -1) {
     console.log("Marketo App > Location: Marketo URL");
 	
