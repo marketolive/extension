@@ -712,11 +712,50 @@ if (currentUrl.search(mktoAppDomain) != -1
 			|| MktPage.userid.search("^admin@mktodemoaccount") != -1)) {
 				console.log("Marketo App > Location: MarketoLive Instance");
 				
+				if (MktPage.userid.search("^admin@mktodemoaccount") != -1) {
+					console.log("Marketo App > User: Admin");
+					
+					// Disabling Demo Plugin Check
+					APP.disableDemoPluginCheck();
+					window.clearInterval(isMktPageInterval);
+					return;
+				}
+				
 				var currUrlFragment,
 					prevWorkspaceId;
 				// Disabling Demo Plugin Check
-				// MktPage.demoPluginWindow.hide();
 				APP.disableDemoPluginCheck();
+				
+				// Setting the Landing Page Draft IDs to Discard
+				var lpIds = {};
+                switch (MktPage.savedState.custPrefix) {
+                    case "mktodemoaccount106":
+						// Custom Landing Page
+						lpIds["dpageid_11381"] = "dpageid_11381";
+                        // Landing Page
+                        lpIds["dpageid_8703"] = "dpageid_8703";
+                        // Responsive Landing Page
+                        lpIds["dpageid_11291"] = "dpageid_11291";
+                        break;
+                    case "mktodemoaccount106a":
+						// Custom Landing Page
+						lpIds["dpageid_11381"] = "dpageid_11381";
+                        // Landing Page
+                        lpIds["dpageid_8703"] = "dpageid_8703";
+                        // Responsive Landing Page
+                        lpIds["dpageid_10454"] = "dpageid_10454";
+                        break;
+                    case "mktodemoaccount106b":
+						// Custom Landing Page
+						lpIds["dpageid_11381"] = "dpageid_11381";
+                        // Landing Page
+                        lpIds["dpageid_10760"] = "dpageid_10760";
+						// Responsive Landing Page
+                        lpIds["dpageid_10762"] = "dpageid_10762";
+                        break;
+					default:
+						break;
+                }
 				
 				// Getting the URL fragment, the part after the #
 				currUrlFragment = Mkt3.DL.getDlToken();
@@ -812,37 +851,6 @@ if (currentUrl.search(mktoAppDomain) != -1
 							currAssetZoneId = -1;
                     }
 				}
-
-                var lpIds = {};
-
-                switch (MktPage.savedState.custPrefix) {
-                    case "mktodemoaccount106":
-						// Custom Landing Page
-						lpIds["dpageid_11381"] = "dpageid_11381";
-                        // Landing Page
-                        lpIds["dpageid_8703"] = "dpageid_8703";
-                        // Responsive Landing Page
-                        lpIds["dpageid_11291"] = "dpageid_11291";
-                        break;
-                    case "mktodemoaccount106a":
-						// Custom Landing Page
-						lpIds["dpageid_11381"] = "dpageid_11381";
-                        // Landing Page
-                        lpIds["dpageid_8703"] = "dpageid_8703";
-                        // Responsive Landing Page
-                        lpIds["dpageid_10454"] = "dpageid_10454";
-                        break;
-                    case "mktodemoaccount106b":
-						// Custom Landing Page
-						lpIds["dpageid_11381"] = "dpageid_11381";
-                        // Landing Page
-                        lpIds["dpageid_10760"] = "dpageid_10760";
-						// Responsive Landing Page
-                        lpIds["dpageid_10762"] = "dpageid_10762";
-                        break;
-					default:
-						break;
-                }
 				
 				// Marketing ROI, Funnel Analysis
 				if (currUrlFragment == "RCM39B2"
