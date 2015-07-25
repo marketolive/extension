@@ -30,10 +30,14 @@ var currentUrl = window.location.href,
     mktoEmailDesigner = mktoDesignerDomain + "/ds",
     mktoLandingPageDesigner = mktoDesignerDomain + "/lpeditor/",
     mktoWizard = mktoAppDomain + "/m#",
-	mktoFormWizard = mktoAppDomain + "FOE",
-	mktoSocialAppWizard = mktoAppDomain + "SOAE",
     rtpDemoDomain = "^http:\/\/sjrtp1.marketo.com\/demo\/$|^http:\/\/cloud4.insightera.com\/demo\/$",
     emailDeliverabilityDomain = "^https:\/\/250ok.com/",
+	mktoMyMarketoFragment = "MM0A1",
+	mktoEmailDesignerFragment = "EME",
+	mktoLandingPageDesignerFragment = "LPE",
+	mktoFormWizardFragment = "FOE",
+	mktoMobilePushNotificationWizardFragment = "MPNE",
+	mktoSocialAppWizardFragment = "SOAE",
     isMktoLiveInstance = false,
 	pod;
 
@@ -692,19 +696,33 @@ if (currentUrl.search(mktoAppDomain) != -1
 			|| MktPage.userid.search("^admin@mktodemoaccount") != -1)) {
 				console.log("Marketo App > Location: MarketoLive Instance");
 				
+				var currUrlFragment,
+					prevWorkspaceId;
 				// Disabling Demo Plugin Check
 				// MktPage.demoPluginWindow.hide();
 				APP.disableDemoPluginCheck();
 				
+				// Getting the URL fragment, the part after the #
+				currUrlFragment = Mkt3.DL.getDlToken();
+				
 				// Email Deliverability
-				if (currentUrl.search(mktoAppDomain + "/#MM0A1") != -1) {
+				if (currUrlFragment == mktoMyMarketoFragment) {
 					APP.overrideDeliverabilityToolsTile();
 				}
-				if (currentUrl.search(mktoEmailDesigner) == -1 
-				&& currentUrl.search(mktoWizard) == -1) {
+				
+				if (currUrlFragment.search("^" + mktoEmailDesignerFragment) == -1 
+				&& currUrlFragment.search("^" + mktoFormWizardFragment) == -1
+				&& currUrlFragment.search("^" + mktoMobilePushNotificationWizardFragment) == -1
+				&& currUrlFragment.search("^" + mktoSocialAppWizardFragment) == -1) {
 					// Storing previous Workspace ID
-					if (currentUrl.search(mktoAppDomain + "/#MM0A1") == -1) {
-						var prevWorkspaceId = MktCanvas.activeTab.config.accessZoneId;
+					if (currUrlFragment.search("^" + mktoLandingPageDesignerFragment) == -1
+					&& currUrlFragment != mktoMyMarketoFragment) {
+						prevWorkspaceId = MktCanvas.activeTab.config.accessZoneId;
+						if (prevWorkspaceId == 1) {
+							// Powerful Automation
+							APP.disableSmartCampaignSaving();
+							APP.enableSmartCampaignCanvas();	
+						}
 					}
 					// DIY Design (Landing Pages)
 					APP.discardLandingPageDrafts(lpIds);
@@ -716,76 +734,13 @@ if (currentUrl.search(mktoAppDomain) != -1
 					APP.disableProgramActionsMenu();
 				}
 				
-				else if (currentUrl.search(mktoLandingPageDesigner) != -1) {
+				else if (currUrlFragment.search("^" + mktoLandingPageDesignerFragment) != -1) {
 					// Overlay Landing Page Designer w/ Company Logo and Color
 					//APP.overlayLandingPageDesigner();
 				}
 				
 				else {
-<<<<<<< HEAD
-					console.log("Marketo App > Location: Assets");
-					// DIY Design (Emails, Forms, Push Notifications, Social Apps)
-					var currAssetZoneId;
-					switch (Mkt3.DL.dl.dlCompCode) {
-						case "EME":
-							Ext4.getStore('Email').load({
-								filters: [{property: 'id', value: Mkt3.DL.dl.compId}],
-								callback: function(records) {
-									records.forEach(
-										function(record) {
-											currAssetZoneId = record.get('zoneId');
-										}
-									);
-								}
-							});
-							break;
-						case "FOE":
-							Ext4.getStore('Form').load({
-								filters: [{property: 'id', value: Mkt3.DL.dl.compId}],
-								callback: function(records) {
-									records.forEach(
-										function(record) {
-											currAssetZoneId = record.get('zoneId');
-											console.log(currAssetZoneId);
-										}
-									);
-								}
-							});
-							break;
-						case "MPNE":
-							Ext4.getStore('MobilePushNotification').load({
-								filters: [{property: 'id', value: Mkt3.DL.dl.compId}],
-								callback: function(records) {
-									records.forEach(
-										function(record) {
-											currAssetZoneId = record.get('zoneId');
-										}
-									);
-								}
-							});
-							break;
-						case "SOAE":
-							Ext4.getStore('SocialApp').load({
-								filters: [{property: 'id', value: Mkt3.DL.dl.compId}],
-								callback: function(records) {
-									records.forEach(
-										function(record) {
-											console.log(record.get('name'));
-											currAssetZoneId = record.get('zoneId');
-										}
-									);
-								}
-							});
-							break;
-						default:
-							break;
-					}
-					
-					if (currAssetZoneId  == 1) {
-						APP.disableEditorSaving();
-					}
-=======
-					console.log("Marketo App > Location: Assets");                    
+					console.log("Marketo App > Location: Designers/Wizards");                    
 					// DIY Design (Emails, Forms, Push Notifications, Social Apps)
 					var currAssetZoneId,
                         loadParameters = {
@@ -804,22 +759,21 @@ if (currentUrl.search(mktoAppDomain) != -1
                                          }
                             
 					switch (Mkt3.DL.dl.dlCompCode) {
-						case "EME":
+						case mktoEmailDesignerFragment:
 							Ext4.getStore('Email').load(loadParameters);
 							break;
-						case "FOE":
+						case mktoFormWizardFragment:
 							Ext4.getStore('Form').load(loadParameters);
 							break;
-						case "MPNE":
+						case mktoMobilePushNotificationWizardFragment:
 							Ext4.getStore('MobilePushNotification').load(loadParameters);
 							break;
-						case "SOAE":
+						case mktoSocialAppWizardFragment:
 							Ext4.getStore('SocialApp').load(loadParameters);
 							break;
 						default:
 							currAssetZoneId = -1;
                     }
->>>>>>> origin/refactoring
 					
 					// Overlay Email Designer w/ Company Logo and Color
 					//APP.overlayEmailDesigner();
@@ -851,18 +805,30 @@ if (currentUrl.search(mktoAppDomain) != -1
                 }
 				
 				// Marketing ROI, Funnel Analysis
-				if (currentUrl.search(mktoAppDomain + "/#RCM39B2") != -1 
-				|| currentUrl.search(mktoAppDomain + "/#RCM5A1") != -1 
-				|| currentUrl.search(mktoAppDomain + "/#AR1559A1") != -1 
-				|| currentUrl.search(mktoAppDomain + "/#AR1682A1") != -1) {
+				if (currUrlFragment == "RCM39B2"
+				|| currUrlFragment == "RCM39B2!"
+				|| currUrlFragment == "RCM5A1"
+				|| currUrlFragment == "RCM5A1!"
+				|| currUrlFragment == "AR1559A1"
+				|| currUrlFragment == "AR1559A1!"
+				|| currUrlFragment == "AR1682A1"
+				|| currUrlFragment == "AR1682A1!") {
+					console.log("Marketo App > Location: Analytics");
+							
 					APP.injectAnalyzerNavBar();
 				}
 
                 window.onhashchange = function() {
 					console.log("Window: Hash Changed");
+					// Getting the URL fragment, the part after the #
+					currUrlFragment = Mkt3.DL.getDlToken();
 					
-					if (currentUrl.search(mktoEmailDesigner) == -1 
-					&& currentUrl.search(mktoWizard) == -1) {
+					if (currUrlFragment.search("^" + mktoEmailDesignerFragment) == -1
+					&& currUrlFragment.search("^" + mktoLandingPageDesignerFragment) == -1
+					&& currUrlFragment.search("^" + mktoFormWizardFragment) == -1
+					&& currUrlFragment.search("^" + mktoMobilePushNotificationWizardFragment) == -1
+					&& currUrlFragment.search("^" + mktoSocialAppWizardFragment) == -1
+					&& currUrlFragment != mktoMyMarketoFragment) {
 						var currWorkspaceId = MktCanvas.activeTab.config.accessZoneId;
 						if (currWorkspaceId == prevWorkspaceId) {
 						}
@@ -870,17 +836,26 @@ if (currentUrl.search(mktoAppDomain) != -1
 							// Powerful Automation
 							APP.disableSmartCampaignSaving();
 							APP.enableSmartCampaignCanvas();
+							prevWorkspaceId = currWorkspaceId;
 						}
 						else {
 							// Enable Smart Campaign Saving for their Workspace
 							APP.enableSmartCampaignSaving();
+							prevWorkspaceId = currWorkspaceId;
 						}
 					}
 					// Marketing ROI, Funnel Analysis
-					if (currentUrl.search(mktoAppDomain + "/#RCM39B2") != -1 
-					|| currentUrl.search(mktoAppDomain + "/#RCM5A1") != -1 
-					|| currentUrl.search(mktoAppDomain + "/#AR1559A1") != -1 
-					|| currentUrl.search(mktoAppDomain + "/#AR1682A1") != -1) {
+					console.log("Marketo App > Checking Location");
+					if (currUrlFragment == "RCM39B2"
+					|| currUrlFragment == "RCM39B2!"
+					|| currUrlFragment == "RCM5A1"
+					|| currUrlFragment == "RCM5A1!"
+					|| currUrlFragment == "AR1559A1"
+					|| currUrlFragment == "AR1559A1!"
+					|| currUrlFragment == "AR1682A1"
+					|| currUrlFragment == "AR1682A1!") {
+						console.log("Marketo App > Location: Analytics");
+							
 						APP.injectAnalyzerNavBar();
 					}
                 }
