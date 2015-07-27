@@ -7,6 +7,7 @@ console.log("Background > Running");
  **************************************************************************************/
 
 var mktoAppDomain = "^https:\/\/app-[a-z0-9]+\.marketo\.com",
+	mktoLiveInstances = "^https:\/\/app-(sjp|ab07|ab08)+\.marketo\.com"
 	mktoAppMatch = "https://app-*.marketo.com",
     mktoLiveDomain = "^https:\/\/marketolive.com",
 	mktoLiveMatch = "https://marketolive.com/*",
@@ -62,7 +63,7 @@ function getCookies(domain, name, callback) {
  **************************************************************************************/
 
 function savePriv(data) {
-	console.log("Background > Saving: Edit Privliges");
+	console.log("Background > Saving: Edit Privileges");
 	
 	chrome.storage.sync.set(data, function() {});
 	var cookiePriv = {
@@ -137,6 +138,7 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 	if (request.action == "colorVal") {
+		console.log("Background > Color");
 		var cookieColor = {
 			url : "http://www.marketodesigner.com/*",
 			name : "color",
@@ -169,9 +171,8 @@ function checkForValidUrl(tabId, changeInfo, tab) {
     var currentUrl = tab.url;
     chrome.browserAction.enable(tabId);
 
-    if (currentUrl.search(mktoAppDomain)
-	|| currentUrl.search(mktoLiveDomain)
-	|| currentUrl.search(emailDeliverabilityDomain)) {
+    if (currentUrl.search(mktoLiveInstances)
+	|| currentUrl.search(mktoLiveDomain)) {
 		getCookies(mktoAppMatch, 'mkto_pod', function (id) {
 			var cookie_pod_value = id,
 				user_pod_value = cookie_pod_value.split('.'),

@@ -32,14 +32,11 @@ loadScript = function(name) {
     document.getElementsByTagName("head")[0].appendChild(jscript_lib_demo);
 }
 
-setCookie = function(cookieField, cookieValue, expiresIn) {
-	console.log("Content > Setting: Cookie");
-	
-    var d = new Date(),
-			expires;
-    d.setTime(d.getTime() + (expiresIn * 24 * 60 * 60 * 1000));
-    expires = "expires=" + d.toUTCString();
-    document.cookie = cookieField + "=" + cookieValue + "; " + expires;
+setCookie = function(cname, cvalue, exdays, domain, secure) {
+    var d = new Date();
+    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+    var expires = "expires=" + d.toGMTString();
+    document.cookie = cname + "=" + cvalue + "; " + expires + "; " + "path=/;" + "domain=" + domain + ";secure="+ secure +";";
 }
 
 getCookie = function(cookieField) {
@@ -109,7 +106,10 @@ Analyzer.prototype.showAnalyzer = function() {
 
 chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
 	if (request.action == "company") {
-        localStorage.setItem("company", request.company.companyName);
+		console.log("Content > Company: " + request.company);
+        localStorage.setItem("company", request.company);
+		console.log("Content > Location: Color Picker");
+		loadScript(COLORPICKER_SCRIPT_LOCATION);
 	}
 });
 
@@ -179,10 +179,4 @@ window.onload = function() {
 		
 		loadScript(DELIVERABILITY_TOOLS_SCRIPT_LOCATION);
 	}
-	
-	else if (currentUrl.search(colorPickerPage) != -1) {
-		console.log("Content > Location: Color Picker");
-		
-		loadScript(COLORPICKER_SCRIPT_LOCATION);
-    }
 }

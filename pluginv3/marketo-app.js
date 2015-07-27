@@ -654,12 +654,31 @@ APP.overlayEmailDesigner = function() {
 	var company = APP.getCookie('company'),
 	color = APP.getCookie('color'),
 	logo = "http://marketolive.com/m2_update/assets/img/turner-tech-white.png";
+	
 	if (company != "turner") {
+		console.log("Marketo App > Overlaying: Turner");
 		logo = "https://logo.clearbit.com/" + company;
 	}
-	document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("logo-bkg").style.backgroundColor = color;
-	document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("301593").style.backgroundColor = color;
-	document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("logo-swap").src = logo;
+	
+	var isIframeElement = window.setInterval(function() {
+		var logoBkg = document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("logo-bkg"),
+			buttonBkg = document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("button-bkg"),
+			logoSwapCompany = document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("logo-swap-company"),
+			logoSwapContainer = document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("logo-swap-container"),
+			logoSwapCompanyContainer = document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("logo-swap-company-container");
+		if (logoBkg != null
+		&& buttonBkg != null
+		&& logoSwapCompany != null) {
+			console.log("Marketo App > Overlaying: iframe");
+			logoSwapContainer.style.display = "none";
+			logoSwapCompanyContainer.style.display = "block";
+			
+			logoBkg.style.backgroundColor = color;
+			buttonBkg.style.backgroundColor = color;
+			logoSwapCompany.src = logo;
+			window.clearInterval(isIframeElement);
+		}
+	}, 0);
 }
 
 /**************************************************************************************
@@ -685,10 +704,25 @@ APP.overlayLandingPageDesigner = function() {
 		logo = "https://logo.clearbit.com/" + company;
 		companyName = company.substring(0, company.indexOf("."));
 	}
-	document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("lp-logo").src = logo;
-	document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("background-color").style.backgroundColor = color;
-	document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("bigger-background").style.backgroundColor = color;
-	document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("sub-title").innerHTML = companyName + " invites you to join:";
+	
+	var isIframeElement = window.setInterval(function() {
+		var lpLogo = document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("lp-logo"),
+			backgroundColor = document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("background-color"),
+			biggerBackground = document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("bigger-background"),
+			subTitle = document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("sub-title");
+		if (lpLogo != null
+		&& backgroundColor != null
+		&& biggerBackground != null
+		&& subTitle != null) {
+			console.log("Marketo App > Overlaying: iframe");
+			
+			lpLogo.src = logo;
+			backgroundColor.style.backgroundColor = color;
+			biggerBackground.style.backgroundColor = color;
+			subTitle.innerHTML = companyName + " invites you to join:";
+			window.clearInterval(isIframeElement);
+		}
+	}, 0);
 }
 
 /**************************************************************************************
@@ -703,7 +737,7 @@ if (currentUrl.search(mktoAppDomain) != -1
     console.log("Marketo App > Location: Marketo URL");
 	
     window.mkto_live_plugin_state = true;
-    var isMktPageInterval = window.setInterval(function() {
+    var isMktPage = window.setInterval(function() {
         if (typeof(MktPage) !== "undefined") {
 			console.log("Marketo App > Location: Marketo Page");
 			
@@ -719,7 +753,7 @@ if (currentUrl.search(mktoAppDomain) != -1
 					
 					// Disabling Demo Plugin Check
 					APP.disableDemoPluginCheck();
-					window.clearInterval(isMktPageInterval);
+					window.clearInterval(isMktPage);
 					return;
 				}
 				
@@ -748,7 +782,7 @@ if (currentUrl.search(mktoAppDomain) != -1
 						if (prevWorkspaceId == 1) {
 							// Powerful Automation
 							APP.disableSmartCampaignSaving();
-							APP.enableSmartCampaignCanvas();	
+							APP.enableSmartCampaignCanvas();
 						}
 					}
 					
@@ -918,7 +952,7 @@ if (currentUrl.search(mktoAppDomain) != -1
 					}
                 }
             }
-            window.clearInterval(isMktPageInterval);
+            window.clearInterval(isMktPage);
         }
     }, 0);
 }
