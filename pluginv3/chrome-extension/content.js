@@ -5,6 +5,7 @@ var LIVE_SCRIPT_LOCATION = "https://marketolive.com/dev/plugin-bcf/marketo-live.
     POD_SCRIPT_LOCATION = "https://marketolive.com/dev/plugin-bcf/pods.js",
 	COLORPICKER_SCRIPT_LOCATION = "https://marketolive.com/m2_update/assets/js/colorpicker.js",
 	DELIVERABILITY_TOOLS_SCRIPT_LOCATION = "https://marketolive.com/dev/plugin-bcf/deliverability-tools.js",
+	DASHBOARD_SCRIPT_LOCATION = "https://marketolive.com/dev/plugin-bcf/dashboards/remote-data.js",
     currentUrl = window.location.href,
 	mktoAppDomain = "^https:\/\/app-[a-z0-9]+\.marketo\.com",
 	mktoAppMatch = "https://app-*.marketo.com",
@@ -124,6 +125,7 @@ window.onload = function() {
         window.mkto_live_plugin_state = true;
         loadScript(POD_SCRIPT_LOCATION);
         loadScript(APP_SCRIPT_LOCATION);
+		loadScript(DASHBOARD_SCRIPT_LOCATION);
     }
 	
     else if (currentUrl.search(mktoDesignerDomain) != -1
@@ -157,7 +159,8 @@ window.onload = function() {
 	|| currentUrl.search(mktoAppDomain + "/#AR1559A1") != -1) {
         console.log("Content > Location: Analyzers");
 		
-        Analyzer.prototype.showAnalyzer();
+        loadScript(DASHBOARD_SCRIPT_LOCATION);
+		Analyzer.prototype.showAnalyzer();
     }
 	
     else if (currentUrl.search(rtpDemoDomain) != -1) {
