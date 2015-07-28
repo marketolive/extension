@@ -10,12 +10,11 @@
  *  @function
  *
  **************************************************************************************/
- 
 console.log("Popup > Running");
 
 window.onload = function() {
 	var background = chrome.extension.getBackgroundPage(),
-	    priv = "false",
+	    priv = "true",
         tags = document.getElementsByClassName("link"),
 		submit = document.getElementById('company-submit'),
 		toggle = document.getElementById('option-toggle'),
@@ -37,25 +36,25 @@ window.onload = function() {
        }
 	}
 
-	settings.onclick = function() {		
+	settings.onclick = function() {
 		document.getElementById('settings-container').style.display = "block";
 		document.getElementById('status').style.display = "block";
 		if (priv == "true") {
 			document.getElementById('toggle').src = "https://marketolive.com/m2_update/assets/img/toggle-on.png";
 			document.getElementById('button-display').style.display = "inline-block";
 		}
-		else {
-			document.getElementById('toggle').src = "https://marketolive.com/m2_update/assets/img/toggle-off.png"; 
+		else if (priv == "false") {
+			document.getElementById('toggle').src = "https://marketolive.com/m2_update/assets/img/toggle-off.png";
 			document.getElementById('button-display').style.display = "inline-block";
-		}    
+		}
 	}
 
 	close.onclick = function() {
-		document.getElementById('settings-container').style.display = "none";   
+		document.getElementById('settings-container').style.display = "none";
 	}
 
 	clear.onclick = function() {
-		background.submitCompany(data);     
+		background.submitCompany(data);
 	}
 	
 	submit.onclick = function() {
@@ -68,13 +67,13 @@ window.onload = function() {
    }
    
    toggle.onclick = function() {
-		if (priv == "false") {
-			document.getElementById('toggle').src = "https://marketolive.com/m2_update/assets/img/toggle-on.png";
-			background.savePriv({'editPrivileges' : "true"});
-		}
-		else {
+		if (priv == "true") {
 			document.getElementById('toggle').src = "https://marketolive.com/m2_update/assets/img/toggle-off.png";
 			background.savePriv({'editPrivileges' : "false"});
+		}
+		else if (priv == "false") {
+			document.getElementById('toggle').src = "https://marketolive.com/m2_update/assets/img/toggle-on.png";
+			background.savePriv({'editPrivileges' : "true"});
 		}
 	}
 }
