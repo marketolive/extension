@@ -872,9 +872,13 @@ if (currentUrl.search(mktoAppDomain) != -1
                                                 records.forEach(
                                                     function(record) {
                                                         currAssetZoneId = record.get('zoneId');
+														console.log("Marketo App > currAssetZoneId = " + currAssetZoneId);
                                                         if (currAssetZoneId  == 1) {
                                                             APP.disableEditorSaving();
                                                         }
+														else if (APP.getCookie("priv") == "false") {
+															APP.disableEditorSaving();
+														}
                                                     }
                                                 );
                                             }
@@ -932,7 +936,9 @@ if (currentUrl.search(mktoAppDomain) != -1
 						
 						else {
 							// Enable Smart Campaign Saving for their Workspace
-							APP.enableSmartCampaignSaving();
+							if (APP.getCookie("priv") == "true") {
+								APP.enableSmartCampaignSaving();
+							}
 							prevWorkspaceId = currWorkspaceId;
 						}
 						
