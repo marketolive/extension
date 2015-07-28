@@ -24,8 +24,15 @@ window.onload = function() {
 		data = {'company' : 'turner'};
 	
 	chrome.storage.sync.get(["editPrivileges"], function(storage) {
-		console.log(storage.editPrivileges);
-		priv = storage.editPrivileges;
+		var editPriv = storage.editPrivileges;
+		if (typeof(editPriv) == "undefined") {
+			priv = "true";
+			background.savePriv({"editPrivileges" : "true"});
+		}
+		else {
+			priv = editPriv;
+		}
+		console.log(editPriv);
 	});
 	
 	// getElementsByClassName() returns an array, so the click

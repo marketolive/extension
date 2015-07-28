@@ -66,13 +66,6 @@ function savePriv(data) {
 	console.log("Background > Saving: Edit Privileges");
 	
 	chrome.storage.sync.set(data, function() {});
-	var cookiePriv = {
-		url : "http://login.marketo.com/*",
-		name : "priv",
-		value : data.editPrivileges,
-		domain : ".marketo.com"
-	}
-	chrome.cookies.set(cookiePriv, function() {});
 }
 
 /**************************************************************************************
@@ -106,16 +99,34 @@ function submitCompany(data) {
  *
  **************************************************************************************/
 
-chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) { 
+chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
 	if (changeInfo.status == "complete") {
-		chrome.storage.sync.get(["company"], function(storage) {
+		chrome.storage.sync.get(["company"] ["editPrivileges"], function(storage) {
 			var cookieCompany = {
 				url : "http://www.marketodesigner.com/*",
 				name : "company",
 				value : storage.company,
 				domain : ".marketodesigner.com"
+			},
+				editPriv = storage.editPrivileges,
+				cookiePrivMarketo = {
+					url : "http://login.marketo.com/*",
+					name : "priv",
+					value : editPriv,
+					domain : ".marketo.com"
+				},
+				cookiePrivDesigner = {
+					url : "http://www.marketodesigner.com/*",
+					name : "priv",
+					value : editPriv,
+					domain : ".marketodesigner.com"
+				};
+			if (typeof(editPriv) == "undefined") {
+				editPriv = true;
 			}
-			chrome.cookies.set(cookieCompany, function() {})
+			chrome.cookies.set(cookiePrivMarketo, function() {});
+			chrome.cookies.set(cookiePrivDesigner, function() {});
+			chrome.cookies.set(cookieCompany, function() {});
 			chrome.tabs.query({url : "*://marketolive.com/*"}, function(tabs) {
 				chrome.tabs.sendMessage(tabs[0].id, {company: storage.company, action: "company"}, function(response) {});
 			});
