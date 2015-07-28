@@ -858,6 +858,8 @@ if (currentUrl.search(mktoAppDomain) != -1
 						default:
 							break;
 					}
+					window.clearInterval(isMktPage);
+					return;
 				}
 				
 				else {
