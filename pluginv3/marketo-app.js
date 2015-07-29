@@ -470,15 +470,34 @@ APP.limitNurturePrograms = function() {
 
 APP.injectAnalyzerNavBar = function() {
     console.log("Marketo App > Injecting: Analyzer Navigation Bar");
-		
+	
 	if (typeof(pod) == "undefined") {
 		//pod = new PODS.Pod(PODS.getCookie("userPod"));
 		pod = new PODS.Pod("app-sjp");
 	}
-	
+
 	for (var y = 0; y < pod.valueSet.length; y++) {
+		console.log("Marketo App > Injecting: Analyzer Navigation Bar > pod.valueSet[y].url = " + pod.valueSet[y].url);
+		console.log("Marketo App > Injecting: Analyzer Navigation Bar > currentUrl = " + currentUrl);
 		if (currentUrl == pod.valueSet[y].url) {
-			APP.updateCSS(pod, pod.valueSet[y].position);
+			console.log("Marketo App > Updating: CSS for Analyzer Navigation Bar");
+	
+			$j = jQuery.noConflict();
+			var currPosition = '#' + pod.valueSet[y].position;
+			$j(currPosition).parent().css('display', 'block');
+			$j(currPosition).parent().siblings().css('display', 'none');
+			$j(currPosition).removeClass('analyzer-button').addClass('analyzer-title');
+			$j(currPosition).siblings().removeClass('analyzer-title').addClass('analyzer-button');
+			$j("#modeler,#success-path-analyzer,#opportunity-influence-analyzer,#program-analyzer").bind("click", function(e) {
+				console.log("Marketo App > Identifying: Current Analyzer");
+				
+				//Updates the currPosition based on the div selected
+				for (var x = 0; x < pod.valueSet.length; x++) {
+					if (e.target.id == pod.valueSet[x].position)
+						currPosition = x;
+				}
+				window.location = pod.valueSet[currPosition].url;
+			});
 		}
 	}
 }
@@ -496,7 +515,7 @@ APP.injectAnalyzerNavBar = function() {
  *  @param {Object} pod - The object containing the user's pod.
  *  @param {Integer} position - The current URL position.
  *
- *  @namespace currentPosition
+ *  @namespace currPosition
  *
  **************************************************************************************/
 
@@ -504,11 +523,11 @@ APP.updateCSS = function(pod, position) {
 	console.log("Marketo App > Updating: CSS for Analyzer Navigation Bar");
 	
     $j = jQuery.noConflict();
-    var currentPosition = '#' + position;
-    $j(currentPosition).parent().css('display', 'block');
-    $j(currentPosition).parent().siblings().css('display', 'none');
-    $j(currentPosition).removeClass('analyzer-button').addClass('analyzer-title');
-    $j(currentPosition).siblings().removeClass('analyzer-title').addClass('analyzer-button');
+    var currPosition = '#' + position;
+    $j(currPosition).parent().css('display', 'block');
+    $j(currPosition).parent().siblings().css('display', 'none');
+    $j(currPosition).removeClass('analyzer-button').addClass('analyzer-title');
+    $j(currPosition).siblings().removeClass('analyzer-title').addClass('analyzer-button');
     $j("#modeler,#success-path-analyzer,#opportunity-influence-analyzer,#program-analyzer").bind("click", function(e) {
         APP.identifyAnalyzer(e.target, pod);
     });
@@ -793,6 +812,8 @@ if (currentUrl.search(mktoAppDomain) != -1
 					|| currUrlFragment == "RCM5A1!"
 					|| currUrlFragment == "AR1559A1"
 					|| currUrlFragment == "AR1559A1!"
+					|| currUrlFragment == "AR1544A1"
+					|| currUrlFragment == "AR1544A1!"
 					|| currUrlFragment == "AR1682A1"
 					|| currUrlFragment == "AR1682A1!") {
 						console.log("Marketo App > Location: Analytics");

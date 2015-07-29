@@ -136,6 +136,14 @@ window.onload = function() {
         loadScript(POD_SCRIPT_LOCATION);
         loadScript(APP_SCRIPT_LOCATION);
 		loadScript(DASHBOARD_SCRIPT_LOCATION);
+		
+		if (currentUrl.search(mktoAppDomain + "/#RCM39A1") != -1
+		|| currentUrl.search(mktoAppDomain + "/#RCM5A1!") != -1
+		|| currentUrl.search(mktoAppDomain + "/#AR1559A1") != -1) {
+			console.log("Content > Location: Analyzers");
+		
+			Analyzer.prototype.showAnalyzer();
+		}
     }
 	
     else if (currentUrl.search(mktoDesignerDomain) != -1
@@ -154,15 +162,6 @@ window.onload = function() {
 		}
         loadScript(POD_SCRIPT_LOCATION);
         loadScript(LIVE_SCRIPT_LOCATION);
-    }
-	
-	else if (currentUrl.search(mktoAppDomain + "/#RCM39A1") != -1
-	|| currentUrl.search(mktoAppDomain + "/#RCM5A1!") != -1
-	|| currentUrl.search(mktoAppDomain + "/#AR1559A1") != -1) {
-        console.log("Content > Location: Analyzers");
-		
-        loadScript(DASHBOARD_SCRIPT_LOCATION);
-		Analyzer.prototype.showAnalyzer();
     }
 	
     else if (currentUrl.search(rtpDemoDomain) != -1) {
