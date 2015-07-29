@@ -1,0 +1,255 @@
+
+/* Adbridge CSS */
+#adbridge{
+  min-width: 1175px;
+}
+
+.adbridge-button-container{
+  position: fixed;
+  bottom: 10px;
+  /* right: 10px; */
+  z-index: 99;
+  width: 100%;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.adbridge-button-inner-container{
+}
+
+.adbridge-button{
+  height: 40px;
+  width: 200px;
+  padding-top: 5px;
+  text-align: center;
+  background-color: #5a54a4;
+  margin-right: 20px;
+  font-size: 24px;
+  display: inline-block;
+  color: #fff;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.adbridge-background{
+  width: 100%;
+  height: auto;
+background-color: #ffffff;
+background-image: url(http://www.transparenttextures.com/patterns/bedge-grunge.png);
+}
+
+.adbridge-container{
+  /*margin-top: 110px;*/
+  width: 100%;
+  height: auto;
+}
+#adbridge-space{
+  display: inline-block;
+  height: 150px;
+  text-align: center;
+  font-size: 36px;
+  width: 100%;
+  text-transform: uppercase;
+  color: #505050;
+  font-weight: 200;
+}
+#adbridge-text{
+  padding-top: 80px;
+}
+
+.part-one-body-container{
+  width: 100%;
+  height: auto;
+}
+
+.part-one-body{
+  text-align: center;
+  display: inline-block;
+  margin-left: 15%;
+}
+
+.part-one-section{
+  width: 46%;
+  height: auto;
+  margin-right: 1%;
+  float: left;
+}
+.part-one-middle-section{
+  width: 46%;
+  height: auto;
+  margin-right: 4%;
+  float: left;
+  margin-left: -34%;
+  margin-top: 50px;
+  position: relative;
+  z-index: -2;
+}
+.part-one-last-section{
+  width: 31%;
+  height: auto;
+  margin-right: 1%;
+  display:inline-block;
+}
+
+#part-one-section-img{
+  width: 100%;
+}
+.adbridge-title{
+  color: #5a54a4;
+  font-size: 20px;
+  text-transform: uppercase;
+  font-weight: 200;
+}
+.adbridge-bkg-line-container{
+  position: absolute;
+  z-index: -10;
+  top: 350px;
+  left: 100px;
+  width: 80%;
+}
+.adbridge-bkg-line{
+  float: left;
+  /* width: 50%;*/
+  height: 10px;
+  background-color: #5a54a4;
+}
+#adbridge-bkg-line-1{
+  margin-left: 30%;
+}
+.adbridge-arrow-container{
+  position: absolute;
+  top: 450px;
+  z-index: -2;
+  min-width: 1126px;
+}
+.adbridge-arrow-container{
+  width: 100%;
+}
+#adbridge-arrow-img{
+  width: 40%;
+}
+.adbridge-description-container{
+  height: 250px;
+  width: 100%;
+  display: inline-block;
+}
+.adbridge-description-inner-container{
+}
+.adbridge-description-words{
+  display: inline-block;
+  width: 30%;
+  box-shadow: 1px 1px 1px #808080;
+  background-color: #fff;
+  padding: 10px;
+}
+#adbridge-description-first{
+  margin-left: 35%;
+ }
+#adbridge-description-second{
+  margin-left: 35%;
+  margin-top: 2%;
+  display: none;
+}
+#adbridge-description-third{
+  margin-left: 60%;
+  margin-top: -3%;
+  display: none;
+}
+.adbridge-cloud-container{
+  width: 100%;
+  height: auto;
+  text-align: center;
+  margin-bottom: 100px;
+  margin-top: -100px;
+}
+.adbridge-cloud-inner-container{
+  text-align: center;
+  width: 100%;
+  display: inline-block;
+}
+#cloud-img{
+  width: 100%;
+}
+.adbridge-description-word-cloud{
+  float: left;
+  margin-top: 50px;
+  width: 30%;
+  box-shadow: 1px 1px 1px #808080;
+  background-color: #fff;
+  padding: 10px;
+  font-size: 18px;
+  margin-top: 100px;
+  text-align: left;
+}
+.extra-spacing-word{
+  margin-left: 2%;
+}
+.arrow-from-cloud-container{
+  width: 100%;
+  margin-top: -15px;
+  text-align: center;
+  margin-top: -115px;
+  position: relative;
+}
+.arrow-from-cloud-inner-container{
+  text-align: center;
+}
+.arrow-from-cloud{
+  display:inline-block;
+  width: 10px;
+  height: 0px;
+  background-color: #5a54a4;
+  position: relative;
+  z-index: -1;
+  top: 0px;
+}
+.add-spacing{
+  position: relative;
+  margin-top: 200px;
+  display: none;
+}
+.cloud-float{
+  float: left;
+  width: 60%;
+  margin-left: 6%;
+  margin-right: 2%;
+}
+#fb-img{
+  width: 100%;
+}
+#adbridge-next{
+  float: right;
+}
+#adbridge-top{
+  padding-top: 8px;
+  float: left;
+}
+#adbridge-three{
+  float: left;
+  margin-top: 0px;
+}
+.part-one-inner-body-container{
+  margin-left:auto;
+  margin-right:auto;
+}
+.margin-left{
+  position: relative;
+  text-align: right;
+  margin-right: -50px;
+  display: none;
+}
+#adbridge-bkg-line-2{
+  width: 0px;
+  float: left;
+  margin-left:40%;
+  min-width:;
+}
+.adbridge-arrow-inner-container{
+  float: right;
+  margin-right: 12%;
+  text-align: right;
+  width: 100%;
+}
+.addspacing, #adbridge-top, #adbridge-three, #adbridge-bkg-line-1, #adbridge-bkg-line-2, #adbridge-arrow, #cloud-img, #adbridge-description-fourth, #fb-img, #adbridge-description-fifth, #last-arrow{
+  display: none;
+}
