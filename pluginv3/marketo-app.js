@@ -878,7 +878,7 @@ if (currentUrl.search(mktoAppDomain) != -1
                                                         if (currAssetZoneId  == 1) {
                                                             APP.disableEditorSaving();
                                                         }
-														else if (APP.getCookie("priv") == "false") {
+														else if (APP.getCookie("priv") != "true") {
 															APP.disableEditorSaving();
 														}
                                                     }
@@ -938,7 +938,7 @@ if (currentUrl.search(mktoAppDomain) != -1
 						
 						else {
 							// Enable Smart Campaign Saving for their Workspace
-							if (APP.getCookie("priv") == "true") {
+							if (APP.getCookie("priv") != "false") {
 								APP.enableSmartCampaignSaving();
 							}
 							prevWorkspaceId = currWorkspaceId;
