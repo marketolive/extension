@@ -24,6 +24,7 @@ window.onload = function() {
 		data = {'company' : 'turner'};
 	
 	chrome.storage.sync.get(["editPrivileges"], function(storage) {
+		console.log("storage.editPrivileges = " + storage.editPrivileges);
 		var editPriv = storage.editPrivileges;
 		if (typeof(editPriv) == "undefined") {
 			priv = "true";

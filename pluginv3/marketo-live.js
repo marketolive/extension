@@ -21,6 +21,24 @@ var currentUrl = window.location.href,
 var LIVE = LIVE || {};
 
 /**************************************************************************************
+*
+*  This function displays a message to the user if he or she does not have a userPod
+*  cookie. Since the deeplinks will not work until after the first login, the user
+*  must be forced through the login page. The message instructs the user to login to 
+*  Marketo, and then return to refresh the page.
+*
+*
+*  @Author Andy
+*
+*  @function
+*
+**************************************************************************************/
+
+LIVE.displayLoginMessage = function () {
+   $("#modal-background")[0].style.display = "block";
+}
+
+/**************************************************************************************
  *
  *  This function injects the deep links onto the homepage based on which
  *  pod that the user is in.
@@ -68,6 +86,7 @@ LIVE.displayLoginMessage = function() {
 
 window.onload = function() {
     console.log("Marketo Live > Loaded: Window");
+	
     var podString = PODS.getCookie("userPod");
     if (!podString) {
         LIVE.displayLoginMessage();
