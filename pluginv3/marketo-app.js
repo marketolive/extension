@@ -472,13 +472,10 @@ APP.injectAnalyzerNavBar = function() {
     console.log("Marketo App > Injecting: Analyzer Navigation Bar");
 	
 	if (typeof(pod) == "undefined") {
-		//pod = new PODS.Pod(PODS.getCookie("userPod"));
-		pod = new PODS.Pod("app-sjp");
+		pod = new PODS.Pod(PODS.getCookie("userPod"));
 	}
 
 	for (var y = 0; y < pod.valueSet.length; y++) {
-		console.log("Marketo App > Injecting: Analyzer Navigation Bar > pod.valueSet[y].url = " + pod.valueSet[y].url);
-		console.log("Marketo App > Injecting: Analyzer Navigation Bar > currentUrl = " + currentUrl);
 		if (currentUrl == pod.valueSet[y].url) {
 			console.log("Marketo App > Updating: CSS for Analyzer Navigation Bar");
 	
@@ -718,8 +715,7 @@ APP.overlayLandingPageDesigner = function() {
 	color = APP.getCookie('color'),
 	companyName = "turner",
 	logo = "http://marketolive.com/m2_update/assets/img/turner-tech-green.png";
-
-	if (company != "turner") {
+	if (company != null) {
 		logo = "https://logo.clearbit.com/" + company;
 		companyName = company.substring(0, company.indexOf("."));
 	}
@@ -777,7 +773,12 @@ if (currentUrl.search(mktoAppDomain) != -1
 				}
 				
 				var currUrlFragment,
-					prevWorkspaceId;
+					prevWorkspaceId,
+					oppInfluenceAnalyzerFragment = "AR1559A1!",
+					programAnalyzerFragment = "AR1544A1!",
+					modeler106Fragment = "RCM39A1!",
+					modeler106abFragment = "RCM5A1!",
+					successPathAnalyzerFragment = "AR1682A1!";
 				// Disabling Demo Plugin Check
 				APP.disableDemoPluginCheck();
 				
@@ -806,16 +807,11 @@ if (currentUrl.search(mktoAppDomain) != -1
 					}
 					
 					// Marketing ROI, Funnel Analysis
-					if (currUrlFragment == "RCM39B2"
-					|| currUrlFragment == "RCM39B2!"
-					|| currUrlFragment == "RCM5A1"
-					|| currUrlFragment == "RCM5A1!"
-					|| currUrlFragment == "AR1559A1"
-					|| currUrlFragment == "AR1559A1!"
-					|| currUrlFragment == "AR1544A1"
-					|| currUrlFragment == "AR1544A1!"
-					|| currUrlFragment == "AR1682A1"
-					|| currUrlFragment == "AR1682A1!") {
+					if (currUrlFragment == oppInfluenceAnalyzerFragment
+					|| currUrlFragment == programAnalyzerFragment
+					|| currUrlFragment == modeler106Fragment
+					|| currUrlFragment == modeler106abFragment
+					|| currUrlFragment == successPathAnalyzerFragment) {
 						console.log("Marketo App > Location: Analytics");
 								
 						APP.injectAnalyzerNavBar();
@@ -936,6 +932,7 @@ if (currentUrl.search(mktoAppDomain) != -1
                 window.onhashchange = function() {
 					console.log("Window: Hash Changed");
 					
+					currentUrl = window.location.href;
 					// Getting the URL fragment, the part after the #
 					currUrlFragment = Mkt3.DL.getDlToken();
 					
@@ -966,14 +963,11 @@ if (currentUrl.search(mktoAppDomain) != -1
 						}
 						
 						// Marketing ROI, Funnel Analysis
-						if (currUrlFragment == "RCM39B2"
-						|| currUrlFragment == "RCM39B2!"
-						|| currUrlFragment == "RCM5A1"
-						|| currUrlFragment == "RCM5A1!"
-						|| currUrlFragment == "AR1559A1"
-						|| currUrlFragment == "AR1559A1!"
-						|| currUrlFragment == "AR1682A1"
-						|| currUrlFragment == "AR1682A1!") {
+						if (currUrlFragment == oppInfluenceAnalyzerFragment
+						|| currUrlFragment == programAnalyzerFragment
+						|| currUrlFragment == modeler106Fragment
+						|| currUrlFragment == modeler106abFragment
+						|| currUrlFragment == successPathAnalyzerFragment) {
 							console.log("Marketo App > Location: Analytics");
 								
 							APP.injectAnalyzerNavBar();

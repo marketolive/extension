@@ -119,6 +119,8 @@ var port = chrome.runtime.connect({
 });
 
 port.onMessage.addListener(function(message, sender) {
+	console.log("Content > Setting: Cookie");
+	
     user_pod = message.greeting;
     setCookie('userPod', user_pod, 365, 'marketolive.com', false);
     setCookie('userPod', user_pod, 365, 'marketo.com', false);
@@ -132,14 +134,22 @@ window.onload = function() {
 	&& currentUrl.search(mktoWizard) == -1) {
 		console.log("Content > Location: Marketo App");
 		
-        window.mkto_live_plugin_state = true;
+		window.mkto_live_plugin_state = true;
+		var oppInfluenceAnalyzerFragment = "AR1559A1!",
+			programAnalyzerFragment = "AR1544A1!",
+			modeler106Fragment = "RCM39A1!",
+			modeler106abFragment = "RCM5A1!",
+			successPathAnalyzerFragment = "AR1682A1!";
+		
         loadScript(POD_SCRIPT_LOCATION);
         loadScript(APP_SCRIPT_LOCATION);
 		loadScript(DASHBOARD_SCRIPT_LOCATION);
 		
-		if (currentUrl.search(mktoAppDomain + "/#RCM39A1") != -1
-		|| currentUrl.search(mktoAppDomain + "/#RCM5A1!") != -1
-		|| currentUrl.search(mktoAppDomain + "/#AR1559A1") != -1) {
+		if (currentUrl.search(mktoAppDomain + "/#" + oppInfluenceAnalyzerFragment) != -1
+		|| currentUrl.search(mktoAppDomain + "/#" + programAnalyzerFragment) != -1
+		|| currentUrl.search(mktoAppDomain + "/#" + modeler106Fragment) != -1
+		|| currentUrl.search(mktoAppDomain + "/#" + modeler106abFragment) != -1
+		|| currentUrl.search(mktoAppDomain + "/#" + successPathAnalyzerFragment) != -1) {
 			console.log("Content > Location: Analyzers");
 		
 			Analyzer.prototype.showAnalyzer();
@@ -158,7 +168,7 @@ window.onload = function() {
         
 		var color = getCookie('color');
 		if (color) {
-			chrome.runtime.sendMessage({action: "colorVal", color : color}, function(response) {});
+			chrome.runtime.sendMessage({action: "colorVal", color : color}, function(response) {console.log("response = " + response);});
 		}
         loadScript(POD_SCRIPT_LOCATION);
         loadScript(LIVE_SCRIPT_LOCATION);

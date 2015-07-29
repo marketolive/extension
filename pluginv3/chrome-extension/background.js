@@ -141,10 +141,16 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 			name : "color",
 			value : request.color,
 			domain : ".marketodesigner.com"
-		}
-		chrome.cookies.set(cookieColor, function() {});
+		},
+			cookieColorMarketoLive = {
+			url : "http://marketolive.com/*",
+			name : "color",
+			value : request.color,
+			domain : ".marketolive.com"
+		};
+		chrome.cookies.set(cookieColor, function() {console.log("blah");});
 		data = {"color" : request.color};
-		chrome.storage.sync.set(data, function() {});
+		//chrome.storage.sync.set(data, function() {});
     }
 });
 
