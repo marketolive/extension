@@ -102,13 +102,16 @@ function submitCompany(data) {
 chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
 	if (changeInfo.status == "complete") {
 		chrome.storage.sync.get(["company"] ["editPrivileges"], function(storage) {
-			var cookieCompany = {
+			var editPriv = storage.editPrivileges;
+            if (typeof(editPriv) == "undefined") {
+				editPriv = "true";
+			}
+            var cookieCompany = {
 				url : "http://www.marketodesigner.com/*",
 				name : "company",
 				value : storage.company,
 				domain : ".marketodesigner.com"
 			},
-				editPriv = storage.editPrivileges,
 				cookiePrivMarketo = {
 					url : "http://login.marketo.com/*",
 					name : "priv",
@@ -121,11 +124,9 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
 					value : editPriv,
 					domain : ".marketodesigner.com"
 				};
-			if (typeof(editPriv) == "undefined") {
-				editPriv = true;
-			}
-			chrome.cookies.set(cookiePrivMarketo, function() {});
-			chrome.cookies.set(cookiePrivDesigner, function() {});
+			
+			chrome.cookies.set(cookiePrivMarketo, function() {console.log("Background > Priv Cookie Set for Marketo");});
+			chrome.cookies.set(cookiePrivDesigner, function() {console.log("Background > Priv Cookie Set for Designer");});
 			chrome.cookies.set(cookieCompany, function() {});
 			chrome.tabs.query({url : "*://marketolive.com/*"}, function(tabs) {
 				chrome.tabs.sendMessage(tabs[0].id, {company: storage.company, action: "company"}, function(response) {});
