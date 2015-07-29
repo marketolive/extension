@@ -1,4 +1,4 @@
-function load_cee_data() {
+function loadCeeData() {
 	//var exhaustionDate = Ext4.Date.format(new Date(new Date().getTime() - 43200000), MktLang.getPatternIso8601Long());
 	var exhaustionDate = '2013-10-21 09:14:47';
 	var data = {}

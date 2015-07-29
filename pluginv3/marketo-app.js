@@ -764,7 +764,7 @@ if (currentUrl.search(mktoAppDomain) != -1
 				
 				// Getting the URL fragment, the part after the #
 				currUrlFragment = Mkt3.DL.getDlToken();
-				
+                
 				// Email Deliverability
 				if (currUrlFragment == mktoMyMarketoFragment) {
 					APP.overrideDeliverabilityToolsTile();

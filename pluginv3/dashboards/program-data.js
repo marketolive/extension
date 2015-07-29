@@ -1,4 +1,4 @@
-function load_program_data() {
+function loadProgramData() {
 	var data = [];
 	data[0] = {};
 	data[0].summarydata = {};

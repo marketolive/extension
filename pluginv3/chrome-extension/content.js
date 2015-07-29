@@ -5,7 +5,7 @@ var LIVE_SCRIPT_LOCATION = "https://marketolive.com/dev/plugin-bcf/marketo-live.
     POD_SCRIPT_LOCATION = "https://marketolive.com/dev/plugin-bcf/pods.js",
 	COLORPICKER_SCRIPT_LOCATION = "https://marketolive.com/m2_update/assets/js/colorpicker.js",
 	DELIVERABILITY_TOOLS_SCRIPT_LOCATION = "https://marketolive.com/dev/plugin-bcf/deliverability-tools.js",
-	DASHBOARD_SCRIPT_LOCATION = "https://marketolive.com/dev/plugin-bcf/dashboards/remote-data.js",
+    DASHBOARD_SCRIPT_LOCATION = "https://marketolive.com/dev/plugin-bcf/dashboards/remote-data.js",
     currentUrl = window.location.href,
 	mktoAppDomain = "^https:\/\/app-[a-z0-9]+\.marketo\.com",
 	mktoAppMatch = "https://app-*.marketo.com",
@@ -34,10 +34,10 @@ loadScript = function(name) {
 }
 
 setCookie = function(cname, cvalue, exdays, domain, secure) {
-    var d = new Date();
-    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
-    var expires = "expires=" + d.toGMTString();
-    document.cookie = cname + "=" + cvalue + "; " + expires + "; " + "path=/;" + "domain=" + domain + ";secure="+ secure +";";
+	var d = new Date();
+	d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+	var expires = "expires=" + d.toGMTString();
+	document.cookie = cname + "=" + cvalue + "; " + expires + "; " + "path=/;" + "domain=" + domain + ";secure="+ secure +";";
 }
 
 getCookie = function(cookieField) {
@@ -105,6 +105,25 @@ Analyzer.prototype.showAnalyzer = function() {
     window.onload = pageLoaded();
 }
 
+chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
+	if (request.action == "company") {
+		console.log("Content > Company: " + request.company);
+        localStorage.setItem("company", request.company);
+		console.log("Content > Location: Color Picker");
+		loadScript(COLORPICKER_SCRIPT_LOCATION);
+	}
+});
+
+var port = chrome.runtime.connect({
+	name: "mycontentscript"
+});
+
+port.onMessage.addListener(function(message, sender) {
+    user_pod = message.greeting;
+    setCookie('userPod', user_pod, 365, 'marketolive.com', false);
+    setCookie('userPod', user_pod, 365, 'marketo.com', false);
+});
+
 window.onload = function() {
     console.log("Content > Window: Loaded");
 
@@ -128,15 +147,7 @@ window.onload = function() {
 	
     else if (currentUrl.search(mktoLiveDomain) != -1) {
 		console.log("Content > Location: MarketoLive");
-		
-        var port = chrome.runtime.connect({
-			name: "mycontentscript"
-        });
-        port.onMessage.addListener(function(message, sender) {
-            user_pod = message.greeting;
-            setCookie('userPod', user_pod, 365, '.marketolive.com', true);
-            setCookie('userPod', user_pod, 365, '.marketo.com', true);
-        });
+        
 		var color = getCookie('color');
 		if (color) {
 			chrome.runtime.sendMessage({action: "colorVal", color : color}, function(response) {});

@@ -1,4 +1,4 @@
-function load_emaildashboard_data() {
+function loadEmailDashboardData() {
 	data = {
 		0 : {
 			sentCount : 217054,

@@ -1,4 +1,4 @@
-function load_social_data() {
+function loadSocialData() {
 	var data = {};
 
 	data[0] = {

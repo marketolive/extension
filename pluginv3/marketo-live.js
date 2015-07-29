@@ -16,9 +16,9 @@ console.log("Marketo Live > Running");
 
 var currentUrl = window.location.href,
 	mktoLiveDomain = "^https:\/\/marketolive.com",
-	mktoLiveMatch = "https://marketolive.com/*";
-
-var LIVE = LIVE || {};
+	mktoLiveMatch = "https://marketolive.com/*",
+    
+    LIVE = LIVE || {};
 
 /**************************************************************************************
 *
@@ -74,8 +74,11 @@ LIVE.insertDeepLinks = function(pod) {
  *
  **************************************************************************************/
 
-LIVE.displayLoginMessage = function() {
-    // TODO
+LIVE.displayLoginMessage = function () {
+    $("#modal-background")[0].style.display = "block";
+    $("#secret-passage").click(function() {
+        $("#modal-background")[0].style.display = "none";
+    });
 }
 
 /**************************************************************************************
@@ -86,7 +89,7 @@ LIVE.displayLoginMessage = function() {
 
 window.onload = function() {
     console.log("Marketo Live > Loaded: Window");
-	
+    
     var podString = PODS.getCookie("userPod");
     if (!podString) {
         LIVE.displayLoginMessage();

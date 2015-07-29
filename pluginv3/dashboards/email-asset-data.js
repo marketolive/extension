@@ -1,4 +1,4 @@
-function load_emailasset_data() {
+function loadEmailAssetData() {
 	/* start of data section */
 	var data = {
 		0 : {
