@@ -180,11 +180,17 @@ function checkForValidUrl(tabId, changeInfo, tab) {
 			var cookie_pod_value = id,
 				user_pod_value = cookie_pod_value.split('.'),
 				user_pod = user_pod_value[0].split(':');
-			chrome.runtime.onConnect.addListener(function (port) {
-				port.postMessage({
-					greeting: user_pod[1]
-				});
-			});
+            
+            console.log(user_pod);
+            if (user_pod[1].search("app-sjp") != -1
+            || user_pod[1].search("app-ab07") != -1
+            || user_pod[1].search("app-ab08") != -1) {
+                chrome.runtime.onConnect.addListener(function (port) {
+                    port.postMessage({
+                        greeting: user_pod[1]
+                    });
+                });
+            }
 		});
     }
 }
