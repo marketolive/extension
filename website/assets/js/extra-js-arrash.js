@@ -362,8 +362,8 @@ $( document ).ready(function() {
 		$('.phone-buttons-container').css('display','inline-block');
 		var logo = getCookie('logo');
 		var company = getCookie('company');
-		var company  = company.substring(0, company.indexOf('.'));
-		if(company != null){
+		if(company != null && company != "turner"){
+			var company  = company.substring(0, company.indexOf('.'));
 			document.getElementById('push-name-name').innerHTML = company;
 			document.getElementById('turner-tie-logo').src = logo;
 		}
