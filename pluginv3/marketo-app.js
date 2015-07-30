@@ -499,8 +499,8 @@ APP.injectAnalyzerNavBar = function() {
 					});
 				}
 			}
+			window.clearInterval(isPodsLoaded);
 		}
-		window.clearInterval(isPodsLoaded);
 	}, 0);
 }
 

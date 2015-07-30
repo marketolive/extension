@@ -100,7 +100,7 @@ var isPodsLoaded = window.setInterval(function() {
         if (currentUrl.search(mktoLiveDomain) != -1) {
             LIVE.insertDeepLinks(pod);
         }
+		window.clearInterval(isPodsLoaded);
     }
-    window.clearInterval(isPodsLoaded);
 }, 0);
 
