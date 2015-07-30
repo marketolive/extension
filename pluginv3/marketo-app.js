@@ -716,8 +716,11 @@ if (currentUrl.search(mktoAppDomain) != -1
 					
 					// Disabling Demo Plugin Check
 					APP.disableDemoPluginCheck();
-					window.clearInterval(isMktPage);
-					return;
+					
+					if (APP.getCookie("priv") != "false") {
+						window.clearInterval(isMktPage);
+						return;
+					}
 				}
 				
 				var currUrlFragment,
