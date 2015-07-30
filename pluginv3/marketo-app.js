@@ -586,7 +586,7 @@ APP.enableEditorSaving = function() {
 /**************************************************************************************
  *  
  *  This function disables saving for the Editors (emails, forms, push notifications, 
- *  and social apps).
+ *  and social apps) and the Nurture Streams.
  *
  *  @Author Brian Fisher
  *
@@ -594,8 +594,8 @@ APP.enableEditorSaving = function() {
  *
  **************************************************************************************/
 
-APP.disableEditorSaving = function() {
-	console.log("Marketo App > Disabling: Saving for Editors");
+APP.disableSaving = function() {
+	console.log("Marketo App > Disabling: Saving for Editors & Nurture Streams");
 	
 	Mkt3.data.Store.prototype.sync = function() {};
 	Ext4.data.Model.prototype.destroy = function() {};
@@ -760,6 +760,11 @@ if (currentUrl.search(mktoAppDomain) != -1
 						}
 					}
 					
+					// Intelligent Nurturing
+					if (currUrlFragment.search("^NP") != -1) {
+						APP.disableSaving();
+					}
+					
 					// Marketing ROI, Funnel Analysis
 					if (currUrlFragment == oppInfluenceAnalyzerFragment
 					|| currUrlFragment == programAnalyzerFragment
@@ -868,10 +873,10 @@ if (currentUrl.search(mktoAppDomain) != -1
                                                         currAssetZoneId = record.get('zoneId');
 														console.log("Marketo App > currAssetZoneId = " + currAssetZoneId);
                                                         if (currAssetZoneId  == 1) {
-                                                            APP.disableEditorSaving();
+                                                            APP.disableSaving();
                                                         }
 														else if (APP.getCookie("priv") != "true") {
-															APP.disableEditorSaving();
+															APP.disableSaving();
 														}
                                                     }
                                                 );
