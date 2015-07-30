@@ -469,91 +469,39 @@ APP.limitNurturePrograms = function() {
  **************************************************************************************/
 
 APP.injectAnalyzerNavBar = function() {
-    console.log("Marketo App > Injecting: Analyzer Navigation Bar");
-	
-	if (typeof(pod) == "undefined") {
-		pod = new PODS.Pod(PODS.getCookie("userPod"));
-	}
+	var isPodsLoaded = window.setInterval(function() {
+		if (typeof(PODS) !== "undefined") {
+			console.log("Marketo App > Injecting: Analyzer Navigation Bar");
+			
+			if (typeof(pod) == "undefined") {
+				pod = new PODS.Pod(PODS.getCookie("userPod"));
+			}
 
-	for (var y = 0; y < pod.valueSet.length; y++) {
-		if (currentUrl == pod.valueSet[y].url) {
-			console.log("Marketo App > Updating: CSS for Analyzer Navigation Bar");
-	
-			$j = jQuery.noConflict();
-			var currPosition = '#' + pod.valueSet[y].position;
-			$j(currPosition).parent().css('display', 'block');
-			$j(currPosition).parent().siblings().css('display', 'none');
-			$j(currPosition).removeClass('analyzer-button').addClass('analyzer-title');
-			$j(currPosition).siblings().removeClass('analyzer-title').addClass('analyzer-button');
-			$j("#modeler,#success-path-analyzer,#opportunity-influence-analyzer,#program-analyzer").bind("click", function(e) {
-				console.log("Marketo App > Identifying: Current Analyzer");
-				
-				//Updates the currPosition based on the div selected
-				for (var x = 0; x < pod.valueSet.length; x++) {
-					if (e.target.id == pod.valueSet[x].position)
-						currPosition = x;
+			for (var y = 0; y < pod.valueSet.length; y++) {
+				if (currentUrl == pod.valueSet[y].url) {
+					console.log("Marketo App > Updating: CSS for Analyzer Navigation Bar");
+			
+					$j = jQuery.noConflict();
+					var currPosition = '#' + pod.valueSet[y].position;
+					$j(currPosition).parent().css('display', 'block');
+					$j(currPosition).parent().siblings().css('display', 'none');
+					$j(currPosition).removeClass('analyzer-button').addClass('analyzer-title');
+					$j(currPosition).siblings().removeClass('analyzer-title').addClass('analyzer-button');
+					$j("#modeler,#success-path-analyzer,#opportunity-influence-analyzer,#program-analyzer").bind("click", function(e) {
+						console.log("Marketo App > Identifying: Current Analyzer");
+						
+						//Updates the currPosition based on the div selected
+						for (var x = 0; x < pod.valueSet.length; x++) {
+							if (e.target.id == pod.valueSet[x].position)
+								currPosition = x;
+						}
+						window.location = pod.valueSet[currPosition].url;
+					});
 				}
-				window.location = pod.valueSet[currPosition].url;
-			});
+			}
 		}
-	}
-}
-
-/**************************************************************************************
- *
- *  This function will update all the CSS around the div that is selected in the 
- *  container via jquery functions to get the parent and the siblings related to the 
- *  current position and the parent
- *
- *  @Author Arrash
- *
- *  @function
- *
- *  @param {Object} pod - The object containing the user's pod.
- *  @param {Integer} position - The current URL position.
- *
- *  @namespace currPosition
- *
- **************************************************************************************/
-
-APP.updateCSS = function(pod, position) {
-	console.log("Marketo App > Updating: CSS for Analyzer Navigation Bar");
-	
-    $j = jQuery.noConflict();
-    var currPosition = '#' + position;
-    $j(currPosition).parent().css('display', 'block');
-    $j(currPosition).parent().siblings().css('display', 'none');
-    $j(currPosition).removeClass('analyzer-button').addClass('analyzer-title');
-    $j(currPosition).siblings().removeClass('analyzer-title').addClass('analyzer-button');
-    $j("#modeler,#success-path-analyzer,#opportunity-influence-analyzer,#program-analyzer").bind("click", function(e) {
-        APP.identifyAnalyzer(e.target, pod);
-    });
-}
-
-/**************************************************************************************
- *
- *  This function listens for the user clicking on a specific div in the template, then 
- *  directs them to the correct URL.
- *
- *  @Author Arrash
- *
- *  @function
- *
- *  @param {DOM} element - The element that was clicked on the Analyzer Navigation Bar.
- *  @param {Object) pod - The object containing the user's pod.
- *
- **************************************************************************************/
-
-APP.identifyAnalyzer = function(element, pod) {
-	console.log("Marketo App > Identifying: Current Analyzer");
-	
-    var currPosition;
-    //Updates the currPosition based on the div selected
-    for (var x = 0; x < pod.valueSet.length; x++) {
-        if (element.id == pod.valueSet[x].position)
-            currPosition = x;
-    }
-    window.location = pod.valueSet[currPosition].url;
+		window.clearInterval(isPodsLoaded);
+	}, 0);
 }
 
 /**************************************************************************************
@@ -768,8 +716,14 @@ if (currentUrl.search(mktoAppDomain) != -1
 					
 					// Disabling Demo Plugin Check
 					APP.disableDemoPluginCheck();
-					window.clearInterval(isMktPage);
-					return;
+					
+					if (APP.getCookie("priv") != "false") {
+						window.clearInterval(isMktPage);
+						return;
+					}
+					else {
+						console.log("Marketo App > User: Admin is now a normal user");
+					}
 				}
 				
 				var currUrlFragment,
@@ -861,15 +815,33 @@ if (currentUrl.search(mktoAppDomain) != -1
 				else if (currUrlFragment.search("^" + mktoLandingPageDesignerFragment) != -1) {
 					console.log("Marketo App > Location: Landing Page Designer");
 					
+					var customCompanyLandingPage106Fragment = "LPE11381",
+						customCompanyLandingPagePreview106Fragment = "LPP11381",
+						customCompanyLandingPage106aFragment = "LPE10672",
+						customCompanyLandingPagePreview106aFragment = "LPP10672",
+						customCompanyLandingPage106bFragment = "LPE10768",
+						customCompanyLandingPagePreview106bFragment = "LPP10768";
 					// Disabling System Error Message for sync conflicts
 					APP.disableSystemErrorMessage();
 					
 					// Overlay Landing Page Designer w/ company logo and color
 					switch (currUrlFragment) {
-						case "LPE11381":
+						case customCompanyLandingPage106Fragment:
 							APP.overlayLandingPageDesigner();
 							break;
-						case "LPP11381":
+						case customCompanyLandingPagePreview106Fragment:
+							APP.overlayLandingPageDesigner();
+							break;
+						case customCompanyLandingPage106aFragment:
+							APP.overlayLandingPageDesigner();
+							break;
+						case customCompanyLandingPagePreview106aFragment:
+							APP.overlayLandingPageDesigner();
+							break;
+						case customCompanyLandingPage106bFragment:
+							APP.overlayLandingPageDesigner();
+							break;
+						case customCompanyLandingPagePreview106bFragment:
 							APP.overlayLandingPageDesigner();
 							break;
 						default:
@@ -884,6 +856,9 @@ if (currentUrl.search(mktoAppDomain) != -1
 					
 					// DIY Design (Emails, Forms, Push Notifications, Social Apps)
 					var currAssetZoneId,
+						customCompanyEmail106Fragment = "EME15464",
+						customCompanyEmail106aFragment = "EME14240",
+						customCompanyEmail106bFragment = "EME13924",
                         loadParameters = {
                                             filters: [{property: 'id', value: Mkt3.DL.dl.compId}],
                                             async: false,
@@ -901,14 +876,20 @@ if (currentUrl.search(mktoAppDomain) != -1
                                                     }
                                                 );
                                             }
-                                         }
+                                         };
                             
 					switch (Mkt3.DL.dl.dlCompCode) {
 						case mktoEmailDesignerFragment:
 							Ext4.getStore('Email').load(loadParameters);
 							// Overlay Email Designer w/ Company Logo and Color
 							switch (currUrlFragment) {
-								case "EME15464":
+								case customCompanyEmail106Fragment:
+									APP.overlayEmailDesigner();
+									break;
+								case customCompanyEmail106aFragment:
+									APP.overlayEmailDesigner();
+									break;
+								case customCompanyEmail106bFragment:
 									APP.overlayEmailDesigner();
 									break;
 								default:
