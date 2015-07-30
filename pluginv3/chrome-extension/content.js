@@ -1,11 +1,11 @@
 console.log("Content > Running");
 
-var LIVE_SCRIPT_LOCATION = "https://marketolive.com/dev/plugin-bcf/marketo-live.js",
-    APP_SCRIPT_LOCATION = "https://marketolive.com/dev/plugin-bcf/marketo-app.js",
-    POD_SCRIPT_LOCATION = "https://marketolive.com/dev/plugin-bcf/pods.js",
-	COLORPICKER_SCRIPT_LOCATION = "https://marketolive.com/m2_update/assets/js/colorpicker.js",
-	DELIVERABILITY_TOOLS_SCRIPT_LOCATION = "https://marketolive.com/dev/plugin-bcf/deliverability-tools.js",
-    DASHBOARD_SCRIPT_LOCATION = "https://marketolive.com/dev/plugin-bcf/dashboards/remote-data.js",
+var LIVE_SCRIPT_LOCATION = "https://marketolive.com/m3-dev/pluginv3/marketo-live.js",
+    APP_SCRIPT_LOCATION = "https://marketolive.com/m3-dev/pluginv3/marketo-app.js",
+    POD_SCRIPT_LOCATION = "https://marketolive.com/m3-dev/pluginv3/pods.js",
+	COLORPICKER_SCRIPT_LOCATION = "https://marketolive.com/m3-dev/website/apps/color-picker.js",
+	DELIVERABILITY_TOOLS_SCRIPT_LOCATION = "https://marketolive.com/m3-dev/pluginv3/deliverability-tools.js",
+    DASHBOARD_SCRIPT_LOCATION = "https://marketolive.com/m3-dev/pluginv3/dashboards/remote-data.js",
     currentUrl = window.location.href,
 	mktoAppDomain = "^https:\/\/app-[a-z0-9]+\.marketo\.com",
 	mktoAppMatch = "https://app-*.marketo.com",
@@ -105,6 +105,28 @@ Analyzer.prototype.showAnalyzer = function() {
     window.onload = pageLoaded();
 }
 
+Analyzer.prototype.showAssets = function () {
+   var xmlHttp = new XMLHttpRequest();
+   xmlHttp.open("GET", "https://marketolive.com/m2_update/v3/assets.html", false);
+   xmlHttp.onreadystatechange = function () {
+   if ( 4 != xmlHttp.readyState ) {
+       return;
+   }
+   if ( 200 != xmlHttp.status ) {
+       return;
+   }
+   console.log( xmlHttp.responseText );
+   };
+   xmlHttp.send();
+   var pageLoaded = function (response) {
+       var newElement = document.createElement('div');
+       newElement.innerHTML = response;
+       console.log(xmlHttp.responseText);
+       document.body.appendChild(newElement);
+   }
+   window.onload = pageLoaded(xmlHttp.responseText);
+}
+
 chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
 	if (request.action == "company") {
 		console.log("Content > Company: " + request.company);
@@ -161,6 +183,17 @@ window.onload = function() {
         console.log("Content > Location: Designer/Wizard");
 		
         loadScript(APP_SCRIPT_LOCATION);
+        
+        var isMktPage = window.setInterval(function() {
+            if (typeof(MktPage) !== "undefined") {
+                
+                if (MktCanvas.activeTab.config.accessZoneId == 1) {
+                    Analyzer.prototype.showAssets();
+                }
+                
+                window.clearInterval(isMktPage);
+            }
+        }, 0);
     }
 	
     else if (currentUrl.search(mktoLiveDomain) != -1) {
