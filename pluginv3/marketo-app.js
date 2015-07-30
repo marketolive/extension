@@ -37,9 +37,9 @@ var currentUrl = window.location.href,
 	mktoMobilePushNotificationWizardFragment = "MPNE",
 	mktoSocialAppWizardFragment = "SOAE",
     isMktoLiveInstance = false,
-	pod;
+	pod,
 
-var APP = APP || {};
+    APP = APP || {};
 
 /**************************************************************************************
  *  
@@ -617,7 +617,7 @@ APP.overlayEmailDesigner = function() {
 	
 	var company = APP.getCookie('company'),
 	color = APP.getCookie('color'),
-	logo = "http://marketolive.com/m2_update/assets/img/turner-tech-white.png";
+	logo = "http://marketolive.com/m3-dev/website/assets/img/turner-tech-white.png";
 	
 	if (company != "turner") {
 		console.log("Marketo App > Overlaying: Turner");
@@ -662,7 +662,7 @@ APP.overlayLandingPageDesigner = function() {
 	var company = APP.getCookie('company'),
 	color = APP.getCookie('color'),
 	companyName = "turner",
-	logo = "http://marketolive.com/m2_update/assets/img/turner-tech-green.png";
+	logo = "http://marketolive.com/m3-dev/website/assets/img/turner-tech-green.png";
 	if (company != null) {
 		logo = "https://logo.clearbit.com/" + company;
 		companyName = company.substring(0, company.indexOf("."));
