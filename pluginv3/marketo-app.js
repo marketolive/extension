@@ -507,7 +507,7 @@ APP.injectAnalyzerNavBar = function() {
 /**************************************************************************************
  *  
  *  This function enables saving for the Editors (emails, forms, push notifications, 
- *  and social apps).
+ *  and social apps) and Nurture Streams.
  *
  *  @Author Brian Fisher
  *
@@ -515,8 +515,8 @@ APP.injectAnalyzerNavBar = function() {
  *
  **************************************************************************************/
 
-APP.enableEditorSaving = function() {
-	console.log("Marketo App > Enabling: Saving for Editors");
+APP.enableSaving = function() {
+	console.log("Marketo App > Enabling: Saving for Editors & Nurture Streams");
 	
 	Mkt3.data.Store.prototype.sync = function() {
 		if (this.autoSyncSuspended) {
@@ -586,7 +586,7 @@ APP.enableEditorSaving = function() {
 /**************************************************************************************
  *  
  *  This function disables saving for the Editors (emails, forms, push notifications, 
- *  and social apps).
+ *  and social apps) and the Nurture Streams.
  *
  *  @Author Brian Fisher
  *
@@ -594,8 +594,8 @@ APP.enableEditorSaving = function() {
  *
  **************************************************************************************/
 
-APP.disableEditorSaving = function() {
-	console.log("Marketo App > Disabling: Saving for Editors");
+APP.disableSaving = function() {
+	console.log("Marketo App > Disabling: Saving for Editors & Nurture Streams");
 	
 	Mkt3.data.Store.prototype.sync = function() {};
 	Ext4.data.Model.prototype.destroy = function() {};
@@ -757,6 +757,9 @@ if (currentUrl.search(mktoAppDomain) != -1
 							// Powerful Automation
 							APP.disableSmartCampaignSaving();
 							APP.enableSmartCampaignCanvas();
+							
+							// Intelligent Nurturing
+							APP.disableSaving();
 						}
 					}
 					
@@ -868,10 +871,10 @@ if (currentUrl.search(mktoAppDomain) != -1
                                                         currAssetZoneId = record.get('zoneId');
 														console.log("Marketo App > currAssetZoneId = " + currAssetZoneId);
                                                         if (currAssetZoneId  == 1) {
-                                                            APP.disableEditorSaving();
+                                                            APP.disableSaving();
                                                         }
 														else if (APP.getCookie("priv") != "true") {
-															APP.disableEditorSaving();
+															APP.disableSaving();
 														}
                                                     }
                                                 );
@@ -932,13 +935,17 @@ if (currentUrl.search(mktoAppDomain) != -1
 							// Powerful Automation
 							APP.disableSmartCampaignSaving();
 							APP.enableSmartCampaignCanvas();
+							
+							// Intelligent Nurturing
+							APP.disableSaving();
 							prevWorkspaceId = currWorkspaceId;
 						}
 						
 						else {
-							// Enable Smart Campaign Saving for their Workspace
+							// Enable Smart Campaign & Nurture Stream Saving for their Workspace
 							if (APP.getCookie("priv") != "false") {
 								APP.enableSmartCampaignSaving();
+								APP.enableSaving();
 							}
 							prevWorkspaceId = currWorkspaceId;
 						}
