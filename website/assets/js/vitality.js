@@ -99,23 +99,7 @@ $('body').scrollspy({
 // Portfolio Filtering Scripts & Hover Effect
 $(function() {
     var filterList = {
-        init: function() {
-
-            // MixItUp plugin
-            // http://mixitup.io
-            $('#portfoliolist').mixitup({
-                targetSelector: '.portfolio',
-                filterSelector: '.filter',
-                effects: ['fade'],
-                easing: 'snap',
-                // call the hover effect
-                onMixEnd: filterList.hoverEffect()
-            });
-
-        },
-
         hoverEffect: function() {
-
             // Simple parallax effect
             $('#portfoliolist .portfolio').hover(
                 function() {
@@ -139,8 +123,6 @@ $(function() {
         }
 
     };
-
-    filterList.init();
 });
 
 // Load WOW.js on non-touch devices
