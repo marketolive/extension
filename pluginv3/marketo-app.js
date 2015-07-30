@@ -721,6 +721,9 @@ if (currentUrl.search(mktoAppDomain) != -1
 						window.clearInterval(isMktPage);
 						return;
 					}
+					else {
+						console.log("Marketo App > User: Admin is now a normal user");
+					}
 				}
 				
 				var currUrlFragment,
