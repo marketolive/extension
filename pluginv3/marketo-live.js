@@ -75,6 +75,8 @@ LIVE.insertDeepLinks = function(pod) {
  **************************************************************************************/
 
 LIVE.displayLoginMessage = function () {
+    console.log("Marketo Live > Displaying Modal Window")
+    
     $("#modal-background")[0].style.display = "block";
     $("#secret-passage").click(function() {
         $("#modal-background")[0].style.display = "none";

@@ -184,14 +184,18 @@ window.onload = function() {
 		
         loadScript(APP_SCRIPT_LOCATION);
         
-        var isMktPage = window.setInterval(function() {
-            if (typeof(MktPage) !== "undefined") {
+        var isMkt3 = window.setInterval(function() {
+            console.log("Content > Location: setInterval for Mkt3");
+            if (typeof(Mkt3) !== "undefined") {
                 
-                if (MktCanvas.activeTab.config.accessZoneId == 1) {
+                console.log("Content > Defined: Mkt3");
+                
+                if (Mkt3.DL.dl.compId == 15464) {
+                    console.log("Content > Location: V3 Email in 106");
                     Analyzer.prototype.showAssets();
                 }
                 
-                window.clearInterval(isMktPage);
+                window.clearInterval(isMkt3);
             }
         }, 0);
     }
