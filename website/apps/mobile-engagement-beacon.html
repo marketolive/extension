@@ -20,9 +20,10 @@
     <link href="../assets/css/plugins/magnific-popup.css" rel="stylesheet" type="text/css">
     <link href="../assets/css/plugins/jquery.fs.wallpaper.css" rel="stylesheet" type="text/css">
     <link href="../assets/css/plugins/animate.css" rel="stylesheet" type="text/css">
-    <link href="../assets/css/marketo-live.css" rel="stylesheet" type="text/css">
     <link href="../assets/css/vitality-turquoise.css" rel="stylesheet" type="text/css">
+    <link href="../assets/css/marketo-live.css" rel="stylesheet" type="text/css">
     <link href="../assets/css/get-started.css" rel="stylesheet" type="text/css">
+    <link href="../assets/css/modal-window.css" rel="stylesheet" type="text/css">
     <!-- IE8 support for HTML5 elements and media queries -->
     <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
@@ -33,48 +34,68 @@
 
 <!-- Alternate Body Classes: .modern and .vintage -->
 
-<body id = "mme" class="mme-bkg body-background">
-  <div class = "open-sidebar-main-container">
-    <div class = "close-sidebar-container">
-      <div id = "open-sidebar">
-        >
-      </div>
-    </div>
-  </div>
-  <div class = "sidebar-container">
-    <div class = "sidebar-inner-container">
-      <div class = "close-sidebar-container">
-        <div id = "close-sidebar">
-          <
+<body id="mme" class="mme-bkg body-background">
+
+    <div id="modal-background" style="display: none">
+        <div id="modal-window">
+            <div id="modal-top-bar">
+                <img id="mkto-ball" src="https://marketolive.com/m2/assets/img/marketoball.png">
+                <img id="mkto-live-logo" src="https://marketolive.com/m2/assets/img/marketo-live-image-purp.png">
+            </div>
+            <div id="modal-content">
+                <h1>It looks like you haven't logged into Market<u id="secret-passage">o</u> in a while.</h1>
+                <h2>Please login here: </h2>
+                <a href="https://login.marketo.com" class="clickable" target="_blank">
+                    <div class="button">Login to Marketo</div>
+                </a>
+                <h2>And then refresh this page: </h2>
+                <a href="https://marketolive.com" class="clickable" target="_self">
+                    <div class="button">Refresh</div>
+                </a>
+            </div>
         </div>
-      </div>
-      <p class = "sidebar-title" style= "border-bottom: 1px solid #808080;">
-        Mobile Engagement
-      </p>
-      <p class = "sidebar-title" style = "padding-top: 20px;">
-        Doctor on Demand
-      </p>
-      <div style = "padding-left: 10px;">
-        <p class = "sidebar" id = "push-notification">
-          Push Notification
-        </p>     
-      </div>
-      <p class = "sidebar-title" style = "padding-top: 20px;">
-        Beacon
-      </p>
-      <div style = "padding-left: 10px;">
-        <p class = "sidebar" id = "in-mall">
-          In Mall
-        </p>
-        <p class = "sidebar" id = "in-store">
-          In Store
-        </p> 
-        <p class = "sidebar" id = "at-product">
-          At product
-        </p> 
-      </div>
     </div>
-  </div>
+
+    <div class="open-sidebar-main-container">
+        <div class="close-sidebar-container">
+            <div id="open-sidebar">
+                >
+            </div>
+        </div>
+    </div>
+    <div class="sidebar-container">
+        <div class="sidebar-inner-container">
+            <div class="close-sidebar-container">
+                <div id="close-sidebar">
+                </div>
+            </div>
+            <p class="sidebar-title" style="border-bottom: 1px solid #808080;">
+                Mobile Engagement
+            </p>
+            <p class="sidebar-title" style="padding-top: 20px;">
+                Doctor on Demand
+            </p>
+            <div style="padding-left: 10px;">
+                <p class="sidebar" id="push-notification">
+                    Push Notification
+                </p>
+            </div>
+            <p class="sidebar-title" style="padding-top: 20px;">
+                Beacon
+            </p>
+            <div style="padding-left: 10px;">
+                <p class="sidebar" id="in-mall">
+                    In Mall
+                </p>
+                <p class="sidebar" id="in-store">
+                    In Store
+                </p>
+                <p class="sidebar" id="at-product">
+                    At product
+                </p>
+            </div>
+        </div>
+    </div>
     <!-- Navigation -->
     <!-- Note: navbar-default and navbar-inverse are both supported with this theme. -->
     <div class="navbar-inverse navbar-fixed-top" style="background-color: #5a54a4;margin-bottom: 0px; padding-top: 0px; padding-bottom: 0px;">
@@ -98,8 +119,8 @@
                         <a href="#page-top"></a>
                     </li>
                     <li>
-                      <a id = "demo-in-marketo" target = "_blank" href = "nothing"><img id="small-nav-img" src="../assets/img/demoinmarketo.png" onmouseover="this.src='../assets/img/demoinmarketo-orange.png'" onmouseout="this.src='../assets/img/demoinmarketo.png'"></a>
-                    </li>  
+                        <a id="demo-in-marketo" target="_blank" href="nothing"><img id="small-nav-img" src="../assets/img/demoinmarketo.png" onmouseover="this.src='../assets/img/demoinmarketo-orange.png'" onmouseout="this.src='../assets/img/demoinmarketo.png'"></a>
+                    </li>
                     <li>
                         <a><img id="small-nav-img" src="../assets/img/business_orange.png" onmouseover="this.src='../assets/img/business_orange.png'" onmouseout="this.src='../assets/img/business_orange.png'">
                         </a>
@@ -118,75 +139,77 @@
             </div>
         </div>
     </div>
-    <div id = "main-phone-container">
-      <div id = "main-inner-phone-container">
-        <div class = "movement-and-description">
-          <div class="mm-width app-description-box-container">
-            <div class="app-description-title">
-              Marketo Mobile Engagement
+    <div id="main-phone-container">
+        <div id="main-inner-phone-container">
+            <div class="movement-and-description">
+                <div class="mm-width app-description-box-container">
+                    <div class="app-description-title">
+                        Marketo Mobile Engagement
+                    </div>
+                    <div id="section-description" class="app-description-body">
+                        With Marketo Mobile Engagement, designing and delivering push notifications and in-app messages is as simple as creating an email.
+                        <br>
+                        <br>
+                    </div>
+                    <br>
+                    <p id="message-title" style="color: #5a54a4">Enter your push here:</p>
+                    <input id="message-body" type="text" class="input-body" />
+                </div>
+                <div class="push-notification-container">
+                    <div class="push-notification" id="push">
+                        Send Push!
+                    </div>
+                </div>
+                <div class="phone-buttons-container">
+                    <div class="phone-button back-button" id="back-phone-button">
+                        < </div>
+                            <div class="phone-button next-button" id="next-phone-button">
+                                >
+                            </div>
+                    </div>
+                </div>
+                <div id="android-container">
+                    <div id="android-background">
+                        <img id="phone" src="../apps/assets/android-portrait.png">
+                    </div>
+                    <div id="android-image-overlay">
+                        <div id="android-time-container">
+                            <div id="android-time">
+                                11:59
+                            </div>
+                            <div id="android-date">
+                                Monday 6 July
+                            </div>
+                        </div>
+                        <img id="image-overlay" src="../assets/img/mme-push-0.jpg">
+                        <div id="push-words-container">
+                            <div id="push-name-container">
+                                <div id="push-name-logo">
+                                    <img id="turner-tie-logo" src="../assets/img/turner-tie-logo.png">
+                                </div>
+                                <div id="push-name-name">
+                                    Turner
+                                </div>
+                                <div id="received-now">
+                                    now
+                                </div>
+                            </div>
+                            <div id="push-words">
+                                Looking for a new style?
+                            </div>
+                        </div>
+                        <div id="push-image">
+                            <img id="image-push" src="../assets/img/mme-push.png">
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div id = "section-description" class="app-description-body">
-              With Marketo Mobile Engagement, designing and delivering push notifications and in-app messages is as simple as creating an email. <br><br>
-            </div>
-            <br><p id = "message-title" style = "color: #5a54a4">Enter your push here:</p>             
-            <input id = "message-body" type = "text" class = "input-body" />
-          </div>
-          <div class="push-notification-container">
-            <div class="push-notification" id="push">
-              Send Push!
-            </div>
-          </div>
-          <div class = "phone-buttons-container">
-            <div class = "phone-button back-button" id = "back-phone-button">
-              <
-            </div>
-            <div class = "phone-button next-button" id = "next-phone-button">
-              >
-            </div>
-          </div> 
         </div>
-        <div id = "android-container">
-          <div id = "android-background">
-            <img id = "phone" src = "../apps/assets/android-portrait.png">
-          </div>
-          <div id = "android-image-overlay">
-            <div id = "android-time-container">
-              <div id = "android-time">
-                11:59
-              </div>
-              <div id = "android-date">
-                Monday 6 July
-              </div>
-            </div>
-            <img id = "image-overlay" src = "../assets/img/mme-push-0.jpg">
-            <div id = "push-words-container">
-              <div id = "push-name-container">
-                <div id = "push-name-logo">
-                  <img id = "turner-tie-logo" src = "../assets/img/turner-tie-logo.png">
-                </div>
-                <div id = "push-name-name">
-                  Turner
-                </div>
-                <div id = "received-now">
-                  now
-                </div>
-              </div>
-              <div id = "push-words">
-                Looking for a new style?
-              </div>
-            </div>
-            <div id = "push-image">
-              <img id = "image-push" src = "../assets/img/mme-push.png">
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
-  </div>
 </body>
 <footer>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
-  <script src="../assets/js/extra-js-arrash.js"></script>
-  <script src="../assets/js/mme.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+    <script src="../assets/js/extra-js-arrash.js"></script>
+    <script src="../assets/js/mme.js"></script>
 </footer>
