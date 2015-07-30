@@ -220,7 +220,7 @@ window.onload = function() {
         var pageLoaded = function() {
             var newElement = document.createElement('div');
             newElement.innerHTML = xmlHttp.responseText;
-            document.getElementById("advanced").appendChild(newElement);
+            document.getElementById("demo-page").appendChild(newElement);
         }
         window.onload = pageLoaded();
     }
