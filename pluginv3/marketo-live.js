@@ -94,7 +94,6 @@ console.log("Marketo Live > Running: Main");
 var podString = PODS.getCookie("userPod");
 if (!podString) {
     LIVE.displayLoginMessage();
-    return;
 }
 
 var pod = new PODS.Pod(podString);
