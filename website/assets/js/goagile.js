@@ -27,7 +27,7 @@ $(window).resize(function() {
     updateHeight('partdeux', '50');
     updateHeight('parttrois', '50');
 });
-$(window).ready(function() {
+$(document).ready(function() {
     var windowHeight = $(window).height();
     //console.log(windowHeight);
     $('#main-body').css({
