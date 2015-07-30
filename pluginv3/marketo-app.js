@@ -469,91 +469,39 @@ APP.limitNurturePrograms = function() {
  **************************************************************************************/
 
 APP.injectAnalyzerNavBar = function() {
-    console.log("Marketo App > Injecting: Analyzer Navigation Bar");
-	
-	if (typeof(pod) == "undefined") {
-		pod = new PODS.Pod(PODS.getCookie("userPod"));
-	}
+	var isPodsLoaded = window.setInterval(function() {
+		if (typeof(PODS) !== "undefined") {
+			console.log("Marketo App > Injecting: Analyzer Navigation Bar");
+			
+			if (typeof(pod) == "undefined") {
+				pod = new PODS.Pod(PODS.getCookie("userPod"));
+			}
 
-	for (var y = 0; y < pod.valueSet.length; y++) {
-		if (currentUrl == pod.valueSet[y].url) {
-			console.log("Marketo App > Updating: CSS for Analyzer Navigation Bar");
-	
-			$j = jQuery.noConflict();
-			var currPosition = '#' + pod.valueSet[y].position;
-			$j(currPosition).parent().css('display', 'block');
-			$j(currPosition).parent().siblings().css('display', 'none');
-			$j(currPosition).removeClass('analyzer-button').addClass('analyzer-title');
-			$j(currPosition).siblings().removeClass('analyzer-title').addClass('analyzer-button');
-			$j("#modeler,#success-path-analyzer,#opportunity-influence-analyzer,#program-analyzer").bind("click", function(e) {
-				console.log("Marketo App > Identifying: Current Analyzer");
-				
-				//Updates the currPosition based on the div selected
-				for (var x = 0; x < pod.valueSet.length; x++) {
-					if (e.target.id == pod.valueSet[x].position)
-						currPosition = x;
+			for (var y = 0; y < pod.valueSet.length; y++) {
+				if (currentUrl == pod.valueSet[y].url) {
+					console.log("Marketo App > Updating: CSS for Analyzer Navigation Bar");
+			
+					$j = jQuery.noConflict();
+					var currPosition = '#' + pod.valueSet[y].position;
+					$j(currPosition).parent().css('display', 'block');
+					$j(currPosition).parent().siblings().css('display', 'none');
+					$j(currPosition).removeClass('analyzer-button').addClass('analyzer-title');
+					$j(currPosition).siblings().removeClass('analyzer-title').addClass('analyzer-button');
+					$j("#modeler,#success-path-analyzer,#opportunity-influence-analyzer,#program-analyzer").bind("click", function(e) {
+						console.log("Marketo App > Identifying: Current Analyzer");
+						
+						//Updates the currPosition based on the div selected
+						for (var x = 0; x < pod.valueSet.length; x++) {
+							if (e.target.id == pod.valueSet[x].position)
+								currPosition = x;
+						}
+						window.location = pod.valueSet[currPosition].url;
+					});
 				}
-				window.location = pod.valueSet[currPosition].url;
-			});
+			}
 		}
-	}
-}
-
-/**************************************************************************************
- *
- *  This function will update all the CSS around the div that is selected in the 
- *  container via jquery functions to get the parent and the siblings related to the 
- *  current position and the parent
- *
- *  @Author Arrash
- *
- *  @function
- *
- *  @param {Object} pod - The object containing the user's pod.
- *  @param {Integer} position - The current URL position.
- *
- *  @namespace currPosition
- *
- **************************************************************************************/
-
-APP.updateCSS = function(pod, position) {
-	console.log("Marketo App > Updating: CSS for Analyzer Navigation Bar");
-	
-    $j = jQuery.noConflict();
-    var currPosition = '#' + position;
-    $j(currPosition).parent().css('display', 'block');
-    $j(currPosition).parent().siblings().css('display', 'none');
-    $j(currPosition).removeClass('analyzer-button').addClass('analyzer-title');
-    $j(currPosition).siblings().removeClass('analyzer-title').addClass('analyzer-button');
-    $j("#modeler,#success-path-analyzer,#opportunity-influence-analyzer,#program-analyzer").bind("click", function(e) {
-        APP.identifyAnalyzer(e.target, pod);
-    });
-}
-
-/**************************************************************************************
- *
- *  This function listens for the user clicking on a specific div in the template, then 
- *  directs them to the correct URL.
- *
- *  @Author Arrash
- *
- *  @function
- *
- *  @param {DOM} element - The element that was clicked on the Analyzer Navigation Bar.
- *  @param {Object) pod - The object containing the user's pod.
- *
- **************************************************************************************/
-
-APP.identifyAnalyzer = function(element, pod) {
-	console.log("Marketo App > Identifying: Current Analyzer");
-	
-    var currPosition;
-    //Updates the currPosition based on the div selected
-    for (var x = 0; x < pod.valueSet.length; x++) {
-        if (element.id == pod.valueSet[x].position)
-            currPosition = x;
-    }
-    window.location = pod.valueSet[currPosition].url;
+		window.clearInterval(isPodsLoaded);
+	}, 0);
 }
 
 /**************************************************************************************
