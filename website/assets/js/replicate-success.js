@@ -14,7 +14,7 @@ $(document).ready(function(){
   var pod = getCookie("userPod");
     console.log("Replicate Success > Reading User Pod: "+pod);
     if (pod) {
-        $("#demo-in-marketo").attr("href", "https://"+pod+".marketo.com/#ME4220D4");
+        $("#demo-in-marketo").attr("href", "https://"+pod+".marketo.com/#ME4220B2");
     }
     else {/*TODO: Add error condition here*/}
   var updateImages = function(){
