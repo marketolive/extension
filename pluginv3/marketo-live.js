@@ -57,6 +57,7 @@ LIVE.insertDeepLinks = function(pod) {
 	
     $(".marketo-live-option").click(function(e) {
         window.open(pod[$(this).context.id]);
+        return;
     });
 }
 
