@@ -3,15 +3,15 @@ $(document).ready(function(){
   setInterval(function(){
     if(document.getElementById('home-main-body-0').style.display == 'block'){    
       $('#home-main-body-0').css('display','none');
-      $('#home-main-body-1').fadeIn(2000,'linear');
+      $('#home-main-body-1').css('display', 'block');
     }
     else if(document.getElementById('home-main-body-1').style.display == 'block'){
       $('#home-main-body-1').css('display','none');
-      $('#home-main-body-2').fadeIn(2000,'linear');
+      $('#home-main-body-2').css('display', 'block');
     }
     else if(document.getElementById('home-main-body-2').style.display == 'block'){
       $('#home-main-body-2').css('display','none');
-      $('#home-main-body-0').fadeIn(2000,'linear');
+      $('#home-main-body-0').css('display', 'block');
     }
     else{
       console.log("nothing");

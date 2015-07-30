@@ -24,6 +24,7 @@ if(reload){
 }
 var colorThief = new ColorThief();
   console.log('passed to colorpicker ', localStorage.company);
+  console.log(companyName);
   if(companyName != "turner"){
     companyNameSmall = companyName.substring(0, companyName.indexOf('.')) + " Logo";
     document.getElementById('company-image-title').innerHTML = companyNameSmall;
