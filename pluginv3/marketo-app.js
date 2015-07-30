@@ -507,7 +507,7 @@ APP.injectAnalyzerNavBar = function() {
 /**************************************************************************************
  *  
  *  This function enables saving for the Editors (emails, forms, push notifications, 
- *  and social apps).
+ *  and social apps) and Nurture Streams.
  *
  *  @Author Brian Fisher
  *
@@ -515,8 +515,8 @@ APP.injectAnalyzerNavBar = function() {
  *
  **************************************************************************************/
 
-APP.enableEditorSaving = function() {
-	console.log("Marketo App > Enabling: Saving for Editors");
+APP.enableSaving = function() {
+	console.log("Marketo App > Enabling: Saving for Editors & Nurture Streams");
 	
 	Mkt3.data.Store.prototype.sync = function() {
 		if (this.autoSyncSuspended) {
@@ -757,12 +757,10 @@ if (currentUrl.search(mktoAppDomain) != -1
 							// Powerful Automation
 							APP.disableSmartCampaignSaving();
 							APP.enableSmartCampaignCanvas();
+							
+							// Intelligent Nurturing
+							APP.disableSaving();
 						}
-					}
-					
-					// Intelligent Nurturing
-					if (currUrlFragment.search("^NP") != -1) {
-						APP.disableSaving();
 					}
 					
 					// Marketing ROI, Funnel Analysis
@@ -937,13 +935,17 @@ if (currentUrl.search(mktoAppDomain) != -1
 							// Powerful Automation
 							APP.disableSmartCampaignSaving();
 							APP.enableSmartCampaignCanvas();
+							
+							// Intelligent Nurturing
+							APP.disableSaving();
 							prevWorkspaceId = currWorkspaceId;
 						}
 						
 						else {
-							// Enable Smart Campaign Saving for their Workspace
+							// Enable Smart Campaign & Nurture Stream Saving for their Workspace
 							if (APP.getCookie("priv") != "false") {
 								APP.enableSmartCampaignSaving();
+								APP.enableSaving();
 							}
 							prevWorkspaceId = currWorkspaceId;
 						}
