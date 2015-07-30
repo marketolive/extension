@@ -23,9 +23,9 @@ $(window).resize(function() {
             'left': '0%'
         });
     }
-    updateHeight('#main-body', '0');
-    updateHeight('#partdeux', '50');
-    updateHeight('#parttrois', '50');
+    updateHeight('main-body', '0');
+    updateHeight('partdeux', '50');
+    updateHeight('parttrois', '50');
 });
 $(window).ready(function() {
     var windowHeight = $(window).height();
@@ -52,9 +52,9 @@ $(window).ready(function() {
             'left': '0%'
         });
     }
-    updateHeight('#main-body');
-    updateHeight('#partdeux');
-    updateHeight('#parttrois');
+    updateHeight('main-body');
+    updateHeight('partdeux');
+    updateHeight('parttrois');
 });
 /*
 var eleDistance = function(ele){
