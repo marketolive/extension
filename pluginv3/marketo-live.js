@@ -56,7 +56,7 @@ LIVE.insertDeepLinks = function(pod) {
 	console.log("Marketo Live > Inserting: Deep Links");
 	
     $(".marketo-live-option").click(function(e) {
-        $(this).href = pod[$(this).context.id]);
+        window.open(pod[$(this).context.id]);
     });
 }
 
