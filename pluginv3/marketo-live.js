@@ -89,19 +89,15 @@ LIVE.displayLoginMessage = function () {
  *
  **************************************************************************************/
 
-window.onload = function() {
-    console.log("Marketo Live > Loaded: Window");
-    
-//    var podString = PODS.getCookie("userPod");
-    var podString = null;
-    alert(!podString);
-    if (!podString) {
-        LIVE.displayLoginMessage();
-        return;
-    }
-    
-    var pod = new PODS.Pod(podString);
-    if (currentUrl.search(mktoLiveDomain) != -1) {
-        LIVE.insertDeepLinks(pod);
-    }
+console.log("Marketo Live > Running: Main");
+
+var podString = PODS.getCookie("userPod");
+if (!podString) {
+    LIVE.displayLoginMessage();
+    return;
+}
+
+var pod = new PODS.Pod(podString);
+if (currentUrl.search(mktoLiveDomain) != -1) {
+    LIVE.insertDeepLinks(pod);
 }
