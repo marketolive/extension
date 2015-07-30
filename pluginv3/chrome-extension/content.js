@@ -215,7 +215,7 @@ window.onload = function() {
 		console.log("Content > Location: RTP Demo");
 		
         var xmlHttp = new XMLHttpRequest();
-        xmlHttp.open("GET", "https://marketolive.com/dev/pluginv3/html/turner-rtp.html", false);
+        xmlHttp.open("GET", "https://marketolive.com/m3-dev/pluginv3/html/turner-rtp.html", false);
         xmlHttp.send(null);
         var pageLoaded = function() {
             var newElement = document.createElement('div');
