@@ -92,7 +92,8 @@ LIVE.displayLoginMessage = function () {
 window.onload = function() {
     console.log("Marketo Live > Loaded: Window");
     
-    var podString = PODS.getCookie("userPod");
+//    var podString = PODS.getCookie("userPod");
+    var podString = null;
     if (!podString) {
         LIVE.displayLoginMessage();
         return;
