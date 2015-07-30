@@ -26,11 +26,11 @@ var LIVE_SCRIPT_LOCATION = "https://marketolive.com/m3-dev/pluginv3/marketo-live
 	setCookie;
 
 loadScript = function(name) {
-	console.log("Content > Loading: Script");
+	console.log("Content > Loading: Script: "+name);
 	
-    var jscript_lib_demo = document.createElement("script");
-    jscript_lib_demo.setAttribute("src", name);
-    document.getElementsByTagName("head")[0].appendChild(jscript_lib_demo);
+    var script = document.createElement("script");
+    script.setAttribute("src", name);
+    document.getElementsByTagName("head")[0].appendChild(script);
 }
 
 setCookie = function(cname, cvalue, exdays, domain, secure) {

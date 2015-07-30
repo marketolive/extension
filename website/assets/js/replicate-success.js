@@ -1,19 +1,22 @@
-$(document).ready(function(){
-  function getCookie(name) {
-    var value = "; " + document.cookie;
-    var parts = value.split("; " + name + "=");
-    if (parts.length == 2) return parts.pop().split(";").shift();
-  }
-  var updateDemoButton = function(){
-    console.log("test1");
-    var pod = getCookie("userPod");
-    console.log(pod);
-    if(pod === 'app-sjp'){
-      $("a[href='nothing']").attr('href', 'https://app-sjp.marketo.com/#SL1094330B2')
-      console.log($('#demo-in-marketo').href);
+var getCookie = function(cookieField) {
+    var name = cookieField + "=",
+        cookies = document.cookie.split(';'),
+        currentCookie;
+    for (var ii = 0; ii < cookies.length; ++ii) {
+        var currentCookie = cookies[ii].trim();
+        if (currentCookie.indexOf(name) == 0)
+            return currentCookie.substring(name.length, currentCookie.length);
     }
-  }
-  updateDemoButton();
+    return null;
+}
+
+$(document).ready(function(){
+  var pod = getCookie("userPod");
+    console.log("Replicate Success > Reading User Pod: "+pod);
+    if (pod) {
+        $("#demo-in-marketo").attr("href", "https://app-"+pod+".marketo.com/#ME4220D4");
+    }
+    else {/*TODO: Add error condition here*/}
   var updateImages = function(){
     var color = getCookie('color');
     var logo = getCookie('logo');
