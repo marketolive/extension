@@ -151,6 +151,7 @@ $(document).ready(function(){
     $('.assets-image').src = "../assets/img/boston.jpg";
     $('.assets-image').css('border','1px solid #5a54a4');
     $('.token-city, .token-location, .token-time, .token-date').css({'color':'#5a54a4', 'font-weight':'bold'});
+      $('#onto-mkto').hide();
   });
   $('#mkto-clone').click(function(){
     $('#mkto-clone').css('display','none');
