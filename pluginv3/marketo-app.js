@@ -861,15 +861,33 @@ if (currentUrl.search(mktoAppDomain) != -1
 				else if (currUrlFragment.search("^" + mktoLandingPageDesignerFragment) != -1) {
 					console.log("Marketo App > Location: Landing Page Designer");
 					
+					var customCompanyLandingPage106Fragment = "LPE11381",
+						customCompanyLandingPagePreview106Fragment = "LPP11381",
+						customCompanyLandingPage106aFragment = "LPE10672",
+						customCompanyLandingPagePreview106aFragment = "LPP10672",
+						customCompanyLandingPage106bFragment = "LPE10768",
+						customCompanyLandingPagePreview106bFragment = "LPP10768";
 					// Disabling System Error Message for sync conflicts
 					APP.disableSystemErrorMessage();
 					
 					// Overlay Landing Page Designer w/ company logo and color
 					switch (currUrlFragment) {
-						case "LPE11381":
+						case customCompanyLandingPage106Fragment:
 							APP.overlayLandingPageDesigner();
 							break;
-						case "LPP11381":
+						case customCompanyLandingPagePreview106Fragment:
+							APP.overlayLandingPageDesigner();
+							break;
+						case customCompanyLandingPage106aFragment:
+							APP.overlayLandingPageDesigner();
+							break;
+						case customCompanyLandingPagePreview106aFragment:
+							APP.overlayLandingPageDesigner();
+							break;
+						case customCompanyLandingPage106bFragment:
+							APP.overlayLandingPageDesigner();
+							break;
+						case customCompanyLandingPagePreview106bFragment:
 							APP.overlayLandingPageDesigner();
 							break;
 						default:
@@ -884,6 +902,9 @@ if (currentUrl.search(mktoAppDomain) != -1
 					
 					// DIY Design (Emails, Forms, Push Notifications, Social Apps)
 					var currAssetZoneId,
+						customCompanyEmail106Fragment = "EME15464",
+						customCompanyEmail106aFragment = "EME14240",
+						customCompanyEmail106bFragment = "EME13924",
                         loadParameters = {
                                             filters: [{property: 'id', value: Mkt3.DL.dl.compId}],
                                             async: false,
@@ -901,14 +922,20 @@ if (currentUrl.search(mktoAppDomain) != -1
                                                     }
                                                 );
                                             }
-                                         }
+                                         };
                             
 					switch (Mkt3.DL.dl.dlCompCode) {
 						case mktoEmailDesignerFragment:
 							Ext4.getStore('Email').load(loadParameters);
 							// Overlay Email Designer w/ Company Logo and Color
 							switch (currUrlFragment) {
-								case "EME15464":
+								case customCompanyEmail106Fragment:
+									APP.overlayEmailDesigner();
+									break;
+								case customCompanyEmail106aFragment:
+									APP.overlayEmailDesigner();
+									break;
+								case customCompanyEmail106bFragment:
 									APP.overlayEmailDesigner();
 									break;
 								default:
