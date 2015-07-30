@@ -94,6 +94,7 @@ window.onload = function() {
     
 //    var podString = PODS.getCookie("userPod");
     var podString = null;
+    alert(!podString);
     if (!podString) {
         LIVE.displayLoginMessage();
         return;
