@@ -20,8 +20,9 @@ $(document).ready(function() {
         case "app-ab08":
             $("#demo-in-marketo").attr("href", "https://" + pod + ".marketo.com/#SC19745B2");
             break;
-    } else {
-        // Add error condition here
+        default:
+            // Add error condition here
+            break;
     }
 
     setInterval(function() {
