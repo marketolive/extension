@@ -751,6 +751,8 @@ if (currentUrl.search(mktoAppDomain) != -1
 				&& currUrlFragment.search("^" + mktoMobilePushNotificationWizardFragment) == -1
 				&& currUrlFragment.search("^" + mktoSocialAppWizardFragment) == -1) {
 					
+                    window.clearInterval(isMktPage);
+
 					// Storing previous Workspace ID
 					if (currUrlFragment != mktoMyMarketoFragment) {
 						prevWorkspaceId = MktCanvas.activeTab.config.accessZoneId;
@@ -814,7 +816,6 @@ if (currentUrl.search(mktoAppDomain) != -1
 					
 					// Disabling New Smart Campaign, New Local Asset, New Folder, and Delete
 					APP.disableProgramActionsMenu();
-                    window.clearInterval(isMktPage);
 				}
 				
 				else if (currUrlFragment.search("^" + mktoLandingPageDesignerFragment) != -1) {
