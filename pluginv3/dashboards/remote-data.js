@@ -3,9 +3,10 @@ var header = document.getElementsByTagName("head")[0],
     socialScript = document.createElement("script"),
     programScript = document.createElement("script"),
     emailDashboardScript = document.createElement("script"),
-    emailAssetScript = document.createElement("script");
+    emailAssetScript = document.createElement("script"),
+    isMktPage;
 
-var isMktPage = window.setInterval(function() {
+isMktPage = window.setInterval(function() {
     if (typeof(MktPage) !== "undefined") {
         console.log("Dashboards > Injecting: Data Scripts");
         
