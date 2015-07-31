@@ -17,6 +17,7 @@ console.log("Marketo Live > Running");
 var currentUrl = window.location.href,
 	mktoLiveDomain = "^https:\/\/marketolive.com",
 	mktoLiveMatch = "https://marketolive.com/*",
+    tilePage = "^/go-agile/[a-zA-Z0-9]\.html",
     
     LIVE = LIVE || {};
 
@@ -98,7 +99,7 @@ var isPodsLoaded = window.setInterval(function() {
         }
 
         var pod = new PODS.Pod(podString);
-        if (currentUrl.search(mktoLiveDomain) != -1) {
+        if (currentUrl.search(tilePage) != -1) {
             LIVE.insertDeepLinks(pod);
         }
 		window.clearInterval(isPodsLoaded);
