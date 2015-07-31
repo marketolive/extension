@@ -711,14 +711,16 @@ if (currentUrl.search(mktoAppDomain) != -1
 			|| userId.search("^admin@mktodemoaccount") != -1)) {
 				console.log("Marketo App > Location: MarketoLive Instance");
 				
-				if (userId.search("^admin@mktodemoaccount") != -1) {
+				if (userId.search("^admin@mktodemoaccount") != -1
+                || userId.search("^mktodemoaccount[a-z0-9]*@marketo.com")) {
 					console.log("Marketo App > User: Admin");
 					
 					// Disabling Demo Plugin Check
 					APP.disableDemoPluginCheck();
-					
+					window.clearInterval(isMktPage);
+                    
 					if (APP.getCookie("priv") != "false") {
-						window.clearInterval(isMktPage);
+//						window.clearInterval(isMktPage);
 						return;
 					}
 					else {
