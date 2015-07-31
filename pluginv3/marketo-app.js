@@ -699,8 +699,10 @@ if (currentUrl.search(mktoAppDomain) != -1
 || currentUrl.search(mktoWizard) != -1) {
     console.log("Marketo App > Location: Marketo URL");
 	
+    var isMktPage;
     window.mkto_live_plugin_state = true;
-    var isMktPage = window.setInterval(function() {
+    
+    isMktPage = window.setInterval(function() {
         if (typeof(MktPage) !== "undefined"
         && MktCanvas.activeTab != null ) {
 			console.log("Marketo App > Location: Marketo Page");
