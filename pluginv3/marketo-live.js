@@ -17,7 +17,7 @@ console.log("Marketo Live > Running");
 var currentUrl = window.location.href,
 	mktoLiveDomain = "^https:\/\/marketolive.com",
 	mktoLiveMatch = "https://marketolive.com/*",
-    tilePage = "^/go-agile/[a-zA-Z0-9]\.html",
+    tilePage = "^.*\/go-agile\/[a-zA-Z0-9]*\.html",
     
     LIVE = LIVE || {};
 
