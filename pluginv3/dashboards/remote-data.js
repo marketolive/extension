@@ -8,8 +8,10 @@ var header = document.getElementsByTagName("head")[0],
 var isMktPage = window.setInterval(function() {
     if (typeof(MktPage) !== "undefined") {
         console.log("Dashboards > Injecting: Data Scripts");
-
+        
         window.clearInterval(isMktPage);
+        
+        console.log("Dashboards > Cleared: Window Interval");
 
         // Load the CEE data
         ceeScript.type = "text/javascript";
