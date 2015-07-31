@@ -16,7 +16,7 @@ var isMktPage = window.setInterval(function() {
             console.log("Dashboards > Loading: CEE Data");
             loadCeeData();
         };
-        ceeScript.src = "https://marketolive.com/dev/plugin-bcf/dashboards/cee-data.js";
+        ceeScript.src = "cee-data.js";
         header.appendChild(ceeScript);
 
         // Load social button data
@@ -26,7 +26,7 @@ var isMktPage = window.setInterval(function() {
             console.log("Dashboards > Loading: Social Data");
             loadSocialData();
         };
-        socialScript.src = "https://marketolive.com/dev/plugin-bcf/dashboards/social-data.js";
+        socialScript.src = "social-data.js";
         header.appendChild(socialScript);
 
         // Load program analyzer data
@@ -36,7 +36,7 @@ var isMktPage = window.setInterval(function() {
             console.log("Dashboards > Loading: Program Data");
             loadProgramData();
         };
-        programScript.src = "https://marketolive.com/dev/plugin-bcf/dashboards/program-data.js";
+        programScript.src = "program-data.js";
         header.appendChild(programScript);
 
         // Load email program dashboard data
@@ -46,7 +46,7 @@ var isMktPage = window.setInterval(function() {
             console.log("Dashboards > Loading: Email Program Data");
             loadEmailDashboardData();
         };
-        emailDashboardScript.src = "https://marketolive.com/dev/plugin-bcf/dashboards/email-dashboard-data.js";
+        emailDashboardScript.src = "email-dashboard-data.js";
         header.appendChild(emailDashboardScript);
 
         // Load email asset dashboard data
@@ -56,7 +56,7 @@ var isMktPage = window.setInterval(function() {
             console.log("Dashboards > Loading: Email Asset Data");
             loadEmailAssetData();
         };
-        emailAssetScript.src = "https://marketolive.com/dev/plugin-bcf/dashboards/email-asset-data.js";
+        emailAssetScript.src = "email-asset-data.js";
         header.appendChild(emailAssetScript);
 
         window.clearInterval(isMktPage);
