@@ -701,7 +701,8 @@ if (currentUrl.search(mktoAppDomain) != -1
 	
     window.mkto_live_plugin_state = true;
     var isMktPage = window.setInterval(function() {
-        if (typeof(MktPage) !== "undefined") {
+        if (typeof(MktPage) !== "undefined"
+        && typeof(MktCanvas) !== "undefined") {
 			console.log("Marketo App > Location: Marketo Page");
 			
             var accountString = MktPage.savedState.custPrefix,
