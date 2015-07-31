@@ -14,6 +14,8 @@ $(document).ready(function() {
     var pod = getCookie("userPod");
     switch (pod) {
         case "app-sjp":
+            $("#demo-in-marketo").attr("href", "https://" + pod + ".marketo.com/#SC21914B2");
+            break;
         case "app-ab07":
             $("#demo-in-marketo").attr("href", "https://" + pod + ".marketo.com/#SC20920B2");
             break;
