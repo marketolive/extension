@@ -720,7 +720,6 @@ if (currentUrl.search(mktoAppDomain) != -1
 					window.clearInterval(isMktPage);
                     
 					if (APP.getCookie("priv") != "false") {
-//						window.clearInterval(isMktPage);
 						return;
 					}
 					else {
