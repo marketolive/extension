@@ -9,6 +9,8 @@ var isMktPage = window.setInterval(function() {
     if (typeof(MktPage) !== "undefined") {
         console.log("Dashboards > Injecting: Data Scripts");
 
+        window.clearInterval(isMktPage);
+
         // Load the CEE data
         ceeScript.type = "text/javascript";
         ceeScript.async = true;
@@ -58,7 +60,5 @@ var isMktPage = window.setInterval(function() {
         };
         emailAssetScript.src = "https://marketolive.com/m3-dev/pluginv3/dashboards/email-asset-data.js";
         header.appendChild(emailAssetScript);
-
-        window.clearInterval(isMktPage);
     }
 }, 0);
