@@ -705,7 +705,6 @@ if (currentUrl.search(mktoAppDomain) != -1
         && MktCanvas.activeTab != null ) {
 			console.log("Marketo App > Location: Marketo Page");
             window.clearInterval(isMktPage);
-            console.log("Marketo App > Cleared: Window Interval");
 
             var accountString = MktPage.savedState.custPrefix,
 				userId = MktPage.userid;
@@ -965,5 +964,5 @@ if (currentUrl.search(mktoAppDomain) != -1
                 }
             }
         }
-    }, 0);
+    }, 500);
 }
