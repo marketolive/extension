@@ -705,6 +705,7 @@ if (currentUrl.search(mktoAppDomain) != -1
         && MktCanvas.activeTab != null ) {
 			console.log("Marketo App > Location: Marketo Page");
             window.clearInterval(isMktPage);
+            console.log("Marketo App > Cleared: Window Interval");
 
             var accountString = MktPage.savedState.custPrefix,
 				userId = MktPage.userid;
@@ -751,9 +752,6 @@ if (currentUrl.search(mktoAppDomain) != -1
 				&& currUrlFragment.search("^" + mktoFormWizardFragment) == -1
 				&& currUrlFragment.search("^" + mktoMobilePushNotificationWizardFragment) == -1
 				&& currUrlFragment.search("^" + mktoSocialAppWizardFragment) == -1) {
-					
-                    //window.clearInterval(isMktPage);
-
 					// Storing previous Workspace ID
 					if (currUrlFragment != mktoMyMarketoFragment) {
 						prevWorkspaceId = MktCanvas.activeTab.config.accessZoneId;
@@ -775,8 +773,6 @@ if (currentUrl.search(mktoAppDomain) != -1
 					|| currUrlFragment == successPathAnalyzerFragment) {
 						console.log("Marketo App > Location: Analytics");
 								
-                        //window.clearInterval(isMktPage);
-
 						APP.injectAnalyzerNavBar();
 					}
 					
@@ -856,7 +852,6 @@ if (currentUrl.search(mktoAppDomain) != -1
 						default:
 							break;
 					}
-//					window.clearInterval(isMktPage);
 					return;
 				}
 				
@@ -969,7 +964,6 @@ if (currentUrl.search(mktoAppDomain) != -1
 					}
                 }
             }
-//            window.clearInterval(isMktPage);
         }
     }, 0);
 }
