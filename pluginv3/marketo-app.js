@@ -699,14 +699,14 @@ if (currentUrl.search(mktoAppDomain) != -1
 || currentUrl.search(mktoWizard) != -1) {
     console.log("Marketo App > Location: Marketo URL");
 	
-    var isMktPage;
+    var isMktPageApp;
     window.mkto_live_plugin_state = true;
     
-    isMktPage = window.setInterval(function() {
+    isMktPageApp = window.setInterval(function() {
         if (typeof(MktPage) !== "undefined"
         && MktCanvas.activeTab != null ) {
 			console.log("Marketo App > Location: Marketo Page");
-            window.clearInterval(isMktPage);
+            window.clearInterval(isMktPageApp);
 
             var accountString = MktPage.savedState.custPrefix,
 				userId = MktPage.userid;

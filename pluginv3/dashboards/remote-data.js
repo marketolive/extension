@@ -4,13 +4,13 @@ var header = document.getElementsByTagName("head")[0],
     programScript = document.createElement("script"),
     emailDashboardScript = document.createElement("script"),
     emailAssetScript = document.createElement("script"),
-    isMktPage;
+    isMktPageDashboards;
 
-isMktPage = window.setInterval(function() {
+isMktPageDashboards = window.setInterval(function() {
     if (typeof(MktPage) !== "undefined") {
         console.log("Dashboards > Injecting: Data Scripts");
         
-        window.clearInterval(isMktPage);
+        window.clearInterval(isMktPageDashboards);
         
         console.log("Dashboards > Cleared: Window Interval");
 
