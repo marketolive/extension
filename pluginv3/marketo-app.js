@@ -704,7 +704,8 @@ if (currentUrl.search(mktoAppDomain) != -1
         if (typeof(MktPage) !== "undefined"
         && MktCanvas.activeTab != null ) {
 			console.log("Marketo App > Location: Marketo Page");
-			
+            window.clearInterval(isMktPage);
+
             var accountString = MktPage.savedState.custPrefix,
 				userId = MktPage.userid;
 			if (accountString.search("^mktodemoaccount") != -1
@@ -718,7 +719,6 @@ if (currentUrl.search(mktoAppDomain) != -1
 					
 					// Disabling Demo Plugin Check
 					APP.disableDemoPluginCheck();
-					window.clearInterval(isMktPage);
                     
 					if (APP.getCookie("priv") != "false") {
 						return;
@@ -752,7 +752,7 @@ if (currentUrl.search(mktoAppDomain) != -1
 				&& currUrlFragment.search("^" + mktoMobilePushNotificationWizardFragment) == -1
 				&& currUrlFragment.search("^" + mktoSocialAppWizardFragment) == -1) {
 					
-                    window.clearInterval(isMktPage);
+                    //window.clearInterval(isMktPage);
 
 					// Storing previous Workspace ID
 					if (currUrlFragment != mktoMyMarketoFragment) {
@@ -775,7 +775,7 @@ if (currentUrl.search(mktoAppDomain) != -1
 					|| currUrlFragment == successPathAnalyzerFragment) {
 						console.log("Marketo App > Location: Analytics");
 								
-                        window.clearInterval(isMktPage);
+                        //window.clearInterval(isMktPage);
 
 						APP.injectAnalyzerNavBar();
 					}
@@ -856,7 +856,7 @@ if (currentUrl.search(mktoAppDomain) != -1
 						default:
 							break;
 					}
-					window.clearInterval(isMktPage);
+//					window.clearInterval(isMktPage);
 					return;
 				}
 				
@@ -969,7 +969,7 @@ if (currentUrl.search(mktoAppDomain) != -1
 					}
                 }
             }
-            window.clearInterval(isMktPage);
+//            window.clearInterval(isMktPage);
         }
     }, 0);
 }
