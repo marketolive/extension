@@ -814,6 +814,7 @@ if (currentUrl.search(mktoAppDomain) != -1
 					
 					// Disabling New Smart Campaign, New Local Asset, New Folder, and Delete
 					APP.disableProgramActionsMenu();
+                    window.clearInterval(isMktPage);
 				}
 				
 				else if (currUrlFragment.search("^" + mktoLandingPageDesignerFragment) != -1) {
