@@ -509,6 +509,7 @@
 	font-size: 18px;
 	text-transform: uppercase;
 	cursor: pointer;
+	margin-left: 100px;
 }
 .home-page-option:hover {
 	-webkit-box-shadow: 1px 1px 20px 0px rgba(253, 113, 57, 0.8);
