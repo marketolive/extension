@@ -774,6 +774,8 @@ if (currentUrl.search(mktoAppDomain) != -1
 					|| currUrlFragment == successPathAnalyzerFragment) {
 						console.log("Marketo App > Location: Analytics");
 								
+                        window.clearInterval(isMktPage);
+
 						APP.injectAnalyzerNavBar();
 					}
 					
