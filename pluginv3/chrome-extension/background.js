@@ -78,10 +78,13 @@ function savePriv(data) {
 			value : editPriv,
 			domain : ".marketodesigner.com"
 		};
-	chrome.cookies.set(cookiePrivMarketo, function() {console.log("Background > Setting: Edit Privileges Cookie for Marketo");});
-	chrome.cookies.set(cookiePrivDesigner, function() {console.log("Background > Setting: Edit Privileges Cookie for Designer");});
+	chrome.cookies.set(cookiePrivMarketo, function() {
+        console.log("Background > Setting: Edit Privileges Cookie for Marketo");
+    });
+	chrome.cookies.set(cookiePrivDesigner, function() {
+        console.log("Background > Setting: Edit Privileges Cookie for Designer");
+    });
 	chrome.storage.sync.set(data, function() {});
-	//////////////////////
 	chrome.tabs.query({url : "*://app-sjp.marketo.com/*"}, function(tabs) {
 		chrome.tabs.reload(tabs[0].id);
 	});
@@ -115,8 +118,12 @@ function submitCompany(data) {
 		value : data.company,
 		domain : ".marketolive.com"
 	};
-	chrome.cookies.set(cookieCompany, function() {});
-	chrome.cookies.set(cookieCompanyMarketoLive, function() {});
+	chrome.cookies.set(cookieCompany, function() {
+        console.log("Background > Setting Marketo Designer Company Cookie "+cookieCompany);
+    });
+	chrome.cookies.set(cookieCompanyMarketoLive, function() {
+        console.log("Background > Setting MarketoLive Company Cookie "+cookieCompanyMarketoLive);
+    });
 	chrome.storage.sync.set(data, function() {});
 }
 
@@ -148,7 +155,9 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 			value : request.color,
 			domain : ".marketolive.com"
 		};
-		chrome.cookies.set(cookieColor, function() {console.log("blah");});
+		chrome.cookies.set(cookieColor, function() {
+            console.log("Background > Setting: Colorscheme Cookie "+cookieColor);
+        });
 		data = {"color" : request.color};
 		//chrome.storage.sync.set(data, function() {});
     }
@@ -185,11 +194,29 @@ function checkForValidUrl(tabId, changeInfo, tab) {
             if (user_pod[1].search("app-sjp") != -1
             || user_pod[1].search("app-ab07") != -1
             || user_pod[1].search("app-ab08") != -1) {
-                chrome.runtime.onConnect.addListener(function (port) {
-                    port.postMessage({
-                        greeting: user_pod[1]
-                    });
+                var cookiePod = {
+                    url : "http://www.marketo.com/*",
+                    name : "userPod",
+                    value : user_pod[1],
+                    domain : ".marketo.com"
+                }, 
+                cookiePodMarketoLive = {
+                    url : "https://marketolive.com/*",
+                    name : "userPod",
+                    value : user_pod[1],
+                    domain : ".marketolive.com"
+                } 
+                chrome.cookies.set(cookiePod, function() {
+                    console.log("Background > Setting: Marketo User Pod Cookie "+user_pod[1]);
                 });
+                chrome.cookies.set(cookiePodMarketoLive, function() {
+                    console.log("Background > Setting: MarketoLive User Pod Cookie "+user_pod[1]);
+                });
+//                chrome.runtime.onConnect.addListener(function (port) {
+//                    port.postMessage({
+//                        greeting: user_pod[1]
+//                    });
+//                });
             }
 		});
     }
