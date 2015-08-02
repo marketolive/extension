@@ -28,8 +28,8 @@ $(document).ready(function() {
             break;
         default:
             console.log("MME > Invalid userPod cookie: " + pod);
-            $("#demo-in-marketo").click(function() {
-                $("#modal-background").attr("style", "display:block");
+            $("#demo-in-marketo").click(function () {
+                $("#modal-background").attr("style", "display: block");
             });
             break;
     }
