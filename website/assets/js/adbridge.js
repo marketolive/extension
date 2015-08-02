@@ -12,16 +12,25 @@ var getCookie = function(cookieField) {
 
 $(document).ready(function() {
     var pod = getCookie("userPod");
-    console.log("AdBridge > Reading User Pod: "+pod);
+    console.log("AdBridge > Reading User Pod: " + pod);
     switch (pod) {
         case "app-sjp":
+            console.log("AdBridge > Deeplinking: 106");
             $("#demo-in-marketo").attr("href", "https://app-sjp.marketo.com/#SL1094330B2");
             break;
         case "app-ab07":
+            console.log("AdBridge > Deeplinking: 106a");
             $("#demo-in-marketo").attr("href", "https://app-ab07.marketo.com/#SL983503B2");
             break;
         case "app-ab08":
+            console.log("AdBridge > Deeplinking: 106b");
             $("#demo-in-marketo").attr("href", "https://app-ab08.marketo.com/#SL978069B2");
+            break;
+        default:
+            console.log("AdBridge > Invalid userPod cookie: " + pod);
+            $("#demo-in-marketo").click(function() {
+                $("#modal-background").attr("display", "block");
+            });
             break;
     }
     setTimeout(function() {
@@ -61,14 +70,6 @@ $(document).ready(function() {
     $("#adbridge-back,#adbridge-next").click(function() {
         console.log(this.id);
         switch (this.id) {
-            /*
-            case 'adbridge-back':
-              if(currentPosition != 0){
-                switch(currentPosition){
-                  case 
-                }
-              }
-            */
             case 'adbridge-next':
                 switch (currentPosition) {
                     case 0:

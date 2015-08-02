@@ -12,41 +12,49 @@ var getCookie = function(cookieField) {
 
 $(document).ready(function() {
     var pod = getCookie("userPod");
+    console.log("MME > Reading User Pod: " + pod);
     switch (pod) {
         case "app-sjp":
+            console.log("MME > Deeplinking: 106");
             $("#demo-in-marketo").attr("href", "https://" + pod + ".marketo.com/#SC21914B2");
             break;
         case "app-ab07":
+            console.log("MME > Deeplinking: 106a");
             $("#demo-in-marketo").attr("href", "https://" + pod + ".marketo.com/#SC20920B2");
             break;
         case "app-ab08":
+            console.log("MME > Deeplinking: 106b");
             $("#demo-in-marketo").attr("href", "https://" + pod + ".marketo.com/#SC19745B2");
             break;
         default:
-            // Add error condition here
+            console.log("MME > Invalid userPod cookie: " + pod);
+            $("#demo-in-marketo").click(function() {
+                $("#modal-background").attr("display", "block");
+            });
             break;
     }
 
     setInterval(function() {
-        var d = new Date();
-        var hour = d.getHours();
-        if (hour > 12)
+        var d = new Date(),
+            hour = d.getHours(),
+            mins = d.getMinutes(),
+            day = d.getDate(),
+            time = hour + ':' + mins,
+            dayNames = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+            monthNames = ["January", "February", "March", "April", "May", "June",
+            "July", "August", "September", "October", "November", "December"],
+            month = monthNames[d.getMonth()],
+            dayOfWeek = dayNames[d.getDay() - 1],
+            date = dayOfWeek + ' ' + day + ' ' + month;
+
+        if (hour > 12) {
             hour = hour - 12;
-        else if (hour == 0)
+        } else if (hour == 0) {
             hour = 12;
-        else {}
-        var mins = d.getMinutes();
-        if (mins < 10)
+        } else {}
+        if (mins < 10) {
             mins = '0' + mins;
-        var day = d.getDate();
-        var time = hour + ':' + mins;
-        var dayNames = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
-        var monthNames = ["January", "February", "March", "April", "May", "June",
-            "July", "August", "September", "October", "November", "December"
-        ];
-        var month = monthNames[d.getMonth()];
-        var dayOfWeek = dayNames[d.getDay() - 1];
-        var date = dayOfWeek + ' ' + day + ' ' + month;
+        }
         document.getElementById('android-time').innerHTML = time;
         document.getElementById('android-date').innerHTML = date;
     }, 200);

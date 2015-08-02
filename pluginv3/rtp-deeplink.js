@@ -10,19 +10,21 @@ var getCookie = function(cookieField) {
     return null;
 }
 var pod = getCookie("userPod");
-console.log(pod);
+console.log("RTP > Reading User Pod: " + pod);
 switch (pod) {
     case "app-sjp":
     case "app-ab07":
-        console.log("Deeplinking to 106 and 106a");
+        console.log("RTP > Deeplinking: 106 and 106a");
         $("#demo-in-marketo").attr("href", "https://sjrtp1.marketo.com/app/editReaction.ext?reactionId=1760");
         break;
     case "app-ab08":
-        console.log("Deeplinking to 106b");
+        console.log("RTP > Deeplinking: 106b");
         $("#demo-in-marketo").attr("href", "https://sjrtp2.marketo.com/app/editReaction.ext?reactionId=886");
         break;
     default:
-        console.log("Invalid userPod cookie: " + pod);
-        // add error condition
+        console.log("RTP > Invalid userPod cookie: " + pod);
+        $("#demo-in-marketo").click(function() {
+            $("#modal-background").attr("display", "block");
+        });
         break;
 }
