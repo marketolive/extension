@@ -4,6 +4,13 @@ Modal Window
 
 ********************************************************************/
 
+/*  This is duplicated from bootstrap specifically for 
+    the turner-rtp.html file */
+h1, h2 {
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
 #modal-background {
     font-family: inherit;
     z-index: 9999;
