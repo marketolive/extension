@@ -29,7 +29,7 @@ $(document).ready(function() {
         default:
             console.log("MME > Invalid userPod cookie: " + pod);
             $("#demo-in-marketo").click(function() {
-                $("#modal-background").attr("display", "block");
+                $("#modal-background").attr("style", "display:block");
             });
             break;
     }
