@@ -26,5 +26,8 @@ switch (pod) {
         $("#demo-in-marketo").click(function() {
             $("#modal-background").attr("style", "display: block");
         });
+        $("#secret-passage").click(function() {
+            $("#modal-background")[0].style.display = "none";
+        });
         break;
 }

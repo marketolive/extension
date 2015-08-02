@@ -12,20 +12,23 @@ var getCookie = function(cookieField) {
 
 $(document).ready(function() {
     var pod = getCookie("userPod");
-        color = getCookie('color'),
+    color = getCookie('color'),
         logo = getCookie('logo'),
         companyName = localStorage.company;
-    
+
     console.log("Replicate Success > Reading User Pod: " + pod);
     if (pod) {
         $("#demo-in-marketo").attr("href", "https://" + pod + ".marketo.com/#ME4220B2");
     } 
     else {
         $("#demo-in-marketo").click(function() {
-            $("#modal-background").attr("display", "block");
+            $("#modal-background").attr("style", "display: block");
+        });
+        $("#secret-passage").click(function() {
+            $("#modal-background")[0].style.display = "none";
         });
     }
-    
+
     if (companyName != "turner") {
         var oldSrc = 'https://marketolive.com/m2_update/assets/img/turner-tech-white.png';
         var newSrc = logo;

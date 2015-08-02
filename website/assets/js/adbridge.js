@@ -29,7 +29,10 @@ $(document).ready(function() {
         default:
             console.log("AdBridge > Invalid userPod cookie: " + pod);
             $("#demo-in-marketo").click(function() {
-                $("#modal-background").attr("display", "block");
+                $("#modal-background").attr("style", "display: block");
+            });
+            $("#secret-passage").click(function() {
+                $("#modal-background")[0].style.display = "none";
             });
             break;
     }
