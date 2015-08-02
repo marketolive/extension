@@ -24,7 +24,7 @@ switch (pod) {
     default:
         console.log("RTP > Invalid userPod cookie: " + pod);
         $("#demo-in-marketo").click(function() {
-            $("#modal-background").attr("display", "block");
+            $("#modal-background").attr("style", "display: block");
         });
         break;
 }
