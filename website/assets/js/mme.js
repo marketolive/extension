@@ -28,8 +28,11 @@ $(document).ready(function() {
             break;
         default:
             console.log("MME > Invalid userPod cookie: " + pod);
-            $("#demo-in-marketo").click(function () {
+            $("#demo-in-marketo").click(function() {
                 $("#modal-background").attr("style", "display: block");
+            });
+            $("#secret-passage").click(function() {
+                $("#modal-background")[0].style.display = "none";
             });
             break;
     }
@@ -41,8 +44,9 @@ $(document).ready(function() {
             day = d.getDate(),
             dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
             monthNames = ["January", "February", "March", "April", "May", "June",
-            "July", "August", "September", "October", "November", "December"],
-            month = monthNames[d.getMonth()-1],
+                "July", "August", "September", "October", "November", "December"
+            ],
+            month = monthNames[d.getMonth() - 1],
             dayOfWeek = dayNames[d.getDay()],
             date = dayOfWeek + ' ' + day + ' ' + month,
             time;
@@ -55,9 +59,9 @@ $(document).ready(function() {
         if (mins < 10) {
             mins = '0' + mins;
         }
-        
+
         time = hour + ':' + mins;
-             
+
         document.getElementById('android-time').innerHTML = time;
         document.getElementById('android-date').innerHTML = date;
     }, 200);
