@@ -47,7 +47,6 @@ $(document).ready(function() {
             date = dayOfWeek + ' ' + day + ' ' + month,
             time;
 
-        console.log("MME > The time is "+hour+":"+mins);
         if (hour > 12) {
             hour = hour - 12;
         } else if (hour == 0) {
