@@ -38,16 +38,22 @@
 <body id="replicate-success" class="adbridge-background">
 
     <!-- This is the modal window that gates users without a cookie -->
-    <div id="modal-background" style="display: none">
+    <div id="modal-background" style="display: block">
         <div id="modal-window">
             <div id="modal-top-bar">
-                <img id="mkto-ball" src="https://marketolive.com/m2/assets/img/marketoball.png">
-                <img id="mkto-live-logo" src="https://marketolive.com/m2/assets/img/marketo-live-image-purp.png">
+                <img id="mkto-ball" src="/assets/img/marketoball.png">
+                <img id="mkto-live-logo" src="/assets/img/marketo-live-image-purp.png">
             </div>
             <div id="modal-content">
                 <!-- The <u> tag is for the secret passageway. Click on the 'o' in 'MarketoLive' to close the modal -->
                 <h1>It looks like you haven't logged into Market<u id="secret-passage">o</u>Live in a while.</h1>
-                <h2>Please login here: </h2>
+
+                <h2>Please make sure you have the plugin installed:</h2>
+                <a href="https://marketoemployee.jiveon.com/community/sales/sc-tools/marketolive" class="clickable" target="_blank">
+                    <div class="button">Download the Plugin</div>
+                </a>
+
+                <h2>Then, please login here: </h2>
                 <a href="https://login.marketo.com" class="clickable" target="_blank">
                     <div class="button">Login to Marketo</div>
                 </a>
