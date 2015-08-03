@@ -18,7 +18,7 @@
     }
 
      .marketo-live-home-intro-content {
-        font-size: 36px;
+      font-size: 36px;
       position: fixed;
       z-index: 4;
       top: 14%;
@@ -30,16 +30,15 @@
       -webkit-transform: translate(-50%,-50%);
       -ms-transform: translate(-50%,-50%);
       transform: translate(-50%,-50%);
-    line-height: 25px;
-    text-transform: uppercase;
-    font-family: Raleway,"Helvetica Neue",Helvetica,Arial,sans-serif;
-    font-weight: 900;
+      line-height: 25px;
+      text-transform: uppercase;
+      font-family: Raleway,"Helvetica Neue",Helvetica,Arial,sans-serif;
+      font-weight: 900;
     }
 
      .marketo-live-home-intro-content-header {
         font-size: 72px;
-        line-height: 40px;
-        margin-top: 150px;
+        margin-top: 70px;
         text-transform: uppercase;
         font-family: Raleway,"Helvetica Neue",Helvetica,Arial,sans-serif;
         font-weight: 400;
