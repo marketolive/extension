@@ -80,22 +80,18 @@ LIVE.displayModalWindow = function() {
  *  Main
  *
  **************************************************************************************/
-var isPodsLoaded = window.setInterval(function() {
-    if (typeof(PODS) !== "undefined") {
-        console.log("MarketoLive > Finished: Waiting for PODS");
-        
-        window.clearInterval(isPodsLoaded);
-        var podString = PODS.getCookie("userPod"),
-            pod = new PODS.Pod(podString);
 
-        if (currentUrl.search(tilePage) != -1) {
-            console.log("MarketoLive > Location: Tile Page");
-            
-            if (!podString) {
-                LIVE.insertDeepLinks(null);
-            } else {
-                LIVE.insertDeepLinks(pod);
-            }
+$(document).ready(function() {
+
+    var podString = PODS.getCookie("userPod"),
+        pod = new PODS.Pod(podString);
+
+    if (currentUrl.search(tilePage) != -1) {
+        if (!podString) {
+            LIVE.insertDeepLinks(null);
+        } 
+        else {
+            LIVE.insertDeepLinks(pod);
         }
     }
-}, 0);
+});
