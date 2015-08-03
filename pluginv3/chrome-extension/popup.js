@@ -63,6 +63,7 @@ window.onload = function() {
 
 	clear.onclick = function() {
 		background.submitCompany(data);
+        document.getElementById('settings-container').style.display = "none";
 	}
 	
 	submit.onclick = function() {
