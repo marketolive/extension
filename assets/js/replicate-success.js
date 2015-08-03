@@ -18,9 +18,11 @@ $(document).ready(function() {
 
     console.log("Replicate Success > Reading User Pod: " + pod);
     if (pod) {
+        console.log("Replicate Success > Deeplinking: 106, 106a, 106b");
         $("#demo-in-marketo").attr("href", "https://" + pod + ".marketo.com/#ME4220B2");
     } 
     else {
+        console.log("Replicate Success > Invalid: No userPod Cookie");
         $("#demo-in-marketo").click(function() {
             $("#modal-background").attr("style", "display: block");
         });

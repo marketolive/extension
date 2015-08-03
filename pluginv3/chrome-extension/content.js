@@ -188,7 +188,6 @@ window.onload = function() {
         var isMkt3 = window.setInterval(function() {
             console.log("Content > Location: setInterval for Mkt3");
             if (typeof(Mkt3) !== "undefined") {
-                
                 console.log("Content > Defined: Mkt3");
                 
                 if (Mkt3.DL.dl.compId == 15464) {
