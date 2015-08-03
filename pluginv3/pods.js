@@ -65,15 +65,15 @@ PODS.Pod = function(id) {
     this.powerfulAutomation = this.appUrl + "#SC14945A1";
     this.actionableInsight = "https://mkto-si.na10.visual.force.com/apex/mkto_si__Dashboard";
     this.marketingROI = this.appUrl + "#AR1559A1!";
-    this.replicateSuccess = "https://marketolive.com/m3-dev/website/apps/replicate-success.html";
+    this.replicateSuccess = "https://marketolive.com/m3-dev/apps/replicate-success.html";
     this.searchOptimization = "https://seo.marketo.com/";
     this.personalization = "http://sjrtp1.marketo.com/demo/";
     this.emailDeliverability = "https://250ok.com/login";
     this.flexibleReporting = this.appUrl + "#AH0A1ZN17";
-    this.marketoMoments = "https://marketolive.com/m3-dev/website/apps/mobile_marketo_moments.html";
-    this.salesInsightMobile = "https://marketolive.com/m3-dev/website/apps/mobile_sales_insight.html";
-    this.mobileEngagement = "https://marketolive.com/m3-dev/website/apps/mobile-engagement-beacon.html";
-    this.adbridge = "https://marketolive.com/m3-dev/website/apps/adbridge.html";
+    this.marketoMoments = "https://marketolive.com/m3-dev/apps/mobile_marketo_moments.html";
+    this.salesInsightMobile = "https://marketolive.com/m3-dev/apps/mobile_sales_insight.html";
+    this.mobileEngagement = "https://marketolive.com/m3-dev/apps/mobile-engagement-beacon.html";
+    this.adbridge = "https://marketolive.com/m3-dev/apps/adbridge.html";
 
     switch (this.id) {
         case "app-sjp":
