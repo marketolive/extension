@@ -209,7 +209,6 @@ window.onload = function() {
 			chrome.runtime.sendMessage({action: "colorVal", color : color}, function(response) {console.log("response = " + response);});
 		}
         loadScript(POD_SCRIPT_LOCATION);
-        loadScript(LIVE_SCRIPT_LOCATION);
     }
 	
     else if (currentUrl.search(rtpDemoDomain) != -1) {

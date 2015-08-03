@@ -159,7 +159,6 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
             console.log("Background > Setting: Colorscheme Cookie "+cookieColor);
         });
 		data = {"color" : request.color};
-		//chrome.storage.sync.set(data, function() {});
     }
 });
 
@@ -212,11 +211,6 @@ function checkForValidUrl(tabId, changeInfo, tab) {
                 chrome.cookies.set(cookiePodMarketoLive, function() {
                     console.log("Background > Setting: MarketoLive User Pod Cookie "+user_pod[1]);
                 });
-//                chrome.runtime.onConnect.addListener(function (port) {
-//                    port.postMessage({
-//                        greeting: user_pod[1]
-//                    });
-//                });
             }
 		});
     }

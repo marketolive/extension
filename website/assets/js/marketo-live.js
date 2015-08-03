@@ -56,10 +56,18 @@ LIVE.displayLoginMessage = function() {
 LIVE.insertDeepLinks = function(pod) {
     console.log("Marketo Live > Inserting: Deep Links");
 
-    $(".marketo-live-option").click(function(e) {
-        window.open(pod[$(this).context.id]);
-        return false;
-    });
+    if (pod == null) {
+        $(".marketo-live-option").click(function(e) {
+            LIVE.displayLoginMessage();
+            return false;
+        });
+    } 
+    else {
+        $(".marketo-live-option").click(function(e) {
+            window.open(pod[$(this).context.id]);
+            return false;
+        });
+    }
 }
 
 /**************************************************************************************
@@ -98,9 +106,8 @@ var isPodsLoaded = window.setInterval(function() {
 
         if (currentUrl.search(tilePage) != -1) {
             if (!podString) {
-                LIVE.displayLoginMessage();
-            } 
-            else {
+                LIVE.insertDeepLinks(null);
+            } else {
                 LIVE.insertDeepLinks(pod);
             }
         }
