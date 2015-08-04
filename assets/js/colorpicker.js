@@ -43,7 +43,7 @@ if (companyName != "turner") {
     img.src = "https://logo.clearbit.com/" + companyName + '?size=200';
 }
 else {
-    img.src = "../assets/img/tuner-tech-green.png";
+    img.src = "../assets/img/turner-tech-green.png";
 }
 // This is set to a hard-coded expire time. Need to fix.
 document.cookie = "logo=" + img.src + "; expires=Thu, 18 Dec 2016 12:00:00 UTC; path=/";
