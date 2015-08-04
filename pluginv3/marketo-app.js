@@ -836,7 +836,8 @@ if (currentUrl.search(mktoAppDomain) != -1
                     // Storing previous Workspace ID
                     if (currUrlFragment != mktoMyMarketoFragment) {
 						var isMktCanvas = window.setInterval(function() {
-							if (typeof(MktCanvas.activeTab) !== "undefined") {
+//							if (typeof(MktCanvas) !== "undefined") {
+							if (MktCanvas.activeTab !== null) {
 								console.log("Marketo App > Location: Marketo Canvas");
 								
 								window.clearInterval(isMktCanvas);
