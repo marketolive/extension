@@ -389,7 +389,7 @@ APP.discardEmailDrafts = function(emIds) {
 
 APP.discardFormPushDrafts = function(assetType, assetIds) {
     var assetStore = Ext4.getStore(assetType),
-		originalExceptionFn = MktMessage.showSystemError,
+		originalExceptionFn = MktMessage.showSystemError;
 		MktMessage.showSystemError = Ext4.emptyFn;
     if (typeof(Mkt3) !== 'undefined') {
         if (!assetStore) {
