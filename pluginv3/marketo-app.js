@@ -143,24 +143,28 @@ APP.enableSmartCampaignSaving = function() {
         var dataPanelMetas;
         if (this.saveQueue.dataPanelMetas) {
             dataPanelMetas = this.saveQueue.dataPanelMetas;
-        } else {
+        }
+		else {
             dataPanelMetas = this._serializeDataPanels();
         }
 
         this.saveQueue.pendingChangesCount = 0;
         this.saveQueue.dataPanelMetas = null;
         this.saveQueue.dataPanelCount = 0;
-
         if (dataPanelMetas === null) {
             return;
         }
 
-        if (dataPanelMetas.length === 0 && this.isFlow) {}
+        if (dataPanelMetas.length === 0
+		&& this.isFlow) {
+		}
 
-        if (this.dpSubtype != DPConst.RUN_ACTION && dataPanelMetas) {
+        if (this.dpSubtype != DPConst.RUN_ACTION
+		&& dataPanelMetas) {
             if (this.lastSave.dataPanelMetas && this.lastSave.dataPanelMetas == dataPanelMetas) {
                 return;
-            } else if (this.lastSave.dataPanelMetasUpdated && this.lastSave.dataPanelMetasUpdated == dataPanelMetas) {
+            }
+			else if (this.lastSave.dataPanelMetasUpdated && this.lastSave.dataPanelMetasUpdated == dataPanelMetas) {
                 return;
             }
         }
@@ -168,9 +172,11 @@ APP.enableSmartCampaignSaving = function() {
         console.debug('Saving ' + this.dpType + ':', MktFormat.formatJsonStr(dataPanelMetas));
         if (DPDEBUG) {
             console.debug('Current Save:', dataPanelMetas);
+			
             if (this.lastSave.dataPanelMetas) {
                 console.debug('Previous Save:', this.lastSave.dataPanelMetas);
             }
+			
             if (this.lastSave.dataPanelMetasUpdated) {
                 console.debug('Previous Update:', this.lastSave.dataPanelMetasUpdated);
             }
@@ -180,7 +186,6 @@ APP.enableSmartCampaignSaving = function() {
         this.lastSave.dataPanelMetas = dataPanelMetas;
         this.saveQueue.blockingSaveInProgress = true;
         this.beforeSaveMessage();
-
         var params = Ext.apply({
             dataPanelMetas: dataPanelMetas,
             accessZoneId: this.accessZoneId
@@ -200,6 +205,7 @@ APP.enableSmartCampaignSaving = function() {
         if (DPDEBUG) {
             console.debug("Saving... ", params);
         }
+		
         MktSession.ajaxRequest(this.saveAction, {
             serializeParms: params,
             onMySuccess: this.saveSuccess.createDelegate(this),
@@ -258,7 +264,8 @@ APP.enableSmartCampaignCanvas = function() {
             this.isSmartlist = true;
             this.Flow = false;
             this.SETTINGS = 'conditions';
-        } else if (this.dpType == 'Flow') {
+        }
+		else if (this.dpType == 'Flow') {
             this.isSmartlist = false;
             this.isFlow = true;
             this.SETTINGS = 'actions';
@@ -272,7 +279,9 @@ APP.enableSmartCampaignCanvas = function() {
             items: this.createManager()
         });
 
-        if (this.dpEditable && this.canvas && this.paletteWidth > 0) {
+        if (this.dpEditable
+		&& this.canvas
+		&& this.paletteWidth > 0) {
             this.canvasWidth = MktCanvas.getWidth();
             var availableWidth = Math.min(this.canvasWidth - 700, this.maxPaletteWidth);
             this.paletteWidth = Math.max(this.paletteWidth, availableWidth);
@@ -379,8 +388,9 @@ APP.discardEmailDrafts = function(emIds) {
  **************************************************************************************/
 
 APP.discardFormPushDrafts = function(assetType, assetIds) {
-    var assetStore = Ext4.getStore(assetType), originalExceptionFn = MktMessage.showSystemError;
-    MktMessage.showSystemError = Ext4.emptyFn;
+    var assetStore = Ext4.getStore(assetType),
+		originalExceptionFn = MktMessage.showSystemError,
+		MktMessage.showSystemError = Ext4.emptyFn;
     if (typeof(Mkt3) !== 'undefined') {
         if (!assetStore) {
                 assetStore = Ext4.create('Mkt3.store.'+assetType, {
@@ -426,7 +436,12 @@ APP.disableProgramActionsMenu = function() {
         previousMenu.apply(this, arguments);
         var mItems = menu.items,
             canvas = MktCanvas.getActiveTab(),
-            disable = attr.accessZoneId == 1 || !attr.accessZoneId && canvas && canvas.config && canvas.config.accessZoneId && canvas.config.accessZoneId == 1,
+            disable = attr.accessZoneId == 1
+					|| !attr.accessZoneId
+					&& canvas
+					&& canvas.config
+					&& canvas.config.accessZoneId
+					&& canvas.config.accessZoneId == 1,
             itemsToDisable = ['createProgramFolder',
                 'convertToArchiveFolder',
                 'convertToCampaignFolder',
@@ -464,7 +479,10 @@ APP.disableProgramActionsMenu = function() {
             menu: MktMaMenu.maMenu(),
             handler: function(button) {
                 var canvas = MktCanvas.getActiveTab(),
-                    disableMenu = canvas && canvas.config && canvas.config.accessZoneId && canvas.config.accessZoneId == 1;
+                    disableMenu = canvas 
+								&& canvas.config
+								&& canvas.config.accessZoneId
+								&& canvas.config.accessZoneId == 1;
                 button.menu.items.each(function(item) {
                     item.setDisabled(disableMenu);
                 });
@@ -513,7 +531,6 @@ APP.limitNurturePrograms = function() {
                 width: 400,
                 closable: true
             });
-            //setTimeout(nutureProgramMessageBox.show, 1000);
             nutureProgramMessageBox.show;
             return false;
         } else {
@@ -691,7 +708,9 @@ APP.overlayEmailDesigner = function() {
             logoSwapCompany = document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("logo-swap-company"),
             logoSwapContainer = document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("logo-swap-container"),
             logoSwapCompanyContainer = document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("logo-swap-company-container");
-        if (logoBkg != null && buttonBkg != null && logoSwapCompany != null) {
+        if (logoBkg != null
+		&& buttonBkg != null
+		&& logoSwapCompany != null) {
             console.log("Marketo App > Overlaying: iframe");
             logoSwapContainer.style.display = "none";
             logoSwapCompanyContainer.style.display = "block";
@@ -732,7 +751,10 @@ APP.overlayLandingPageDesigner = function() {
             backgroundColor = document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("background-color"),
             biggerBackground = document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("bigger-background"),
             subTitle = document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("sub-title");
-        if (lpLogo != null && backgroundColor != null && biggerBackground != null && subTitle != null) {
+        if (lpLogo != null
+		&& backgroundColor != null
+		&& biggerBackground != null
+		&& subTitle != null) {
             console.log("Marketo App > Overlaying: iframe");
 
             lpLogo.src = logo;
@@ -750,21 +772,25 @@ APP.overlayLandingPageDesigner = function() {
  *  
  **************************************************************************************/
 
-if (currentUrl.search(mktoAppDomain) != -1 || currentUrl.search(mktoDesignerDomain) != -1 || currentUrl.search(mktoWizard) != -1) {
+if (currentUrl.search(mktoAppDomain) != -1
+|| currentUrl.search(mktoDesignerDomain) != -1
+|| currentUrl.search(mktoWizard) != -1) {
     console.log("Marketo App > Location: Marketo URL");
 
     var isMktPageApp;
     window.mkto_live_plugin_state = true;
 
     isMktPageApp = window.setInterval(function() {
-        if (typeof(MktPage) !== "undefined" /*&& MktCanvas.activeTab != null*/) { // <---------------------------------------------------------------------------
+        if (typeof(MktPage) !== "undefined") {
             console.log("Marketo App > Location: Marketo Page");
             
             window.clearInterval(isMktPageApp);
 
             var accountString = MktPage.savedState.custPrefix,
                 userId = MktPage.userid;
-            if (accountString.search("^mktodemoaccount") != -1 && (userId.search("\.demo@marketo\.com$") != -1 || userId.search("^admin@mktodemoaccount") != -1)) {
+            if (accountString.search("^mktodemoaccount") != -1
+			&& (userId.search("\.demo@marketo\.com$") != -1
+			|| userId.search("^admin@mktodemoaccount") != -1)) {
                 console.log("Marketo App > Location: MarketoLive Instance");
 
                 if (userId.search("^admin@mktodemoaccount") != -1
@@ -807,19 +833,30 @@ if (currentUrl.search(mktoAppDomain) != -1 || currentUrl.search(mktoDesignerDoma
                 && currUrlFragment.search("^" + mktoSocialAppWizardFragment) == -1) {
                     // Storing previous Workspace ID
                     if (currUrlFragment != mktoMyMarketoFragment) {
-                        prevWorkspaceId = MktCanvas.activeTab.config.accessZoneId;
-                        if (prevWorkspaceId == 1) {
-                            // Powerful Automation
-                            APP.disableSmartCampaignSaving();
-                            APP.enableSmartCampaignCanvas();
+						var isMktCanvas = window.setInterval(function() {
+							if (typeof(MktCanvas) !== "undefined") {
+								console.log("Marketo App > Location: Marketo Canvas");
+								
+								window.clearInterval(isMktCanvas);
+								prevWorkspaceId = MktCanvas.activeTab.config.accessZoneId;
+								if (prevWorkspaceId == 1) {
+									// Powerful Automation
+									APP.disableSmartCampaignSaving();
+									APP.enableSmartCampaignCanvas();
 
-                            // Intelligent Nurturing
-                            APP.disableSaving();
-                        }
-                    }
+									// Intelligent Nurturing
+									APP.disableSaving();
+								}
+							}
+						}, 0);
+					}
 
                     // Marketing ROI, Funnel Analysis
-                    if (currUrlFragment == oppInfluenceAnalyzerFragment || currUrlFragment == programAnalyzerFragment || currUrlFragment == modeler106Fragment || currUrlFragment == modeler106abFragment || currUrlFragment == successPathAnalyzerFragment) {
+                    if (currUrlFragment == oppInfluenceAnalyzerFragment
+					|| currUrlFragment == programAnalyzerFragment
+					|| currUrlFragment == modeler106Fragment
+					|| currUrlFragment == modeler106abFragment
+					|| currUrlFragment == successPathAnalyzerFragment) {
                         console.log("Marketo App > Location: Analytics");
 
                         APP.injectAnalyzerNavBar();
@@ -978,29 +1015,47 @@ if (currentUrl.search(mktoAppDomain) != -1 || currentUrl.search(mktoDesignerDoma
                     // Getting the URL fragment, the part after the #
                     currUrlFragment = Mkt3.DL.getDlToken();
 
-                    if (currUrlFragment.search("^" + mktoEmailDesignerFragment) == -1 && currUrlFragment.search("^" + mktoLandingPageDesignerFragment) == -1 && currUrlFragment.search("^" + mktoFormWizardFragment) == -1 && currUrlFragment.search("^" + mktoMobilePushNotificationWizardFragment) == -1 && currUrlFragment.search("^" + mktoSocialAppWizardFragment) == -1 && currUrlFragment != mktoMyMarketoFragment) {
+                    if (currUrlFragment.search("^" + mktoEmailDesignerFragment) == -1
+					&& currUrlFragment.search("^" + mktoLandingPageDesignerFragment) == -1
+					&& currUrlFragment.search("^" + mktoFormWizardFragment) == -1
+					&& currUrlFragment.search("^" + mktoMobilePushNotificationWizardFragment) == -1
+					&& currUrlFragment.search("^" + mktoSocialAppWizardFragment) == -1
+					&& currUrlFragment != mktoMyMarketoFragment) {
 
-                        var currWorkspaceId = MktCanvas.activeTab.config.accessZoneId;
-                        if (currWorkspaceId == prevWorkspaceId) {} else if (currWorkspaceId == 1) {
-                            // Powerful Automation
-                            APP.disableSmartCampaignSaving();
-                            APP.enableSmartCampaignCanvas();
+                        var isMktCanvasHash = window.setInterval(function() {
+							if (typeof(MktCanvas) !== "undefined") {
+								console.log("Marketo App > Location: Marketo Canvas");
+								
+								window.clearInterval(isMktCanvasHash);
+								var currWorkspaceId = MktCanvas.activeTab.config.accessZoneId;
+								if (currWorkspaceId == prevWorkspaceId) {
+								}
+								else if (currWorkspaceId == 1) {
+									// Powerful Automation
+									APP.disableSmartCampaignSaving();
+									APP.enableSmartCampaignCanvas();
 
-                            // Intelligent Nurturing
-                            APP.disableSaving();
-                            prevWorkspaceId = currWorkspaceId;
-                        } 
-                        else {
-                            // Enable Smart Campaign & Nurture Stream Saving for their Workspace
-                            if (APP.getCookie("priv") != "false") {
-                                APP.enableSmartCampaignSaving();
-                                APP.enableSaving();
-                            }
-                            prevWorkspaceId = currWorkspaceId;
-                        }
+									// Intelligent Nurturing
+									APP.disableSaving();
+									prevWorkspaceId = currWorkspaceId;
+								} 
+								else {
+									// Enable Smart Campaign & Nurture Stream Saving for their Workspace
+									if (APP.getCookie("priv") != "false") {
+										APP.enableSmartCampaignSaving();
+										APP.enableSaving();
+									}
+									prevWorkspaceId = currWorkspaceId;
+								}
+							}
+						}, 0);
 
                         // Marketing ROI, Funnel Analysis
-                        if (currUrlFragment == oppInfluenceAnalyzerFragment || currUrlFragment == programAnalyzerFragment || currUrlFragment == modeler106Fragment || currUrlFragment == modeler106abFragment || currUrlFragment == successPathAnalyzerFragment) {
+                        if (currUrlFragment == oppInfluenceAnalyzerFragment
+						|| currUrlFragment == programAnalyzerFragment
+						|| currUrlFragment == modeler106Fragment
+						|| currUrlFragment == modeler106abFragment
+						|| currUrlFragment == successPathAnalyzerFragment) {
                             console.log("Marketo App > Location: Analytics");
 
                             APP.injectAnalyzerNavBar();
@@ -1009,5 +1064,5 @@ if (currentUrl.search(mktoAppDomain) != -1 || currentUrl.search(mktoDesignerDoma
                 }
             }
         }
-    }, 500);
+    }, 0);
 }
