@@ -241,25 +241,17 @@ $( document ).ready(function() {
 
   $('#marketo-live-home').animate({'top' : '10%'}, 600);
   $('#marketo-live-home-option').animate({'margin-bottom' : '5%'}, 600);
-  
-	var help = document.getElementById('help-link');
-	
-	$("#first-option, #goAgile").click(function(){
-		var userPodCookie = getCookie("userPod");
-		if(userPodCookie == null){
-			var bkg = document.getElementsByClassName('help-cover');
-			var container = document.getElementsByClassName('help-center-container');
-			var centerbox = document.getElementsByClassName('help-center-box');
-			$(centerbox).animate({
-	    	'margin-top': '125px',
-	  		}, 400, function() {
-	  	});
-			$(bkg).css('display','block');
-			$(container).css('display','block');
-		}
-		else{
-			window.location.href = "https://www.marketolive.com/m2/go-agile/business.html";
-		}
+  	
+	$("#help-link").click(function(){
+		var bkg = document.getElementsByClassName('help-cover');
+		var container = document.getElementsByClassName('help-center-container');
+		var centerbox = document.getElementsByClassName('help-center-box');
+		$(centerbox).animate({
+    	'margin-top': '125px',
+  		}, 400, function() {
+  	});
+		$(bkg).css('display','block');
+		$(container).css('display','block');
 	});
 	
 	$('.cancel-help').click(function(){
