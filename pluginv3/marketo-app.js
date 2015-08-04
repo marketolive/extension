@@ -724,8 +724,7 @@ if (currentUrl.search(mktoAppDomain) != -1 || currentUrl.search(mktoDesignerDoma
                 console.log("Marketo App > Location: MarketoLive Instance");
 
                 if (userId.search("^admin@mktodemoaccount") != -1
-                    /*|| userId.search("^mktodemoaccount[a-z0-9]*@marketo.com")*/
-                ) {
+                    /*|| userId.search("^mktodemoaccount[a-z0-9]*@marketo.com")*/) {
                     console.log("Marketo App > User: Admin");
 
                     // Disabling Demo Plugin Check
@@ -757,7 +756,11 @@ if (currentUrl.search(mktoAppDomain) != -1 || currentUrl.search(mktoDesignerDoma
                     APP.overrideDeliverabilityToolsTile();
                 }
 
-                if (currUrlFragment.search("^" + mktoEmailDesignerFragment) == -1 && currUrlFragment.search("^" + mktoLandingPageDesignerFragment) == -1 && currUrlFragment.search("^" + mktoFormWizardFragment) == -1 && currUrlFragment.search("^" + mktoMobilePushNotificationWizardFragment) == -1 && currUrlFragment.search("^" + mktoSocialAppWizardFragment) == -1) {
+                if (currUrlFragment.search("^" + mktoEmailDesignerFragment) == -1 
+                && currUrlFragment.search("^" + mktoLandingPageDesignerFragment) == -1 
+                && currUrlFragment.search("^" + mktoFormWizardFragment) == -1 
+                && currUrlFragment.search("^" + mktoMobilePushNotificationWizardFragment) == -1 
+                && currUrlFragment.search("^" + mktoSocialAppWizardFragment) == -1) {
                     // Storing previous Workspace ID
                     if (currUrlFragment != mktoMyMarketoFragment) {
                         prevWorkspaceId = MktCanvas.activeTab.config.accessZoneId;
@@ -790,7 +793,7 @@ if (currentUrl.search(mktoAppDomain) != -1 || currentUrl.search(mktoDesignerDoma
                             // Responsive Landing Page
                             lpIds["dpageid_11291"] = "dpageid_11291";
                             // Custom Company Email
-                            emIds.append(15464);
+                            emIds.push(15464);
                             break;
                         case "mktodemoaccount106a":
                             // Custom Landing Page
@@ -800,7 +803,7 @@ if (currentUrl.search(mktoAppDomain) != -1 || currentUrl.search(mktoDesignerDoma
                             // Responsive Landing Page
                             lpIds["dpageid_10454"] = "dpageid_10454";
                             // Custom Company Email
-                            emIds.append(14240);
+                            emIds.push(14240);
                             break;
                         case "mktodemoaccount106b":
                             // Custom Landing Page
@@ -809,7 +812,7 @@ if (currentUrl.search(mktoAppDomain) != -1 || currentUrl.search(mktoDesignerDoma
                             lpIds["dpageid_10760"] = "dpageid_10760";
                             // Responsive Landing Page
                             lpIds["dpageid_10762"] = "dpageid_10762";
-                            emIds.append(13924);
+                            emIds.push(13924);
                             break;
                         default:
                             break;
@@ -818,7 +821,7 @@ if (currentUrl.search(mktoAppDomain) != -1 || currentUrl.search(mktoDesignerDoma
                     // DIY Design (Landing Pages)
                     APP.discardLandingPageDrafts(lpIds);
                     // DIY Design (Email)
-                    APP.discardEmailDrafts(lpIds);
+                    APP.discardEmailDrafts(emIds);
 
                     // Limiting Nurture Programs
                     APP.limitNurturePrograms();

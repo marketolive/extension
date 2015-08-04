@@ -107,24 +107,42 @@ Analyzer.prototype.showAnalyzer = function() {
 
 Analyzer.prototype.showAssets = function () {
    var xmlHttp = new XMLHttpRequest();
-   xmlHttp.open("GET", "https://marketolive.com/m2_update/v3/assets.html", false);
+   xmlHttp.open("GET", "https://marketolive.com/m3-dev/v3/assets.html", false);
    xmlHttp.onreadystatechange = function () {
-   if ( 4 != xmlHttp.readyState ) {
-       return;
-   }
-   if ( 200 != xmlHttp.status ) {
-       return;
-   }
-   console.log( xmlHttp.responseText );
+       if ( 4 != xmlHttp.readyState ) {
+           return;
+       }
+       if ( 200 != xmlHttp.status ) {
+           return;
+       }
    };
    xmlHttp.send();
    var pageLoaded = function (response) {
-       var newElement = document.createElement('div');
+       var newElement = document.createElement('div'),
+           pod = getCookie("userPod");
        newElement.innerHTML = response;
-       console.log(xmlHttp.responseText);
-       document.body.appendChild(newElement);
+//       document.body.appendChild(newElement);
+       document.querySelectorAll("body.mktPurple")[0].appendChild(newElement);
    }
    window.onload = pageLoaded(xmlHttp.responseText);
+    
+    switch(pod) {
+        case "app-sjp":
+            document.getElementById("ml-email-link").href = "https://na-sjp.marketodesigner.com/ds?explictHostname=app-sjp.marketo.com#EME9819";
+            document.getElementById("ml-form-link").href = "https://app-sjp.marketo.com/m#FOE2892-DET";
+            document.getElementById("ml-lp-link").href = "https://na-sjp.marketodesigner.com/lpeditor/editor?explictHostname=app-sjp.marketo.com#LPE8703";
+            document.getElementById("ml-push-link").href="https://app-sjp.marketo.com/#PN29A1LA1";
+        case "app-ab07":
+            document.getElementById("ml-email-link").href = "https://na-ab07.marketodesigner.com/ds?explictHostname=app-ab07.marketo.com#EME14240";
+            document.getElementById("ml-form-link").href = "https://app-ab07.marketo.com/m#FOE2532-DET";
+            document.getElementById("ml-lp-link").href = "https://na-ab07.marketodesigner.com/lpeditor/editor?explictHostname=app-ab07.marketo.com#LPE10672";
+            document.getElementById("ml-push-link").href="https://app-ab07.marketo.com/m#MPNE29-SU";
+        case "app-ab08":
+            document.getElementById("ml-email-link").href = "https://na-ab08.marketodesigner.com/ds?explictHostname=app-ab08.marketo.com#EME13924";
+            document.getElementById("ml-form-link").href = "https://app-ab08.marketo.com/m#FOE2472-DET";
+            document.getElementById("ml-lp-link").href = "https://na-ab08.marketodesigner.com/lpeditor/editor?explictHostname=app-ab08.marketo.com#LPE10768";
+            document.getElementById("ml-push-link").href="https://app-ab08.marketo.com/m#MPNE2-SU";
+    }
 }
 
 chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
@@ -138,15 +156,6 @@ chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
 
 var port = chrome.runtime.connect({
 	name: "mycontentscript"
-});
-
-port.onMessage.addListener(function(message, sender) {
-	console.log("Content > Setting: Cookie "+message.greeting);
-	
-    user_pod = message.greeting;
-//    setCookie('userPod', user_pod, 365, 'marketolive.com', false);
-//    setCookie('userPod', user_pod, 365, 'marketo.com', false);
-//    setCookie('userPod', user_pod, 365, 'sjrtp1.marketo.com', false);
 });
 
 window.onload = function() {
@@ -184,20 +193,9 @@ window.onload = function() {
         console.log("Content > Location: Designer/Wizard");
 		
         loadScript(APP_SCRIPT_LOCATION);
-        
-        var isMkt3 = window.setInterval(function() {
-            console.log("Content > Location: setInterval for Mkt3");
-            if (typeof(Mkt3) !== "undefined") {
-                console.log("Content > Defined: Mkt3");
                 
-                if (Mkt3.DL.dl.compId == 15464) {
-                    console.log("Content > Location: V3 Email in 106");
-                    Analyzer.prototype.showAssets();
-                }
-                
-                window.clearInterval(isMkt3);
-            }
-        }, 0);
+        // TODO: Fix this so it isn't static
+        Analyzer.prototype.showAssets();
     }
 	
     else if (currentUrl.search(mktoLiveDomain) != -1) {
@@ -207,7 +205,6 @@ window.onload = function() {
 		if (color) {
 			chrome.runtime.sendMessage({action: "colorVal", color : color}, function(response) {console.log("response = " + response);});
 		}
-//        loadScript(POD_SCRIPT_LOCATION);
     }
 	
     else if (currentUrl.search(rtpDemoDomain) != -1) {
