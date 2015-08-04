@@ -359,7 +359,7 @@ APP.discardEmailDrafts = function(emIds) {
         width: 270,
         closable: false
     });
-    mktEmManager.discardDraft(emArray);
+    mktEmManager.discardDraft(emIds);
     emMessageBox.hide();
 }
 
