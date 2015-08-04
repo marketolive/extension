@@ -365,6 +365,50 @@ APP.discardEmailDrafts = function(emIds) {
 
 /**************************************************************************************
  *  
+ *  This function discards Form or Push Notification drafts
+ *
+ *  @Author Andy Garcia
+ *
+ *  @function
+ *
+ *  @param {String} assetType - The type of asset to discard. Can be "Form" 
+ *                              or "MobilePushNotification"
+ *  @param {int[]} assetIds -   The array of asset ids to discard. These should
+ *                              be in integer form not string.
+ *
+ **************************************************************************************/
+
+APP.discardFormPushDrafts = function(assetType, assetIds) {
+    var assetStore = Ext4.getStore(assetType), originalExceptionFn = MktMessage.showSystemError;
+    MktMessage.showSystemError = Ext4.emptyFn;
+    if (typeof(Mkt3) !== 'undefined') {
+        if (!assetStore) {
+                assetStore = Ext4.create('Mkt3.store.'+assetType, {
+                    storeId : assetType
+                });
+        }
+        assetStore.load({
+            filters : [{
+                property : 'id',
+                value : assetIds
+            }],
+            callback : function(assets) {
+                //debugger;
+                for (var i = 0; i < assets.length; i++) {
+                    var asset = assets[i];
+                    asset.discard(function(success) {
+                        if (success) {
+                            asset.updateNode();
+                        }
+                    }, this);
+                }
+            }
+        });		
+    }
+}
+
+/**************************************************************************************
+ *  
  *  This function disables the Program actions menu items: New Smart Campaign, New 
  *  Local Asset, New Folder, and Delete.
  *
@@ -713,7 +757,7 @@ if (currentUrl.search(mktoAppDomain) != -1 || currentUrl.search(mktoDesignerDoma
     window.mkto_live_plugin_state = true;
 
     isMktPageApp = window.setInterval(function() {
-        if (typeof(MktPage) !== "undefined" && MktCanvas.activeTab != null) {
+        if (typeof(MktPage) !== "undefined" /*&& MktCanvas.activeTab != null*/) { // <---------------------------------------------------------------------------
             console.log("Marketo App > Location: Marketo Page");
             
             window.clearInterval(isMktPageApp);
