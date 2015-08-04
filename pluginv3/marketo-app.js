@@ -388,6 +388,8 @@ APP.discardEmailDrafts = function(emIds) {
  **************************************************************************************/
 
 APP.discardFormPushDrafts = function(assetType, assetIds) {
+    console.log("Marketo App > Discarding: "+assetType+" Drafts");
+    
     var assetStore = Ext4.getStore(assetType),
 		originalExceptionFn = MktMessage.showSystemError;
     MktMessage.showSystemError = Ext4.emptyFn;
@@ -864,7 +866,9 @@ if (currentUrl.search(mktoAppDomain) != -1
 
                     // Setting the asset draft IDs to discard
                     var lpIds = {},
-                        emIds = [];
+                        emIds = [],
+                        formIds = [],
+                        pushIds = [];
                     switch (accountString) {
                         case "mktodemoaccount106":
                             // Custom Landing Page
@@ -874,7 +878,11 @@ if (currentUrl.search(mktoAppDomain) != -1
                             // Responsive Landing Page
                             lpIds["dpageid_11291"] = "dpageid_11291";
                             // Custom Company Email
-                            emIds.push(15464);
+                            emIds.push(15464);  // <---------------------------------------------------- Do we need to discard all of the nurture emails too?
+                            // DIY Design and Replicate Success Forms
+                            formIds.push(2892, 1749, 1900);  
+                            // DIY Design and Mobile Engagement Push Notifications 
+                            pushIds.push(29, 23);               
                             break;
                         case "mktodemoaccount106a":
                             // Custom Landing Page
@@ -885,6 +893,10 @@ if (currentUrl.search(mktoAppDomain) != -1
                             lpIds["dpageid_10454"] = "dpageid_10454";
                             // Custom Company Email
                             emIds.push(14240);
+                            // DIY Design and Replicate Success Forms
+                            formIds.push(2532, 1749, 1900);  
+                            // DIY Design and Mobile Engagement Push Notifications 
+                            pushIds.push(29, 26); 
                             break;
                         case "mktodemoaccount106b":
                             // Custom Landing Page
@@ -894,6 +906,10 @@ if (currentUrl.search(mktoAppDomain) != -1
                             // Responsive Landing Page
                             lpIds["dpageid_10762"] = "dpageid_10762";
                             emIds.push(13924);
+                            // DIY Design and Replicate Success Forms
+                            formIds.push(2472, 1749, 1900);  
+                            // DIY Design and Mobile Engagement Push Notifications 
+                            pushIds.push(2, 1); 
                             break;
                         default:
                             break;
@@ -903,6 +919,10 @@ if (currentUrl.search(mktoAppDomain) != -1
                     APP.discardLandingPageDrafts(lpIds);
                     // DIY Design (Email)
                     APP.discardEmailDrafts(emIds);
+                    // DIY Design (Forms)
+                    APP.discardFormPushDrafts("Form", formIds);
+                    // DIY Design (Push Notifications)
+                    APP.discardFormPushDrafts("MobilePushNotification", pushIds);
 
                     // Limiting Nurture Programs
                     APP.limitNurturePrograms();
@@ -1027,7 +1047,7 @@ if (currentUrl.search(mktoAppDomain) != -1
 								console.log("Marketo App > Location: Marketo Canvas");
 								
 								window.clearInterval(isMktCanvasHash);
-								var currWorkspaceId = MktCanvas.activeTab.config.accessZoneId;
+								var currWorkspaceId = MktCanvas.activeTab.config.accessZoneId; // <------------------------------------------------
 								if (currWorkspaceId == prevWorkspaceId) {
 								}
 								else if (currWorkspaceId == 1) {
