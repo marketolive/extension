@@ -62,7 +62,7 @@ var correct = document.getElementById('correct');
 var incorrect = document.getElementById('incorrect');
 
 correct.onclick = function() {
-    location.href = "../../apps/color-picker.html?reloaded=1";
+    location.href = location+"?reloaded=1";
 }
 incorrect.onclick = function() {
     document.getElementById('first').style.display = "none";
