@@ -123,10 +123,8 @@ Analyzer.prototype.showAssets = function () {
        newElement.innerHTML = response;
 //       document.body.appendChild(newElement);
        document.querySelectorAll("body.mktPurple")[0].appendChild(newElement);
-   }
-   window.onload = pageLoaded(xmlHttp.responseText);
-    
-    switch(pod) {
+       
+       switch(pod) {
         case "app-sjp":
             document.getElementById("ml-email-link").href = "https://na-sjp.marketodesigner.com/ds?explictHostname=app-sjp.marketo.com#EME9819";
             document.getElementById("ml-form-link").href = "https://app-sjp.marketo.com/m#FOE2892-DET";
@@ -142,7 +140,9 @@ Analyzer.prototype.showAssets = function () {
             document.getElementById("ml-form-link").href = "https://app-ab08.marketo.com/m#FOE2472-DET";
             document.getElementById("ml-lp-link").href = "https://na-ab08.marketodesigner.com/lpeditor/editor?explictHostname=app-ab08.marketo.com#LPE10768";
             document.getElementById("ml-push-link").href="https://app-ab08.marketo.com/m#MPNE2-SU";
-    }
+       }
+   }
+   window.onload = pageLoaded(xmlHttp.responseText);
 }
 
 chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {

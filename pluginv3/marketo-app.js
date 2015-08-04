@@ -862,7 +862,7 @@ if (currentUrl.search(mktoAppDomain) != -1
                         APP.injectAnalyzerNavBar();
                     }
 
-                    // Setting the Landing Page draft IDs to discard
+                    // Setting the asset draft IDs to discard
                     var lpIds = {},
                         emIds = [];
                     switch (accountString) {
