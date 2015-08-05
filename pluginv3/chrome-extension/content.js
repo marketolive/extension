@@ -1,12 +1,15 @@
 console.log("Content > Running");
 
-var LIVE_SCRIPT_LOCATION = "https://marketolive.com/m3-dev/pluginv3/marketo-live.js",
-    APP_SCRIPT_LOCATION = "https://marketolive.com/m3-dev/pluginv3/marketo-app.js",
-    POD_SCRIPT_LOCATION = "https://marketolive.com/m3-dev/pluginv3/pods.js",
-	COLORPICKER_SCRIPT_LOCATION = "https://marketolive.com/m3-dev/apps/color-picker.js",
-	DELIVERABILITY_TOOLS_SCRIPT_LOCATION = "https://marketolive.com/m3-dev/pluginv3/deliverability-tools.js",
-    DASHBOARD_SCRIPT_LOCATION = "https://marketolive.com/m3-dev/pluginv3/dashboards/remote-data.js",
-    RTP_DEEPLINK_SCRIPT_LOCATION = "https://marketolive.com/m3-dev/pluginv3/rtp-deeplink.js",
+var URL_PATH = "m3";
+    LIVE_SCRIPT_LOCATION = "https://marketolive.com/"+URL_PATH+"/pluginv3/marketo-live.js",
+    APP_SCRIPT_LOCATION = "https://marketolive.com/"+URL_PATH+"/pluginv3/marketo-app.js",
+    POD_SCRIPT_LOCATION = "https://marketolive.com/"+URL_PATH+"/pluginv3/pods.js",
+	COLORPICKER_SCRIPT_LOCATION = "https://marketolive.com/"+URL_PATH+"/apps/color-picker.js",
+	DELIVERABILITY_TOOLS_SCRIPT_LOCATION = "https://marketolive.com/"+URL_PATH+"/pluginv3/deliverability-tools.js",
+    DASHBOARD_SCRIPT_LOCATION = "https://marketolive.com/"+URL_PATH+"/pluginv3/dashboards/remote-data.js",
+    RTP_DEEPLINK_SCRIPT_LOCATION = "https://marketolive.com/"+URL_PATH+"/pluginv3/rtp-deeplink.js",
+    ASSET_NAV_BAR_LOCATION = "https://marketolive.com/"+URL_PATH+"/v3/assets.html",
+    RTP_NAV_BAR_LOCATION = "https://marketolive.com/"+URL_PATH+"/pluginv3/html/turner-rtp.html",
     currentUrl = window.location.href,
 	mktoAppDomain = "^https:\/\/app-[a-z0-9]+\.marketo\.com",
 	mktoAppMatch = "https://app-*.marketo.com",
@@ -122,7 +125,7 @@ Analyzer.prototype.showAnalyzer = function() {
 
 Analyzer.prototype.showAssets = function() {
    var xmlHttp = new XMLHttpRequest();
-   xmlHttp.open("GET", "https://marketolive.com/m3-dev/v3/assets.html", false);
+   xmlHttp.open("GET", ASSET_NAV_BAR_LOCATION, false);
    xmlHttp.onreadystatechange = function() {
        if (4 != xmlHttp.readyState) {
            return;
@@ -263,7 +266,7 @@ window.onload = function() {
 		console.log("Content > Location: RTP Demo");
 		
         var xmlHttp = new XMLHttpRequest();
-        xmlHttp.open("GET", "https://marketolive.com/m3-dev/pluginv3/html/turner-rtp.html", false);
+        xmlHttp.open("GET", RTP_NAV_BAR_LOCATION, false);
         xmlHttp.send(null);
         var pageLoaded = function() {
             var newElement = document.createElement('div');

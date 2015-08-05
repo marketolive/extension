@@ -27,6 +27,7 @@ var currentUrl = window.location.href,
     mktoDesignerMatch = "https://*.marketodesigner.com/*",
     mktoEmailDesigner = mktoDesignerDomain + "/ds",
     mktoLandingPageDesigner = mktoDesignerDomain + "/lpeditor/",
+    defaultTurnerLogo = "http://marketolive.com/m3/assets/img/turner-tech-green.png";
     mktoWizard = mktoAppDomain + "/m#",
     rtpDemoDomain = "^http:\/\/sjrtp1.marketo.com\/demo\/$|^http:\/\/cloud4.insightera.com\/demo\/$",
     emailDeliverabilityDomain = "^https:\/\/250ok.com/",
@@ -697,7 +698,7 @@ APP.overlayEmailDesigner = function() {
 
     var company = APP.getCookie('company'),
         color = APP.getCookie('color'),
-        logo = "http://marketolive.com/m3-dev/assets/img/turner-tech-green.png";
+        logo = defaultTurnerLogo;
 
     if (company != "turner"
 	&& company != null) {
@@ -743,7 +744,7 @@ APP.overlayLandingPageDesigner = function() {
     var company = APP.getCookie('company'),
         color = APP.getCookie('color'),
         companyName = "turner",
-        logo = "http://marketolive.com/m3-dev/assets/img/turner-tech-green.png";
+        logo = defaultTurnerLogo;
     if (company != null) {
         logo = "https://logo.clearbit.com/" + company;
         companyName = company.substring(0, company.indexOf("."));
