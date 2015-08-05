@@ -22,29 +22,27 @@ if (reload) {
     document.getElementById('second').style.display = "block";
     document.getElementById('second-correct').style.display = "block";
 }
-var colorThief = new ColorThief();
+var colorThief = new ColorThief(),
+	canvas = document.getElementById('image').getContext("2d"),
+	img = new Image();
+	
 console.log('passed to colorpicker ', localStorage.company);
 console.log(companyName);
-if (companyName != "turner") {
+if (companyName != "turner"
+&& companyName != null) {
     companyNameSmall = companyName.substring(0, companyName.indexOf('.')) + " Logo";
     document.getElementById('company-image-title').innerHTML = companyNameSmall;
-}
-console.log("passed updating the company");
-var canvas = document.getElementById('image').getContext("2d");
-var img = new Image();
-img.onload = function() {
-    canvas.drawImage(img, 0, 0);
-//    originalImageData = canvas.getImageData(0, 0, width, height); //chrome will not fail
-}
-
-// TODO: fix the logic on this page to eliminate this redundancy
-if (companyName != "turner") {
-    img.crossOrigin = 'https://logo.clearbit.com/*'; //crossdomain xml file, this is facebook example
+	img.crossOrigin = 'https://logo.clearbit.com/*'; //crossdomain xml file, this is facebook example
     img.src = "https://logo.clearbit.com/" + companyName + '?size=200';
 }
 else {
     img.src = "../assets/img/turner-tech-green.png";
 }
+
+img.onload = function() {
+    canvas.drawImage(img, 0, 0);
+}
+
 // This is set to a hard-coded expire time. Need to fix.
 document.cookie = "logo=" + img.src + "; expires=Thu, 18 Dec 2016 12:00:00 UTC; path=/";
 
