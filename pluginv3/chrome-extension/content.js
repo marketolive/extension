@@ -200,12 +200,7 @@ window.onload = function() {
         console.log("Content > Location: Designer/Wizard");
 		
         loadScript(APP_SCRIPT_LOCATION);
-<<<<<<< HEAD
 		Analyzer.prototype.showAssets();
-=======
-                
-        Analyzer.prototype.showAssets();
->>>>>>> ce0f2b1ecd3339f8ba3a578975f48171cf5d2d96
     }
 	
     else if (currentUrl.search(mktoLiveDomain) != -1) {
