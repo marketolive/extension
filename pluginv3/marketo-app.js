@@ -11,6 +11,7 @@
  *
  **************************************************************************************/
 console.log("Marketo App > Running");
+window.mkto_live_plugin_state = true;
 
 /**************************************************************************************
  *
@@ -782,10 +783,7 @@ if (currentUrl.search(mktoAppDomain) != -1
 || currentUrl.search(mktoWizard) != -1) {
     console.log("Marketo App > Location: Marketo URL");
 
-    var isMktPageApp;
-    window.mkto_live_plugin_state = true;
-
-    isMktPageApp = window.setInterval(function() {
+    var isMktPageApp = window.setInterval(function() {
         if (typeof(MktPage) !== "undefined") {
             console.log("Marketo App > Location: Marketo Page");
             

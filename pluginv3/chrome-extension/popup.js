@@ -64,6 +64,7 @@ window.onload = function() {
 
 	clear.onclick = function() {
 		background.submitCompany(data);
+        background.resetColor();
         document.getElementById('settings-container').style.display = "none";
 	}
 	
