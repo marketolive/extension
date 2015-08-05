@@ -792,7 +792,8 @@ if (currentUrl.search(mktoAppDomain) != -1
                 userId = MktPage.userid;
             if (accountString.search("^mktodemoaccount") != -1
 			&& (userId.search("\.demo@marketo\.com$") != -1
-			|| userId.search("^admin@mktodemoaccount") != -1)) {
+			|| userId.search("^admin@mktodemoaccount") != -1
+            || userId.search("^mktodemoaccount[a-z0-9]*@marketo\.com") != -1)) {
                 console.log("Marketo App > Location: MarketoLive Instance");
 
                 if (userId.search("^admin@mktodemoaccount") != -1
