@@ -135,16 +135,21 @@ Analyzer.prototype.showAssets = function() {
 					document.getElementById("ml-form-link").href = "https://app-sjp.marketo.com/m#FOE2892-DET";
 					document.getElementById("ml-lp-link").href = "https://na-sjp.marketodesigner.com/lpeditor/editor?explictHostname=app-sjp.marketo.com#LPE8703";
 					document.getElementById("ml-push-link").href="https://app-sjp.marketo.com/#PN29A1LA1";
+					break;
 				case "app-ab07":
 					document.getElementById("ml-email-link").href = "https://na-ab07.marketodesigner.com/ds?explictHostname=app-ab07.marketo.com#EME14240";
 					document.getElementById("ml-form-link").href = "https://app-ab07.marketo.com/m#FOE2532-DET";
 					document.getElementById("ml-lp-link").href = "https://na-ab07.marketodesigner.com/lpeditor/editor?explictHostname=app-ab07.marketo.com#LPE10672";
 					document.getElementById("ml-push-link").href="https://app-ab07.marketo.com/m#MPNE29-SU";
+					break;
 				case "app-ab08":
 					document.getElementById("ml-email-link").href = "https://na-ab08.marketodesigner.com/ds?explictHostname=app-ab08.marketo.com#EME13924";
 					document.getElementById("ml-form-link").href = "https://app-ab08.marketo.com/m#FOE2472-DET";
 					document.getElementById("ml-lp-link").href = "https://na-ab08.marketodesigner.com/lpeditor/editor?explictHostname=app-ab08.marketo.com#LPE10768";
 					document.getElementById("ml-push-link").href="https://app-ab08.marketo.com/m#MPNE2-SU";
+					break;
+				default:
+					break;
 				}
 			}
 		pageLoaded(xmlHttp.responseText);
