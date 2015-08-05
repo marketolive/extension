@@ -166,6 +166,6 @@
 #small-nav-img{
         width: 30px;
       }
-#demo-in-markto img:hover {
+#demo-in-markto:hover {
     cursor: pointer;
 }
