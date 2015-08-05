@@ -435,9 +435,69 @@ APP.discardFormPushDrafts = function(assetType, assetIds) {
 APP.disableProgramActionsMenu = function() {
     console.log("Marketo App > Disabling: Program Actions Menu");
 
-    var previousMenu = MktMaMenu.preShowProgramActionsMenu;
+	// Disables the Folder and Smart Campaign > New
+	var prevNewMenu = Mkt.app.MarketingActivities.Toolbar.getNewMenuButton;
+	Mkt.app.MarketingActivities.Toolbar.getNewMenuButton = function() {
+		prevNewMenu.apply(this, arguments);
+		return {
+			text : MktLang.getStr('mktMaMenu.New'),
+			iconCls : 'mkiBooksBlue',
+			xtype : 'mkttbbutton',
+			menu : MktMaMenu.maMenu(),
+			handler : function(button) {
+				var canvas = MktCanvas.getActiveTab(),
+				disableMenu = canvas
+							&& canvas.config
+							&& canvas.config.accessZoneId
+							&& canvas.config.accessZoneId == 1;
+				button.menu.items.each(function(item) {
+					item.setDisabled(disableMenu);
+				});
+			}
+		};
+	}
+	
+	// Disables the Marketing Program, Nurture Program, Event Program, and Email Batch Program > Actions
+	var prevActionsMenu = Mkt.menus.marketingEvent.Toolbar.preShowMarketingProgramActions;
+	Mkt.menus.marketingEvent.Toolbar.preShowMarketingProgramActions = Mkt.menus.marketingEvent.Toolbar.preShowMarketingEventActions = function(menu) {
+		prevActionsMenu.apply(this, arguments);
+		var mItems = menu.items,
+			canvas = MktCanvas.getActiveTab(),
+			disable = canvas
+					&& canvas.config
+					&& canvas.config.accessZoneId
+					&& canvas.config.accessZoneId == 1,
+			itemsToDisable = [
+							"cloneMarketingProgram",//Clone
+							"cloneMarketingEvent",//Clone
+							"cloneNurtureProgram",//Clone
+							"cloneEmailBatchProgram",//Clone
+							"deleteMarketingProgram",//Delete
+							"deleteMarketingEvent",//Delete
+							"deleteNurtureProgram",//Delete
+							"deleteEmailBatchProgram",//Delete
+							"testNurtureProgram",//Test Stream
+							"eventSchedule",//Schedule
+							"entryRescheduleEntries",//Reschedule Entries
+							//"webinarSettings",//Event Settings
+							"sfdcCampaignSync",//Salesforce Campaign Sync
+							"refreshFromWebinarProvider",//Refresh from Webinar Provider
+							//"showImportMemberStatus",//Show Import Status
+							//"showExportMemberStatus"//Show Export Status
+							];
+
+		itemsToDisable.forEach(function(itemToDisable) {
+			var item = mItems.get(itemToDisable);
+			if (item) {
+				item.setDisabled(disable);
+			}
+		});
+	}
+	
+	// Disables the Marketing Program, Nurture Program, Event Program, and Email Batch Program > Right-click
+	var prevRightClickMenu = MktMaMenu.preShowProgramActionsMenu;
     MktMaMenu.preShowProgramActionsMenu = function(menu, attr) {
-        previousMenu.apply(this, arguments);
+        prevRightClickMenu.apply(this, arguments);
         var mItems = menu.items,
             canvas = MktCanvas.getActiveTab(),
             disable = attr.accessZoneId == 1
@@ -446,26 +506,52 @@ APP.disableProgramActionsMenu = function() {
 					&& canvas.config
 					&& canvas.config.accessZoneId
 					&& canvas.config.accessZoneId == 1,
-            itemsToDisable = ['createProgramFolder',
-                'convertToArchiveFolder',
-                'convertToCampaignFolder',
-                'shareProgramFolder',
-                'renameProgramFolder',
-                'deleteProgramFolder',
-                'newSmartCampaign',
-                'scActivate',
-                'scArchive',
-                //'scClone',
-                'scAbort',
-                'scAbort',
-                'scMove',
-                'deleteMarketingEvent',
-                'createNewMarketingProgram',
-                'newLocalAsset',
-                'deleteMarketingProgram',
-                'deleteNurtureProgram',
-                'deleteEmailBatchProgram'
-            ];
+            itemsToDisable = [							
+							//"navigateToNurtureTracks",//View Streams
+							//"navigateToCFSmartCamp",//View Smart Campaigns
+							//"navigateToLocalAssets",//View Assets
+							//"navigateToProgramSmartList",//View Smart List
+							//"navigateToEventSettings",//View Setup
+							//"navigateToCFTokens",//View My Tokens
+							//"navigateToEventMembers",//View Members
+							//"navigateToCFResults",//View Results
+							//"navigateToSmartCampaign",//View Campaign
+							//"navigateToSmartList",//View Smart List
+							//"navigateToFlow",//View Flow
+							//"navigateToSchedule",//View Schedule
+							//"navigateToResults",//View Results
+							//"navigateToCampaignMembers",//View Campaign Members
+							"newSmartCampaign",//New Smart Campaign
+							"newLocalAsset",//New Local Asset
+							"createNewMarketingProgram", //New Program
+							"createProgramFolder",//New Folder
+							"renameProgramFolder",//Rename Folder
+							"deleteProgramFolder",//Delete Folder
+							"convertToArchiveFolder",//Convert To Archive Folder
+							"convertToCampaignFolder",//Convert To Campaign Folder
+							"scClone",//Clone
+							"cloneMarketingProgram",//Clone
+							"cloneMarketingEvent",//Clone
+							"cloneNurtureProgram",//Clone
+							"cloneEmailBatchProgram",//Clone
+							"scArchive",//Delete
+							"deleteMarketingProgram",//Delete
+							"deleteMarketingEvent",//Delete
+							"deleteNurtureProgram",//Delete
+							"deleteEmailBatchProgram",//Delete
+							"scMove",//Move
+							"scActivate",//Activate
+							"scAbort",//Abort Campaign
+							"scClearPalette",//Clear Palette Cache
+							"scClearSmartList",//Clear Smart List
+							"scClearFlow",//Clear Flow
+							"shareProgramFolder",//Share Folder
+							//"addToFavorites",//Add to Favorites
+							//"removeFromFavorites",//Remove from Favorites
+							"progGenerateRef",//Build Campaign References
+							"checkForCorruptEmails"//Check For Corrupt Emails
+							];
+							
         itemsToDisable.forEach(function(itemToDisable) {
             var item = mItems.get(itemToDisable);
             if (item) {
@@ -474,25 +560,52 @@ APP.disableProgramActionsMenu = function() {
         });
         return menu;
     }
-
-    Mkt.app.MarketingActivities.Toolbar.getNewEventMenuButton = function() {
-        return {
-            text: MktLang.getStr('mktMaMenu.New'),
-            iconCls: 'mkiBooksBlue',
-            xtype: 'mkttbbutton',
-            menu: MktMaMenu.maMenu(),
-            handler: function(button) {
-                var canvas = MktCanvas.getActiveTab(),
-                    disableMenu = canvas 
-								&& canvas.config
-								&& canvas.config.accessZoneId
-								&& canvas.config.accessZoneId == 1;
-                button.menu.items.each(function(item) {
-                    item.setDisabled(disableMenu);
-                });
-            }
-        };
-    }
+	
+	var prevEmailRightClickMenu = MktDsMenu.preShowEmailMenu;
+	MktDsMenu.preShowEmailMenu = function(menu, attr) {
+		prevEmailRightClickMenu.apply(this, arguments);
+		var mItems = menu.items,
+		canvas = MktCanvas.getActiveTab(),
+		disable = attr.accessZoneId == 1
+				|| !attr.accessZoneId
+				&& canvas
+				&& canvas.config
+				&& canvas.config.accessZoneId
+				&& canvas.config.accessZoneId == 1,
+				itemsToDisable = [								
+								//"emailEdit",//Edit Draft
+								//"emailPreview",//Preview
+								"emailApprove",//Approve
+								"emailUnapprove",//Unapprove
+								//"emailDownloadHtml",//Download HTML
+								//"emailSendTest",//Send Sample
+								"emailClone",//Clone
+								"emailDelete",//Delete
+								"emailMove",//Move
+								"emailNewTest",//New Test
+								//"addToFavorites",//Add to Favorites
+								//"removeFromFavorites",//Remove from Favorites
+								"emailDraftEdit",//Edit Draft
+								"emailDraftPreview",//Preview Draft
+								"emailDraftSendTest",//Send Sample of Draft
+								"emailDraftApprove",//Approve Draft
+								//"emailDraftDiscard",//Discard Draft
+								"emailApproveTest",//Approve Test
+								//"emailSendSampleTest",//Send Sample Test
+								//"emailEditTest",//Edit Test
+								//"emailViewTestSummary",//View Test Summary
+								//"emailTestDeclareChampion",//Declare Champion
+								"emailDiscardTest"//Discard Test
+								];
+								
+		itemsToDisable.forEach(function(itemToDisable) {
+			var item = mItems.get(itemToDisable);
+			if (item) {
+				item.setDisabled(disable);
+			}
+		});
+		return menu;
+	}
 }
 
 /**************************************************************************************
@@ -838,8 +951,7 @@ if (currentUrl.search(mktoAppDomain) != -1
                     // Storing previous Workspace ID
                     if (currUrlFragment != mktoMyMarketoFragment) {
 						var isMktCanvas = window.setInterval(function() {
-//							if (typeof(MktCanvas) !== "undefined") {
-							if (MktCanvas.activeTab !== null) {
+							if (typeof(MktCanvas.activeTab) !== "undefined") {
 								console.log("Marketo App > Location: Marketo Canvas");
 								
 								window.clearInterval(isMktCanvas);
@@ -1046,7 +1158,7 @@ if (currentUrl.search(mktoAppDomain) != -1
 					&& currUrlFragment != mktoMyMarketoFragment) {
 
                         var isMktCanvasHash = window.setInterval(function() {
-							if (typeof(MktCanvas) !== "undefined") {
+							if (typeof(MktCanvas.activeTab) !== "undefined") {
 								console.log("Marketo App > Location: Marketo Canvas");
 								
 								window.clearInterval(isMktCanvasHash);
