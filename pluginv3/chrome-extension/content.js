@@ -22,6 +22,21 @@ var LIVE_SCRIPT_LOCATION = "https://marketolive.com/m3-dev/pluginv3/marketo-live
 	rtpDemoDomain = "^http:\/\/sjrtp1.marketo.com\/demo\/$|^http:\/\/cloud4.insightera.com\/demo\/$",
 	emailDeliverabilityDomain = "^https:\/\/250ok.com/",
 	colorPickerPage = "\/color-picker\.html$",
+    customCompanyLandingPage106Fragment = "LPE11381",
+    customCompanyLandingPagePreview106Fragment = "LPP11381",
+    customCompanyLandingPage106aFragment = "LPE10672",
+    customCompanyLandingPagePreview106aFragment = "LPP10672",
+    customCompanyLandingPage106bFragment = "LPE10768",
+    customCompanyLandingPagePreview106bFragment = "LPP10768",
+    customCompanyEmail106Fragment = "EME15464",
+    customCompanyEmail106aFragment = "EME14240",
+    customCompanyEmail106bFragment = "EME13924",
+    form106Fragment = "FOE2892",
+    form106aFragment = "FOE2532",
+    form106bFragment = "FOE2472",
+    push106Fragment = "MPNE29",
+    push106aFragment = "MPNE29",
+    push106bFragment = "MPNE2",
 	loadScript,
 	getCookie,
 	setCookie;
@@ -131,23 +146,37 @@ Analyzer.prototype.showAssets = function() {
 			   
 				switch(pod) {
 				case "app-sjp":
-					document.getElementById("ml-email-link").href = "https://na-sjp.marketodesigner.com/ds?explictHostname=app-sjp.marketo.com#EME9819";
-					document.getElementById("ml-form-link").href = "https://app-sjp.marketo.com/m#FOE2892-DET";
-					document.getElementById("ml-lp-link").href = "https://na-sjp.marketodesigner.com/lpeditor/editor?explictHostname=app-sjp.marketo.com#LPE8703";
-					document.getElementById("ml-push-link").href="https://app-sjp.marketo.com/#PN29A1LA1";
+					document.getElementById("ml-email-link").href = 
+                        "https://na-sjp.marketodesigner.com/ds?explictHostname=app-sjp.marketo.com#"+customCompanyEmail106Fragment;
+					document.getElementById("ml-form-link").href = 
+                        "https://app-sjp.marketo.com/m#"+form106Fragment+"-DET";
+					document.getElementById("ml-lp-link").href = 
+                        "https://na-sjp.marketodesigner.com/lpeditor/editor?explictHostname=app-sjp.marketo.com#"+customCompanyLandingPage106Fragment;
+					document.getElementById("ml-push-link").href="https://app-sjp.marketo.com/m#MPNE29"+push106Fragment;
 					break;
+                        
 				case "app-ab07":
-					document.getElementById("ml-email-link").href = "https://na-ab07.marketodesigner.com/ds?explictHostname=app-ab07.marketo.com#EME14240";
-					document.getElementById("ml-form-link").href = "https://app-ab07.marketo.com/m#FOE2532-DET";
-					document.getElementById("ml-lp-link").href = "https://na-ab07.marketodesigner.com/lpeditor/editor?explictHostname=app-ab07.marketo.com#LPE10672";
-					document.getElementById("ml-push-link").href="https://app-ab07.marketo.com/m#MPNE29-SU";
+					document.getElementById("ml-email-link").href = 
+                        "https://na-ab07.marketodesigner.com/ds?explictHostname=app-ab07.marketo.com#"+customCompanyEmail106aFragment;
+					document.getElementById("ml-form-link").href = 
+                        "https://app-ab07.marketo.com/m#"+form106aFragment+"-DET";
+					document.getElementById("ml-lp-link").href = 
+                        "https://na-ab07.marketodesigner.com/lpeditor/editor?explictHostname=app-ab07.marketo.com#"+customCompanyLandingPage106aFragment;
+					document.getElementById("ml-push-link").href=
+                        "https://app-ab07.marketo.com/m#"+push106aFragment+"-SU";
 					break;
+                        
 				case "app-ab08":
-					document.getElementById("ml-email-link").href = "https://na-ab08.marketodesigner.com/ds?explictHostname=app-ab08.marketo.com#EME13924";
-					document.getElementById("ml-form-link").href = "https://app-ab08.marketo.com/m#FOE2472-DET";
-					document.getElementById("ml-lp-link").href = "https://na-ab08.marketodesigner.com/lpeditor/editor?explictHostname=app-ab08.marketo.com#LPE10768";
-					document.getElementById("ml-push-link").href="https://app-ab08.marketo.com/m#MPNE2-SU";
+					document.getElementById("ml-email-link").href = 
+                        "https://na-ab08.marketodesigner.com/ds?explictHostname=app-ab08.marketo.com#"+customCompanyEmail106bFragment;
+					document.getElementById("ml-form-link").href = 
+                        "https://app-ab08.marketo.com/m#"+form106bFragment+"-DET";
+					document.getElementById("ml-lp-link").href = 
+                        "https://na-ab08.marketodesigner.com/lpeditor/editor?explictHostname=app-ab08.marketo.com#"+customCompanyLandingPage106bFragment;
+					document.getElementById("ml-push-link").href=
+                        "https://app-ab08.marketo.com/m#"+push106bFragment;
 					break;
+                        
 				default:
 					break;
 				}
@@ -200,8 +229,21 @@ window.onload = function() {
 		}
     }
 	
-    else if (currentUrl.search(mktoDesignerDomain) != -1
-    || currentUrl.search(mktoWizard) != -1) {
+    else if (currentUrl.search(customCompanyLandingPage106Fragment) != -1
+    || currentUrl.search(customCompanyLandingPage106aFragment) != -1
+    || currentUrl.search(customCompanyLandingPage106bFragment) != -1
+    || currentUrl.search(customCompanyLandingPagePreview106Fragment) != -1
+    || currentUrl.search(customCompanyLandingPagePreview106aFragment) != -1
+    || currentUrl.search(customCompanyLandingPagePreview106bFragment) != -1
+    || currentUrl.search(customCompanyEmail106Fragment) != -1
+    || currentUrl.search(customCompanyEmail106aFragment) != -1
+    || currentUrl.search(customCompanyEmail106bFragment) != -1
+    || currentUrl.search(form106Fragment) != -1
+    || currentUrl.search(form106aFragment) != -1
+    || currentUrl.search(form106bFragment) != -1
+    || currentUrl.search(push106Fragment) != -1
+    || currentUrl.search(push106aFragment) != -1
+    || currentUrl.search(push106bFragment) != -1) {
         console.log("Content > Location: Designer/Wizard");
 		
         loadScript(APP_SCRIPT_LOCATION);
