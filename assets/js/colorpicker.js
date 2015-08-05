@@ -34,7 +34,7 @@ var canvas = document.getElementById('image').getContext("2d");
 var img = new Image();
 img.onload = function() {
     canvas.drawImage(img, 0, 0);
-    originalImageData = canvas.getImageData(0, 0, width, height); //chrome will not fail
+//    originalImageData = canvas.getImageData(0, 0, width, height); //chrome will not fail
 }
 
 // TODO: fix the logic on this page to eliminate this redundancy
