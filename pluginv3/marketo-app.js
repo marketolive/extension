@@ -879,8 +879,8 @@ if (currentUrl.search(mktoAppDomain) != -1
                             lpIds["dpageid_8703"] = "dpageid_8703";
                             // Responsive Landing Page
                             lpIds["dpageid_11291"] = "dpageid_11291";
-                            // Custom Company Email
-                            emIds.push(15464);  // <---------------------------------------------------- Do we need to discard all of the nurture emails too?
+                            // Custom Company Email and Legacy Email
+                            emIds.push(15464);
                             // DIY Design and Replicate Success Forms
                             formIds.push(2892, 1749, 1900);  
                             // DIY Design and Mobile Engagement Push Notifications 
