@@ -699,8 +699,9 @@ APP.overlayEmailDesigner = function() {
         color = APP.getCookie('color'),
         logo = "http://marketolive.com/m3-dev/assets/img/turner-tech-white.png";
 
-    if (company != "turner") {
-        console.log("Marketo App > Overlaying: Turner");
+    if (company != "turner"
+	&& company != null) {
+        console.log("Marketo App > Overlaying: " + company);
         logo = "https://logo.clearbit.com/" + company;
     }
 
