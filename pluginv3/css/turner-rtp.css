@@ -101,6 +101,7 @@
 
 #small-nav-img{
   width: 30px;
+    cursor: pointer;
 }
 #advanced{
   margin-top: 50px !important;
