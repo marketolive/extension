@@ -197,7 +197,6 @@ window.onload = function() {
 		
         loadScript(APP_SCRIPT_LOCATION);
                 
-        // TODO: Fix this so it isn't static
         Analyzer.prototype.showAssets();
     }
 	
