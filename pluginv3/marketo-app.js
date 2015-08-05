@@ -796,7 +796,7 @@ if (currentUrl.search(mktoAppDomain) != -1
                 console.log("Marketo App > Location: MarketoLive Instance");
 
                 if (userId.search("^admin@mktodemoaccount") != -1
-                    /*|| userId.search("^mktodemoaccount[a-z0-9]*@marketo.com")*/) {
+                || userId.search("^mktodemoaccount[a-z0-9]*@marketo\.com")) {
                     console.log("Marketo App > User: Admin");
 
                     // Disabling Demo Plugin Check
