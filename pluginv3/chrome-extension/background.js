@@ -198,7 +198,13 @@ function checkForValidUrl(tabId, changeInfo, tab) {
                     name : "userPod",
                     value : user_pod[1],
                     domain : ".marketo.com"
-                }, 
+                },
+                cookiePodMarketoDesigner = {
+                    url : "http://www.marketodesigner.com/*",
+                    name : "userPod",
+                    value : user_pod[1],
+                    domain : ".marketodesigner.com"
+                },
                 cookiePodMarketoLive = {
                     url : "https://marketolive.com/*",
                     name : "userPod",
@@ -207,6 +213,9 @@ function checkForValidUrl(tabId, changeInfo, tab) {
                 } 
                 chrome.cookies.set(cookiePod, function() {
                     console.log("Background > Setting: Marketo User Pod Cookie "+user_pod[1]);
+                });
+                chrome.cookies.set(cookiePodMarketoDesigner, function() {
+                    console.log("Background > Setting: Marketo Designer User Pod Cookie "+user_pod[1]);
                 });
                 chrome.cookies.set(cookiePodMarketoLive, function() {
                     console.log("Background > Setting: MarketoLive User Pod Cookie "+user_pod[1]);
