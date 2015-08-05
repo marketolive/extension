@@ -697,7 +697,7 @@ APP.overlayEmailDesigner = function() {
 
     var company = APP.getCookie('company'),
         color = APP.getCookie('color'),
-        logo = "http://marketolive.com/m3-dev/assets/img/turner-tech-white.png";
+        logo = "http://marketolive.com/m3-dev/assets/img/turner-tech-green.png";
 
     if (company != "turner"
 	&& company != null) {
