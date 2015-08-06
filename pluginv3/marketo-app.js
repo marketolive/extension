@@ -11,6 +11,7 @@
  *
  **************************************************************************************/
 console.log("Marketo App > Running");
+window.mkto_live_plugin_state = true;
 
 /**************************************************************************************
  *
@@ -27,6 +28,7 @@ var currentUrl = window.location.href,
     mktoDesignerMatch = "https://*.marketodesigner.com/*",
     mktoEmailDesigner = mktoDesignerDomain + "/ds",
     mktoLandingPageDesigner = mktoDesignerDomain + "/lpeditor/",
+    defaultTurnerLogo = "http://marketolive.com/m3/assets/img/turner-tech-green.png",
     mktoWizard = mktoAppDomain + "/m#",
     rtpDemoDomain = "^http:\/\/sjrtp1.marketo.com\/demo\/$|^http:\/\/cloud4.insightera.com\/demo\/$",
     emailDeliverabilityDomain = "^https:\/\/250ok.com/",
@@ -455,7 +457,7 @@ APP.disableProgramActionsMenu = function() {
 		};
 	}
 	
-	// Disables the Marketing Program, Nurture Program, Event Program, and Email Batch Program > Actions
+	// Disables the Marketing Program, Nurture Program, Event Program, and Email Batch Program > Actions menu
 	var prevActionsMenu = Mkt.menus.marketingEvent.Toolbar.preShowMarketingProgramActions;
 	Mkt.menus.marketingEvent.Toolbar.preShowMarketingProgramActions = Mkt.menus.marketingEvent.Toolbar.preShowMarketingEventActions = function(menu) {
 		prevActionsMenu.apply(this, arguments);
@@ -492,10 +494,11 @@ APP.disableProgramActionsMenu = function() {
 		});
 	}
 	
-	// Disables the Marketing Program, Nurture Program, Event Program, and Email Batch Program > Right-click
+	// Disables the Marketing Program, Nurture Program, Event Program, and Email Batch Program > Right-click menu
 	var prevRightClickMenu = MktMaMenu.preShowProgramActionsMenu;
     MktMaMenu.preShowProgramActionsMenu = function(menu, attr) {
         prevRightClickMenu.apply(this, arguments);
+		
         var mItems = menu.items,
             canvas = MktCanvas.getActiveTab(),
             disable = attr.accessZoneId == 1
@@ -559,12 +562,13 @@ APP.disableProgramActionsMenu = function() {
         return menu;
     }
 	
+	// Disables the Email > Right-click menu
 	var prevEmailRightClickMenu = MktDsMenu.preShowEmailMenu;
 	MktDsMenu.preShowEmailMenu = function(menu, attr) {
 		prevEmailRightClickMenu.apply(this, arguments);
 		var mItems = menu.items,
-		canvas = MktCanvas.getActiveTab(),
-		disable = attr.accessZoneId == 1
+            canvas = MktCanvas.getActiveTab(),
+            disable = attr.accessZoneId == 1
 				|| !attr.accessZoneId
 				&& canvas
 				&& canvas.config
@@ -603,6 +607,123 @@ APP.disableProgramActionsMenu = function() {
 			}
 		});
 		return menu;
+	}
+
+	// Disables the Landing Page > Right-click menu
+	var prevLandingPageRightClickMenu = MktDsMenu.preShowPageMenu;
+	MktDsMenu.preShowPageMenu = function(menu, attr) {
+		prevLandingPageRightClickMenu.apply(this, arguments);
+		
+		var mItems = menu.items,
+			canvas = MktCanvas.getActiveTab(),
+			disable = attr.accessZoneId == 1
+					|| !attr.accessZoneId
+					&& canvas
+					&& canvas.config
+					&& canvas.config.accessZoneId
+					&& canvas.config.accessZoneId == 1,
+			itemsToDisable = [							
+							//"pageEdit",//Edit Draft
+							//"pagePreview",//Preview
+							//"deviceSwitch",//Device Switch
+							"pageApprove",//Approve
+							"pageUnapprove",//Unapprove
+							//"publishToFacebook",//Publish To Facebook
+							"pageConvertToTestGroup",//Convert to Test Group
+							"pageClone",//Clone
+							"pageDelete",//Delete
+							"urlTools",//URL Tools
+							"pageMove",//Move
+							//"addToFavorites",//Add to Favorites
+							//"removeFromFavorites",//Remove from Favorites
+							"pageDraftEdit",//Edit Draft
+							"pageDraftPreview",//Preview Draft
+							"pageDraftApprove",//Approve Draft
+							//"pageDraftDiscard"//Discard Draft
+							];
+
+		itemsToDisable.forEach(function(itemToDisable) {
+			var item = mItems.get(itemToDisable);
+			if (item) {
+				item.setDisabled(disable);
+			}
+		});
+		return menu;
+	}
+	
+	// Disables the Form > Right-click menu
+	var prevFormRightClickMenu = MktDsMenu.preShowFormMenu;
+	MktDsMenu.preShowFormMenu = function(menu, attr) {
+		prevFormRightClickMenu.apply(this, arguments);
+
+		var mItems = menu.items,
+		canvas = MktCanvas.getActiveTab(),
+		disable = attr.accessZoneId == 1
+				|| !attr.accessZoneId
+				&& canvas
+				&& canvas.config
+				&& canvas.config.accessZoneId
+				&& canvas.config.accessZoneId == 1,
+		itemsToDisable = [						
+						//"formEditDraft",//Edit Draft
+						//"formPreview",//Preview
+						//"formEdit",//Edit Form
+						"formApprove",//Approve
+						"formClone",//Clone Form
+						"formDelete",//Delete Form
+						//"formEmbed",//Embed Code
+						"formMove",//Move
+						//"addToFavorites",//Add to Favorites
+						//"removeFromFavorites",//Remove from Favorites
+						"formDraftPreview",//Preview Draft
+						"formDraftEdit",//Edit Draft
+						"formDraftApprove",//Approve Draft
+						//"formDraftDiscard"//Discard Draft
+						];
+
+		itemsToDisable.forEach(function(itemToDisable) {
+			var item = mItems.get(itemToDisable);
+			if (item) {
+				item.setDisabled(disable);
+			}
+		});
+		return menu;
+	}
+	
+	// Disable Social App > Right-click menu ******
+	var prevSocialAppRightClickMenu = MktDsMenu.preShowSocialAppMenu;
+	MktDsMenu.preShowSocialAppMenu = function(menu, attr) {
+		prevSocialAppRightClickMenu.apply(this, arguments);
+		
+		var mItems = menu.items,
+			isDefaultAccessZone = attr.accessZoneId == 1;
+		if (isDefaultAccessZone) {
+			mItems.get('socialAppPreview').setVisible(true);
+			mItems.get('socialAppEdit').setVisible(true);
+			mItems.get('socialAppApprove').setVisible(true);
+			mItems.get('socialAppApprove').setDisabled(false);
+			mItems.get('socialAppClone').setDisabled(true);
+			mItems.get('socialAppDelete').setDisabled(true);
+			mItems.get('socialAppDraftActionsText').setVisible(true);
+			mItems.get('socialAppDraftPreview').setVisible(true);
+			mItems.get('socialAppDraftEdit').setVisible(true);
+			mItems.get('socialAppDraftApprove').setVisible(true);
+			mItems.get('socialAppDraftDiscard').setVisible(true);
+			mItems.get('socialAppDraftDiscard').setDisabled(false);
+		}
+		return menu;
+	}
+	
+	// Disable Social App > Action menu ********
+	var prevSocialAppActionsMenu = Mkt3.controller.socialApp.SocialApp.prototype.loadToolbar;
+	Mkt3.controller.socialApp.SocialApp.prototype.loadToolbar = function(menu, attr) {
+		prevSocialAppActionsMenu.apply(this, arguments);
+
+		var disable = this.getSocialApp().get('zoneId') == 1,
+			items = Ext4.ComponentQuery.query('socialAppToolbar contextMenu [action=clone],' + 'socialAppToolbar contextMenu [action=delete],');
+		items.forEach(function(item) {
+			item.setDisabled(disable);
+		});
 	}
 }
 
@@ -810,7 +931,7 @@ APP.overlayEmailDesigner = function() {
 
     var company = APP.getCookie('company'),
         color = APP.getCookie('color'),
-        logo = "http://marketolive.com/m3-dev/assets/img/turner-tech-green.png";
+        logo = defaultTurnerLogo;
 
     if (company != "turner"
 	&& company != null) {
@@ -856,8 +977,9 @@ APP.overlayLandingPageDesigner = function() {
     var company = APP.getCookie('company'),
         color = APP.getCookie('color'),
         companyName = "turner",
-        logo = "http://marketolive.com/m3-dev/assets/img/turner-tech-green.png";
-    if (company != null) {
+        logo = defaultTurnerLogo;
+    if (company != "turner"
+    && company != null) {
         logo = "https://logo.clearbit.com/" + company;
         companyName = company.substring(0, company.indexOf("."));
     }
@@ -893,10 +1015,7 @@ if (currentUrl.search(mktoAppDomain) != -1
 || currentUrl.search(mktoWizard) != -1) {
     console.log("Marketo App > Location: Marketo URL");
 
-    var isMktPageApp;
-    window.mkto_live_plugin_state = true;
-
-    isMktPageApp = window.setInterval(function() {
+    var isMktPageApp = window.setInterval(function() {
         if (typeof(MktPage) !== "undefined") {
             console.log("Marketo App > Location: Marketo Page");
             
@@ -951,7 +1070,7 @@ if (currentUrl.search(mktoAppDomain) != -1
                     // Storing previous Workspace ID
                     if (currUrlFragment != mktoMyMarketoFragment) {
 						var isMktCanvas = window.setInterval(function() {
-							if (typeof(MktCanvas.activeTab) !== "undefined") {
+							if (MktCanvas.activeTab !== null) {
 								console.log("Marketo App > Location: Marketo Canvas");
 								
 								window.clearInterval(isMktCanvas);
@@ -1158,11 +1277,11 @@ if (currentUrl.search(mktoAppDomain) != -1
 					&& currUrlFragment != mktoMyMarketoFragment) {
 
                         var isMktCanvasHash = window.setInterval(function() {
-							if (typeof(MktCanvas.activeTab) !== "undefined") {
+							if (MktCanvas.activeTab !== null) {
 								console.log("Marketo App > Location: Marketo Canvas");
 								
 								window.clearInterval(isMktCanvasHash);
-								var currWorkspaceId = MktCanvas.activeTab.config.accessZoneId; // <------------------------------------------------
+								var currWorkspaceId = MktCanvas.activeTab.config.accessZoneId;
 								if (currWorkspaceId == prevWorkspaceId) {
 								}
 								else if (currWorkspaceId == 1) {
