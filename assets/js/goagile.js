@@ -56,13 +56,3 @@ $(document).ready(function() {
     updateHeight('partdeux');
     updateHeight('parttrois');
 });
-/*
-var eleDistance = function(ele){
-  ele = '#' + ele;
-  var thirdHeight = $( window ).height() / 3;
-  var elementOffSet = $(ele).offset().top;
-  var totalHeight = thirdHeight + elementOffSet;
-  var mainContainer = '.marketo-live-guide-option-container-home-next';
-  $(ele).find(mainContainer).css({'margin-top':'0px;','position':'absolute', 'top': totalHeight, 'left':'0%'});
-}
-*/
