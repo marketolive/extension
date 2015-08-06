@@ -15,7 +15,7 @@ $(document).ready(function() {
     color = getCookie('color'),
         logo = getCookie('logo'),
         companyName = getCookie('company'),
-        defaultLogo = '../img/turner-tech-white.png',
+        defaultLogo = '../assets/img/turner-tech-white.png',
         defaultColor = 'rgb(42, 83, 112)';
 
     console.log("Replicate Success > Reading User Pod: " + pod);
@@ -35,9 +35,9 @@ $(document).ready(function() {
 
     if (companyName != "turner"
     && companyName != null) {
-        var oldSrc = '../assets/img/turner-tech-white.png';
+//        var oldSrc = '../assets/img/turner-tech-white.png';
         var newSrc = logo;
-        console.log(oldSrc);
+//        console.log(oldSrc);
         $('.logo-swap').attr('src', logo);
         $('.asset-header-mkto').css('background-color', color);
     }
