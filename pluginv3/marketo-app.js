@@ -457,6 +457,33 @@ APP.disableProgramActionsMenu = function() {
 		};
 	}
 	
+	// Disables Lead Database > ALL > New menu
+	/*
+	var prevLeadDatabaseNewMenu = MktLeadDbMenu.leadDbMenu;
+	MktLeadDbMenu.leadDbMenu = function() {
+		//prevLeadDatabaseNewMenu.apply(this, arguments);
+		var mItems = MktLeadDbMenu.leadDbMenu().items,
+			canvas = MktCanvas.getActiveTab(),
+			disable = canvas
+					&& canvas.config
+					&& canvas.config.accessZoneId
+					&& canvas.config.accessZoneId == 1,
+			itemsToDisable = [
+							"newSmartList",//New Smart List
+							"newList",//New List
+							"newSegmentation",//New Segmentation
+							"newLead",//New Lead
+							"newDataMgr"//New Field Organizer
+							];
+		itemsToDisable.forEach(function(itemToDisable) {
+			var item = mItems.get(itemToDisable);
+			if (item) {
+				item.setDisabled(disable);
+			}
+		});
+	}
+	*/
+	
 	// Disables Marketing Activities > Marketing Program, Nurture Program, Event Program, and Email Batch Program > Actions menus
 	var prevActionsMenu = Mkt.menus.marketingEvent.Toolbar.preShowMarketingProgramActions;
 	Mkt.menus.marketingEvent.Toolbar.preShowMarketingProgramActions = Mkt.menus.marketingEvent.Toolbar.preShowMarketingEventActions = function(menu) {
@@ -755,35 +782,35 @@ APP.disableProgramActionsMenu = function() {
 	}
 	
 	// Disables Lead Database > List > Right-click and Actions menu
-	var originalFn = MktLeadDbMenu.preShowListListMenu;
+	var prevListMenu = MktLeadDbMenu.preShowListListMenu;
 	MktLeadDbMenu.preShowListListMenu = function(menu, attr) {
-		originalFn.apply(this, arguments);
+		prevListMenu.apply(this, arguments);
 		
 		var mItems = menu.items,
-		canvas = MktCanvas.getActiveTab(),
-		disable = menu.currNode
-				&& menu.currNode.attributes
-				&& menu.currNode.attributes.accessZoneId == 1
-				|| !menu.currNode
-				&& canvas
-				&& canvas.config
-				&& canvas.config.accessZoneId
-				&& canvas.config.accessZoneId == 1,
-		itemsToDisable = [
-						//"navigateToMembership",//View Leads
-						//"navigateToSmartList",//View Smart List
-						//"navigateToFilterView",//Filter View
-						//"showImportStatus",//Show Import Status
-						//"showExportStatus",//Show Export Status
-						//"importList",//Import List
-						//"exportList",//Export List
-						//"exportAdBridge",//Send via Ad Bridge
-						"cloneSmartlist",//Clone Smart List
-						"cloneList",//Clone List
-						"deleteList",//Delete List
-						//"addToFavorites",//Add to Favorites
-						//"removeFromFavorites"//Remove from Favorites
-						];
+			canvas = MktCanvas.getActiveTab(),
+			disable = menu.currNode
+					&& menu.currNode.attributes
+					&& menu.currNode.attributes.accessZoneId == 1
+					|| !menu.currNode
+					&& canvas
+					&& canvas.config
+					&& canvas.config.accessZoneId
+					&& canvas.config.accessZoneId == 1,
+			itemsToDisable = [
+							//"navigateToMembership",//View Leads
+							//"navigateToSmartList",//View Smart List
+							//"navigateToFilterView",//Filter View
+							//"showImportStatus",//Show Import Status
+							//"showExportStatus",//Show Export Status
+							//"importList",//Import List
+							//"exportList",//Export List
+							//"exportAdBridge",//Send via Ad Bridge
+							"cloneSmartlist",//Clone Smart List
+							"cloneList",//Clone List
+							"deleteList",//Delete List
+							//"addToFavorites",//Add to Favorites
+							//"removeFromFavorites"//Remove from Favorites
+							];
 
 		itemsToDisable.forEach(function(itemToDisable) {
 			var item = mItems.get(itemToDisable);
@@ -791,6 +818,60 @@ APP.disableProgramActionsMenu = function() {
 				item.setDisabled(disable);
 			}
 		});
+		return menu;
+	}
+	
+	// Disables Lead Database > Smart List and Segments > Right-click and Actions menu
+	var prevSmartListMenu = MktLeadDbMenu.preShowUserListMenu;
+	MktLeadDbMenu.preShowUserListMenu = function(menu, attr) {
+		prevSmartListMenu.apply(this, arguments);
+		
+		var mItems = menu.items,
+			canvas = MktCanvas.getActiveTab(),
+			disable = menu.currNode
+					&& menu.currNode.attributes
+					&& menu.currNode.attributes.accessZoneId == 1
+					|| !menu.currNode
+					&& canvas
+					&& canvas.config
+					&& canvas.config.accessZoneId
+					&& canvas.config.accessZoneId == 1,
+			itemsToDisable = [
+							//"navigateToMembership",//View Leads
+							//"navigateToSmartList",//View Smart List
+							//"navigateToFilterView",//Filter View
+							//"showImportStatus",//Show Import Status
+							//"showExportStatus",//Show Export Status
+							//"importList",//Import List
+							//"exportList",//Export List
+							//"exportAdBridge",//Send via Ad Bridge
+							"cloneSmartlist",//Clone Smart List
+							"cloneList",//Clone List
+							"deleteList",//Delete List
+							//"addToFavorites",//Add to Favorites
+							//"removeFromFavorites"//Remove from Favorites
+							];
+			/*
+			itemsToRemove = [
+							
+							];
+			*/
+
+		itemsToDisable.forEach(function(itemToDisable) {
+			var item = mItems.get(itemToDisable);
+			if (item) {
+				item.setDisabled(disable);
+			}
+		});
+
+		/* Use itemsToRemove to disable visibility of menu items rather than graying-out
+		itemsToRemove.forEach(function(itemToRemove) {
+			var item = mItems.get(itemToRemove);
+			if (item) {
+				item.setVisible(!disable);
+			}
+		});
+		*/
 		return menu;
 	}
 }
