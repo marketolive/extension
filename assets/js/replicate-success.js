@@ -14,7 +14,9 @@ $(document).ready(function() {
     var pod = getCookie("userPod");
     color = getCookie('color'),
         logo = getCookie('logo'),
-        companyName = localStorage.company;
+        companyName = getCookie('company'),
+        defaultLogo = '../img/turner-tech-white.png',
+        defaultColor = 'rgb(42, 83, 112)';
 
     console.log("Replicate Success > Reading User Pod: " + pod);
     if (pod) {
@@ -31,12 +33,17 @@ $(document).ready(function() {
         });
     }
 
-    if (companyName != "turner") {
+    if (companyName != "turner"
+    && companyName != null) {
         var oldSrc = '../img/turner-tech-white.png';
         var newSrc = logo;
         console.log(oldSrc);
         $('.logo-swap').attr('src', logo);
         $('.asset-header-mkto').css('background-color', color);
+    }
+    else {
+        $('.logo-swap').attr('src', defaultLogo);
+        $('.asset-header-mkto').css('background-color', defaultColor);
     }
     $("#reminder-clone, #lp-clone, #auto-responder-clone").click(function() {
         console.log(this.id);
