@@ -32,7 +32,7 @@ $(document).ready(function() {
     }
 
     if (companyName != "turner") {
-        var oldSrc = 'https://marketolive.com/m2_update/assets/img/turner-tech-white.png';
+        var oldSrc = '../img/turner-tech-white.png';
         var newSrc = logo;
         console.log(oldSrc);
         $('.logo-swap').attr('src', logo);
