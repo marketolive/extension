@@ -11,6 +11,7 @@
  *
  **************************************************************************************/
 console.log("Marketo App > Running");
+window.mkto_live_plugin_state = true;
 
 /**************************************************************************************
  *
@@ -27,6 +28,7 @@ var currentUrl = window.location.href,
     mktoDesignerMatch = "https://*.marketodesigner.com/*",
     mktoEmailDesigner = mktoDesignerDomain + "/ds",
     mktoLandingPageDesigner = mktoDesignerDomain + "/lpeditor/",
+    defaultTurnerLogo = "http://marketolive.com/m3/assets/img/turner-tech-green.png",
     mktoWizard = mktoAppDomain + "/m#",
     rtpDemoDomain = "^http:\/\/sjrtp1.marketo.com\/demo\/$|^http:\/\/cloud4.insightera.com\/demo\/$",
     emailDeliverabilityDomain = "^https:\/\/250ok.com/",
@@ -437,7 +439,6 @@ APP.disableProgramActionsMenu = function() {
 	var prevNewMenu = Mkt.app.MarketingActivities.Toolbar.getNewMenuButton;
 	Mkt.app.MarketingActivities.Toolbar.getNewMenuButton = function() {
 		prevNewMenu.apply(this, arguments);
-		
 		return {
 			text : MktLang.getStr('mktMaMenu.New'),
 			iconCls : 'mkiBooksBlue',
@@ -460,7 +461,6 @@ APP.disableProgramActionsMenu = function() {
 	var prevActionsMenu = Mkt.menus.marketingEvent.Toolbar.preShowMarketingProgramActions;
 	Mkt.menus.marketingEvent.Toolbar.preShowMarketingProgramActions = Mkt.menus.marketingEvent.Toolbar.preShowMarketingEventActions = function(menu) {
 		prevActionsMenu.apply(this, arguments);
-		
 		var mItems = menu.items,
 			canvas = MktCanvas.getActiveTab(),
 			disable = canvas
@@ -566,7 +566,6 @@ APP.disableProgramActionsMenu = function() {
 	var prevEmailRightClickMenu = MktDsMenu.preShowEmailMenu;
 	MktDsMenu.preShowEmailMenu = function(menu, attr) {
 		prevEmailRightClickMenu.apply(this, arguments);
-		
 		var mItems = menu.items,
 			canvas = MktCanvas.getActiveTab(),
 			disable = attr.accessZoneId == 1
@@ -609,7 +608,7 @@ APP.disableProgramActionsMenu = function() {
 		});
 		return menu;
 	}
-	
+
 	// Disables Marketing Activities > Landing Page > Right-click menu
 	var prevLandingPageRightClickMenu = MktDsMenu.preShowPageMenu;
 	MktDsMenu.preShowPageMenu = function(menu, attr) {
@@ -1000,7 +999,7 @@ APP.overlayEmailDesigner = function() {
 
     var company = APP.getCookie('company'),
         color = APP.getCookie('color'),
-        logo = "http://marketolive.com/m3-dev/assets/img/turner-tech-green.png";
+        logo = defaultTurnerLogo;
 
     if (company != "turner"
 	&& company != null) {
@@ -1046,8 +1045,9 @@ APP.overlayLandingPageDesigner = function() {
     var company = APP.getCookie('company'),
         color = APP.getCookie('color'),
         companyName = "turner",
-        logo = "http://marketolive.com/m3-dev/assets/img/turner-tech-green.png";
-    if (company != null) {
+        logo = defaultTurnerLogo;
+    if (company != "turner"
+    && company != null) {
         logo = "https://logo.clearbit.com/" + company;
         companyName = company.substring(0, company.indexOf("."));
     }
@@ -1083,10 +1083,7 @@ if (currentUrl.search(mktoAppDomain) != -1
 || currentUrl.search(mktoWizard) != -1) {
     console.log("Marketo App > Location: Marketo URL");
 
-    var isMktPageApp;
-    window.mkto_live_plugin_state = true;
-
-    isMktPageApp = window.setInterval(function() {
+    var isMktPageApp = window.setInterval(function() {
         if (typeof(MktPage) !== "undefined") {
             console.log("Marketo App > Location: Marketo Page");
             
@@ -1352,7 +1349,7 @@ if (currentUrl.search(mktoAppDomain) != -1
 								console.log("Marketo App > Location: Marketo Canvas");
 								
 								window.clearInterval(isMktCanvasHash);
-								var currWorkspaceId = MktCanvas.activeTab.config.accessZoneId; // <------------------------------------------------
+								var currWorkspaceId = MktCanvas.activeTab.config.accessZoneId;
 								if (currWorkspaceId == prevWorkspaceId) {
 								}
 								else if (currWorkspaceId == 1) {
