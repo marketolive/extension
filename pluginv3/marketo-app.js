@@ -435,7 +435,7 @@ APP.discardFormPushDrafts = function(assetType, assetIds) {
 APP.disableProgramActionsMenu = function() {
     console.log("Marketo App > Disabling: Program Actions Menu");
 
-	// Disables the Folder and Smart Campaign > New
+	// Disables Marketing Activities > Folder and Smart Campaign > New menu
 	var prevNewMenu = Mkt.app.MarketingActivities.Toolbar.getNewMenuButton;
 	Mkt.app.MarketingActivities.Toolbar.getNewMenuButton = function() {
 		prevNewMenu.apply(this, arguments);
@@ -457,7 +457,34 @@ APP.disableProgramActionsMenu = function() {
 		};
 	}
 	
-	// Disables the Marketing Program, Nurture Program, Event Program, and Email Batch Program > Actions
+	// Disables Lead Database > ALL > New menu
+	/*
+	var prevLeadDatabaseNewMenu = MktLeadDbMenu.leadDbMenu;
+	MktLeadDbMenu.leadDbMenu = function() {
+		//prevLeadDatabaseNewMenu.apply(this, arguments);
+		var mItems = MktLeadDbMenu.leadDbMenu().items,
+			canvas = MktCanvas.getActiveTab(),
+			disable = canvas
+					&& canvas.config
+					&& canvas.config.accessZoneId
+					&& canvas.config.accessZoneId == 1,
+			itemsToDisable = [
+							"newSmartList",//New Smart List
+							"newList",//New List
+							"newSegmentation",//New Segmentation
+							"newLead",//New Lead
+							"newDataMgr"//New Field Organizer
+							];
+		itemsToDisable.forEach(function(itemToDisable) {
+			var item = mItems.get(itemToDisable);
+			if (item) {
+				item.setDisabled(disable);
+			}
+		});
+	}
+	*/
+	
+	// Disables Marketing Activities > Marketing Program, Nurture Program, Event Program, and Email Batch Program > Actions menus
 	var prevActionsMenu = Mkt.menus.marketingEvent.Toolbar.preShowMarketingProgramActions;
 	Mkt.menus.marketingEvent.Toolbar.preShowMarketingProgramActions = Mkt.menus.marketingEvent.Toolbar.preShowMarketingEventActions = function(menu) {
 		prevActionsMenu.apply(this, arguments);
@@ -494,10 +521,11 @@ APP.disableProgramActionsMenu = function() {
 		});
 	}
 	
-	// Disables the Marketing Program, Nurture Program, Event Program, and Email Batch Program > Right-click
+	// Disables Marketing Activities > Marketing Program, Nurture Program, Event Program, and Email Batch Program > Right-click menus
 	var prevRightClickMenu = MktMaMenu.preShowProgramActionsMenu;
     MktMaMenu.preShowProgramActionsMenu = function(menu, attr) {
         prevRightClickMenu.apply(this, arguments);
+		
         var mItems = menu.items,
             canvas = MktCanvas.getActiveTab(),
             disable = attr.accessZoneId == 1
@@ -506,7 +534,7 @@ APP.disableProgramActionsMenu = function() {
 					&& canvas.config
 					&& canvas.config.accessZoneId
 					&& canvas.config.accessZoneId == 1,
-            itemsToDisable = [							
+            itemsToDisable = [
 							//"navigateToNurtureTracks",//View Streams
 							//"navigateToCFSmartCamp",//View Smart Campaigns
 							//"navigateToLocalAssets",//View Assets
@@ -561,42 +589,43 @@ APP.disableProgramActionsMenu = function() {
         return menu;
     }
 	
+	// Disables Marketing Activities > Email > Right-click menu
 	var prevEmailRightClickMenu = MktDsMenu.preShowEmailMenu;
 	MktDsMenu.preShowEmailMenu = function(menu, attr) {
 		prevEmailRightClickMenu.apply(this, arguments);
 		var mItems = menu.items,
-		canvas = MktCanvas.getActiveTab(),
-		disable = attr.accessZoneId == 1
-				|| !attr.accessZoneId
-				&& canvas
-				&& canvas.config
-				&& canvas.config.accessZoneId
-				&& canvas.config.accessZoneId == 1,
-				itemsToDisable = [								
-								//"emailEdit",//Edit Draft
-								//"emailPreview",//Preview
-								"emailApprove",//Approve
-								"emailUnapprove",//Unapprove
-								//"emailDownloadHtml",//Download HTML
-								//"emailSendTest",//Send Sample
-								"emailClone",//Clone
-								"emailDelete",//Delete
-								"emailMove",//Move
-								"emailNewTest",//New Test
-								//"addToFavorites",//Add to Favorites
-								//"removeFromFavorites",//Remove from Favorites
-								"emailDraftEdit",//Edit Draft
-								"emailDraftPreview",//Preview Draft
-								"emailDraftSendTest",//Send Sample of Draft
-								"emailDraftApprove",//Approve Draft
-								//"emailDraftDiscard",//Discard Draft
-								"emailApproveTest",//Approve Test
-								//"emailSendSampleTest",//Send Sample Test
-								//"emailEditTest",//Edit Test
-								//"emailViewTestSummary",//View Test Summary
-								//"emailTestDeclareChampion",//Declare Champion
-								"emailDiscardTest"//Discard Test
-								];
+			canvas = MktCanvas.getActiveTab(),
+			disable = attr.accessZoneId == 1
+					|| !attr.accessZoneId
+					&& canvas
+					&& canvas.config
+					&& canvas.config.accessZoneId
+					&& canvas.config.accessZoneId == 1,
+			itemsToDisable = [
+							//"emailEdit",//Edit Draft
+							//"emailPreview",//Preview
+							"emailApprove",//Approve
+							"emailUnapprove",//Unapprove
+							//"emailDownloadHtml",//Download HTML
+							//"emailSendTest",//Send Sample
+							"emailClone",//Clone
+							"emailDelete",//Delete
+							"emailMove",//Move
+							"emailNewTest",//New Test
+							//"addToFavorites",//Add to Favorites
+							//"removeFromFavorites",//Remove from Favorites
+							"emailDraftEdit",//Edit Draft
+							"emailDraftPreview",//Preview Draft
+							"emailDraftSendTest",//Send Sample of Draft
+							"emailDraftApprove",//Approve Draft
+							//"emailDraftDiscard",//Discard Draft
+							"emailApproveTest",//Approve Test
+							//"emailSendSampleTest",//Send Sample Test
+							//"emailEditTest",//Edit Test
+							//"emailViewTestSummary",//View Test Summary
+							//"emailTestDeclareChampion",//Declare Champion
+							"emailDiscardTest"//Discard Test
+									];
 								
 		itemsToDisable.forEach(function(itemToDisable) {
 			var item = mItems.get(itemToDisable);
@@ -604,6 +633,245 @@ APP.disableProgramActionsMenu = function() {
 				item.setDisabled(disable);
 			}
 		});
+		return menu;
+	}
+
+	// Disables Marketing Activities > Landing Page > Right-click menu
+	var prevLandingPageRightClickMenu = MktDsMenu.preShowPageMenu;
+	MktDsMenu.preShowPageMenu = function(menu, attr) {
+		prevLandingPageRightClickMenu.apply(this, arguments);
+		
+		var mItems = menu.items,
+			canvas = MktCanvas.getActiveTab(),
+			disable = attr.accessZoneId == 1
+					|| !attr.accessZoneId
+					&& canvas
+					&& canvas.config
+					&& canvas.config.accessZoneId
+					&& canvas.config.accessZoneId == 1,
+			itemsToDisable = [
+							//"pageEdit",//Edit Draft
+							//"pagePreview",//Preview
+							//"deviceSwitch",//Device Switch
+							"pageApprove",//Approve
+							"pageUnapprove",//Unapprove
+							//"publishToFacebook",//Publish To Facebook
+							"pageConvertToTestGroup",//Convert to Test Group
+							"pageClone",//Clone
+							"pageDelete",//Delete
+							"urlTools",//URL Tools
+							"pageMove",//Move
+							//"addToFavorites",//Add to Favorites
+							//"removeFromFavorites",//Remove from Favorites
+							"pageDraftEdit",//Edit Draft
+							"pageDraftPreview",//Preview Draft
+							"pageDraftApprove",//Approve Draft
+							//"pageDraftDiscard"//Discard Draft
+							];
+
+		itemsToDisable.forEach(function(itemToDisable) {
+			var item = mItems.get(itemToDisable);
+			if (item) {
+				item.setDisabled(disable);
+			}
+		});
+		return menu;
+	}
+	
+	// Disables Marketing Activities > Form > Right-click menu
+	var prevFormRightClickMenu = MktDsMenu.preShowFormMenu;
+	MktDsMenu.preShowFormMenu = function(menu, attr) {
+		prevFormRightClickMenu.apply(this, arguments);
+
+		var mItems = menu.items,
+			canvas = MktCanvas.getActiveTab(),
+			disable = attr.accessZoneId == 1
+					|| !attr.accessZoneId
+					&& canvas
+					&& canvas.config
+					&& canvas.config.accessZoneId
+					&& canvas.config.accessZoneId == 1,
+			itemsToDisable = [
+							//"formEditDraft",//Edit Draft
+							//"formPreview",//Preview
+							//"formEdit",//Edit Form
+							"formApprove",//Approve
+							"formClone",//Clone Form
+							"formDelete",//Delete Form
+							//"formEmbed",//Embed Code
+							"formMove",//Move
+							//"addToFavorites",//Add to Favorites
+							//"removeFromFavorites",//Remove from Favorites
+							"formDraftPreview",//Preview Draft
+							"formDraftEdit",//Edit Draft
+							"formDraftApprove",//Approve Draft
+							//"formDraftDiscard"//Discard Draft
+							];
+
+		itemsToDisable.forEach(function(itemToDisable) {
+			var item = mItems.get(itemToDisable);
+			if (item) {
+				item.setDisabled(disable);
+			}
+		});
+		return menu;
+	}
+	
+	// Disables Marketing Activities > Social App > Right-click menu
+	var prevSocialAppRightClickMenu = MktDsMenu.preShowSocialAppMenu;
+	MktDsMenu.preShowSocialAppMenu = function(menu, attr) {
+		prevSocialAppRightClickMenu.apply(this, arguments);
+		
+		var mItems = menu.items,
+			canvas = MktCanvas.getActiveTab(),
+			disable = attr.accessZoneId == 1
+				|| !attr.accessZoneId
+				&& canvas
+				&& canvas.config
+				&& canvas.config.accessZoneId
+				&& canvas.config.accessZoneId == 1,
+			itemsToDisable = [
+							//"socialAppEdit",//Edit Draft
+							//"socialAppPreview",//Preview
+							"socialAppApprove",//Approve
+							"socialAppClone",//Clone
+							"socialAppDelete",//Delete
+							//"socialAppWidgetCode",//Embed Code
+							//"addToFavorites",//Add to Favorites
+							//"removeFromFavorites",//Remove from Favorites
+							"socialAppDraftEdit",//Edit Draft
+							"socialAppDraftPreview",//Preview Draft
+							"socialAppDraftApprove",//Approve Draft
+							//"socialAppDraftDiscard"//Discard Draft
+							];
+			
+		itemsToDisable.forEach(function(itemToDisable) {
+			var item = mItems.get(itemToDisable);
+			if (item) {
+				item.setDisabled(disable);
+			}
+		});
+		return menu;
+	}
+	
+	// Disable Marketing Activities > Social App > Action menu
+	var prevSocialAppActionsMenu = Mkt3.controller.socialApp.SocialApp.prototype.loadToolbar;
+	Mkt3.controller.socialApp.SocialApp.prototype.loadToolbar = function(menu, attr) {
+		prevSocialAppActionsMenu.apply(this, arguments);
+
+		var disable = this.getSocialApp().get('zoneId') == 1,
+			mItems = Ext4.ComponentQuery.query(
+							/*"socialAppToolbar contextMenu [action=edit]," +*/ //Edit
+							/*"socialAppToolbar contextMenu [action=preview]," +*/ //Preview
+							"socialAppToolbar contextMenu [action=approve]," + //Approve
+							"socialAppToolbar contextMenu [action=clone]," + //Clone
+							"socialAppToolbar contextMenu [action=delete]," + //Delete
+							/*"socialAppToolbar contextMenu [action=getWidgetEmbedCode]," +*/ //Embed Code
+							"socialAppToolbar contextMenu [action=editDraft]," + //Edit Draft
+							"socialAppToolbar contextMenu [action=previewDraft]," + //Preview Draft
+							"socialAppToolbar contextMenu [action=approveDraft]," /*+*/ //Approve Draft
+							/*"socialAppToolbar contextMenu [action=discardDraft],"*/ //Discard Draft
+							); 
+		
+		mItems.forEach(function(item) {
+			if (item) {
+				item.setDisabled(disable);
+			}
+		});
+		return menu;
+	}
+	
+	// Disables Lead Database > List > Right-click and Actions menu
+	var prevListMenu = MktLeadDbMenu.preShowListListMenu;
+	MktLeadDbMenu.preShowListListMenu = function(menu, attr) {
+		prevListMenu.apply(this, arguments);
+		
+		var mItems = menu.items,
+			canvas = MktCanvas.getActiveTab(),
+			disable = menu.currNode
+					&& menu.currNode.attributes
+					&& menu.currNode.attributes.accessZoneId == 1
+					|| !menu.currNode
+					&& canvas
+					&& canvas.config
+					&& canvas.config.accessZoneId
+					&& canvas.config.accessZoneId == 1,
+			itemsToDisable = [
+							//"navigateToMembership",//View Leads
+							//"navigateToSmartList",//View Smart List
+							//"navigateToFilterView",//Filter View
+							//"showImportStatus",//Show Import Status
+							//"showExportStatus",//Show Export Status
+							//"importList",//Import List
+							//"exportList",//Export List
+							//"exportAdBridge",//Send via Ad Bridge
+							"cloneSmartlist",//Clone Smart List
+							"cloneList",//Clone List
+							"deleteList",//Delete List
+							//"addToFavorites",//Add to Favorites
+							//"removeFromFavorites"//Remove from Favorites
+							];
+
+		itemsToDisable.forEach(function(itemToDisable) {
+			var item = mItems.get(itemToDisable);
+			if (item) {
+				item.setDisabled(disable);
+			}
+		});
+		return menu;
+	}
+	
+	// Disables Lead Database > Smart List and Segments > Right-click and Actions menu
+	var prevSmartListMenu = MktLeadDbMenu.preShowUserListMenu;
+	MktLeadDbMenu.preShowUserListMenu = function(menu, attr) {
+		prevSmartListMenu.apply(this, arguments);
+		
+		var mItems = menu.items,
+			canvas = MktCanvas.getActiveTab(),
+			disable = menu.currNode
+					&& menu.currNode.attributes
+					&& menu.currNode.attributes.accessZoneId == 1
+					|| !menu.currNode
+					&& canvas
+					&& canvas.config
+					&& canvas.config.accessZoneId
+					&& canvas.config.accessZoneId == 1,
+			itemsToDisable = [
+							//"navigateToMembership",//View Leads
+							//"navigateToSmartList",//View Smart List
+							//"navigateToFilterView",//Filter View
+							//"showImportStatus",//Show Import Status
+							//"showExportStatus",//Show Export Status
+							//"importList",//Import List
+							//"exportList",//Export List
+							//"exportAdBridge",//Send via Ad Bridge
+							"cloneSmartlist",//Clone Smart List
+							"cloneList",//Clone List
+							"deleteList",//Delete List
+							//"addToFavorites",//Add to Favorites
+							//"removeFromFavorites"//Remove from Favorites
+							];
+			/*
+			itemsToRemove = [
+							
+							];
+			*/
+
+		itemsToDisable.forEach(function(itemToDisable) {
+			var item = mItems.get(itemToDisable);
+			if (item) {
+				item.setDisabled(disable);
+			}
+		});
+
+		/* Use itemsToRemove to disable visibility of menu items rather than graying-out
+		itemsToRemove.forEach(function(itemToRemove) {
+			var item = mItems.get(itemToRemove);
+			if (item) {
+				item.setVisible(!disable);
+			}
+		});
+		*/
 		return menu;
 	}
 }
@@ -1158,11 +1426,11 @@ if (currentUrl.search(mktoAppDomain) != -1
 					&& currUrlFragment != mktoMyMarketoFragment) {
 
                         var isMktCanvasHash = window.setInterval(function() {
-							if (typeof(MktCanvas.activeTab) !== "undefined") {
+							if (MktCanvas.activeTab !== null) {
 								console.log("Marketo App > Location: Marketo Canvas");
 								
 								window.clearInterval(isMktCanvasHash);
-								var currWorkspaceId = MktCanvas.activeTab.config.accessZoneId; // <------------------------------------------------
+								var currWorkspaceId = MktCanvas.activeTab.config.accessZoneId;
 								if (currWorkspaceId == prevWorkspaceId) {
 								}
 								else if (currWorkspaceId == 1) {
