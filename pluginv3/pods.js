@@ -2,7 +2,8 @@ console.log("Pods > Running");
 
 // TODO: add error check for invalid pod, make sure that replicateSuccess is the same for all pods
 
-var PODS = PODS || {};
+var URL_PATH = "m3",
+    PODS = PODS || {};
 
 /**************************************************************************************
  *
@@ -65,22 +66,21 @@ PODS.Pod = function(id) {
     this.powerfulAutomation = this.appUrl + "#SC14945A1";
     this.actionableInsight = "https://mkto-si.na10.visual.force.com/apex/mkto_si__Dashboard";
     this.marketingROI = this.appUrl + "#AR1559A1!";
-    this.replicateSuccess = "https://marketolive.com/m3-dev/apps/replicate-success.html";
+    this.replicateSuccess = "https://marketolive.com/"+URL_PATH+"/apps/replicate-success.html";
     this.searchOptimization = "https://seo.marketo.com/";
     this.personalization = "http://sjrtp1.marketo.com/demo/";
     this.emailDeliverability = "https://250ok.com/login";
     this.flexibleReporting = this.appUrl + "#AH0A1ZN17";
-    this.marketoMoments = "https://marketolive.com/m3-dev/apps/mobile_marketo_moments.html";
-    this.salesInsightMobile = "https://marketolive.com/m3-dev/apps/mobile_sales_insight.html";
-    this.mobileEngagement = "https://marketolive.com/m3-dev/apps/mobile-engagement-beacon.html";
-    this.adbridge = "https://marketolive.com/m3-dev/apps/adbridge.html";
+    this.marketoMoments = "https://marketolive.com/"+URL_PATH+"/apps/mobile_marketo_moments.html";
+    this.salesInsightMobile = "https://marketolive.com/"+URL_PATH+"/apps/mobile_sales_insight.html";
+    this.mobileEngagement = "https://marketolive.com/"+URL_PATH+"/apps/mobile-engagement-beacon.html";
+    this.adbridge = "https://marketolive.com/"+URL_PATH+"/apps/adbridge.html";
 
     switch (this.id) {
         case "app-sjp":
             this.diyDesign = this.appUrl + "#PG4217B2";
             this.intelligentNurturing = this.appUrl + "#NP5170B2";
 			this.funnelAnalysis = this.appUrl + "#RCM39A1!";
-            //this.funnelAnalysis = this.appUrl + "?preview=true&approved=true/#RCM39A1!";
             this.calendar = this.appUrl + "#CAL0-eyJlZGl0IjoxLCJkdCI6IjIwMTUwNDE4IiwiY3QiOjEsInRhZ3MiOnsic3lzLkVudHJ5U3VidHlwZSI6WyJlbWFpbCIsIndlYmluYXIiLCJudXJ0dXJlX3J1biIsImVtYWlsX3Rlc3QiLCJjYW1wYWlnbl9ydW4iLCJub25lIiwiYjMxYmE2YTYtMDk5Ni00ODMyLWJhZjQtNzk5ODQ3ZGY4YmM4IiwiZXZlbnQiLCIwNWVlZmQ0Yy05OGZiLTRhYjctOTFjZS1hYTE2NWNhZDI0YjkiLCIyNDQ2ODg5MC0yNjEwLTRkMjctYjZlYy05ODVlYjQxNzViOTUiLCI0MTU0MmJiNy1jMzQ0LTQ3NGItODU4Zi1mNGM5YWM1MzcwZjciLCJkZWVjMDkwZC1iY2U0LTQ1MjYtYjYwMy1iMmRhOTc5MzMwNmIiLCIxMzhlZmM1OS02MjU0LTRkNDYtYjdmYi0zZWVjNzA2YTU3ZTMiLCI3YmZiOThkNS05M2IzLTQxMjUtODE5Yy0xZDlkYjMxMzEwYjAiLCI2NDRjOWNiNS0yMjU2LTRlNmMtYjI1YS04ODEzNTE3NGM2MTIiLCI1ZTU4NGQ1Yi04NGI0LTQ2YTctYWIzNi1mMGJmYTE0ZWQ2YzQiLCJiMmY4YTJkMy0xMjQ1LTRkMjctYmRkZi04NjczMTExNTEwOGEiLCJlbWFpbF9jYW1wYWlnbl9ydW4iXSwic3lzLldvcmtzcGFjZUlkIjpbIjEiXX19";
             break;
         case "app-ab07":

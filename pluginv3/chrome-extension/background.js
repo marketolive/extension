@@ -127,6 +127,29 @@ function submitCompany(data) {
 	chrome.storage.sync.set(data, function() {});
 }
 
+function resetColor () {
+    console.log("Background > Resetting: Company Color");
+    
+    var cookieColor = {
+			url : "http://www.marketodesigner.com/*",
+			name : "color",
+			value : "rgb(42, 83, 112)",
+			domain : ".marketodesigner.com"
+		},
+        cookieColorMarketoLive = {
+			url : "http://marketolive.com/*",
+			name : "color",
+			value : "rgb(42, 83, 112)",
+			domain : ".marketolive.com"
+        };
+    chrome.cookies.set(cookieColor, function() {
+        console.log("Background > Setting Marketo Designer Company Color Cookie "+cookieCompany);
+    });
+	chrome.cookies.set(cookieColorMarketoLive, function() {
+        console.log("Background > Setting MarketoLive Company Color Cookie "+cookieCompanyMarketoLive);
+    });
+}
+
 /**************************************************************************************
  *
  *  This function creates a cookie on mktoDesignerDomain passing the company color and

@@ -13,7 +13,8 @@
 console.log("Popup > Running");
 
 window.onload = function() {
-	var background = chrome.extension.getBackgroundPage(),
+	var URL_PATH = "m3",
+        background = chrome.extension.getBackgroundPage(),
 	    priv = "true",
         tags = document.getElementsByClassName("link"),
 		submit = document.getElementById('company-submit'),
@@ -48,11 +49,11 @@ window.onload = function() {
 		document.getElementById('settings-container').style.display = "block";
 		document.getElementById('status').style.display = "block";
 		if (priv == "true") {
-			document.getElementById('toggle').src = "https://marketolive.com/m2_update/assets/img/toggle-on.png";
+			document.getElementById('toggle').src = "https://marketolive.com/"+URL_PATH+"/assets/img/toggle-on.png";
 			document.getElementById('button-display').style.display = "inline-block";
 		}
 		else if (priv == "false") {
-			document.getElementById('toggle').src = "https://marketolive.com/m2_update/assets/img/toggle-off.png";
+			document.getElementById('toggle').src = "https://marketolive.com/"+URL_PATH+"/assets/img/toggle-off.png";
 			document.getElementById('button-display').style.display = "inline-block";
 		}
 	}
@@ -63,6 +64,7 @@ window.onload = function() {
 
 	clear.onclick = function() {
 		background.submitCompany(data);
+        background.resetColor();
         document.getElementById('settings-container').style.display = "none";
 	}
 	
@@ -77,11 +79,11 @@ window.onload = function() {
    
    toggle.onclick = function() {
 		if (priv == "true") {
-			document.getElementById('toggle').src = "https://marketolive.com/m2_update/assets/img/toggle-off.png";
+			document.getElementById('toggle').src = "https://marketolive.com/"+URL_PATH+"/assets/img/toggle-off.png";
 			background.savePriv({'editPrivileges' : "false"});
 		}
 		else if (priv == "false") {
-			document.getElementById('toggle').src = "https://marketolive.com/m2_update/assets/img/toggle-on.png";
+			document.getElementById('toggle').src = "https://marketolive.com/"+URL_PATH+"/assets/img/toggle-on.png";
 			background.savePriv({'editPrivileges' : "true"});
 		}
 	}
