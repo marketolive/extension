@@ -35,7 +35,7 @@ $(document).ready(function() {
 
     if (companyName != "turner"
     && companyName != null) {
-        var oldSrc = '../img/turner-tech-white.png';
+        var oldSrc = '../assets/img/turner-tech-white.png';
         var newSrc = logo;
         console.log(oldSrc);
         $('.logo-swap').attr('src', logo);
