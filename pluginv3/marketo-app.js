@@ -1366,7 +1366,6 @@ if (currentUrl.search(mktoAppDomain) != -1
                                 property: 'id',
                                 value: Mkt3.DL.dl.compId
                             }],
-                            async: false,
                             callback: function(records) {
                                 records.forEach(
                                     function(record) {
@@ -1384,6 +1383,7 @@ if (currentUrl.search(mktoAppDomain) != -1
 
                     switch (Mkt3.DL.dl.dlCompCode) {
                         case mktoEmailDesignerFragment:
+                            console.log("Callback for email editor");
                             Ext4.getStore('Email').load(loadParameters);
                             // Overlay Email Designer w/ Company Logo and Color
                             switch (currUrlFragment) {
@@ -1401,16 +1401,20 @@ if (currentUrl.search(mktoAppDomain) != -1
                             }
                             break;
                         case mktoFormWizardFragment:
+                            console.log("Callback for form editor");
                             Ext4.getStore('Form').load(loadParameters);
                             break;
                         case mktoMobilePushNotificationWizardFragment:
+                            console.log("Callback for push editor");
                             Ext4.getStore('MobilePushNotification').load(loadParameters);
                             break;
                         case mktoSocialAppWizardFragment:
+                            console.log("Callback for social editor");
                             Ext4.getStore('SocialApp').load(loadParameters);
                             break;
                         default:
                             currAssetZoneId = -1;
+                            break;
                     }
                 }
 
