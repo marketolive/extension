@@ -16,7 +16,7 @@ var URL_PATH = "m3",
 	mktoAppMatch = "https://app-*.marketo.com",
 	mktoLiveDomain = "^https:\/\/marketolive.com",
 	mktoLiveMatch = "https://marketolive.com/*",
-    mktoColorPicker = "^https:\/\/marketolive\.com[a-zA-Z0-9\/]*\/color-picker\.html"
+    mktoColorPicker = "^https:\/\/marketolive\.com[a-zA-Z0-9\/]*\/color-picker\.html",
 	mktoLoginDomain = "^https:\/\/login\.marketo\.com",
 	mktoAppLoginDomain = "^https:\/\/app\.marketo\.com",
 	mktoDesignerDomain = "^https:\/\/[a-z0-9]+-[a-z0-9]+\.marketodesigner\.com",
@@ -257,10 +257,24 @@ window.onload = function() {
     else if (currentUrl.search(mktoColorPicker) != -1) {
 		console.log("Content > Location: Color-Picker Page");
         
-        var colorThief = new ColorThief(),
+        var companyName = getCookie("company"), 
+            colorThief = new ColorThief(),
             canvas = document.getElementById('image').getContext("2d"),
             img = new Image(),
             colorSet;
+        
+        console.log("Color Picker > Company Name is: "+companyName);
+
+        if (companyName != "turner"
+        && companyName != null) {
+            var companyNameSmall = companyName.substring(0, companyName.indexOf('.')) + " Logo";
+            document.getElementById('company-image-title').innerHTML = companyNameSmall;
+            img.crossOrigin = 'https://logo.clearbit.com/*'; //crossdomain xml file, this is facebook example
+            img.src = "https://logo.clearbit.com/" + companyName + '?size=200';
+        }
+        else {
+            img.src = "../assets/img/turner-tech-green.png";
+        }
         
         img.onload = function() {
             canvas.drawImage(img, 0, 0);
