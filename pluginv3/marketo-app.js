@@ -28,7 +28,8 @@ var currentUrl = window.location.href,
     mktoDesignerMatch = "https://*.marketodesigner.com/*",
     mktoEmailDesigner = mktoDesignerDomain + "/ds",
     mktoLandingPageDesigner = mktoDesignerDomain + "/lpeditor/",
-    defaultTurnerLogo = "http://marketolive.com/m3/assets/img/turner-tech-green.png",
+    defaultTurnerLogoGreen = "http://marketolive.com/m3/assets/img/turner-tech-green.png",
+    defaultTurnerLogoWhite = "http://marketolive.com/m3/assets/img/turner-tech-white.png",
     mktoWizard = mktoAppDomain + "/m#",
     rtpDemoDomain = "^http:\/\/sjrtp1.marketo.com\/demo\/$|^http:\/\/cloud4.insightera.com\/demo\/$",
     emailDeliverabilityDomain = "^https:\/\/250ok.com/",
@@ -1080,7 +1081,7 @@ APP.overlayEmailDesigner = function() {
 
     var company = APP.getCookie('company'),
         color = APP.getCookie('color'),
-        logo = defaultTurnerLogo;
+        logo = defaultTurnerLogoWhite;
 
     if (company != "turner"
 	&& company != null) {
@@ -1094,6 +1095,7 @@ APP.overlayEmailDesigner = function() {
             logoSwapCompany = document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("logo-swap-company"),
             logoSwapContainer = document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("logo-swap-container"),
             logoSwapCompanyContainer = document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("logo-swap-company-container");
+        
         if (logoBkg != null
 		&& buttonBkg != null
 		&& logoSwapCompany != null) {
@@ -1126,7 +1128,8 @@ APP.overlayLandingPageDesigner = function() {
     var company = APP.getCookie('company'),
         color = APP.getCookie('color'),
         companyName = "turner",
-        logo = defaultTurnerLogo;
+        logo = defaultTurnerLogoGreen;
+    
     if (company != "turner"
     && company != null) {
         logo = "https://logo.clearbit.com/" + company;
