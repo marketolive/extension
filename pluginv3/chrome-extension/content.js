@@ -291,7 +291,7 @@ window.onload = function() {
                 cookieColor = 'rgb(' + colorSet[0] + ',' + colorSet[1] + ',' + colorSet[2] + ')',
                 cookieLogo = img.src;
             
-            chrome.runtime.sendMessage({action: "setCompanyCookies", color : cookieColor, logo: cookieLogo}, function(response) {
+            chrome.runtime.sendMessage({action: "setColorCookie", color : cookieColor}, function(response) {
                 console.log("Content > Received Response from Background Color Cookie Request: " + response);
                 location.href = location+"?reloaded=1";
             });          

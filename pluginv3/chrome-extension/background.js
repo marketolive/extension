@@ -163,8 +163,9 @@ function resetColor () {
  **************************************************************************************/
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-	if (request.action == "colorVal") {
+	if (request.action == "setColorCookie") {
 		console.log("Background > Color");
+        
 		var cookieColor = {
 			url : "http://www.marketodesigner.com/*",
 			name : "color",
