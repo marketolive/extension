@@ -267,8 +267,8 @@ window.onload = function() {
                 color: cookieColor
             }, function(response) {
                 console.log("Content > Received Response from Background Color Cookie Request: " + response);
-                location.href = location + "?reloaded=1";
             });
+            window.close();
         }
         incorrect.onclick = function() {
             document.getElementById('first').style.display = "none";
