@@ -43,26 +43,6 @@ else {
 img.onload = function() {
     canvas.drawImage(img, 0, 0);
     colorSet = colorThief.getPalette(img, 2)[1];
-    console.log("Content > The Secondary Color is: " + colorSet);
-}
-
-var correct = document.getElementById('correct'),
-    incorrect = document.getElementById('incorrect');
-
-correct.onclick = function() {
-    var cookieColor = 'rgb(' + colorSet[0] + ',' + colorSet[1] + ',' + colorSet[2] + ')',
-        cookieLogo = img.src;
-
-    chrome.runtime.sendMessage({
-        action: "setColorCookie",
-        color: cookieColor
-    }, function(response) {
-        console.log("Content > Received Response from Background Color Cookie Request: " + response);
-        location.href = location + "?reloaded=1";
-    });
-}
-incorrect.onclick = function() {
-    document.getElementById('first').style.display = "none";
-    document.getElementById('second').style.display = "block";
-    document.getElementById('second-incorrect').style.display = "block";
+    document.getElementById("cookie-color").innerHTML = 'rgb(' + colorSet[0] + ',' + colorSet[1] + ',' + colorSet[2] + ')';
+    console.log("Color Picker > The Secondary Color is: " + colorSet);
 }
