@@ -74,7 +74,7 @@ window.onload = function() {
 		}
 		else {
 			console.log("Popup > Error: Submitting Company");
-		}
+        }
    }
    
    toggle.onclick = function() {

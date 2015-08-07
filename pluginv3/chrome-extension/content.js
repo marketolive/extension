@@ -1,4 +1,5 @@
 console.log("Content > Running");
+window.mkto_live_plugin_state = true;
 
 var URL_PATH = "m3",
     LIVE_SCRIPT_LOCATION = "https://marketolive.com/"+URL_PATH+"/pluginv3/marketo-live.js",
@@ -15,6 +16,7 @@ var URL_PATH = "m3",
 	mktoAppMatch = "https://app-*.marketo.com",
 	mktoLiveDomain = "^https:\/\/marketolive.com",
 	mktoLiveMatch = "https://marketolive.com/*",
+    mktoColorPicker = "^https:\/\/marketolive\.com[a-zA-Z0-9\/]*\/color-picker\.html"
 	mktoLoginDomain = "^https:\/\/login\.marketo\.com",
 	mktoAppLoginDomain = "^https:\/\/app\.marketo\.com",
 	mktoDesignerDomain = "^https:\/\/[a-z0-9]+-[a-z0-9]+\.marketodesigner\.com",
@@ -210,7 +212,6 @@ window.onload = function() {
 	&& currentUrl.search(mktoWizard) == -1) {
 		console.log("Content > Location: Marketo App");
 		
-		window.mkto_live_plugin_state = true;
 		var oppInfluenceAnalyzerFragment = "AR1559A1!",
 			programAnalyzerFragment = "AR1544A1!",
 			modeler106Fragment = "RCM39A1!",
@@ -253,13 +254,39 @@ window.onload = function() {
 		Analyzer.prototype.showAssets();
     }
 	
-    else if (currentUrl.search(mktoLiveDomain) != -1) {
-		console.log("Content > Location: MarketoLive");
+    else if (currentUrl.search(mktoColorPicker) != -1) {
+		console.log("Content > Location: Color-Picker Page");
         
-		var color = getCookie('color');
-		if (color) {
-			chrome.runtime.sendMessage({action: "colorVal", color : color}, function(response) {console.log("response = " + response);});
-		}
+        var colorThief = new ColorThief(),
+            canvas = document.getElementById('image').getContext("2d"),
+            img = new Image(),
+            colorSet;
+        
+        img.onload = function() {
+            canvas.drawImage(img, 0, 0);
+            colorSet = colorThief.getPalette(img, 2)[1];
+            console.log("Content > The Secondary Color is: "+colorSet);
+        }
+        
+        var correct = document.getElementById('correct'),
+            incorrect = document.getElementById('incorrect');
+
+        correct.onclick = function() {
+            var colorSet = null,
+                logoSet = null,
+                cookieColor = 'rgb(' + colorSet[0] + ',' + colorSet[1] + ',' + colorSet[2] + ')',
+                cookieLogo = img.src;
+            
+            chrome.runtime.sendMessage({action: "setCompanyCookies", color : cookieColor, logo: cookieLogo}, function(response) {
+                console.log("Content > Received Response from Background Color Cookie Request: " + response);
+                location.href = location+"?reloaded=1";
+            });          
+        }
+        incorrect.onclick = function() {
+            document.getElementById('first').style.display = "none";
+            document.getElementById('second').style.display = "block";
+            document.getElementById('second-incorrect').style.display = "block";
+        }
     }
 	
     else if (currentUrl.search(rtpDemoDomain) != -1) {

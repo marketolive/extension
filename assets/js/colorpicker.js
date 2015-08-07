@@ -13,21 +13,19 @@ var getCookie = function(cookieField) {
     return null;
 }
 
-var companyName = getCookie("company");
-var reload = location.search.split('reloaded=')[1];
-console.log(reload);
+var companyName = getCookie("company"),
+    reload = location.search.split('reloaded=')[1];
+
+console.log("Color Picker > Reload Query String: "+reload);
 
 if (reload) {
     document.getElementById('first').style.display = "none";
     document.getElementById('second').style.display = "block";
     document.getElementById('second-correct').style.display = "block";
 }
-var colorThief = new ColorThief(),
-	canvas = document.getElementById('image').getContext("2d"),
-	img = new Image();
 	
-console.log('passed to colorpicker ', localStorage.company);
-console.log(companyName);
+console.log("Color Picker > Company Name is: "+companyName);
+
 if (companyName != "turner"
 && companyName != null) {
     companyNameSmall = companyName.substring(0, companyName.indexOf('.')) + " Logo";
@@ -37,33 +35,4 @@ if (companyName != "turner"
 }
 else {
     img.src = "../assets/img/turner-tech-green.png";
-}
-
-img.onload = function() {
-    canvas.drawImage(img, 0, 0);
-}
-
-// This is set to a hard-coded expire time. Need to fix.
-document.cookie = "logo=" + img.src + "; expires=Thu, 18 Dec 2016 12:00:00 UTC; path=/";
-
-setTimeout(function() {
-    var color = colorThief.getColor(img);
-    var colors = colorThief.getPalette(img, 2);
-    colorSet = colors[1];
-    console.log(colorSet);
-    console.log(color);
-    var cookieColor = 'rgb(' + colorSet[0] + ',' + colorSet[1] + ',' + colorSet[2] + ')';
-    document.cookie = "color=" + cookieColor + "; expires=Thu, 18 Dec 2016 12:00:00 UTC; path=/";
-}, 500);
-
-var correct = document.getElementById('correct');
-var incorrect = document.getElementById('incorrect');
-
-correct.onclick = function() {
-    location.href = location+"?reloaded=1";
-}
-incorrect.onclick = function() {
-    document.getElementById('first').style.display = "none";
-    document.getElementById('second').style.display = "block";
-    document.getElementById('second-incorrect').style.display = "block";
 }

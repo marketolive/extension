@@ -112,7 +112,7 @@ function submitCompany(data) {
 		value : data.company,
 		domain : ".marketodesigner.com"
 	},
-		cookieCompanyMarketoLive = {
+    cookieCompanyMarketoLive = {
 		url : "http://marketolive.com/*",
 		name : "company",
 		value : data.company,
@@ -124,7 +124,6 @@ function submitCompany(data) {
 	chrome.cookies.set(cookieCompanyMarketoLive, function() {
         console.log("Background > Setting MarketoLive Company Cookie "+cookieCompanyMarketoLive);
     });
-	chrome.storage.sync.set(data, function() {});
 }
 
 function resetColor () {
@@ -143,10 +142,10 @@ function resetColor () {
 			domain : ".marketolive.com"
         };
     chrome.cookies.set(cookieColor, function() {
-        console.log("Background > Setting Marketo Designer Company Color Cookie "+cookieCompany);
+        console.log("Background > Setting Marketo Designer Company Color Cookie "+cookieColor);
     });
 	chrome.cookies.set(cookieColorMarketoLive, function() {
-        console.log("Background > Setting MarketoLive Company Color Cookie "+cookieCompanyMarketoLive);
+        console.log("Background > Setting MarketoLive Company Color Cookie "+cookieColorMarketoLive);
     });
 }
 
@@ -172,7 +171,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 			value : request.color,
 			domain : ".marketodesigner.com"
 		},
-			cookieColorMarketoLive = {
+        cookieColorMarketoLive = {
 			url : "http://marketolive.com/*",
 			name : "color",
 			value : request.color,
@@ -181,7 +180,9 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 		chrome.cookies.set(cookieColor, function() {
             console.log("Background > Setting: Colorscheme Cookie "+cookieColor);
         });
-		data = {"color" : request.color};
+        chrome.cookies.set(cookieColorMarketoLive, function() {
+            console.log("Background > Setting: MarketoLive Colorscheme Cookie "+cookieColor);
+        });
     }
 });
 
