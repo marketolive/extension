@@ -190,15 +190,6 @@ Analyzer.prototype.showAssets = function() {
    }, 0);
 }
 
-chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
-	if (request.action == "company") {
-		console.log("Content > Company: " + request.company);
-        localStorage.setItem("company", request.company);
-		console.log("Content > Location: Color Picker");
-		loadScript(COLORPICKER_SCRIPT_LOCATION);
-	}
-});
-
 var port = chrome.runtime.connect({
 	name: "mycontentscript"
 });
