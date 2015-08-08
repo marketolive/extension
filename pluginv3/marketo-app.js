@@ -1600,10 +1600,8 @@ if (currentUrl.search(mktoAppDomain) != -1
                         emIds = APP.getEmailIds(APP.getCookie("userPod"));
                     switch (accountString) {
                         case "mktodemoaccount106":
-                            // Custom Landing Page
-                            lpIds["dpageid_11381"] = "dpageid_11381";
                             // Landing Page
-                            lpIds["dpageid_8703"] = "dpageid_8703";
+                            lpIds["dpageid_11381"] = "dpageid_11381";
                             // Responsive Landing Page
                             lpIds["dpageid_11291"] = "dpageid_11291";
                             // DIY Design and Replicate Success Forms
@@ -1638,21 +1636,22 @@ if (currentUrl.search(mktoAppDomain) != -1
                         default:
                             break;
                     }
-
-                    // DIY Design (Landing Pages)
-                    APP.discardLandingPageDrafts(lpIds);
-                    // DIY Design (Email)
-                    APP.discardEmailDrafts(emIds);
-                    // DIY Design (Forms)
-                    APP.discardFormPushDrafts("Form", formIds);
-                    // DIY Design (Push Notifications)
-                    APP.discardFormPushDrafts("MobilePushNotification", pushIds);
-
-                    // Limiting Nurture Programs
-                    APP.limitNurturePrograms();
-
-                    // Disabling New Smart Campaign, New Local Asset, New Folder, and Delete
-                    APP.disableMenus();
+                    var canDiscardDrafts = window.setInterval(function () {
+                        if (typeof(mktLPLManager) !== "undefined") {
+                            // DIY Design (Landing Pages)
+                            APP.discardLandingPageDrafts(lpIds);
+                            // DIY Design (Email)
+                            APP.discardEmailDrafts(emIds);
+                            // DIY Design (Forms)
+                            APP.discardFormPushDrafts("Form", formIds);
+                            // DIY Design (Push Notifications)
+                            APP.discardFormPushDrafts("MobilePushNotification", pushIds);
+                            // Limiting Nurture Programs
+                            APP.limitNurturePrograms();
+                            // Disabling New Smart Campaign, New Local Asset, New Folder, and Delete
+                            APP.disableMenus();
+                        }
+                    }, 0);
                 } 
                 else if (currUrlFragment.search("^" + mktoLandingPageDesignerFragment) != -1) {
                     console.log("Marketo App > Location: Landing Page Designer");
