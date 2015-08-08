@@ -2,12 +2,12 @@ console.log("Content > Running");
 window.mkto_live_plugin_state = true;
 
 var URL_PATH = "m3",
-    LIVE_SCRIPT_LOCATION = "https://marketolive.com/"+URL_PATH+"/pluginv3/marketo-live.js",
-    APP_SCRIPT_LOCATION = "https://marketolive.com/"+URL_PATH+"/pluginv3/marketo-app.js",
-    POD_SCRIPT_LOCATION = "https://marketolive.com/"+URL_PATH+"/pluginv3/pods.js",
-	DELIVERABILITY_TOOLS_SCRIPT_LOCATION = "https://marketolive.com/"+URL_PATH+"/pluginv3/deliverability-tools.js",
-    DASHBOARD_SCRIPT_LOCATION = "https://marketolive.com/"+URL_PATH+"/pluginv3/dashboards/remote-data.js",
-    RTP_DEEPLINK_SCRIPT_LOCATION = "https://marketolive.com/"+URL_PATH+"/pluginv3/rtp-deeplink.js",
+    LIVE_SCRIPT_LOCATION = "https://marketolive.com/"+URL_PATH+"/pluginv3/marketo-live.min.js",
+    APP_SCRIPT_LOCATION = "https://marketolive.com/"+URL_PATH+"/pluginv3/marketo-app.min.js",
+    POD_SCRIPT_LOCATION = "https://marketolive.com/"+URL_PATH+"/pluginv3/pods.min.js",
+	DELIVERABILITY_TOOLS_SCRIPT_LOCATION = "https://marketolive.com/"+URL_PATH+"/pluginv3/deliverability-tools.min.js",
+    DASHBOARD_SCRIPT_LOCATION = "https://marketolive.com/"+URL_PATH+"/pluginv3/dashboards/remote-data.min.js",
+    RTP_DEEPLINK_SCRIPT_LOCATION = "https://marketolive.com/"+URL_PATH+"/pluginv3/rtp-deeplink.min.js",
     ASSET_NAV_BAR_LOCATION = "https://marketolive.com/"+URL_PATH+"/v3/assets.html",
     RTP_NAV_BAR_LOCATION = "https://marketolive.com/"+URL_PATH+"/pluginv3/html/turner-rtp.html",
     currentUrl = window.location.href,
