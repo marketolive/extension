@@ -1293,7 +1293,7 @@ if (currentUrl.search(mktoAppDomain) != -1
                     var lpIds = {},
                         formIds = [],
                         pushIds = [],
-                        emIds = APP.getEmailIds(pod.id);
+                        emIds = APP.getEmailIds(APP.getCookie("userPod"));
                     switch (accountString) {
                         case "mktodemoaccount106":
                             // Custom Landing Page
