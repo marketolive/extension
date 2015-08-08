@@ -14,7 +14,7 @@
        "run_at": "document_start",
       "matches": [ "*://*.marketodesigner.com/*",  "*://marketolive.com/*", "*://*.marketo.com/*", "*://go.app.io/*", "https://250ok.com/*", "http://cloud4.insightera.com/demo/", "*://cloud4.insightera.com/*" ]
    } ],
-   "description": "This is the plugin that enables the MarketoLive functionality.",
+   "description": "This plugin is for Marketo employees who have access to the MarketoLive demo environment.",
    "icons": {
       "128": "images/icon.png",
       "16": "images/icon.png",
