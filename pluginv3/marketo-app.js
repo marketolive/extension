@@ -1666,8 +1666,6 @@ if (currentUrl.search(mktoAppDomain) != -1
                     // Disabling System Error Message for sync conflicts
                     APP.disableSystemErrorMessage();
                     
-                    APP.disableSaving();
-
                     // Overlay Landing Page Designer w/ company logo and color
                     switch (currUrlFragment) {
                         case customCompanyLandingPage106Fragment:
