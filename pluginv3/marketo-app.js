@@ -35,7 +35,9 @@ var currentUrl = window.location.href,
     emailDeliverabilityDomain = "^https:\/\/250ok.com/",
     mktoMyMarketoFragment = "MM0A1",
     mktoEmailDesignerFragment = "EME",
+    mktoEmailPreviewFragment = "EMP",
     mktoLandingPageDesignerFragment = "LPE",
+    mktoLandingPagePreviewFragment = "LPP",
     mktoFormWizardFragment = "FOE",
     mktoMobilePushNotificationWizardFragment = "MPNE",
     mktoSocialAppWizardFragment = "SOAE",
@@ -1553,8 +1555,10 @@ if (currentUrl.search(mktoAppDomain) != -1
                     APP.overrideDeliverabilityToolsTile();
                 }
 
-                if (currUrlFragment.search("^" + mktoEmailDesignerFragment) == -1 
-                && currUrlFragment.search("^" + mktoLandingPageDesignerFragment) == -1 
+                if (currUrlFragment.search("^" + mktoEmailDesignerFragment) == -1
+                && currUrlFragment.search("^" + mktoEmailPreviewFragment)
+                && currUrlFragment.search("^" + mktoLandingPageDesignerFragment) == -1
+                && currUrlFragment.search("^" + mktoLandingPagePreviewFragment) == -1
                 && currUrlFragment.search("^" + mktoFormWizardFragment) == -1 
                 && currUrlFragment.search("^" + mktoMobilePushNotificationWizardFragment) == -1 
                 && currUrlFragment.search("^" + mktoSocialAppWizardFragment) == -1) {
