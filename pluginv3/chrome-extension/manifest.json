@@ -5,7 +5,7 @@
    },
    "browser_action": {
      "default_popup": "popup.html",
-      "default_icon": "images/mkto_logo_enable.png",
+      "default_icon": "images/icon.png",
       "default_title": "MarketoLive"
    },
    "content_scripts": [ {
@@ -16,11 +16,10 @@
    } ],
    "description": "This is the plugin that enables the MarketoLive functionality.",
    "icons": {
-      "128": "images/mkto_logo_enable.png",
-      "16": "images/mkto_logo_enable.png",
-      "48": "images/mkto_logo_enable.png"
+      "128": "images/icon.png",
+      "16": "images/icon.png",
+      "48": "images/icon.png"
    },
-  // "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEArwwPgvsjpdqo1M1FzpibYLsx7l6fpm23FJJquNNCbVmOwBvURJ178QxP7PBQHK/n+EJgOd7oO447DoHmuGcDQe7KF1TZfJeoOS4pT8bMNL02JbqbQjjfwCbTDPZjPGtqH2lFCpmmjtdti5K/+3CtsBKCPSDrkPCRtMbhlA86t/b8ypIFE62O7UsWI0wKdhmDh5aNoKMV99AXEZ74suhymSnT3Bvr86Au7lOi/wl/Bi5o9KRTHhmYgf30fokuSAlVB+uHIfboJMGLpVIYz6ap3me3Ha7FG5r9mhPk1udDgarBxoL02EVXyA7tKME9F3+CacFwbl5PmEescmkgur+sSQIDAQAB",
    "manifest_version": 2,
    "name": "MarketoLive",
    "permissions": [ "storage", "webNavigation", "tabs", "cookies", "*://*.marketodesigner.com/*", "*://marketolive.com/*", "*://*.marketo.com/*", "*://go.app.io/*", "http://cloud4.insightera.com/demo/", "*://cloud4.insightera.com/*", "https://250ok.com/*" ],
