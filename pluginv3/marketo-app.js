@@ -433,16 +433,38 @@ APP.discardFormPushDrafts = function(assetType, assetIds) {
  *
  **************************************************************************************/
 
-APP.disableProgramActionsMenu = function() {
+APP.disableMenus = function() {
     console.log("Marketo App > Disabling: Program Actions Menu");
 
 	// Disables Marketing Activities > Folder and Smart Campaign > New menu
-	var prevNewMenu = Mkt.app.MarketingActivities.Toolbar.getNewMenuButton;
+	var prevMarketingNewMenu = Mkt.app.MarketingActivities.Toolbar.getNewMenuButton;
 	Mkt.app.MarketingActivities.Toolbar.getNewMenuButton = function() {
-		prevNewMenu.apply(this, arguments);
+		prevMarketingNewMenu.apply(this, arguments);
 		return {
 			text : MktLang.getStr('mktMaMenu.New'),
 			iconCls : 'mkiBooksBlue',
+			xtype : 'mkttbbutton',
+			menu : MktMaMenu.maMenu(),
+			handler : function(button) {
+				var canvas = MktCanvas.getActiveTab(),
+				disableMenu = canvas
+							&& canvas.config
+							&& canvas.config.accessZoneId
+							&& canvas.config.accessZoneId == 1;
+				button.menu.items.each(function(item) {
+					item.setDisabled(disableMenu);
+				});
+			}
+		};
+	}
+	
+	// Disables Design Studio > ALL > New menu
+	var prevDesignNewMenu = Mkt.app.DesignStudio.Toolbar.getNewMenuButton;
+	Mkt.app.DesignStudio.Toolbar.getNewMenuButton = function() {
+		prevDesignNewMenu.apply(this, arguments);
+		return {
+			text : MktLang.getStr('mktDsMenu.New'),
+			iconCls : 'mkiColorsCmyk',
 			xtype : 'mkttbbutton',
 			menu : MktMaMenu.maMenu(),
 			handler : function(button) {
@@ -615,8 +637,8 @@ APP.disableProgramActionsMenu = function() {
 							"emailNewTest",//New Test
 							//"addToFavorites",//Add to Favorites
 							//"removeFromFavorites",//Remove from Favorites
-							"emailDraftEdit",//Edit Draft
-							"emailDraftPreview",//Preview Draft
+							//"emailDraftEdit",//Edit Draft
+							//"emailDraftPreview",//Preview Draft
 							"emailDraftSendTest",//Send Sample of Draft
 							"emailDraftApprove",//Approve Draft
 							//"emailDraftDiscard",//Discard Draft
@@ -664,8 +686,8 @@ APP.disableProgramActionsMenu = function() {
 							"pageMove",//Move
 							//"addToFavorites",//Add to Favorites
 							//"removeFromFavorites",//Remove from Favorites
-							"pageDraftEdit",//Edit Draft
-							"pageDraftPreview",//Preview Draft
+							//"pageDraftEdit",//Edit Draft
+							//"pageDraftPreview",//Preview Draft
 							"pageDraftApprove",//Approve Draft
 							//"pageDraftDiscard"//Discard Draft
 							];
@@ -703,8 +725,8 @@ APP.disableProgramActionsMenu = function() {
 							"formMove",//Move
 							//"addToFavorites",//Add to Favorites
 							//"removeFromFavorites",//Remove from Favorites
-							"formDraftPreview",//Preview Draft
-							"formDraftEdit",//Edit Draft
+							//"formDraftPreview",//Preview Draft
+							//"formDraftEdit",//Edit Draft
 							"formDraftApprove",//Approve Draft
 							//"formDraftDiscard"//Discard Draft
 							];
@@ -740,8 +762,8 @@ APP.disableProgramActionsMenu = function() {
 							//"socialAppWidgetCode",//Embed Code
 							//"addToFavorites",//Add to Favorites
 							//"removeFromFavorites",//Remove from Favorites
-							"socialAppDraftEdit",//Edit Draft
-							"socialAppDraftPreview",//Preview Draft
+							//"socialAppDraftEdit",//Edit Draft
+							//"socialAppDraftPreview",//Preview Draft
 							"socialAppDraftApprove",//Approve Draft
 							//"socialAppDraftDiscard"//Discard Draft
 							];
@@ -772,9 +794,214 @@ APP.disableProgramActionsMenu = function() {
 							"socialAppToolbar contextMenu [action=previewDraft]," + //Preview Draft
 							"socialAppToolbar contextMenu [action=approveDraft]," /*+*/ //Approve Draft
 							/*"socialAppToolbar contextMenu [action=discardDraft],"*/ //Discard Draft
-							); 
+							);
 		
 		mItems.forEach(function(item) {
+			if (item) {
+				item.setDisabled(disable);
+			}
+		});
+		return menu;
+	}
+	
+	// Disables Marketing Activities > Push Notification > Right-click menu
+	var prevPushNotificationRightClickMenu = MktDsMenu.preShowPushNotificationMenu;
+	MktDsMenu.preShowPushNotificationMenu = function(menu, attr) {
+		prevPushNotificationRightClickMenu.apply(this, arguments);
+		
+		var mItems = menu.items,
+			canvas = MktCanvas.getActiveTab(),
+			disable = attr.accessZoneId == 1
+				|| !attr.accessZoneId
+				&& canvas
+				&& canvas.config
+				&& canvas.config.accessZoneId
+				&& canvas.config.accessZoneId == 1,
+			itemsToDisable = [
+							//"pushNotificationEdit",//Edit Draft
+							"pushNotificationApprove",//Approve
+							//"pushNotificationSendSample",//Send Sample
+							"pushNotificationUnapprove",//Unapprove
+							"pushNotificationDelete",//Delete
+							"pushNotificationDraftEdit",//Edit Draft
+							"pushNotificationDraftSendSample",//Send Sample of Draft
+							"pushNotificationDraftApprove",//Approve Draft
+							//"pushNotificationDraftDiscard",//Discard Draft
+							];
+			
+		itemsToDisable.forEach(function(itemToDisable) {
+			var item = mItems.get(itemToDisable);
+			if (item) {
+				item.setDisabled(disable);
+			}
+		});
+		return menu;
+	}
+	
+	// Disable Marketing Activities > Push Notification > Action menu
+	var prevPushNotificationActionsMenu = Mkt3.controller.mobilePushNotification.MobilePushNotification.prototype.loadToolbar;
+	Mkt3.controller.mobilePushNotification.MobilePushNotification.prototype.loadToolbar = function(menu, attr) {
+		prevPushNotificationActionsMenu.apply(this, arguments);
+
+		var disable = this.getMobilePushNotification().get('zoneId') == 1,
+			mItems = Ext4.ComponentQuery.query(
+							/*"mobilePushNotification contextMenu [action=edit]," +*/ //Edit Draft
+							/*"mobilePushNotification contextMenu [action=sendSample]," +*/ //Send Sample
+							"mobilePushNotification contextMenu [action=approve]," + //Approve
+							"mobilePushNotification contextMenu [action=unapprove]," + //Unapprove
+							"mobilePushNotification contextMenu [action=clone]," + //Clone
+							"mobilePushNotification contextMenu [action=delete]," + //Delete
+							"mobilePushNotification contextMenu [action=editDraft]," + //Edit Draft
+							"mobilePushNotification contextMenu [action=sendDraftSample]," + //Send Sample of Draft
+							"mobilePushNotification contextMenu [action=approveDraft]," /*+*/ //Approve Draft
+							/*"mobilePushNotification contextMenu [action=discardDraft],"*/ //Discard Draft
+							);
+		
+		mItems.forEach(function(item) {
+			if (item) {
+				item.setDisabled(disable);
+			}
+		});
+		return menu;
+	}
+	
+	// Disables Design Studio > Landing Page Template > Right-click and Actions menus
+	var prevLandingPageTemplateMenu = MktDsMenu.preShowTemplateMenu;
+	MktDsMenu.preShowTemplateMenu = function(menu, attr) {
+		prevLandingPageTemplateMenu.apply(this, arguments);
+		
+		var mItems = menu.items,
+			canvas = MktCanvas.getActiveTab(),
+			disable = attr.accessZoneId == 1
+				|| !attr.accessZoneId
+				&& canvas
+				&& canvas.config
+				&& canvas.config.accessZoneId
+				&& canvas.config.accessZoneId == 1,
+			itemsToDisable = [
+							//"editPageTemplate",//Edit Draft
+							//"previewPageTemplate",//Preview
+							"approvePageTemplate",//Approve
+							"unapprovePageTemplate",//Unapprove
+							"clonePageTemplate",//Clone
+							"pageTemplateDelete",//Delete
+							//"pageTemplateExport",//Export
+							//"addToFavorites",//Add to Favorites
+							//"removeFromFavorites",//Remove from Favorites
+							//"editPageTemplateDraft",//Edit Draft
+							//"previewDraftPageTemplate",//Preview Draft
+							"approveDraftPageTemplate",//Approve Draft
+							//"discardDraftPageTemplate",//Discard Draft
+							];
+			
+		itemsToDisable.forEach(function(itemToDisable) {
+			var item = mItems.get(itemToDisable);
+			if (item) {
+				item.setDisabled(disable);
+			}
+		});
+		return menu;
+	}
+	
+	// Disables Design Studio > Email Template > Right-click and Actions menus
+	var prevEmailTemplateMenu = MktDsMenu.preShowEmailTemplateMenu;
+	MktDsMenu.preShowEmailTemplateMenu = function(menu, attr) {
+		prevEmailTemplateMenu.apply(this, arguments);
+		
+		var mItems = menu.items,
+			canvas = MktCanvas.getActiveTab(),
+			disable = attr.accessZoneId == 1
+				|| !attr.accessZoneId
+				&& canvas
+				&& canvas.config
+				&& canvas.config.accessZoneId
+				&& canvas.config.accessZoneId == 1,
+			itemsToDisable = [
+							//"emailTemplateEdit",//Edit Draft
+							//"emailTemplatePreview",//Preview
+							//"emailTemplateSendTest",//Send Sample
+							"emailTemplateApprove",//Approve
+							"emailTemplateUnapprove",//Unapprove
+							"emailTemplateClone",//Clone
+							"emailTemplateDelete",//Delete
+							//"addToFavorites",//Add to Favorites
+							//"removeFromFavorites",//Remove from Favorites
+							//"emailTemplateDraftEdit",//Edit Draft
+							//"emailTemplateDraftPreview",//Preview Draft
+							"emailTemplateDraftSendTest",//Send Sample of Draft
+							"emailTemplateDraftApprove",//Approve Draft
+							//"emailTemplateDraftDiscard",//Discard Draft
+							];
+			
+		itemsToDisable.forEach(function(itemToDisable) {
+			var item = mItems.get(itemToDisable);
+			if (item) {
+				item.setDisabled(disable);
+			}
+		});
+		return menu;
+	}
+	
+	// Disables Design Studio > Snippet > Right-click and Actions menus
+	var prevSnippetMenu = MktDsMenu.preShowSnippetMenu;
+	MktDsMenu.preShowSnippetMenu = function(menu, attr) {
+		prevSnippetMenu.apply(this, arguments);
+		
+		var mItems = menu.items,
+			canvas = MktCanvas.getActiveTab(),
+			disable = attr.accessZoneId == 1
+				|| !attr.accessZoneId
+				&& canvas
+				&& canvas.config
+				&& canvas.config.accessZoneId
+				&& canvas.config.accessZoneId == 1,
+			itemsToDisable = [
+							//"snippetEdit",//Edit Draft
+							//"snippetPreview",//Preview
+							"snippetApprove",//Approve
+							"snippetUnapprove",//Unapprove
+							"snippetClone",//Clone
+							"snippetDelete",//Delete
+							//"addToFavorites",//Add to Favorites
+							//"removeFromFavorites",//Remove from Favorites
+							//"snippetDraftEdit",//Edit Draft
+							//"snippetDraftPreview",//Preview Draft
+							"snippetDraftApprove",//Approve Draft
+							//"snippetDraftDiscard",//Discard Draft
+							];
+			
+		itemsToDisable.forEach(function(itemToDisable) {
+			var item = mItems.get(itemToDisable);
+			if (item) {
+				item.setDisabled(disable);
+			}
+		});
+		return menu;
+	}
+	
+	// Disables Design Studio > Image > Right-click and Actions menus
+	var prevImageMenu = MktDsMenu.preShowImageMenu;
+	MktDsMenu.preShowImageMenu = function(menu, attr) {
+		prevImageMenu.apply(this, arguments);
+		
+		var mItems = menu.items,
+			canvas = MktCanvas.getActiveTab(),
+			disable = attr.accessZoneId == 1
+				|| !attr.accessZoneId
+				&& canvas
+				&& canvas.config
+				&& canvas.config.accessZoneId
+				&& canvas.config.accessZoneId == 1,
+			itemsToDisable = [
+							"uploadImage",//Upload Image or File
+							//"grabFromWebPage",//Grab Images from Web
+							//"imagePreview",//View
+							"imageDelete",//Delete
+							"replaceImage",//Replace Image or File
+							];
+			
+		itemsToDisable.forEach(function(itemToDisable) {
+			var item = mItems.get(itemToDisable);
 			if (item) {
 				item.setDisabled(disable);
 			}
@@ -811,6 +1038,76 @@ APP.disableProgramActionsMenu = function() {
 							"deleteList",//Delete List
 							//"addToFavorites",//Add to Favorites
 							//"removeFromFavorites"//Remove from Favorites
+							];
+
+		itemsToDisable.forEach(function(itemToDisable) {
+			var item = mItems.get(itemToDisable);
+			if (item) {
+				item.setDisabled(disable);
+			}
+		});
+		return menu;
+	}
+	
+	// Disables Lead Database > Segmentation > Right-click and Actions menu
+	var prevSegmentationMenu = MktLeadDbMenu.preShowSegmentationMenu;
+	MktLeadDbMenu.preShowSegmentationMenu = function(menu, attr) {
+		prevSegmentationMenu.apply(this, arguments);
+		
+		var mItems = menu.items,
+			canvas = MktCanvas.getActiveTab(),
+			disable = menu.currNode
+					&& menu.currNode.attributes
+					&& menu.currNode.attributes.accessZoneId == 1
+					|| !menu.currNode
+					&& canvas
+					&& canvas.config
+					&& canvas.config.accessZoneId
+					&& canvas.config.accessZoneId == 1,
+			itemsToDisable = [
+							"createDraftSegmentation",//Create Draft
+							//"editSegmentation",//Edit Segments
+							"approveSegmentation",//Approve
+							"unapproveSegmentation",//Unapprove
+							"deleteSegmentation",//Delete
+							//"refreshSegmentation",//Refresh Status
+							//"editDraftSegmentation",//Edit Segments
+							"approveDraftSegmentation",//Approve Draft
+							//"discardDraftSegmentation",//Discard Draft
+							];
+
+		itemsToDisable.forEach(function(itemToDisable) {
+			var item = mItems.get(itemToDisable);
+			if (item) {
+				item.setDisabled(disable);
+			}
+		});
+		return menu;
+	}
+	
+	// Disables Lead Database > Segmentation Folder > Right-click and Actions menu
+	var prevSegmentationFolderMenu = MktLeadDbMenu.preShowSegmentationFolderMenu;
+	MktLeadDbMenu.preShowSegmentationFolderMenu = function(menu, attr) {
+		prevSegmentationFolderMenu.apply(this, arguments);
+		
+		var mItems = menu.items,
+			canvas = MktCanvas.getActiveTab(),
+			disable = menu.currNode
+					&& menu.currNode.attributes
+					&& menu.currNode.attributes.accessZoneId == 1
+					|| !menu.currNode
+					&& canvas
+					&& canvas.config
+					&& canvas.config.accessZoneId
+					&& canvas.config.accessZoneId == 1,
+			itemsToDisable = [
+							"newSegmentation",//New Segmentation
+							"share",//Share Folder
+							"createFolder",//New Folder
+							"renameFolder",//Rename Folder
+							"deleteFolder",//Delete Folder
+							"convertToArchiveFolder",//Convert To Archive Folder
+							"convertToFolder",//Convert To Folder
 							];
 
 		itemsToDisable.forEach(function(itemToDisable) {
@@ -1351,7 +1648,7 @@ if (currentUrl.search(mktoAppDomain) != -1
                     APP.limitNurturePrograms();
 
                     // Disabling New Smart Campaign, New Local Asset, New Folder, and Delete
-                    APP.disableProgramActionsMenu();
+                    APP.disableMenus();
                 } 
                 else if (currUrlFragment.search("^" + mktoLandingPageDesignerFragment) != -1) {
                     console.log("Marketo App > Location: Landing Page Designer");
