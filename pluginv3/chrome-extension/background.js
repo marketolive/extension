@@ -177,12 +177,30 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 			name : "color",
 			value : request.color,
 			domain : ".marketolive.com"
-		};
+		},
+        cookieLogo = {
+            url : "http://www.marketodesigner.com/*",
+			name : "logo",
+			value : request.logo,
+			domain : ".marketodesigner.com"
+        },
+        cookieLogoMarketoLive = {
+            url : "http://marketolive.com/*",
+			name : "logo",
+			value : request.logo,
+			domain : ".marketolive.com"
+        };
 		chrome.cookies.set(cookieColor, function() {
-            console.log("Background > Setting: Colorscheme Cookie "+cookieColor);
+            console.log("Background > Setting: Colorscheme Cookie " + cookieColor);
         });
         chrome.cookies.set(cookieColorMarketoLive, function() {
-            console.log("Background > Setting: MarketoLive Colorscheme Cookie "+cookieColor);
+            console.log("Background > Setting: MarketoLive Colorscheme Cookie " + cookieColor);
+        });
+        chrome.cookies.set(cookieLogo, function() {
+            console.log("Background > Setting: Marketo Logo Cookie " + cookieLogo);
+        });
+        chrome.cookies.set(cookieLogoMarketoLive, function() {
+            console.log("Background > Setting: MarketoLive Logo Cookie " + cookieLogo);
         });
     }
 });

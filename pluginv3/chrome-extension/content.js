@@ -232,25 +232,31 @@ window.onload = function() {
 		}
     }
 	
-    else if (currentUrl.search(customCompanyLandingPage106Fragment) != -1
-    || currentUrl.search(customCompanyLandingPage106aFragment) != -1
-    || currentUrl.search(customCompanyLandingPage106bFragment) != -1
-    || currentUrl.search(customCompanyLandingPagePreview106Fragment) != -1
-    || currentUrl.search(customCompanyLandingPagePreview106aFragment) != -1
-    || currentUrl.search(customCompanyLandingPagePreview106bFragment) != -1
-    || currentUrl.search(customCompanyEmail106Fragment) != -1
-    || currentUrl.search(customCompanyEmail106aFragment) != -1
-    || currentUrl.search(customCompanyEmail106bFragment) != -1
-    || currentUrl.search(form106Fragment) != -1
-    || currentUrl.search(form106aFragment) != -1
-    || currentUrl.search(form106bFragment) != -1
-    || currentUrl.search(push106Fragment) != -1
-    || currentUrl.search(push106aFragment) != -1
-    || currentUrl.search(push106bFragment) != -1) {
+    else if (currentUrl.search(mktoDesignerDomain) != -1
+	|| currentUrl.search(mktoWizard) != -1) {
         console.log("Content > Location: Designer/Wizard");
-		
+        
         loadScript(APP_SCRIPT_LOCATION);
-		Analyzer.prototype.showAssets();
+        
+        if (currentUrl.search(customCompanyLandingPage106Fragment) != -1
+        || currentUrl.search(customCompanyLandingPage106aFragment) != -1
+        || currentUrl.search(customCompanyLandingPage106bFragment) != -1
+        || currentUrl.search(customCompanyLandingPagePreview106Fragment) != -1
+        || currentUrl.search(customCompanyLandingPagePreview106aFragment) != -1
+        || currentUrl.search(customCompanyLandingPagePreview106bFragment) != -1
+        || currentUrl.search(customCompanyEmail106Fragment) != -1
+        || currentUrl.search(customCompanyEmail106aFragment) != -1
+        || currentUrl.search(customCompanyEmail106bFragment) != -1
+        || currentUrl.search(form106Fragment) != -1
+        || currentUrl.search(form106aFragment) != -1
+        || currentUrl.search(form106bFragment) != -1
+        || currentUrl.search(push106Fragment) != -1
+        || currentUrl.search(push106aFragment) != -1
+        || currentUrl.search(push106bFragment) != -1) {
+            console.log("Content > Location: Asset with Nav Bar");
+            
+            Analyzer.prototype.showAssets();
+        }
     }
 	
     else if (currentUrl.search(mktoColorPicker) != -1) {
@@ -260,11 +266,13 @@ window.onload = function() {
             incorrect = document.getElementById('incorrect');
 
         correct.onclick = function() {
-            var cookieColor = document.getElementById("cookie-color").innerHTML;
+            var cookieColor = document.getElementById("cookie-color").innerHTML,
+                cookieLogo = document.getElementById("cookie-logo").innerHTML;
 
             chrome.runtime.sendMessage({
                 action: "setColorCookie",
-                color: cookieColor
+                color: cookieColor,
+                logo: cookieLogo
             }, function(response) {
                 console.log("Content > Received Response from Background Color Cookie Request: " + response);
             });

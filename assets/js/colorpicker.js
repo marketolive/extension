@@ -45,4 +45,6 @@ img.onload = function() {
     colorSet = colorThief.getPalette(img, 2)[1];
     document.getElementById("cookie-color").innerHTML = 'rgb(' + colorSet[0] + ',' + colorSet[1] + ',' + colorSet[2] + ')';
     console.log("Color Picker > The Secondary Color is: " + colorSet);
+    document.getElementById("cookie-logo").innerHTML = img.src;
+    console.log("Color Picker > The Logo is: " + img.src);
 }

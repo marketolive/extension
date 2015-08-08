@@ -1156,6 +1156,45 @@ APP.overlayLandingPageDesigner = function() {
     }, 0);
 }
 
+APP.getEmailIds = function (pod) {
+    var emIds = [];
+    switch (pod) {
+        case "app-sjp":
+            // DIY Design
+            emIds.push(15464);
+            // Intelligent Nurturing
+            emIds.push(12818, 12820, 12819, 12816, 12811, 12815, 12812, 12821, 12813, 12814, 12817, 12823);
+            // Replicate Success Roadshow
+            emIds.push(10010, 10179, 10180, 12845, 10181, 10182, 10183, 10184);
+            // Replicate Success Webinar
+            emIds.push(4894, 3764, 3765, 3767, 3766, 3762);
+            break;
+        case "app-ab07":
+            // DIY Design
+            emIds.push(14240);
+            // Intelligent Nurturing
+            emIds.push(10171, 10173, 10172, 10169, 9957, 9974, 9968, 10174, 9972, 9973, 10170, 9962);
+            // Replicate Success Roadshow
+            emIds.push(10010, 10179, 10180, 10181, 10182, 10183, 10184);
+            // Replicate Success Webinar
+            emIds.push(4894, 3764, 3765, 3767, 3766, 3762);
+            break;
+        case "app-ab08":
+            // DIY Design
+            emIds.push(13924);
+            // Intelligent Nurturing
+            emIds.push(12818, 12820, 12819, 12816, 12811, 12815, 12812, 12821, 12813, 12814, 12817, 12823);
+            // Replicate Success Roadshow
+            emIds.push(10010, 10179, 10180, 12845, 10181, 10182, 10183, 10184);
+            // Replicate Success Webinar
+            emIds.push(4894, 3764, 3765, 3767, 3766, 3762);
+            break;
+        default:
+            console.error("Marketp App > Invalid: User Pod in getEmailIds()");
+            break;
+    }
+}
+
 /**************************************************************************************
  *
  *  Main
@@ -1252,9 +1291,9 @@ if (currentUrl.search(mktoAppDomain) != -1
 
                     // Setting the asset draft IDs to discard
                     var lpIds = {},
-                        emIds = [],
                         formIds = [],
-                        pushIds = [];
+                        pushIds = [],
+                        emIds = APP.getEmailIds(pod.id);
                     switch (accountString) {
                         case "mktodemoaccount106":
                             // Custom Landing Page
@@ -1264,7 +1303,7 @@ if (currentUrl.search(mktoAppDomain) != -1
                             // Responsive Landing Page
                             lpIds["dpageid_11291"] = "dpageid_11291";
                             // Custom Company Email and Legacy Email
-                            emIds.push(15464);
+                            emIds.push(15464, 9819, );
                             // DIY Design and Replicate Success Forms
                             formIds.push(2892, 1749, 1900);  
                             // DIY Design and Mobile Engagement Push Notifications 
