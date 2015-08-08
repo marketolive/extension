@@ -1157,6 +1157,8 @@ APP.overlayLandingPageDesigner = function() {
 }
 
 APP.getEmailIds = function (pod) {
+    console.log("Marketo App > Getting Email Ids for Pod: " + pod);
+    
     var emIds = [];
     switch (pod) {
         case "app-sjp":
@@ -1193,6 +1195,7 @@ APP.getEmailIds = function (pod) {
             console.error("Marketp App > Invalid: User Pod in getEmailIds()");
             break;
     }
+    return emIds;
 }
 
 /**************************************************************************************
