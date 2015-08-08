@@ -1302,8 +1302,6 @@ if (currentUrl.search(mktoAppDomain) != -1
                             lpIds["dpageid_8703"] = "dpageid_8703";
                             // Responsive Landing Page
                             lpIds["dpageid_11291"] = "dpageid_11291";
-                            // Custom Company Email and Legacy Email
-                            emIds.push(15464, 9819, );
                             // DIY Design and Replicate Success Forms
                             formIds.push(2892, 1749, 1900);  
                             // DIY Design and Mobile Engagement Push Notifications 
@@ -1316,8 +1314,6 @@ if (currentUrl.search(mktoAppDomain) != -1
                             lpIds["dpageid_8703"] = "dpageid_8703";
                             // Responsive Landing Page
                             lpIds["dpageid_10454"] = "dpageid_10454";
-                            // Custom Company Email
-                            emIds.push(14240);
                             // DIY Design and Replicate Success Forms
                             formIds.push(2532, 1749, 1900);  
                             // DIY Design and Mobile Engagement Push Notifications 
@@ -1330,7 +1326,6 @@ if (currentUrl.search(mktoAppDomain) != -1
                             lpIds["dpageid_10760"] = "dpageid_10760";
                             // Responsive Landing Page
                             lpIds["dpageid_10762"] = "dpageid_10762";
-                            emIds.push(13924);
                             // DIY Design and Replicate Success Forms
                             formIds.push(2472, 1749, 1900);  
                             // DIY Design and Mobile Engagement Push Notifications 

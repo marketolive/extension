@@ -191,16 +191,16 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 			domain : ".marketolive.com"
         };
 		chrome.cookies.set(cookieColor, function() {
-            console.log("Background > Setting: Colorscheme Cookie " + cookieColor);
+            console.log("Background > Setting: Colorscheme Cookie " + cookieColor["value"]);
         });
         chrome.cookies.set(cookieColorMarketoLive, function() {
-            console.log("Background > Setting: MarketoLive Colorscheme Cookie " + cookieColor);
+            console.log("Background > Setting: MarketoLive Colorscheme Cookie " + cookieColor["value"]);
         });
         chrome.cookies.set(cookieLogo, function() {
-            console.log("Background > Setting: Marketo Logo Cookie " + cookieLogo);
+            console.log("Background > Setting: Marketo Logo Cookie " + cookieLogo["value"]);
         });
         chrome.cookies.set(cookieLogoMarketoLive, function() {
-            console.log("Background > Setting: MarketoLive Logo Cookie " + cookieLogo);
+            console.log("Background > Setting: MarketoLive Logo Cookie " + cookieLogo["value"]);
         });
     }
 });
