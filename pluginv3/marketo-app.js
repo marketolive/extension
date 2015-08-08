@@ -1638,6 +1638,7 @@ if (currentUrl.search(mktoAppDomain) != -1
                     }
                     var canDiscardDrafts = window.setInterval(function () {
                         if (typeof(mktLPLManager) !== "undefined") {
+                            window.clearInterval(canDiscardDrafts);
                             // DIY Design (Landing Pages)
                             APP.discardLandingPageDrafts(lpIds);
                             // DIY Design (Email)
