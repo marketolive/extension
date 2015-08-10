@@ -1611,7 +1611,7 @@ if (currentUrl.search(mktoAppDomain) != -1
                             break;
                         case "mktodemoaccount106a":
                             // Custom Landing Page
-                            lpIds["dpageid_11381"] = "dpageid_11381";
+                            lpIds["dpageid_10672"] = "dpageid_10672";
                             // Landing Page
                             lpIds["dpageid_8703"] = "dpageid_8703";
                             // Responsive Landing Page
