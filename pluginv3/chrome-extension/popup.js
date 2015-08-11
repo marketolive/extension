@@ -13,29 +13,34 @@
 console.log("Popup > Running");
 
 window.onload = function() {
+    
+    // This is a strange idiosyncrasy with chrome plugins. You cannot directly reference the local
+    // folders without hard-coding the unique id of the plugin, which may potentially change. This is
+    // the alternative to using <img src="whatever">
+    document.getElementById("logo-size").src = chrome.extension.getURL("images/marketo-live-image-purp.png");
+    document.getElementById("gear-size").src = chrome.extension.getURL("images/popupsettings.png");
+    document.getElementById("toggle").src = chrome.extension.getURL("images/toggle-on.png");
+    document.getElementById("rtp").src = chrome.extension.getURL("images/rtp-image.png");
+    document.getElementById("ecommerce").src = chrome.extension.getURL("images/shopping-cart-purple.png");
+    document.getElementById("mobile-moments").src = chrome.extension.getURL("images/marketo_moments.png");
+    document.getElementById("mobile-engagement").src = chrome.extension.getURL("images/mobile_engagement.png");
+    document.getElementById("mobile-msi").src = chrome.extension.getURL("images/mobile_msi.png");
+    document.getElementById("event-check-in").src = chrome.extension.getURL("images/marketoball.png");
+    document.getElementById('toggle').src = chrome.extension.getURL("images/toggle-on.png");
+    
 	var URL_PATH = "m3",
         background = chrome.extension.getBackgroundPage(),
-	    priv = "true",
+	    priv = true,
         tags = document.getElementsByClassName("link"),
+        companyForm = document.getElementById("company-form"),
+        company = document.getElementById("name-entered"),
 		submit = document.getElementById('company-submit'),
 		toggle = document.getElementById('option-toggle'),
 		clear = document.getElementById('clear-submit'),
 		settings = document.getElementById('settings'),
+        settingsOpen = false,
 		close = document.getElementById('close'),
 		data = {'company' : 'turner'};
-	
-	chrome.storage.sync.get(["editPrivileges"], function(storage) {
-		console.log("storage.editPrivileges = " + storage.editPrivileges);
-		var editPriv = storage.editPrivileges;
-		if (typeof(editPriv) == "undefined") {
-			priv = "true";
-			background.savePriv({"editPrivileges" : "true"});
-		}
-		else {
-			priv = editPriv;
-		}
-		console.log(editPriv);
-	});
 	
 	// getElementsByClassName() returns an array, so the click
 	// listener needs to be added to each one individually.
@@ -46,20 +51,14 @@ window.onload = function() {
 	}
 
 	settings.onclick = function() {
-		document.getElementById('settings-container').style.display = "block";
-		document.getElementById('status').style.display = "block";
-		if (priv == "true") {
-			document.getElementById('toggle').src = "https://marketolive.com/"+URL_PATH+"/assets/img/toggle-on.png";
-			document.getElementById('button-display').style.display = "inline-block";
-		}
-		else if (priv == "false") {
-			document.getElementById('toggle').src = "https://marketolive.com/"+URL_PATH+"/assets/img/toggle-off.png";
-			document.getElementById('button-display').style.display = "inline-block";
-		}
-	}
-
-	close.onclick = function() {
-		document.getElementById('settings-container').style.display = "none";
+        if (!settingsOpen) {
+            settingsOpen = true;
+            document.getElementById('settings-container').style.display = "block";
+        }
+        else {
+            settingsOpen = false;
+            document.getElementById('settings-container').style.display = "none";
+        }
 	}
 
 	clear.onclick = function() {
@@ -68,22 +67,29 @@ window.onload = function() {
         document.getElementById('settings-container').style.display = "none";
 	}
 	
-	submit.onclick = function() {
-		if (document.querySelector('#name-entered').value != "") {
-			background.submitCompany({'company': document.querySelector('#name-entered').value});
-		}
-		else {
-			console.log("Popup > Error: Submitting Company");
-        }
-   }
-   
+    companyForm.submit(function () {
+        console.log("submitted");
+       window.open(companyForm.action+"?company="+company.value); 
+    });
+    
+//	submit.onclick = function() {
+//		if (document.querySelector('#name-entered').value != "") {
+//			background.submitCompany({'company': document.querySelector('#name-entered').value});
+//		}
+//		else {
+//			console.log("Popup > Error: Submitting Company");
+//        }
+//   }
+    
    toggle.onclick = function() {
-		if (priv == "true") {
-			document.getElementById('toggle').src = "https://marketolive.com/"+URL_PATH+"/assets/img/toggle-off.png";
+		if (priv) {
+            priv = false;
+			document.getElementById('toggle').src = chrome.extension.getURL("images/toggle-off.png");
 			background.savePriv({'editPrivileges' : "false"});
 		}
-		else if (priv == "false") {
-			document.getElementById('toggle').src = "https://marketolive.com/"+URL_PATH+"/assets/img/toggle-on.png";
+		else {
+            priv = true;
+			document.getElementById('toggle').src = chrome.extension.getURL("images/toggle-on.png");
 			background.savePriv({'editPrivileges' : "true"});
 		}
 	}

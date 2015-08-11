@@ -59,7 +59,7 @@ var currentUrl = window.location.href,
  **************************************************************************************/
 
 APP.getCookie = function(cookieField) {
-    console.log("Marketo App > Getting: Cookie");
+    console.log("Marketo App > Getting: Cookie "+cookieField);
 
     var name = cookieField + "=",
         cookies = document.cookie.split(';'),
