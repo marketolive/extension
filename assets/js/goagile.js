@@ -1,12 +1,6 @@
 $(window).resize(function() {
     var windowHeight = $(window).height();
-    $('#main-body').css({
-        'height': windowHeight
-    });
-    $('#partdeux').css({
-        'height': windowHeight
-    });
-    $('#parttrois').css({
+    $('#main-body, #partdeux, #parttrois').css({
         'height': windowHeight
     });
 
@@ -30,13 +24,7 @@ $(window).resize(function() {
 $(document).ready(function() {
     var windowHeight = $(window).height();
     //console.log(windowHeight);
-    $('#main-body').css({
-        'height': windowHeight
-    });
-    $('#partdeux').css({
-        'height': windowHeight
-    });
-    $('#parttrois').css({
+    $('#main-body, #partdeux, #parttrois').css({
         'height': windowHeight
     });
     var updateHeight = function(ele) {

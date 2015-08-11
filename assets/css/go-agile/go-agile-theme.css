@@ -1,0 +1,81 @@
+.body-background {
+  width: 100%;
+  height: 100%;
+  background: url('../../img/marketolivemain.png') no-repeat center center fixed;
+  background-repeat: no-repeat;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  z-index: -5;
+}
+.live-option{
+  background-color: #fff;
+}
+.live-words-container{
+  font-size: 16px;
+  color: #fff;
+  background-color: #5a54a4;
+  text-transform: uppercase;
+  font-weight: 200;
+}
+.diy-design{
+  width: 100%;
+  height: 150px;
+  background: url('../../img/diy-design-guide-option-img-purp.png');
+  background-size: 150px;
+}
+.diy-design:hover{
+  background: url('../../img/diy-design-guide-option-img-orange.png');
+  background-size: 150px; 
+}
+.powerful-automation{
+  width: 100%;
+  height: 150px;
+  background: url('../../img/powerful-automation-guide-option-img-purp.png');
+  background-size: 150px;
+}
+.powerful-automation:hover{
+  background: url('../../img/powerful-automation-guide-option-img-orange.png');
+  background-size: 150px; 
+}
+.intelligent-nurturing{
+  width: 100%;
+  height: 150px;
+  background: url('../../img/intelligent-nurturing-guide-option-img-purp.png');
+  background-size: 150px;
+}
+.intelligent-nurturing:hover{
+  background: url('../../img/intelligent-nurturing-guide-option-img-orange.png');
+  background-size: 150px; 
+}
+.actionable-insight{
+  width: 100%;
+  height: 150px;
+  background: url('../../img/actionable-insight-guide-option-img-purp.png');
+  background-size: 150px;
+}
+.actionable-insight:hover{
+  background: url('../../img/actionable-insight-guide-option-img-orange.png');
+  background-size: 150px; 
+}
+.marketing-roi{
+  width: 100%;
+  height: 150px;
+  background: url('../../img/marketing-roi-guide-option-img-purp.png');
+  background-size: 150px;
+}
+.marketing-roi:hover{
+  background: url('../../img/marketing-roi-guide-option-img-orange.png');
+  background-size: 150px; 
+}
+.replicate-success{
+  width: 100%;
+  height: 150px;
+  background: url('../../img/replicate-success-guide-option-img-purp.png');
+  background-size: 150px;
+}
+.replicate-success:hover{
+  background: url('../../img/replicate-success-guide-option-img-orange.png');
+  background-size: 150px; 
+}

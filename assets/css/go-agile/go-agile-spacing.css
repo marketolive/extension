@@ -1,0 +1,79 @@
+.main-body-options{
+  width: 100%;
+}
+.main-body-container{
+  text-align: center;
+}
+.inner-container{
+  margin: 0 auto; 
+  height: 100px;
+}
+.title-img{
+  width: 145px;
+}
+.live-option{
+  width: 150px;
+  border-radius: 150px;
+  cursor: pointer;
+  height: 150px;
+  margin: 0 auto;
+  display: inline-block;
+}
+.title-container{
+  width: 100%;
+  height: 60px;
+  position: fixed;
+  min-width: 900px;
+  text-align: center;
+  top: 75px;
+}
+.live-option-container{
+  width: 300px;
+  height: 180px;
+  float: left;
+}
+.section-up{
+  height: 50px;
+  width: 100%;
+  margin-bottom: 20px;
+}
+.section-down{
+  height: 50px;
+  width: 100%;
+  margin-top: 20px;
+}
+.marketo-live-option{
+  width: 140px;
+}
+.live-words-container{
+  width: 225px;
+  padding-top: 12px;
+  height: 35px;
+  position: relative;
+  z-index: 8;
+  margin: 0 auto;
+  margin-top: -30px;
+}
+.extra-margin-top{
+  margin-top: 50px;
+}
+.section-container{
+  display: inline-block;
+}
+.arrow{
+  text-align: center;
+  height: 40px;
+}
+.part-deux{
+  margin-top: 200px;
+}
+.main-body-inner-container{
+  margin: 0 auto;
+  width: 900px;
+}
+#partdeux{
+  padding: 200px 0;
+}
+#main-body{
+  padding-top: 200px;
+}

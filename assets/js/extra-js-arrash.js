@@ -242,24 +242,6 @@ $( document ).ready(function() {
   $('#marketo-live-home').animate({'top' : '10%'}, 600);
   $('#marketo-live-home-option').animate({'margin-bottom' : '5%'}, 600);
   	
-	$("#help-link").click(function(){
-		var bkg = document.getElementsByClassName('help-cover');
-		var container = document.getElementsByClassName('help-center-container');
-		var centerbox = document.getElementsByClassName('help-center-box');
-		$(centerbox).animate({
-    	'margin-top': '125px',
-  		}, 400, function() {
-  	});
-		$(bkg).css('display','block');
-		$(container).css('display','block');
-	});
-	
-	$('.cancel-help').click(function(){
-		var bkg = document.getElementsByClassName('help-cover');
-		var container = document.getElementsByClassName('help-center-container');
-		$(bkg).css('display','none');
-		$(container).css('display','none');
-	});
 
 	$('.subscription-drop-down-container').click(function(){
 		var bkg = document.getElementsByClassName('subscription-drop-down-container');

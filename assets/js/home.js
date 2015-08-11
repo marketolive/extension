@@ -1,4 +1,6 @@
 $(document).ready(function(){
+  $('.main-logo').animate({'top' : '10%'}, 600);
+  $('.home-page-option-container').animate({'margin-bottom' : '5%'}, 600);
   document.getElementById('home-main-body-0').style.display = 'block';
   setInterval(function(){
     if(document.getElementById('home-main-body-0').style.display == 'block'){    
