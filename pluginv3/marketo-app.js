@@ -1622,10 +1622,8 @@ if (currentUrl.search(mktoAppDomain) != -1
                             pushIds.push(29, 26); 
                             break;
                         case "mktodemoaccount106b":
-                            // Custom Landing Page
-                            lpIds["dpageid_11381"] = "dpageid_11381";
                             // Landing Page
-                            lpIds["dpageid_10760"] = "dpageid_10760";
+                            lpIds["dpageid_10760"] = "dpageid_10768";
                             // Responsive Landing Page
                             lpIds["dpageid_10762"] = "dpageid_10762";
                             // DIY Design and Replicate Success Forms
