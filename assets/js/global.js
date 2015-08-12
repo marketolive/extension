@@ -1,11 +1,6 @@
 $( document ).ready(function() {
   var x = 0;
-  $("#help-link").click(function(){
-/*
-    var bkg = document.getElementsByClassName('help-cover');
-    var container = document.getElementsByClassName('help-center-container');
-    var centerbox = document.getElementsByClassName('help-center-box');
-*/
+  $("#help-link, #sidebar-help").click(function(){
     $('.help-center-box').animate({
       'margin-top': '125px',
       }, 400, function() {
@@ -15,10 +10,6 @@ $( document ).ready(function() {
   });
   
   $('.cancel-help').click(function(){
-/*
-    var bkg = document.getElementsByClassName('help-cover');
-    var container = document.getElementsByClassName('help-center-container');
-*/
     $('.help-cover').css('display','none');
     $('.help-center-container').css('display','none');
   });

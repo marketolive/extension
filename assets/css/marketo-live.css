@@ -19,6 +19,7 @@
 	width: 800px;
 	margin: 25px auto 0px auto; 
 	display: inline-block;
+	font-weight: 200;
 }
 
 #android-background{
@@ -1014,7 +1015,6 @@ header{
 	font-weight: 100;
 }
 #android-time{
-	font-family: "Roboto";
 	font-size: 72px;
 }
 #android-date{
@@ -1023,11 +1023,12 @@ header{
 }
 .input-body{
 	margin-top: 10px;
-	width: 100%;
+	width: 95%;
 	height: 45px;
 	background-color: #f2f2f2;
 	border: none;
 	border-bottom: 1px solid #c2c2c2;
+	font-size: 18px;
 }
 #push-words-container{
 	position: absolute;

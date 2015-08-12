@@ -181,10 +181,10 @@ body {
 .side-bar{
   height: 100%;
   width: 200px;
-  /*background-color: #fff; */
   opacity: .75;
   position: fixed;
   z-index: 999;
+  text-align: left;
 }
 .side-bar-ball{
   width: 100%;
@@ -226,4 +226,7 @@ body {
 }
 a {
   text-decoration: none;
+}
+.pointer{
+  cursor: pointer;
 }

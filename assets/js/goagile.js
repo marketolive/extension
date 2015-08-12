@@ -23,6 +23,11 @@ $(window).resize(function() {
 });
 
 $(document).ready(function() {
+    $('.main-body-options').click(function(){
+        x = 0;
+        $('.side-bar').css('background-color','transparent');
+        $('.side-bar-inner-container').css('display','none');  
+    });
     var windowHeight = $(window).height();
     //console.log(windowHeight);
     $('#main-body, #partdeux, #parttrois').css({
