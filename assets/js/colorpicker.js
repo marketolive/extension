@@ -1,7 +1,7 @@
 var getCompany = function(cookieField) {
-        console.log("Content > Getting: Cookie");
+        console.log("Content > Getting: Company Name");
 
-        var params = window.location.href.split("?"),
+        var params = window.location.href.split("?")[1],
             params = params.split("&"),
             paramPair,
             paramName,
@@ -12,7 +12,12 @@ var getCompany = function(cookieField) {
             paramPair = params[ii].split("=");
             paramName = paramPair[0];
             paramValue = paramPair[1];
+            
+            if (paramName == "company") {
+                return paramValue;
+            }
         }
+        return "turner";
     },
 
     reload = location.search.split('reloaded=')[1],
