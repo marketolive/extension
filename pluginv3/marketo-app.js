@@ -1431,7 +1431,7 @@ APP.overlayLandingPageDesigner = function() {
     
     if (company != "turner"
     && company != null) {
-        logo = "https://logo.clearbit.com/" + company;
+        logo = APP.getCookie("logo");
         companyName = company.substring(0, company.indexOf("."));
     }
 
