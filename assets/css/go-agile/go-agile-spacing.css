@@ -11,6 +11,9 @@
 .title-img{
   width: 145px;
 }
+.dialog-img{
+  width: 200px;
+}
 .live-option{
   width: 150px;
   border-radius: 150px;
@@ -71,9 +74,13 @@
   margin: 0 auto;
   width: 900px;
 }
-#partdeux{
+#partdeux, #parttrois{
   padding: 200px 0;
 }
 #main-body{
   padding-top: 200px;
+}
+.image-sizing{
+  height: 150px;
+  width: 100%;
 }

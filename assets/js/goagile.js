@@ -21,12 +21,42 @@ $(window).resize(function() {
     updateHeight('partdeux', '50');
     updateHeight('parttrois', '50');
 });
+
 $(document).ready(function() {
     var windowHeight = $(window).height();
     //console.log(windowHeight);
     $('#main-body, #partdeux, #parttrois').css({
         'height': windowHeight
     });
+    $("#first-down, #second-up, #second-down, #third-up").click(function(e) {
+        if(e.currentTarget.id == "first-down" || e.currentTarget.id == "third-up"){
+            $('html, body').animate({
+                scrollTop: $("#partdeux").offset().top
+            }, 600);
+        }
+        else if(e.currentTarget.id == "second-up"){
+            $('html, body').animate({
+                scrollTop: $("#main-body").offset().top
+            }, 600);            
+        }
+        else{
+            $('html, body').animate({
+                scrollTop: $("#parttrois").offset().top
+            }, 600);   
+        }
+    });
+
+    $(".image-sizing").hover(
+        function(e) {
+            var ele = this.id + "-words";
+            $(ele).css('color','rgb(247, 151, 51)');
+        },
+        function(e) {
+            var ele = this.id + "-words";
+            $(ele).css('color','#5a54a4');
+        }
+    );
+
     var updateHeight = function(ele) {
         ele = '#' + ele;
         var thirdHeight = $(window).height() * 1 / 3;
@@ -43,4 +73,6 @@ $(document).ready(function() {
     updateHeight('main-body');
     updateHeight('partdeux');
     updateHeight('parttrois');
+
+
 });

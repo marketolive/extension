@@ -9,6 +9,17 @@
   background-size: cover;
   z-index: -5;
 }
+.body-background-dialog {
+  width: 100%;
+  height: 100%;
+  background: url('../../img/dialog-bkg.jpg') no-repeat center center fixed;
+  background-repeat: no-repeat;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  z-index: -5;
+}
 .live-option{
   background-color: #fff;
 }
@@ -20,8 +31,6 @@
   font-weight: 200;
 }
 .diy-design{
-  width: 100%;
-  height: 150px;
   background: url('../../img/diy-design-guide-option-img-purp.png');
   background-size: 150px;
 }
@@ -30,8 +39,6 @@
   background-size: 150px; 
 }
 .powerful-automation{
-  width: 100%;
-  height: 150px;
   background: url('../../img/powerful-automation-guide-option-img-purp.png');
   background-size: 150px;
 }
@@ -40,8 +47,6 @@
   background-size: 150px; 
 }
 .intelligent-nurturing{
-  width: 100%;
-  height: 150px;
   background: url('../../img/intelligent-nurturing-guide-option-img-purp.png');
   background-size: 150px;
 }
@@ -50,8 +55,6 @@
   background-size: 150px; 
 }
 .actionable-insight{
-  width: 100%;
-  height: 150px;
   background: url('../../img/actionable-insight-guide-option-img-purp.png');
   background-size: 150px;
 }
@@ -60,8 +63,6 @@
   background-size: 150px; 
 }
 .marketing-roi{
-  width: 100%;
-  height: 150px;
   background: url('../../img/marketing-roi-guide-option-img-purp.png');
   background-size: 150px;
 }
@@ -70,12 +71,90 @@
   background-size: 150px; 
 }
 .replicate-success{
-  width: 100%;
-  height: 150px;
   background: url('../../img/replicate-success-guide-option-img-purp.png');
   background-size: 150px;
 }
 .replicate-success:hover{
   background: url('../../img/replicate-success-guide-option-img-orange.png');
+  background-size: 150px; 
+}
+.search-optimization{
+  background: url('../../img/search-optimization-guide-option-img-purp.png');
+  background-size: 150px;
+}
+.search-optimization:hover{
+  background: url('../../img/search-optimization-guide-option-img-orange.png');
+  background-size: 150px; 
+}
+.personalization{
+  background: url('../../img/personalization-guide-option-img-purp.png');
+  background-size: 150px;
+}
+.personalization:hover{
+  background: url('../../img/personalization-guide-option-img-orange.png');
+  background-size: 150px; 
+}
+.calendar{
+  background: url('../../img/calendar-guide-option-img-purp.png');
+  background-size: 150px;
+}
+.calendar:hover{
+  background: url('../../img/calendar-guide-option-img-orange.png');
+  background-size: 150px; 
+}
+.funnel-analysis{
+  background: url('../../img/funnel-analysis-guide-option-img-purp.png');
+  background-size: 150px;
+}
+.funnel-analysis:hover{
+  background: url('../../img/funnel-analysis-guide-option-img-orange.png');
+  background-size: 150px; 
+}
+.email-deliverability{
+  background: url('../../img/email-deliverability-guide-option-img-purp.png');
+  background-size: 150px;
+}
+.email-deliverability:hover{
+  background: url('../../img/email-deliverability-guide-option-img-orange.png');
+  background-size: 150px; 
+}
+.flexible-reporting{
+  background: url('../../img/flexible-reporting-guide-option-img-purp.png');
+  background-size: 150px;
+}
+.flexible-reporting:hover{
+  background: url('../../img/flexible-reporting-guide-option-img-orange.png');
+  background-size: 150px; 
+}
+.marketo-moments{
+  background: url('../../img/marketo-moments-guide-option-img-purp.png');
+  background-size: 150px;
+}
+.marketo-moments:hover{
+  background: url('../../img/marketo-moments-guide-option-img-orange.png');
+  background-size: 150px; 
+}
+.mobile-sales-insight{
+  background: url('../../img/mobile-sales-insight-guide-option-img-purp.png');
+  background-size: 150px;
+}
+.mobile-sales-insight:hover{
+  background: url('../../img/mobile-sales-insight-guide-option-img-orange.png');
+  background-size: 150px; 
+}
+.mobile-engagement{
+  background: url('../../img/mobile-engagement-guide-option-img-purp.png');
+  background-size: 150px;
+}
+.mobile-engagement:hover{
+  background: url('../../img/mobile-engagement-guide-option-img-orange.png');
+  background-size: 150px; 
+}
+.adbridge{
+  background: url('../../img/adbridge-guide-option-img-purp.png');
+  background-size: 150px;
+}
+.adbridge:hover{
+  background: url('../../img/adbridge-guide-option-img-orange.png');
   background-size: 150px; 
 }
