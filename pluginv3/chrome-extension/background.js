@@ -86,9 +86,9 @@ function savePriv(data) {
     });
 	chrome.storage.sync.set(data, function() {});
 	chrome.tabs.query({url : "*://*.marketo.com/*"}, function(tabs) {
-            for (var ii=0; ii<tabs.length; ++ii) {
-                chrome.tabs.reload(tabs[ii].id);
-            }
+        for (var ii=0; ii<tabs.length; ++ii) {
+            chrome.tabs.reload(tabs[ii].id);
+        }
 	});
 }
 

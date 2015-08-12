@@ -13,7 +13,7 @@
 console.log("Popup > Running");
 
 window.onload = function() {
-    
+
     // This is a strange idiosyncrasy with chrome plugins. You cannot directly reference the local
     // folders without hard-coding the unique id of the plugin, which may potentially change. This is
     // the alternative to using <img src="whatever">
@@ -27,70 +27,81 @@ window.onload = function() {
     document.getElementById("mobile-msi").src = chrome.extension.getURL("images/mobile_msi.png");
     document.getElementById("event-check-in").src = chrome.extension.getURL("images/marketoball.png");
     document.getElementById('toggle').src = chrome.extension.getURL("images/toggle-on.png");
-    
-	var URL_PATH = "m3",
-        background = chrome.extension.getBackgroundPage(),
-	    priv = true,
-        tags = document.getElementsByClassName("link"),
-        companyForm = document.getElementById("company-form"),
-        company = document.getElementById("name-entered"),
-		submit = document.getElementById('company-submit'),
-		toggle = document.getElementById('option-toggle'),
-		clear = document.getElementById('clear-submit'),
-		settings = document.getElementById('settings'),
-        settingsOpen = false,
-		close = document.getElementById('close'),
-		data = {'company' : 'turner'};
-	
-	// getElementsByClassName() returns an array, so the click
-	// listener needs to be added to each one individually.
-	for (var ii = 0; ii < tags.length; ++ii) {
-		tags[ii].onclick = function () {
-			chrome.tabs.create({ url: this.href, selected : true });
-       }
-	}
 
-	settings.onclick = function() {
+    var URL_PATH = "m3",
+        background = chrome.extension.getBackgroundPage(),
+        priv = true,
+        tags = document.getElementsByClassName("link"),
+        company = document.getElementById("name-entered"),
+        submit = document.getElementById('company-submit'),
+        toggle = document.getElementById('option-toggle'),
+        clear = document.getElementById('clear-submit'),
+        settings = document.getElementById('settings'),
+        settingsOpen = false,
+        close = document.getElementById('close'),
+        data = {
+            'company': 'turner'
+        },
+        goToColorPicker = function(parameter) {
+            window.open("https://marketolive.com/m3/apps/color-picker.html?company=" + parameter);
+        }
+
+    // getElementsByClassName() returns an array, so the click
+    // listener needs to be added to each one individually.
+    for (var ii = 0; ii < tags.length; ++ii) {
+        tags[ii].onclick = function() {
+            chrome.tabs.create({
+                url: this.href,
+                selected: true
+            });
+        }
+    }
+
+    settings.onclick = function() {
         if (!settingsOpen) {
             settingsOpen = true;
             document.getElementById('settings-container').style.display = "block";
-        }
+        } 
         else {
             settingsOpen = false;
             document.getElementById('settings-container').style.display = "none";
         }
-	}
+    }
 
-	clear.onclick = function() {
-		background.submitCompany(data);
+    clear.onclick = function() {
+        background.submitCompany(data);
         background.resetColor();
         document.getElementById('settings-container').style.display = "none";
-	}
-	
-    companyForm.submit(function () {
-        console.log("submitted");
-       window.open(companyForm.action+"?company="+company.value); 
-    });
+    }
+
+    submit.onclick = function (e) {
+        goToColorPicker(company.value);
+    }
     
-//	submit.onclick = function() {
-//		if (document.querySelector('#name-entered').value != "") {
-//			background.submitCompany({'company': document.querySelector('#name-entered').value});
-//		}
-//		else {
-//			console.log("Popup > Error: Submitting Company");
-//        }
-//   }
-    
-   toggle.onclick = function() {
-		if (priv) {
+    company.onkeyup = function (e) {
+        if (e.keyCode == 13) {
+            goToColorPicker(this.value);
+            return;
+        }
+        else {
+            return;
+        }
+    }
+
+    toggle.onclick = function() {
+        if (priv) {
             priv = false;
-			document.getElementById('toggle').src = chrome.extension.getURL("images/toggle-off.png");
-			background.savePriv({'editPrivileges' : "false"});
-		}
-		else {
+            document.getElementById('toggle').src = chrome.extension.getURL("images/toggle-off.png");
+            background.savePriv({
+                'editPrivileges': "false"
+            });
+        } 
+        else {
             priv = true;
-			document.getElementById('toggle').src = chrome.extension.getURL("images/toggle-on.png");
-			background.savePriv({'editPrivileges' : "true"});
-		}
-	}
+            document.getElementById('toggle').src = chrome.extension.getURL("images/toggle-on.png");
+            background.savePriv({
+                'editPrivileges': "true"
+            });
+        }
+    }
 }
