@@ -28,7 +28,7 @@ window.onload = function() {
     document.getElementById("event-check-in").src = chrome.extension.getURL("images/marketoball.png");
     document.getElementById('toggle').src = chrome.extension.getURL("images/toggle-on.png");
 
-    var URL_PATH = "m3",
+    var URL_PATH = "m3-dev",
         background = chrome.extension.getBackgroundPage(),
         priv = true,
         tags = document.getElementsByClassName("link"),
@@ -43,7 +43,7 @@ window.onload = function() {
             'company': 'turner'
         },
         goToColorPicker = function(parameter) {
-            window.open("https://marketolive.com/m3/apps/color-picker.html?company=" + parameter);
+            window.open("https://marketolive.com/"+URL_PATH+"/apps/color-picker.html?company=" + parameter);
         }
 
     // getElementsByClassName() returns an array, so the click
