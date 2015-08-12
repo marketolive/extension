@@ -1385,7 +1385,7 @@ APP.overlayEmailDesigner = function() {
     if (company != "turner"
 	&& company != null) {
         console.log("Marketo App > Overlaying: " + company);
-        logo = "https://logo.clearbit.com/" + company;
+        logo = APP.getCookie("logo");
     }
 
     var isIframeElement = window.setInterval(function() {

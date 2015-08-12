@@ -15,7 +15,7 @@ var URL_PATH = "m3-dev",
 	mktoAppMatch = "https://app-*.marketo.com",
 	mktoLiveDomain = "^https:\/\/marketolive.com",
 	mktoLiveMatch = "https://marketolive.com/*",
-    mktoColorPicker = "^https:\/\/marketolive\.com[a-zA-Z0-9\/]*\/color-picker\.html",
+    mktoColorPicker = "^https:\/\/marketolive\.com[a-zA-Z0-9-\/]*\/color-picker\.html",
 	mktoLoginDomain = "^https:\/\/login\.marketo\.com",
 	mktoAppLoginDomain = "^https:\/\/app\.marketo\.com",
 	mktoDesignerDomain = "^https:\/\/[a-z0-9]+-[a-z0-9]+\.marketodesigner\.com",
@@ -258,7 +258,8 @@ window.onload = function() {
 
         correct.onclick = function() {
             var cookieColor = document.getElementById("cookie-color").innerHTML,
-                cookieLogo = document.getElementById("cookie-logo").innerHTML;
+                // The split gets rid of the image size in the URL parameter
+                cookieLogo = document.getElementById("cookie-logo").innerHTML.split("?")[0];
 
             chrome.runtime.sendMessage({
                 action: "setColorCookie",
@@ -269,6 +270,7 @@ window.onload = function() {
             });
             window.close();
         }
+        
         incorrect.onclick = function() {
             document.getElementById('first').style.display = "none";
             document.getElementById('second').style.display = "block";
