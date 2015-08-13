@@ -353,6 +353,7 @@ $( document ).ready(function() {
 		$('.phone-buttons-container').css('display','inline-block');
 		var logo = getCookie('logo'),
 			company;
+		console.log(logo);
 		if(logo != null){
 			company = logo.split("clearbit.com/")[1].split(".")[0];
 			document.getElementById('push-name-name').innerHTML = company;
