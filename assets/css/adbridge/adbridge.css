@@ -45,7 +45,7 @@ background-image: url(http://www.transparenttextures.com/patterns/bedge-grunge.p
 }
 #adbridge-space{
   display: inline-block;
-  height: 150px;
+  height: 100px;
   text-align: center;
   font-size: 36px;
   width: 100%;
@@ -54,7 +54,7 @@ background-image: url(http://www.transparenttextures.com/patterns/bedge-grunge.p
   font-weight: 200;
 }
 #adbridge-text{
-  padding-top: 80px;
+  padding-top: 40px;
 }
 
 .part-one-body-container{
@@ -118,7 +118,7 @@ background-image: url(http://www.transparenttextures.com/patterns/bedge-grunge.p
 }
 .adbridge-arrow-container{
   position: absolute;
-  top: 450px;
+  top: 400px;
   z-index: -2;
   min-width: 1126px;
 }

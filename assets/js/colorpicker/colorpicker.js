@@ -1,3 +1,8 @@
+$('.body-container').click(function(){
+    x = 0;
+    $('.side-bar').css('background-color','transparent');
+    $('.side-bar-inner-container').css('display','none');  
+});
 var getCookie = function(cookieField) {
         console.log("Content > Getting: Cookie");
 
@@ -21,7 +26,6 @@ var getCookie = function(cookieField) {
     colorSet;
 
 console.log("Color Picker > Reload Query String: " + reload);
-
 if (reload) {
     document.getElementById('first').style.display = "none";
     document.getElementById('second').style.display = "block";

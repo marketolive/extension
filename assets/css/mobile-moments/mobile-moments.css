@@ -1,0 +1,17 @@
+#moments{
+  width: 100%;
+  background: url('../../img/moments.png') no-repeat center center fixed;
+  background-repeat: no-repeat;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+#main-android-body-mme{
+  width: 309px;
+  height: 550px;
+  top: 112px;
+  position: absolute;
+  right: 25px;
+  z-index: 5;
+}

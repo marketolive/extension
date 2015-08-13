@@ -1,3 +1,11 @@
+textarea{
+	font-size: 18px;
+}
+*{
+	webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
 #replicate-success{
 	background-color: #808080;
 }
@@ -26,7 +34,7 @@
   text-align: left;
 }
 #replicate-success-text{
-	padding-top: 60px;
+	padding-top: 40px;
 	padding-left: 40px;
 }
 .campaign-header-middle{
@@ -311,7 +319,7 @@
 	width: 100%;
 	height: auto;
 	padding: 3%;
-	font-size: 16px;
+	font-size: 18px;
 	text-align:justify;
 }
 .form-body-container{
@@ -381,7 +389,7 @@
 .textarea{
 	width: 100%;
 	text-align: center;
-	padding-right: 15%;
+	padding-right: 25%;
 	border: none;
 }
 .image-option-container{

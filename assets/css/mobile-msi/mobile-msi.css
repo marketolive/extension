@@ -1,0 +1,15 @@
+#msi-body{
+  overflow: scroll; height: 518px; width: 100%;
+}
+#msi-image-width{
+  width: 100%;
+}
+#main-android-body-msi{
+  width: 310px;
+  height: 518px;
+  top: 112px;
+  position: absolute;
+  right: 25px;
+  margin-left: auto;
+  z-index: 5;
+}

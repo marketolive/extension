@@ -46,9 +46,9 @@ $(document).ready(function() {
             monthNames = ["January", "February", "March", "April", "May", "June",
                 "July", "August", "September", "October", "November", "December"
             ],
-            month = monthNames[d.getMonth() - 1],
+            month = monthNames[d.getMonth()],
             dayOfWeek = dayNames[d.getDay()],
-            date = dayOfWeek + ' ' + day + ' ' + month,
+            date = dayOfWeek + ' ' + month + ' ' + day,
             time;
 
         if (hour > 12) {

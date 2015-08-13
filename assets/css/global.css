@@ -3,6 +3,19 @@ body {
     margin: 0px;
     font-family: Roboto;
 }
+input[type=text], textarea {
+  -webkit-transition: all 0.30s ease-in-out;
+  -moz-transition: all 0.30s ease-in-out;
+  -ms-transition: all 0.30s ease-in-out;
+  -o-transition: all 0.30s ease-in-out;
+  outline: none;
+  padding: 0px 0px 0px 5px;
+  border-bottom: 2px solid #DDDDDD;
+}
+input[type=text]:focus{
+  padding: 0px 0px 0px 17px;
+  border-bottom: 2px solid rgba(88, 82, 161, 1);
+}
 .top-bar{
   width: 100%;
   height: 50px;
@@ -27,7 +40,8 @@ body {
 }
 .top-bar-option{
   display: inline-block;
-  padding-right: 15px;
+  margin-right: 15px;
+  cursor:pointer;
 }
 #top-bar-link{
   text-decoration: none;
@@ -93,7 +107,7 @@ body {
   color: #5a54a4;
   text-decoration: none;
 }
-#small-nav-img{
+.small-nav-img{
   width: 30px;
 }
 .help-cover{
@@ -181,7 +195,7 @@ body {
 .side-bar{
   height: 100%;
   width: 200px;
-  opacity: .75;
+  opacity: .90;
   position: fixed;
   z-index: 999;
   text-align: left;
@@ -229,4 +243,24 @@ a {
 }
 .pointer{
   cursor: pointer;
+}
+#demo-in-marketo{
+  background: url('../img/demoinmarketo.png') center center;
+  background-size: 30px;
+  width: 30px;
+  height: 30px;
+}
+#demo-in-marketo:hover{
+  background: url('../img/demoinmarketo-orange.png') center center;
+  background-size: 30px;
+}
+#help-link{
+  background: url('../img/help.png') center center;
+  background-size: 30px;
+  width: 30px;
+  height: 30px;
+}
+#help-link:hover{
+  background: url('../img/help-orange.png') center center;
+  background-size: 30px;
 }

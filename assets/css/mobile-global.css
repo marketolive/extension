@@ -1,0 +1,56 @@
+.android-bkg{
+  height: 100%;
+  z-index: 1;
+  float: left;
+  margin-left: 50px;
+  width: 342px;
+}
+.app-description-container{
+  width: 400px;
+  margin-top: 75px;
+  float: left;
+}
+.app-description-box-container{
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 1px 1px 1px 1px #505050;
+  padding-left: 25px;
+  padding: 15px 15px 15px 15px;
+  margin-top: 15px;
+  text-align: left;
+  font-size: 18px;
+  font-weight: 200;
+}
+.app-description-title{
+  color: #5a54a4;
+  margin-bottom: 15px;
+  font-size: 18px;
+}
+#msi{
+  width: 100%;
+  background: url('../img/msi.png') no-repeat center center fixed;
+  background-repeat: no-repeat;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+#main-android-container{
+  width: 800px;
+  height: 780px;
+  position: relative;
+  margin: 0px auto;
+  padding-top: 50px;
+}
+#main-android-body{
+  width: 310px; 
+  height: 518px; 
+  top: 61px; 
+  position: relative; 
+  right: 16px; 
+  margin-left: auto; 
+  z-index: 5;
+}
+#android-img-width{
+  width: 342px;
+}

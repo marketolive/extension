@@ -11,6 +11,11 @@ var getCookie = function(cookieField) {
 }
 
 $(document).ready(function() {
+    $('#page-cover-container').click(function(){
+        x = 0;
+        $('.side-bar').css('background-color','transparent');
+        $('.side-bar-inner-container').css('display','none');  
+    });
     var pod = getCookie("userPod");
     console.log("AdBridge > Reading User Pod: " + pod);
     switch (pod) {
