@@ -274,7 +274,7 @@ window.onload = function() {
 
         correct.onclick = submitCookies;
 		
-		document.keypress = function (e) {
+		document.onkeyup = function (e) {
 			if (e.which == 13) {
 				submitCookies();
 			}
