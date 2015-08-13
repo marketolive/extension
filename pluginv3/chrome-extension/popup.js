@@ -57,7 +57,7 @@ window.onload = function() {
         }
     }
 
-    settings.onclick = function() {
+    settings.onclick = function () {
         if (!settingsOpen) {
             settingsOpen = true;
             document.getElementById('settings-container').style.display = "block";
@@ -68,8 +68,8 @@ window.onload = function() {
         }
     }
 
-    clear.onclick = function() {
-        background.submitCompany(data);
+    clear.onclick = function () {
+        background.resetLogo();
         background.resetColor();
         document.getElementById('settings-container').style.display = "none";
     }
