@@ -254,9 +254,10 @@ window.onload = function() {
 		console.log("Content > Location: Color-Picker Page");
         
         var correct = document.getElementById('correct'),
-            incorrect = document.getElementById('incorrect');
-
-        correct.onclick = function() {
+            incorrect = document.getElementById('incorrect'),
+			submitCookies;
+		
+		submitCookies = function() {
             var cookieColor = document.getElementById("cookie-color").innerHTML,
                 // The split gets rid of the image size in the URL parameter
                 cookieLogo = document.getElementById("cookie-logo").innerHTML.split("?")[0];
@@ -270,6 +271,14 @@ window.onload = function() {
             });
             window.close();
         }
+
+        correct.onclick = submitCookies;
+		
+		document.keypress = function (e) {
+			if (e.which == 13) {
+				submitCookies();
+			}
+		}
         
         incorrect.onclick = function() {
             document.getElementById('first').style.display = "none";

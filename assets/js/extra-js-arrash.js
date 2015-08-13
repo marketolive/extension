@@ -349,16 +349,16 @@ $( document ).ready(function() {
 
 	$("#push").click(function() {
 		var pushNotification = document.querySelector('#message-body');
-		//document.getElementById('image-overlay').src = '../assets/img/mme-push-1.png';
 		$('.push-notification-container').css('display','none');
 		$('.phone-buttons-container').css('display','inline-block');
-		var logo = getCookie('logo');
-		var company = getCookie('company');
-		if(company != null && company != "turner"){
-			var company  = company.substring(0, company.indexOf('.'));
+		var logo = getCookie('logo'),
+			company;
+		if(logo != null){
+			company = logo.split("clearbit.com/")[1].split(".")[0];
 			document.getElementById('push-name-name').innerHTML = company;
-			document.getElementById('turner-tie-logo').src = logo;
+			document.getElementById('turner-tie-logo').src = logo+"/size=200";
 		}
+		
 		if(pushNotification.value != ''){
 			document.getElementById('push-words').innerHTML = pushNotification.value;
 		}
