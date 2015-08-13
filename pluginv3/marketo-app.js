@@ -1707,7 +1707,7 @@ if (currentUrl.search(mktoAppDomain) != -1
                                         console.log("Marketo App > currAssetZoneId = " + currAssetZoneId);
                                         if (currAssetZoneId == 1) {
                                             APP.disableSaving();
-                                        } else if (APP.getCookie("priv") != "true") {
+                                        } else if (APP.getCookie("priv") == "false") {
                                             APP.disableSaving();
                                         }
                                     }
