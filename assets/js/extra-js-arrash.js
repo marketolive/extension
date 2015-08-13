@@ -357,7 +357,7 @@ $( document ).ready(function() {
 		if(logo != null){
 			company = logo.split("clearbit.com/")[1].split(".")[0];
 			document.getElementById('push-name-name').innerHTML = company;
-			document.getElementById('turner-tie-logo').src = logo+"/size=200";
+			document.getElementById('turner-tie-logo').src = logo+"?size=200";
 		}
 		
 		if(pushNotification.value != ''){
