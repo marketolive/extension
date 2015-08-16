@@ -30,6 +30,7 @@ var currentUrl = window.location.href,
     mktoLandingPageDesigner = mktoDesignerDomain + "/lpeditor/",
     defaultTurnerLogoGreen = "http://marketolive.com/m3/assets/img/turner-tech-green.png",
     defaultTurnerLogoWhite = "http://marketolive.com/m3/assets/img/turner-tech-white.png",
+    defaultColor = "rgb(42, 83, 112)",
     mktoWizard = mktoAppDomain + "/m#",
     rtpDemoDomain = "^http:\/\/sjrtp1.marketo.com\/demo\/$|^http:\/\/cloud4.insightera.com\/demo\/$",
     emailDeliverabilityDomain = "^https:\/\/250ok.com/",
@@ -59,7 +60,7 @@ var currentUrl = window.location.href,
  **************************************************************************************/
 
 APP.getCookie = function(cookieField) {
-    console.log("Marketo App > Getting: Cookie");
+    console.log("Marketo App > Getting: Cookie "+cookieField);
 
     var name = cookieField + "=",
         cookies = document.cookie.split(';'),
@@ -1378,14 +1379,14 @@ APP.disableSaving = function() {
 APP.overlayEmailDesigner = function() {
     console.log("Marketo App > Overlaying: Email Designer");
 
-    var company = APP.getCookie('company'),
-        color = APP.getCookie('color'),
-        logo = defaultTurnerLogoWhite;
+    var logo = APP.getCookie("logo"),
+        color = APP.getCookie("color");
 
-    if (company != "turner"
-	&& company != null) {
-        console.log("Marketo App > Overlaying: " + company);
-        logo = "https://logo.clearbit.com/" + company;
+    if (logo == null) {
+        logo = defaultTurnerLogoWhite;
+    }
+    if (color == null) {
+        color = defaultColor;
     }
 
     var isIframeElement = window.setInterval(function() {
@@ -1424,15 +1425,15 @@ APP.overlayEmailDesigner = function() {
 APP.overlayLandingPageDesigner = function() {
     console.log("Marketo App > Overlaying: Landing Page Designer");
 
-    var company = APP.getCookie('company'),
-        color = APP.getCookie('color'),
-        companyName = "turner",
-        logo = defaultTurnerLogoGreen;
+    var logo = APP.getCookie("logo"), 
+        color = APP.getCookie("color");
+        
     
-    if (company != "turner"
-    && company != null) {
-        logo = "https://logo.clearbit.com/" + company;
-        companyName = company.substring(0, company.indexOf("."));
+    if (logo == null) {
+        logo = defaultTurnerLogoGreen;
+    }
+    if (color == null) {
+        color = defaultColor;
     }
 
     var isIframeElement = window.setInterval(function() {

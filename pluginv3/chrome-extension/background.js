@@ -86,9 +86,9 @@ function savePriv(data) {
     });
 	chrome.storage.sync.set(data, function() {});
 	chrome.tabs.query({url : "*://*.marketo.com/*"}, function(tabs) {
-            for (var ii=0; ii<tabs.length; ++ii) {
-                chrome.tabs.reload(tabs[ii].id);
-            }
+        for (var ii=0; ii<tabs.length; ++ii) {
+            chrome.tabs.reload(tabs[ii].id);
+        }
 	});
 }
 
@@ -105,27 +105,27 @@ function savePriv(data) {
  **************************************************************************************/
 
 function submitCompany(data) {
-	console.log("Background > Submitting: Company Name");
-	console.log("Background > Submitting: Company Name = " + data.company);
-	
-	var cookieCompany = {
-		url : "https://www.marketodesigner.com/*",
-		name : "company",
-		value : data.company,
-		domain : ".marketodesigner.com"
-	},
-    cookieCompanyMarketoLive = {
-		url : "http://marketolive.com/*",
-		name : "company",
-		value : data.company,
-		domain : ".marketolive.com"
-	};
-	chrome.cookies.set(cookieCompany, function() {
-        console.log("Background > Setting Marketo Designer Company Cookie "+cookieCompany);
-    });
-	chrome.cookies.set(cookieCompanyMarketoLive, function() {
-        console.log("Background > Setting MarketoLive Company Cookie "+cookieCompanyMarketoLive);
-    });
+//	console.log("Background > Submitting: Company Name");
+//	console.log("Background > Submitting: Company Name = " + data.company);
+//	
+//	var cookieCompany = {
+//		url : "https://www.marketodesigner.com/*",
+//		name : "company",
+//		value : data.company,
+//		domain : ".marketodesigner.com"
+//	},
+//    cookieCompanyMarketoLive = {
+//		url : "http://marketolive.com/*",
+//		name : "company",
+//		value : data.company,
+//		domain : ".marketolive.com"
+//	};
+//	chrome.cookies.set(cookieCompany, function() {
+//        console.log("Background > Setting Marketo Designer Company Cookie "+cookieCompany);
+//    });
+//	chrome.cookies.set(cookieCompanyMarketoLive, function() {
+//        console.log("Background > Setting MarketoLive Company Cookie "+cookieCompanyMarketoLive);
+//    });
 }
 
 function resetColor () {
@@ -134,20 +134,36 @@ function resetColor () {
     var cookieColor = {
 			url : "http://www.marketodesigner.com/*",
 			name : "color",
-			value : "rgb(42, 83, 112)",
-			domain : ".marketodesigner.com"
 		},
         cookieColorMarketoLive = {
 			url : "http://marketolive.com/*",
 			name : "color",
-			value : "rgb(42, 83, 112)",
-			domain : ".marketolive.com"
         };
-    chrome.cookies.set(cookieColor, function() {
-        console.log("Background > Setting Marketo Designer Company Color Cookie "+cookieColor);
+    chrome.cookies.remove(cookieColor, function() {
+        console.log("Background > Removing: Marketo Designer Company Color Cookie");
     });
-	chrome.cookies.set(cookieColorMarketoLive, function() {
-        console.log("Background > Setting MarketoLive Company Color Cookie "+cookieColorMarketoLive);
+	chrome.cookies.remove(cookieColorMarketoLive, function() {
+        console.log("Background > Removing: MarketoLive Company Color Cookie");
+    });
+}
+
+function resetLogo () {
+    console.log("Background > Resetting: Company Logo");
+    
+    var cookieLogo = {
+			url : "http://www.marketodesigner.com/*",
+			name : "logo",
+		},
+        cookieLogoMarketoLive = {
+			url : "http://marketolive.com/*",
+			name : "logo",
+        };
+    
+    chrome.cookies.remove(cookieLogo, function () {
+        console.log("Background > Removing: Marketo Designer Company Logo Cookie");
+    });
+    chrome.cookies.remove(cookieLogoMarketoLive, function () {
+        console.log("Background > Removing: MarketoLive Company Logo Cookie");
     });
 }
 

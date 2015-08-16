@@ -15,7 +15,7 @@ var URL_PATH = "m3",
 	mktoAppMatch = "https://app-*.marketo.com",
 	mktoLiveDomain = "^https:\/\/marketolive.com",
 	mktoLiveMatch = "https://marketolive.com/*",
-    mktoColorPicker = "^https:\/\/marketolive\.com[a-zA-Z0-9\/]*\/color-picker\.html",
+    mktoColorPicker = "^https:\/\/marketolive\.com[a-zA-Z0-9-\/]*\/color-picker\.html",
 	mktoLoginDomain = "^https:\/\/login\.marketo\.com",
 	mktoAppLoginDomain = "^https:\/\/app\.marketo\.com",
 	mktoDesignerDomain = "^https:\/\/[a-z0-9]+-[a-z0-9]+\.marketodesigner\.com",
@@ -254,11 +254,13 @@ window.onload = function() {
 		console.log("Content > Location: Color-Picker Page");
         
         var correct = document.getElementById('correct'),
-            incorrect = document.getElementById('incorrect');
-
-        correct.onclick = function() {
+            incorrect = document.getElementById('incorrect'),
+			submitCookies;
+		
+		submitCookies = function() {
             var cookieColor = document.getElementById("cookie-color").innerHTML,
-                cookieLogo = document.getElementById("cookie-logo").innerHTML;
+                // The split gets rid of the image size in the URL parameter
+                cookieLogo = document.getElementById("cookie-logo").innerHTML.split("?")[0];
 
             chrome.runtime.sendMessage({
                 action: "setColorCookie",
@@ -269,6 +271,15 @@ window.onload = function() {
             });
             window.close();
         }
+
+        correct.onclick = submitCookies;
+		
+		document.onkeyup = function (e) {
+			if (e.which == 13) {
+				submitCookies();
+			}
+		}
+        
         incorrect.onclick = function() {
             document.getElementById('first').style.display = "none";
             document.getElementById('second').style.display = "block";

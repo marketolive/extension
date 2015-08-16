@@ -5,187 +5,213 @@
  value "popup.html".
  -->
 <html>
-  <head>
+
+<head>
     <title>Getting Started Extension's Popup</title>
     <style>
-      body {
-        font-family: "Segoe UI", "Lucida Grande", Tahoma, sans-serif;
-        font-size: 100%;
-        margin: 0px;
-      }
-      a {
-        text-decoration: none;
-      }
-      #settings-container{
-        display: none;
-        background-color: #f2f2f2;
-        padding-bottom: 5px;
-        border-bottom: 1px solid #ccc;
-      }
-      #status {
-        /* avoid an excessively wide status text */
-        width: 300px;
-        display: block;
-      }
-      #marketo-live-logo-container{
-        /* avoid an excessively wide status text */
-        width: 100%;
-        padding-top: 10px;
-        padding-bottom: 5px;
-        text-align: center;
-        border-bottom: 1px solid #c2c2c2;
-        background-color: #5a54a4;
-        display: inline-block;
-      }
-      #logo-size{
-        /* avoid an excessively wide status text */
-        height: 35px;
-        float: left;
-        margin-left: 15px;
-      }
-      #gear-size{
-        /* avoid an excessively wide status text */
-        height: 25px;
-      }
-      #settings{
-        padding-top: 3px;
-        height: 35px;
-        float: right;
-        margin-right: 15px;        
-      }
-      .option-container{
-        display: inline-block;
-        padding-left: 30px;
-        padding-top: 10px;
-        width: 100%;
-        cursor: pointer;
-      }
-      .company-container{
-        display: inline-block;
-        padding-top: 10px;
-        width: 100%;
-        margin-left: 8px;
-        cursor: pointer;
-      }
-      .option-image{
-        height: 30px;
-      }
-      .option-title{
-        font-size: 12px;
-        color: #5a54a4;
-        padding-left: 10px;
-        padding-top: 10px;
-      }
-      .edit-title{
-        font-size: 12px;
-        color: #5a54a4;
-        margin-right: 10px;
-        padding-top: 3px;
-      }
-      .option-image-container{
-        width: 60px;
-        height: auto;
-        float: left;
-        text-align: center;
-      }
-      .option-image-container-toggle{
-        width: 70px;
-        float: left;
-        text-align: center;
-      }
-      .extra-margin{
-        padding-left: 15px;
-        /* text-align: center; */
-        width: 260px;
-      }
-      #button-display{
-        display: none;
-      }
-      .font-size-priv{
-        font-size: 12px;
-      }
-      .float-right{
-        float: right;
-      }
-      .option-image-toggle{
-        width: 70%;
-        float: left;
-      }
-      .float-left{
-        float: left;
-      }
-      .company-name{
-        width: 180px;
-        height: 26px;
-        font-size: 12px;
-        font-weight: 200;
-        padding-left: 5px;
-        border: none;
-        border-bottom: 1px solid #ccc;
-        border-radius: 5px;
-      }
-      .company-submit{
-        text-align: center;
-        margin-left: -15px;
-        background-color: #5a54a4;
-        height: 28px;
-        color: #fff;
-        width: 50px;
-        /* height: 30px; */
-        border-top-right-radius: 5px;
-        border-bottom-right-radius: 5px;
-        font-size: 10px;
-        text-transform: uppercase;
-      }
-      .company-inner-submit{
-        padding-top: 8px;
-      }
-      .clear-submit{
-        text-align: center;
-        padding-left: 10px;
-        padding-right: 10px;
-        background-color: #5a54a4;
-        height: 28px;
-        color: #fff;
-        /* height: 30px; */
-        border-radius: 5px;
-        font-size: 10px;
-        text-transform: uppercase;
-      }
-      .clear-container{
-        margin-left: 5px;
-        cursor: pointer;
-        float: left;
-      }
-      .clear-inner-submit{
-        padding-top: 8px;
-      }
-      #close{
-        margin-left: 15px;
-      }
-      #inner-close{
-        background-color: #5a54a4;
-        border-radius: 25px;
-        height: 20px;
-        width: 25px;
-        text-align: center;
-        padding-top: 5px;
-        color: #fff;
-      }
-      input[type=text]{
-        -webkit-transition: all 0.30s ease-in-out;
-        -moz-transition: all 0.30s ease-in-out;
-        -ms-transition: all 0.30s ease-in-out;
-        -o-transition: all 0.30s ease-in-out;
-        outline: none;
-        padding: 0px 0px 0px 5px;
-        border-bottom: 2px solid #DDDDDD;
-      }
-      input[type=text]:focus{
-        padding: 0px 0px 0px 17px;
-        border-bottom: 2px solid rgba(88, 82, 161, 1);
-      }
-
+        body {
+            font-family: "Segoe UI", "Lucida Grande", Tahoma, sans-serif;
+            font-size: 100%;
+            margin: 0px;
+        }
+        
+        a {
+            text-decoration: none;
+        }
+        
+        #settings-container {
+            display: none;
+            background-color: #f2f2f2;
+            padding-bottom: 5px;
+            border-bottom: 1px solid #ccc;
+        }
+        
+        #status {
+            /* avoid an excessively wide status text */
+            width: 300px;
+            display: block;
+        }
+        
+        #marketo-live-logo-container {
+            /* avoid an excessively wide status text */
+            width: 100%;
+            padding-top: 10px;
+            padding-bottom: 5px;
+            text-align: center;
+            border-bottom: 1px solid #c2c2c2;
+            background-color: #5a54a4;
+            display: inline-block;
+        }
+        
+        #logo-size {
+            /* avoid an excessively wide status text */
+            height: 35px;
+            float: left;
+            margin-left: 15px;
+        }
+        
+        #gear-size {
+            /* avoid an excessively wide status text */
+            height: 25px;
+        }
+        
+        #settings {
+            padding-top: 3px;
+            height: 35px;
+            float: right;
+            margin-right: 15px;
+        }
+        
+        .option-container {
+            display: inline-block;
+            padding-left: 30px;
+            padding-top: 10px;
+            width: 100%;
+            cursor: pointer;
+        }
+        
+        .company-container {
+            display: inline-block;
+            padding-top: 10px;
+            width: 100%;
+            margin-left: 8px;
+            cursor: pointer;
+        }
+        
+        .option-image {
+            height: 30px;
+        }
+        
+        .option-title {
+            font-size: 12px;
+            color: #5a54a4;
+            padding-left: 10px;
+            padding-top: 10px;
+        }
+        
+        .edit-title {
+            font-size: 12px;
+            color: #5a54a4;
+            margin-right: 10px;
+            padding-top: 3px;
+        }
+        
+        .option-image-container {
+            width: 60px;
+            height: auto;
+            float: left;
+            text-align: center;
+        }
+        
+        .option-image-container-toggle {
+            width: 70px;
+            float: left;
+            text-align: center;
+        }
+        
+        .extra-margin {
+            padding-left: 15px;
+            /* text-align: center; */
+            width: 260px;
+        }
+        
+        .font-size-priv {
+            font-size: 12px;
+        }
+        
+        .float-right {
+            float: right;
+        }
+        
+        .option-image-toggle {
+            width: 70%;
+            float: left;
+        }
+        
+        .float-left {
+            float: left;
+        }
+        
+        .company-name {
+            width: 180px;
+            height: 26px;
+            font-size: 12px;
+            font-weight: 200;
+            padding-left: 5px;
+            border: none;
+            border-bottom: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        
+        .company-submit {
+            text-align: center;
+            margin-left: -15px;
+            background-color: #5a54a4;
+            height: 28px;
+            color: #fff;
+            width: 50px;
+            /* height: 30px; */
+            border-top-right-radius: 5px;
+            border-bottom-right-radius: 5px;
+            font-size: 10px;
+            text-transform: uppercase;
+        }
+        
+        .company-inner-submit {
+            padding-top: 8px;
+        }
+        
+        .clear-submit {
+            text-align: center;
+            padding-left: 10px;
+            padding-right: 10px;
+            background-color: #5a54a4;
+            height: 28px;
+            color: #fff;
+            /* height: 30px; */
+            border-radius: 5px;
+            font-size: 10px;
+            text-transform: uppercase;
+        }
+        
+        .clear-container {
+            margin-left: 5px;
+            cursor: pointer;
+            float: left;
+        }
+        
+        .clear-inner-submit {
+            padding-top: 8px;
+        }
+        
+        #close {
+            margin-left: 15px;
+        }
+        
+        #inner-close {
+            background-color: #5a54a4;
+            border-radius: 25px;
+            height: 20px;
+            width: 25px;
+            text-align: center;
+            padding-top: 5px;
+            color: #fff;
+        }
+        
+        input[type=text] {
+            -webkit-transition: all 0.30s ease-in-out;
+            -moz-transition: all 0.30s ease-in-out;
+            -ms-transition: all 0.30s ease-in-out;
+            -o-transition: all 0.30s ease-in-out;
+            outline: none;
+            padding: 0px 0px 0px 5px;
+            border-bottom: 2px solid #DDDDDD;
+        }
+        
+        input[type=text]:focus {
+            padding: 0px 0px 0px 17px;
+            border-bottom: 2px solid rgba(88, 82, 161, 1);
+        }
     </style>
 
     <!--
@@ -195,107 +221,103 @@
       - [1]: https://developer.chrome.com/extensions/contentSecurityPolicy
      -->
     <script src="popup.js"></script>
-  </head>
-  <body id = "status">
-    <div id = "marketo-live-logo-container">
-      <a href = "https://marketolive.com/m3/home.html" class = "link">
-      <img id = "logo-size" src="https://marketolive.com/m3/assets/img/marketo-live-image-purp.png">
-      </a>
-      <div id = "settings">
-        <img id = "gear-size" src="https://marketolive.com/m3/assets/img/popupsettings.png">
-      </div>
-    </div>
-    <div id = "settings-container">
-      <div class = "company-container">
-        <input type = "text" id = "name-entered" placeholder = "Company Website..." class = "company-name float-left">
-        <a href = "https://marketolive.com/m3/apps/color-picker.html" class="link">
-        <div id = "company-submit" class = "float-left company-submit">
-          <div class = "company-inner-submit">
-            Submit
-          </div>
-        </div>
+</head>
+
+<body id="status">
+    <div id="marketo-live-logo-container">
+        <a href="https://marketolive.com/m3/home.html" class="link">
+            <img id="logo-size" src="">
         </a>
-        <div class = "clear-container">
-          <div id = "clear-submit" class = "clear-submit">
-            <div class = "clear-inner-submit">
-              Clear
+        <div id="settings">
+            <img id="gear-size" src="">
+        </div>
+    </div>
+    <!-- TODO: change submit to an actual submit button so enter will work -->
+    <div id="settings-container">
+        <div class="company-container">
+                <input type="text" id="name-entered" placeholder="Company Website..." class="company-name float-left">
+                    <div id="company-submit" class="float-left company-submit">
+                        <div class="company-inner-submit">
+                            Submit
+                        </div>
+                    </div>
+            <div class="clear-container">
+                <div id="clear-submit" class="clear-submit">
+                    <div class="clear-inner-submit">
+                        Clear
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
-      <div id = "button-display" class = "option-container extra-margin font-size-priv">
-        <div class = "edit-title float-left">
-          Edit Privileges
+        <div id="button-display" class="option-container extra-margin font-size-priv">
+            <div class="edit-title float-left">
+                Edit Privileges
+            </div>
+            <div id="option-toggle" class="option-image-container-toggle float-left">
+                <img id="toggle" class="option-image-toggle" src="">
+            </div>
         </div>
-        <div id = "option-toggle" class = "option-image-container-toggle float-left">
-          <img id = "toggle" class = "option-image-toggle" src = "https://marketolive.com/m3/assets/img/toggle-on.png">
-        </div>
-        <div id = "close" class = "float-right">
-          <div id = "inner-close">
-            X
-          </div>
-        </div>
-      </div>
     </div>
-    <div class = "option-container">
-      <a href = "http://sjrtp1.marketo.com/demo/" class="link">
-      <div class = "option-image-container">
-        <img class = "option-image" src = "http://www.marketo.com/_assets/uploads/PageLayer-ProductMenuItem/6/marketing-automation-newest.png">
-      </div>
-      <div class = "option-title">
-        Real-Time Personalization
-      </div>
-      </a>
+    <div class="option-container">
+        <a href="http://sjrtp1.marketo.com/demo/" class="link">
+            <div class="option-image-container">
+                <img id="rtp" class="option-image" src="">
+            </div>
+            <div class="option-title">
+                Real-Time Personalization
+            </div>
+        </a>
     </div>
-    <div class = "option-container">
-      <a href = "http://marketosolutionsconsulting.com/m/b2c/" class="link">
-      <div class = "option-image-container">
-        <img class = "option-image" src = "http://cdn.mysitemyway.com/icons-watermarks/simple-purple/bfa/bfa_shopping-cart/bfa_shopping-cart_simple-purple_512x512.png">
-      </div>
-      <div class = "option-title">
-        Turner Ecommerce
-      </div>
-      </a>
+    <div class="option-container">
+        <a href="http://marketosolutionsconsulting.com/m/b2c/" class="link">
+            <div class="option-image-container">
+                <img id="ecommerce" class="option-image" src="">
+            </div>
+            <div class="option-title">
+                Turner Ecommerce
+            </div>
+        </a>
     </div>
-    <div class = "option-container">
-      <a href = "http://marketolive.com/m3/apps/mobile_marketo_moments.html" class="link">
-      <div class = "option-image-container">
-        <img class = "option-image" src = "http://marketolive.com/m3/assets/img/marketo_moments.png">
-      </div>
-      <div class = "option-title">
-        Mobile Moments
-      </div>
-      </a>
+    <div class="option-container">
+        <a href="http://marketolive.com/m3/apps/mobile_marketo_moments.html" class="link">
+            <div class="option-image-container">
+                <img id="mobile-moments" class="option-image" src="">
+            </div>
+            <div class="option-title">
+                Mobile Moments
+            </div>
+        </a>
     </div>
-    <div class = "option-container">
-      <a href = "https://marketolive.com/m3/apps/mobile-engagement-beacon.html" class="link">
-      <div class = "option-image-container">
-        <img class = "option-image" src = "http://marketolive.com/m3/assets/img/mobile_engagement.png">
-      </div>
-      <div class = "option-title">
-        Mobile Engagement
-      </div>
-      </a>
+    <div class="option-container">
+        <a href="https://marketolive.com/m3/apps/mobile-engagement-beacon.html" class="link">
+            <div class="option-image-container">
+                <img id="mobile-engagement" class="option-image" src="">
+            </div>
+            <div class="option-title">
+                Mobile Engagement
+            </div>
+        </a>
     </div>
-    <div class = "option-container">
-      <a href = "http://marketolive.com/m3/apps/mobile_sales_insight.html" class="link">
-      <div class = "option-image-container">
-        <img class = "option-image" src = "http://marketolive.com/m3/assets/img/mobile_msi.png">
-      </div>
-      <div class = "option-title">
-        Mobile Sales Insight
-      </div>
-      </a>
+    <div class="option-container">
+        <a href="http://marketolive.com/m3/apps/mobile_sales_insight.html" class="link">
+            <div class="option-image-container">
+                <img id="mobile-msi" class="option-image" src="">
+            </div>
+            <div class="option-title">
+                Mobile Sales Insight
+            </div>
+        </a>
     </div>
-    <div class = "option-container">
-      <a href = "https://itunes.apple.com/us/app/marketo-events/id522766637?mt=8" class="link">
-      <div class = "option-image-container">
-        <img class = "option-image" src = "https://marketolive.com/m3/assets/img/marketoball.png">
-      </div>
-      <div class = "option-title">
-        Mobile Event Check-In
-      </div>
-      </a>
+    <div class="option-container">
+        <a href="https://itunes.apple.com/us/app/marketo-events/id522766637?mt=8" class="link">
+            <div class="option-image-container">
+                <img id="event-check-in" class="option-image" src="">
+            </div>
+            <div class="option-title">
+                Mobile Event Check-In
+            </div>
+        </a>
     </div>
-  </body>
+</body>
+
 </html>
