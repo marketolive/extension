@@ -1,3 +1,9 @@
+#push-container{
+  position: absolute;
+  z-index: 4;
+  top: 170px;
+  display: none;
+}
 .app-description-container{
   position: absolute;
   z-index: 5;
@@ -230,7 +236,7 @@
   font-weight: 100;
 }
 #android-time{
-  font-size: 72px;
+  font-size: 60px;
 }
 #android-date{
   font-size: 16px;
@@ -300,4 +306,14 @@
   padding-top: 12px;
   padding-left: 10px;
   float: left;
+}
+.beacon-overlay, .beacon-overlay-1{
+  position: absolute;
+  z-index: 10;
+  display: none;
+  top: 121px;
+  left: 5px;
+}
+#image-beacon-1, #image-beacon-2{
+  width: 408px;
 }
