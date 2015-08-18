@@ -28,7 +28,7 @@
 }
 #msi{
   width: 100%;
-  background: url('../img/msi.png') no-repeat center center fixed;
+  background: url('../../img/msi.png') no-repeat center center fixed;
   background-repeat: no-repeat;
     -webkit-background-size: cover;
     -moz-background-size: cover;

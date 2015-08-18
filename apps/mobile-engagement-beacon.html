@@ -8,10 +8,11 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <title>MME</title>
-
-    <link href="../assets/css/mme/mme.css" rel="stylesheet" type="text/css">
-    <link href="../assets/css/modal-window.css" rel="stylesheet" type="text/css">
-    <link href="../assets/css/global.css" rel="stylesheet" type="text/css">
+    <link href="../assets/css/mme/mme-theme.css" rel="stylesheet" type="text/css">
+    <link href="../assets/css/mme/mme-responsive.css" rel="stylesheet" type="text/css">
+    <link href="../assets/css/mme/mme-spacing.css" rel="stylesheet" type="text/css">
+    <link href="../assets/css/global/modal-window.css" rel="stylesheet" type="text/css">
+    <link href="../assets/css/global/global.css" rel="stylesheet" type="text/css">
 </head>
 
 <body id="mme" class="mme-bkg body-background">
@@ -52,7 +53,7 @@
           </div>
         </div>
         <div class = "side-bar-inner-container" id = "side-bar-inner-show">
-          <a href = "../home-new.html">
+          <a href = "../home.html">
             <div class = "side-bar-inner-option">
               Home
             </div>
@@ -63,12 +64,12 @@
           <div class = "side-bar-inner-option underline-option">
             Japanese
           </div>
-          <a href = "../go-agile/business-new.html">
+          <a href = "../go-agile/business.html">
             <div class = "side-bar-inner-option padding-top">
               Business
             </div>
           </a>
-          <a href = "../go-agile/dialog-new.html">
+          <a href = "../go-agile/dialog.html">
             <div class = "side-bar-inner-option">
               Dialog
             </div>
@@ -86,8 +87,8 @@
     <div id="main-phone-container">
         <div id="main-inner-phone-container">
             <div class="movement-and-description">
-                <div class="mm-width app-description-box-container">
-                    <div class="app-description-title">
+                <div class="mm-width app-description-box-container white-bkg-color">
+                    <div class="app-description-title purple-font-color">
                         Marketo Mobile Engagement
                     </div>
                     <div id="section-description" class="app-description-body">
@@ -97,20 +98,20 @@
                     </div>
                     <br>
                     <p id="message-title" style="color: #5a54a4">Enter your push here:</p>
-                    <input id="message-body" type="text" class="input-body" />
+                    <input id="message-body" type="text" class="input-body light-grey-bkg-color font-size-medium" />
                 </div>
-                <div class="push-notification-container">
-                    <div class="push-notification" id="push">
+                <div class="push-notification-container purple-bkg-color">
+                    <div class="push-notification push-notification-theme white-font-color" id="push">
                         Send Push!
                     </div>
                     <audio id="audio" src="../assets/mp3/iphone-sound.mp3" ></audio>
                     <audio id="audio2" src="../assets/mp3/vibrate-sound.mp3" ></audio>
                 </div>
-                <div class="phone-buttons-container">
-                    <div class="phone-button back-button" id="back-phone-button">
+                <div class="phone-buttons-container font-size-large">
+                    <div class="phone-button purple-bkg-color white-font-color float-left back-button" id="back-phone-button">
                         < 
                     </div>
-                    <div class="phone-button next-button" id="next-phone-button">
+                    <div class="phone-button purple-bkg-color white-font-color float-left next-button" id="next-phone-button">
                         >
                     </div>
                 </div>
@@ -120,22 +121,22 @@
                         <img id="phone" src="../apps/assets/android-portrait.png">
                     </div>
                     <div id="android-image-overlay">
-                        <div id="android-time-container">
+                        <div id="android-time-container" class = "white-font-color android-time-theme">
                             <div id="android-time">
                             </div>
-                            <div id="android-date">
+                            <div id="android-date" class = "android-date-theme">
                             </div>
                         </div>
                         <img id="image-overlay" src="../assets/img/mme-push-0.jpg">
-                        <div id="push-words-container">
-                            <div id="push-name-container">
-                                <div id="push-name-logo">
+                        <div id="push-words-container" class = "push-words-container-theme white-font-color text-align-left">
+                            <div id="push-name-container" class = "display">
+                                <div id="push-name-logo" class = "float-left">
                                     <img id="turner-tie-logo" src="../assets/img/turner-tie-logo.png">
                                 </div>
-                                <div id="push-name-name">
+                                <div id="push-name-name" class = "float-left">
                                     Turner
                                 </div>
-                                <div id="received-now">
+                                <div id="received-now" class = "float-left">
                                     now
                                 </div>
                             </div>
@@ -168,6 +169,6 @@
     <script src="../assets/js/mme/mme-interval.js"></script>
     <script src="../pluginv3/pods.min.js"></script>
     <script src="../pluginv3/marketo-live.min.js"></script>
-    <script src="../assets/js/global.js"></script>
+    <script src="../assets/js/global/global.js"></script>
 
 </footer>

@@ -16,6 +16,15 @@ input[type=text]:focus{
   padding: 0px 0px 0px 17px;
   border-bottom: 2px solid rgba(88, 82, 161, 1);
 }
+
+
+/*********************************************************************
+
+  Theme For Top & Side Bar Used Across Pages
+
+*********************************************************************/
+
+
 .top-bar{
   width: 100%;
   height: 50px;
@@ -185,11 +194,11 @@ input[type=text]:focus{
   cursor: pointer;
 }
 .marketo-ball{
-  background: url('../img/marketo-live-circle.png') center center;
+  background: url('../../img/marketo-live-circle.png') center center;
   background-size: 60px;
 }
 .marketo-ball:hover{
-  background: url('../img/marketo-live-circle-orange.png') center center;
+  background: url('../../img/marketo-live-circle-orange.png') center center;
   background-size: 60px; 
 }
 .side-bar{
@@ -245,22 +254,62 @@ a {
   cursor: pointer;
 }
 #demo-in-marketo{
-  background: url('../img/demoinmarketo.png') center center;
+  background: url('../../img/demoinmarketo.png') center center;
   background-size: 30px;
   width: 30px;
   height: 30px;
 }
 #demo-in-marketo:hover{
-  background: url('../img/demoinmarketo-orange.png') center center;
+  background: url('../../img/demoinmarketo-orange.png') center center;
   background-size: 30px;
 }
 #help-link{
-  background: url('../img/help.png') center center;
+  background: url('../../img/help.png') center center;
   background-size: 30px;
   width: 30px;
   height: 30px;
 }
 #help-link:hover{
-  background: url('../img/help-orange.png') center center;
+  background: url('../../img/help-orange.png') center center;
   background-size: 30px;
+}
+
+/*********************************************************************
+
+  Standard CSS Used Across Pages
+
+*********************************************************************/
+
+.purple-bkg-color{
+  background-color: #5a54a4;
+}
+.white-bkg-color{
+  background-color: #fff;
+}
+.white-font-color{
+  color: #fff;
+}
+.purple-font-color{
+  color: #5a54a4;
+}
+.pointer{
+  cursor: pointer;
+}
+.float-left{
+  float: left;
+}
+.float-right{
+  float: right;
+}
+.display{
+  display: inline-block;
+}
+.text-align-left{
+  text-align: left;
+}
+.text-align-right{
+  text-align: right;
+}
+.text-align-center{
+  text-align: center;
 }

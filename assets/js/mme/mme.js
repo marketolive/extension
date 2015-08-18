@@ -32,6 +32,7 @@ $(document).ready(function(){
       $(this).css('display','none');
     });
     $('.beacon-overlay-1').show('slide', {direction: 'up'}, 800, function(){
+      $('#mme').attr("class","mme-bkg-4");
     });
   });
   $('#message-body').keyup(function(e) {
@@ -102,67 +103,6 @@ $(document).ready(function(){
           $('#android-time').css('font-size','76px');
           $('#android-date').css('font-size','22px');
           $('#image-push-1').css('width', '100%');
-        }
-        break;
-      case 'mme-bkg-2' :
-        if(this.id == 'back-phone-button'){
-          document.getElementById('image-overlay').src = "../assets/img/mme-push-0.jpg";
-          $('.app-description-box-container').css('margin-bottom','0px');
-          document.getElementById('section-description').innerHTML = engagementWords[0];
-          $('#mme').attr("class","mme-bkg");
-          $('.push-notification-container').css('display','block');
-          $('.phone-buttons-container').css('display','none');
-          $('#message-title').css('display','block');
-          $('#message-body').css('display','block');
-          $('#push-container').css('display','none');
-        }
-        else{
-          document.getElementById('image-overlay').src = "../assets/img/beacon-2.jpg";
-          document.getElementById('android-time').style.display = "none";
-          document.getElementById('android-date').style.display = "none";
-          $('.app-description-box-container').css('display', 'none');
-          $('#back-phone-button').css('display','none');
-          $('#next-phone-button').css('display', 'none');
-          $('.beacon-overlay').css('display', 'block');
-          //$('.app-description-box-container').css('margin-bottom','93px');
-          //document.getElementById('section-description').innerHTML = engagementWords[2];
-          $('#mme').attr("class","mme-bkg-3");
-        }
-        break;
-      case 'mme-bkg-3' :
-        if(this.id == 'back-phone-button'){
-          document.getElementById('image-overlay').src = "../assets/img/beacon-1.jpg";
-          document.getElementById('android-time').style.display = "block";
-          document.getElementById('android-date').style.display = "block";
-          $('.app-description-box-container').css('margin-bottom','93px');
-          document.getElementById('section-description').innerHTML = engagementWords[1];
-          $('#mme').attr("class","mme-bkg-2");
-        }
-        else{
-          document.getElementById('image-overlay').src = "../assets/img/beacon-3.jpg";
-          $('.app-description-box-container').css('margin-bottom','93px');
-          document.getElementById('section-description').innerHTML = engagementWords[3];
-          $('#mme').attr("class","mme-bkg-4");
-        }
-        break;
-      case 'mme-bkg-4' :
-        if(this.id == 'back-phone-button'){
-          document.getElementById('image-overlay').src = "../assets/img/beacon-2.jpg";
-          $('.app-description-box-container').css('margin-bottom','93px');
-          document.getElementById('section-description').innerHTML = engagementWords[2];
-          $('#mme').attr("class","mme-bkg-3");
-        }
-        else{
-          document.getElementById('image-overlay').src = "../assets/img/mme-push-0.jpg";
-          document.getElementById('android-time').style.display = "block";
-          document.getElementById('android-date').style.display = "block";
-          document.getElementById('section-description').innerHTML = engagementWords[0];
-          $('.app-description-box-container').css('margin-bottom','0px');
-          $('#mme').attr("class","mme-bkg");
-          $('#message-title').css('display','block');
-          $('#message-body').css('display','block');
-          $('.push-notification-container').css('display','block');
-          $('.phone-buttons-container').css('display','none');
         }
         break;
       default :
