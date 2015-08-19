@@ -52,13 +52,15 @@ $(document).ready(function() {
     });
 
     $(".image-sizing").hover(
-        function(e) {
-            var ele = this.id + "-words";
+        function() {
+            var ele = "#" + this.id + "-words";
+            console.log("in", ele);
             $(ele).css('color','rgb(247, 151, 51)');
         },
-        function(e) {
-            var ele = this.id + "-words";
-            $(ele).css('color','#5a54a4');
+        function() {
+            var ele = "#" + this.id + "-words";
+            console.log("out", ele);
+            $(ele).css('color','#fff');
         }
     );
 

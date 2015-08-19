@@ -60,15 +60,13 @@ $(document).ready(function() {
     var currentPosition = 1;
     $("#adbridge-top").click(function() {
         var currHeight = $(document).scrollTop();
-        console.log(currHeight);
-        console.log("test");
         if (currHeight > 550 && currHeight < 800) {
             console.log("test1");
             $('html,body').animate({
                 scrollTop: $("#adbridge-space").offset().top
             });
             $('#adbridge-top').css('display', 'none');
-        } else if (currHeight > 800) {
+        } else if (currHeight > 850) {
             console.log("test2");
             $('html,body').animate({
                 scrollTop: $("#cloud-container").offset().top
