@@ -39,13 +39,13 @@ LIVE.insertDeepLinks = function(pod) {
     console.log("MarketoLive > Inserting: Deep Links");
 
     if (pod == null) {
-        $(".marketo-live-option").click(function(e) {
+        $(".image-sizing").click(function(e) {
             LIVE.displayModalWindow();
             return false;
         });
     } 
     else {
-        $(".marketo-live-option").click(function(e) {
+        $(".image-sizing").click(function(e) {
             window.open(pod[$(this).context.id]);
             return false;
         });
