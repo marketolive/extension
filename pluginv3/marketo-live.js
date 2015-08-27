@@ -46,6 +46,7 @@ LIVE.insertDeepLinks = function(pod) {
     } 
     else {
         $(".image-sizing").click(function(e) {
+            console.log($(this).context.id);
             console.log(pod[$(this).context.id]);
             window.open(pod[$(this).context.id]);
             return false;
