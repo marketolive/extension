@@ -17,12 +17,12 @@ $( document ).ready(function() {
   $('.marketo-ball').click(function(){
     if(x == 0){
       x = 1;
-      $('.side-bar').css('background-color','#fff');
+      $('.side-bar').css({'background-color':'#fff', 'z-index':'999'});
       $('.side-bar-inner-container').fadeIn( "slow" );
     }
     else{
       x = 0;
-      $('.side-bar').css('background-color','transparent');
+      $('.side-bar').css({'background-color':'transparent', 'z-index':'-999'});
       $('.side-bar-inner-container').css('display','none');      
     }
   });

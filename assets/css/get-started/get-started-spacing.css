@@ -110,6 +110,12 @@
 .image{
   width: 95%;
 }
+.right-image{
+  width: 90%;
+}
+.spacing-left{
+  margin-left: 15%;
+}
 .section-title{
   font-size: 32px;
   width: 100%;

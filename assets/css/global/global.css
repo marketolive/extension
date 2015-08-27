@@ -192,6 +192,10 @@ input[type=text]:focus{
   width: 60px;
   height: 60px;  
   cursor: pointer;
+  position: fixed;
+  left: 65px;
+  top: 15px;
+  z-index: 1000;
 }
 .marketo-ball{
   background: url('../../img/marketo-live-circle.png') center center;
@@ -204,9 +208,10 @@ input[type=text]:focus{
 .side-bar{
   height: 100%;
   width: 200px;
+  padding-top: 50px;
   opacity: .90;
   position: fixed;
-  z-index: 999;
+  z-index: -999;
   text-align: left;
 }
 .side-bar-ball{
