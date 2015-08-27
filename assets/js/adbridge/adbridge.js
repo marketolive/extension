@@ -21,15 +21,21 @@ $(document).ready(function() {
     switch (pod) {
         case "app-sjp":
             console.log("AdBridge > Deeplinking: 106");
-            $("#demo-in-marketo").attr("href", "https://app-sjp.marketo.com/#SL1096260B2");
+            $("#demo-in-marketo").click(function () {
+                location.replace("https://app-sjp.marketo.com/#SL1096260B2");
+            });
             break;
         case "app-ab07":
             console.log("AdBridge > Deeplinking: 106a");
-            $("#demo-in-marketo").attr("href", "https://app-ab07.marketo.com/#SL984037B2");
+            $("#demo-in-marketo").click(function () {
+                location.replace("https://app-ab07.marketo.com/#SL984037B2");
+            });
             break;
         case "app-ab08":
             console.log("AdBridge > Deeplinking: 106b");
-            $("#demo-in-marketo").attr("href", "https://app-ab08.marketo.com/#SL978341B2");
+            $("#demo-in-marketo").click(function () {
+                location.replace("https://app-ab08.marketo.com/#SL978341B2");
+            });
             break;
         default:
             console.log("AdBridge > Invalid userPod cookie: " + pod);
