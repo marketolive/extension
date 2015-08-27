@@ -1,4 +1,4 @@
-var URL_PATH = "m3",
+var URL_PATH = "m3-dev",
     CEE_SCRIPT_LOCATION = "https://marketolive.com/"+URL_PATH+"/pluginv3/dashboards/cee-data.min.js",
     SOCIAL_SCRIPT_LOCATION = "https://marketolive.com/"+URL_PATH+"/pluginv3/dashboards/social-data.min.js",
     PROGRAM_SCRIPT_LOCATION = "https://marketolive.com/"+URL_PATH+"/pluginv3/dashboards/program-data.min.js",
