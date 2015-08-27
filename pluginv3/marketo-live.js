@@ -36,7 +36,7 @@ var currentUrl = window.location.href,
  **************************************************************************************/
 
 LIVE.insertDeepLinks = function(pod) {
-    console.log("MarketoLive > Inserting: Deep Links for: "+pod);
+    console.log("MarketoLive > Inserting: Deep Links for: "+pod.id);
 
     if (pod == null) {
         $(".image-sizing").click(function(e) {
