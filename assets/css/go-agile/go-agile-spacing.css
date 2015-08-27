@@ -95,10 +95,32 @@
   background-size: cover;
   z-index: -5;
 }
+.body-backgroundjp {
+  width: 100%;
+  height: 100%;
+  background: url('../../img/japan-office.png') no-repeat center center fixed;
+  background-repeat: no-repeat;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  z-index: -5;
+}
 .body-background-dialog {
   width: 100%;
   height: 100%;
   background: url('../../img/dialog-bkg.jpg') no-repeat center center fixed;
+  background-repeat: no-repeat;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  z-index: -5;
+}
+.body-background-dialogjp {
+  width: 100%;
+  height: 100%;
+  background: url('../../img/japan-dialog.png') no-repeat center center fixed;
   background-repeat: no-repeat;
   -webkit-background-size: cover;
   -moz-background-size: cover;
