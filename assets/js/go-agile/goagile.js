@@ -54,12 +54,10 @@ $(document).ready(function() {
     $(".live-option").hover(
         function() {
             var ele = "#" + this.id + "-words";
-            console.log("in", ele);
             $(ele).css('color','rgb(247, 151, 51)');
         },
         function() {
             var ele = "#" + this.id + "-words";
-            console.log("out", ele);
             $(ele).css('color','#fff');
         }
     );
