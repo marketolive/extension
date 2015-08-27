@@ -51,7 +51,7 @@ $(document).ready(function() {
         }
     });
 
-    $(".image-sizing").hover(
+    $(".live-option").hover(
         function() {
             var ele = "#" + this.id + "-words";
             console.log("in", ele);
