@@ -16,10 +16,9 @@ $(document).ready(function() {
         $('.side-bar').css('background-color','transparent');
         $('.side-bar-inner-container').css('display','none');  
     });
-    var pod = getCookie("userPod");
-    color = getCookie('color'),
+    var pod = getCookie("userPod"),
+    	color = getCookie('color'),
         logo = getCookie('logo'),
-        companyName = getCookie('company'),
         defaultLogo = '../assets/img/turner-tech-white.png',
         defaultColor = 'rgb(42, 83, 112)';
 
@@ -38,18 +37,16 @@ $(document).ready(function() {
         });
     }
 
-    if (companyName != "turner"
-    && companyName != null) {
-//        var oldSrc = '../assets/img/turner-tech-white.png';
-        var newSrc = logo;
-//        console.log(oldSrc);
-        $('.logo-swap').attr('src', logo);
-        $('.asset-header-mkto').css('background-color', color);
+    if (logo == null) {
+        logo = defaultLogo;
     }
-    else {
-        $('.logo-swap').attr('src', defaultLogo);
-        $('.asset-header-mkto').css('background-color', defaultColor);
+    if (color == null) {
+		color = defaultColor;
     }
+	
+	$('.logo-swap').attr('src', logo);
+    $('.asset-header-mkto').css('background-color', color);
+	
     $("#reminder-clone, #lp-clone, #auto-responder-clone").click(function() {
         console.log(this.id);
         switch (this.id) {

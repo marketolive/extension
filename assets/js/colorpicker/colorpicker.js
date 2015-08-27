@@ -3,23 +3,30 @@ $('.body-container').click(function(){
     $('.side-bar').css('background-color','transparent');
     $('.side-bar-inner-container').css('display','none');  
 });
-var getCookie = function(cookieField) {
-        console.log("Content > Getting: Cookie");
+var getCompany = function(cookieField) {
+        console.log("Content > Getting: Company Name");
 
-        var name = cookieField + "=",
-            cookies = document.cookie.split(';'),
-            currentCookie;
-        for (var ii = 0; ii < cookies.length; ++ii) {
-            var currentCookie = cookies[ii].trim();
-            if (currentCookie.indexOf(name) == 0) {
-                return currentCookie.substring(name.length, currentCookie.length);
+        var params = window.location.href.split("?")[1],
+            params = params.split("&"),
+            paramPair,
+            paramName,
+            paramValue,
+            ii;
+    
+        for (ii=0; ii<params.length; ++ii) {
+            paramPair = params[ii].split("=");
+            paramName = paramPair[0];
+            paramValue = paramPair[1];
+            
+            if (paramName == "company") {
+                return paramValue;
             }
         }
-        return null;
+        return "turner";
     },
 
     reload = location.search.split('reloaded=')[1],
-    companyName = getCookie("company"),
+    companyName = getCompany(),
     colorThief = new ColorThief(),
     canvas = document.getElementById('image').getContext("2d"),
     img = new Image(),
