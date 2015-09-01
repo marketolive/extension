@@ -50,7 +50,7 @@ $(document).ready(function() {
     $('.asset-header-mkto').css('background-color', color);
 	
     $("#reminder-clone, #lp-clone, #auto-responder-clone").click(function() {
-        console.log(this.id);
+        console.log("Replicate Success > Clicked: "+this.id);
         switch (this.id) {
             case 'reminder-clone':
                 $('#reminder-clone').css('display', 'none');
@@ -83,7 +83,7 @@ $(document).ready(function() {
                 }, 900);
                 break;
             default:
-                console.log("none");
+                console.log("Replicate Success > Invalid: Switch statement in click callback hit default condition line 85");
                 break;
         }
     });
@@ -122,13 +122,8 @@ $(document).ready(function() {
             document.getElementById('original-auto-responder-image').src = "../assets/img/boston.jpg";
         } else if (document.getElementById('reminder-lightbox').style.display == 'block') {
             var el = document.querySelector("#reminder-textarea");
-            console.log(el.value);
             document.getElementById('reminder-text-inside').innerHTML = el.value;
-            console.log(document.getElementById('reminder-text-inside').innerHTML);
             document.getElementById('original-reminder-image').src = "../assets/img/boston.jpg";
-            console.log(document.getElementById('original-reminder-image').src);
-        } else {
-            console.log("NOPE");
         }
     });
     $('#landing-page-body, #auto-responder-body, #reminder-body').click(function() {

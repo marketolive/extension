@@ -84,9 +84,6 @@ $(document).ready(function() {
         var enterKey = 13;
         if (e.which == enterKey) {
             push();
-            console.log("yup");
-        } else {
-            console.log("nope");
         }
     });
     $("#push").click(function() {
@@ -118,7 +115,7 @@ $(document).ready(function() {
     }
     $("#back-phone-button, #next-phone-button").click(function() {
         var className = $('#mme').attr('class').split(' ')[0];
-        console.log(className);
+        console.log("MME > Clicked: "+className);
         switch (className) {
             case 'mme-bkg':
                 if (this.id == 'back-phone-button') {} else {
@@ -160,7 +157,7 @@ $(document).ready(function() {
                 }
                 break;
             default:
-                console.log("went to default");
+                console.log("MME > Background is the Default");
                 break;
         }
     });

@@ -20,8 +20,5 @@ $(document).ready(function(){
       $('#home-main-body-2').css('display','none');
       $('#home-main-body-0').css('display', 'block');
     }
-    else{
-      console.log("nothing");
-    }
   }, 8000);
 })

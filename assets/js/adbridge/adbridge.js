@@ -56,7 +56,6 @@ $(document).ready(function() {
 
     document.onscroll = function() {
         var currHeight = $(document).scrollTop();
-        console.log("test1");
         if (currHeight > 550)
             $('#adbridge-top').css('display', 'block');
         else {
@@ -67,20 +66,18 @@ $(document).ready(function() {
     $("#adbridge-top").click(function() {
         var currHeight = $(document).scrollTop();
         if (currHeight > 550 && currHeight < 800) {
-            console.log("test1");
             $('html,body').animate({
                 scrollTop: $("#adbridge-space").offset().top
             });
             $('#adbridge-top').css('display', 'none');
         } else if (currHeight > 850) {
-            console.log("test2");
             $('html,body').animate({
                 scrollTop: $("#cloud-container").offset().top
             });
         } else {}
     });
     $("#adbridge-back,#adbridge-next").click(function() {
-        console.log(this.id);
+        console.log("AdBridge > Clicked: "+this.id);
         switch (this.id) {
             case 'adbridge-next':
                 switch (currentPosition) {
@@ -153,12 +150,11 @@ $(document).ready(function() {
                         currentPosition++;
                         break;
                     default:
-                        console.log("not 1-4");
                         break;
                         break;
                 }
             default:
-                console.log("was neither");
+                console.log("AdBridge > Clicked: Back Button");
                 break;
         }
     });
