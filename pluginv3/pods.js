@@ -2,7 +2,7 @@ console.log("Pods > Running");
 
 // TODO: add error check for invalid pod, make sure that replicateSuccess is the same for all pods
 
-var URL_PATH = "m3-dev",
+var URL_PATH = "m3",
     PODS = PODS || {};
 
 /**************************************************************************************
