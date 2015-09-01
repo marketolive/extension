@@ -1,7 +1,7 @@
 html,
 body {
     margin: 0px;
-    font-family: Roboto;
+    font-family: Roboto,"Helvetica Neue",Helvetica,Arial,sans-serif;
 }
 input[type=text], textarea {
   -webkit-transition: all 0.30s ease-in-out;
