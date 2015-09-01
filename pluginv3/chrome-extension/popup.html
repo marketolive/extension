@@ -235,12 +235,12 @@
     <!-- TODO: change submit to an actual submit button so enter will work -->
     <div id="settings-container">
         <div class="company-container">
-                <input type="text" id="name-entered" placeholder="Company Website..." class="company-name float-left">
-                    <div id="company-submit" class="float-left company-submit">
-                        <div class="company-inner-submit">
-                            Submit
-                        </div>
-                    </div>
+            <input type="text" id="name-entered" placeholder="Company Website..." class="company-name float-left">
+            <div id="company-submit" class="float-left company-submit">
+                <div class="company-inner-submit">
+                    Submit
+                </div>
+            </div>
             <div class="clear-container">
                 <div id="clear-submit" class="clear-submit">
                     <div class="clear-inner-submit">
@@ -319,5 +319,24 @@
         </a>
     </div>
 </body>
+
+<footer>
+    <script>
+        (function(i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r;
+            i[r] = i[r] || function() {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date();
+            a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0];
+            a.async = 1;
+            a.src = g;
+            m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+        ga('create', 'UA-66849846-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+</footer>
 
 </html>

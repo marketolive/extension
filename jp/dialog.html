@@ -373,8 +373,6 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script type="text/javascript" src="../assets/js/go-agile/goagile.js"></script>
     <script type="text/javascript" src="../assets/js/global/global.js"></script>
-    <script src="../pluginv3/pods.min.js"></script>
-    <script src="../pluginv3/marketo-live.min.js"></script>
     <script type="text/javascript">
         document.write(unescape("%3Cscript src='//munchkin.marketo.net/munchkin.js' type='text/javascript'%3E%3C/script%3E"));
     </script>
@@ -387,10 +385,9 @@
     <script>
         (function(i, s, o, g, r, a, m) {
             i['GoogleAnalyticsObject'] = r;
-            i[r] = i[r] ||
-                function() {
-                    (i[r].q = i[r].q || []).push(arguments)
-                }, i[r].l = 1 * new Date();
+            i[r] = i[r] || function() {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date();
             a = s.createElement(o),
                 m = s.getElementsByTagName(o)[0];
             a.async = 1;
@@ -398,12 +395,9 @@
             m.parentNode.insertBefore(a, m)
         })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
 
-        ga('create', 'UA-57886764-1', 'auto');
+        ga('create', 'UA-66849846-1', 'auto');
         ga('send', 'pageview');
     </script>
-    <script>
-        $('#get_started_link, action1').click(function() {
-            ga('send', 'event', first + ' ' + last, 'Get Started');
-        });
-    </script>
+    <script src="../pluginv3/pods.min.js"></script>
+    <script src="../pluginv3/marketo-live.min.js"></script>
 </footer>
