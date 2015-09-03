@@ -1363,6 +1363,38 @@ APP.disableSaving = function() {
 
     Mkt3.data.Store.prototype.sync = function() {};
     Ext4.data.Model.prototype.destroy = function() {};
+	Mkt3.controller.editor.form.settings.FieldSelection.prototype.deleteFormField = function(formField) {
+		var formFieldWidget = formField.getFieldWidget(),
+			formFieldId,
+			childFieldIndex,
+			childFormField,
+			allFormFields;
+			
+		if (formFieldWidget
+		&& formFieldWidget.get('datatype') === 'fieldset') {
+			allFormFields = this.getForm().getFormFields();
+			formFieldId = formField.get('id');
+			for (childFieldIndex = 0; childFieldIndex < allFormFields.getCount(); childFieldIndex++) {
+				childFormField = allFormFields.getAt(childFieldIndex);
+				if (childFormField.get('fieldsetFieldId') == formFieldId) {
+					this.deleteFormField(childFormField);
+				}
+			}
+		}
+		
+		formField.destroy({
+			scope: this,
+			callback: function(field, response) {
+				if (response.success) {
+					if (formFieldWidget) {
+						formFieldWidget.destroy();
+					}
+				}
+			}
+		});
+		// This allows for multiple form fields to be deleted
+		this.renumberWidgets();
+	}
 }
 
 /**************************************************************************************
