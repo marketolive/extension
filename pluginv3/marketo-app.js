@@ -124,7 +124,9 @@ APP.overrideDeliverabilityToolsTile = function() {
         ii = 0;
     
     for (ii=0; ii<tiles.length; ++ii) {
-        if (tiles[ii].href.search("homepage/sso?sso=250ok") != -1) {
+        // The question mark below needs to be escaped with two slashes
+        // in order for the search function to work.
+        if (tiles[ii].href.search("homepage/sso\\?sso=250ok") != -1) {
             tiles[ii].href = "https://250ok.com/login";
             break;
         }
