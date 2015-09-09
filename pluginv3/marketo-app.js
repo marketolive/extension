@@ -1730,7 +1730,7 @@ if (currentUrl.search(mktoAppDomain) != -1
                 }
 				else if (currUrlFragment == mktoMarketingActivitiesDefaultFragment
 				|| currUrlFragment == mktoLeadDatabaseDefaultFragment) {
-					APP.disableButtons;
+					APP.disableButtons();
 				}
 
                 if (currUrlFragment.search("^" + mktoEmailDesignerFragment) == -1
@@ -1943,7 +1943,7 @@ if (currentUrl.search(mktoAppDomain) != -1
                     }
 					else if (currUrlFragment == mktoMarketingActivitiesDefaultFragment
 					|| currUrlFragment == mktoLeadDatabaseDefaultFragment) {
-						APP.disableButtons;
+						APP.disableButtons();
 					}
 
                     if (currUrlFragment.search("^" + mktoEmailDesignerFragment) == -1
