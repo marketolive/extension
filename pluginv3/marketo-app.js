@@ -451,6 +451,7 @@ APP.disableMenus = function() {
 	
 	//Removes the New Program and New Smart Campaign buttons from the Default Workspace home
 	$jQ = jQuery.noConflict();
+	console.log($jQ(".mktButtonPositive"));
 	$jQ(".mktButtonPositive").remove();
 
 	//Disables Marketing Activities > Marketing Program, Nurture Program, Event Program, and Email Batch Program > New menu
