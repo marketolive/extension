@@ -35,6 +35,8 @@ var currentUrl = window.location.href,
     rtpDemoDomain = "^http:\/\/sjrtp1.marketo.com\/demo\/$|^http:\/\/cloud4.insightera.com\/demo\/$",
     emailDeliverabilityDomain = "^https:\/\/250ok.com/",
     mktoMyMarketoFragment = "MM0A1",
+	mktoMarketingActivitiesDefaultFragment = "MA15A1",
+	mktoLeadDatabaseDefaultFragment = "ML0A1ZN2",
     mktoEmailDesignerFragment = "EME",
     mktoEmailPreviewFragment = "EMP",
     mktoLandingPageDesignerFragment = "LPE",
@@ -437,6 +439,25 @@ APP.discardFormPushDrafts = function(assetType, assetIds) {
 
 /**************************************************************************************
  *  
+ *  This function disables the Default Workspace home buttons: New Program, and New  
+ *  Smart Campaign
+ *
+ *  @Author Brian Fisher
+ *
+ *  @function
+ *
+ **************************************************************************************/
+
+APP.disableButtons = function() {
+	console.log("Marketo App > Disabling: Buttons");
+	
+	$jQ = jQuery.noConflict();
+	console.log($jQ(".mktButtonPositive"));
+	$jQ(".mktButtonPositive").remove();
+}
+
+/**************************************************************************************
+ *  
  *  This function disables the Program actions menu items: New Smart Campaign, New 
  *  Local Asset, New Folder, and Delete.
  *
@@ -449,11 +470,6 @@ APP.discardFormPushDrafts = function(assetType, assetIds) {
 APP.disableMenus = function() {
     console.log("Marketo App > Disabling: Menus");
 	
-	//Removes the New Program and New Smart Campaign buttons from the Default Workspace home
-	$jQ = jQuery.noConflict();
-	console.log($jQ(".mktButtonPositive"));
-	$jQ(".mktButtonPositive").remove();
-
 	//Disables Marketing Activities > Marketing Program, Nurture Program, Event Program, and Email Batch Program > New menu
 	var prevMarketingNewEventMenu = Mkt.app.MarketingActivities.Toolbar.getNewEventMenuButton;
 	Mkt.app.MarketingActivities.Toolbar.getNewEventMenuButton = function() {
@@ -1712,6 +1728,10 @@ if (currentUrl.search(mktoAppDomain) != -1
                 if (currUrlFragment == mktoMyMarketoFragment) {
                     APP.overrideDeliverabilityToolsTile();
                 }
+				else if (currUrlFragment == mktoMarketingActivitiesDefaultFragment
+				|| currUrlFragment == mktoLeadDatabaseDefaultFragment) {
+					APP.disableButtons;
+				}
 
                 if (currUrlFragment.search("^" + mktoEmailDesignerFragment) == -1
                 && currUrlFragment.search("^" + mktoEmailPreviewFragment)
@@ -1921,6 +1941,10 @@ if (currentUrl.search(mktoAppDomain) != -1
                     if (currUrlFragment == mktoMyMarketoFragment) {
                         APP.overrideDeliverabilityToolsTile();
                     }
+					else if (currUrlFragment == mktoMarketingActivitiesDefaultFragment
+					|| currUrlFragment == mktoLeadDatabaseDefaultFragment) {
+						APP.disableButtons;
+					}
 
                     if (currUrlFragment.search("^" + mktoEmailDesignerFragment) == -1
 					&& currUrlFragment.search("^" + mktoLandingPageDesignerFragment) == -1
