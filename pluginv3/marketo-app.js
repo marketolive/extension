@@ -120,7 +120,15 @@ APP.disableSystemErrorMessage = function() {
 APP.overrideDeliverabilityToolsTile = function() {
     console.log("Marketo App > Overriding: Deliverability Tools Tile");
 
-    document.getElementById("homeTile-1036-btnEl").href = "https://250ok.com/login";
+    var tiles = document.getElementsByTagName("a"),
+        ii = 0;
+    
+    for (ii=0; ii<tiles.length; ++ii) {
+        if (tiles[ii].href.search("homepage/sso?sso=250ok") != -1) {
+            tiles[ii].href = "https://250ok.com/login";
+            break;
+        }
+    }
 }
 
 /**************************************************************************************
@@ -1818,6 +1826,11 @@ if (currentUrl.search(mktoAppDomain) != -1
                     currentUrl = window.location.href;
                     // Getting the URL fragment, the part after the #
                     currUrlFragment = Mkt3.DL.getDlToken();
+                    
+                    // Email Deliverability
+                    if (currUrlFragment == mktoMyMarketoFragment) {
+                        APP.overrideDeliverabilityToolsTile();
+                    }
 
                     if (currUrlFragment.search("^" + mktoEmailDesignerFragment) == -1
 					&& currUrlFragment.search("^" + mktoLandingPageDesignerFragment) == -1
