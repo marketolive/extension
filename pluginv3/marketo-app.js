@@ -452,7 +452,6 @@ APP.disableButtons = function() {
 	console.log("Marketo App > Disabling: Buttons");
 	
 	$jQ = jQuery.noConflict();
-	console.log($jQ(".mktButtonPositive"));
 	$jQ(".mktButtonPositive").remove();
 }
 
