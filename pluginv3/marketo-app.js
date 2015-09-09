@@ -437,8 +437,35 @@ APP.discardFormPushDrafts = function(assetType, assetIds) {
  **************************************************************************************/
 
 APP.disableMenus = function() {
-    console.log("Marketo App > Disabling: Program Actions Menu");
+    console.log("Marketo App > Disabling: Menus");
+	
+	//Removes the New Program and New Smart Campaign buttons from the Default Workspace home
+	$jQ = jQuery.noConflict();
+	$jQ(".x-btn-text mkiWalletClosed").remove();
+	$jQ(".x-btn-text mkiLightbulbOn").remove();
 
+	//Disables Marketing Activities > Marketing Program, Nurture Program, Event Program, and Email Batch Program > New menu
+	var prevMarketingNewEventMenu = Mkt.app.MarketingActivities.Toolbar.getNewEventMenuButton;
+	Mkt.app.MarketingActivities.Toolbar.getNewEventMenuButton = function() {
+		prevMarketingNewMenu.apply(this, arguments);
+		return {
+			text : MktLang.getStr('mktMaMenu.New'),
+			iconCls : 'mkiBooksBlue',
+			xtype : 'mkttbbutton',
+			menu : MktMaMenu.maMenu(),
+			handler : function(button) {
+				var canvas = MktCanvas.getActiveTab(),
+				disableMenu = canvas
+							&& canvas.config
+							&& canvas.config.accessZoneId
+							&& canvas.config.accessZoneId == 1;
+				button.menu.items.each(function(item) {
+					item.setDisabled(disableMenu);
+				});
+			}
+		};
+	}
+	
 	// Disables Marketing Activities > Folder and Smart Campaign > New menu
 	var prevMarketingNewMenu = Mkt.app.MarketingActivities.Toolbar.getNewMenuButton;
 	Mkt.app.MarketingActivities.Toolbar.getNewMenuButton = function() {
