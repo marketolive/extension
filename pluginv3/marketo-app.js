@@ -451,13 +451,12 @@ APP.disableMenus = function() {
 	
 	//Removes the New Program and New Smart Campaign buttons from the Default Workspace home
 	$jQ = jQuery.noConflict();
-	$jQ(".x-btn-text mkiWalletClosed").remove();
-	$jQ(".x-btn-text mkiLightbulbOn").remove();
+	$jQ(".mktButtonPositive").remove();
 
 	//Disables Marketing Activities > Marketing Program, Nurture Program, Event Program, and Email Batch Program > New menu
 	var prevMarketingNewEventMenu = Mkt.app.MarketingActivities.Toolbar.getNewEventMenuButton;
 	Mkt.app.MarketingActivities.Toolbar.getNewEventMenuButton = function() {
-		prevMarketingNewMenu.apply(this, arguments);
+		prevMarketingNewEventMenu.apply(this, arguments);
 		return {
 			text : MktLang.getStr('mktMaMenu.New'),
 			iconCls : 'mkiBooksBlue',
@@ -905,6 +904,50 @@ APP.disableMenus = function() {
 		return menu;
 	}
 	
+	// Disables Design Studio > ALL > Right-click menus
+	var prevContextMenu = MktDsMenu.preShowContextMenu;
+	MktDsMenu.preShowContextMenu = function(menu, attr) {
+		prevContextMenu.apply(this, arguments);
+		
+		var mItems = menu.items,
+			canvas = MktCanvas.getActiveTab(),
+			disable = attr.accessZoneId == 1
+				|| !attr.accessZoneId
+				&& canvas
+				&& canvas.config
+				&& canvas.config.accessZoneId
+				&& canvas.config.accessZoneId == 1,
+			itemsToDisable = [
+							"newLandingPage",//New Landing Page
+							"newTestGroup",//New Test Group
+							"newPageTemplate",//New Landing Page Template
+							"pageTemplateImport",//Import Template
+							"newForm",//New Form
+							"newVideoShare",//New YouTube Video
+							"newShareButton",//New Social Button
+							"newReferralOffer",//New Referral Offer
+							"newEmail",//New Email
+							"newEmailTemplate",//New Email Template
+							"newSnippet",//New Snippet
+							"uploadImage",//"Upload Image or File"
+							//"grabFromWebPage",//Grab Images from Web
+							"share",//Share Folder
+							"createFolder",//New Folder
+							"renameFolder",//Rename Folder
+							"deleteFolder",//Delete Folder
+							"convertToArchiveFolder",//Convert To Archive Folder
+							"convertToFolder",//Convert To Folder
+							];
+			
+		itemsToDisable.forEach(function(itemToDisable) {
+			var item = mItems.get(itemToDisable);
+			if (item) {
+				item.setDisabled(disable);
+			}
+		});
+		return menu;
+	}
+	
 	// Disables Design Studio > Landing Page Template > Right-click and Actions menus
 	var prevLandingPageTemplateMenu = MktDsMenu.preShowTemplateMenu;
 	MktDsMenu.preShowTemplateMenu = function(menu, attr) {
@@ -932,6 +975,50 @@ APP.disableMenus = function() {
 							//"previewDraftPageTemplate",//Preview Draft
 							"approveDraftPageTemplate",//Approve Draft
 							//"discardDraftPageTemplate",//Discard Draft
+							];
+			
+		itemsToDisable.forEach(function(itemToDisable) {
+			var item = mItems.get(itemToDisable);
+			if (item) {
+				item.setDisabled(disable);
+			}
+		});
+		return menu;
+	}
+	
+	// Disables Design Studio > ALL > Right-click menus
+	var prevContextMenu = MktDsMenu.preShowContextMenu;
+	MktDsMenu.preShowContextMenu = function(menu, attr) {
+		prevContextMenu.apply(this, arguments);
+		
+		var mItems = menu.items,
+			canvas = MktCanvas.getActiveTab(),
+			disable = attr.accessZoneId == 1
+				|| !attr.accessZoneId
+				&& canvas
+				&& canvas.config
+				&& canvas.config.accessZoneId
+				&& canvas.config.accessZoneId == 1,
+			itemsToDisable = [
+							"newLandingPage",//New Landing Page
+							"newTestGroup",//New Test Group
+							"newPageTemplate",//New Landing Page Template
+							"pageTemplateImport",//Import Template
+							"newForm",//New Form
+							"newVideoShare",//New YouTube Video
+							"newShareButton",//New Social Button
+							"newReferralOffer",//New Referral Offer
+							"newEmail",//New Email
+							"newEmailTemplate",//New Email Template
+							"newSnippet",//New Snippet
+							"uploadImage",//"Upload Image or File"
+							//"grabFromWebPage",//Grab Images from Web
+							"share",//Share Folder
+							"createFolder",//New Folder
+							"renameFolder",//Rename Folder
+							"deleteFolder",//Delete Folder
+							"convertToArchiveFolder",//Convert To Archive Folder
+							"convertToFolder",//Convert To Folder
 							];
 			
 		itemsToDisable.forEach(function(itemToDisable) {
