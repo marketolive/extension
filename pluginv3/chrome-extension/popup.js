@@ -28,7 +28,7 @@ window.onload = function() {
     document.getElementById("event-check-in").src = chrome.extension.getURL("images/marketoball.png");
     document.getElementById('toggle').src = chrome.extension.getURL("images/toggle-on.png");
 
-    var URL_PATH = "m3-dev",
+    var URL_PATH = "m3",
         background = chrome.extension.getBackgroundPage(),
         priv = true,
         tags = document.getElementsByClassName("link"),
