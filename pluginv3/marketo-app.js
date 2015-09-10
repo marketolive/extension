@@ -440,7 +440,7 @@ APP.discardFormPushDrafts = function(assetType, assetIds) {
 /**************************************************************************************
  *  
  *  This function disables the Default Workspace home buttons: New Program, and New  
- *  Smart Campaign
+ *  Smart Campaign, New Smart List
  *
  *  @Author Brian Fisher
  *
@@ -921,9 +921,9 @@ APP.disableMenus = function() {
 	}
 	
 	// Disables Design Studio > ALL > Right-click menus
-	var prevContextMenu = MktDsMenu.preShowContextMenu;
+	var prevDesignStudioContextMenu = MktDsMenu.preShowContextMenu;
 	MktDsMenu.preShowContextMenu = function(menu, attr) {
-		prevContextMenu.apply(this, arguments);
+		prevDesignStudioContextMenu.apply(this, arguments);
 		
 		var mItems = menu.items,
 			canvas = MktCanvas.getActiveTab(),
@@ -991,50 +991,6 @@ APP.disableMenus = function() {
 							//"previewDraftPageTemplate",//Preview Draft
 							"approveDraftPageTemplate",//Approve Draft
 							//"discardDraftPageTemplate",//Discard Draft
-							];
-			
-		itemsToDisable.forEach(function(itemToDisable) {
-			var item = mItems.get(itemToDisable);
-			if (item) {
-				item.setDisabled(disable);
-			}
-		});
-		return menu;
-	}
-	
-	// Disables Design Studio > ALL > Right-click menus
-	var prevContextMenu = MktDsMenu.preShowContextMenu;
-	MktDsMenu.preShowContextMenu = function(menu, attr) {
-		prevContextMenu.apply(this, arguments);
-		
-		var mItems = menu.items,
-			canvas = MktCanvas.getActiveTab(),
-			disable = attr.accessZoneId == 1
-				|| !attr.accessZoneId
-				&& canvas
-				&& canvas.config
-				&& canvas.config.accessZoneId
-				&& canvas.config.accessZoneId == 1,
-			itemsToDisable = [
-							"newLandingPage",//New Landing Page
-							"newTestGroup",//New Test Group
-							"newPageTemplate",//New Landing Page Template
-							"pageTemplateImport",//Import Template
-							"newForm",//New Form
-							"newVideoShare",//New YouTube Video
-							"newShareButton",//New Social Button
-							"newReferralOffer",//New Referral Offer
-							"newEmail",//New Email
-							"newEmailTemplate",//New Email Template
-							"newSnippet",//New Snippet
-							"uploadImage",//"Upload Image or File"
-							//"grabFromWebPage",//Grab Images from Web
-							"share",//Share Folder
-							"createFolder",//New Folder
-							"renameFolder",//Rename Folder
-							"deleteFolder",//Delete Folder
-							"convertToArchiveFolder",//Convert To Archive Folder
-							"convertToFolder",//Convert To Folder
 							];
 			
 		itemsToDisable.forEach(function(itemToDisable) {
@@ -1152,10 +1108,10 @@ APP.disableMenus = function() {
 		return menu;
 	}
 	
-	// Disables Lead Database > List > Right-click and Actions menu
-	var prevListMenu = MktLeadDbMenu.preShowListListMenu;
-	MktLeadDbMenu.preShowListListMenu = function(menu, attr) {
-		prevListMenu.apply(this, arguments);
+	// Disables Lead Database > System Smart List, Smart List, List, Segment > Right-click menus
+	var prevLeadDatabaseContextMenu = MktLeadDbMenu.preShowContextMenu;
+	MktLeadDbMenu.preShowContextMenu = function(menu, attr) {
+		prevLeadDatabaseContextMenu.apply(this, arguments);
 		
 		var mItems = menu.items,
 			canvas = MktCanvas.getActiveTab(),
@@ -1179,6 +1135,55 @@ APP.disableMenus = function() {
 							"cloneSmartlist",//Clone Smart List
 							"cloneList",//Clone List
 							"deleteList",//Delete List
+							"showSupportHistory",//Support Tools - History
+							"showSupportUsagePerf",//Support Tools - Run Stats
+							"showSmartListProcessorDiag",//Processor Diagnostics
+							"showSmartListProcessorOverride",//Override Processor
+							//"addToFavorites",//Add to Favorites
+							//"removeFromFavorites"//Remove from Favorites
+							];
+
+		itemsToDisable.forEach(function(itemToDisable) {
+			var item = mItems.get(itemToDisable);
+			if (item) {
+				item.setDisabled(disable);
+			}
+		});
+		return menu;
+	}
+	
+	// Disables Lead Database > List > Right-click and Actions menu
+	var prevListMenu = MktLeadDbMenu.preShowListListMenu;
+	MktLeadDbMenu.preShowListListMenu = function(menu, attr) {
+		prevListMenu.apply(this, arguments);
+		debugger;
+		
+		var mItems = menu.items,
+			canvas = MktCanvas.getActiveTab(),
+			disable = menu.currNode
+					&& menu.currNode.attributes
+					&& menu.currNode.attributes.accessZoneId == 1
+					|| !menu.currNode
+					&& canvas
+					&& canvas.config
+					&& canvas.config.accessZoneId
+					&& canvas.config.accessZoneId == 1,
+			itemsToDisable = [
+							//"navigateToMembership",//View Leads
+							//"navigateToSmartList",//View Smart List
+							//"navigateToFilterView",//Filter View
+							//"showImportStatus",//Show Import Status
+							//"showExportStatus",//Show Export Status
+							//"importList",//Import List
+							//"exportList",//Export List
+							//"exportAdBridge",//Send via Ad Bridge
+							"cloneSmartlist",//Clone Smart List
+							"cloneList",//Clone List
+							"deleteList",//Delete List
+							"showSupportHistory",//Support Tools - History
+							"showSupportUsagePerf",//Support Tools - Run Stats
+							"showSmartListProcessorDiag",//Processor Diagnostics
+							"showSmartListProcessorOverride",//Override Processor
 							//"addToFavorites",//Add to Favorites
 							//"removeFromFavorites"//Remove from Favorites
 							];
@@ -1313,6 +1318,80 @@ APP.disableMenus = function() {
 			}
 		});
 		*/
+		return menu;
+	}
+	
+	// Disables Analytics > Analyzer and Report > Right-click menus
+	var prevReportMenu = MktAnalyticsMenu.preShowReportMenu;
+	MktAnalyticsMenu.preShowReportMenu = function(menu, attr) {
+		prevReportMenu.apply(this, arguments);
+		
+		var mItems = menu.items,
+			canvas = MktCanvas.getActiveTab(),
+			disable = menu.currNode
+					&& menu.currNode.attributes
+					&& menu.currNode.attributes.accessZoneId == 1
+					|| !menu.currNode
+					&& canvas
+					&& canvas.config
+					&& canvas.config.accessZoneId
+					&& canvas.config.accessZoneId == 1,
+			itemsToDisable = [
+							//"navigateToAnalyzer",//View Analyzer
+							//"navigateToSmartList",//View Smart List
+							//"navigateToAnalyzerSetup",//View Setup
+							//"navigateToSetup",//View Setup
+							//"navigateToSubscriptions",//View Subscriptions
+							"cloneReport",//Clone Analyzer or Report
+							"deleteReport",//Delete Analyzer or Report
+							"moveReport",//Move Report
+							//"addToFavorites",//Add to Favorites
+							//"removeFromFavorites"//Remove from Favorites
+							];
+
+		itemsToDisable.forEach(function(itemToDisable) {
+			var item = mItems.get(itemToDisable);
+			if (item) {
+				item.setDisabled(disable);
+			}
+		});
+		return menu;
+	}
+	
+	// Disables Analytics > Folder > Right-click menu
+	var prevReportFolderMenu = MktAnalyticsMenu.preshowReportFolderMenu ;
+	MktAnalyticsMenu.preshowReportFolderMenu  = function(menu, attr) {
+		prevReportFolderMenu.apply(this, arguments);
+		
+		var mItems = menu.items,
+			canvas = MktCanvas.getActiveTab(),
+			disable = menu.currNode
+					&& menu.currNode.attributes
+					&& menu.currNode.attributes.accessZoneId == 1
+					|| !menu.currNode
+					&& canvas
+					&& canvas.config
+					&& canvas.config.accessZoneId
+					&& canvas.config.accessZoneId == 1,
+			itemsToDisable = [
+							"createFolder",//New Folder
+							"renameFolder",//Rename Folder
+							"deleteFolder",//Delete Folder
+							"convertToArchiveFolder",//Convert To Archive Folder
+							"convertToFolder",//Convert To Folder
+							"newRcm",//New Revenue Cycle Model
+							"share",//Share Folder
+							"moveReport",//Move Report
+							//"addToFavorites",//Add to Favorites
+							//"removeFromFavorites"//Remove from Favorites
+							];
+
+		itemsToDisable.forEach(function(itemToDisable) {
+			var item = mItems.get(itemToDisable);
+			if (item) {
+				item.setDisabled(disable);
+			}
+		});
 		return menu;
 	}
 }
