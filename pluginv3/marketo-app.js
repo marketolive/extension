@@ -2119,15 +2119,13 @@ if (currentUrl.search(mktoAppDomain) != -1
                 }
             }
             else {
-                // Email Deliverability
                 if (currUrlFragment == mktoMyMarketoFragment) {
                     APP.overrideDeliverabilityToolsTile();
                 }
-                
                 window.onhashchange = function () {
                     if (currUrlFragment == mktoMyMarketoFragment) {
-                    APP.overrideDeliverabilityToolsTile();
-                }
+                        APP.overrideDeliverabilityToolsTile();
+                    }
                 }
             }
         }
