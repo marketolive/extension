@@ -5,13 +5,14 @@
  *  functionality onto the Marketo App. It is loaded by the MarketoLive plugin and 
  *  is responsible for the manipulation of the Marketo GUI.
  *
- *  @Author Andy, Arrash, Brian
+ *  @Author Andrew Garcia, Arrash Yasavolian, Brian Fisher
  *
  *  @namespace
  *
  **************************************************************************************/
 console.log("Marketo App > Running");
-window.mkto_live_plugin_state = true;
+// This is the value that the demo plugin check looks for
+window.mkto_live_plugin_state = true; 
 
 /**************************************************************************************
  *
@@ -19,6 +20,7 @@ window.mkto_live_plugin_state = true;
  *
  **************************************************************************************/
 
+// These are all expressed in regex notation. 
 var currentUrl = window.location.href,
     mktoAppDomain = "^https:\/\/app-[a-z0-9]+\.marketo\.com",
     mktoAppMatch = "https://app-*.marketo.com",
@@ -49,13 +51,14 @@ var currentUrl = window.location.href,
 
 /**************************************************************************************
  *  
- *  This function gets the cookie for the specified user pod.
+ *  This function gets the specified cookie for the current domain. It loops through
+ *  the string contained in document.cookie and looks for the given cookie.
  *
- *  @Author Andy
+ *  @Author Andrew Garcia
  *
  *  @function
  *
- *  @param {String} cookieField - Represents the user's pod.
+ *  @param {String} cookieField - Represents the key to search for inside document.cookie
  *
  **************************************************************************************/
 
@@ -76,7 +79,12 @@ APP.getCookie = function(cookieField) {
 
 /**************************************************************************************
  *  
- *  This function disables the demo plugin check.
+ *  This function disables the demo plugin check that the Marketo subscription uses
+ *  to enforce having the plugin installed. The user experience with the Marketo
+ *  feature as implemented today isn't ideal, so this function disables it altogether.
+ *  Obviously, only having the plugin could disable the check, so it's guaranteed that
+ *  the user has the plugin (unless they're very Javascript savvy and paste this in the
+ *  console).
  *
  *  @Author Brian Fisher
  *
@@ -88,12 +96,15 @@ APP.disableDemoPluginCheck = function() {
     console.log("Marketo App > Disabling: Demo Plugin Check");
 
     MktPage.validateDemoPlugin = function() {};
-    isMktoLiveInstance = true;
+    isMktoLiveInstance = true; // <---------------------------------------------------------------------------LOOK HERE!--------------
 }
 
 /**************************************************************************************
  *  
  *  This function disables the system error message for sync errors on Landing Pages.
+ *  These errors would occur when two users edit the same landing page simultaneously.
+ *  Please note that this also hides other system errors, so revisions should be 
+ *  considered to determine if this is the correct approach.
  *
  *  @Author Brian Fisher
  *
@@ -109,9 +120,14 @@ APP.disableSystemErrorMessage = function() {
 
 /**************************************************************************************
  *  
- *  This function overrides the target link for the Deliverability Tools tile.
+ *  This function overrides the target link for the Deliverability Tools tile. By default,
+ *  the tile uses SSO to login to 250ok. However, we only have one 250ok instance that
+ *  contains usable demo data, so the plugin must send people into that instance. This
+ *  function directs users to the 250ok login page where the deliverability-tools.js script
+ *  takes over to automatically login and hide the necessary buttons. This function should
+ *  also run inside of SC sandbox instances.
  *
- *  @Author Brian Fisher
+ *  @Author Andrew Garcia
  *
  *  @function
  *
@@ -123,6 +139,8 @@ APP.overrideDeliverabilityToolsTile = function() {
     var tiles = document.getElementsByTagName("a"),
         ii = 0;
     
+    // The tile HTML ids change each time a user clicks away from the home screen,
+    // so they cannot be selected directly by id.
     for (ii=0; ii<tiles.length; ++ii) {
         // The question mark below needs to be escaped with two slashes
         // in order for the search function to work.
@@ -135,7 +153,9 @@ APP.overrideDeliverabilityToolsTile = function() {
 
 /**************************************************************************************
  *  
- *  This function enables saving of Smart Campaigns.
+ *  This function enables saving of Smart Campaigns. It is essentially a copy/paste of
+ *  the Marketo source code, so that it can be reset when we overwrite these functions
+ *  in the disable smart campaign saving function.
  *
  *  @Author Brian Fisher
  *
@@ -233,8 +253,7 @@ APP.enableSmartCampaignSaving = function() {
 /**************************************************************************************
  *  
  *  This function disables saving of Smart Campaigns while maintaining the correct 
- *  order of the steps (the previous bug where a flow step shows as 'undefined' has 
- *  been eradicated).
+ *  order of the steps.
  *
  *  @Author Brian Fisher
  *
@@ -253,7 +272,9 @@ APP.disableSmartCampaignSaving = function() {
 
 /**************************************************************************************
  *  
- *  This function enables the Smart List and Flow Canvases for Smart Campaigns.
+ *  This function enables the Smart List and Flow Canvases for Smart Campaigns. In the
+ *  case where a user does not have edit privileges for marketing assets, the UI for
+ *  triggers, filters, and flow steps will not show by default.
  *
  *  @Author Brian Fisher
  *
@@ -1303,9 +1324,14 @@ APP.disableMenus = function() {
 
 /**************************************************************************************
  *  
- *  This function limits each Workspace to 3 Nurture Programs.
+ *  This function limits each Workspace to 3 Nurture Programs. Basically, each time
+ *  a nuture program is created, it first searches the folder tree to see if the user
+ *  already has 3 programs. If so, it displays an error message. The reason this exists
+ *  is because there is a limit of 300 nurture programs per subscription, and up to
+ *  100 workspaces per subscription. 300 programs divided by 100 workspaces equals 3 
+ *  nurture programs per workspace.
  *
- *  @Author Brian Fisher
+ *  @Author Andrew Garcia
  *
  *  @function
  *
@@ -1352,9 +1378,9 @@ APP.limitNurturePrograms = function() {
 /**************************************************************************************
  *
  *  This function contains the control logic for injecting the Analyzer Navigation Bar 
- *  and is the callback function for window.onhashchange.
+ *  that allows for easy switching between analyzers without returning to the folder tree.
  *
- *  @Author Andy
+ *  @Author Arrash Yasavolian
  *
  *  @function
  *
@@ -1364,7 +1390,8 @@ APP.injectAnalyzerNavBar = function() {
     var isPodsLoaded = window.setInterval(function() {
         if (typeof(PODS) !== "undefined") {
             console.log("Marketo App > Injecting: Analyzer Navigation Bar");
-
+            
+            window.clearInterval(isPodsLoaded);
             if (typeof(pod) == "undefined") {
                 pod = new PODS.Pod(PODS.getCookie("userPod"));
             }
@@ -1373,6 +1400,8 @@ APP.injectAnalyzerNavBar = function() {
                 if (currentUrl == pod.valueSet[y].url) {
                     console.log("Marketo App > Updating: CSS for Analyzer Navigation Bar");
 
+                    // This code block swaps the colors of the analyzer labels depending
+                    // on which one the user is currently viewing.
                     $j = jQuery.noConflict();
                     var currPosition = '#' + pod.valueSet[y].position;
                     $j(currPosition).parent().css('display', 'block');
@@ -1382,7 +1411,7 @@ APP.injectAnalyzerNavBar = function() {
                     $j("#modeler,#success-path-analyzer,#opportunity-influence-analyzer,#program-analyzer").bind("click", function(e) {
                         console.log("Marketo App > Identifying: Current Analyzer");
 
-                        //Updates the currPosition based on the div selected
+                        // Updates the currPosition based on the div selected
                         for (var x = 0; x < pod.valueSet.length; x++) {
                             if (e.target.id == pod.valueSet[x].position)
                                 currPosition = x;
@@ -1391,7 +1420,6 @@ APP.injectAnalyzerNavBar = function() {
                     });
                 }
             }
-            window.clearInterval(isPodsLoaded);
         }
     }, 0);
 }
@@ -1526,7 +1554,7 @@ APP.disableSaving = function() {
  *  This function overlays the email designer with the submitted company logo and 
  *  color.
  *
- *  @Author Arrash
+ *  @Author Arrash Yasavolian
  *
  *  @function
  *
@@ -1572,7 +1600,7 @@ APP.overlayEmailDesigner = function() {
  *  This function overlays the landing page designer with the submitted company logo 
  *  and color.
  *
- *  @Author Arrash
+ *  @Author Arrash Yasavolian
  *
  *  @function
  *
@@ -1611,6 +1639,16 @@ APP.overlayLandingPageDesigner = function() {
         }
     }, 0);
 }
+
+/**************************************************************************************
+ *  
+ *  This function returns the email ids of all the email assets in a given instance. 
+ *
+ *  @Author Andrew Garcia
+ *
+ *  @function
+ *
+ **************************************************************************************/
 
 APP.getEmailIds = function (pod) {
     console.log("Marketo App > Getting Email Ids for Pod: " + pod);
@@ -1673,12 +1711,16 @@ if (currentUrl.search(mktoAppDomain) != -1
 
             var accountString = MktPage.savedState.custPrefix,
                 userId = MktPage.userid;
+            
+            // This checks to see if the username is one that would be associated
+            // with a MarketoLive subscription.
             if (accountString.search("^mktodemoaccount") != -1
 			&& (userId.search("\.demo@marketo\.com$") != -1
 			|| userId.search("^admin@mktodemoaccount") != -1
             || userId.search("^mktodemoaccount[a-z0-9]*@marketo\.com") != -1)) {
                 console.log("Marketo App > Location: MarketoLive Instance");
 
+                // If the user is the admin or ghost, disable
                 if (userId.search("^admin@mktodemoaccount") != -1
                 || userId.search("^mktodemoaccount[a-z0-9]*@marketo\.com") != -1) {
                     console.log("Marketo App > User: Admin");
@@ -1686,12 +1728,19 @@ if (currentUrl.search(mktoAppDomain) != -1
                     // Disabling Demo Plugin Check
                     APP.disableDemoPluginCheck();
 
+                    // This check ensures that an admin can login and test the 
+                    // plugin as a normal user. 
                     if (APP.getCookie("priv") != "false") {
                         return;
                     } 
                     else {
                         console.log("Marketo App > User: Admin is now a normal user");
                     }
+                }
+                
+                // Email Deliverability
+                if (currUrlFragment == mktoMyMarketoFragment) {
+                    APP.overrideDeliverabilityToolsTile();
                 }
 
                 var currUrlFragment,
@@ -1701,17 +1750,14 @@ if (currentUrl.search(mktoAppDomain) != -1
                     modeler106Fragment = "RCM39A1!",
                     modeler106abFragment = "RCM5A1!",
                     successPathAnalyzerFragment = "AR1682A1!";
+                
                 // Disabling Demo Plugin Check
                 APP.disableDemoPluginCheck();
 
                 // Getting the URL fragment, the part after the #
                 currUrlFragment = Mkt3.DL.getDlToken();
 
-                // Email Deliverability
-                if (currUrlFragment == mktoMyMarketoFragment) {
-                    APP.overrideDeliverabilityToolsTile();
-                }
-
+                // Only execute this block if the user is not on an editor page.
                 if (currUrlFragment.search("^" + mktoEmailDesignerFragment) == -1
                 && currUrlFragment.search("^" + mktoEmailPreviewFragment)
                 && currUrlFragment.search("^" + mktoLandingPageDesignerFragment) == -1
@@ -1967,6 +2013,18 @@ if (currentUrl.search(mktoAppDomain) != -1
                             APP.injectAnalyzerNavBar();
                         }
                     }
+                }
+            }
+            else {
+                // Email Deliverability
+                if (currUrlFragment == mktoMyMarketoFragment) {
+                    APP.overrideDeliverabilityToolsTile();
+                }
+                
+                window.onhashchange = function () {
+                    if (currUrlFragment == mktoMyMarketoFragment) {
+                    APP.overrideDeliverabilityToolsTile();
+                }
                 }
             }
         }
