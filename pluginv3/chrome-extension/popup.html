@@ -19,7 +19,7 @@
             text-decoration: none;
         }
         
-        #settings-container {
+        #settings-container, #help-container {
             display: none;
             background-color: #f2f2f2;
             padding-bottom: 5px;
@@ -50,12 +50,12 @@
             margin-left: 15px;
         }
         
-        #gear-size {
+        #gear-size, #help-size {
             /* avoid an excessively wide status text */
             height: 25px;
         }
         
-        #settings {
+        #settings, #help {
             padding-top: 3px;
             height: 35px;
             float: right;
@@ -228,11 +228,36 @@
         <a href="https://marketolive.com/m3/home.html" class="link">
             <img id="logo-size" src="">
         </a>
+        <div id="help">
+            <img id="help-size" src="">
+        </div>
         <div id="settings">
             <img id="gear-size" src="">
         </div>
     </div>
     <!-- TODO: change submit to an actual submit button so enter will work -->
+    <div id="help-container">
+        <div class="option-container">
+            <a href="mailto:marketolive.rl597@zapiermail.com?Subject=%5BNAME%20OF%20ISSUE%5D&Body=%5BDESCRIPTION%20OF%20ISSUE%5D%0A%0A%5BATTACH%20OR%20PASTE%20ANY%20SCREENSHOTS%5D" class="link">
+                <div class="option-image-container">
+                    <img id="report-a-bug" class="option-image" src="">
+                </div>
+                <div class="option-title">
+                    Report a Bug
+                </div>
+            </a>
+        </div>
+        <div class="option-container">
+            <a href="https://marketoemployee.jiveon.com/community/sales/sc-tools/marketolive/content?filterID=contentstatus%5Bpublished%5D~category%5Bmarketolive-official%5D&sortKey=contentstatus%5Bpublished%5D~subjectAsc&sortOrder=1" class="link">
+                <div class="option-image-container">
+                    <img id="training" class="option-image" src="">
+                </div>
+                <div class="option-title">
+                    Training Videos & Content
+                </div>
+            </a>
+        </div>
+    </div>
     <div id="settings-container">
         <div class="company-container">
             <input type="text" id="name-entered" placeholder="Company Website..." class="company-name float-left">
