@@ -460,6 +460,38 @@ APP.discardFormPushDrafts = function(assetType, assetIds) {
 
 /**************************************************************************************
  *  
+ *  This function hides each folder that is not in the Default workspace except the  
+ *  user's own folder
+ *
+ *  @Author Andy Garcia
+ *
+ *  @function
+ *
+ **************************************************************************************/
+
+APP.hideFolders = function(username) {
+	console.log("Marketo App > Hiding: Folders");
+	
+	var workspaces = document.getElementsByClassName("mkiEnvironment"),
+    userWorkspace = "Marketing",
+    ii;
+
+    for (ii=0; ii<workspaces.length; ii++) {
+        if (workspaces[ii].parentElement.getElementsByTagName("a")[0].getElementsByTagName("span")[0].innerHTML == userWorkspace) {
+            var folders = workspaces[ii].parentElement.parentElement.getElementsByTagName("ul")[0].getElementsByTagName("li"),
+                jj;
+            
+            for (jj=0; jj<folders.length; jj++) {
+                if (folders[jj].getElementsByTagName("div")[0].getElementsByTagName("a")[0].getElementsByTagName("span")[0].innerHTML != username) {
+                    folders[jj].getElementsByTagName("div")[0].parentElement.setAttribute("style", "display:none");
+                }
+            }
+        }
+    }
+}
+
+/**************************************************************************************
+ *  
  *  This function disables the Default Workspace home buttons: New Program, and New  
  *  Smart Campaign, New Smart List
  *
@@ -1805,7 +1837,8 @@ if (currentUrl.search(mktoAppDomain) != -1
             window.clearInterval(isMktPageApp);
 
             var accountString = MktPage.savedState.custPrefix,
-                userId = MktPage.userid;
+                userId = MktPage.userid,
+                username = userId.split("@")[0];
             
             // This checks to see if the username is one that would be associated
             // with a MarketoLive subscription.
@@ -1866,6 +1899,7 @@ if (currentUrl.search(mktoAppDomain) != -1
                 && currUrlFragment.search("^" + mktoSocialAppWizardFragment) == -1) {
                     // Storing previous Workspace ID
                     if (currUrlFragment != mktoMyMarketoFragment) {
+                        APP.hideFolders(username);
 						var isMktCanvas = window.setInterval(function() {
 							if (MktCanvas.activeTab !== null) {
 								console.log("Marketo App > Location: Marketo Canvas");
@@ -2077,6 +2111,7 @@ if (currentUrl.search(mktoAppDomain) != -1
 					&& currUrlFragment.search("^" + mktoSocialAppWizardFragment) == -1
 					&& currUrlFragment != mktoMyMarketoFragment) {
 
+                        APP.hideFolders(username);
                         var isMktCanvasHash = window.setInterval(function() {
 							if (MktCanvas.activeTab !== null) {
 								console.log("Marketo App > Location: Marketo Canvas");
