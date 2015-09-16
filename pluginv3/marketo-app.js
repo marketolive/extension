@@ -470,8 +470,8 @@ APP.discardFormPushDrafts = function(assetType, assetIds) {
  **************************************************************************************/
 
 APP.hideFolders = function(username) {
-	console.log("Marketo App > Hiding: Folders");
-	
+	console.log("Marketo App > Hiding: Folders, username = " + username);
+    
 	var workspaces = document.getElementsByClassName("mkiEnvironment"),
     userWorkspace = "Marketing",
     ii;
