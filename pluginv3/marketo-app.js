@@ -1899,7 +1899,6 @@ if (currentUrl.search(mktoAppDomain) != -1
                 && currUrlFragment.search("^" + mktoSocialAppWizardFragment) == -1) {
                     // Storing previous Workspace ID
                     if (currUrlFragment != mktoMyMarketoFragment) {
-                        APP.hideFolders(username);
 						var isMktCanvas = window.setInterval(function() {
 							if (MktCanvas.activeTab !== null) {
 								console.log("Marketo App > Location: Marketo Canvas");
@@ -1914,6 +1913,7 @@ if (currentUrl.search(mktoAppDomain) != -1
 									// Intelligent Nurturing
 									APP.disableSaving();
 								}
+                                APP.hideFolders(username);
 							}
 						}, 0);
 					}
@@ -2111,7 +2111,6 @@ if (currentUrl.search(mktoAppDomain) != -1
 					&& currUrlFragment.search("^" + mktoSocialAppWizardFragment) == -1
 					&& currUrlFragment != mktoMyMarketoFragment) {
 
-                        APP.hideFolders(username);
                         var isMktCanvasHash = window.setInterval(function() {
 							if (MktCanvas.activeTab !== null) {
 								console.log("Marketo App > Location: Marketo Canvas");
@@ -2138,6 +2137,7 @@ if (currentUrl.search(mktoAppDomain) != -1
 									prevWorkspaceId = currWorkspaceId;
 								}
 							}
+                            APP.hideFolders(username);
 						}, 0);
 
                         // Marketing ROI, Funnel Analysis
