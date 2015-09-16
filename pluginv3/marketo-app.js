@@ -2136,8 +2136,8 @@ if (currentUrl.search(mktoAppDomain) != -1
 									}
 									prevWorkspaceId = currWorkspaceId;
 								}
+                                APP.hideFolders(username);
 							}
-                            APP.hideFolders(username);
 						}, 0);
 
                         // Marketing ROI, Funnel Analysis
