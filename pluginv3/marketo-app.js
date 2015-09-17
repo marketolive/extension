@@ -1918,7 +1918,7 @@ if (currentUrl.search(mktoAppDomain) != -1
 						}, 0);
                         
                         var isMktTree = window.setInterval(function() {
-                            if (typeof(Mkt.widgets.FilterTreePanel.prototype.updateTreeWidth) !== "undefined") {
+                            if (typeof(Ext.tree.TreeEventModel.prototype.delegateClick) !== "undefined") {
                                 console.log("Marketo App > Location: Marketo Tree");
                                 
                                 window.clearInterval(isMktTree);
@@ -2149,7 +2149,7 @@ if (currentUrl.search(mktoAppDomain) != -1
 						}, 0);
                         
                         var isMktTree = window.setInterval(function() {
-                            if (typeof(Mkt.widgets.FilterTreePanel.prototype.updateTreeWidth) !== "undefined") {
+                            if (typeof(Ext.tree.TreeEventModel.prototype.delegateClick) !== "undefined") {
                                 console.log("Marketo App > Location: Marketo Tree");
                                 
                                 window.clearInterval(isMktTree);
