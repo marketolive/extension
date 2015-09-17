@@ -1913,9 +1913,17 @@ if (currentUrl.search(mktoAppDomain) != -1
 									// Intelligent Nurturing
 									APP.disableSaving();
 								}
-                                APP.hideFolders(username);
 							}
 						}, 0);
+                        
+                        var isMktTree = window.setInterval(function() {
+                            if (typeof(document.getElementById("ProgramsTree")) !== "undefined") {
+                                console.log("Marketo App > Location: Marketo Tree");
+                                
+                                window.clearInterval(isMktTree);
+                                APP.hideFolders(username);
+                            }
+                        }, 0);
 					}
 
                     // Marketing ROI, Funnel Analysis
@@ -2136,9 +2144,17 @@ if (currentUrl.search(mktoAppDomain) != -1
 									}
 									prevWorkspaceId = currWorkspaceId;
 								}
-                                APP.hideFolders(username);
 							}
 						}, 0);
+                        
+                        var isMktTree = window.setInterval(function() {
+                            if (typeof(document.getElementById("ProgramsTree")) !== "undefined") {
+                                console.log("Marketo App > Location: Marketo Tree");
+                                
+                                window.clearInterval(isMktTree);
+                                APP.hideFolders(username);
+                            }
+                        }, 0);
 
                         // Marketing ROI, Funnel Analysis
                         if (currUrlFragment == oppInfluenceAnalyzerFragment
