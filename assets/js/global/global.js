@@ -1,6 +1,6 @@
 $( document ).ready(function() {
   var x = 0;
-  $("#help-link, #sidebar-help").click(function(){
+  $("#help-link, #sidebar-help, #audience-menu").click(function(){
     $('.help-center-box').animate({
       'margin-top': '125px',
       }, 400, function() {
@@ -9,6 +9,7 @@ $( document ).ready(function() {
     $('.help-center-container').css('display','block');
   });
   
+    
   $('.cancel-help').click(function(){
     $('.help-cover').css('display','none');
     $('.help-center-container').css('display','none');
