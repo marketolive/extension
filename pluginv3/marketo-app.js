@@ -460,6 +460,39 @@ APP.discardFormPushDrafts = function(assetType, assetIds) {
 
 /**************************************************************************************
  *  
+ *  This function hides each folder that is not in the Default workspace except the  
+ *  user's own folder
+ *
+ *  @Author Andy Garcia
+ *
+ *  @function
+ *
+ **************************************************************************************/
+
+APP.hideFolders = function(username) {
+	console.log("Marketo App > Hiding: Folders");
+    
+	var workspaces = document.getElementsByClassName("mkiEnvironment"),
+    userWorkspace = "Marketing",
+    ii;
+
+    for (ii=0; ii<workspaces.length; ii++) {
+        if (workspaces[ii].parentElement.getElementsByTagName("a")[0].getElementsByTagName("span")[0].innerHTML == userWorkspace) {
+            var folders = workspaces[ii].parentElement.parentElement.getElementsByTagName("ul")[0].getElementsByTagName("li"),
+                jj;
+            
+            for (jj=0; jj<folders.length; jj++) {
+                if (folders[jj].getElementsByTagName("div")[0].getElementsByTagName("a")[0].getElementsByTagName("span")[0].innerHTML != username) {
+                    folders[jj].getElementsByTagName("div")[0].parentElement.setAttribute("style", "display:none");
+                }
+            }
+            break;
+        }
+    }
+}
+
+/**************************************************************************************
+ *  
  *  This function disables the Default Workspace home buttons: New Program, and New  
  *  Smart Campaign, New Smart List
  *
@@ -1805,7 +1838,8 @@ if (currentUrl.search(mktoAppDomain) != -1
             window.clearInterval(isMktPageApp);
 
             var accountString = MktPage.savedState.custPrefix,
-                userId = MktPage.userid;
+                userId = MktPage.userid,
+                username = userId.split("@")[0];
             
             // This checks to see if the username is one that would be associated
             // with a MarketoLive subscription.
@@ -1882,6 +1916,15 @@ if (currentUrl.search(mktoAppDomain) != -1
 								}
 							}
 						}, 0);
+                        
+                        var isMktTree = window.setInterval(function() {
+                            if (typeof(Ext.tree.TreeEventModel.prototype.delegateClick) !== "undefined") {
+                                console.log("Marketo App > Location: Marketo Tree");
+                                
+                                window.clearInterval(isMktTree);
+                                APP.hideFolders(username);
+                            }
+                        }, 0);
 					}
 
                     // Marketing ROI, Funnel Analysis
@@ -2104,6 +2147,15 @@ if (currentUrl.search(mktoAppDomain) != -1
 								}
 							}
 						}, 0);
+                        
+                        var isMktTree = window.setInterval(function() {
+                            if (typeof(Ext.tree.TreeEventModel.prototype.delegateClick) !== "undefined") {
+                                console.log("Marketo App > Location: Marketo Tree");
+                                
+                                window.clearInterval(isMktTree);
+                                APP.hideFolders(username);
+                            }
+                        }, 0);
 
                         // Marketing ROI, Funnel Analysis
                         if (currUrlFragment == oppInfluenceAnalyzerFragment

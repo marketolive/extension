@@ -1,16 +1,16 @@
 $(document).ready(function(){
-    $("#main-measure-your-success, #main-align-with-sales, #main-engage-your-customers, #main-drive-more-awareness, #main-down, #drive-up, #align-up, #align-down, #drive-down, #engage-up, #engage-down, #measure-up").click(function(e) {
-        if(e.currentTarget.id == "main-down" || e.currentTarget.id == "engage-up" || e.currentTarget.id == "main-drive-more-awareness"){
+    $("#main-measure-your-success, #main-align-with-sales, #main-engage-your-customers, #main-drive-more-awareness, #main-down, #drive-up, #main-acquire-and-segment, #main-engage-and-test, #main-report-and-iterate, #align-up, #align-down, #drive-down, #engage-up, #engage-down, #measure-up").click(function(e) {
+        if(e.currentTarget.id == "main-down" || e.currentTarget.id == "engage-up" || e.currentTarget.id == "main-drive-more-awareness" || e.currentTarget.id == "main-acquire-and-segment"){
             $('html, body').animate({
                 scrollTop: $("#drivemoreawareness").offset().top
             }, 600);
         }
-        else if(e.currentTarget.id == "drive-down" || e.currentTarget.id == "align-up" || e.currentTarget.id == "main-engage-your-customers"){
+        else if(e.currentTarget.id == "drive-down" || e.currentTarget.id == "align-up" || e.currentTarget.id == "main-engage-your-customers" || e.currentTarget.id == "main-engage-and-test"){
             $('html, body').animate({
                 scrollTop: $("#engageyourcustomers").offset().top
             }, 600);            
         }
-        else if(e.currentTarget.id == "engage-down" || e.currentTarget.id == "main-align-with-sales"){
+        else if(e.currentTarget.id == "engage-down" || e.currentTarget.id == "main-align-with-sales" || e.currentTarget.id == "main-report-and-iterate"){
             $('html, body').animate({
                 scrollTop: $("#alignwithsales").offset().top
             }, 600);            
@@ -89,39 +89,39 @@ $(document).ready(function(){
     },
     "acquire1" : {
       "title" : "Search Optimization",
-      "words" : " "
+      "words" : "Marketo Search Engine Optimization (SEO) is an easy-to-use tool that helps marketers without specialized knowledge drive more quality traffic to their website and landing pages."
     },
     "acquire2" : {
       "title" : "Adbridge",
-      "words" : " "
+      "words" : "Ad bridge connects marketo’s rich behavioral data with facebook, google, linkedin and other advertising platforms, so marketers can target the right potential customers with meaningful, relevant ads."
     },
     "acquire3" : {
       "title" : "Segmentation",
-      "words" : " "
+      "words" : "Powered by a smart marketing database, you’ll have a single view of each consumer across channels, including behavioral demographic, and transactional data."
     },
     "test1" : {
       "title" : "Engagement Engine",
-      "words" : " "
+      "words" : "Easily create personas and/or segments and add relevant content to send over a configurable cadence to each audience. The engagement engine has your back and will automatically check with pieces of content a person has received before sending the next message."
     },
     "test2" : {
       "title" : "Message Testing",
-      "words" : " "
+      "words" : "A/B/N test your content based on subject line, from name, time sent, or template. automatically configure the “champion” settings based on open rate, click rate, or custom conversions like a purchase or download."
     },
     "test3" : {
       "title" : "Cadence Testing",
-      "words" : " "
+      "words" : "Split your audiences into different drip campaigns and nurtures to test the performance and optimal cadence for each set of messaging."
     },
     "report1" : {
       "title" : "Email Performance",
-      "words" : " "
+      "words" : "Use the email performance dashboard to visually analyze common email metrics like opens, clicks, and unsubscribes, as well as the marketo engagement score which automatically combines this metrics in to a single score that can be benchmarked against other emails."
     },
     "report2" : {
       "title" : "Test Reporting",
-      "words" : " "
+      "words" : "Understand all of the key metrics behind your a/b/n test including any custom conversions that you can configure across all of your variants."
     },
     "report3" : {
       "title" : "Campaign Reporting",
-      "words" : " "
+      "words" : "Use this four-dimensional analyzer to holistically understand which campaigns and channels are working best. Include revenue metrics and attribution to close the loop on your campaigns."
     }
   }
   $(".section-bubble, .section-small-bubble").hover(function(e){

@@ -27,8 +27,11 @@ window.onload = function() {
     document.getElementById("mobile-msi").src = chrome.extension.getURL("images/mobile_msi.png");
     document.getElementById("event-check-in").src = chrome.extension.getURL("images/marketoball.png");
     document.getElementById('toggle').src = chrome.extension.getURL("images/toggle-on.png");
+    document.getElementById('help-size').src = chrome.extension.getURL("images/help-white.png");
+    document.getElementById('training').src = chrome.extension.getURL("images/submit-feature-request-img-purp.png");
+    document.getElementById('report-a-bug').src = chrome.extension.getURL("images/report-a-bug-img-purp.png");
 
-    var URL_PATH = "m3",
+    var URL_PATH = "m3-dev",
         background = chrome.extension.getBackgroundPage(),
         priv = true,
         tags = document.getElementsByClassName("link"),
@@ -37,7 +40,9 @@ window.onload = function() {
         toggle = document.getElementById('option-toggle'),
         clear = document.getElementById('clear-submit'),
         settings = document.getElementById('settings'),
+        help = document.getElementById('help'),
         settingsOpen = false,
+        helpOpen = false,
         close = document.getElementById('close'),
         data = {
             'company': 'turner'
@@ -61,6 +66,17 @@ window.onload = function() {
 			}
 		}
 	}
+
+    help.onclick = function () {
+        if (!helpOpen) {
+            helpOpen = true;
+            document.getElementById('help-container').style.display = "block";
+        } 
+        else {
+            helpOpen = false;
+            document.getElementById('help-container').style.display = "none";
+        }
+    }
 
     settings.onclick = function () {
         if (!settingsOpen) {
