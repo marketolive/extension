@@ -196,8 +196,12 @@ var port = chrome.runtime.connect({
 
 window.onload = function() {
     console.log("Content > Window: Loaded");
+    
+    if (currentUrl.search(mktoLiveDomain) != -1) {
+        document.getElementById("first-option").style.display = "block";
+    }
 
-    if (currentUrl.search(mktoAppDomain) != -1
+    else if (currentUrl.search(mktoAppDomain) != -1
 	&& currentUrl.search(mktoDesignerDomain) == -1
 	&& currentUrl.search(mktoWizard) == -1) {
 		console.log("Content > Location: Marketo App");
