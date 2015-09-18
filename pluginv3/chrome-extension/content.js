@@ -199,6 +199,7 @@ window.onload = function() {
     
     if (currentUrl.search(mktoLiveDomain) != -1) {
         console.log("Content > Displaying Go Agile Button");
+        
         document.getElementById("first-option").style.display = "block";
     }
 
