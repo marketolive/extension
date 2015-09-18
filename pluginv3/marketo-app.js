@@ -5,13 +5,14 @@
  *  functionality onto the Marketo App. It is loaded by the MarketoLive plugin and 
  *  is responsible for the manipulation of the Marketo GUI.
  *
- *  @Author Andy, Arrash, Brian
+ *  @Author Andrew Garcia, Arrash Yasavolian, Brian Fisher
  *
  *  @namespace
  *
  **************************************************************************************/
 console.log("Marketo App > Running");
-window.mkto_live_plugin_state = true;
+// This is the value that the demo plugin check looks for
+window.mkto_live_plugin_state = true; 
 
 /**************************************************************************************
  *
@@ -19,6 +20,7 @@ window.mkto_live_plugin_state = true;
  *
  **************************************************************************************/
 
+// These are all expressed in regex notation. 
 var currentUrl = window.location.href,
     mktoAppDomain = "^https:\/\/app-[a-z0-9]+\.marketo\.com",
     mktoAppMatch = "https://app-*.marketo.com",
@@ -35,6 +37,8 @@ var currentUrl = window.location.href,
     rtpDemoDomain = "^http:\/\/sjrtp1.marketo.com\/demo\/$|^http:\/\/cloud4.insightera.com\/demo\/$",
     emailDeliverabilityDomain = "^https:\/\/250ok.com/",
     mktoMyMarketoFragment = "MM0A1",
+	mktoMarketingActivitiesDefaultFragment = "MA15A1",
+	mktoLeadDatabaseDefaultFragment = "ML0A1ZN2",
     mktoEmailDesignerFragment = "EME",
     mktoEmailPreviewFragment = "EMP",
     mktoLandingPageDesignerFragment = "LPE",
@@ -49,13 +53,14 @@ var currentUrl = window.location.href,
 
 /**************************************************************************************
  *  
- *  This function gets the cookie for the specified user pod.
+ *  This function gets the specified cookie for the current domain. It loops through
+ *  the string contained in document.cookie and looks for the given cookie.
  *
- *  @Author Andy
+ *  @Author Andrew Garcia
  *
  *  @function
  *
- *  @param {String} cookieField - Represents the user's pod.
+ *  @param {String} cookieField - Represents the key to search for inside document.cookie
  *
  **************************************************************************************/
 
@@ -76,7 +81,12 @@ APP.getCookie = function(cookieField) {
 
 /**************************************************************************************
  *  
- *  This function disables the demo plugin check.
+ *  This function disables the demo plugin check that the Marketo subscription uses
+ *  to enforce having the plugin installed. The user experience with the Marketo
+ *  feature as implemented today isn't ideal, so this function disables it altogether.
+ *  Obviously, only having the plugin could disable the check, so it's guaranteed that
+ *  the user has the plugin (unless they're very Javascript savvy and paste this in the
+ *  console).
  *
  *  @Author Brian Fisher
  *
@@ -94,6 +104,9 @@ APP.disableDemoPluginCheck = function() {
 /**************************************************************************************
  *  
  *  This function disables the system error message for sync errors on Landing Pages.
+ *  These errors would occur when two users edit the same landing page simultaneously.
+ *  Please note that this also hides other system errors, so revisions should be 
+ *  considered to determine if this is the correct approach.
  *
  *  @Author Brian Fisher
  *
@@ -109,9 +122,14 @@ APP.disableSystemErrorMessage = function() {
 
 /**************************************************************************************
  *  
- *  This function overrides the target link for the Deliverability Tools tile.
+ *  This function overrides the target link for the Deliverability Tools tile. By default,
+ *  the tile uses SSO to login to 250ok. However, we only have one 250ok instance that
+ *  contains usable demo data, so the plugin must send people into that instance. This
+ *  function directs users to the 250ok login page where the deliverability-tools.js script
+ *  takes over to automatically login and hide the necessary buttons. This function should
+ *  also run inside of SC sandbox instances.
  *
- *  @Author Brian Fisher
+ *  @Author Andrew Garcia
  *
  *  @function
  *
@@ -122,7 +140,9 @@ APP.overrideDeliverabilityToolsTile = function() {
 
     var tiles = document.getElementsByTagName("a"),
         ii = 0;
-    
+
+    // The tile HTML ids change each time a user clicks away from the home screen,
+    // so they cannot be selected directly by id.
     for (ii=0; ii<tiles.length; ++ii) {
         // The question mark below needs to be escaped with two slashes
         // in order for the search function to work.
@@ -135,7 +155,9 @@ APP.overrideDeliverabilityToolsTile = function() {
 
 /**************************************************************************************
  *  
- *  This function enables saving of Smart Campaigns.
+ *  This function enables saving of Smart Campaigns. It is essentially a copy/paste of
+ *  the Marketo source code, so that it can be reset when we overwrite these functions
+ *  in the disable smart campaign saving function.
  *
  *  @Author Brian Fisher
  *
@@ -233,8 +255,7 @@ APP.enableSmartCampaignSaving = function() {
 /**************************************************************************************
  *  
  *  This function disables saving of Smart Campaigns while maintaining the correct 
- *  order of the steps (the previous bug where a flow step shows as 'undefined' has 
- *  been eradicated).
+ *  order of the steps.
  *
  *  @Author Brian Fisher
  *
@@ -253,7 +274,9 @@ APP.disableSmartCampaignSaving = function() {
 
 /**************************************************************************************
  *  
- *  This function enables the Smart List and Flow Canvases for Smart Campaigns.
+ *  This function enables the Smart List and Flow Canvases for Smart Campaigns. In the
+ *  case where a user does not have edit privileges for marketing assets, the UI for
+ *  triggers, filters, and flow steps will not show by default.
  *
  *  @Author Brian Fisher
  *
@@ -437,6 +460,57 @@ APP.discardFormPushDrafts = function(assetType, assetIds) {
 
 /**************************************************************************************
  *  
+ *  This function hides each folder that is not in the Default workspace except the  
+ *  user's own folder
+ *
+ *  @Author Andy Garcia
+ *
+ *  @function
+ *
+ **************************************************************************************/
+
+APP.hideFolders = function(username) {
+	console.log("Marketo App > Hiding: Folders");
+    
+	var workspaces = document.getElementsByClassName("mkiEnvironment"),
+    userWorkspace = "Marketing",
+    ii;
+
+    for (ii=0; ii<workspaces.length; ii++) {
+        if (workspaces[ii].parentElement.getElementsByTagName("a")[0].getElementsByTagName("span")[0].innerHTML == userWorkspace) {
+            var folders = workspaces[ii].parentElement.parentElement.getElementsByTagName("ul")[0].getElementsByTagName("li"),
+                jj;
+            
+            for (jj=0; jj<folders.length; jj++) {
+                if (folders[jj].getElementsByTagName("div")[0].getElementsByTagName("a")[0].getElementsByTagName("span")[0].innerHTML != username) {
+                    folders[jj].getElementsByTagName("div")[0].parentElement.setAttribute("style", "display:none");
+                }
+            }
+            break;
+        }
+    }
+}
+
+/**************************************************************************************
+ *  
+ *  This function disables the Default Workspace home buttons: New Program, and New  
+ *  Smart Campaign, New Smart List
+ *
+ *  @Author Brian Fisher
+ *
+ *  @function
+ *
+ **************************************************************************************/
+
+APP.disableButtons = function() {
+	console.log("Marketo App > Disabling: Buttons");
+	
+	$jQ = jQuery.noConflict();
+	$jQ(".mktButtonPositive").remove();
+}
+
+/**************************************************************************************
+ *  
  *  This function disables the Program actions menu items: New Smart Campaign, New 
  *  Local Asset, New Folder, and Delete.
  *
@@ -447,8 +521,30 @@ APP.discardFormPushDrafts = function(assetType, assetIds) {
  **************************************************************************************/
 
 APP.disableMenus = function() {
-    console.log("Marketo App > Disabling: Program Actions Menu");
-
+    console.log("Marketo App > Disabling: Menus");
+	
+	//Disables Marketing Activities > Marketing Program, Nurture Program, Event Program, and Email Batch Program > New menu
+	var prevMarketingNewEventMenu = Mkt.app.MarketingActivities.Toolbar.getNewEventMenuButton;
+	Mkt.app.MarketingActivities.Toolbar.getNewEventMenuButton = function() {
+		prevMarketingNewEventMenu.apply(this, arguments);
+		return {
+			text : MktLang.getStr('mktMaMenu.New'),
+			iconCls : 'mkiBooksBlue',
+			xtype : 'mkttbbutton',
+			menu : MktMaMenu.maMenu(),
+			handler : function(button) {
+				var canvas = MktCanvas.getActiveTab(),
+				disableMenu = canvas
+							&& canvas.config
+							&& canvas.config.accessZoneId
+							&& canvas.config.accessZoneId == 1;
+				button.menu.items.each(function(item) {
+					item.setDisabled(disableMenu);
+				});
+			}
+		};
+	}
+	
 	// Disables Marketing Activities > Folder and Smart Campaign > New menu
 	var prevMarketingNewMenu = Mkt.app.MarketingActivities.Toolbar.getNewMenuButton;
 	Mkt.app.MarketingActivities.Toolbar.getNewMenuButton = function() {
@@ -878,6 +974,50 @@ APP.disableMenus = function() {
 		return menu;
 	}
 	
+	// Disables Design Studio > ALL > Right-click menus
+	var prevDesignStudioContextMenu = MktDsMenu.preShowContextMenu;
+	MktDsMenu.preShowContextMenu = function(menu, attr) {
+		prevDesignStudioContextMenu.apply(this, arguments);
+		
+		var mItems = menu.items,
+			canvas = MktCanvas.getActiveTab(),
+			disable = attr.accessZoneId == 1
+				|| !attr.accessZoneId
+				&& canvas
+				&& canvas.config
+				&& canvas.config.accessZoneId
+				&& canvas.config.accessZoneId == 1,
+			itemsToDisable = [
+							"newLandingPage",//New Landing Page
+							"newTestGroup",//New Test Group
+							"newPageTemplate",//New Landing Page Template
+							"pageTemplateImport",//Import Template
+							"newForm",//New Form
+							"newVideoShare",//New YouTube Video
+							"newShareButton",//New Social Button
+							"newReferralOffer",//New Referral Offer
+							"newEmail",//New Email
+							"newEmailTemplate",//New Email Template
+							"newSnippet",//New Snippet
+							"uploadImage",//"Upload Image or File"
+							//"grabFromWebPage",//Grab Images from Web
+							"share",//Share Folder
+							"createFolder",//New Folder
+							"renameFolder",//Rename Folder
+							"deleteFolder",//Delete Folder
+							"convertToArchiveFolder",//Convert To Archive Folder
+							"convertToFolder",//Convert To Folder
+							];
+			
+		itemsToDisable.forEach(function(itemToDisable) {
+			var item = mItems.get(itemToDisable);
+			if (item) {
+				item.setDisabled(disable);
+			}
+		});
+		return menu;
+	}
+	
 	// Disables Design Studio > Landing Page Template > Right-click and Actions menus
 	var prevLandingPageTemplateMenu = MktDsMenu.preShowTemplateMenu;
 	MktDsMenu.preShowTemplateMenu = function(menu, attr) {
@@ -1022,10 +1162,10 @@ APP.disableMenus = function() {
 		return menu;
 	}
 	
-	// Disables Lead Database > List > Right-click and Actions menu
-	var prevListMenu = MktLeadDbMenu.preShowListListMenu;
-	MktLeadDbMenu.preShowListListMenu = function(menu, attr) {
-		prevListMenu.apply(this, arguments);
+	// Disables Lead Database > System Smart List, Smart List, List, Segment > Right-click menus
+	var prevLeadDatabaseContextMenu = MktLeadDbMenu.preShowContextMenu;
+	MktLeadDbMenu.preShowContextMenu = function(menu, attr) {
+		prevLeadDatabaseContextMenu.apply(this, arguments);
 		
 		var mItems = menu.items,
 			canvas = MktCanvas.getActiveTab(),
@@ -1049,6 +1189,55 @@ APP.disableMenus = function() {
 							"cloneSmartlist",//Clone Smart List
 							"cloneList",//Clone List
 							"deleteList",//Delete List
+							"showSupportHistory",//Support Tools - History
+							"showSupportUsagePerf",//Support Tools - Run Stats
+							"showSmartListProcessorDiag",//Processor Diagnostics
+							"showSmartListProcessorOverride",//Override Processor
+							//"addToFavorites",//Add to Favorites
+							//"removeFromFavorites"//Remove from Favorites
+							];
+
+		itemsToDisable.forEach(function(itemToDisable) {
+			var item = mItems.get(itemToDisable);
+			if (item) {
+				item.setDisabled(disable);
+			}
+		});
+		return menu;
+	}
+	
+	// Disables Lead Database > List > Right-click and Actions menu
+	var prevListMenu = MktLeadDbMenu.preShowListListMenu;
+	MktLeadDbMenu.preShowListListMenu = function(menu, attr) {
+		prevListMenu.apply(this, arguments);
+		debugger;
+		
+		var mItems = menu.items,
+			canvas = MktCanvas.getActiveTab(),
+			disable = menu.currNode
+					&& menu.currNode.attributes
+					&& menu.currNode.attributes.accessZoneId == 1
+					|| !menu.currNode
+					&& canvas
+					&& canvas.config
+					&& canvas.config.accessZoneId
+					&& canvas.config.accessZoneId == 1,
+			itemsToDisable = [
+							//"navigateToMembership",//View Leads
+							//"navigateToSmartList",//View Smart List
+							//"navigateToFilterView",//Filter View
+							//"showImportStatus",//Show Import Status
+							//"showExportStatus",//Show Export Status
+							//"importList",//Import List
+							//"exportList",//Export List
+							//"exportAdBridge",//Send via Ad Bridge
+							"cloneSmartlist",//Clone Smart List
+							"cloneList",//Clone List
+							"deleteList",//Delete List
+							"showSupportHistory",//Support Tools - History
+							"showSupportUsagePerf",//Support Tools - Run Stats
+							"showSmartListProcessorDiag",//Processor Diagnostics
+							"showSmartListProcessorOverride",//Override Processor
 							//"addToFavorites",//Add to Favorites
 							//"removeFromFavorites"//Remove from Favorites
 							];
@@ -1185,13 +1374,92 @@ APP.disableMenus = function() {
 		*/
 		return menu;
 	}
+	
+	// Disables Analytics > Analyzer and Report > Right-click menus
+	var prevReportMenu = MktAnalyticsMenu.preShowReportMenu;
+	MktAnalyticsMenu.preShowReportMenu = function(menu, attr) {
+		prevReportMenu.apply(this, arguments);
+		
+		var mItems = menu.items,
+			canvas = MktCanvas.getActiveTab(),
+			disable = menu.currNode
+					&& menu.currNode.attributes
+					&& menu.currNode.attributes.accessZoneId == 1
+					|| !menu.currNode
+					&& canvas
+					&& canvas.config
+					&& canvas.config.accessZoneId
+					&& canvas.config.accessZoneId == 1,
+			itemsToDisable = [
+							//"navigateToAnalyzer",//View Analyzer
+							//"navigateToSmartList",//View Smart List
+							//"navigateToAnalyzerSetup",//View Setup
+							//"navigateToSetup",//View Setup
+							//"navigateToSubscriptions",//View Subscriptions
+							"cloneReport",//Clone Analyzer or Report
+							"deleteReport",//Delete Analyzer or Report
+							"moveReport",//Move Report
+							//"addToFavorites",//Add to Favorites
+							//"removeFromFavorites"//Remove from Favorites
+							];
+
+		itemsToDisable.forEach(function(itemToDisable) {
+			var item = mItems.get(itemToDisable);
+			if (item) {
+				item.setDisabled(disable);
+			}
+		});
+		return menu;
+	}
+	
+	// Disables Analytics > Folder > Right-click menu
+	var prevReportFolderMenu = MktAnalyticsMenu.preshowReportFolderMenu ;
+	MktAnalyticsMenu.preshowReportFolderMenu  = function(menu, attr) {
+		prevReportFolderMenu.apply(this, arguments);
+		
+		var mItems = menu.items,
+			canvas = MktCanvas.getActiveTab(),
+			disable = menu.currNode
+					&& menu.currNode.attributes
+					&& menu.currNode.attributes.accessZoneId == 1
+					|| !menu.currNode
+					&& canvas
+					&& canvas.config
+					&& canvas.config.accessZoneId
+					&& canvas.config.accessZoneId == 1,
+			itemsToDisable = [
+							"createFolder",//New Folder
+							"renameFolder",//Rename Folder
+							"deleteFolder",//Delete Folder
+							"convertToArchiveFolder",//Convert To Archive Folder
+							"convertToFolder",//Convert To Folder
+							"newRcm",//New Revenue Cycle Model
+							"share",//Share Folder
+							"moveReport",//Move Report
+							//"addToFavorites",//Add to Favorites
+							//"removeFromFavorites"//Remove from Favorites
+							];
+
+		itemsToDisable.forEach(function(itemToDisable) {
+			var item = mItems.get(itemToDisable);
+			if (item) {
+				item.setDisabled(disable);
+			}
+		});
+		return menu;
+	}
 }
 
 /**************************************************************************************
  *  
- *  This function limits each Workspace to 3 Nurture Programs.
+ *  This function limits each Workspace to 3 Nurture Programs. Basically, each time
+ *  a nuture program is created, it first searches the folder tree to see if the user
+ *  already has 3 programs. If so, it displays an error message. The reason this exists
+ *  is because there is a limit of 300 nurture programs per subscription, and up to
+ *  100 workspaces per subscription. 300 programs divided by 100 workspaces equals 3 
+ *  nurture programs per workspace.
  *
- *  @Author Brian Fisher
+ *  @Author Andrew Garcia
  *
  *  @function
  *
@@ -1238,9 +1506,9 @@ APP.limitNurturePrograms = function() {
 /**************************************************************************************
  *
  *  This function contains the control logic for injecting the Analyzer Navigation Bar 
- *  and is the callback function for window.onhashchange.
+ *  that allows for easy switching between analyzers without returning to the folder tree.
  *
- *  @Author Andy
+ *  @Author Arrash Yasavolian
  *
  *  @function
  *
@@ -1250,7 +1518,8 @@ APP.injectAnalyzerNavBar = function() {
     var isPodsLoaded = window.setInterval(function() {
         if (typeof(PODS) !== "undefined") {
             console.log("Marketo App > Injecting: Analyzer Navigation Bar");
-
+            
+            window.clearInterval(isPodsLoaded);
             if (typeof(pod) == "undefined") {
                 pod = new PODS.Pod(PODS.getCookie("userPod"));
             }
@@ -1259,6 +1528,8 @@ APP.injectAnalyzerNavBar = function() {
                 if (currentUrl == pod.valueSet[y].url) {
                     console.log("Marketo App > Updating: CSS for Analyzer Navigation Bar");
 
+                    // This code block swaps the colors of the analyzer labels depending
+                    // on which one the user is currently viewing.
                     $j = jQuery.noConflict();
                     var currPosition = '#' + pod.valueSet[y].position;
                     $j(currPosition).parent().css('display', 'block');
@@ -1268,7 +1539,7 @@ APP.injectAnalyzerNavBar = function() {
                     $j("#modeler,#success-path-analyzer,#opportunity-influence-analyzer,#program-analyzer").bind("click", function(e) {
                         console.log("Marketo App > Identifying: Current Analyzer");
 
-                        //Updates the currPosition based on the div selected
+                        // Updates the currPosition based on the div selected
                         for (var x = 0; x < pod.valueSet.length; x++) {
                             if (e.target.id == pod.valueSet[x].position)
                                 currPosition = x;
@@ -1277,7 +1548,6 @@ APP.injectAnalyzerNavBar = function() {
                     });
                 }
             }
-            window.clearInterval(isPodsLoaded);
         }
     }, 0);
 }
@@ -1412,7 +1682,7 @@ APP.disableSaving = function() {
  *  This function overlays the email designer with the submitted company logo and 
  *  color.
  *
- *  @Author Arrash
+ *  @Author Arrash Yasavolian
  *
  *  @function
  *
@@ -1458,7 +1728,7 @@ APP.overlayEmailDesigner = function() {
  *  This function overlays the landing page designer with the submitted company logo 
  *  and color.
  *
- *  @Author Arrash
+ *  @Author Arrash Yasavolian
  *
  *  @function
  *
@@ -1497,6 +1767,16 @@ APP.overlayLandingPageDesigner = function() {
         }
     }, 0);
 }
+
+/**************************************************************************************
+ *  
+ *  This function returns the email ids of all the email assets in a given instance. 
+ *
+ *  @Author Andrew Garcia
+ *
+ *  @function
+ *
+ **************************************************************************************/
 
 APP.getEmailIds = function (pod) {
     console.log("Marketo App > Getting Email Ids for Pod: " + pod);
@@ -1558,13 +1838,18 @@ if (currentUrl.search(mktoAppDomain) != -1
             window.clearInterval(isMktPageApp);
 
             var accountString = MktPage.savedState.custPrefix,
-                userId = MktPage.userid;
+                userId = MktPage.userid,
+                username = userId.split("@")[0];
+            
+            // This checks to see if the username is one that would be associated
+            // with a MarketoLive subscription.
             if (accountString.search("^mktodemoaccount") != -1
 			&& (userId.search("\.demo@marketo\.com$") != -1
 			|| userId.search("^admin@mktodemoaccount") != -1
             || userId.search("^mktodemoaccount[a-z0-9]*@marketo\.com") != -1)) {
                 console.log("Marketo App > Location: MarketoLive Instance");
 
+                // If the user is the admin or ghost, disable
                 if (userId.search("^admin@mktodemoaccount") != -1
                 || userId.search("^mktodemoaccount[a-z0-9]*@marketo\.com") != -1) {
                     console.log("Marketo App > User: Admin");
@@ -1572,6 +1857,8 @@ if (currentUrl.search(mktoAppDomain) != -1
                     // Disabling Demo Plugin Check
                     APP.disableDemoPluginCheck();
 
+                    // This check ensures that an admin can login and test the 
+                    // plugin as a normal user. 
                     if (APP.getCookie("priv") != "false") {
                         return;
                     } 
@@ -1587,6 +1874,7 @@ if (currentUrl.search(mktoAppDomain) != -1
                     modeler106Fragment = "RCM39A1!",
                     modeler106abFragment = "RCM5A1!",
                     successPathAnalyzerFragment = "AR1682A1!";
+                
                 // Disabling Demo Plugin Check
                 APP.disableDemoPluginCheck();
 
@@ -1597,7 +1885,12 @@ if (currentUrl.search(mktoAppDomain) != -1
                 if (currUrlFragment == mktoMyMarketoFragment) {
                     APP.overrideDeliverabilityToolsTile();
                 }
+				else if (currUrlFragment == mktoMarketingActivitiesDefaultFragment
+				|| currUrlFragment == mktoLeadDatabaseDefaultFragment) {
+					APP.disableButtons();
+				}
 
+                // Only execute this block if the user is not on an editor page.
                 if (currUrlFragment.search("^" + mktoEmailDesignerFragment) == -1
                 && currUrlFragment.search("^" + mktoEmailPreviewFragment)
                 && currUrlFragment.search("^" + mktoLandingPageDesignerFragment) == -1
@@ -1623,6 +1916,15 @@ if (currentUrl.search(mktoAppDomain) != -1
 								}
 							}
 						}, 0);
+                        
+                        var isMktTree = window.setInterval(function() {
+                            if (typeof(Ext.tree.TreeEventModel.prototype.delegateClick) !== "undefined") {
+                                console.log("Marketo App > Location: Marketo Tree");
+                                
+                                window.clearInterval(isMktTree);
+//                                APP.hideFolders(username);
+                            }
+                        }, 0);
 					}
 
                     // Marketing ROI, Funnel Analysis
@@ -1801,6 +2103,15 @@ if (currentUrl.search(mktoAppDomain) != -1
                     currentUrl = window.location.href;
                     // Getting the URL fragment, the part after the #
                     currUrlFragment = Mkt3.DL.getDlToken();
+                    
+                    // Email Deliverability
+                    if (currUrlFragment == mktoMyMarketoFragment) {
+                        APP.overrideDeliverabilityToolsTile();
+                    }
+					else if (currUrlFragment == mktoMarketingActivitiesDefaultFragment
+					|| currUrlFragment == mktoLeadDatabaseDefaultFragment) {
+						APP.disableButtons();
+					}
 
                     if (currUrlFragment.search("^" + mktoEmailDesignerFragment) == -1
 					&& currUrlFragment.search("^" + mktoLandingPageDesignerFragment) == -1
@@ -1836,6 +2147,15 @@ if (currentUrl.search(mktoAppDomain) != -1
 								}
 							}
 						}, 0);
+                        
+                        var isMktTree = window.setInterval(function() {
+                            if (typeof(Ext.tree.TreeEventModel.prototype.delegateClick) !== "undefined") {
+                                console.log("Marketo App > Location: Marketo Tree");
+                                
+                                window.clearInterval(isMktTree);
+//                                APP.hideFolders(username);
+                            }
+                        }, 0);
 
                         // Marketing ROI, Funnel Analysis
                         if (currUrlFragment == oppInfluenceAnalyzerFragment
@@ -1847,6 +2167,16 @@ if (currentUrl.search(mktoAppDomain) != -1
 
                             APP.injectAnalyzerNavBar();
                         }
+                    }
+                }
+            }
+            else {
+                if (currUrlFragment == mktoMyMarketoFragment) {
+                    APP.overrideDeliverabilityToolsTile();
+                }
+                window.onhashchange = function () {
+                    if (currUrlFragment == mktoMyMarketoFragment) {
+                        APP.overrideDeliverabilityToolsTile();
                     }
                 }
             }

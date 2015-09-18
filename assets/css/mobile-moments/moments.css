@@ -1,0 +1,142 @@
+* {
+	margin: 0px;
+	padding: 0px;
+	list-style: none;
+}
+
+body {
+	font-family: Roboto;
+	
+}
+
+.background-container {
+	position: absolute;
+	opacity: 0.8;
+	width: 100%;
+}
+
+.main-header {
+	position: relative;
+	top: 25px;
+	color: white;
+	font-size: 40px;
+	font-weight: 300;
+	text-align: center;
+}
+
+.inner-container {
+	position: relative;
+	display: flex;
+	justify-content: space-between;
+	margin: 0 auto;
+	padding-left: 150px;
+	font-size: 24px;
+	font-weight: 300;	
+	width: 80%;
+	top: 45px;
+	
+}
+
+.inner-container-left {
+	flex: 1;
+	opacity: 0.8;
+	margin: 20px;
+	padding: 15px;
+	background-color: white;
+}
+
+.moments-text {
+	color: #5A56A2;
+}
+
+.moments-overview {
+	margin-top: 20px;
+}
+
+.moments-value-prop {
+	list-style: circle;
+	margin-top: 20px;
+}
+
+.moments-value-prop li {
+	font-size: 24px;
+	margin-top: 20px;
+}
+
+.inner-container-right {
+	flex: 1;
+	position: relative;
+}
+
+#phone-case {
+	position: absolute;
+	display: block;
+	margin: auto;
+	z-index: 1;
+	width: 342px;
+	height: 678px;
+}
+
+#mobile-header {
+	position: relative;
+	z-index: 6;
+	top: 52px;
+	left: 15px;
+	height: 64px;
+	width: 310px;
+
+}
+
+.secondary-moments-container {
+	overflow: scroll;
+	width: 315px;
+	height: 565px;
+	top: 32px;
+	left: 16px;
+}
+
+.overlay {
+	display: none;
+	position: absolute;
+	background-color: rgba(0,0,0,0.5); /*dim the background*/
+	z-index: 4;
+	height: 3102px;
+	width: 315px;
+	top: 32px;
+	left: 16px;
+}
+
+#mobile-menu {	
+	position: absolute;
+	z-index: 5;	
+	top: 32px;
+	right: 77px;
+	/*
+	position: fixed;
+    z-index: 5;
+    top: 162px;
+    right: 282px;
+    */
+}
+
+.hide {
+	display: none;
+}
+
+.moments-container {
+	position: relative;
+	overflow: scroll;
+	overflow-x: hidden;
+	margin-top: 20px;
+	height: 565px;
+	width: 325px;
+}
+
+#moments {
+	position: absolute;
+	z-index: 2;
+	width: 311px;
+	top: 33px;
+	left: 15px;
+}
+

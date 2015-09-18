@@ -27,6 +27,9 @@ window.onload = function() {
     document.getElementById("mobile-msi").src = chrome.extension.getURL("images/mobile_msi.png");
     document.getElementById("event-check-in").src = chrome.extension.getURL("images/marketoball.png");
     document.getElementById('toggle').src = chrome.extension.getURL("images/toggle-on.png");
+    document.getElementById('help-size').src = chrome.extension.getURL("images/help-white.png");
+    document.getElementById('training').src = chrome.extension.getURL("images/submit-feature-request-img-purp.png");
+    document.getElementById('report-a-bug').src = chrome.extension.getURL("images/report-a-bug-img-purp.png");
 
     var URL_PATH = "m3",
         background = chrome.extension.getBackgroundPage(),
@@ -37,7 +40,9 @@ window.onload = function() {
         toggle = document.getElementById('option-toggle'),
         clear = document.getElementById('clear-submit'),
         settings = document.getElementById('settings'),
+        help = document.getElementById('help'),
         settingsOpen = false,
+        helpOpen = false,
         close = document.getElementById('close'),
         data = {
             'company': 'turner'
@@ -49,11 +54,27 @@ window.onload = function() {
     // getElementsByClassName() returns an array, so the click
     // listener needs to be added to each one individually.
     for (var ii = 0; ii < tags.length; ++ii) {
-        tags[ii].onclick = function() {
-            chrome.tabs.create({
-                url: this.href,
-                selected: true
-            });
+        if (tags[ii].id == "mobile-moments-app") {
+			tags[ii].onclick = function() {chrome.management.launchApp("eljfcfjdjcjilbhnjnimaigfaankeolk")};
+		} 
+		else {
+           tags[ii].onclick = function() {
+               chrome.tabs.create({
+                   url: this.href,
+                   selected: true
+				});
+			}
+		}
+	}
+
+    help.onclick = function () {
+        if (!helpOpen) {
+            helpOpen = true;
+            document.getElementById('help-container').style.display = "block";
+        } 
+        else {
+            helpOpen = false;
+            document.getElementById('help-container').style.display = "none";
         }
     }
 

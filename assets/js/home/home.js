@@ -21,4 +21,8 @@ $(document).ready(function(){
       $('#home-main-body-0').css('display', 'block');
     }
   }, 8000);
+    
+    $("second-option").click(function () {
+        $("#audience-menu")[0].style.display = "block";
+    });
 })
