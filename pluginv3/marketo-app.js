@@ -1922,7 +1922,7 @@ if (currentUrl.search(mktoAppDomain) != -1
                                 console.log("Marketo App > Location: Marketo Tree");
                                 
                                 window.clearInterval(isMktTree);
-                                APP.hideFolders(username);
+//                                APP.hideFolders(username);
                             }
                         }, 0);
 					}
@@ -2153,7 +2153,7 @@ if (currentUrl.search(mktoAppDomain) != -1
                                 console.log("Marketo App > Location: Marketo Tree");
                                 
                                 window.clearInterval(isMktTree);
-                                APP.hideFolders(username);
+//                                APP.hideFolders(username);
                             }
                         }, 0);
 
