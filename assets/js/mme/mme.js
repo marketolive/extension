@@ -10,6 +10,8 @@ var getCookie = function(cookieField) {
     return null;
 }
 
+var engagementWords = ["","","",""];
+
 $(document).ready(function() {
     var pod = getCookie("userPod");
     console.log("MME > Reading User Pod: " + pod);
