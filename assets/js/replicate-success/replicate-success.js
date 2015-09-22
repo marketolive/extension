@@ -155,14 +155,14 @@ $(document).ready(function() {
     $('#rs-close').click(function() {
         $('.background-cover').css('display', 'none');
         $('#tokens-cover').css('display', 'none');
-        $('.token-city').html('Boston');
-        $('.token-location').html('Hynes Convention Center');
-        $('.token-time').html('8:30 PM');
-        $('.token-date').html('August 22nd');
-        document.getElementById('original-lp-image-mkto').src = "../assets/img/boston.jpg";
-        document.getElementById('original-reminder-image-mkto').src = "../assets/img/boston.jpg";
-        document.getElementById('original-auto-responder-image-mkto').src = "../assets/img/boston.jpg";
-        $('.assets-image').src = "../assets/img/boston.jpg";
+        $('.token-city').html($("#city-value").html());
+        $('.token-location').html($("#location-value").html());
+        $('.token-time').html($("#time-value").html());
+        $('.token-date').html($("#date-value").html());
+        document.getElementById('original-lp-image-mkto').src = $("#image-value").attr("src");
+        document.getElementById('original-reminder-image-mkto').src = $("#image-value").attr("src");
+        document.getElementById('original-auto-responder-image-mkto').src = $("#image-value").attr("src");
+        $('.assets-image').src = $("#image-value").attr("src");
         $('.assets-image').css('border', '1px solid #5a54a4');
         $('.token-city, .token-location, .token-time, .token-date').css({
             'color': '#5a54a4',
