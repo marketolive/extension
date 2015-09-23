@@ -19,25 +19,8 @@ $(document).ready(function() {
     var pod = getCookie("userPod"),
     	color = getCookie('color'),
         logo = getCookie('logo'),
-        defaultLogo = '../assets/img/turner-tech-white.png',
+        defaultLogo = RS.imagePath+'turner-tech-white.png',
         defaultColor = 'rgb(42, 83, 112)';
-
-    console.log("Replicate Success > Reading User Pod: " + pod);
-    if (pod) {
-        console.log("Replicate Success > Deeplinking: 106, 106a, 106b");
-        $("#demo-in-marketo").click(function () {
-            location.replace("https://" + pod + ".marketo.com/#ME4220B2");
-        });
-    } 
-    else {
-        console.log("Replicate Success > Invalid: No userPod Cookie");
-        $("#demo-in-marketo").click(function() {
-            $("#modal-background").attr("style", "display: block");
-        });
-        $("#secret-passage").click(function() {
-            $("#modal-background")[0].style.display = "none";
-        });
-    }
 
     if (logo == null) {
         logo = defaultLogo;
@@ -99,13 +82,13 @@ $(document).ready(function() {
     });
     $("#rs-image").click(function() {
         if (document.getElementById('lp-lightbox').style.display == 'block') {
-            document.getElementById('lp-second-img').src = "../assets/img/boston.jpg";
+            document.getElementById('lp-second-img').src = RS.secondaryImage;
             document.getElementById('lp-second-replace').style.display = "none";
         } else if (document.getElementById('auto-responder-lightbox').style.display == 'block') {
-            document.getElementById('auto-responder-second-img').src = "../assets/img/boston.jpg";
+            document.getElementById('auto-responder-second-img').src = RS.secondaryImage;
             document.getElementById('lp-second-replace').style.display = "none";
         } else if (document.getElementById('reminder-lightbox').style.display == 'block') {
-            document.getElementById('reminder-second-img').src = "../assets/img/boston.jpg";
+            document.getElementById('reminder-second-img').src = RS.secondaryImage;
             document.getElementById('lp-second-replace').style.display = "none";
         } else {}
     });
@@ -115,15 +98,15 @@ $(document).ready(function() {
         if (document.getElementById('lp-lightbox').style.display == 'block') {
             var el = document.querySelector("#lp-textarea");
             document.getElementById('lp-text-inside').innerHTML = el.value;
-            document.getElementById('original-lp-image').src = "../assets/img/boston.jpg";
+            document.getElementById('original-lp-image').src = RS.secondaryImage;
         } else if (document.getElementById('auto-responder-lightbox').style.display == 'block') {
             var el = document.querySelector("#auto-responder-textarea");
             document.getElementById('auto-responder-text-inside').innerHTML = el.value;
-            document.getElementById('original-auto-responder-image').src = "../assets/img/boston.jpg";
+            document.getElementById('original-auto-responder-image').src = RS.secondaryImage;
         } else if (document.getElementById('reminder-lightbox').style.display == 'block') {
             var el = document.querySelector("#reminder-textarea");
             document.getElementById('reminder-text-inside').innerHTML = el.value;
-            document.getElementById('original-reminder-image').src = "../assets/img/boston.jpg";
+            document.getElementById('original-reminder-image').src = RS.secondaryImage;
         }
     });
     $('#landing-page-body, #auto-responder-body, #reminder-body').click(function() {

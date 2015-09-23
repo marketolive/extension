@@ -1,50 +1,7 @@
-var getCookie = function(cookieField) {
-    var name = cookieField + "=",
-        cookies = document.cookie.split(';'),
-        currentCookie;
-    for (var ii = 0; ii < cookies.length; ++ii) {
-        var currentCookie = cookies[ii].trim();
-        if (currentCookie.indexOf(name) == 0)
-            return currentCookie.substring(name.length, currentCookie.length);
-    }
-    return null;
-}
-
-var engagementWords = ["","","",""];
+// This script is dependent on mme-constants-<lang> being include on the page beforehand. 
+// It allows this script to run independent of which language the page is in.
 
 $(document).ready(function() {
-    var pod = getCookie("userPod");
-    console.log("MME > Reading User Pod: " + pod);
-    
-    switch (pod) {
-        case "app-sjp":
-            console.log("MME > Deeplinking: 106");
-            $("#demo-in-marketo").click(function () {
-            location.replace("https://" + pod + ".marketo.com/#SC21914B2");
-            });
-            break;
-        case "app-ab07":
-            console.log("MME > Deeplinking: 106a");
-            $("#demo-in-marketo").click(function () {
-                location.replace("https://" + pod + ".marketo.com/#SC20920B2");
-            });
-            break;
-        case "app-ab08":
-            console.log("MME > Deeplinking: 106b");
-            $("#demo-in-marketo").click(function () {
-                location.replace("https://" + pod + ".marketo.com/#SC19745B2");
-            });
-            break;
-        default:
-            console.log("MME > Invalid userPod cookie: " + pod);
-            $("#demo-in-marketo").click(function() {
-                $("#modal-background").attr("style", "display: block");
-            });
-            $("#secret-passage").click(function() {
-                $("#modal-background")[0].style.display = "none";
-            });
-            break;
-    }
     $('#page-cover-container').click(function() {
         x = 0;
         $('.side-bar').css('background-color', 'transparent');
@@ -55,11 +12,9 @@ $(document).ready(function() {
             direction: 'right'
         }, 800, function() {
             $(this).css('display', 'none');
-            document.getElementById('image-overlay').src = "../assets/img/beacon.jpg";
+            document.getElementById('image-overlay').src = MME.imagePath+"beacon.jpg";
             document.getElementById('android-time').style.display = "none";
             document.getElementById('android-date').style.display = "none";
-            //$('.app-description-box-container').css('margin-bottom','93px');
-            //document.getElementById('section-description').innerHTML = engagementWords[2];
             $('#mme').attr("class", "mme-bkg-3");
             $('.beacon-overlay').css('display', 'block');
         });
@@ -91,11 +46,10 @@ $(document).ready(function() {
         audio.play();
         audio2.play();
         var pushNotification = document.querySelector('#message-body');
-        //document.getElementById('image-overlay').src = '../assets/img/mme-push-1.png';
         $('.push-notification-container').css('display', 'none');
         $('.phone-buttons-container').css('display', 'inline-block');
-        var logo = getCookie('logo');
-        var company = getCookie('company');
+        var logo = MME.getCookie('logo');
+        var company = MME.getCookie('company');
         if (company != null && company != "turner") {
             var company = company.substring(0, company.indexOf('.'));
             document.getElementById('push-name-name').innerHTML = company;
@@ -104,7 +58,7 @@ $(document).ready(function() {
         if (pushNotification.value != '') {
             document.getElementById('push-words').innerHTML = pushNotification.value;
         } else {
-            document.getElementById('push-words').innerHTML = 'Summers here! Stay cool in the heat with this discount!';
+            document.getElementById('push-words').innerHTML = MME.defaultPush;
         }
         $('#push-image').fadeIn("slow", function() {});
         $('#push-words-container').fadeIn("slow", function() {});
@@ -115,8 +69,7 @@ $(document).ready(function() {
         switch (className) {
             case 'mme-bkg':
                 if (this.id == 'back-phone-button') {} else {
-                    document.getElementById('image-overlay').src = "../assets/img/beacon-1.jpg";
-                    document.getElementById('section-description').innerHTML = engagementWords[1];
+                    document.getElementById('image-overlay').src = MME.imagePath+"beacon-1.jpg";
                     document.getElementById('push-words-container').style.display = "none";
                     document.getElementById('push-image').style.display = "none";
                     $('#mme').attr("class", "mme-bkg-2");
