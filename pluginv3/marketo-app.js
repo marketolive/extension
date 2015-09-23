@@ -98,7 +98,7 @@ APP.disableDemoPluginCheck = function() {
     console.log("Marketo App > Disabling: Demo Plugin Check");
 
     MktPage.validateDemoPlugin = function() {};
-    isMktoLiveInstance = true; // <---------------------------------------------------------------------------LOOK HERE!--------------
+    isMktoLiveInstance = true;
 }
 
 /**************************************************************************************
@@ -140,7 +140,7 @@ APP.overrideDeliverabilityToolsTile = function() {
 
     var tiles = document.getElementsByTagName("a"),
         ii = 0;
-    
+
     // The tile HTML ids change each time a user clicks away from the home screen,
     // so they cannot be selected directly by id.
     for (ii=0; ii<tiles.length; ++ii) {
