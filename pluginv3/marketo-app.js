@@ -460,35 +460,65 @@ APP.discardFormPushDrafts = function(assetType, assetIds) {
 
 /**************************************************************************************
  *  
- *  This function hides each folder that is not in the Default workspace except the  
+ *  This function overrides the expand function for a Marketo tree node in support of 
+ *  the APP.hideFolders function
+ *
+ *  @Author Brian Fisher
+ *
+ *  @function
+ *
+ **************************************************************************************/
+ 
+APP.overrideTreeNodeExpand = function() {
+    console.log("Marketo App > Overriding: Tree Node Expand");
+ 
+    MktAsyncTreeNode.prototype.expand = function() {
+        var attr = this.attributes,
+            userWorkspaceName = "Marketing",
+            userName = MktPage.userid.split("@")[0],
+            ii;
+        
+        if (attr.folder) {
+            if (attr.cancelFirstExpand) {
+                delete this.attributes.cancelFirstExpand;
+            }
+            else if (this.childNodes
+            && this.childNodes.length > 0
+            && !attr.mktExpanded) {
+                MktFolder.saveExpandState(this, true);
+            }
+        }
+        
+        if (this.text == userWorkspaceName || this.parentNode.text == userWorkspaceName) {
+            for (ii = 0; ii < this.childNodes.length; ii++) {
+                if (this.childNodes[ii].attributes.system == false) {
+                    if (this.childNodes[ii].text !== userName) {
+                        APP.hideFolders(this.childNodes[ii].ui.iconNode.id);
+                    }
+                }
+            }
+        }
+        
+        MktAsyncTreeNode.superclass.expand.apply(this, arguments);
+        attr.mktExpanded = true;
+    }
+}
+
+/**************************************************************************************
+ *  
+ *  This function hides each folder that is in the Marketing workspace except the 
  *  user's own folder
  *
- *  @Author Andy Garcia
+ *  @Author Brian Fisher
  *
  *  @function
  *
  **************************************************************************************/
 
-APP.hideFolders = function(username) {
+APP.hideFolders = function(folderId) {
 	console.log("Marketo App > Hiding: Folders");
     
-	var workspaces = document.getElementsByClassName("mkiEnvironment"),
-    userWorkspace = "Marketing",
-    ii;
-
-    for (ii=0; ii<workspaces.length; ii++) {
-        if (workspaces[ii].parentElement.getElementsByTagName("a")[0].getElementsByTagName("span")[0].innerHTML == userWorkspace) {
-            var folders = workspaces[ii].parentElement.parentElement.getElementsByTagName("ul")[0].getElementsByTagName("li"),
-                jj;
-            
-            for (jj=0; jj<folders.length; jj++) {
-                if (folders[jj].getElementsByTagName("div")[0].getElementsByTagName("a")[0].getElementsByTagName("span")[0].innerHTML != username) {
-                    folders[jj].getElementsByTagName("div")[0].parentElement.setAttribute("style", "display:none");
-                }
-            }
-            break;
-        }
-    }
+    document.getElementById(folderId).parentElement.setAttribute("style", "display:none");
 }
 
 /**************************************************************************************
@@ -1898,13 +1928,15 @@ if (currentUrl.search(mktoAppDomain) != -1
                 && currUrlFragment.search("^" + mktoFormWizardFragment) == -1 
                 && currUrlFragment.search("^" + mktoMobilePushNotificationWizardFragment) == -1 
                 && currUrlFragment.search("^" + mktoSocialAppWizardFragment) == -1) {
+                    
                     // Storing previous Workspace ID
                     if (currUrlFragment != mktoMyMarketoFragment) {
 						var isMktCanvas = window.setInterval(function() {
 							if (MktCanvas.activeTab !== null) {
 								console.log("Marketo App > Location: Marketo Canvas");
 								
-								window.clearInterval(isMktCanvas);
+								APP.overrideTreeNodeExpand();
+                                window.clearInterval(isMktCanvas);
 								prevWorkspaceId = MktCanvas.activeTab.config.accessZoneId;
 								if (prevWorkspaceId == 1) {
 									// Powerful Automation
@@ -1916,15 +1948,6 @@ if (currentUrl.search(mktoAppDomain) != -1
 								}
 							}
 						}, 0);
-                        
-                        var isMktTree = window.setInterval(function() {
-                            if (typeof(Ext.tree.TreeEventModel.prototype.delegateClick) !== "undefined") {
-                                console.log("Marketo App > Location: Marketo Tree");
-                                
-                                window.clearInterval(isMktTree);
-                                APP.hideFolders(username);
-                            }
-                        }, 0);
 					}
 
                     // Marketing ROI, Funnel Analysis
@@ -2125,6 +2148,7 @@ if (currentUrl.search(mktoAppDomain) != -1
 								console.log("Marketo App > Location: Marketo Canvas");
 								
 								window.clearInterval(isMktCanvasHash);
+                                APP.overrideTreeNodeExpand();
 								var currWorkspaceId = MktCanvas.activeTab.config.accessZoneId;
 								if (currWorkspaceId == prevWorkspaceId) {
 								}
@@ -2147,15 +2171,6 @@ if (currentUrl.search(mktoAppDomain) != -1
 								}
 							}
 						}, 0);
-                        
-                        var isMktTree = window.setInterval(function() {
-                            if (typeof(Ext.tree.TreeEventModel.prototype.delegateClick) !== "undefined") {
-                                console.log("Marketo App > Location: Marketo Tree");
-                                
-                                window.clearInterval(isMktTree);
-                                APP.hideFolders(username);
-                            }
-                        }, 0);
 
                         // Marketing ROI, Funnel Analysis
                         if (currUrlFragment == oppInfluenceAnalyzerFragment
