@@ -460,8 +460,9 @@ APP.discardFormPushDrafts = function(assetType, assetIds) {
 
 /**************************************************************************************
  *  
- *  This function overrides the expand function for a Marketo tree node in support of 
- *  the APP.hideFolders function
+ *  This function overrides the expand function for a Marketo tree node in order to 
+ *  hide each non-system folder that is in the Marketing workspace except the user's 
+ *  own folder
  *
  *  @Author Brian Fisher
  *
@@ -493,7 +494,27 @@ APP.overrideTreeNodeExpand = function() {
             for (ii = 0; ii < this.childNodes.length; ii++) {
                 if (this.childNodes[ii].attributes.system == false) {
                     if (this.childNodes[ii].text !== userName) {
-                        APP.hideFolders(this.childNodes[ii].ui.iconNode.id);
+                        this.childNodes[ii].ui.node.hidden = true;
+                    }
+                    else {
+                        MktAsyncTreeNode.prototype.expand = function() {
+                            var attr = this.attributes,
+                                ii;
+                            
+                            if (attr.folder) {
+                                if (attr.cancelFirstExpand) {
+                                    delete this.attributes.cancelFirstExpand;
+                                }
+                                else if (this.childNodes
+                                && this.childNodes.length > 0
+                                && !attr.mktExpanded) {
+                                    MktFolder.saveExpandState(this, true);
+                                }
+                            }
+                            
+                            MktAsyncTreeNode.superclass.expand.apply(this, arguments);
+                            attr.mktExpanded = true;
+                        }
                     }
                 }
             }
@@ -502,23 +523,6 @@ APP.overrideTreeNodeExpand = function() {
         MktAsyncTreeNode.superclass.expand.apply(this, arguments);
         attr.mktExpanded = true;
     }
-}
-
-/**************************************************************************************
- *  
- *  This function hides each folder that is in the Marketing workspace except the 
- *  user's own folder
- *
- *  @Author Brian Fisher
- *
- *  @function
- *
- **************************************************************************************/
-
-APP.hideFolders = function(folderId) {
-	console.log("Marketo App > Hiding: Folders");
-    
-    document.getElementById(folderId).parentElement.setAttribute("style", "display:none");
 }
 
 /**************************************************************************************
