@@ -476,7 +476,7 @@ APP.overrideTreeNodeExpand = function() {
     MktAsyncTreeNode.prototype.expand = function() {
         var attr = this.attributes,
             userWorkspaceName = "Marketing",
-            userName = MktPage.userid.split("@")[0],
+            userName = MktPage.userid.split(".demo")[0],
             ii;
         
         if (attr.folder) {
@@ -490,31 +490,13 @@ APP.overrideTreeNodeExpand = function() {
             }
         }
         
-        if (this.text == userWorkspaceName || this.parentNode.text == userWorkspaceName) {
+        if (this.text == userWorkspaceName || (this.parentNode.text == userWorkspaceName && this.attributes.system == true)) {
             for (ii = 0; ii < this.childNodes.length; ii++) {
                 if (this.childNodes[ii].attributes.system == false) {
                     if (this.childNodes[ii].text !== userName) {
                         this.childNodes[ii].ui.node.hidden = true;
                     }
                     else {
-                        MktAsyncTreeNode.prototype.expand = function() {
-                            var attr = this.attributes,
-                                ii;
-                            
-                            if (attr.folder) {
-                                if (attr.cancelFirstExpand) {
-                                    delete this.attributes.cancelFirstExpand;
-                                }
-                                else if (this.childNodes
-                                && this.childNodes.length > 0
-                                && !attr.mktExpanded) {
-                                    MktFolder.saveExpandState(this, true);
-                                }
-                            }
-                            
-                            MktAsyncTreeNode.superclass.expand.apply(this, arguments);
-                            attr.mktExpanded = true;
-                        }
                     }
                 }
             }
