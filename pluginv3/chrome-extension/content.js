@@ -197,11 +197,11 @@ var port = chrome.runtime.connect({
 window.onload = function() {
     console.log("Content > Window: Loaded");
     
-    if (currentUrl.search(mktoLiveDomain) != -1) {
-        console.log("Content > Displaying Go Agile Button");
-        
-        document.getElementById("first-option").style.display = "inline-block";
-    }
+//    if (currentUrl.search(mktoLiveDomain) != -1) {
+//        console.log("Content > Displaying Go Agile Button");
+//        
+//        document.getElementById("first-option").style.display = "inline-block";
+//    }
 
     else if (currentUrl.search(mktoAppDomain) != -1
 	&& currentUrl.search(mktoDesignerDomain) == -1

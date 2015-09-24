@@ -38,5 +38,6 @@
   display: none;
 }
 #first-option {
-    display: none;
+/*    Un-comment this in order to hide the go-agile button*/
+/*    display: none;*/
 }
