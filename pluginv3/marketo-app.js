@@ -1859,10 +1859,9 @@ if (currentUrl.search(mktoAppDomain) != -1
             
             // This checks to see if the username is one that would be associated
             // with a MarketoLive subscription.
-            if (accountString.search("^mktodemoaccount") != -1
-			&& (userId.search("\.demo@marketo\.com$") != -1
-			|| userId.search("^admin@mktodemoaccount") != -1
-            || userId.search("^mktodemoaccount[a-z0-9]*@marketo\.com") != -1)) {
+            if (accountString == "mktodemoaccount106"
+            || accountString == "mktodemoaccount106a"
+            || accountString == "mktodemoaccount106b") {
                 console.log("Marketo App > Location: MarketoLive Instance");
 
                 // If the user is the admin or ghost, disable
@@ -1885,6 +1884,7 @@ if (currentUrl.search(mktoAppDomain) != -1
 
                 var currUrlFragment,
                     prevWorkspaceId,
+                    japanWorkspaceId = 173,
                     oppInfluenceAnalyzerFragment = "AR1559A1!",
                     programAnalyzerFragment = "AR1544A1!",
                     modeler106Fragment = "RCM39A1!",
@@ -1924,7 +1924,7 @@ if (currentUrl.search(mktoAppDomain) != -1
 								APP.overrideTreeNodeExpand();
                                 window.clearInterval(isMktCanvas);
 								prevWorkspaceId = MktCanvas.activeTab.config.accessZoneId;
-								if (prevWorkspaceId == 1) {
+								if (prevWorkspaceId == 1 || prevWorkspaceId == japanWorkspaceId) {
 									// Powerful Automation
 									APP.disableSmartCampaignSaving();
 									APP.enableSmartCampaignCanvas();
@@ -2138,7 +2138,7 @@ if (currentUrl.search(mktoAppDomain) != -1
 								var currWorkspaceId = MktCanvas.activeTab.config.accessZoneId;
 								if (currWorkspaceId == prevWorkspaceId) {
 								}
-								else if (currWorkspaceId == 1) {
+								else if (currWorkspaceId == 1 || currWorkspaceId == japanWorkspaceId) {
 									// Powerful Automation
 									APP.disableSmartCampaignSaving();
 									APP.enableSmartCampaignCanvas();
