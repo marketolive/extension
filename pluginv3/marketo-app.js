@@ -1808,6 +1808,12 @@ APP.getEmailIds = function (pod) {
             emIds.push(10010, 10179, 10180, 12845, 10181, 10182, 10183, 10184);
             // Replicate Success Webinar
             emIds.push(4894, 3764, 3765, 3767, 3766, 3762);
+            // Japanese Replicate Success Webinar
+            emIds.push(16118, 16119, 16120, 16122, 16121, 16117);
+            // Japanese Replicate Success Roadshow
+            emIds.push(16123);
+            // Japanese Intelligent Nurturing
+            emIds.push(16137, 16129, 16125, 16126, 16124, 16136, 16128, 16130, 16131, 16132, 16127, 16133);
             break;
         case "app-ab07":
             // DIY Design
@@ -1958,10 +1964,14 @@ if (currentUrl.search(mktoAppDomain) != -1
                             lpIds["dpageid_11381"] = "dpageid_11381";
                             // Responsive Landing Page
                             lpIds["dpageid_11291"] = "dpageid_11291";
+                            // Japanese Landing Page
+                            lpIds["dpageid_11548"] = "dpageid_11548";
+                            // Japanese Landing Page 2
+                            lpIds["dpageid_11546"] = "dpageid_11546";
                             // DIY Design and Replicate Success Forms
-                            formIds.push(2892, 1749, 1900);  
+                            formIds.push(2892, 1749, 1900, 3018, 3020, 3021);  
                             // DIY Design and Mobile Engagement Push Notifications 
-                            pushIds.push(29, 23);               
+                            pushIds.push(29, 23, 88, 89);               
                             break;
                         case "mktodemoaccount106a":
                             // Custom Landing Page
