@@ -43,7 +43,7 @@ LIVE.insertDeepLinks = function(pod) {
             return false;
         });
     } 
-    
+
     else {
         console.log("MarketoLive > Inserting: Deep Links for: "+pod.id);
         $(".image-sizing").click(function(e) {
