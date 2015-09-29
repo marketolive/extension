@@ -125,14 +125,14 @@ input[type=text]:focus{
   opacity: .5;
   position: fixed;
   background-color: #505050;
-  z-index: 1000;
+  z-index: 99999;
   display: none;
 }
 .help-center-container{
   width: 100%;
   height: 100%;
   position: fixed;
-  z-index: 1001;
+  z-index: 999991;
   display: none;
 }
 .help-inner-container{
