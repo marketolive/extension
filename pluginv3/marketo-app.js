@@ -476,7 +476,6 @@ APP.overrideTreeNodeExpand = function() {
     MktAsyncTreeNode.prototype.expand = function() {
         var attr = this.attributes,
             userWorkspaceName = "Marketing",
-            userName = MktPage.userid.split(".demo")[0],
             ii;
         
         if (attr.folder) {
@@ -491,6 +490,14 @@ APP.overrideTreeNodeExpand = function() {
         }
         
         if (this.text == userWorkspaceName || (this.parentNode.text == userWorkspaceName && this.attributes.system == true)) {
+            var userId = MktPage.userid,
+            userName;
+            if (userId.search("\.demo@marketo.com$") != -1) {
+                userName = userId.split(".demo")[0];
+            }
+            else {
+                userName = userId.split("@")[0];
+            }
             for (ii = 0; ii < this.childNodes.length; ii++) {
                 if (this.childNodes[ii].attributes.system == false) {
                     if (this.childNodes[ii].text !== userName) {
