@@ -31,3 +31,15 @@ switch (pod) {
         });
         break;
 }
+
+$("#help-link, #sidebar-help").click(function() {
+    $('.help-center-box').animate({
+        'margin-top': '125px',
+    }, 400, function() {});
+    $('.help-cover').css('display', 'block');
+    $('.help-center-container').css('display', 'block');
+});
+$('.cancel-help').click(function() {
+    $('.help-cover').css('display', 'none');
+    $('.help-center-container').css('display', 'none');
+});
