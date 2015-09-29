@@ -54,17 +54,18 @@ window.onload = function() {
     // getElementsByClassName() returns an array, so the click
     // listener needs to be added to each one individually.
     for (var ii = 0; ii < tags.length; ++ii) {
-        if (tags[ii].id == "mobile-moments-app") {
-			tags[ii].onclick = function() {chrome.management.launchApp("eljfcfjdjcjilbhnjnimaigfaankeolk")};
-		} 
-		else {
+        // This is for running the Android apps inside the Chrome browser
+//        if (tags[ii].id == "mobile-moments-app") {
+//			tags[ii].onclick = function() {chrome.management.launchApp("eljfcfjdjcjilbhnjnimaigfaankeolk")};
+//		} 
+//		else {
            tags[ii].onclick = function() {
                chrome.tabs.create({
                    url: this.href,
                    selected: true
 				});
 			}
-		}
+//		}
 	}
 
     help.onclick = function () {
