@@ -9,7 +9,7 @@ var getCookie = function(cookieField) {
     }
     return null;
 }
-$jq = jQuery.noConflict();
+//$jq = jQuery.noConflict();
 var pod = getCookie("userPod");
 console.log("RTP > Reading User Pod: " + pod);
 switch (pod) {
