@@ -33,6 +33,8 @@ switch (pod) {
 }
 
 $("#help-link, #sidebar-help").click(function() {
+    console.log("RTP > Showing: Help Modal");
+    
     $('.help-center-box').animate({
         'margin-top': '125px',
     }, 400, function() {});
@@ -40,6 +42,8 @@ $("#help-link, #sidebar-help").click(function() {
     $('.help-center-container').css('display', 'block');
 });
 $('.cancel-help').click(function() {
+    console.log("RTP > Hiding: Help Modal");
+    
     $('.help-cover').css('display', 'none');
     $('.help-center-container').css('display', 'none');
 });
