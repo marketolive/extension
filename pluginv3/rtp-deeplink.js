@@ -9,7 +9,6 @@ var getCookie = function(cookieField) {
     }
     return null;
 }
-//$jq = jQuery.noConflict();
 var pod = getCookie("userPod");
 console.log("RTP > Reading User Pod: " + pod);
 switch (pod) {
@@ -33,18 +32,20 @@ switch (pod) {
         break;
 }
 
-$("#help-link").click(function() {
-    console.log("RTP > Showing: Help Modal");
-    
-    $('.help-center-box').animate({
-        'margin-top': '125px',
-    }, 400, function() {});
-    $('.help-cover').css('display', 'block');
-    $('.help-center-container').css('display', 'block');
-});
-$('.cancel-help').click(function() {
-    console.log("RTP > Hiding: Help Modal");
-    
-    $('.help-cover').css('display', 'none');
-    $('.help-center-container').css('display', 'none');
+$(document).ready(function() {
+    $("#help-link").click(function() {
+        console.log("RTP > Showing: Help Modal");
+
+        $('.help-center-box').animate({
+            'margin-top': '125px',
+        }, 400, function() {});
+        $('.help-cover').css('display', 'block');
+        $('.help-center-container').css('display', 'block');
+    });
+    $('.cancel-help').click(function() {
+        console.log("RTP > Hiding: Help Modal");
+
+        $('.help-cover').css('display', 'none');
+        $('.help-center-container').css('display', 'none');
+    });
 });
