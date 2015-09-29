@@ -41,11 +41,13 @@ $(document).ready(function() {
         }, 400, function() {});
         $('.help-cover').css('display', 'block');
         $('.help-center-container').css('display', 'block');
+        $('#iframelive').hide();
     });
     $('.cancel-help').click(function() {
         console.log("RTP > Hiding: Help Modal");
 
         $('.help-cover').css('display', 'none');
         $('.help-center-container').css('display', 'none');
+        $('#iframelive').show();
     });
 });
