@@ -33,7 +33,7 @@ switch (pod) {
         break;
 }
 
-$jq("#help-link, #sidebar-help").click(function() {
+$("#help-link").click(function() {
     console.log("RTP > Showing: Help Modal");
     
     $('.help-center-box').animate({
@@ -42,7 +42,7 @@ $jq("#help-link, #sidebar-help").click(function() {
     $('.help-cover').css('display', 'block');
     $('.help-center-container').css('display', 'block');
 });
-$jq('.cancel-help').click(function() {
+$('.cancel-help').click(function() {
     console.log("RTP > Hiding: Help Modal");
     
     $('.help-cover').css('display', 'none');
