@@ -86,4 +86,16 @@
         </div>
     </div>
 </div>
-<script type="text/javascript" src="https://marketolive.com/m3/assets/js/global/global.min.js"></script>
+<script type="text/javascript">
+    $("#help-link, #sidebar-help").click(function() {
+        $('.help-center-box').animate({
+            'margin-top': '125px',
+        }, 400, function() {});
+        $('.help-cover').css('display', 'block');
+        $('.help-center-container').css('display', 'block');
+    });
+    $('.cancel-help').click(function() {
+        $('.help-cover').css('display', 'none');
+        $('.help-center-container').css('display', 'none');
+    });
+</script>
