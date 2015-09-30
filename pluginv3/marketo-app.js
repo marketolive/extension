@@ -474,6 +474,7 @@ APP.overrideTreeNodeExpand = function() {
     console.log("Marketo App > Overriding: Tree Node Expand");
  
     MktAsyncTreeNode.prototype.expand = function() {
+        console.log("Marketo App > Executing: Tree Node Expand");
         var attr = this.attributes,
             userWorkspaceName = "Marketing",
             ii;
