@@ -490,6 +490,7 @@ APP.overrideTreeNodeExpand = function() {
         }
         
         if (this.text == userWorkspaceName || (this.parentNode.text == userWorkspaceName && this.attributes.system == true)) {
+            console.log(MktPage.userid);
             var userId = MktPage.userid,
             userName;
             if (userId.search("\.demo@marketo.com$") != -1) {
