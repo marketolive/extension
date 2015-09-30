@@ -478,18 +478,7 @@ APP.overrideTreeNodeExpand = function() {
         var attr = this.attributes,
             userWorkspaceName = "Marketing",
             ii;
-        
-        if (attr.folder) {
-            if (attr.cancelFirstExpand) {
-                delete this.attributes.cancelFirstExpand;
-            }
-            else if (this.childNodes
-            && this.childNodes.length > 0
-            && !attr.mktExpanded) {
-                MktFolder.saveExpandState(this, true);
-            }
-        }
-        
+            
         if (this.text == userWorkspaceName || (this.parentNode.text == userWorkspaceName && this.attributes.system == true)) {
             console.log(MktPage.userid);
             var userId = MktPage.userid,
@@ -508,6 +497,17 @@ APP.overrideTreeNodeExpand = function() {
                     else {
                     }
                 }
+            }
+        }
+        
+        if (attr.folder) {
+            if (attr.cancelFirstExpand) {
+                delete this.attributes.cancelFirstExpand;
+            }
+            else if (this.childNodes
+            && this.childNodes.length > 0
+            && !attr.mktExpanded) {
+                MktFolder.saveExpandState(this, true);
             }
         }
         
