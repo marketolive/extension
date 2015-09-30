@@ -38,7 +38,9 @@ var currentUrl = window.location.href,
     emailDeliverabilityDomain = "^https:\/\/250ok.com/",
     mktoMyMarketoFragment = "MM0A1",
 	mktoMarketingActivitiesDefaultFragment = "MA15A1",
+    mktoMarketingActivitiesMarketingFragment = "MA19802A1",
 	mktoLeadDatabaseDefaultFragment = "ML0A1ZN2",
+    mktoLeadDatabaseMarketingFragment = "ML0A1ZN19788",
     mktoEmailDesignerFragment = "EME",
     mktoEmailPreviewFragment = "EMP",
     mktoLandingPageDesignerFragment = "LPE",
@@ -46,6 +48,7 @@ var currentUrl = window.location.href,
     mktoFormWizardFragment = "FOE",
     mktoMobilePushNotificationWizardFragment = "MPNE",
     mktoSocialAppWizardFragment = "SOAE",
+    mktoMarketingWorkspaceId = 172,
     isMktoLiveInstance = false,
     pod,
 
@@ -581,10 +584,12 @@ APP.disableMenus = function() {
 			menu : MktMaMenu.maMenu(),
 			handler : function(button) {
 				var canvas = MktCanvas.getActiveTab(),
-				disableMenu = canvas
+				disableMenu = (canvas
 							&& canvas.config
-							&& canvas.config.accessZoneId
-							&& canvas.config.accessZoneId == 1;
+							&& canvas.config.accessZoneId)
+							&& (canvas.config.accessZoneId == 1
+                            || (canvas.config.title == "Marketing Activities"
+                            && canvas.config.accessZoneId == mktoMarketingWorkspaceId))
 				button.menu.items.each(function(item) {
 					item.setDisabled(disableMenu);
 				});
@@ -685,12 +690,12 @@ APP.disableMenus = function() {
 		
         var mItems = menu.items,
             canvas = MktCanvas.getActiveTab(),
-            disable = attr.accessZoneId == 1
-					|| !attr.accessZoneId
-					&& canvas
+            disable = (canvas
 					&& canvas.config
-					&& canvas.config.accessZoneId
-					&& canvas.config.accessZoneId == 1,
+					&& canvas.config.accessZoneId)
+					&& (canvas.config.accessZoneId == 1
+                    || (canvas.config.title == "Marketing Activities"
+                    && canvas.config.accessZoneId == mktoMarketingWorkspaceId)),
             itemsToDisable = [
 							//"navigateToNurtureTracks",//View Streams
 							//"navigateToCFSmartCamp",//View Smart Campaigns
@@ -1917,7 +1922,7 @@ if (currentUrl.search(mktoAppDomain) != -1
                     APP.overrideDeliverabilityToolsTile();
                 }
 				else if (currUrlFragment == mktoMarketingActivitiesDefaultFragment
-				|| currUrlFragment == mktoLeadDatabaseDefaultFragment) {
+				|| currUrlFragment == mktoMarketingActivitiesMarketingFragment || currUrlFragment == mktoLeadDatabaseDefaultFragment || currUrlFragment == mktoLeadDatabaseMarketingFragment) {
 					APP.disableButtons();
 				}
 
@@ -2137,7 +2142,7 @@ if (currentUrl.search(mktoAppDomain) != -1
                         APP.overrideDeliverabilityToolsTile();
                     }
 					else if (currUrlFragment == mktoMarketingActivitiesDefaultFragment
-					|| currUrlFragment == mktoLeadDatabaseDefaultFragment) {
+				|| currUrlFragment == mktoMarketingActivitiesMarketingFragment || currUrlFragment == mktoLeadDatabaseDefaultFragment || currUrlFragment == mktoLeadDatabaseMarketingFragment) {
 						APP.disableButtons();
 					}
 
