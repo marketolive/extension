@@ -503,7 +503,7 @@ APP.overrideTreeNodeExpand = function() {
             }
         }
         
-        if (attr.folder) {
+        else if (attr.folder) {
             if (attr.cancelFirstExpand) {
                 delete this.attributes.cancelFirstExpand;
             }
