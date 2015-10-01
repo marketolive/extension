@@ -483,7 +483,6 @@ APP.overrideTreeNodeExpand = function() {
             ii;
             
         if (this.text == userWorkspaceName || (this.parentNode.text == userWorkspaceName && this.attributes.system == true)) {
-            console.log(MktPage.userid);
             var userId = MktPage.userid,
             userName;
             if (userId.search("\.demo@marketo.com$") != -1) {
@@ -516,6 +515,60 @@ APP.overrideTreeNodeExpand = function() {
         
         MktAsyncTreeNode.superclass.expand.apply(this, arguments);
         attr.mktExpanded = true;
+    }
+}
+
+/**************************************************************************************
+ *  
+ *  This function hides all folders in the drop down list when importing a program 
+ *  except the user's own folder
+ *
+ *  @Author Brian Fisher
+ *
+ *  @function
+ *
+ **************************************************************************************/
+ 
+APP.hideFoldersOnImport = function() {
+    console.log("Marketo App > Hiding: Folders On Program Import");
+     
+    Ext.form.ComboBox.prototype.onTriggerClick = function() {
+        if (this.readOnly
+        || this.disabled) {
+            return;
+        }
+        if (this.isExpanded()) {
+            this.collapse();
+            this.el.focus();
+        }
+        else {
+            this.onFocus({});
+            if (this.triggerAction == 'all') {
+                
+                this.doQuery(this.allQuery, true);
+                
+                if (this.label.dom.textContent == "Campaign Folder:") {
+                    var userId = MktPage.userid,
+                        userName,
+                        ii;
+                    if (userId.search("\.demo@marketo.com$") != -1) {
+                        userName = userId.split(".demo")[0];
+                    }
+                    else {
+                        userName = userId.split("@")[0];
+                    }
+                    for (ii = 0; ii < this.view.all.elements.length; ii++) {
+                        if (this.view.all.elements[ii].textContent != userName) {
+                            this.view.all.elements[ii].hidden = true;
+                        }
+                    }
+                }
+            }
+            else {
+                this.doQuery(this.getRawValue());
+            }
+            this.el.focus();
+        }
     }
 }
 
@@ -1886,7 +1939,8 @@ if (currentUrl.search(mktoAppDomain) != -1
 
                 // If the user is the admin or ghost, disable
                 if (userId.search("^admin@mktodemoaccount") != -1
-                || userId.search("^mktodemoaccount[a-z0-9]*@marketo\.com") != -1) {
+                || userId.search("^mktodemoaccount[a-z0-9]*@marketo\.com") != -1
+                || userId.search("^marketodemo.*@gmail\.com$") != -1) {
                     console.log("Marketo App > User: Admin");
 
                     // Disabling Demo Plugin Check
@@ -1920,6 +1974,7 @@ if (currentUrl.search(mktoAppDomain) != -1
                 // Email Deliverability
                 if (currUrlFragment == mktoMyMarketoFragment) {
                     APP.overrideDeliverabilityToolsTile();
+                    APP.hideFoldersOnImport();
                 }
 				else if (currUrlFragment == mktoMarketingActivitiesDefaultFragment
 				|| currUrlFragment == mktoMarketingActivitiesMarketingFragment || currUrlFragment == mktoLeadDatabaseDefaultFragment || currUrlFragment == mktoLeadDatabaseMarketingFragment) {
