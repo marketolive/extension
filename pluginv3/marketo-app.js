@@ -1997,6 +1997,7 @@ if (currentUrl.search(mktoAppDomain) != -1
 								console.log("Marketo App > Location: Marketo Canvas");
 								
 								APP.overrideTreeNodeExpand();
+                                APP.hideFoldersOnImport();
                                 window.clearInterval(isMktCanvas);
 								prevWorkspaceId = MktCanvas.activeTab.config.accessZoneId;
 								if (prevWorkspaceId == 1 || prevWorkspaceId == japanWorkspaceId) {
