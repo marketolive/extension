@@ -38,7 +38,9 @@ var currentUrl = window.location.href,
     emailDeliverabilityDomain = "^https:\/\/250ok.com/",
     mktoMyMarketoFragment = "MM0A1",
 	mktoMarketingActivitiesDefaultFragment = "MA15A1",
+    mktoMarketingActivitiesMarketingFragment = "MA19802A1",
 	mktoLeadDatabaseDefaultFragment = "ML0A1ZN2",
+    mktoLeadDatabaseMarketingFragment = "ML0A1ZN19788",
     mktoEmailDesignerFragment = "EME",
     mktoEmailPreviewFragment = "EMP",
     mktoLandingPageDesignerFragment = "LPE",
@@ -46,6 +48,7 @@ var currentUrl = window.location.href,
     mktoFormWizardFragment = "FOE",
     mktoMobilePushNotificationWizardFragment = "MPNE",
     mktoSocialAppWizardFragment = "SOAE",
+    mktoMarketingWorkspaceId = 172,
     isMktoLiveInstance = false,
     pod,
 
@@ -474,23 +477,12 @@ APP.overrideTreeNodeExpand = function() {
     console.log("Marketo App > Overriding: Tree Node Expand");
  
     MktAsyncTreeNode.prototype.expand = function() {
+        console.log("Marketo App > Executing: Tree Node Expand");
         var attr = this.attributes,
             userWorkspaceName = "Marketing",
             ii;
-        
-        if (attr.folder) {
-            if (attr.cancelFirstExpand) {
-                delete this.attributes.cancelFirstExpand;
-            }
-            else if (this.childNodes
-            && this.childNodes.length > 0
-            && !attr.mktExpanded) {
-                MktFolder.saveExpandState(this, true);
-            }
-        }
-        
+            
         if (this.text == userWorkspaceName || (this.parentNode.text == userWorkspaceName && this.attributes.system == true)) {
-            console.log(MktPage.userid);
             var userId = MktPage.userid,
             userName;
             if (userId.search("\.demo@marketo.com$") != -1) {
@@ -510,8 +502,73 @@ APP.overrideTreeNodeExpand = function() {
             }
         }
         
+        else if (attr.folder) {
+            if (attr.cancelFirstExpand) {
+                delete this.attributes.cancelFirstExpand;
+            }
+            else if (this.childNodes
+            && this.childNodes.length > 0
+            && !attr.mktExpanded) {
+                MktFolder.saveExpandState(this, true);
+            }
+        }
+        
         MktAsyncTreeNode.superclass.expand.apply(this, arguments);
         attr.mktExpanded = true;
+    }
+}
+
+/**************************************************************************************
+ *  
+ *  This function hides all folders in the drop down list when importing a program 
+ *  except the user's own folder
+ *
+ *  @Author Brian Fisher
+ *
+ *  @function
+ *
+ **************************************************************************************/
+ 
+APP.hideFoldersOnImport = function() {
+    console.log("Marketo App > Hiding: Folders On Program Import");
+     
+    Ext.form.ComboBox.prototype.onTriggerClick = function() {
+        if (this.readOnly
+        || this.disabled) {
+            return;
+        }
+        if (this.isExpanded()) {
+            this.collapse();
+            this.el.focus();
+        }
+        else {
+            this.onFocus({});
+            if (this.triggerAction == 'all') {
+                
+                this.doQuery(this.allQuery, true);
+                
+                if (this.label.dom.textContent == "Campaign Folder:") {
+                    var userId = MktPage.userid,
+                        userName,
+                        ii;
+                    if (userId.search("\.demo@marketo.com$") != -1) {
+                        userName = userId.split(".demo")[0];
+                    }
+                    else {
+                        userName = userId.split("@")[0];
+                    }
+                    for (ii = 0; ii < this.view.all.elements.length; ii++) {
+                        if (this.view.all.elements[ii].textContent != userName) {
+                            this.view.all.elements[ii].hidden = true;
+                        }
+                    }
+                }
+            }
+            else {
+                this.doQuery(this.getRawValue());
+            }
+            this.el.focus();
+        }
     }
 }
 
@@ -580,10 +637,12 @@ APP.disableMenus = function() {
 			menu : MktMaMenu.maMenu(),
 			handler : function(button) {
 				var canvas = MktCanvas.getActiveTab(),
-				disableMenu = canvas
+				disableMenu = (canvas
 							&& canvas.config
-							&& canvas.config.accessZoneId
-							&& canvas.config.accessZoneId == 1;
+							&& canvas.config.accessZoneId)
+							&& (canvas.config.accessZoneId == 1
+                            || (canvas.config.title == "Marketing Activities"
+                            && canvas.config.accessZoneId == mktoMarketingWorkspaceId))
 				button.menu.items.each(function(item) {
 					item.setDisabled(disableMenu);
 				});
@@ -684,12 +743,12 @@ APP.disableMenus = function() {
 		
         var mItems = menu.items,
             canvas = MktCanvas.getActiveTab(),
-            disable = attr.accessZoneId == 1
-					|| !attr.accessZoneId
-					&& canvas
+            disable = (canvas
 					&& canvas.config
-					&& canvas.config.accessZoneId
-					&& canvas.config.accessZoneId == 1,
+					&& canvas.config.accessZoneId)
+					&& (canvas.config.accessZoneId == 1
+                    || (canvas.config.title == "Marketing Activities"
+                    && canvas.config.accessZoneId == mktoMarketingWorkspaceId)),
             itemsToDisable = [
 							//"navigateToNurtureTracks",//View Streams
 							//"navigateToCFSmartCamp",//View Smart Campaigns
@@ -1880,7 +1939,8 @@ if (currentUrl.search(mktoAppDomain) != -1
 
                 // If the user is the admin or ghost, disable
                 if (userId.search("^admin@mktodemoaccount") != -1
-                || userId.search("^mktodemoaccount[a-z0-9]*@marketo\.com") != -1) {
+                || userId.search("^mktodemoaccount[a-z0-9]*@marketo\.com") != -1
+                || userId.search("^marketodemo.*@gmail\.com$") != -1) {
                     console.log("Marketo App > User: Admin");
 
                     // Disabling Demo Plugin Check
@@ -1914,9 +1974,10 @@ if (currentUrl.search(mktoAppDomain) != -1
                 // Email Deliverability
                 if (currUrlFragment == mktoMyMarketoFragment) {
                     APP.overrideDeliverabilityToolsTile();
+                    APP.hideFoldersOnImport();
                 }
 				else if (currUrlFragment == mktoMarketingActivitiesDefaultFragment
-				|| currUrlFragment == mktoLeadDatabaseDefaultFragment) {
+				|| currUrlFragment == mktoMarketingActivitiesMarketingFragment || currUrlFragment == mktoLeadDatabaseDefaultFragment || currUrlFragment == mktoLeadDatabaseMarketingFragment) {
 					APP.disableButtons();
 				}
 
@@ -2136,7 +2197,7 @@ if (currentUrl.search(mktoAppDomain) != -1
                         APP.overrideDeliverabilityToolsTile();
                     }
 					else if (currUrlFragment == mktoMarketingActivitiesDefaultFragment
-					|| currUrlFragment == mktoLeadDatabaseDefaultFragment) {
+				|| currUrlFragment == mktoMarketingActivitiesMarketingFragment || currUrlFragment == mktoLeadDatabaseDefaultFragment || currUrlFragment == mktoLeadDatabaseMarketingFragment) {
 						APP.disableButtons();
 					}
 
