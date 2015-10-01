@@ -28,7 +28,7 @@ window.onload = function() {
     document.getElementById("event-check-in").src = chrome.extension.getURL("images/marketoball.png");
     document.getElementById('toggle').src = chrome.extension.getURL("images/toggle-on.png");
     document.getElementById('help-size').src = chrome.extension.getURL("images/help-white.png");
-    document.getElementById('training').src = chrome.extension.getURL("images/submit-feature-request-img-purp.png");
+    document.getElementById('training').src = chrome.extension.getURL("images/training-icon-purple-small.png");
     document.getElementById('report-a-bug').src = chrome.extension.getURL("images/report-a-bug-img-purp.png");
 
     var URL_PATH = "m3",
