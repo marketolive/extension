@@ -2007,7 +2007,7 @@ if (currentUrl.search(mktoAppDomain) != -1
                             window.clearInterval(isAdBridgeSmartList);
                             APP.openAdBridgeModal();
                         }
-                    }
+                    }, 0);
                 }
 
                 // Only execute this block if the user is not on an editor page.
