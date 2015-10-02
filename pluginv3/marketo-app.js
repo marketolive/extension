@@ -483,7 +483,9 @@ APP.overrideTreeNodeExpand = function() {
             userWorkspaceName = "Marketing",
             ii;
             
-        if (this.text == userWorkspaceName || (this.parentNode.text == userWorkspaceName && this.attributes.system == true)) {
+        if (this.text == userWorkspaceName
+        || (this.parentNode.text == userWorkspaceName
+        && this.attributes.system == true)) {
             var userId = MktPage.userid,
             userName;
             if (userId.search("\.demo@marketo.com$") != -1) {
@@ -504,22 +506,23 @@ APP.overrideTreeNodeExpand = function() {
         }
         
         if (attr.folder) {
-            debugger;
             if (attr.cancelFirstExpand) {
-                debugger;
                 delete this.attributes.cancelFirstExpand;
             }
             else if (this.childNodes
             && this.childNodes.length > 0
             && !attr.mktExpanded) {
-                debugger;
-                MktFolder.saveExpandState(this, true);
+                
+                if (this.text != userWorkspaceName
+                && (this.parentNode.text != userWorkspaceName
+                && this.attributes.system == true)) {
+                    console.log("Marketo App > Saving: Folder Expand State");
+                    MktFolder.saveExpandState(this, true);
+                }
             }
         }
-        debugger;
         MktAsyncTreeNode.superclass.expand.apply(this, arguments);
         attr.mktExpanded = true;
-        debugger;
     }
 }
 
