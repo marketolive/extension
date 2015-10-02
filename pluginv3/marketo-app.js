@@ -503,19 +503,23 @@ APP.overrideTreeNodeExpand = function() {
             }
         }
         
-        else if (attr.folder) {
+        if (attr.folder) {
+            debugger;
             if (attr.cancelFirstExpand) {
+                debugger;
                 delete this.attributes.cancelFirstExpand;
             }
             else if (this.childNodes
             && this.childNodes.length > 0
             && !attr.mktExpanded) {
+                debugger;
                 MktFolder.saveExpandState(this, true);
             }
         }
-        
+        debugger;
         MktAsyncTreeNode.superclass.expand.apply(this, arguments);
         attr.mktExpanded = true;
+        debugger;
     }
 }
 
