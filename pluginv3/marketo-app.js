@@ -50,6 +50,7 @@ var currentUrl = window.location.href,
     mktoMobilePushNotificationWizardFragment = "MPNE",
     mktoSocialAppWizardFragment = "SOAE",
     mktoMarketingWorkspaceId = 172,
+    userWorkspaceName = "Marketing",
     isMktoLiveInstance = false,
     pod,
 
@@ -479,8 +480,8 @@ APP.overrideTreeNodeExpand = function() {
  
     MktAsyncTreeNode.prototype.expand = function() {
         console.log("Marketo App > Executing: Tree Node Expand");
+        
         var attr = this.attributes,
-            userWorkspaceName = "Marketing",
             ii;
             
         if (this.text == userWorkspaceName
@@ -488,6 +489,7 @@ APP.overrideTreeNodeExpand = function() {
         && this.attributes.system == true)) {
             var userId = MktPage.userid,
             userName;
+            
             if (userId.search("\.demo@marketo.com$") != -1) {
                 userName = userId.split(".demo")[0];
             }
@@ -497,7 +499,7 @@ APP.overrideTreeNodeExpand = function() {
             for (ii = 0; ii < this.childNodes.length; ii++) {
                 if (this.childNodes[ii].attributes.system == false) {
                     if (this.childNodes[ii].text !== userName) {
-                        this.childNodes[ii].ui.node.hidden = true;
+                        this.childNodes[ii].hidden = true;
                     }
                     else {
                     }
@@ -528,6 +530,63 @@ APP.overrideTreeNodeExpand = function() {
 
 /**************************************************************************************
  *  
+ *  This function overrides the collapse function for a Marketo tree node in order to 
+ *  hide each non-system folder that is in the Marketing workspace except the user's 
+ *  own folder
+ *
+ *  @Author Brian Fisher
+ *
+ *  @function
+ *
+ **************************************************************************************/
+ 
+APP.overrideTreeNodeCollapse = function() {
+    console.log("Marketo App > Overriding: Tree Node Collapse");
+    
+        MktAsyncTreeNode.prototype.collapse = function() {
+        console.log("Marketo App > Executing: Tree Node Collapse");
+        
+        var attr = this.attributes,
+            ii;
+            
+        if (this.text == userWorkspaceName
+        || (this.parentNode.text == userWorkspaceName
+        && this.attributes.system == true)) {
+            var userId = MktPage.userid,
+            userName;
+            
+            if (userId.search("\.demo@marketo.com$") != -1) {
+                userName = userId.split(".demo")[0];
+            }
+            else {
+                userName = userId.split("@")[0];
+            }
+            for (ii = 0; ii < this.childNodes.length; ii++) {
+                if (this.childNodes[ii].attributes.system == false) {
+                    if (this.childNodes[ii].text !== userName) {
+                        this.childNodes[ii].ui.elNode.hidden = true;
+                    }
+                    else {
+                    }
+                }
+            }
+        }
+        
+        if (attr.suppressAjaxCollapse) {
+            delete this.attributes.suppressAjaxCollapse;
+        }
+        else if (isDefined(attr.folder)
+        && attr.folder
+        && attr.mktExpanded === true) {
+            MktFolder.saveExpandState(this, false);
+        }
+        MktTreeNode.superclass.collapse.apply(this, arguments);
+        attr.mktExpanded = false;
+    }
+}
+
+/**************************************************************************************
+ *  
  *  This function hides all folders in the drop down list when importing a program 
  *  except the user's own folder
  *
@@ -538,7 +597,7 @@ APP.overrideTreeNodeExpand = function() {
  **************************************************************************************/
  
 APP.hideFoldersOnImport = function() {
-    console.log("Marketo App > Hiding: Folders On Program Import");
+    console.log("Marketo App > Hiding: Folders On Program Import via Override");
      
     Ext.form.ComboBox.prototype.onTriggerClick = function() {
         if (this.readOnly
@@ -577,6 +636,64 @@ APP.hideFoldersOnImport = function() {
             }
             this.el.focus();
         }
+    }
+}
+
+/**************************************************************************************
+ *  
+ *  This function hides the canvas page grid in the Marketing Workspace for:
+ *  Design Studio > Landing Pages, Forms, Emails, Snippets, Images and Files;
+ *  Lead Database > Any List > Lead List;
+ *  Marketing Activities > Any Smart Campaign > Results View
+ *
+ *  @Author Brian Fisher
+ *
+ *  @function
+ *
+ **************************************************************************************/
+
+APP.hidePageGrid = function() {
+    console.log("Marketo App > Hiding: Page Grid via Override");
+    
+    MktGrids.CanvasGridPanel.prototype.loadPagedGrid = function() {
+        if (MktCanvas.activeTab.config.accessZoneId == mktoMarketingWorkspaceId) {
+            switch (this.canvas) {
+                // Design Studio > Landing Pages
+                case "landingCanvasLP":
+                    this.hide();
+                    break;
+                // Design Studio > Forms
+                case "landingCanvasFO":
+                    this.hide();
+                    break;
+                // Design Studio > Emails
+                case "landingCanvasEM":
+                    this.hide();
+                    break;
+                // Design Studio > Snippets
+                case "landingCanvasSnippet":
+                    this.hide();
+                    break;
+                // Design Studio > Images and Files
+                case "landingCanvasIM":
+                    this.hide();
+                    break;
+                // Lead Database > Any List > Lead List
+                case "ldbCanvasLeadList":
+                    this.hide();
+                    break;
+                // Marketing Activities > Any Smart Campaign > Results View
+                case "campaignCanvasDetailActivityLog":
+                    this.hide();
+                    break;
+                // Analytics > Any Report > Report View
+                case "atxCanvasDetailView":
+                    break;
+                default:
+                    break;
+            }
+        }
+        this.store.load({params:{start: 0, query: this.query}});
     }
 }
 
@@ -1953,8 +2070,7 @@ if (currentUrl.search(mktoAppDomain) != -1
             window.clearInterval(isMktPageApp);
 
             var accountString = MktPage.savedState.custPrefix,
-                userId = MktPage.userid,
-                username = userId.split("@")[0];
+                userId = MktPage.userid;
             
             // This checks to see if the username is one that would be associated
             // with a MarketoLive subscription.
@@ -2033,6 +2149,8 @@ if (currentUrl.search(mktoAppDomain) != -1
 								console.log("Marketo App > Location: Marketo Canvas");
 								
 								APP.overrideTreeNodeExpand();
+                                APP.overrideTreeNodeCollapse();
+                                APP.hidePageGrid();
                                 APP.hideFoldersOnImport();
                                 window.clearInterval(isMktCanvas);
 								prevWorkspaceId = MktCanvas.activeTab.config.accessZoneId;
@@ -2250,7 +2368,6 @@ if (currentUrl.search(mktoAppDomain) != -1
 								console.log("Marketo App > Location: Marketo Canvas");
 								
 								window.clearInterval(isMktCanvasHash);
-                                APP.overrideTreeNodeExpand();
 								var currWorkspaceId = MktCanvas.activeTab.config.accessZoneId;
 								if (currWorkspaceId == prevWorkspaceId) {
 								}
