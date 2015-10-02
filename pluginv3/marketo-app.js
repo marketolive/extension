@@ -2000,7 +2000,14 @@ if (currentUrl.search(mktoAppDomain) != -1
 				}
                 
                 else if (currUrlFragment == mktoAdBridgeSmartListFragment) {
-                    APP.openAdBridgeModal();
+                    var isAdBridgeSmartList = window.setInterval(function() {
+                        if (typeof(document.getElementsByClassName("x-btn-text mkiUserTarget")[0]) !== "undefined") {
+                            console.log("Marketo App > Location: Ad Bridge Smart List");
+                            
+                            window.clearInterval(isAdBridgeSmartList);
+                            APP.openAdBridgeModal();
+                        }
+                    }
                 }
 
                 // Only execute this block if the user is not on an editor page.
