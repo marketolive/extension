@@ -203,7 +203,7 @@ window.onload = function() {
 //        document.getElementById("first-option").style.display = "inline-block";
 //    }
 
-    else if (currentUrl.search(mktoAppDomain) != -1
+    if (currentUrl.search(mktoAppDomain) != -1
 	&& currentUrl.search(mktoDesignerDomain) == -1
 	&& currentUrl.search(mktoWizard) == -1) {
 		console.log("Content > Location: Marketo App");
