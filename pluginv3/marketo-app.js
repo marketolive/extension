@@ -2142,16 +2142,17 @@ if (currentUrl.search(mktoAppDomain) != -1
                 && currUrlFragment.search("^" + mktoMobilePushNotificationWizardFragment) == -1 
                 && currUrlFragment.search("^" + mktoSocialAppWizardFragment) == -1) {
                     
+                    APP.overrideTreeNodeExpand();
+                    APP.overrideTreeNodeCollapse();
+                    APP.hidePageGrid();
+                    APP.hideFoldersOnImport();
+                    
                     // Storing previous Workspace ID
                     if (currUrlFragment != mktoMyMarketoFragment) {
 						var isMktCanvas = window.setInterval(function() {
 							if (MktCanvas.activeTab !== null) {
 								console.log("Marketo App > Location: Marketo Canvas");
 								
-								APP.overrideTreeNodeExpand();
-                                APP.overrideTreeNodeCollapse();
-                                APP.hidePageGrid();
-                                APP.hideFoldersOnImport();
                                 window.clearInterval(isMktCanvas);
 								prevWorkspaceId = MktCanvas.activeTab.config.accessZoneId;
 								if (prevWorkspaceId == 1 || prevWorkspaceId == japanWorkspaceId) {
