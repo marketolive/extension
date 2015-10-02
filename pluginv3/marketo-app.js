@@ -41,6 +41,7 @@ var currentUrl = window.location.href,
     mktoMarketingActivitiesMarketingFragment = "MA19802A1",
 	mktoLeadDatabaseDefaultFragment = "ML0A1ZN2",
     mktoLeadDatabaseMarketingFragment = "ML0A1ZN19788",
+    mktoAdBridgeSmartListFragment = "SL1096260B2",
     mktoEmailDesignerFragment = "EME",
     mktoEmailPreviewFragment = "EMP",
     mktoLandingPageDesignerFragment = "LPE",
@@ -1853,6 +1854,24 @@ APP.overlayLandingPageDesigner = function() {
 
 /**************************************************************************************
  *  
+ *  This function opens the Send via Ad Bridge modal window
+ *
+ *  @Author Brian Fisher
+ *
+ *  @function
+ *
+ **************************************************************************************/
+ 
+APP.openAdBridgeModal = function() {
+    console.log("Marketo App > Opening Ad Bridge Modal Window");
+    
+    if (document.getElementsByClassName("x-btn-text mkiUserTarget")[0].type == "button") {
+        document.getElementsByClassName("x-btn-text mkiUserTarget")[0].click();
+    }
+}
+
+/**************************************************************************************
+ *  
  *  This function returns the email ids of all the email assets in a given instance. 
  *
  *  @Author Andrew Garcia
@@ -1861,7 +1880,7 @@ APP.overlayLandingPageDesigner = function() {
  *
  **************************************************************************************/
 
-APP.getEmailIds = function (pod) {
+APP.getEmailIds = function(pod) {
     console.log("Marketo App > Getting Email Ids for Pod: " + pod);
     
     var emIds = [];
@@ -1974,12 +1993,15 @@ if (currentUrl.search(mktoAppDomain) != -1
                 // Email Deliverability
                 if (currUrlFragment == mktoMyMarketoFragment) {
                     APP.overrideDeliverabilityToolsTile();
-                    APP.hideFoldersOnImport();
                 }
 				else if (currUrlFragment == mktoMarketingActivitiesDefaultFragment
 				|| currUrlFragment == mktoMarketingActivitiesMarketingFragment || currUrlFragment == mktoLeadDatabaseDefaultFragment || currUrlFragment == mktoLeadDatabaseMarketingFragment) {
 					APP.disableButtons();
 				}
+                
+                else if (currUrlFragment == mktoAdBridgeSmartListFragment) {
+                    APP.openAdBridgeModal();
+                }
 
                 // Only execute this block if the user is not on an editor page.
                 if (currUrlFragment.search("^" + mktoEmailDesignerFragment) == -1
