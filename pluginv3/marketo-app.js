@@ -41,6 +41,7 @@ var currentUrl = window.location.href,
     mktoMarketingActivitiesMarketingFragment = "MA19802A1",
 	mktoLeadDatabaseDefaultFragment = "ML0A1ZN2",
     mktoLeadDatabaseMarketingFragment = "ML0A1ZN19788",
+    mktoAdBridgeSmartListFragment = "SL1096260B2",
     mktoEmailDesignerFragment = "EME",
     mktoEmailPreviewFragment = "EMP",
     mktoLandingPageDesignerFragment = "LPE",
@@ -49,6 +50,7 @@ var currentUrl = window.location.href,
     mktoMobilePushNotificationWizardFragment = "MPNE",
     mktoSocialAppWizardFragment = "SOAE",
     mktoMarketingWorkspaceId = 172,
+    userWorkspaceName = "Marketing",
     isMktoLiveInstance = false,
     pod,
 
@@ -478,13 +480,16 @@ APP.overrideTreeNodeExpand = function() {
  
     MktAsyncTreeNode.prototype.expand = function() {
         console.log("Marketo App > Executing: Tree Node Expand");
+        
         var attr = this.attributes,
-            userWorkspaceName = "Marketing",
             ii;
             
-        if (this.text == userWorkspaceName || (this.parentNode.text == userWorkspaceName && this.attributes.system == true)) {
+        if (this.text == userWorkspaceName
+        || (this.parentNode.text == userWorkspaceName
+        && this.attributes.system == true)) {
             var userId = MktPage.userid,
             userName;
+            
             if (userId.search("\.demo@marketo.com$") != -1) {
                 userName = userId.split(".demo")[0];
             }
@@ -494,7 +499,7 @@ APP.overrideTreeNodeExpand = function() {
             for (ii = 0; ii < this.childNodes.length; ii++) {
                 if (this.childNodes[ii].attributes.system == false) {
                     if (this.childNodes[ii].text !== userName) {
-                        this.childNodes[ii].ui.node.hidden = true;
+                        this.childNodes[ii].hidden = true;
                     }
                     else {
                     }
@@ -502,19 +507,81 @@ APP.overrideTreeNodeExpand = function() {
             }
         }
         
-        else if (attr.folder) {
+        if (attr.folder) {
             if (attr.cancelFirstExpand) {
                 delete this.attributes.cancelFirstExpand;
             }
             else if (this.childNodes
             && this.childNodes.length > 0
             && !attr.mktExpanded) {
-                MktFolder.saveExpandState(this, true);
+                
+                if (this.text != userWorkspaceName
+                && (this.parentNode.text != userWorkspaceName
+                && this.attributes.system == true)) {
+                    console.log("Marketo App > Saving: Folder Expand State");
+                    MktFolder.saveExpandState(this, true);
+                }
+            }
+        }
+        MktAsyncTreeNode.superclass.expand.apply(this, arguments);
+        attr.mktExpanded = true;
+    }
+}
+
+/**************************************************************************************
+ *  
+ *  This function overrides the collapse function for a Marketo tree node in order to 
+ *  hide each non-system folder that is in the Marketing workspace except the user's 
+ *  own folder
+ *
+ *  @Author Brian Fisher
+ *
+ *  @function
+ *
+ **************************************************************************************/
+ 
+APP.overrideTreeNodeCollapse = function() {
+    console.log("Marketo App > Overriding: Tree Node Collapse");
+    
+        MktAsyncTreeNode.prototype.collapse = function() {
+        console.log("Marketo App > Executing: Tree Node Collapse");
+        
+        var attr = this.attributes,
+            ii;
+            
+        if (this.text == userWorkspaceName
+        || (this.parentNode.text == userWorkspaceName
+        && this.attributes.system == true)) {
+            var userId = MktPage.userid,
+            userName;
+            
+            if (userId.search("\.demo@marketo.com$") != -1) {
+                userName = userId.split(".demo")[0];
+            }
+            else {
+                userName = userId.split("@")[0];
+            }
+            for (ii = 0; ii < this.childNodes.length; ii++) {
+                if (this.childNodes[ii].attributes.system == false) {
+                    if (this.childNodes[ii].text !== userName) {
+                        this.childNodes[ii].ui.elNode.hidden = true;
+                    }
+                    else {
+                    }
+                }
             }
         }
         
-        MktAsyncTreeNode.superclass.expand.apply(this, arguments);
-        attr.mktExpanded = true;
+        if (attr.suppressAjaxCollapse) {
+            delete this.attributes.suppressAjaxCollapse;
+        }
+        else if (isDefined(attr.folder)
+        && attr.folder
+        && attr.mktExpanded === true) {
+            MktFolder.saveExpandState(this, false);
+        }
+        MktTreeNode.superclass.collapse.apply(this, arguments);
+        attr.mktExpanded = false;
     }
 }
 
@@ -530,7 +597,7 @@ APP.overrideTreeNodeExpand = function() {
  **************************************************************************************/
  
 APP.hideFoldersOnImport = function() {
-    console.log("Marketo App > Hiding: Folders On Program Import");
+    console.log("Marketo App > Hiding: Folders On Program Import via Override");
      
     Ext.form.ComboBox.prototype.onTriggerClick = function() {
         if (this.readOnly
@@ -569,6 +636,64 @@ APP.hideFoldersOnImport = function() {
             }
             this.el.focus();
         }
+    }
+}
+
+/**************************************************************************************
+ *  
+ *  This function hides the canvas page grid in the Marketing Workspace for:
+ *  Design Studio > Landing Pages, Forms, Emails, Snippets, Images and Files;
+ *  Lead Database > Any List > Lead List;
+ *  Marketing Activities > Any Smart Campaign > Results View
+ *
+ *  @Author Brian Fisher
+ *
+ *  @function
+ *
+ **************************************************************************************/
+
+APP.hidePageGrid = function() {
+    console.log("Marketo App > Hiding: Page Grid via Override");
+    
+    MktGrids.CanvasGridPanel.prototype.loadPagedGrid = function() {
+        if (MktCanvas.activeTab.config.accessZoneId == mktoMarketingWorkspaceId) {
+            switch (this.canvas) {
+                // Design Studio > Landing Pages
+                case "landingCanvasLP":
+                    this.hide();
+                    break;
+                // Design Studio > Forms
+                case "landingCanvasFO":
+                    this.hide();
+                    break;
+                // Design Studio > Emails
+                case "landingCanvasEM":
+                    this.hide();
+                    break;
+                // Design Studio > Snippets
+                case "landingCanvasSnippet":
+                    this.hide();
+                    break;
+                // Design Studio > Images and Files
+                case "landingCanvasIM":
+                    this.hide();
+                    break;
+                // Lead Database > Any List > Lead List
+                case "ldbCanvasLeadList":
+                    this.hide();
+                    break;
+                // Marketing Activities > Any Smart Campaign > Results View
+                case "campaignCanvasDetailActivityLog":
+                    this.hide();
+                    break;
+                // Analytics > Any Report > Report View
+                case "atxCanvasDetailView":
+                    break;
+                default:
+                    break;
+            }
+        }
+        this.store.load({params:{start: 0, query: this.query}});
     }
 }
 
@@ -1853,6 +1978,24 @@ APP.overlayLandingPageDesigner = function() {
 
 /**************************************************************************************
  *  
+ *  This function opens the Send via Ad Bridge modal window
+ *
+ *  @Author Brian Fisher
+ *
+ *  @function
+ *
+ **************************************************************************************/
+ 
+APP.openAdBridgeModal = function() {
+    console.log("Marketo App > Opening Ad Bridge Modal Window");
+    
+    if (document.getElementsByClassName("x-btn-text mkiUserTarget")[0].type == "button") {
+        document.getElementsByClassName("x-btn-text mkiUserTarget")[0].click();
+    }
+}
+
+/**************************************************************************************
+ *  
  *  This function returns the email ids of all the email assets in a given instance. 
  *
  *  @Author Andrew Garcia
@@ -1861,7 +2004,7 @@ APP.overlayLandingPageDesigner = function() {
  *
  **************************************************************************************/
 
-APP.getEmailIds = function (pod) {
+APP.getEmailIds = function(pod) {
     console.log("Marketo App > Getting Email Ids for Pod: " + pod);
     
     var emIds = [];
@@ -1927,8 +2070,7 @@ if (currentUrl.search(mktoAppDomain) != -1
             window.clearInterval(isMktPageApp);
 
             var accountString = MktPage.savedState.custPrefix,
-                userId = MktPage.userid,
-                username = userId.split("@")[0];
+                userId = MktPage.userid;
             
             // This checks to see if the username is one that would be associated
             // with a MarketoLive subscription.
@@ -1974,12 +2116,22 @@ if (currentUrl.search(mktoAppDomain) != -1
                 // Email Deliverability
                 if (currUrlFragment == mktoMyMarketoFragment) {
                     APP.overrideDeliverabilityToolsTile();
-                    APP.hideFoldersOnImport();
                 }
 				else if (currUrlFragment == mktoMarketingActivitiesDefaultFragment
 				|| currUrlFragment == mktoMarketingActivitiesMarketingFragment || currUrlFragment == mktoLeadDatabaseDefaultFragment || currUrlFragment == mktoLeadDatabaseMarketingFragment) {
 					APP.disableButtons();
 				}
+                
+                else if (currUrlFragment == mktoAdBridgeSmartListFragment) {
+                    var isAdBridgeSmartList = window.setInterval(function() {
+                        if (typeof(document.getElementsByClassName("x-btn-text mkiUserTarget")[0]) !== "undefined") {
+                            console.log("Marketo App > Location: Ad Bridge Smart List");
+                            
+                            window.clearInterval(isAdBridgeSmartList);
+                            APP.openAdBridgeModal();
+                        }
+                    }, 0);
+                }
 
                 // Only execute this block if the user is not on an editor page.
                 if (currUrlFragment.search("^" + mktoEmailDesignerFragment) == -1
@@ -1990,13 +2142,17 @@ if (currentUrl.search(mktoAppDomain) != -1
                 && currUrlFragment.search("^" + mktoMobilePushNotificationWizardFragment) == -1 
                 && currUrlFragment.search("^" + mktoSocialAppWizardFragment) == -1) {
                     
+                    APP.overrideTreeNodeExpand();
+                    APP.overrideTreeNodeCollapse();
+                    APP.hidePageGrid();
+                    APP.hideFoldersOnImport();
+                    
                     // Storing previous Workspace ID
                     if (currUrlFragment != mktoMyMarketoFragment) {
 						var isMktCanvas = window.setInterval(function() {
 							if (MktCanvas.activeTab !== null) {
 								console.log("Marketo App > Location: Marketo Canvas");
 								
-								APP.overrideTreeNodeExpand();
                                 window.clearInterval(isMktCanvas);
 								prevWorkspaceId = MktCanvas.activeTab.config.accessZoneId;
 								if (prevWorkspaceId == 1 || prevWorkspaceId == japanWorkspaceId) {
@@ -2213,7 +2369,6 @@ if (currentUrl.search(mktoAppDomain) != -1
 								console.log("Marketo App > Location: Marketo Canvas");
 								
 								window.clearInterval(isMktCanvasHash);
-                                APP.overrideTreeNodeExpand();
 								var currWorkspaceId = MktCanvas.activeTab.config.accessZoneId;
 								if (currWorkspaceId == prevWorkspaceId) {
 								}
