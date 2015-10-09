@@ -31,3 +31,23 @@ switch (pod) {
         });
         break;
 }
+
+$(document).ready(function() {
+    $("#help-link").click(function() {
+        console.log("RTP > Showing: Help Modal");
+
+        $('.help-center-box').animate({
+            'margin-top': '125px',
+        }, 400, function() {});
+        $('.help-cover').css('display', 'block');
+        $('.help-center-container').css('display', 'block');
+        $('#iframelive').hide();
+    });
+    $('.cancel-help').click(function() {
+        console.log("RTP > Hiding: Help Modal");
+
+        $('.help-cover').css('display', 'none');
+        $('.help-center-container').css('display', 'none');
+        $('#iframelive').show();
+    });
+});
