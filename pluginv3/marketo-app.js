@@ -970,8 +970,8 @@ APP.hidePageGrid = function() {
 
 /**************************************************************************************
  *  
- *  This function disables the Default Workspace home buttons: New Program, and New  
- *  Smart Campaign, New Smart List
+ *  This function disables the Default and Marketing Workspaces home buttons:   
+ *  New Program, New Smart Campaign, and New Smart List
  *
  *  @Author Brian Fisher
  *
@@ -2361,7 +2361,9 @@ if (currentUrl.search(mktoAppDomain) != -1
                     APP.overrideDeliverabilityToolsTile();
                 }
 				else if (currUrlFragment == mktoMarketingActivitiesDefaultFragment
-				|| currUrlFragment == mktoMarketingActivitiesMarketingFragment || currUrlFragment == mktoLeadDatabaseDefaultFragment || currUrlFragment == mktoLeadDatabaseMarketingFragment) {
+				|| currUrlFragment == mktoMarketingActivitiesMarketingFragment
+                || currUrlFragment == mktoLeadDatabaseDefaultFragment
+                || currUrlFragment == mktoLeadDatabaseMarketingFragment) {
 					APP.disableButtons();
 				}
                 
@@ -2599,7 +2601,9 @@ if (currentUrl.search(mktoAppDomain) != -1
                         APP.overrideDeliverabilityToolsTile();
                     }
 					else if (currUrlFragment == mktoMarketingActivitiesDefaultFragment
-				|| currUrlFragment == mktoMarketingActivitiesMarketingFragment || currUrlFragment == mktoLeadDatabaseDefaultFragment || currUrlFragment == mktoLeadDatabaseMarketingFragment) {
+                    || currUrlFragment == mktoMarketingActivitiesMarketingFragment
+                    || currUrlFragment == mktoLeadDatabaseDefaultFragment
+                    || currUrlFragment == mktoLeadDatabaseMarketingFragment) {
 						APP.disableButtons();
 					}
 
