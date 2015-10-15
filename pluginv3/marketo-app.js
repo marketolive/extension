@@ -127,6 +127,83 @@ APP.disableSystemErrorMessage = function() {
 
 /**************************************************************************************
  *  
+ *  This function disables the confirmation message for deleting Triggers, Filters, and
+ *  Flow Steps from a Smart Campaign or Smart List in the Default Worksapce.
+ *
+ *  @Author Brian Fisher
+ *
+ *  @function
+ *
+ **************************************************************************************/
+
+APP.disableConfirmationMessage = function() {
+    console.log("Marketo App > Disabling: Smart Campaign Delete Confirmation Message");
+    
+    Mkt.widgets.DataPanel.prototype.clickClose = function() {
+        var hasChanges = this.hasSettings(),
+            showTriggerWarning = false;
+        if (this.isSmartlist && this.dpMeta.trigger) {
+            var triggerCount = this.dpMgr.getTriggers().length;
+            if (triggerCount == 1) {
+                showTriggerWarning = true;
+            }
+        }
+        
+        if (hasChanges || showTriggerWarning) {
+            var title = MktLang.getStr('DataFormPanel.Delete_arg0', [this.dpTypeName(true)]),
+                name = this.dpMeta.displayName || this.dpMeta.name,
+                msg = MktLang.getStr('DataFormPanel.Are_you_sure_you_want_to_delete_arg0_arg1', [this.dpTypeName(), MktLang.getDBStr(name)]);
+            
+            if (showTriggerWarning) {
+                msg += MktLang.getStr("DataFormPanel.Triggered_campaigns_must_contain_trigger_remain_active");
+            }
+            
+            if (this.dpMgr.isSmartlist && !this.dpMeta.trigger && this.dpMgr.smartListRuleLogic.customMode()) {
+                msg += MktLang.getStr('DataFormPanel.Reminder') +
+                MktLang.getStr('DataFormPanel.Check_your_advanced_filter_rules_after_any_insert_delete_reorder');
+            }
+            
+            if (MktCanvas.getActiveTab().config.accessZoneId == 1) {
+                if (hasChanges && showTriggerWarning) {
+                    Ext4.Msg.confirmDelete({
+                        title : title,
+                        msg : msg,
+                        minHeight : 300,
+                        fn : function (buttonId) {
+                            if (buttonId === 'ok') {
+                                this._doClose();
+                            }
+                        },
+                        scope : this
+                    });
+                }
+                else {
+                    console.log("Marketo App > Closing: Smart Campaign Delete Confirmation Message");
+                    this._doClose();
+                }
+            }
+            else {
+                Ext4.Msg.confirmDelete({
+                    title : title,
+                    msg : msg,
+                    minHeight : 300,
+                    fn : function (buttonId) {
+                        if (buttonId === 'ok') {
+                            this._doClose();
+                        }
+                    },
+                    scope : this
+                });
+            }
+        }
+        else {
+            this._doClose();
+        }
+    }
+}
+
+/**************************************************************************************
+ *  
  *  This function overrides the target link for the Deliverability Tools tile. By default,
  *  the tile uses SSO to login to 250ok. However, we only have one 250ok instance that
  *  contains usable demo data, so the plugin must send people into that instance. This
@@ -2394,6 +2471,7 @@ if (currentUrl.search(mktoAppDomain) != -1
                     APP.overrideNewSmartCampaignCreate();
                     APP.hidePageGrid();
                     APP.hideFoldersOnImport();
+                    APP.disableConfirmationMessage();
                     
                     // Storing previous Workspace ID
                     if (currUrlFragment != mktoMyMarketoFragment) {
