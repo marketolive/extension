@@ -110,8 +110,6 @@ APP.disableDemoPluginCheck = function() {
  *  
  *  This function disables the system error message for sync errors on Landing Pages.
  *  These errors would occur when two users edit the same landing page simultaneously.
- *  Please note that this also hides other system errors, so revisions should be 
- *  considered to determine if this is the correct approach.
  *
  *  @Author Brian Fisher
  *
@@ -119,10 +117,22 @@ APP.disableDemoPluginCheck = function() {
  *
  **************************************************************************************/
 
-APP.disableSystemErrorMessage = function() {
-    console.log("Marketo App > Disabling: System Error Message");
+APP.disableSyncErrorMessage = function() {
+    console.log("Marketo App > Disabling: Landing Page Sync Error Message");
 
-    MktMessage.showSystemError = function() {};
+    // Old way that hid other system errors
+    //MktMessage.showSystemError = function() {};
+    Mkt3.controller.editor.LandingPagePropertyPanel.prototype.fireSyncProperties = function(record, changes) {
+        var prop = record.get('properties');
+        if (prop) {
+            var prop = this.normalizeProperties(Ext4.clone(prop), false, changes);
+            record.set('properties', prop);
+        }
+        
+        if (record.data.localeId != 1) { 
+            this.application.fireEvent('message.lp.syncProperties', record, changes);
+        }
+    }
 }
 
 /**************************************************************************************
@@ -2575,7 +2585,7 @@ if (currentUrl.search(mktoAppDomain) != -1
                         customCompanyLandingPage106bFragment = "LPE10768",
                         customCompanyLandingPagePreview106bFragment = "LPP10768";
                     // Disabling System Error Message for sync conflicts
-                    APP.disableSystemErrorMessage();
+                    APP.disableSyncErrorMessage();
                     
                     // Overlay Landing Page Designer w/ company logo and color
                     switch (currUrlFragment) {
