@@ -2239,7 +2239,8 @@ APP.overlayEmailDesigner = function() {
         color = defaultColor;
     }
 
-    var isIframeElement = window.setInterval(function() {
+    var isEmailIframeElement = window.setInterval(function() {
+        window.clearInterval(isEmailIframeElement);
         var logoBkg = document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("logo-bkg"),
             buttonBkg = document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("button-bkg"),
             logoSwapCompany = document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("logo-swap-company"),
@@ -2256,7 +2257,6 @@ APP.overlayEmailDesigner = function() {
             logoBkg.style.backgroundColor = color;
             buttonBkg.style.backgroundColor = color;
             logoSwapCompany.src = logo;
-            window.clearInterval(isIframeElement);
         }
     }, 0);
 }
@@ -2286,8 +2286,8 @@ APP.overlayLandingPageDesigner = function() {
         color = defaultColor;
     }
 
-    var isIframeElement = window.setInterval(function() {
-        window.clearInterval(isIframeElement);
+    var isLandingPageIframeElement = window.setInterval(function() {
+        window.clearInterval(isLandingPageIframeElement);
         var lpLogo = document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("lp-logo"),
             backgroundColor = document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("background-color"),
             biggerBackground = document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("bigger-background"),
