@@ -2287,6 +2287,7 @@ APP.overlayLandingPageDesigner = function() {
     }
 
     var isIframeElement = window.setInterval(function() {
+        window.clearInterval(isIframeElement);
         var lpLogo = document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("lp-logo"),
             backgroundColor = document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("background-color"),
             biggerBackground = document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("bigger-background"),
@@ -2301,7 +2302,6 @@ APP.overlayLandingPageDesigner = function() {
             backgroundColor.style.backgroundColor = color;
             biggerBackground.style.backgroundColor = color;
             subTitle.innerHTML = companyName + " invites you to join:";
-            window.clearInterval(isIframeElement);
         }
     }, 0);
 }
