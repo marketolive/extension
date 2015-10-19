@@ -366,6 +366,109 @@ APP.disableSmartCampaignSaving = function() {
 
 /**************************************************************************************
  *  
+ *  This function overrides the save function of Smart Campaigns in order to disable   
+ *  saving within the Default Workspace while maintaining the order of the steps.
+ *
+ *  @Author Brian Fisher
+ *
+ *  @function
+ *
+ **************************************************************************************/
+
+APP.overrideSmartCampaignSaving = function() {
+    console.log("Marketo App > Overriding: Saving for Smart Campaigns");
+    
+    Mkt.widgets.DataPanelManager.prototype.save = function(cause, dp, acceptUpdates) {
+        this._updateDataPanelOrder(true);
+        if (MktCanvas.getActiveTab().config.accessZoneId != 1
+        && APP.getCookie("priv") != "false") {
+            if (this.saveQueue.blockingSaveInProgress) {
+                this.saveQueue.pendingChangesCount++;
+                this.saveQueue.dataPanelMetas = this._serializeDataPanels();
+                this.saveQueue.dataPanelCount = this.countDataPanels();
+                return;
+            }
+
+            var dataPanelMetas;
+            if (this.saveQueue.dataPanelMetas) {
+                dataPanelMetas = this.saveQueue.dataPanelMetas;
+            }
+            else {
+                dataPanelMetas = this._serializeDataPanels();
+            }
+
+            this.saveQueue.pendingChangesCount = 0;
+            this.saveQueue.dataPanelMetas = null;
+            this.saveQueue.dataPanelCount = 0;
+            if (dataPanelMetas === null) {
+                return;
+            }
+
+            if (dataPanelMetas.length === 0
+            && this.isFlow) {
+            }
+
+            if (this.dpSubtype != DPConst.RUN_ACTION
+            && dataPanelMetas) {
+                if (this.lastSave.dataPanelMetas && this.lastSave.dataPanelMetas == dataPanelMetas) {
+                    return;
+                }
+                else if (this.lastSave.dataPanelMetasUpdated && this.lastSave.dataPanelMetasUpdated == dataPanelMetas) {
+                    return;
+                }
+            }
+
+            console.debug('Saving ' + this.dpType + ':', MktFormat.formatJsonStr(dataPanelMetas));
+            if (DPDEBUG) {
+                console.debug('Current Save:', dataPanelMetas);
+                
+                if (this.lastSave.dataPanelMetas) {
+                    console.debug('Previous Save:', this.lastSave.dataPanelMetas);
+                }
+                
+                if (this.lastSave.dataPanelMetasUpdated) {
+                    console.debug('Previous Update:', this.lastSave.dataPanelMetasUpdated);
+                }
+            }
+
+            this.lastSave.acceptUpdates = acceptUpdates;
+            this.lastSave.dataPanelMetas = dataPanelMetas;
+            this.saveQueue.blockingSaveInProgress = true;
+            this.beforeSaveMessage();
+            var params = Ext.apply({
+                dataPanelMetas: dataPanelMetas,
+                accessZoneId: this.accessZoneId
+            }, this.baseSaveParams);
+
+            if (this.isSmartlist && this.smartListRuleLogic.customMode()) {
+                if (this.smartListRuleLogic.isCustomLogicValid()) {
+                    var smartListLogicParams = this.smartListRuleLogic.getSmartListLogicSaveParams();
+                    Ext.apply(params, smartListLogicParams);
+                } else {
+                    console.debug('Data panel save successful. Custom rule logic is not valid');
+                }
+            }
+
+            params[this.appVarsBase + 'Id'] = this.dataPanelStorageId;
+            this.beforeSaveHook();
+            if (DPDEBUG) {
+                console.debug("Saving... ", params);
+            }
+            
+            MktSession.ajaxRequest(this.saveAction, {
+                serializeParms: params,
+                onMySuccess: this.saveSuccess.createDelegate(this),
+                onMyFailure: this.saveFailure.createDelegate(this)
+            });
+        }
+        else {
+            console.log("Marketo App > Disabling: Saving for Smart Campaigns");
+        }
+    }
+}
+
+/**************************************************************************************
+ *  
  *  This function enables the Smart List and Flow Canvases for Smart Campaigns. In the
  *  case where a user does not have edit privileges for marketing assets, the UI for
  *  triggers, filters, and flow steps will not show by default.
@@ -2476,6 +2579,7 @@ if (currentUrl.search(mktoAppDomain) != -1
                     
                     APP.overrideTreeNodeExpand();
                     APP.overrideTreeNodeCollapse();
+                    APP.overrideSmartCampaignSaving();
                     APP.overrideNewProgramCreate();
                     APP.overrideProgramSaveEdit();
                     APP.overrideNewSmartCampaignCreate();
@@ -2493,7 +2597,7 @@ if (currentUrl.search(mktoAppDomain) != -1
 								prevWorkspaceId = MktCanvas.activeTab.config.accessZoneId;
 								if (prevWorkspaceId == 1 || prevWorkspaceId == japanWorkspaceId) {
 									// Powerful Automation
-									APP.disableSmartCampaignSaving();
+									//APP.disableSmartCampaignSaving();
 									APP.enableSmartCampaignCanvas();
 
 									// Intelligent Nurturing
@@ -2712,7 +2816,7 @@ if (currentUrl.search(mktoAppDomain) != -1
 								}
 								else if (currWorkspaceId == 1 || currWorkspaceId == japanWorkspaceId) {
 									// Powerful Automation
-									APP.disableSmartCampaignSaving();
+									//APP.disableSmartCampaignSaving();
 									APP.enableSmartCampaignCanvas();
 
 									// Intelligent Nurturing
@@ -2722,7 +2826,7 @@ if (currentUrl.search(mktoAppDomain) != -1
 								else {
 									// Enable Smart Campaign & Nurture Stream Saving for their Workspace
 									if (APP.getCookie("priv") != "false") {
-										APP.enableSmartCampaignSaving();
+										//APP.enableSmartCampaignSaving();
 										APP.enableSaving();
 									}
 									prevWorkspaceId = currWorkspaceId;
