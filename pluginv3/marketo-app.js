@@ -2230,13 +2230,13 @@ APP.overlayEmailDesigner = function() {
     }
 
     var isEmailIframeElement = window.setInterval(function() {
-        window.clearInterval(isEmailIframeElement);
         var logoBkg = document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("logo-bkg"),
             buttonBkg = document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("button-bkg"),
             logoSwapCompany = document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("logo-swap-company"),
             logoSwapContainer = document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("logo-swap-container"),
             logoSwapCompanyContainer = document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("logo-swap-company-container");
         
+        window.clearInterval(isEmailIframeElement);
         if (logoBkg != null
 		&& buttonBkg != null
 		&& logoSwapCompany != null) {
