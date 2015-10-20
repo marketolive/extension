@@ -2236,7 +2236,6 @@ APP.overlayEmailDesigner = function() {
             logoSwapContainer = document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("logo-swap-container"),
             logoSwapCompanyContainer = document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("logo-swap-company-container");
         
-        window.clearInterval(isEmailIframeElement);
         if (logoBkg != null
 		&& buttonBkg != null
 		&& logoSwapCompany != null) {
@@ -2248,6 +2247,7 @@ APP.overlayEmailDesigner = function() {
             buttonBkg.style.backgroundColor = color;
             logoSwapCompany.src = logo;
         }
+    window.clearInterval(isEmailIframeElement);
     }, 0);
 }
 
