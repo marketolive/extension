@@ -2240,14 +2240,14 @@ APP.overlayEmailDesigner = function() {
 		&& buttonBkg != null
 		&& logoSwapCompany != null) {
             console.log("Marketo App > Overlaying: iframe");
+            window.clearInterval(isEmailIframeElement);
+            
             logoSwapContainer.style.display = "none";
             logoSwapCompanyContainer.style.display = "block";
-
             logoBkg.style.backgroundColor = color;
             buttonBkg.style.backgroundColor = color;
             logoSwapCompany.src = logo;
         }
-    window.clearInterval(isEmailIframeElement);
     }, 0);
 }
 
@@ -2265,9 +2265,10 @@ APP.overlayEmailDesigner = function() {
 APP.overlayLandingPageDesigner = function() {
     console.log("Marketo App > Overlaying: Landing Page Designer");
 
-    var logo = APP.getCookie("logo"), 
-        color = APP.getCookie("color");
-        
+    var logo = APP.getCookie("logo"),
+        color = APP.getCookie("color"),
+        company = logo.split("https://logo.clearbit.com/")[1].split(".")[0],
+        companyName = company.charAt(0).toUpperCase() + company.slice(1);    
     
     if (logo == null) {
         logo = defaultTurnerLogoGreen;
@@ -2277,7 +2278,6 @@ APP.overlayLandingPageDesigner = function() {
     }
 
     var isLandingPageIframeElement = window.setInterval(function() {
-        window.clearInterval(isLandingPageIframeElement);
         var lpLogo = document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("lp-logo"),
             backgroundColor = document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("background-color"),
             biggerBackground = document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("bigger-background"),
@@ -2287,6 +2287,7 @@ APP.overlayLandingPageDesigner = function() {
 		&& biggerBackground != null
 		&& subTitle != null) {
             console.log("Marketo App > Overlaying: iframe");
+            window.clearInterval(isLandingPageIframeElement);
 
             lpLogo.src = logo;
             backgroundColor.style.backgroundColor = color;
