@@ -12,7 +12,7 @@
  **************************************************************************************/
 console.log("Marketo App > Running");
 // This is the value that the demo plugin check looks for
-window.mkto_live_plugin_state = true; 
+window.mkto_live_plugin_state = true;
 
 /**************************************************************************************
  *
@@ -51,7 +51,7 @@ var currentUrl = window.location.href,
     mktoSocialAppWizardFragment = "SOAE",
     mktoMarketingWorkspaceId = 172,
     userWorkspaceName = "Marketing",
-    isMktoLiveInstance = true,
+    isMktoLiveInstance = false,
     pod,
 
     APP = APP || {};
@@ -102,6 +102,7 @@ APP.getCookie = function(cookieField) {
 APP.disableDemoPluginCheck = function() {
     console.log("Marketo App > Disabling: Demo Plugin Check");
 
+    window.mkto_live_plugin_state = true;
     MktPage.validateDemoPlugin = function() {};
     isMktoLiveInstance = true;
 }
@@ -1189,12 +1190,22 @@ APP.disableMenus = function() {
 		
         var mItems = menu.items,
             canvas = MktCanvas.getActiveTab(),
-            disable = (canvas
-					&& canvas.config
-					&& canvas.config.accessZoneId)
-					&& (canvas.config.accessZoneId == 1
-                    || (canvas.config.title == "Marketing Activities"
-                    && canvas.config.accessZoneId == mktoMarketingWorkspaceId)),
+            disable = (attr.accessZoneId 
+                        && attr.accessZoneId == 1)
+                    || (attr.depth
+                        && attr.depth == 1
+                        && attr.accessZoneId
+                        && attr.accessZoneId == mktoMarketingWorkspaceId)
+                    || (!attr.accessZoneId
+                        && menu.currNode
+                        && menu.currNode.attributes
+                        && menu.currNode.attributes.accessZoneId
+                        && menu.currNode.attributes.accessZoneId == 1)
+                    || (!menu.currNode
+                        && canvas
+                        && canvas.config
+                        && canvas.config.accessZoneId
+                        && canvas.config.accessZoneId == 1),
             itemsToDisable = [
 							//"navigateToNurtureTracks",//View Streams
 							//"navigateToCFSmartCamp",//View Smart Campaigns
@@ -1256,12 +1267,22 @@ APP.disableMenus = function() {
 		prevEmailRightClickMenu.apply(this, arguments);
 		var mItems = menu.items,
 			canvas = MktCanvas.getActiveTab(),
-			disable = attr.accessZoneId == 1
-					|| !attr.accessZoneId
-					&& canvas
-					&& canvas.config
-					&& canvas.config.accessZoneId
-					&& canvas.config.accessZoneId == 1,
+			disable = (attr.accessZoneId 
+                        && attr.accessZoneId == 1)
+                    || (attr.depth
+                        && attr.depth == 1
+                        && attr.accessZoneId
+                        && attr.accessZoneId == mktoMarketingWorkspaceId)
+                    || (!attr.accessZoneId
+                        && menu.currNode
+                        && menu.currNode.attributes
+                        && menu.currNode.attributes.accessZoneId
+                        && menu.currNode.attributes.accessZoneId == 1)
+                    || (!menu.currNode
+                        && canvas
+                        && canvas.config
+                        && canvas.config.accessZoneId
+                        && canvas.config.accessZoneId == 1),
 			itemsToDisable = [
 							//"emailEdit",//Edit Draft
 							//"emailPreview",//Preview
@@ -1304,12 +1325,22 @@ APP.disableMenus = function() {
 		
 		var mItems = menu.items,
 			canvas = MktCanvas.getActiveTab(),
-			disable = attr.accessZoneId == 1
-					|| !attr.accessZoneId
-					&& canvas
-					&& canvas.config
-					&& canvas.config.accessZoneId
-					&& canvas.config.accessZoneId == 1,
+			disable = (attr.accessZoneId 
+                        && attr.accessZoneId == 1)
+                    || (attr.depth
+                        && attr.depth == 1
+                        && attr.accessZoneId
+                        && attr.accessZoneId == mktoMarketingWorkspaceId)
+                    || (!attr.accessZoneId
+                        && menu.currNode
+                        && menu.currNode.attributes
+                        && menu.currNode.attributes.accessZoneId
+                        && menu.currNode.attributes.accessZoneId == 1)
+                    || (!menu.currNode
+                        && canvas
+                        && canvas.config
+                        && canvas.config.accessZoneId
+                        && canvas.config.accessZoneId == 1),
 			itemsToDisable = [
 							//"pageEdit",//Edit Draft
 							//"pagePreview",//Preview
@@ -1346,12 +1377,22 @@ APP.disableMenus = function() {
 
 		var mItems = menu.items,
 			canvas = MktCanvas.getActiveTab(),
-			disable = attr.accessZoneId == 1
-					|| !attr.accessZoneId
-					&& canvas
-					&& canvas.config
-					&& canvas.config.accessZoneId
-					&& canvas.config.accessZoneId == 1,
+			disable = (attr.accessZoneId 
+                        && attr.accessZoneId == 1)
+                    || (attr.depth
+                        && attr.depth == 1
+                        && attr.accessZoneId
+                        && attr.accessZoneId == mktoMarketingWorkspaceId)
+                    || (!attr.accessZoneId
+                        && menu.currNode
+                        && menu.currNode.attributes
+                        && menu.currNode.attributes.accessZoneId
+                        && menu.currNode.attributes.accessZoneId == 1)
+                    || (!menu.currNode
+                        && canvas
+                        && canvas.config
+                        && canvas.config.accessZoneId
+                        && canvas.config.accessZoneId == 1),
 			itemsToDisable = [
 							//"formEditDraft",//Edit Draft
 							//"formPreview",//Preview
@@ -1385,12 +1426,22 @@ APP.disableMenus = function() {
 		
 		var mItems = menu.items,
 			canvas = MktCanvas.getActiveTab(),
-			disable = attr.accessZoneId == 1
-				|| !attr.accessZoneId
-				&& canvas
-				&& canvas.config
-				&& canvas.config.accessZoneId
-				&& canvas.config.accessZoneId == 1,
+			disable = (attr.accessZoneId 
+                        && attr.accessZoneId == 1)
+                    || (attr.depth
+                        && attr.depth == 1
+                        && attr.accessZoneId
+                        && attr.accessZoneId == mktoMarketingWorkspaceId)
+                    || (!attr.accessZoneId
+                        && menu.currNode
+                        && menu.currNode.attributes
+                        && menu.currNode.attributes.accessZoneId
+                        && menu.currNode.attributes.accessZoneId == 1)
+                    || (!menu.currNode
+                        && canvas
+                        && canvas.config
+                        && canvas.config.accessZoneId
+                        && canvas.config.accessZoneId == 1),
 			itemsToDisable = [
 							//"socialAppEdit",//Edit Draft
 							//"socialAppPreview",//Preview
@@ -1449,12 +1500,22 @@ APP.disableMenus = function() {
 		
 		var mItems = menu.items,
 			canvas = MktCanvas.getActiveTab(),
-			disable = attr.accessZoneId == 1
-				|| !attr.accessZoneId
-				&& canvas
-				&& canvas.config
-				&& canvas.config.accessZoneId
-				&& canvas.config.accessZoneId == 1,
+			disable = (attr.accessZoneId 
+                        && attr.accessZoneId == 1)
+                    || (attr.depth
+                        && attr.depth == 1
+                        && attr.accessZoneId
+                        && attr.accessZoneId == mktoMarketingWorkspaceId)
+                    || (!attr.accessZoneId
+                        && menu.currNode
+                        && menu.currNode.attributes
+                        && menu.currNode.attributes.accessZoneId
+                        && menu.currNode.attributes.accessZoneId == 1)
+                    || (!menu.currNode
+                        && canvas
+                        && canvas.config
+                        && canvas.config.accessZoneId
+                        && canvas.config.accessZoneId == 1),
 			itemsToDisable = [
 							//"pushNotificationEdit",//Edit Draft
 							"pushNotificationApprove",//Approve
@@ -1510,12 +1571,22 @@ APP.disableMenus = function() {
 		
 		var mItems = menu.items,
 			canvas = MktCanvas.getActiveTab(),
-			disable = attr.accessZoneId == 1
-				|| !attr.accessZoneId
-				&& canvas
-				&& canvas.config
-				&& canvas.config.accessZoneId
-				&& canvas.config.accessZoneId == 1,
+			disable = (attr.accessZoneId 
+                        && attr.accessZoneId == 1)
+                    || (attr.depth
+                        && attr.depth == 1
+                        && attr.accessZoneId
+                        && attr.accessZoneId == mktoMarketingWorkspaceId)
+                    || (!attr.accessZoneId
+                        && menu.currNode
+                        && menu.currNode.attributes
+                        && menu.currNode.attributes.accessZoneId
+                        && menu.currNode.attributes.accessZoneId == 1)
+                    || (!menu.currNode
+                        && canvas
+                        && canvas.config
+                        && canvas.config.accessZoneId
+                        && canvas.config.accessZoneId == 1),
 			itemsToDisable = [
 							"newLandingPage",//New Landing Page
 							"newTestGroup",//New Test Group
@@ -1554,12 +1625,22 @@ APP.disableMenus = function() {
 		
 		var mItems = menu.items,
 			canvas = MktCanvas.getActiveTab(),
-			disable = attr.accessZoneId == 1
-				|| !attr.accessZoneId
-				&& canvas
-				&& canvas.config
-				&& canvas.config.accessZoneId
-				&& canvas.config.accessZoneId == 1,
+            disable = (attr.accessZoneId 
+                        && attr.accessZoneId == 1)
+                    || (attr.depth
+                        && attr.depth == 1
+                        && attr.accessZoneId
+                        && attr.accessZoneId == mktoMarketingWorkspaceId)
+                    || (!attr.accessZoneId
+                        && menu.currNode
+                        && menu.currNode.attributes
+                        && menu.currNode.attributes.accessZoneId
+                        && menu.currNode.attributes.accessZoneId == 1)
+                    || (!menu.currNode
+                        && canvas
+                        && canvas.config
+                        && canvas.config.accessZoneId
+                        && canvas.config.accessZoneId == 1),
 			itemsToDisable = [
 							//"editPageTemplate",//Edit Draft
 							//"previewPageTemplate",//Preview
@@ -1592,12 +1673,22 @@ APP.disableMenus = function() {
 		
 		var mItems = menu.items,
 			canvas = MktCanvas.getActiveTab(),
-			disable = attr.accessZoneId == 1
-				|| !attr.accessZoneId
-				&& canvas
-				&& canvas.config
-				&& canvas.config.accessZoneId
-				&& canvas.config.accessZoneId == 1,
+			disable = (attr.accessZoneId 
+                        && attr.accessZoneId == 1)
+                    || (attr.depth
+                        && attr.depth == 1
+                        && attr.accessZoneId
+                        && attr.accessZoneId == mktoMarketingWorkspaceId)
+                    || (!attr.accessZoneId
+                        && menu.currNode
+                        && menu.currNode.attributes
+                        && menu.currNode.attributes.accessZoneId
+                        && menu.currNode.attributes.accessZoneId == 1)
+                    || (!menu.currNode
+                        && canvas
+                        && canvas.config
+                        && canvas.config.accessZoneId
+                        && canvas.config.accessZoneId == 1),
 			itemsToDisable = [
 							//"emailTemplateEdit",//Edit Draft
 							//"emailTemplatePreview",//Preview
@@ -1631,12 +1722,22 @@ APP.disableMenus = function() {
 		
 		var mItems = menu.items,
 			canvas = MktCanvas.getActiveTab(),
-			disable = attr.accessZoneId == 1
-				|| !attr.accessZoneId
-				&& canvas
-				&& canvas.config
-				&& canvas.config.accessZoneId
-				&& canvas.config.accessZoneId == 1,
+			disable = (attr.accessZoneId 
+                        && attr.accessZoneId == 1)
+                    || (attr.depth
+                        && attr.depth == 1
+                        && attr.accessZoneId
+                        && attr.accessZoneId == mktoMarketingWorkspaceId)
+                    || (!attr.accessZoneId
+                        && menu.currNode
+                        && menu.currNode.attributes
+                        && menu.currNode.attributes.accessZoneId
+                        && menu.currNode.attributes.accessZoneId == 1)
+                    || (!menu.currNode
+                        && canvas
+                        && canvas.config
+                        && canvas.config.accessZoneId
+                        && canvas.config.accessZoneId == 1),
 			itemsToDisable = [
 							//"snippetEdit",//Edit Draft
 							//"snippetPreview",//Preview
@@ -1668,12 +1769,22 @@ APP.disableMenus = function() {
 		
 		var mItems = menu.items,
 			canvas = MktCanvas.getActiveTab(),
-			disable = attr.accessZoneId == 1
-				|| !attr.accessZoneId
-				&& canvas
-				&& canvas.config
-				&& canvas.config.accessZoneId
-				&& canvas.config.accessZoneId == 1,
+			disable = (attr.accessZoneId 
+                        && attr.accessZoneId == 1)
+                    || (attr.depth
+                        && attr.depth == 1
+                        && attr.accessZoneId
+                        && attr.accessZoneId == mktoMarketingWorkspaceId)
+                    || (!attr.accessZoneId
+                        && menu.currNode
+                        && menu.currNode.attributes
+                        && menu.currNode.attributes.accessZoneId
+                        && menu.currNode.attributes.accessZoneId == 1)
+                    || (!menu.currNode
+                        && canvas
+                        && canvas.config
+                        && canvas.config.accessZoneId
+                        && canvas.config.accessZoneId == 1),
 			itemsToDisable = [
 							"uploadImage",//Upload Image or File
 							//"grabFromWebPage",//Grab Images from Web
@@ -1698,14 +1809,22 @@ APP.disableMenus = function() {
 		
 		var mItems = menu.items,
 			canvas = MktCanvas.getActiveTab(),
-			disable = menu.currNode
-					&& menu.currNode.attributes
-					&& menu.currNode.attributes.accessZoneId == 1
-					|| !menu.currNode
-					&& canvas
-					&& canvas.config
-					&& canvas.config.accessZoneId
-					&& canvas.config.accessZoneId == 1,
+			disable = (attr.accessZoneId 
+                        && attr.accessZoneId == 1)
+                    || (attr.depth
+                        && attr.depth == 1
+                        && attr.accessZoneId
+                        && attr.accessZoneId == mktoMarketingWorkspaceId)
+                    || (!attr.accessZoneId
+                        && menu.currNode
+                        && menu.currNode.attributes
+                        && menu.currNode.attributes.accessZoneId
+                        && menu.currNode.attributes.accessZoneId == 1)
+                    || (!menu.currNode
+                        && canvas
+                        && canvas.config
+                        && canvas.config.accessZoneId
+                        && canvas.config.accessZoneId == 1),
 			itemsToDisable = [
 							//"navigateToMembership",//View Leads
 							//"navigateToSmartList",//View Smart List
@@ -1742,14 +1861,22 @@ APP.disableMenus = function() {
 		
 		var mItems = menu.items,
 			canvas = MktCanvas.getActiveTab(),
-			disable = menu.currNode
-					&& menu.currNode.attributes
-					&& menu.currNode.attributes.accessZoneId == 1
-					|| !menu.currNode
-					&& canvas
-					&& canvas.config
-					&& canvas.config.accessZoneId
-					&& canvas.config.accessZoneId == 1,
+			disable = (attr.accessZoneId 
+                        && attr.accessZoneId == 1)
+                    || (attr.depth
+                        && attr.depth == 1
+                        && attr.accessZoneId
+                        && attr.accessZoneId == mktoMarketingWorkspaceId)
+                    || (!attr.accessZoneId
+                        && menu.currNode
+                        && menu.currNode.attributes
+                        && menu.currNode.attributes.accessZoneId
+                        && menu.currNode.attributes.accessZoneId == 1)
+                    || (!menu.currNode
+                        && canvas
+                        && canvas.config
+                        && canvas.config.accessZoneId
+                        && canvas.config.accessZoneId == 1),
 			itemsToDisable = [
 							//"navigateToMembership",//View Leads
 							//"navigateToSmartList",//View Smart List
@@ -1786,14 +1913,22 @@ APP.disableMenus = function() {
 		
 		var mItems = menu.items,
 			canvas = MktCanvas.getActiveTab(),
-			disable = menu.currNode
-					&& menu.currNode.attributes
-					&& menu.currNode.attributes.accessZoneId == 1
-					|| !menu.currNode
-					&& canvas
-					&& canvas.config
-					&& canvas.config.accessZoneId
-					&& canvas.config.accessZoneId == 1,
+			disable = (attr.accessZoneId 
+                        && attr.accessZoneId == 1)
+                    || (attr.depth
+                        && attr.depth == 1
+                        && attr.accessZoneId
+                        && attr.accessZoneId == mktoMarketingWorkspaceId)
+                    || (!attr.accessZoneId
+                        && menu.currNode
+                        && menu.currNode.attributes
+                        && menu.currNode.attributes.accessZoneId
+                        && menu.currNode.attributes.accessZoneId == 1)
+                    || (!menu.currNode
+                        && canvas
+                        && canvas.config
+                        && canvas.config.accessZoneId
+                        && canvas.config.accessZoneId == 1),
 			itemsToDisable = [
 							"createDraftSegmentation",//Create Draft
 							//"editSegmentation",//Edit Segments
@@ -1822,14 +1957,22 @@ APP.disableMenus = function() {
 		
 		var mItems = menu.items,
 			canvas = MktCanvas.getActiveTab(),
-			disable = menu.currNode
-					&& menu.currNode.attributes
-					&& menu.currNode.attributes.accessZoneId == 1
-					|| !menu.currNode
-					&& canvas
-					&& canvas.config
-					&& canvas.config.accessZoneId
-					&& canvas.config.accessZoneId == 1,
+			disable = (attr.accessZoneId 
+                        && attr.accessZoneId == 1)
+                    || (attr.depth
+                        && attr.depth == 1
+                        && attr.accessZoneId
+                        && attr.accessZoneId == mktoMarketingWorkspaceId)
+                    || (!attr.accessZoneId
+                        && menu.currNode
+                        && menu.currNode.attributes
+                        && menu.currNode.attributes.accessZoneId
+                        && menu.currNode.attributes.accessZoneId == 1)
+                    || (!menu.currNode
+                        && canvas
+                        && canvas.config
+                        && canvas.config.accessZoneId
+                        && canvas.config.accessZoneId == 1),
 			itemsToDisable = [
 							"newSegmentation",//New Segmentation
 							"share",//Share Folder
@@ -1856,14 +1999,22 @@ APP.disableMenus = function() {
 		
 		var mItems = menu.items,
 			canvas = MktCanvas.getActiveTab(),
-			disable = menu.currNode
-					&& menu.currNode.attributes
-					&& menu.currNode.attributes.accessZoneId == 1
-					|| !menu.currNode
-					&& canvas
-					&& canvas.config
-					&& canvas.config.accessZoneId
-					&& canvas.config.accessZoneId == 1,
+			disable = (attr.accessZoneId 
+                        && attr.accessZoneId == 1)
+                    || (attr.depth
+                        && attr.depth == 1
+                        && attr.accessZoneId
+                        && attr.accessZoneId == mktoMarketingWorkspaceId)
+                    || (!attr.accessZoneId
+                        && menu.currNode
+                        && menu.currNode.attributes
+                        && menu.currNode.attributes.accessZoneId
+                        && menu.currNode.attributes.accessZoneId == 1)
+                    || (!menu.currNode
+                        && canvas
+                        && canvas.config
+                        && canvas.config.accessZoneId
+                        && canvas.config.accessZoneId == 1),
 			itemsToDisable = [
 							//"navigateToMembership",//View Leads
 							//"navigateToSmartList",//View Smart List
@@ -1910,14 +2061,22 @@ APP.disableMenus = function() {
 		
 		var mItems = menu.items,
 			canvas = MktCanvas.getActiveTab(),
-			disable = menu.currNode
-					&& menu.currNode.attributes
-					&& menu.currNode.attributes.accessZoneId == 1
-					|| !menu.currNode
-					&& canvas
-					&& canvas.config
-					&& canvas.config.accessZoneId
-					&& canvas.config.accessZoneId == 1,
+			disable = (attr.accessZoneId 
+                        && attr.accessZoneId == 1)
+                    || (attr.depth
+                        && attr.depth == 1
+                        && attr.accessZoneId
+                        && attr.accessZoneId == mktoMarketingWorkspaceId)
+                    || (!attr.accessZoneId
+                        && menu.currNode
+                        && menu.currNode.attributes
+                        && menu.currNode.attributes.accessZoneId
+                        && menu.currNode.attributes.accessZoneId == 1)
+                    || (!menu.currNode
+                        && canvas
+                        && canvas.config
+                        && canvas.config.accessZoneId
+                        && canvas.config.accessZoneId == 1),
 			itemsToDisable = [
 							//"navigateToAnalyzer",//View Analyzer
 							//"navigateToSmartList",//View Smart List
@@ -1947,14 +2106,22 @@ APP.disableMenus = function() {
 		
 		var mItems = menu.items,
 			canvas = MktCanvas.getActiveTab(),
-			disable = menu.currNode
-					&& menu.currNode.attributes
-					&& menu.currNode.attributes.accessZoneId == 1
-					|| !menu.currNode
-					&& canvas
-					&& canvas.config
-					&& canvas.config.accessZoneId
-					&& canvas.config.accessZoneId == 1,
+			disable = (attr.accessZoneId 
+                        && attr.accessZoneId == 1)
+                    || (attr.depth
+                        && attr.depth == 1
+                        && attr.accessZoneId
+                        && attr.accessZoneId == mktoMarketingWorkspaceId)
+                    || (!attr.accessZoneId
+                        && menu.currNode
+                        && menu.currNode.attributes
+                        && menu.currNode.attributes.accessZoneId
+                        && menu.currNode.attributes.accessZoneId == 1)
+                    || (!menu.currNode
+                        && canvas
+                        && canvas.config
+                        && canvas.config.accessZoneId
+                        && canvas.config.accessZoneId == 1),
 			itemsToDisable = [
 							"createFolder",//New Folder
 							"renameFolder",//Rename Folder
@@ -2389,7 +2556,6 @@ if (currentUrl.search(mktoAppDomain) != -1
             console.log("Marketo App > Location: Marketo Page");
             
             window.clearInterval(isMktPageApp);
-
             var accountString = MktPage.savedState.custPrefix,
                 userId = MktPage.userid;
             
@@ -2399,6 +2565,8 @@ if (currentUrl.search(mktoAppDomain) != -1
             || accountString == "mktodemoaccount106a"
             || accountString == "mktodemoaccount106b") {
                 console.log("Marketo App > Location: MarketoLive Instance");
+                
+                window.mkto_live_plugin_state = true;
 
                 // If the user is the admin or ghost, disable
                 if (userId.search("^admin@mktodemoaccount") != -1
@@ -2467,6 +2635,7 @@ if (currentUrl.search(mktoAppDomain) != -1
                     
                     APP.overrideTreeNodeExpand();
                     APP.overrideTreeNodeCollapse();
+                    APP.disableMenus();
                     APP.overrideSmartCampaignSaving();
                     APP.overrideSmartCampaignCanvas();
                     APP.overrideNewProgramCreate();
@@ -2559,8 +2728,6 @@ if (currentUrl.search(mktoAppDomain) != -1
                             APP.discardFormPushDrafts("MobilePushNotification", pushIds);
                             // Limiting Nurture Programs
                             APP.limitNurturePrograms();
-                            // Disabling New Smart Campaign, New Local Asset, New Folder, and Delete
-                            APP.disableMenus();
                         }
                     }, 0);
                 } 
