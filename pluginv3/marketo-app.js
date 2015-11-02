@@ -564,7 +564,7 @@ APP.overrideTreeNodeExpand = function() {
         if (this.text == userWorkspaceName
         || (this.parentNode.text == userWorkspaceName
         && this.attributes.system == true)) {
-            var userId = MktPage.userid,
+            var userId = MktPage.userid.toLowerCase(),
             userName;
             
             if (userId.search("\.demo@marketo.com$") != -1) {
@@ -575,7 +575,7 @@ APP.overrideTreeNodeExpand = function() {
             }
             for (ii = 0; ii < this.childNodes.length; ii++) {
                 if (this.childNodes[ii].attributes.system == false) {
-                    if (this.childNodes[ii].text !== userName) {
+                    if (this.childNodes[ii].text.toLowerCase() !== userName) {
                         this.childNodes[ii].hidden = true;
                     }
                     else {
@@ -629,7 +629,7 @@ APP.overrideTreeNodeCollapse = function() {
         if (this.text == userWorkspaceName
         || (this.parentNode.text == userWorkspaceName
         && this.attributes.system == true)) {
-            var userId = MktPage.userid,
+            var userId = MktPage.userid.toLowerCase(),
             userName;
             
             if (userId.search("\.demo@marketo.com$") != -1) {
@@ -640,7 +640,7 @@ APP.overrideTreeNodeCollapse = function() {
             }
             for (ii = 0; ii < this.childNodes.length; ii++) {
                 if (this.childNodes[ii].attributes.system == false) {
-                    if (this.childNodes[ii].text !== userName) {
+                    if (this.childNodes[ii].text.toLowerCase() !== userName) {
                         this.childNodes[ii].ui.elNode.hidden = true;
                     }
                     else {
@@ -681,7 +681,7 @@ APP.overrideNewProgramCreate = function() {
     
         if (MktCanvas.getActiveTab().config.accessZoneId != 1) {
             if (this.title == "New Program") {
-                var userId = MktPage.userid,
+                var userId = MktPage.userid.toLowerCase(),
                 userName,
                 ii;
                 if (userId.search("\.demo@marketo.com$") != -1) {
@@ -692,14 +692,14 @@ APP.overrideNewProgramCreate = function() {
                 }
                 
                 if (this.items.items[2].fieldLabel == "Name") {
-                    if (this.items.items[2].getValue().search(userName + "$") == -1) {
+                    if (this.items.items[2].getValue().toLowerCase().search(userName + "$") == -1) {
                         this.items.items[2].setValue(this.items.items[2].getValue() + " - " + userName);
                     }
                 }
                 else {
                     for (ii = 0; ii < this.items.items.length; ii++) {
                         if (this.items.items[ii].fieldLabel == "Name") {
-                            if (this.items.items[ii].getValue().search(userName + "$") == -1) {
+                            if (this.items.items[ii].getValue().toLowerCase().search(userName + "$") == -1) {
                                 this.items.items[ii].setValue(this.items.items[ii].getValue() + " - " + userName);
                             }
                         }
@@ -778,7 +778,7 @@ APP.overrideProgramSaveEdit = function() {
         
         if (MktCanvas.getActiveTab().config.accessZoneId != 1) {
             if (this.titleId == "mpTEName" || this.titleId == "cdhTEName") {
-                var userId = MktPage.userid,
+                var userId = MktPage.userid.toLowerCase(),
                 userName,
                 ii;
                 if (userId.search("\.demo@marketo.com$") != -1) {
@@ -789,7 +789,7 @@ APP.overrideProgramSaveEdit = function() {
                 }
                 
                 if (this.items.items[1].items.items[0].name == "mpTEName" || this.items.items[1].items.items[0].name == "cdhTEName") {
-                    if (this.items.items[1].items.items[0].getValue().search(userName + "$") == -1) {
+                    if (this.items.items[1].items.items[0].getValue().toLowerCase().search(userName + "$") == -1) {
                         this.items.items[1].items.items[0].setValue(this.items.items[1].items.items[0].getValue() + " - " + userName);
                     }
                 }
@@ -799,7 +799,7 @@ APP.overrideProgramSaveEdit = function() {
                             var jj;
                             for (jj = 0; jj < this.items.items[ii].items.items.length; jj++) {
                                 if (this.items.items[ii].items.items[jj].name == "mpTEName" || this.items.items[ii].items.items[jj].name == "cdhTEName") {
-                                    if (this.items.items[ii].items.items[jj].getValue().search(userName + "$") == -1) {
+                                    if (this.items.items[ii].items.items[jj].getValue().toLowerCase().search(userName + "$") == -1) {
                                         this.items.items[ii].items.items[jj].setValue(this.items.items[ii].items.items[jj].getValue() + "-" + userName);
                                     }
                                 }
@@ -898,7 +898,7 @@ APP.overrideNewSmartCampaignCreate = function() {
             if (this.id == "Mkt3.controller.smartCampaign.AssetForm") {
                 if (typeof(this.getField("name").getValue()) != "undefined") {
                     var scName = this.getField("name").getValue(),
-                    userId = MktPage.userid,
+                    userId = MktPage.userid.toLowerCase(),
                     userName;
                     if (userId.search("\.demo@marketo.com$") != -1) {
                         userName = userId.split(".demo")[0];
@@ -906,7 +906,7 @@ APP.overrideNewSmartCampaignCreate = function() {
                     else {
                         userName = userId.split("@")[0];
                     }
-                    if (scName.search(userName + "$") == -1) {
+                    if (scName.toLowerCase().search(userName + "$") == -1) {
                         this.getField("name").setValue(scName + " - " + userName);
                     }
                 }
@@ -964,7 +964,7 @@ APP.hideFoldersOnImport = function() {
                 this.doQuery(this.allQuery, true);
                 
                 if (this.label.dom.textContent == "Campaign Folder:") {
-                    var userId = MktPage.userid,
+                    var userId = MktPage.userid.toLowerCase(),
                         userName,
                         ii;
                     if (userId.search("\.demo@marketo.com$") != -1) {
@@ -974,7 +974,7 @@ APP.hideFoldersOnImport = function() {
                         userName = userId.split("@")[0];
                     }
                     for (ii = 0; ii < this.view.all.elements.length; ii++) {
-                        if (this.view.all.elements[ii].textContent != userName) {
+                        if (this.view.all.elements[ii].textContent.toLowerCase() != userName) {
                             this.view.all.elements[ii].hidden = true;
                         }
                     }
@@ -1190,18 +1190,23 @@ APP.disableMenus = function() {
 		
         var mItems = menu.items,
             canvas = MktCanvas.getActiveTab(),
-            disable = (attr.accessZoneId 
+            disable = (attr
+                        && attr.accessZoneId 
                         && attr.accessZoneId == 1)
-                    || (attr.depth
+                    || (attr
+                        && attr.depth
                         && attr.depth == 1
                         && attr.accessZoneId
                         && attr.accessZoneId == mktoMarketingWorkspaceId)
-                    || (!attr.accessZoneId
+                    || (!attr
+                        || !attr.accessZoneId
+                        && menu
                         && menu.currNode
                         && menu.currNode.attributes
                         && menu.currNode.attributes.accessZoneId
                         && menu.currNode.attributes.accessZoneId == 1)
-                    || (!menu.currNode
+                    || (!menu
+                        || !menu.currNode
                         && canvas
                         && canvas.config
                         && canvas.config.accessZoneId
@@ -1267,18 +1272,23 @@ APP.disableMenus = function() {
 		prevEmailRightClickMenu.apply(this, arguments);
 		var mItems = menu.items,
 			canvas = MktCanvas.getActiveTab(),
-			disable = (attr.accessZoneId 
+			disable = (attr
+                        && attr.accessZoneId 
                         && attr.accessZoneId == 1)
-                    || (attr.depth
+                    || (attr
+                        && attr.depth
                         && attr.depth == 1
                         && attr.accessZoneId
                         && attr.accessZoneId == mktoMarketingWorkspaceId)
-                    || (!attr.accessZoneId
+                    || (!attr
+                        || !attr.accessZoneId
+                        && menu
                         && menu.currNode
                         && menu.currNode.attributes
                         && menu.currNode.attributes.accessZoneId
                         && menu.currNode.attributes.accessZoneId == 1)
-                    || (!menu.currNode
+                    || (!menu
+                        || !menu.currNode
                         && canvas
                         && canvas.config
                         && canvas.config.accessZoneId
@@ -1325,18 +1335,23 @@ APP.disableMenus = function() {
 		
 		var mItems = menu.items,
 			canvas = MktCanvas.getActiveTab(),
-			disable = (attr.accessZoneId 
+			disable = (attr
+                        && attr.accessZoneId 
                         && attr.accessZoneId == 1)
-                    || (attr.depth
+                    || (attr
+                        && attr.depth
                         && attr.depth == 1
                         && attr.accessZoneId
                         && attr.accessZoneId == mktoMarketingWorkspaceId)
-                    || (!attr.accessZoneId
+                    || (!attr
+                        || !attr.accessZoneId
+                        && menu
                         && menu.currNode
                         && menu.currNode.attributes
                         && menu.currNode.attributes.accessZoneId
                         && menu.currNode.attributes.accessZoneId == 1)
-                    || (!menu.currNode
+                    || (!menu
+                        || !menu.currNode
                         && canvas
                         && canvas.config
                         && canvas.config.accessZoneId
@@ -1377,18 +1392,23 @@ APP.disableMenus = function() {
 
 		var mItems = menu.items,
 			canvas = MktCanvas.getActiveTab(),
-			disable = (attr.accessZoneId 
+			disable = (attr
+                        && attr.accessZoneId 
                         && attr.accessZoneId == 1)
-                    || (attr.depth
+                    || (attr
+                        && attr.depth
                         && attr.depth == 1
                         && attr.accessZoneId
                         && attr.accessZoneId == mktoMarketingWorkspaceId)
-                    || (!attr.accessZoneId
+                    || (!attr
+                        || !attr.accessZoneId
+                        && menu
                         && menu.currNode
                         && menu.currNode.attributes
                         && menu.currNode.attributes.accessZoneId
                         && menu.currNode.attributes.accessZoneId == 1)
-                    || (!menu.currNode
+                    || (!menu
+                        || !menu.currNode
                         && canvas
                         && canvas.config
                         && canvas.config.accessZoneId
@@ -1426,18 +1446,23 @@ APP.disableMenus = function() {
 		
 		var mItems = menu.items,
 			canvas = MktCanvas.getActiveTab(),
-			disable = (attr.accessZoneId 
+			disable = (attr
+                        && attr.accessZoneId 
                         && attr.accessZoneId == 1)
-                    || (attr.depth
+                    || (attr
+                        && attr.depth
                         && attr.depth == 1
                         && attr.accessZoneId
                         && attr.accessZoneId == mktoMarketingWorkspaceId)
-                    || (!attr.accessZoneId
+                    || (!attr
+                        || !attr.accessZoneId
+                        && menu
                         && menu.currNode
                         && menu.currNode.attributes
                         && menu.currNode.attributes.accessZoneId
                         && menu.currNode.attributes.accessZoneId == 1)
-                    || (!menu.currNode
+                    || (!menu
+                        || !menu.currNode
                         && canvas
                         && canvas.config
                         && canvas.config.accessZoneId
@@ -1500,18 +1525,23 @@ APP.disableMenus = function() {
 		
 		var mItems = menu.items,
 			canvas = MktCanvas.getActiveTab(),
-			disable = (attr.accessZoneId 
+			disable = (attr
+                        && attr.accessZoneId 
                         && attr.accessZoneId == 1)
-                    || (attr.depth
+                    || (attr
+                        && attr.depth
                         && attr.depth == 1
                         && attr.accessZoneId
                         && attr.accessZoneId == mktoMarketingWorkspaceId)
-                    || (!attr.accessZoneId
+                    || (!attr
+                        || !attr.accessZoneId
+                        && menu
                         && menu.currNode
                         && menu.currNode.attributes
                         && menu.currNode.attributes.accessZoneId
                         && menu.currNode.attributes.accessZoneId == 1)
-                    || (!menu.currNode
+                    || (!menu
+                        || !menu.currNode
                         && canvas
                         && canvas.config
                         && canvas.config.accessZoneId
@@ -1571,18 +1601,23 @@ APP.disableMenus = function() {
 		
 		var mItems = menu.items,
 			canvas = MktCanvas.getActiveTab(),
-			disable = (attr.accessZoneId 
+			disable = (attr
+                        && attr.accessZoneId 
                         && attr.accessZoneId == 1)
-                    || (attr.depth
+                    || (attr
+                        && attr.depth
                         && attr.depth == 1
                         && attr.accessZoneId
                         && attr.accessZoneId == mktoMarketingWorkspaceId)
-                    || (!attr.accessZoneId
+                    || (!attr
+                        || !attr.accessZoneId
+                        && menu
                         && menu.currNode
                         && menu.currNode.attributes
                         && menu.currNode.attributes.accessZoneId
                         && menu.currNode.attributes.accessZoneId == 1)
-                    || (!menu.currNode
+                    || (!menu
+                        || !menu.currNode
                         && canvas
                         && canvas.config
                         && canvas.config.accessZoneId
@@ -1625,18 +1660,23 @@ APP.disableMenus = function() {
 		
 		var mItems = menu.items,
 			canvas = MktCanvas.getActiveTab(),
-            disable = (attr.accessZoneId 
+            disable = (attr
+                        && attr.accessZoneId 
                         && attr.accessZoneId == 1)
-                    || (attr.depth
+                    || (attr
+                        && attr.depth
                         && attr.depth == 1
                         && attr.accessZoneId
                         && attr.accessZoneId == mktoMarketingWorkspaceId)
-                    || (!attr.accessZoneId
+                    || (!attr
+                        || !attr.accessZoneId
+                        && menu
                         && menu.currNode
                         && menu.currNode.attributes
                         && menu.currNode.attributes.accessZoneId
                         && menu.currNode.attributes.accessZoneId == 1)
-                    || (!menu.currNode
+                    || (!menu
+                        || !menu.currNode
                         && canvas
                         && canvas.config
                         && canvas.config.accessZoneId
@@ -1673,18 +1713,23 @@ APP.disableMenus = function() {
 		
 		var mItems = menu.items,
 			canvas = MktCanvas.getActiveTab(),
-			disable = (attr.accessZoneId 
+			disable = (attr
+                        && attr.accessZoneId 
                         && attr.accessZoneId == 1)
-                    || (attr.depth
+                    || (attr
+                        && attr.depth
                         && attr.depth == 1
                         && attr.accessZoneId
                         && attr.accessZoneId == mktoMarketingWorkspaceId)
-                    || (!attr.accessZoneId
+                    || (!attr
+                        || !attr.accessZoneId
+                        && menu
                         && menu.currNode
                         && menu.currNode.attributes
                         && menu.currNode.attributes.accessZoneId
                         && menu.currNode.attributes.accessZoneId == 1)
-                    || (!menu.currNode
+                    || (!menu
+                        || !menu.currNode
                         && canvas
                         && canvas.config
                         && canvas.config.accessZoneId
@@ -1722,18 +1767,23 @@ APP.disableMenus = function() {
 		
 		var mItems = menu.items,
 			canvas = MktCanvas.getActiveTab(),
-			disable = (attr.accessZoneId 
+			disable = (attr
+                        && attr.accessZoneId 
                         && attr.accessZoneId == 1)
-                    || (attr.depth
+                    || (attr
+                        && attr.depth
                         && attr.depth == 1
                         && attr.accessZoneId
                         && attr.accessZoneId == mktoMarketingWorkspaceId)
-                    || (!attr.accessZoneId
+                    || (!attr
+                        || !attr.accessZoneId
+                        && menu
                         && menu.currNode
                         && menu.currNode.attributes
                         && menu.currNode.attributes.accessZoneId
                         && menu.currNode.attributes.accessZoneId == 1)
-                    || (!menu.currNode
+                    || (!menu
+                        || !menu.currNode
                         && canvas
                         && canvas.config
                         && canvas.config.accessZoneId
@@ -1769,18 +1819,23 @@ APP.disableMenus = function() {
 		
 		var mItems = menu.items,
 			canvas = MktCanvas.getActiveTab(),
-			disable = (attr.accessZoneId 
+			disable = (attr
+                        && attr.accessZoneId 
                         && attr.accessZoneId == 1)
-                    || (attr.depth
+                    || (attr
+                        && attr.depth
                         && attr.depth == 1
                         && attr.accessZoneId
                         && attr.accessZoneId == mktoMarketingWorkspaceId)
-                    || (!attr.accessZoneId
+                    || (!attr
+                        || !attr.accessZoneId
+                        && menu
                         && menu.currNode
                         && menu.currNode.attributes
                         && menu.currNode.attributes.accessZoneId
                         && menu.currNode.attributes.accessZoneId == 1)
-                    || (!menu.currNode
+                    || (!menu
+                        || !menu.currNode
                         && canvas
                         && canvas.config
                         && canvas.config.accessZoneId
@@ -1809,18 +1864,23 @@ APP.disableMenus = function() {
 		
 		var mItems = menu.items,
 			canvas = MktCanvas.getActiveTab(),
-			disable = (attr.accessZoneId 
+			disable = (attr
+                        && attr.accessZoneId 
                         && attr.accessZoneId == 1)
-                    || (attr.depth
+                    || (attr
+                        && attr.depth
                         && attr.depth == 1
                         && attr.accessZoneId
                         && attr.accessZoneId == mktoMarketingWorkspaceId)
-                    || (!attr.accessZoneId
+                    || (!attr
+                        || !attr.accessZoneId
+                        && menu
                         && menu.currNode
                         && menu.currNode.attributes
                         && menu.currNode.attributes.accessZoneId
                         && menu.currNode.attributes.accessZoneId == 1)
-                    || (!menu.currNode
+                    || (!menu
+                        || !menu.currNode
                         && canvas
                         && canvas.config
                         && canvas.config.accessZoneId
@@ -1861,18 +1921,23 @@ APP.disableMenus = function() {
 		
 		var mItems = menu.items,
 			canvas = MktCanvas.getActiveTab(),
-			disable = (attr.accessZoneId 
+			disable = (attr
+                        && attr.accessZoneId 
                         && attr.accessZoneId == 1)
-                    || (attr.depth
+                    || (attr
+                        && attr.depth
                         && attr.depth == 1
                         && attr.accessZoneId
                         && attr.accessZoneId == mktoMarketingWorkspaceId)
-                    || (!attr.accessZoneId
+                    || (!attr
+                        || !attr.accessZoneId
+                        && menu
                         && menu.currNode
                         && menu.currNode.attributes
                         && menu.currNode.attributes.accessZoneId
                         && menu.currNode.attributes.accessZoneId == 1)
-                    || (!menu.currNode
+                    || (!menu
+                        || !menu.currNode
                         && canvas
                         && canvas.config
                         && canvas.config.accessZoneId
@@ -1913,18 +1978,23 @@ APP.disableMenus = function() {
 		
 		var mItems = menu.items,
 			canvas = MktCanvas.getActiveTab(),
-			disable = (attr.accessZoneId 
+			disable = (attr
+                        && attr.accessZoneId 
                         && attr.accessZoneId == 1)
-                    || (attr.depth
+                    || (attr
+                        && attr.depth
                         && attr.depth == 1
                         && attr.accessZoneId
                         && attr.accessZoneId == mktoMarketingWorkspaceId)
-                    || (!attr.accessZoneId
+                    || (!attr
+                        || !attr.accessZoneId
+                        && menu
                         && menu.currNode
                         && menu.currNode.attributes
                         && menu.currNode.attributes.accessZoneId
                         && menu.currNode.attributes.accessZoneId == 1)
-                    || (!menu.currNode
+                    || (!menu
+                        || !menu.currNode
                         && canvas
                         && canvas.config
                         && canvas.config.accessZoneId
@@ -1957,18 +2027,23 @@ APP.disableMenus = function() {
 		
 		var mItems = menu.items,
 			canvas = MktCanvas.getActiveTab(),
-			disable = (attr.accessZoneId 
+			disable = (attr
+                        && attr.accessZoneId 
                         && attr.accessZoneId == 1)
-                    || (attr.depth
+                    || (attr
+                        && attr.depth
                         && attr.depth == 1
                         && attr.accessZoneId
                         && attr.accessZoneId == mktoMarketingWorkspaceId)
-                    || (!attr.accessZoneId
+                    || (!attr
+                        || !attr.accessZoneId
+                        && menu
                         && menu.currNode
                         && menu.currNode.attributes
                         && menu.currNode.attributes.accessZoneId
                         && menu.currNode.attributes.accessZoneId == 1)
-                    || (!menu.currNode
+                    || (!menu
+                        || !menu.currNode
                         && canvas
                         && canvas.config
                         && canvas.config.accessZoneId
@@ -1999,18 +2074,23 @@ APP.disableMenus = function() {
 		
 		var mItems = menu.items,
 			canvas = MktCanvas.getActiveTab(),
-			disable = (attr.accessZoneId 
+			disable = (attr
+                        && attr.accessZoneId 
                         && attr.accessZoneId == 1)
-                    || (attr.depth
+                    || (attr
+                        && attr.depth
                         && attr.depth == 1
                         && attr.accessZoneId
                         && attr.accessZoneId == mktoMarketingWorkspaceId)
-                    || (!attr.accessZoneId
+                    || (!attr
+                        || !attr.accessZoneId
+                        && menu
                         && menu.currNode
                         && menu.currNode.attributes
                         && menu.currNode.attributes.accessZoneId
                         && menu.currNode.attributes.accessZoneId == 1)
-                    || (!menu.currNode
+                    || (!menu
+                        || !menu.currNode
                         && canvas
                         && canvas.config
                         && canvas.config.accessZoneId
@@ -2061,18 +2141,23 @@ APP.disableMenus = function() {
 		
 		var mItems = menu.items,
 			canvas = MktCanvas.getActiveTab(),
-			disable = (attr.accessZoneId 
+			disable = (attr
+                        && attr.accessZoneId 
                         && attr.accessZoneId == 1)
-                    || (attr.depth
+                    || (attr
+                        && attr.depth
                         && attr.depth == 1
                         && attr.accessZoneId
                         && attr.accessZoneId == mktoMarketingWorkspaceId)
-                    || (!attr.accessZoneId
+                    || (!attr
+                        || !attr.accessZoneId
+                        && menu
                         && menu.currNode
                         && menu.currNode.attributes
                         && menu.currNode.attributes.accessZoneId
                         && menu.currNode.attributes.accessZoneId == 1)
-                    || (!menu.currNode
+                    || (!menu
+                        || !menu.currNode
                         && canvas
                         && canvas.config
                         && canvas.config.accessZoneId
@@ -2106,18 +2191,23 @@ APP.disableMenus = function() {
 		
 		var mItems = menu.items,
 			canvas = MktCanvas.getActiveTab(),
-			disable = (attr.accessZoneId 
+			disable = (attr
+                        && attr.accessZoneId 
                         && attr.accessZoneId == 1)
-                    || (attr.depth
+                    || (attr
+                        && attr.depth
                         && attr.depth == 1
                         && attr.accessZoneId
                         && attr.accessZoneId == mktoMarketingWorkspaceId)
-                    || (!attr.accessZoneId
+                    || (!attr
+                        || !attr.accessZoneId
+                        && menu
                         && menu.currNode
                         && menu.currNode.attributes
                         && menu.currNode.attributes.accessZoneId
                         && menu.currNode.attributes.accessZoneId == 1)
-                    || (!menu.currNode
+                    || (!menu
+                        || !menu.currNode
                         && canvas
                         && canvas.config
                         && canvas.config.accessZoneId
@@ -2557,7 +2647,7 @@ if (currentUrl.search(mktoAppDomain) != -1
             
             window.clearInterval(isMktPageApp);
             var accountString = MktPage.savedState.custPrefix,
-                userId = MktPage.userid;
+                userId = MktPage.userid.toLowerCase();
             
             // This checks to see if the username is one that would be associated
             // with a MarketoLive subscription.
