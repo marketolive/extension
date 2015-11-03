@@ -2233,6 +2233,953 @@ APP.disableMenus = function() {
 		});
 		return menu;
 	}
+    
+    Mkt.widgets.ToolbarButton.prototype.showMenu = function() {
+        var ii;
+            
+        if (MktCanvas
+            && MktCanvas.getActiveTab()
+            && MktCanvas.getActiveTab().config
+            && MktCanvas.getActiveTab().config.accessZoneId
+            && MktCanvas.getActiveTab().config.accessZoneId == 1) {
+        
+            // Lead Database > Lead Actions > Sub-menu
+            if (this.menu.itemId == "leadDbLeadMenu") {
+                for (ii = 0; ii < this.menu.items.items.length; ii++) {
+                    if (typeof(this.menu.items.items[ii].menu) != "undefined") {
+                        var jj;
+                        
+                        for (jj = 0; jj < this.menu.items.items[ii].menu.items.items.length; jj++) {
+                            this.menu.items.items[ii].menu.items.items[jj].disable(true);
+                        }
+                    }
+                }
+            }
+            
+            for (ii = 0; ii < this.menu.items.items.length; ii++) {
+                switch (this.menu.items.items[ii].itemId) {
+                
+                // Marketing Activities & Design Studio > New
+                // New Campaign Folder
+                case "createProgramFolder":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // New Smart Campaign
+                case "newSmartCampaign":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // New Program
+                case "createNewMarketingProgram":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // Import Program
+                case "importProgram":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // New Campaign Folder
+                case "createProgramFolder":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                    
+                // Marketing Activities > Program Actions
+                // Reschedule Entries
+                case "entryRescheduleEntries":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // Salesforce Campaign Sync
+                case "sfdcCampaignSync":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // Clone
+                case "cloneMarketingProgram":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // Delete
+                case "deleteMarketingProgram":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // Show Import Status
+                case "showImportMemberStatus":
+                    //this.menu.items.items[ii].disable(true);
+                    break;
+                // Show Export Status
+                case "showExportMemberStatus":
+                    //this.menu.items.items[ii].disable(true);
+                    break;
+                    
+                // Marketing Activities > Change Status
+                // Not in Program
+                case "Not in ProgramStatusMarketingEvent":
+                    this.menu.disable(true);
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // Member
+                case "MemberStatusMarketingEvent":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // Sent
+                case "SentStatusMarketingEvent":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // Visited
+                case "VisitedStatusMarketingEvent":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // Engaged
+                case "EngagedStatusMarketingEvent":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // Invited
+                case "InvitedStatusMarketingEvent":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // Registered
+                case "RegisteredStatusMarketingEvent":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // Attended
+                case "AttendedStatusMarketingEvent":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // No Show
+                case "No ShowStatusMarketingEvent":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // Opened
+                case "OpenedStatusMarketingEvent":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // Clicked
+                case "ClickedStatusMarketingEvent":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // Bounced
+                case "BouncedStatusMarketingEvent":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // Unsubscribed
+                case "UnsubscribedStatusMarketingEvent":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                    
+                // Marketing Activities > Email Batch Program
+                // Clone
+                case "cloneEmailBatchProgram":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // Delete
+                case "deleteEmailBatchProgram":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                    
+                // Marketing Activities > Nurture Program Actions
+                // Clone
+                case "cloneNurtureProgram":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // Delete
+                case "deleteNurtureProgram":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // Test Stream
+                case "testNurtureProgram":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                    
+                // Marketing Activities > Event Program Actions
+                // Schedule
+                case "eventSchedule":
+                    //this.menu.items.items[ii].disable(true);
+                    break;
+                // Reschedule Entries
+                case "entryRescheduleEntries":
+                    //this.menu.items.items[ii].disable(true);
+                    break;
+                // Clone
+                case "cloneMarketingEvent":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // Delete
+                case "deleteMarketingEvent":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // Refresh from Webinar Provider
+                case "refreshFromWebinarProvider":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                    
+                // Marketing Activities > Smart Campaign Actions
+                // View Streams
+                case "navigateToNurtureTracks":
+                    //this.menu.items.items[ii].disable(true);
+                    break;
+                // View Smart Campaigns
+                case "navigateToCFSmartCamp":
+                    //this.menu.items.items[ii].disable(true);
+                    break;
+                // View Assets
+                case "navigateToLocalAssets":
+                    //this.menu.items.items[ii].disable(true);
+                    break;
+                // View Smart List
+                case "navigateToProgramSmartList":
+                    //this.menu.items.items[ii].disable(true);
+                    break;
+                // View Setup
+                case "navigateToEventSettings":
+                    //this.menu.items.items[ii].disable(true);
+                    break;
+                // View My Tokens
+                case "navigateToCFTokens":
+                    //this.menu.items.items[ii].disable(true);
+                    break;
+                // View Members
+                case "navigateToEventMembers":
+                    //this.menu.items.items[ii].disable(true);
+                    break;
+                // View Results
+                case "navigateToCFResults":
+                    //this.menu.items.items[ii].disable(true);
+                    break;
+                // View Campaign
+                case "navigateToSmartCampaign":
+                    //this.menu.items.items[ii].disable(true);
+                    break;
+                // View Smart List
+                case "navigateToSmartList":
+                    //this.menu.items.items[ii].disable(true);
+                    break;
+                // View Flow
+                case "navigateToFlow":
+                    //this.menu.items.items[ii].disable(true);
+                    break;
+                // View Schedule
+                case "navigateToSchedule":
+                    //this.menu.items.items[ii].disable(true);
+                    break;
+                // View Results
+                case "navigateToResults":
+                    //this.menu.items.items[ii].disable(true);
+                    break;
+                // View Campaign Members
+                case "navigateToCampaignMembers":
+                    //this.menu.items.items[ii].disable(true);
+                    break;
+                // New Local Asset
+                case "newLocalAsset":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // Rename Folder
+                case "renameProgramFolder":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // Delete Folder
+                case "deleteProgramFolder":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // Convert To Archive Folder
+                case "convertToArchiveFolder":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // Convert To Campaign Folder
+                case "convertToCampaignFolder":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // Clone
+                case "scClone":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // Delete
+                case "scArchive":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // Move
+                case "scMove":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // Clone
+                case "cloneMarketingEvent":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // Delete
+                case "deleteMarketingEvent":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // Clone
+                case "cloneNurtureProgram":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // Delete
+                case "deleteNurtureProgram":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // Clone
+                case "cloneEmailBatchProgram":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // Delete
+                case "deleteEmailBatchProgram":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // Activate
+                case "scActivate":
+                    //this.menu.items.items[ii].disable(true);
+                    break;
+                // Abort Campaign
+                case "scAbort":
+                    //this.menu.items.items[ii].disable(true);
+                    break;
+                // Add To Favorites
+                case "addToFavorites":
+                    //this.menu.items.items[ii].disable(true);
+                    break;
+                // Remove From Favorites
+                case "removeFromFavorites":
+                    //this.menu.items.items[ii].disable(true);
+                    break;
+                // Import Program Status
+                case "importProgramStatus":
+                    //this.menu.items.items[ii].disable(true);
+                    break;
+                // Support Tools - Change History
+                case "scCampChangeHistory":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // Support Tools - Run History
+                case "scCampRunHistory":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // Clear Palette Cache
+                case "scClearPalette":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // Clear Smart List
+                case "scClearSmartList":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // Clear Flow
+                case "scClearFlow":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // Build Campaign References
+                case "progGenerateRef":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // Check For Corrupt Emails
+                case "checkForCorruptEmails":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                    
+                // Marketing Activities & Design Studio > Email Actions
+                // Edit Draft
+                case "emailEdit":
+                    //this.menu.items.items[ii].disable(true);
+                    break;
+                // Preview
+                case "emailPreview":
+                    //this.menu.items.items[ii].disable(true);
+                    break;
+                // Approve
+                case "emailApprove":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // Unapprove
+                case "emailUnapprove":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // Download HTML
+                case "emailDownloadHtml":
+                    //this.menu.items.items[ii].disable(true);
+                    break;
+                // Send Sample
+                case "emailSendTest":
+                    //this.menu.items.items[ii].disable(true);
+                    break;
+                // Clone
+                case "emailClone":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // Delete
+                case "emailDelete":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // Move
+                case "emailMove":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // New Test
+                case "emailNewTest":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // Edit Draft
+                case "emailDraftEdit":
+                    //this.menu.items.items[ii].disable(true);
+                    break;
+                // Preview Draft
+                case "emailDraftPreview":
+                    //this.menu.items.items[ii].disable(true);
+                    break;
+                // Send Sample of Draft
+                case "emailDraftSendTest":
+                    //this.menu.items.items[ii].disable(true);
+                    break;
+                // Approve Draft
+                case "emailDraftApprove":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // Discard Draft
+                case "emailDraftDiscard":
+                    //this.menu.items.items[ii].disable(true);
+                    break;
+                // Approve Test
+                case "emailApproveTest":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // Send Sample Test
+                case "emailSendSampleTest":
+                    //this.menu.items.items[ii].disable(true);
+                    break;
+                // Edit Test
+                case "emailEditTest":
+                    //this.menu.items.items[ii].disable(true);
+                    break;
+                // View Test Summary
+                case "emailViewTestSummary":
+                    //this.menu.items.items[ii].disable(true);
+                    break;
+                // Declare Champion
+                case "emailTestDeclareChampion":
+                    //this.menu.items.items[ii].disable(true);
+                    break;
+                // Discard Test
+                case "emailDiscardTest":
+                    //this.menu.items.items[ii].disable(true);
+                    break;
+                    
+                // Design Studio > Email Template Actions
+                // Edit Draft
+                case "emailTemplateEdit":
+                    //this.menu.items.items[ii].disable(true);
+                    break;
+                // Preview
+                case "emailTemplatePreview":
+                    //this.menu.items.items[ii].disable(true);
+                    break;
+                // Send Sample
+                case "emailTemplateSendTest":
+                    //this.menu.items.items[ii].disable(true);
+                    break;
+                // Approve
+                case "emailTemplateApprove":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // Unapprove
+                case "emailTemplateUnapprove":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // Clone
+                case "emailTemplateClone":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // Delete
+                case "emailTemplateDelete":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // Edit Draft
+                case "emailTemplateDraftEdit":
+                    //this.menu.items.items[ii].disable(true);
+                    break;
+                // Preview Draft
+                case "emailTemplateDraftPreview":
+                    //this.menu.items.items[ii].disable(true);
+                    break;
+                // Send Sample of Draft
+                case "emailTemplateDraftSendTest":
+                    //this.menu.items.items[ii].disable(true);
+                    break;
+                // Approve Draft
+                case "emailTemplateDraftApprove":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // Discard Draft
+                case "emailTemplateDraftDiscard":
+                    //this.menu.items.items[ii].disable(true);
+                    break;
+                    
+                // Marketing Activities & Design Studio > Form Actions
+                // Edit Draft
+                case "formEditDraft":
+                    //this.menu.items.items[ii].disable(true);
+                    break;
+                // Preview
+                case "formPreview":
+                    //this.menu.items.items[ii].disable(true);
+                    break;
+                // Edit Form
+                case "formEdit":
+                    //this.menu.items.items[ii].disable(true);
+                    break;
+                // Approve
+                case "formApprove":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // Clone Form
+                case "formClone":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // Delete Form
+                case "formDelete":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // Embed Code
+                case "formEmbed":
+                    //this.menu.items.items[ii].disable(true);
+                    break;
+                // Move
+                case "formMove":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // Preview Draft
+                case "formDraftPreview":
+                    //this.menu.items.items[ii].disable(true);
+                    break;
+                // Edit Draft
+                case "formDraftEdit":
+                    //this.menu.items.items[ii].disable(true);
+                    break;
+                // Approve Draft
+                case "formDraftApprove":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // Discard Draft
+                case "formDraftDiscard":
+                    //this.menu.items.items[ii].disable(true);
+                    break;
+                    
+                // Marketing Activities & Design Studio > Landing Page Actions
+                // Edit Draft
+                case "pageEdit":
+                    //this.menu.items.items[ii].disable(true);
+                    break;
+                // Preview
+                case "pagePreview":
+                    //this.menu.items.items[ii].disable(true);
+                    break;
+                // Device Switch
+                case "deviceSwitch":
+                    //this.menu.items.items[ii].disable(true);
+                    break;
+                // Approve
+                case "pageApprove":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // Unapprove
+                case "pageUnapprove":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // Publish To Facebook
+                case "publishToFacebook":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // Convert to Test Group
+                case "pageConvertToTestGroup":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // Clone
+                case "pageClone":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // Delete
+                case "pageDelete":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // URL Tools
+                case "urlTools":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // Move
+                case "pageMove":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // Edit Draft
+                case "pageDraftEdit":
+                    //this.menu.items.items[ii].disable(true);
+                    break;
+                // Preview Draft
+                case "pageDraftPreview":
+                    //this.menu.items.items[ii].disable(true);
+                    break;
+                // Approve Draft
+                case "pageDraftApprove":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // Discard Draft
+                case "pageDraftDiscard":
+                    //this.menu.items.items[ii].disable(true);
+                    break;
+                    
+                // Design Studio > Landing Page Template Actions
+                // Edit Draft
+                case "editPageTemplate":
+                    //this.menu.items.items[ii].disable(true);
+                    break;
+                // Preview
+                case "previewPageTemplate":
+                    //this.menu.items.items[ii].disable(true);
+                    break;
+                // Approve
+                case "approvePageTemplate":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // Unapprove
+                case "unapprovePageTemplate":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // Clone
+                case "clonePageTemplate":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // Delete
+                case "pageTemplateDelete":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // Export
+                case "pageTemplateExport":
+                    //this.menu.items.items[ii].disable(true);
+                    break;
+                // Edit Draft
+                case "editPageTemplateDraft":
+                    //this.menu.items.items[ii].disable(true);
+                    break;
+                // Preview Draft
+                case "previewDraftPageTemplate":
+                    //this.menu.items.items[ii].disable(true);
+                    break;
+                // Approve Draft
+                case "approveDraftPageTemplate":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // Discard Draft
+                case "discardDraftPageTemplate":
+                    //this.menu.items.items[ii].disable(true);
+                    break;
+                    
+                // Design Studio > Snippet Actions
+                // Edit Draft
+                case "snippetEdit":
+                    //this.menu.items.items[ii].disable(true);
+                    break;
+                // Preview
+                case "snippetPreview":
+                    //this.menu.items.items[ii].disable(true);
+                    break;
+                // Approve
+                case "snippetApprove":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // Unapprove
+                case "snippetUnapprove":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // Clone
+                case "snippetClone":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // Delete
+                case "snippetDelete":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // Edit Draft
+                case "snippetDraftEdit":
+                    //this.menu.items.items[ii].disable(true);
+                    break;
+                // Preview Draft
+                case "snippetDraftPreview":
+                    //this.menu.items.items[ii].disable(true);
+                    break;
+                // Approve Draft
+                case "snippetDraftApprove":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // Discard Draft
+                case "snippetDraftDiscard":
+                    //this.menu.items.items[ii].disable(true);
+                    break;
+                    
+                // Design Studio > File Actions
+                // Upload Image or File
+                case "uploadImage":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // Grab Images from Web
+                case "grabFromWebPage":
+                    //this.menu.items.items[ii].disable(true);
+                    break;
+                // View
+                case "imagePreview":
+                    //this.menu.items.items[ii].disable(true);
+                    break;
+                // Delete
+                case "imageDelete":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // Replace Image or File
+                case "replaceImage":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                    
+                // Lead Database > New
+                // New Smart List
+                case "newSmartList":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // New List
+                case "newList":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // New Segmentation
+                case "newSegmentation":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // Import List
+                case "importList":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // New Lead
+                case "newLead":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // New Field Organizer
+                case "newDataMgr":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                
+                // Lead Database > Smart List / List Actions
+                // View Leads
+                case "navigateToMembership":
+                    //this.menu.items.items[ii].disable(true);
+                    break;
+                // View Smart List
+                case "navigateToSmartList":
+                    //this.menu.items.items[ii].disable(true);
+                    break;
+                // Filter View
+                case "navigateToFilterView":
+                    //this.menu.items.items[ii].disable(true);
+                    break;
+                // Show Import Status
+                case "showImportStatus":
+                    //this.menu.items.items[ii].disable(true);
+                    break;
+                // showExportStatus
+                case "showExportStatus":
+                    //this.menu.items.items[ii].disable(true);
+                    break;
+                // Import List
+                case "importList":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // Export List
+                case "exportList":
+                    //this.menu.items.items[ii].disable(true);
+                    break;
+                // Send via Ad Bridge
+                case "exportAdBridge":
+                    //this.menu.items.items[ii].disable(true);
+                    break;
+                // New Smart List Subscription
+                case "newSmartListReportSubscription":
+                    //this.menu.items.items[ii].disable(true);
+                    break;
+                // Clone Smart List
+                case "cloneSmartlist":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // Clone List
+                case "cloneList":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // Delete List
+                case "deleteList":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // Support Tools - History
+                case "showSupportHistory":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // Support Tools - Run Stats
+                case "showSupportUsagePerf":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // Processor Diagnostics
+                case "showSmartListProcessorDiag":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // Override Processor
+                case "showSmartListProcessorOverride":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                    
+                // Lead Database > Lead Actions
+                // View Lead Details
+                case "viewLeadDetails":
+                    //this.menu.items.items[ii].disable(true);
+                    break;
+                // BlackCat Diagnostics
+                case "blackCatDiag":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // Merge Leads
+                case "mergeLeads":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // Marketing
+                case "leadDbMenuFlowActions":
+                    //this.menu.items.items[ii].disable(true);
+                    break;
+                // Programs
+                case "programsFolder":
+                    //this.menu.items.items[ii].disable(true);
+                    break;
+                // Special
+                case "specialFolder":
+                    //this.menu.items.items[ii].disable(true);
+                    break;
+                // Salesforce
+                case "salesforceFolder":
+                    //this.menu.items.items[ii].disable(true);
+                    break;
+                    
+                // Lead Database > Segmentation Actions
+                // Create Draft
+                case "createDraftSegmentation":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // Edit Segments
+                case "editSegmentation":
+                    //this.menu.items.items[ii].disable(true);
+                    break;
+                // Approve
+                case "approveSegmentation":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // Unapprove
+                case "unapproveSegmentation":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // Delete
+                case "deleteSegmentation":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // Refresh Status
+                case "refreshSegmentation":
+                    //this.menu.items.items[ii].disable(true);
+                    break;
+                // Edit Segments
+                case "editDraftSegmentation":
+                    //this.menu.items.items[ii].disable(true);
+                    break;
+                // Approve Draft
+                case "approveDraftSegmentation":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // Discard Draft
+                case "discardDraftSegmentation":
+                    //this.menu.items.items[ii].disable(true);
+                    break;
+                default:
+                    break;
+                    
+                // Analytics > Report Actions
+                // Delete Report
+                case "deleteReport":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // Drill-Down
+                case "newDrillDown_atxCanvasOverview":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                    
+                // Analytics > Analyzer Actions
+                // Export Data
+                case "newReport_atxCanvasOverview":
+                    //this.menu.items.items[ii].disable(true);
+                    break;
+                // Delete Analyzer
+                case "deleteReport":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                
+                // Analytics > Model Actions
+                // Edit Draft
+                case "rcmEdit":
+                    //this.menu.items.items[ii].disable(true);
+                    break;
+                // Preview Model
+                case "rcmPreview":
+                    //this.menu.items.items[ii].disable(true);
+                    break;
+                // Approve Stages
+                case "rcmApproveStages":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // Unapprove Stages
+                case "rcmUnapproveStages":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // Approve Model
+                case "rcmApprove":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // Unapprove Model
+                case "rcmUnapprove":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // Clone Model
+                case "rcmClone":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // Delete Model
+                case "rcmDelete":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // Export Model
+                case "rcmExport":
+                    //this.menu.items.items[ii].disable(true);
+                    break;
+                // Edit Draft
+                case "rcmEditDraft":
+                    //this.menu.items.items[ii].disable(true);
+                    break;
+                // Preview Draft
+                case "rcmPreviewDraft":
+                    //this.menu.items.items[ii].disable(true);
+                    break;
+                // Approve Model Draft
+                case "rcmApproveDraft":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                // Discard Model Draft
+                case "rcmDiscardDraft":
+                    //this.menu.items.items[ii].disable(true);
+                    break;
+                // Assignment Rules
+                case "rcmAassignmentRules":
+                    this.menu.items.items[ii].disable(true);
+                    break;
+                }
+            }
+        }
+            
+        this.showingMenu = true;
+        if (this.menu.xtra) {
+            delete this.menu.xtra;
+        }
+        this.menu.triggeredFrom = 'button';
+        this.fireEvent('beforemenushow', this.menu);
+        Mkt.widgets.ToolbarButton.superclass.showMenu.call(this);
+        this.showingMenu = false;
+    }
 }
 
 /**************************************************************************************
