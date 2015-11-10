@@ -3678,7 +3678,7 @@ if (currentUrl.search(mktoAppDomain) != -1
                     APP.overrideNewProgramCreate();
                     APP.overrideProgramSaveEdit();
                     APP.overrideNewSmartCampaignCreate();
-                    APP.hidePageGrid();
+                    //APP.hidePageGrid();
                     APP.hideFoldersOnImport();
                     APP.disableConfirmationMessage();
                     
