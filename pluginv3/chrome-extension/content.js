@@ -1,7 +1,7 @@
 console.log("Content > Running");
 window.mkto_live_plugin_state = true;
 
-var URL_PATH = "m3-dev",
+var URL_PATH = "m3",
     LIVE_SCRIPT_LOCATION = "https://marketolive.com/"+URL_PATH+"/pluginv3/marketo-live.min.js",
     APP_SCRIPT_LOCATION = "https://marketolive.com/"+URL_PATH+"/pluginv3/marketo-app.min.js",
     POD_SCRIPT_LOCATION = "https://marketolive.com/"+URL_PATH+"/pluginv3/pods.min.js",
@@ -26,8 +26,8 @@ var URL_PATH = "m3-dev",
 	rtpDemoDomain = "^http:\/\/sjrtp1.marketo.com\/demo\/$|^http:\/\/cloud4.insightera.com\/demo\/$",
 	emailDeliverabilityDomain = "^https:\/\/250ok.com/",
 	colorPickerPage = "\/color-picker\.html$",
-    customCompanyLandingPage106Fragment = "LPE11381",
-    customCompanyLandingPagePreview106Fragment = "LPP11381",
+    customCompanyLandingPage106Fragment = "LPE11826",
+    customCompanyLandingPagePreview106Fragment = "LPP11826",
     customCompanyLandingPage106aFragment = "LPE10672",
     customCompanyLandingPagePreview106aFragment = "LPP10672",
     customCompanyLandingPage106bFragment = "LPE10768",
