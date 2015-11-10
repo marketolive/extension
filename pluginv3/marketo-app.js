@@ -41,7 +41,7 @@ var currentUrl = window.location.href,
     mktoMarketingActivitiesMarketingFragment = "MA19802A1",
 	mktoLeadDatabaseDefaultFragment = "ML0A1ZN2",
     mktoLeadDatabaseMarketingFragment = "ML0A1ZN19788",
-    mktoAdBridgeSmartListFragment = "SL1096260B2",
+    mktoAdBridgeSmartListFragment = "SL1B2",
     mktoEmailDesignerFragment = "EME",
     mktoEmailPreviewFragment = "EMP",
     mktoLandingPageDesignerFragment = "LPE",
@@ -3717,7 +3717,7 @@ if (currentUrl.search(mktoAppDomain) != -1
                     switch (accountString) {
                         case "mktodemoaccount106":
                             // Landing Page
-                            lpIds["dpageid_11381"] = "dpageid_11381";
+                            lpIds["dpageid_11826"] = "dpageid_11826";
                             // Responsive Landing Page
                             lpIds["dpageid_11291"] = "dpageid_11291";
                             // Japanese Landing Page
@@ -3771,8 +3771,8 @@ if (currentUrl.search(mktoAppDomain) != -1
                 else if (currUrlFragment.search("^" + mktoLandingPageDesignerFragment) != -1) {
                     console.log("Marketo App > Location: Landing Page Designer");
 
-                    var customCompanyLandingPage106Fragment = "LPE11381",
-                        customCompanyLandingPagePreview106Fragment = "LPP11381",
+                    var customCompanyLandingPage106Fragment = "LPE11826",
+                        customCompanyLandingPagePreview106Fragment = "LPP11826",
                         customCompanyLandingPage106aFragment = "LPE10672",
                         customCompanyLandingPagePreview106aFragment = "LPP10672",
                         customCompanyLandingPage106bFragment = "LPE10768",
