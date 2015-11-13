@@ -563,7 +563,9 @@ APP.overrideTreeNodeExpand = function() {
             
         if (this.text == userWorkspaceName
         || (this.parentNode.text == userWorkspaceName
-        && this.attributes.system == true)) {
+            && this.attributes.system == true)
+        || (this.parentNode.parentNode.text == userWorkspaceName
+            && this.attributes.system == true)) {
             var userId = MktPage.userid.toLowerCase(),
             userName;
             
@@ -593,8 +595,8 @@ APP.overrideTreeNodeExpand = function() {
             && !attr.mktExpanded) {
                 
                 if (this.text != userWorkspaceName
-                && (this.parentNode.text != userWorkspaceName
-                && this.attributes.system == true)) {
+                && this.parentNode.text != userWorkspaceName
+                && this.parentNode.parentNode.text != userWorkspaceName) {
                     console.log("Marketo App > Saving: Folder Expand State");
                     MktFolder.saveExpandState(this, true);
                 }
@@ -628,7 +630,9 @@ APP.overrideTreeNodeCollapse = function() {
             
         if (this.text == userWorkspaceName
         || (this.parentNode.text == userWorkspaceName
-        && this.attributes.system == true)) {
+            && this.attributes.system == true)
+        || (this.parentNode.parentNode.text == userWorkspaceName
+            && this.attributes.system == true)) {
             var userId = MktPage.userid.toLowerCase(),
             userName;
             
@@ -664,8 +668,9 @@ APP.overrideTreeNodeCollapse = function() {
 
 /**************************************************************************************
  *  
- *  This function overrides the create function for a New Program in order to enforce
- *  a naming convention by appending the user's username to the name of the program
+ *  This function overrides the create function for a new Program or Segmentation in 
+ *  order to enforce a naming convention by appending the user's username to the name 
+ *  of the new program or segmentation
  *
  *  @Author Brian Fisher
  *
@@ -674,23 +679,24 @@ APP.overrideTreeNodeCollapse = function() {
  **************************************************************************************/
  
 APP.overrideNewProgramCreate = function() {
-    console.log("Marketo App > Overriding: New Program Creation");
+    console.log("Marketo App > Overriding: New Program/Segmentation Creation");
     
     Mkt.widgets.ModalForm.prototype.okButtonHandler = function() {
-        console.log("Marketo App > Executing: New Program Creation");
+        console.log("Marketo App > Executing: New Program/Segmentation Creation");
     
-        if (MktCanvas.getActiveTab().config.accessZoneId != 1) {
-            if (this.title == "New Program") {
-                var userId = MktPage.userid.toLowerCase(),
-                userName,
-                ii;
-                if (userId.search("\.demo@marketo.com$") != -1) {
-                    userName = userId.split(".demo")[0];
-                }
-                else {
-                    userName = userId.split("@")[0];
-                }
+        if (this.title == "New Program"
+        || this.title == "New Segmentation") {
+            var userId = MktPage.userid.toLowerCase(),
+            userName,
+            ii;
+            if (userId.search("\.demo@marketo.com$") != -1) {
+                userName = userId.split(".demo")[0];
+            }
+            else {
+                userName = userId.split("@")[0];
+            }
                 
+            if (this.title == "New Program") {
                 if (this.items.items[2].fieldLabel == "Name") {
                     if (this.items.items[2].getValue().toLowerCase().search(userName + "$") == -1) {
                         this.items.items[2].setValue(this.items.items[2].getValue() + " - " + userName);
@@ -701,6 +707,24 @@ APP.overrideNewProgramCreate = function() {
                         if (this.items.items[ii].fieldLabel == "Name") {
                             if (this.items.items[ii].getValue().toLowerCase().search(userName + "$") == -1) {
                                 this.items.items[ii].setValue(this.items.items[ii].getValue() + " - " + userName);
+                            }
+                        }
+                    }
+                }
+            }
+            else if (this.title == "New Segmentation") {
+                if (this.items.items[1].items.items[0].fieldLabel == "Name") {
+                    if (this.items.items[1].items.items[0].getValue().toLowerCase().search(userName + "$") == -1) {
+                        this.items.items[1].items.items[0].setValue(this.items.items[1].items.items[0].getValue() + " - " + userName);
+                    }
+                }
+                else {
+                    for (ii = 0; ii < this.items.items.length; ii++) {
+                        for (jj = 0; jj < this.items.items[ii].items.items.length; jj++) {
+                            if (this.items.items[ii].items.items[jj].fieldLabel == "Name") {
+                                if (this.items.items[ii].items.items[jj].getValue().toLowerCase().search(userName + "$") == -1) {
+                                    this.items.items[ii].items.items[jj].setValue(this.items.items[ii].items.items[jj].getValue() + " - " + userName);
+                                }
                             }
                         }
                     }
@@ -760,9 +784,9 @@ APP.overrideNewProgramCreate = function() {
 
 /**************************************************************************************
  *  
- *  This function overrides the save edit function for renaming exisiting Programs and 
- *  Smart Campaigns in order to enforce a naming convention by appending the user's 
- *  username to the name of the program or smart campaign
+ *  This function overrides the save edit function for renaming exisiting Programs, 
+ *  Smart Campaigns, and Assets in order to enforce a naming convention by appending the 
+ *  user's username to the name of the program, smart campaign, or asset
  *
  *  @Author Brian Fisher
  *
@@ -770,38 +794,39 @@ APP.overrideNewProgramCreate = function() {
  *
  **************************************************************************************/
  
-APP.overrideProgramSaveEdit = function() {
-    console.log("Marketo App > Overriding: Program Save Edit");
+APP.overrideAssetSaveEdit = function() {
+    console.log("Marketo App > Overriding: Asset Save Edit");
     
     Mkt.widgets.CanvasHeader.prototype.saveEdit = function() {
-        console.log("Marketo App > Executing: Program Save Edit");
+        console.log("Marketo App > Executing: Asset Save Edit");
         
-        if (MktCanvas.getActiveTab().config.accessZoneId != 1) {
-            if (this.titleId == "mpTEName" || this.titleId == "cdhTEName") {
-                var userId = MktPage.userid.toLowerCase(),
-                userName,
-                ii;
-                if (userId.search("\.demo@marketo.com$") != -1) {
-                    userName = userId.split(".demo")[0];
-                }
-                else {
-                    userName = userId.split("@")[0];
-                }
+        if ((MktExplorer.getEl().dom.ownerDocument.title.search("Marketing Activities") != -1
+            && (this.titleId == "mpTEName"
+                || this.titleId == "cdhTEName"))
+        || MktExplorer.getEl().dom.ownerDocument.title.search("Marketing Activities") == -1) {
+            var userId = MktPage.userid.toLowerCase(),
+            userName,
+            ii;
+            if (userId.search("\.demo@marketo.com$") != -1) {
+                userName = userId.split(".demo")[0];
+            }
+            else {
+                userName = userId.split("@")[0];
+            }
                 
-                if (this.items.items[1].items.items[0].name == "mpTEName" || this.items.items[1].items.items[0].name == "cdhTEName") {
-                    if (this.items.items[1].items.items[0].getValue().toLowerCase().search(userName + "$") == -1) {
-                        this.items.items[1].items.items[0].setValue(this.items.items[1].items.items[0].getValue() + " - " + userName);
-                    }
+            if (this.items.items[1].items.items[0].name.search("Name$") != -1) {
+                if (this.items.items[1].items.items[0].getValue().toLowerCase().search(userName + "$") == -1) {
+                    this.items.items[1].items.items[0].setValue(this.items.items[1].items.items[0].getValue() + " - " + userName);
                 }
-                else {
-                    for (ii = 0; ii < this.items.items.length; ii++) {
-                        if (this.items.items[ii].defaultType == "textfield") {
-                            var jj;
-                            for (jj = 0; jj < this.items.items[ii].items.items.length; jj++) {
-                                if (this.items.items[ii].items.items[jj].name == "mpTEName" || this.items.items[ii].items.items[jj].name == "cdhTEName") {
-                                    if (this.items.items[ii].items.items[jj].getValue().toLowerCase().search(userName + "$") == -1) {
-                                        this.items.items[ii].items.items[jj].setValue(this.items.items[ii].items.items[jj].getValue() + "-" + userName);
-                                    }
+            }
+            else {
+                for (ii = 0; ii < this.items.items.length; ii++) {
+                    if (this.items.items[ii].defaultType == "textfield") {
+                        var jj;
+                        for (jj = 0; jj < this.items.items[ii].items.items.length; jj++) {
+                            if (this.items.items[ii].items.items[jj].name.search("Name$") != -1) {
+                                if (this.items.items[ii].items.items[jj].getValue().toLowerCase().search(userName + "$") == -1) {
+                                    this.items.items[ii].items.items[jj].setValue(this.items.items[ii].items.items[jj].getValue() + "-" + userName);
                                 }
                             }
                         }
@@ -878,9 +903,9 @@ APP.overrideProgramSaveEdit = function() {
 
 /**************************************************************************************
  *  
- *  This function overrides the create function for a New Smart Campaign in order to 
- *  enforce a naming convention by appending the user's username to the name of the 
- *  smart campaign
+ *  This function overrides the create function for any new asset that is not a child 
+ *  of a program in order to enforce a naming convention by appending the user's  
+ *  username to the name of the new asset
  *
  *  @Author Brian Fisher
  *
@@ -888,27 +913,26 @@ APP.overrideProgramSaveEdit = function() {
  *
  **************************************************************************************/
  
-APP.overrideNewSmartCampaignCreate = function() {
-    console.log("Marketo App > Overriding: New Smart Campaign Creation");
+APP.overrideNewAssetCreate = function() {
+    console.log("Marketo App > Overriding: New Asset Creation");
     
     Mkt3.controller.lib.AbstractModalForm.prototype.onSubmit = function(form) {
-        console.log("Marketo App > Executing: New Smart Campaign Creation");
+        console.log("Marketo App > Executing: New Asset Creation");
         
-        if (MktCanvas.getActiveTab().config.accessZoneId != 1) {
-            if (this.id == "Mkt3.controller.smartCampaign.AssetForm") {
-                if (typeof(this.getField("name").getValue()) != "undefined") {
-                    var scName = this.getField("name").getValue(),
-                    userId = MktPage.userid.toLowerCase(),
-                    userName;
-                    if (userId.search("\.demo@marketo.com$") != -1) {
-                        userName = userId.split(".demo")[0];
-                    }
-                    else {
-                        userName = userId.split("@")[0];
-                    }
-                    if (scName.toLowerCase().search(userName + "$") == -1) {
-                        this.getField("name").setValue(scName + " - " + userName);
-                    }
+        if (typeof(form.ownerAsset.isOneOfProgramTypes) == "undefined"
+        || form.ownerAsset.isOneOfProgramTypes() == false) {
+            if (typeof(this.getField("name").getValue()) != "undefined") {
+                var assetName = this.getField("name").getValue(),
+                userId = MktPage.userid.toLowerCase(),
+                userName;
+                if (userId.search("\.demo@marketo.com$") != -1) {
+                    userName = userId.split(".demo")[0];
+                }
+                else {
+                    userName = userId.split("@")[0];
+                }
+                if (assetName.toLowerCase().search(userName + "$") == -1) {
+                    this.getField("name").setValue(assetName + " - " + userName);
                 }
             }
         }
@@ -3676,8 +3700,8 @@ if (currentUrl.search(mktoAppDomain) != -1
                     APP.overrideSmartCampaignSaving();
                     APP.overrideSmartCampaignCanvas();
                     APP.overrideNewProgramCreate();
-                    APP.overrideProgramSaveEdit();
-                    APP.overrideNewSmartCampaignCreate();
+                    APP.overrideAssetSaveEdit();
+                    APP.overrideNewAssetCreate();
                     //APP.hidePageGrid();
                     APP.hideFoldersOnImport();
                     APP.disableConfirmationMessage();
