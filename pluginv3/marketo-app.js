@@ -564,7 +564,7 @@ APP.overrideTreeNodeExpand = function() {
         if (this.text == userWorkspaceName
         || (this.parentNode.text == userWorkspaceName
             && this.attributes.system == true)
-        || (typeof(this.parentNode.parentNode.text) != "undefined"
+        || (typeof(this.parentNode.parentNode) != "undefined"
             && this.parentNode.parentNode.text == userWorkspaceName
             && this.attributes.system == true)) {
             var userId = MktPage.userid.toLowerCase(),
@@ -597,7 +597,7 @@ APP.overrideTreeNodeExpand = function() {
                 
                 if (this.text != userWorkspaceName
                 && this.parentNode.text != userWorkspaceName
-                && typeof(this.parentNode.parentNode.text) != "undefined"
+                && typeof(this.parentNode.parentNode) != "undefined"
                 && this.parentNode.parentNode.text != userWorkspaceName) {
                     console.log("Marketo App > Saving: Folder Expand State");
                     MktFolder.saveExpandState(this, true);
@@ -633,7 +633,7 @@ APP.overrideTreeNodeCollapse = function() {
         if (this.text == userWorkspaceName
         || (this.parentNode.text == userWorkspaceName
             && this.attributes.system == true)
-        || (typeof(this.parentNode.parentNode.text) != "undefined"
+        || (typeof(this.parentNode.parentNode) != "undefined"
             && this.parentNode.parentNode.text == userWorkspaceName
             && this.attributes.system == true)) {
             var userId = MktPage.userid.toLowerCase(),
