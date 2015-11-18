@@ -922,9 +922,13 @@ APP.overrideNewAssetCreate = function() {
     Mkt3.controller.lib.AbstractModalForm.prototype.onSubmit = function(form) {
         console.log("Marketo App > Executing: New Asset Creation");
         
-        if (typeof(form.ownerAsset.isOneOfProgramTypes) == "undefined"
+        if (form == null
+        || form.ownerAsset == null
+        || form.ownerAsset.isOneOfProgramTypes == null
         || form.ownerAsset.isOneOfProgramTypes() == false) {
-            if (typeof(this.getField("name").getValue()) != "undefined") {
+            if (this != null
+            && this.getField("name") != null
+            && this.getField("name").getValue() != null) {
                 var assetName = this.getField("name").getValue(),
                 userId = MktPage.userid.toLowerCase(),
                 userName;
@@ -990,7 +994,16 @@ APP.hideFoldersOnImport = function() {
                 
                 this.doQuery(this.allQuery, true);
                 
-                if (this.label.dom.textContent == "Campaign Folder:") {
+                if (this != null
+                && this.label != null
+                && this.label.dom != null
+                && this.label.dom.textContent != null
+                && this.label.dom.textContent == "Campaign Folder:"
+                && MktCanvas != null
+                && MktCanvas.getActiveTab() != null
+                && MktCanvas.getActiveTab().config != null
+                && MktCanvas.getActiveTab().config.accessZoneId != null
+                && MktCanvas.getActiveTab().config.accessZoneId == mktoMarketingWorkspaceId) {
                     var userId = MktPage.userid.toLowerCase(),
                         userName,
                         ii;
