@@ -93,6 +93,37 @@ Analyzer = function(pod) {
     this.pod = pod;
 }
 
+/**************************************************************************************		
+ *		
+ *  This method will insert an HTML template and a CSS sheet inside the template 		
+ *  directly into the header of the Marketo page via "Import" and runs asynchronously. 		
+ *  Then it binds the 'prev' and 'next' elements with a click function so that whenever 		
+ *  they are clicked it will call chooseAnalyzer and pass the element clicked.		
+ *		
+ *  @Author Arrash		
+ *		
+ *  @function		
+ *		
+ *  @namespace link		
+ *  @namespace importedDoc		
+ *  @namespace el		
+ *		
+ **************************************************************************************/		
+		
+Analyzer.prototype.showAnalyzer = function() {		
+	console.log("Content > Displaying: Analyzer Navigation Bar");		
+			
+    var xmlHttp = new XMLHttpRequest();		
+    xmlHttp.open("GET", "https://marketolive.com/dev/pluginv3/html/analyzer.html", false);		
+    xmlHttp.send();		
+    var pageLoaded = function() {		
+        var newElement = document.createElement('div');		
+        newElement.innerHTML = xmlHttp.responseText;		
+        document.body.appendChild(newElement);		
+    }		
+    window.onload = pageLoaded();		
+}
+
 var port = chrome.runtime.connect({
 	name: "mycontentscript"
 });
