@@ -210,7 +210,7 @@ window.onload = function() {
 		
 		var oppInfluenceAnalyzerFragment = "AR1559A1!",
 			programAnalyzerFragment = "AR1544A1!",
-			modeler106Fragment = "RCM39A1!",
+			modeler106Fragment = "RCM70A1!",
 			modeler106abFragment = "RCM5A1!",
 			successPathAnalyzerFragment = "AR1682A1!";
 		
