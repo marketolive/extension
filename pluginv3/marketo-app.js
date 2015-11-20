@@ -265,16 +265,14 @@ APP.overrideAnalyticsTiles = function() {
     
     var isAnalyticsTiles = window.setInterval(function() {
         if (typeof(MktPage) !== "undefined"
-        && typeof(MktCanvas) !== "undefined") {
+        && typeof(MktCanvas) !== "undefined"
+        && typeof(MktCanvas.getActiveTab().config.mkt3XType) !== "undefined") {
             window.clearInterval(isAnalyticsTiles);
             if (MktPage != null
             && MktPage.savedState != null
             && MktPage.savedState.custPrefix != null
             && MktPage.savedState.custPrefix == "mktodemoaccount106"
             && MktCanvas != null
-            && MktCanvas.getActiveTab() != null
-            && MktCanvas.getActiveTab().config != null
-            && MktCanvas.getActiveTab().config.mkt3XType != null
             && MktCanvas.getActiveTab().config.mkt3XType == "analyticsHome"
             && MktCanvas.getActiveTab().config.accessZoneId != null
             && MktCanvas.getActiveTab().config.accessZoneId == 1
