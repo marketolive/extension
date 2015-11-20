@@ -263,113 +263,119 @@ APP.overrideDeliverabilityToolsTile = function() {
 APP.overrideAnalyticsTiles = function() {
     console.log("Marketo App > Overriding: Analytics Tiles");
     
-    if (MktPage != null
-    && MktPage.savedState != null
-    && MktPage.savedState.custPrefix != null
-    && MktPage.savedState.custPrefix == "mktodemoaccount106"
-    && MktCanvas != null
-    && MktCanvas.getActiveTab() != null
-    && MktCanvas.getActiveTab().config != null
-    && MktCanvas.getActiveTab().config.mkt3XType != null
-    && MktCanvas.getActiveTab().config.mkt3XType == "analyticsHome"
-    && MktCanvas.getActiveTab().config.accessZoneId != null
-    && MktCanvas.getActiveTab().config.accessZoneId == 1
-    && MktCanvas.getActiveTab().el != null
-    && MktCanvas.getActiveTab().el.dom != null
-    && MktCanvas.getActiveTab().el.dom.childNodes != null) {
-        console.log("Marketo App > Executing: Analytics Tiles");
-        
-        var ii,
-            host = "https://app-sjp.marketo.com",
-            numOfTiles = MktCanvas.getActiveTab().el.dom.childNodes[0].childNodes[1].childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes.length;
-        for (ii = 0; ii < numOfTiles; ii++) {
-            var currTileHTML = MktCanvas.getActiveTab().el.dom.childNodes[0].childNodes[1].childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[ii].outerHTML;
-            switch (MktCanvas.getActiveTab().el.dom.childNodes[0].childNodes[1].childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[ii].textContent) {
-                case "Email Performance":
-                    currTileHTML = '<a href="' + host + '/#AR3866B2">' + currTileHTML + '</a>';
-                    MktCanvas.getActiveTab().el.dom.childNodes[0].childNodes[1].childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[ii].outerHTML = currTileHTML;
-                    break;
+    var isAnalyticsTiles = window.setInterval(function() {
+        if (typeof(MktPage) !== "undefined"
+        && typeof(MktCanvas) !== "undefined") {
+            window.clearInterval(isAnalyticsTiles);
+            if (MktPage != null
+            && MktPage.savedState != null
+            && MktPage.savedState.custPrefix != null
+            && MktPage.savedState.custPrefix == "mktodemoaccount106"
+            && MktCanvas != null
+            && MktCanvas.getActiveTab() != null
+            && MktCanvas.getActiveTab().config != null
+            && MktCanvas.getActiveTab().config.mkt3XType != null
+            && MktCanvas.getActiveTab().config.mkt3XType == "analyticsHome"
+            && MktCanvas.getActiveTab().config.accessZoneId != null
+            && MktCanvas.getActiveTab().config.accessZoneId == 1
+            && MktCanvas.getActiveTab().el != null
+            && MktCanvas.getActiveTab().el.dom != null
+            && MktCanvas.getActiveTab().el.dom.childNodes != null) {
+                console.log("Marketo App > Executing: Analytics Tiles");
                 
-                case "Lead Performance":
-                    currTileHTML = '<a href="' + host + '/#AR3874B2">' + currTileHTML + '</a>';
-                    MktCanvas.getActiveTab().el.dom.childNodes[0].childNodes[1].childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[ii].outerHTML = currTileHTML;
-                    break;
+                var ii,
+                    host = "https://app-sjp.marketo.com",
+                    numOfTiles = MktCanvas.getActiveTab().el.dom.childNodes[0].childNodes[1].childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes.length;
+                for (ii = 0; ii < numOfTiles; ii++) {
+                    var currTileHTML = MktCanvas.getActiveTab().el.dom.childNodes[0].childNodes[1].childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[ii].outerHTML;
+                    switch (MktCanvas.getActiveTab().el.dom.childNodes[0].childNodes[1].childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[ii].textContent) {
+                        case "Email Performance":
+                            currTileHTML = '<a href="' + host + '/#AR3866B2">' + currTileHTML + '</a>';
+                            MktCanvas.getActiveTab().el.dom.childNodes[0].childNodes[1].childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[ii].outerHTML = currTileHTML;
+                            break;
+                        
+                        case "Lead Performance":
+                            currTileHTML = '<a href="' + host + '/#AR3874B2">' + currTileHTML + '</a>';
+                            MktCanvas.getActiveTab().el.dom.childNodes[0].childNodes[1].childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[ii].outerHTML = currTileHTML;
+                            break;
 
-                case "Web Page Activity":
-                    currTileHTML = '<a href="' + host + '/#AR3876B2">' + currTileHTML + '</a>';
-                    MktCanvas.getActiveTab().el.dom.childNodes[0].childNodes[1].childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[ii].outerHTML = currTileHTML;
-                    break;
+                        case "Web Page Activity":
+                            currTileHTML = '<a href="' + host + '/#AR3876B2">' + currTileHTML + '</a>';
+                            MktCanvas.getActiveTab().el.dom.childNodes[0].childNodes[1].childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[ii].outerHTML = currTileHTML;
+                            break;
 
-                case "Opportunity Influence Analyzer":
-                    currTileHTML = '<a href="' + host + '/#AR1559A1!">' + currTileHTML + '</a>';
-                    MktCanvas.getActiveTab().el.dom.childNodes[0].childNodes[1].childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[ii].outerHTML = currTileHTML;
-                    break;
+                        case "Opportunity Influence Analyzer":
+                            currTileHTML = '<a href="' + host + '/#AR1559A1!">' + currTileHTML + '</a>';
+                            MktCanvas.getActiveTab().el.dom.childNodes[0].childNodes[1].childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[ii].outerHTML = currTileHTML;
+                            break;
 
-                case "Program Analyzer":
-                    currTileHTML = '<a href="' + host + '/#AR1544A1!">' + currTileHTML + '</a>';
-                    MktCanvas.getActiveTab().el.dom.childNodes[0].childNodes[1].childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[ii].outerHTML = currTileHTML;
-                    break;
+                        case "Program Analyzer":
+                            currTileHTML = '<a href="' + host + '/#AR1544A1!">' + currTileHTML + '</a>';
+                            MktCanvas.getActiveTab().el.dom.childNodes[0].childNodes[1].childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[ii].outerHTML = currTileHTML;
+                            break;
 
-                case "Success Path Analyzer":
-                    currTileHTML = '<a href="' + host + '/#AR1682A1!">' + currTileHTML + '</a>';
-                    MktCanvas.getActiveTab().el.dom.childNodes[0].childNodes[1].childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[ii].outerHTML = currTileHTML;
-                    break;
+                        case "Success Path Analyzer":
+                            currTileHTML = '<a href="' + host + '/#AR1682A1!">' + currTileHTML + '</a>';
+                            MktCanvas.getActiveTab().el.dom.childNodes[0].childNodes[1].childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[ii].outerHTML = currTileHTML;
+                            break;
 
-                case "Revenue Explorer":
-                    //currTileHTML = '<a href="' + host + '/#">' + currTileHTML + '</a>';
-                    //MktCanvas.getActiveTab().el.dom.childNodes[0].childNodes[1].childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[ii].outerHTML = currTileHTML;
-                    break;
+                        case "Revenue Explorer":
+                            //currTileHTML = '<a href="' + host + '/#">' + currTileHTML + '</a>';
+                            //MktCanvas.getActiveTab().el.dom.childNodes[0].childNodes[1].childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[ii].outerHTML = currTileHTML;
+                            break;
 
-                case "Engagement Stream Performance":
-                    currTileHTML = '<a href="' + host + '/#AR3881B2">' + currTileHTML + '</a>';
-                    MktCanvas.getActiveTab().el.dom.childNodes[0].childNodes[1].childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[ii].outerHTML = currTileHTML;
-                    break;
+                        case "Engagement Stream Performance":
+                            currTileHTML = '<a href="' + host + '/#AR3881B2">' + currTileHTML + '</a>';
+                            MktCanvas.getActiveTab().el.dom.childNodes[0].childNodes[1].childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[ii].outerHTML = currTileHTML;
+                            break;
 
-                case "Program Performance":
-                    currTileHTML = '<a href="' + host + '/#AR3882B2">' + currTileHTML + '</a>';
-                    MktCanvas.getActiveTab().el.dom.childNodes[0].childNodes[1].childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[ii].outerHTML = currTileHTML;
-                    break;
+                        case "Program Performance":
+                            currTileHTML = '<a href="' + host + '/#AR3882B2">' + currTileHTML + '</a>';
+                            MktCanvas.getActiveTab().el.dom.childNodes[0].childNodes[1].childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[ii].outerHTML = currTileHTML;
+                            break;
 
-                case "Email Link Performance":
-                    currTileHTML = '<a href="' + host + '/#AR3886B2">' + currTileHTML + '</a>';
-                    MktCanvas.getActiveTab().el.dom.childNodes[0].childNodes[1].childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[ii].outerHTML = currTileHTML;
-                    break;
+                        case "Email Link Performance":
+                            currTileHTML = '<a href="' + host + '/#AR3886B2">' + currTileHTML + '</a>';
+                            MktCanvas.getActiveTab().el.dom.childNodes[0].childNodes[1].childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[ii].outerHTML = currTileHTML;
+                            break;
 
-                case "Social Influence":
-                    //currTileHTML = '<a href="' + host + '/#">' + currTileHTML + '</a>';
-                    //MktCanvas.getActiveTab().el.dom.childNodes[0].childNodes[1].childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[ii].outerHTML = currTileHTML;
-                    break;
+                        case "Social Influence":
+                            //currTileHTML = '<a href="' + host + '/#">' + currTileHTML + '</a>';
+                            //MktCanvas.getActiveTab().el.dom.childNodes[0].childNodes[1].childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[ii].outerHTML = currTileHTML;
+                            break;
 
-                case "Leads By Revenue Stage":
-                    currTileHTML = '<a href="' + host + '/#AR3889B2">' + currTileHTML + '</a>';
-                    MktCanvas.getActiveTab().el.dom.childNodes[0].childNodes[1].childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[ii].outerHTML = currTileHTML;
-                    break;
+                        case "Leads By Revenue Stage":
+                            currTileHTML = '<a href="' + host + '/#AR3889B2">' + currTileHTML + '</a>';
+                            MktCanvas.getActiveTab().el.dom.childNodes[0].childNodes[1].childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[ii].outerHTML = currTileHTML;
+                            break;
 
-                case "Landing Page Performance":
-                    currTileHTML = '<a href="' + host + '/#AR3891B2">' + currTileHTML + '</a>';
-                    MktCanvas.getActiveTab().el.dom.childNodes[0].childNodes[1].childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[ii].outerHTML = currTileHTML;
-                    break;
+                        case "Landing Page Performance":
+                            currTileHTML = '<a href="' + host + '/#AR3891B2">' + currTileHTML + '</a>';
+                            MktCanvas.getActiveTab().el.dom.childNodes[0].childNodes[1].childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[ii].outerHTML = currTileHTML;
+                            break;
 
-                case "Leads By Status":
-                    currTileHTML = '<a href="' + host + '/#AR3893B2">' + currTileHTML + '</a>';
-                    MktCanvas.getActiveTab().el.dom.childNodes[0].childNodes[1].childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[ii].outerHTML = currTileHTML;
-                    break;
+                        case "Leads By Status":
+                            currTileHTML = '<a href="' + host + '/#AR3893B2">' + currTileHTML + '</a>';
+                            MktCanvas.getActiveTab().el.dom.childNodes[0].childNodes[1].childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[ii].outerHTML = currTileHTML;
+                            break;
 
-                case "Company Web Activity":
-                    currTileHTML = '<a href="' + host + '/#AR3901B2">' + currTileHTML + '</a>';
-                    MktCanvas.getActiveTab().el.dom.childNodes[0].childNodes[1].childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[ii].outerHTML = currTileHTML;
-                    break;
+                        case "Company Web Activity":
+                            currTileHTML = '<a href="' + host + '/#AR3901B2">' + currTileHTML + '</a>';
+                            MktCanvas.getActiveTab().el.dom.childNodes[0].childNodes[1].childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[ii].outerHTML = currTileHTML;
+                            break;
 
-                case "Sales Insight Email Performance":
-                    currTileHTML = '<a href="' + host + '/#AR3903B2">' + currTileHTML + '</a>';
-                    MktCanvas.getActiveTab().el.dom.childNodes[0].childNodes[1].childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[ii].outerHTML = currTileHTML;
-                    break;
-                    
-                default:
-                    break;
+                        case "Sales Insight Email Performance":
+                            currTileHTML = '<a href="' + host + '/#AR3903B2">' + currTileHTML + '</a>';
+                            MktCanvas.getActiveTab().el.dom.childNodes[0].childNodes[1].childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[ii].outerHTML = currTileHTML;
+                            break;
+                            
+                        default:
+                            break;
+                    }
+                }
             }
         }
-    }
+    }, 0);
 }
 
 /**************************************************************************************
@@ -3795,7 +3801,7 @@ if (currentUrl.search(mktoAppDomain) != -1
                     japanWorkspaceId = 173,
                     oppInfluenceAnalyzerFragment = "AR1559A1!",
                     programAnalyzerFragment = "AR1544A1!",
-                    modeler106Fragment = "RCM39A1!",
+                    modeler106Fragment = "RCM70A1!",
                     modeler106abFragment = "RCM5A1!",
                     successPathAnalyzerFragment = "AR1682A1!";
                 
