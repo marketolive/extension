@@ -34,8 +34,8 @@ DELIVERABILITY.login = function () {
     
     // jQuery returns an array even though an id is selected, which
     // is why there is a [0] on the email and password selectors.
-    $("#email")[0].value = "reade.demo@marketo.com";
-    $("#password")[0].value = "marketo17";
+    $("#email")[0].value = "marketolive@marketo.com";
+    $("#password")[0].value = "!Marketo17";
     // This needs to change if another button is ever added to the login
     // page. Currently, the submit button is the only one.
     $("button")[0].click();
