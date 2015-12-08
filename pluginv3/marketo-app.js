@@ -1269,8 +1269,8 @@ APP.disableMenus = function() {
 				disableMenu = canvas
 							&& canvas.config
 							&& canvas.config.accessZoneId
-							&& canvas.config.accessZoneId == 1
-                            || canvas.config.accessZoneId == mktoJapaneseWorkspaceId;
+							&& (canvas.config.accessZoneId == 1
+                                || canvas.config.accessZoneId == mktoJapaneseWorkspaceId);
 				button.menu.items.each(function(item) {
 					item.setDisabled(disableMenu);
 				});
@@ -1293,9 +1293,9 @@ APP.disableMenus = function() {
 							&& canvas.config
 							&& canvas.config.accessZoneId)
 							&& ((canvas.config.accessZoneId == 1
-                            || canvas.config.accessZoneId == mktoJapaneseWorkspaceId)
-                            || (canvas.config.title == "Marketing Activities"
-                            && canvas.config.accessZoneId == mktoMarketingWorkspaceId))
+                                    || canvas.config.accessZoneId == mktoJapaneseWorkspaceId)
+                                || (canvas.config.title == "Marketing Activities"
+                                    && canvas.config.accessZoneId == mktoMarketingWorkspaceId))
 				button.menu.items.each(function(item) {
 					item.setDisabled(disableMenu);
 				});
@@ -1317,8 +1317,8 @@ APP.disableMenus = function() {
 				disableMenu = canvas
 							&& canvas.config
 							&& canvas.config.accessZoneId
-							&& canvas.config.accessZoneId == 1
-                            || canvas.config.accessZoneId == mktoJapaneseWorkspaceId;
+							&& (canvas.config.accessZoneId == 1
+                                || canvas.config.accessZoneId == mktoJapaneseWorkspaceId);
 				button.menu.items.each(function(item) {
 					item.setDisabled(disableMenu);
 				});
@@ -1335,8 +1335,8 @@ APP.disableMenus = function() {
 			disable = canvas
 					&& canvas.config
 					&& canvas.config.accessZoneId
-					&& canvas.config.accessZoneId == 1
-                    || canvas.config.accessZoneId == mktoJapaneseWorkspaceId,
+					&& (canvas.config.accessZoneId == 1
+                        || canvas.config.accessZoneId == mktoJapaneseWorkspaceId),
 			itemsToDisable = [
 							"cloneMarketingProgram",//Clone
 							"cloneMarketingEvent",//Clone
@@ -1373,8 +1373,8 @@ APP.disableMenus = function() {
             canvas = MktCanvas.getActiveTab(),
             disable = (attr
                         && attr.accessZoneId 
-                        && attr.accessZoneId == 1
-                        || attr.accessZoneId == mktoJapaneseWorkspaceId)
+                        && (attr.accessZoneId == 1
+                            || attr.accessZoneId == mktoJapaneseWorkspaceId))
                     || (attr
                         && attr.depth
                         && attr.depth == 1
@@ -1386,15 +1386,15 @@ APP.disableMenus = function() {
                         && menu.currNode
                         && menu.currNode.attributes
                         && menu.currNode.attributes.accessZoneId
-                        && menu.currNode.attributes.accessZoneId == 1
-                        || menu.currNode.attributes.accessZoneId == mktoJapaneseWorkspaceId)
+                        && (menu.currNode.attributes.accessZoneId == 1
+                            || menu.currNode.attributes.accessZoneId == mktoJapaneseWorkspaceId))
                     || (!menu
                         || !menu.currNode
                         && canvas
                         && canvas.config
                         && canvas.config.accessZoneId
-                        && canvas.config.accessZoneId == 1
-                        || canvas.config.accessZoneId == mktoJapaneseWorkspaceId),
+                        && (canvas.config.accessZoneId == 1
+                            || canvas.config.accessZoneId == mktoJapaneseWorkspaceId)),
             itemsToDisable = [
 							//"navigateToNurtureTracks",//View Streams
 							//"navigateToCFSmartCamp",//View Smart Campaigns
@@ -1458,8 +1458,8 @@ APP.disableMenus = function() {
 			canvas = MktCanvas.getActiveTab(),
 			disable = (attr
                         && attr.accessZoneId 
-                        && attr.accessZoneId == 1
-                        || attr.accessZoneId == mktoJapaneseWorkspaceId)
+                        && (attr.accessZoneId == 1
+                            || attr.accessZoneId == mktoJapaneseWorkspaceId))
                     || (attr
                         && attr.depth
                         && attr.depth == 1
@@ -1471,15 +1471,15 @@ APP.disableMenus = function() {
                         && menu.currNode
                         && menu.currNode.attributes
                         && menu.currNode.attributes.accessZoneId
-                        && menu.currNode.attributes.accessZoneId == 1
-                        || menu.currNode.attributes.accessZoneId == mktoJapaneseWorkspaceId)
+                        && (menu.currNode.attributes.accessZoneId == 1
+                            || menu.currNode.attributes.accessZoneId == mktoJapaneseWorkspaceId))
                     || (!menu
                         || !menu.currNode
                         && canvas
                         && canvas.config
                         && canvas.config.accessZoneId
-                        && canvas.config.accessZoneId == 1
-                        || canvas.config.accessZoneId == mktoJapaneseWorkspaceId),
+                        && (canvas.config.accessZoneId == 1
+                            || canvas.config.accessZoneId == mktoJapaneseWorkspaceId)),
 			itemsToDisable = [
 							//"emailEdit",//Edit Draft
 							//"emailPreview",//Preview
@@ -1524,8 +1524,8 @@ APP.disableMenus = function() {
 			canvas = MktCanvas.getActiveTab(),
 			disable = (attr
                         && attr.accessZoneId 
-                        && attr.accessZoneId == 1
-                        || attr.accessZoneId == mktoJapaneseWorkspaceId)
+                        && (attr.accessZoneId == 1
+                            || attr.accessZoneId == mktoJapaneseWorkspaceId))
                     || (attr
                         && attr.depth
                         && attr.depth == 1
@@ -1537,15 +1537,15 @@ APP.disableMenus = function() {
                         && menu.currNode
                         && menu.currNode.attributes
                         && menu.currNode.attributes.accessZoneId
-                        && menu.currNode.attributes.accessZoneId == 1
-                        || menu.currNode.attributes.accessZoneId == mktoJapaneseWorkspaceId)
+                        && (menu.currNode.attributes.accessZoneId == 1
+                            || menu.currNode.attributes.accessZoneId == mktoJapaneseWorkspaceId))
                     || (!menu
                         || !menu.currNode
                         && canvas
                         && canvas.config
                         && canvas.config.accessZoneId
-                        && canvas.config.accessZoneId == 1
-                        || canvas.config.accessZoneId == mktoJapaneseWorkspaceId),
+                        && (canvas.config.accessZoneId == 1
+                            || canvas.config.accessZoneId == mktoJapaneseWorkspaceId)),
 			itemsToDisable = [
 							//"pageEdit",//Edit Draft
 							//"pagePreview",//Preview
@@ -1584,8 +1584,8 @@ APP.disableMenus = function() {
 			canvas = MktCanvas.getActiveTab(),
 			disable = (attr
                         && attr.accessZoneId 
-                        && attr.accessZoneId == 1
-                        || attr.accessZoneId == mktoJapaneseWorkspaceId)
+                        && (attr.accessZoneId == 1
+                            || attr.accessZoneId == mktoJapaneseWorkspaceId))
                     || (attr
                         && attr.depth
                         && attr.depth == 1
@@ -1597,15 +1597,15 @@ APP.disableMenus = function() {
                         && menu.currNode
                         && menu.currNode.attributes
                         && menu.currNode.attributes.accessZoneId
-                        && menu.currNode.attributes.accessZoneId == 1
-                        || menu.currNode.attributes.accessZoneId == mktoJapaneseWorkspaceId)
+                        && (menu.currNode.attributes.accessZoneId == 1
+                            || menu.currNode.attributes.accessZoneId == mktoJapaneseWorkspaceId))
                     || (!menu
                         || !menu.currNode
                         && canvas
                         && canvas.config
                         && canvas.config.accessZoneId
-                        && canvas.config.accessZoneId == 1
-                        || canvas.config.accessZoneId == mktoJapaneseWorkspaceId),
+                        && (canvas.config.accessZoneId == 1
+                            || canvas.config.accessZoneId == mktoJapaneseWorkspaceId)),
 			itemsToDisable = [
 							//"formEditDraft",//Edit Draft
 							//"formPreview",//Preview
@@ -1641,8 +1641,8 @@ APP.disableMenus = function() {
 			canvas = MktCanvas.getActiveTab(),
 			disable = (attr
                         && attr.accessZoneId 
-                        && attr.accessZoneId == 1
-                        || attr.accessZoneId == mktoJapaneseWorkspaceId)
+                        && (attr.accessZoneId == 1
+                            || attr.accessZoneId == mktoJapaneseWorkspaceId))
                     || (attr
                         && attr.depth
                         && attr.depth == 1
@@ -1654,15 +1654,15 @@ APP.disableMenus = function() {
                         && menu.currNode
                         && menu.currNode.attributes
                         && menu.currNode.attributes.accessZoneId
-                        && menu.currNode.attributes.accessZoneId == 1
-                        || menu.currNode.attributes.accessZoneId == mktoJapaneseWorkspaceId)
+                        && (menu.currNode.attributes.accessZoneId == 1
+                            || menu.currNode.attributes.accessZoneId == mktoJapaneseWorkspaceId))
                     || (!menu
                         || !menu.currNode
                         && canvas
                         && canvas.config
                         && canvas.config.accessZoneId
-                        && canvas.config.accessZoneId == 1
-                        || canvas.config.accessZoneId == mktoJapaneseWorkspaceId),
+                        && (canvas.config.accessZoneId == 1
+                            || canvas.config.accessZoneId == mktoJapaneseWorkspaceId)),
 			itemsToDisable = [
 							//"socialAppEdit",//Edit Draft
 							//"socialAppPreview",//Preview
@@ -1724,8 +1724,8 @@ APP.disableMenus = function() {
 			canvas = MktCanvas.getActiveTab(),
 			disable = (attr
                         && attr.accessZoneId 
-                        && attr.accessZoneId == 1
-                        || attr.accessZoneId == mktoJapaneseWorkspaceId)
+                        && (attr.accessZoneId == 1
+                            || attr.accessZoneId == mktoJapaneseWorkspaceId))
                     || (attr
                         && attr.depth
                         && attr.depth == 1
@@ -1737,15 +1737,15 @@ APP.disableMenus = function() {
                         && menu.currNode
                         && menu.currNode.attributes
                         && menu.currNode.attributes.accessZoneId
-                        && menu.currNode.attributes.accessZoneId == 1
-                        || menu.currNode.attributes.accessZoneId == mktoJapaneseWorkspaceId)
+                        && (menu.currNode.attributes.accessZoneId == 1
+                            || menu.currNode.attributes.accessZoneId == mktoJapaneseWorkspaceId))
                     || (!menu
                         || !menu.currNode
                         && canvas
                         && canvas.config
                         && canvas.config.accessZoneId
-                        && canvas.config.accessZoneId == 1
-                        || canvas.config.accessZoneId == mktoJapaneseWorkspaceId),
+                        && (canvas.config.accessZoneId == 1
+                            || canvas.config.accessZoneId == mktoJapaneseWorkspaceId)),
 			itemsToDisable = [
 							//"pushNotificationEdit",//Edit Draft
 							"pushNotificationApprove",//Approve
@@ -1804,8 +1804,8 @@ APP.disableMenus = function() {
 			canvas = MktCanvas.getActiveTab(),
 			disable = (attr
                         && attr.accessZoneId 
-                        && attr.accessZoneId == 1
-                        || attr.accessZoneId == mktoJapaneseWorkspaceId)
+                        && (attr.accessZoneId == 1
+                            || attr.accessZoneId == mktoJapaneseWorkspaceId))
                     || (attr
                         && attr.depth
                         && attr.depth == 1
@@ -1817,15 +1817,15 @@ APP.disableMenus = function() {
                         && menu.currNode
                         && menu.currNode.attributes
                         && menu.currNode.attributes.accessZoneId
-                        && menu.currNode.attributes.accessZoneId == 1
-                        || menu.currNode.attributes.accessZoneId == mktoJapaneseWorkspaceId)
+                        && (menu.currNode.attributes.accessZoneId == 1
+                            || menu.currNode.attributes.accessZoneId == mktoJapaneseWorkspaceId))
                     || (!menu
                         || !menu.currNode
                         && canvas
                         && canvas.config
                         && canvas.config.accessZoneId
-                        && canvas.config.accessZoneId == 1
-                        || canvas.config.accessZoneId == mktoJapaneseWorkspaceId),
+                        && (canvas.config.accessZoneId == 1
+                            || canvas.config.accessZoneId == mktoJapaneseWorkspaceId)),
 			itemsToDisable = [
 							"newLandingPage",//New Landing Page
 							"newTestGroup",//New Test Group
@@ -1866,8 +1866,8 @@ APP.disableMenus = function() {
 			canvas = MktCanvas.getActiveTab(),
             disable = (attr
                         && attr.accessZoneId 
-                        && attr.accessZoneId == 1
-                        || attr.accessZoneId == mktoJapaneseWorkspaceId)
+                        && (attr.accessZoneId == 1
+                            || attr.accessZoneId == mktoJapaneseWorkspaceId))
                     || (attr
                         && attr.depth
                         && attr.depth == 1
@@ -1879,15 +1879,15 @@ APP.disableMenus = function() {
                         && menu.currNode
                         && menu.currNode.attributes
                         && menu.currNode.attributes.accessZoneId
-                        && menu.currNode.attributes.accessZoneId == 1
-                        || menu.currNode.attributes.accessZoneId == mktoJapaneseWorkspaceId)
+                        && (menu.currNode.attributes.accessZoneId == 1
+                            || menu.currNode.attributes.accessZoneId == mktoJapaneseWorkspaceId))
                     || (!menu
                         || !menu.currNode
                         && canvas
                         && canvas.config
                         && canvas.config.accessZoneId
-                        && canvas.config.accessZoneId == 1
-                        || canvas.config.accessZoneId == mktoJapaneseWorkspaceId),
+                        && (canvas.config.accessZoneId == 1
+                            || canvas.config.accessZoneId == mktoJapaneseWorkspaceId)),
 			itemsToDisable = [
 							//"editPageTemplate",//Edit Draft
 							//"previewPageTemplate",//Preview
@@ -1922,8 +1922,8 @@ APP.disableMenus = function() {
 			canvas = MktCanvas.getActiveTab(),
 			disable = (attr
                         && attr.accessZoneId 
-                        && attr.accessZoneId == 1
-                        || attr.accessZoneId == mktoJapaneseWorkspaceId)
+                        && (attr.accessZoneId == 1
+                            || attr.accessZoneId == mktoJapaneseWorkspaceId))
                     || (attr
                         && attr.depth
                         && attr.depth == 1
@@ -1935,15 +1935,15 @@ APP.disableMenus = function() {
                         && menu.currNode
                         && menu.currNode.attributes
                         && menu.currNode.attributes.accessZoneId
-                        && menu.currNode.attributes.accessZoneId == 1
-                        || menu.currNode.attributes.accessZoneId == mktoJapaneseWorkspaceId)
+                        && (menu.currNode.attributes.accessZoneId == 1
+                            || menu.currNode.attributes.accessZoneId == mktoJapaneseWorkspaceId))
                     || (!menu
                         || !menu.currNode
                         && canvas
                         && canvas.config
                         && canvas.config.accessZoneId
-                        && canvas.config.accessZoneId == 1
-                        || canvas.config.accessZoneId == mktoJapaneseWorkspaceId),
+                        && (canvas.config.accessZoneId == 1
+                            || canvas.config.accessZoneId == mktoJapaneseWorkspaceId)),
 			itemsToDisable = [
 							//"emailTemplateEdit",//Edit Draft
 							//"emailTemplatePreview",//Preview
@@ -1979,8 +1979,8 @@ APP.disableMenus = function() {
 			canvas = MktCanvas.getActiveTab(),
 			disable = (attr
                         && attr.accessZoneId 
-                        && attr.accessZoneId == 1
-                        || attr.accessZoneId == mktoJapaneseWorkspaceId)
+                        && (attr.accessZoneId == 1
+                            || attr.accessZoneId == mktoJapaneseWorkspaceId))
                     || (attr
                         && attr.depth
                         && attr.depth == 1
@@ -1992,15 +1992,15 @@ APP.disableMenus = function() {
                         && menu.currNode
                         && menu.currNode.attributes
                         && menu.currNode.attributes.accessZoneId
-                        && menu.currNode.attributes.accessZoneId == 1
-                        || menu.currNode.attributes.accessZoneId == mktoJapaneseWorkspaceId)
+                        && (menu.currNode.attributes.accessZoneId == 1
+                            || menu.currNode.attributes.accessZoneId == mktoJapaneseWorkspaceId))
                     || (!menu
                         || !menu.currNode
                         && canvas
                         && canvas.config
                         && canvas.config.accessZoneId
-                        && canvas.config.accessZoneId == 1
-                        || canvas.config.accessZoneId == mktoJapaneseWorkspaceId),
+                        && (canvas.config.accessZoneId == 1
+                            || canvas.config.accessZoneId == mktoJapaneseWorkspaceId)),
 			itemsToDisable = [
 							//"snippetEdit",//Edit Draft
 							//"snippetPreview",//Preview
@@ -2034,8 +2034,8 @@ APP.disableMenus = function() {
 			canvas = MktCanvas.getActiveTab(),
 			disable = (attr
                         && attr.accessZoneId 
-                        && attr.accessZoneId == 1
-                        || attr.accessZoneId == mktoJapaneseWorkspaceId)
+                        && (attr.accessZoneId == 1
+                            || attr.accessZoneId == mktoJapaneseWorkspaceId))
                     || (attr
                         && attr.depth
                         && attr.depth == 1
@@ -2047,15 +2047,15 @@ APP.disableMenus = function() {
                         && menu.currNode
                         && menu.currNode.attributes
                         && menu.currNode.attributes.accessZoneId
-                        && menu.currNode.attributes.accessZoneId == 1
-                        || menu.currNode.attributes.accessZoneId == mktoJapaneseWorkspaceId)
+                        && (menu.currNode.attributes.accessZoneId == 1
+                            || menu.currNode.attributes.accessZoneId == mktoJapaneseWorkspaceId))
                     || (!menu
                         || !menu.currNode
                         && canvas
                         && canvas.config
                         && canvas.config.accessZoneId
-                        && canvas.config.accessZoneId == 1
-                        || canvas.config.accessZoneId == mktoJapaneseWorkspaceId),
+                        && (canvas.config.accessZoneId == 1
+                            || canvas.config.accessZoneId == mktoJapaneseWorkspaceId)),
 			itemsToDisable = [
 							"uploadImage",//Upload Image or File
 							//"grabFromWebPage",//Grab Images from Web
@@ -2082,8 +2082,8 @@ APP.disableMenus = function() {
 			canvas = MktCanvas.getActiveTab(),
 			disable = (attr
                         && attr.accessZoneId 
-                        && attr.accessZoneId == 1
-                        || attr.accessZoneId == mktoJapaneseWorkspaceId)
+                        && (attr.accessZoneId == 1
+                            || attr.accessZoneId == mktoJapaneseWorkspaceId))
                     || (attr
                         && attr.depth
                         && attr.depth == 1
@@ -2095,15 +2095,15 @@ APP.disableMenus = function() {
                         && menu.currNode
                         && menu.currNode.attributes
                         && menu.currNode.attributes.accessZoneId
-                        && menu.currNode.attributes.accessZoneId == 1
-                        || menu.currNode.attributes.accessZoneId == mktoJapaneseWorkspaceId)
+                        && (menu.currNode.attributes.accessZoneId == 1
+                            || menu.currNode.attributes.accessZoneId == mktoJapaneseWorkspaceId))
                     || (!menu
                         || !menu.currNode
                         && canvas
                         && canvas.config
                         && canvas.config.accessZoneId
-                        && canvas.config.accessZoneId == 1
-                        || canvas.config.accessZoneId == mktoJapaneseWorkspaceId),
+                        && (canvas.config.accessZoneId == 1
+                            || canvas.config.accessZoneId == mktoJapaneseWorkspaceId)),
 			itemsToDisable = [
 							//"navigateToMembership",//View Leads
 							//"navigateToSmartList",//View Smart List
@@ -2142,8 +2142,8 @@ APP.disableMenus = function() {
 			canvas = MktCanvas.getActiveTab(),
 			disable = (attr
                         && attr.accessZoneId 
-                        && attr.accessZoneId == 1
-                        || attr.accessZoneId == mktoJapaneseWorkspaceId)
+                        && (attr.accessZoneId == 1
+                            || attr.accessZoneId == mktoJapaneseWorkspaceId))
                     || (attr
                         && attr.depth
                         && attr.depth == 1
@@ -2155,15 +2155,15 @@ APP.disableMenus = function() {
                         && menu.currNode
                         && menu.currNode.attributes
                         && menu.currNode.attributes.accessZoneId
-                        && menu.currNode.attributes.accessZoneId == 1
-                        || menu.currNode.attributes.accessZoneId == mktoJapaneseWorkspaceId)
+                        && (menu.currNode.attributes.accessZoneId == 1
+                            || menu.currNode.attributes.accessZoneId == mktoJapaneseWorkspaceId))
                     || (!menu
                         || !menu.currNode
                         && canvas
                         && canvas.config
                         && canvas.config.accessZoneId
-                        && canvas.config.accessZoneId == 1
-                        || canvas.config.accessZoneId == mktoJapaneseWorkspaceId),
+                        && (canvas.config.accessZoneId == 1
+                            || canvas.config.accessZoneId == mktoJapaneseWorkspaceId)),
 			itemsToDisable = [
 							//"navigateToMembership",//View Leads
 							//"navigateToSmartList",//View Smart List
@@ -2202,8 +2202,8 @@ APP.disableMenus = function() {
 			canvas = MktCanvas.getActiveTab(),
 			disable = (attr
                         && attr.accessZoneId 
-                        && attr.accessZoneId == 1
-                        || attr.accessZoneId == mktoJapaneseWorkspaceId)
+                        && (attr.accessZoneId == 1
+                            || attr.accessZoneId == mktoJapaneseWorkspaceId))
                     || (attr
                         && attr.depth
                         && attr.depth == 1
@@ -2215,15 +2215,15 @@ APP.disableMenus = function() {
                         && menu.currNode
                         && menu.currNode.attributes
                         && menu.currNode.attributes.accessZoneId
-                        && menu.currNode.attributes.accessZoneId == 1
-                        || menu.currNode.attributes.accessZoneId == mktoJapaneseWorkspaceId)
+                        && (menu.currNode.attributes.accessZoneId == 1
+                            || menu.currNode.attributes.accessZoneId == mktoJapaneseWorkspaceId))
                     || (!menu
                         || !menu.currNode
                         && canvas
                         && canvas.config
                         && canvas.config.accessZoneId
-                        && canvas.config.accessZoneId == 1
-                        || canvas.config.accessZoneId == mktoJapaneseWorkspaceId),
+                        && (canvas.config.accessZoneId == 1
+                            || canvas.config.accessZoneId == mktoJapaneseWorkspaceId)),
 			itemsToDisable = [
 							"createDraftSegmentation",//Create Draft
 							//"editSegmentation",//Edit Segments
@@ -2254,8 +2254,8 @@ APP.disableMenus = function() {
 			canvas = MktCanvas.getActiveTab(),
 			disable = (attr
                         && attr.accessZoneId 
-                        && attr.accessZoneId == 1
-                        || attr.accessZoneId == mktoJapaneseWorkspaceId)
+                        && (attr.accessZoneId == 1
+                            || attr.accessZoneId == mktoJapaneseWorkspaceId))
                     || (attr
                         && attr.depth
                         && attr.depth == 1
@@ -2267,15 +2267,15 @@ APP.disableMenus = function() {
                         && menu.currNode
                         && menu.currNode.attributes
                         && menu.currNode.attributes.accessZoneId
-                        && menu.currNode.attributes.accessZoneId == 1
-                        || menu.currNode.attributes.accessZoneId == mktoJapaneseWorkspaceId)
+                        && (menu.currNode.attributes.accessZoneId == 1
+                            || menu.currNode.attributes.accessZoneId == mktoJapaneseWorkspaceId))
                     || (!menu
                         || !menu.currNode
                         && canvas
                         && canvas.config
                         && canvas.config.accessZoneId
-                        && canvas.config.accessZoneId == 1
-                        || canvas.config.accessZoneId == mktoJapaneseWorkspaceId),
+                        && (canvas.config.accessZoneId == 1
+                            || canvas.config.accessZoneId == mktoJapaneseWorkspaceId)),
 			itemsToDisable = [
 							"newSegmentation",//New Segmentation
 							"share",//Share Folder
@@ -2304,8 +2304,8 @@ APP.disableMenus = function() {
 			canvas = MktCanvas.getActiveTab(),
 			disable = (attr
                         && attr.accessZoneId 
-                        && attr.accessZoneId == 1
-                        || attr.accessZoneId == mktoJapaneseWorkspaceId)
+                        && (attr.accessZoneId == 1
+                            || attr.accessZoneId == mktoJapaneseWorkspaceId))
                     || (attr
                         && attr.depth
                         && attr.depth == 1
@@ -2317,15 +2317,15 @@ APP.disableMenus = function() {
                         && menu.currNode
                         && menu.currNode.attributes
                         && menu.currNode.attributes.accessZoneId
-                        && menu.currNode.attributes.accessZoneId == 1
-                        || menu.currNode.attributes.accessZoneId == mktoJapaneseWorkspaceId)
+                        && (menu.currNode.attributes.accessZoneId == 1
+                            || menu.currNode.attributes.accessZoneId == mktoJapaneseWorkspaceId))
                     || (!menu
                         || !menu.currNode
                         && canvas
                         && canvas.config
                         && canvas.config.accessZoneId
-                        && canvas.config.accessZoneId == 1
-                        || canvas.config.accessZoneId == mktoJapaneseWorkspaceId),
+                        && (canvas.config.accessZoneId == 1
+                            || canvas.config.accessZoneId == mktoJapaneseWorkspaceId)),
 			itemsToDisable = [
 							//"navigateToMembership",//View Leads
 							//"navigateToSmartList",//View Smart List
@@ -2374,8 +2374,8 @@ APP.disableMenus = function() {
 			canvas = MktCanvas.getActiveTab(),
 			disable = (attr
                         && attr.accessZoneId 
-                        && attr.accessZoneId == 1
-                        || attr.accessZoneId == mktoJapaneseWorkspaceId)
+                        && (attr.accessZoneId == 1
+                            || attr.accessZoneId == mktoJapaneseWorkspaceId))
                     || (attr
                         && attr.depth
                         && attr.depth == 1
@@ -2387,15 +2387,15 @@ APP.disableMenus = function() {
                         && menu.currNode
                         && menu.currNode.attributes
                         && menu.currNode.attributes.accessZoneId
-                        && menu.currNode.attributes.accessZoneId == 1
-                        || menu.currNode.attributes.accessZoneId == mktoJapaneseWorkspaceId)
+                        && (menu.currNode.attributes.accessZoneId == 1
+                            || menu.currNode.attributes.accessZoneId == mktoJapaneseWorkspaceId))
                     || (!menu
                         || !menu.currNode
                         && canvas
                         && canvas.config
                         && canvas.config.accessZoneId
-                        && canvas.config.accessZoneId == 1
-                        || canvas.config.accessZoneId == mktoJapaneseWorkspaceId),
+                        && (canvas.config.accessZoneId == 1
+                            || canvas.config.accessZoneId == mktoJapaneseWorkspaceId)),
 			itemsToDisable = [
 							//"navigateToAnalyzer",//View Analyzer
 							//"navigateToSmartList",//View Smart List
@@ -2427,8 +2427,8 @@ APP.disableMenus = function() {
 			canvas = MktCanvas.getActiveTab(),
 			disable = (attr
                         && attr.accessZoneId 
-                        && attr.accessZoneId == 1
-                        || attr.accessZoneId == mktoJapaneseWorkspaceId)
+                        && (attr.accessZoneId == 1
+                            || attr.accessZoneId == mktoJapaneseWorkspaceId))
                     || (attr
                         && attr.depth
                         && attr.depth == 1
@@ -2440,15 +2440,15 @@ APP.disableMenus = function() {
                         && menu.currNode
                         && menu.currNode.attributes
                         && menu.currNode.attributes.accessZoneId
-                        && menu.currNode.attributes.accessZoneId == 1
-                        || menu.currNode.attributes.accessZoneId == mktoJapaneseWorkspaceId)
+                        && (menu.currNode.attributes.accessZoneId == 1
+                            || menu.currNode.attributes.accessZoneId == mktoJapaneseWorkspaceId))
                     || (!menu
                         || !menu.currNode
                         && canvas
                         && canvas.config
                         && canvas.config.accessZoneId
-                        && canvas.config.accessZoneId == 1
-                        || canvas.config.accessZoneId == mktoJapaneseWorkspaceId),
+                        && (canvas.config.accessZoneId == 1
+                            || canvas.config.accessZoneId == mktoJapaneseWorkspaceId)),
 			itemsToDisable = [
 							"createFolder",//New Folder
 							"renameFolder",//Rename Folder
@@ -2478,8 +2478,8 @@ APP.disableMenus = function() {
             && MktCanvas.getActiveTab()
             && MktCanvas.getActiveTab().config
             && MktCanvas.getActiveTab().config.accessZoneId
-            && MktCanvas.getActiveTab().config.accessZoneId == 1
-            || MktCanvas.getActiveTab().config.accessZoneId == mktoJapaneseWorkspaceId) {
+            && (MktCanvas.getActiveTab().config.accessZoneId == 1
+                || MktCanvas.getActiveTab().config.accessZoneId == mktoJapaneseWorkspaceId)) {
         
             // Lead Database > Lead Actions > Sub-menu
             if (this.menu.itemId == "leadDbLeadMenu") {
