@@ -41,8 +41,10 @@ var currentUrl = window.location.href,
     mktoMyMarketoFragment = "MM0A1",
 	mktoMarketingActivitiesDefaultFragment = "MA15A1",
     mktoMarketingActivitiesMarketingFragment = "MA19802A1",
+    mktoMarketingActivitiesJapaneseFragment = "MA19848A1",
 	mktoLeadDatabaseDefaultFragment = "ML0A1ZN2",
     mktoLeadDatabaseMarketingFragment = "ML0A1ZN19788",
+    mktoLeadDatabaseJapaneseFragment = "ML0A1ZN19834",
     mktoAnalyticsFragment = "AH0A1ZN17",
     mktoAdBridgeSmartListFragment = "SL1B2",
     mktoEmailDesignerFragment = "EME",
@@ -3881,8 +3883,10 @@ if (currentUrl.search(mktoAppDomain) != -1
                 }
 				else if (currUrlFragment == mktoMarketingActivitiesDefaultFragment
 				|| currUrlFragment == mktoMarketingActivitiesMarketingFragment
+                || currUrlFragment == mktoMarketingActivitiesJapaneseFragment
                 || currUrlFragment == mktoLeadDatabaseDefaultFragment
-                || currUrlFragment == mktoLeadDatabaseMarketingFragment) {
+                || currUrlFragment == mktoLeadDatabaseMarketingFragment
+                || currUrlFragment == mktoLeadDatabaseJapaneseFragment) {
 					APP.disableButtons();
 				}
                 
@@ -4123,8 +4127,10 @@ if (currentUrl.search(mktoAppDomain) != -1
                     }
 					else if (currUrlFragment == mktoMarketingActivitiesDefaultFragment
                     || currUrlFragment == mktoMarketingActivitiesMarketingFragment
+                    || currUrlFragment == mktoMarketingActivitiesJapaneseFragment
                     || currUrlFragment == mktoLeadDatabaseDefaultFragment
-                    || currUrlFragment == mktoLeadDatabaseMarketingFragment) {
+                    || currUrlFragment == mktoLeadDatabaseMarketingFragment
+                    || currUrlFragment == mktoLeadDatabaseJapaneseFragment) {
 						APP.disableButtons();
 					}
                     
