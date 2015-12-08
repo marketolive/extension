@@ -53,6 +53,7 @@ var currentUrl = window.location.href,
     mktoMobilePushNotificationWizardFragment = "MPNE",
     mktoSocialAppWizardFragment = "SOAE",
     mktoMarketingWorkspaceId = 172,
+    mktoJapaneseWorkspaceId = 173,
     userWorkspaceName = "Marketing",
     isMktoLiveInstance = false,
     pod,
@@ -393,7 +394,9 @@ APP.overrideSmartCampaignSaving = function() {
     
     Mkt.widgets.DataPanelManager.prototype.save = function(cause, dp, acceptUpdates) {
         this._updateDataPanelOrder(true);
-        if (MktCanvas.getActiveTab().config.accessZoneId != 1
+        var workspaceId = MktCanvas.getActiveTab().config.accessZoneId;
+        if (workspaceId != 1
+        && workspaceId != mktoJapaneseWorkspaceId
         && APP.getCookie("priv") != "false") {
             if (this.saveQueue.blockingSaveInProgress) {
                 this.saveQueue.pendingChangesCount++;
