@@ -180,9 +180,13 @@ APP.disableConfirmationMessage = function() {
                 MktLang.getStr('DataFormPanel.Check_your_advanced_filter_rules_after_any_insert_delete_reorder');
             }
             
-            var workspaceId = MktCanvas.getActiveTab().config.accessZoneId;
-            if (workspaceId == 1
-            || workspaceId == disableConfirmationMessage) {
+            if (MktCanvas
+            && MktCanvas.getActiveTab()
+            && MktCanvas.getActiveTab().config
+            && MktCanvas.getActiveTab().config.accessZoneId) {
+                console.log("Marketo App > Closing: Smart Campaign Delete Confirmation Message");
+                this._doClose();
+                /*
                 if (hasChanges && showTriggerWarning) {
                     Ext4.Msg.confirmDelete({
                         title : title,
@@ -200,6 +204,7 @@ APP.disableConfirmationMessage = function() {
                     console.log("Marketo App > Closing: Smart Campaign Delete Confirmation Message");
                     this._doClose();
                 }
+                */
             }
             else {
                 Ext4.Msg.confirmDelete({
