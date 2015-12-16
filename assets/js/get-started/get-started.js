@@ -1,31 +1,16 @@
 $(document).ready(function(){
-    $("#main-measure-your-success, #main-align-with-sales, #main-engage-your-customers, #main-drive-more-awareness, #main-down, #drive-up, #main-acquire-and-segment, #main-engage-and-test, #main-report-and-iterate, #align-up, #align-down, #drive-down, #engage-up, #engage-down, #measure-up").click(function(e) {
-        if(e.currentTarget.id == "main-down" || e.currentTarget.id == "engage-up" || e.currentTarget.id == "main-drive-more-awareness" || e.currentTarget.id == "main-acquire-and-segment"){
-            $('html, body').animate({
-                scrollTop: $("#drivemoreawareness").offset().top
-            }, 600);
-        }
-        else if(e.currentTarget.id == "drive-down" || e.currentTarget.id == "align-up" || e.currentTarget.id == "main-engage-your-customers" || e.currentTarget.id == "main-engage-and-test"){
-            $('html, body').animate({
-                scrollTop: $("#engageyourcustomers").offset().top
-            }, 600);            
-        }
-        else if(e.currentTarget.id == "engage-down" || e.currentTarget.id == "main-align-with-sales" || e.currentTarget.id == "main-report-and-iterate"){
-            $('html, body').animate({
-                scrollTop: $("#alignwithsales").offset().top
-            }, 600);            
-        }
-        else if(e.currentTarget.id == "align-down" || e.currentTarget.id == "main-measure-your-success"){
-            $('html, body').animate({
-                scrollTop: $("#measureyoursuccess").offset().top
-            }, 600);            
-        }
-        else if(e.currentTarget.id == "measure-up" || e.currentTarget.id == "drive-up"){
-            $('html, body').animate({
-                scrollTop: $("#options").offset().top
-            }, 600);   
-        }
+    $('#fullpage').fullpage();
+
+    $('.down-arrow-bkg').click(function(){
+      $.fn.fullpage.moveSectionDown();
+      
     });
+
+    $('.up-arrow-bkg').click(function(){
+      $.fn.fullpage.moveSectionUp();
+    });
+      
+  
   var driveWords = {
     "drive1" : {
       "title" : "Search Optimization" ,
