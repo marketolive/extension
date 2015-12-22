@@ -1,0 +1,153 @@
+/*!
+ * Start Bootstrap - Business Frontpage HTML Template (http://startbootstrap.com)
+ * Code licensed under the Apache License v2.0.
+ * For details, see http://www.apache.org/licenses/LICENSE-2.0.
+ */
+
+body {
+    /*padding-top: 50px;*/ /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
+}
+
+/* Header Image Background - Change the URL below to your image path (example: ../images/background.jpg) */
+
+.business-header {
+    min-height: 500px;
+    padding-bottom: 100px;
+    height: 100%;
+    background: url('../MarketoLive-master/assets/img/marketobackground.png') center center no-repeat scroll;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+    -o-background-size: cover;
+}
+
+/* Customize the text color and shadow color and to optimize text legibility. */
+
+.tagline {
+    font-size: 48px;
+    text-shadow: 0 0 10px #000;
+    color: #fff;
+    text-align: center;
+}
+
+.subject-tagline {
+    color: white;
+    font-size: 22px;
+    text-align: center;
+}
+
+.subject-tagline-image {
+    padding: 10%;
+    background-color: white;
+    border-radius: 50%;
+    border: 5px solid #5a54a4;
+}
+
+.logo {
+    height: 60px;
+    width: 60px;
+    margin-top: 1%;
+    margin-left: 5%;
+}
+
+/*.image-spacing-pic {
+    max-width: 90%;
+    max-height: px;
+}*/
+
+.arrow-container-down {
+    margin-left: 50%;
+    margin-right: 50%;
+}
+
+.arrow-container-up {
+    margin-left: 50%;
+    margin-right: 50%;
+}
+
+.inner-arrow-container {
+    width: 50px;
+    height: 50px;
+}
+
+.section2-image-container {
+    width: 100%;
+    height: 100%;
+}
+
+.section2-options {
+    display: table-cell;
+    border: 5px solid #5a54a4;
+    border-radius: 50%;
+    width: 150px;
+    height: 150px;
+    padding: 10%;
+    vertical-align: middle;
+}
+
+.section3 {
+    margin-bottom: 1%;
+}
+
+.section3-options {
+    display: table-cell;
+    border: 5px solid #5a54a4;
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    padding: 10%;
+    vertical-align: middle;
+}
+
+.section4-options {
+    display: table-cell;
+    border: 5px solid #5a54a4;
+    border-radius: 50%;
+    width: 150px;
+    height: 150px;
+    padding: 10%;
+    vertical-align: middle;
+}
+
+.section5-options {
+    display: table-cell;
+    border: 5px solid #5a54a4;
+    border-radius: 50%;
+    width: 150px;
+    height: 150px;
+    padding: 10%;
+    vertical-align: middle;
+}
+
+
+
+.font-size-16 {
+    font-size: 16px;
+}
+
+.section-options {
+    margin-top: 10%;
+}
+
+.section-options-18{
+    margin-top: 18%;
+}
+
+.group-section-container {
+    margin-bottom: 5%;
+}
+
+.purple-background {
+    background-color: #5a54a4;
+}
+
+.white-text {
+    color: white;
+}
+.img-center {
+    margin: 0 auto;
+}
+
+footer {
+    margin: 50px 0;
+}
