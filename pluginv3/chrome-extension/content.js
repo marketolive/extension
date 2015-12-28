@@ -84,9 +84,7 @@ displayProgressModal = function(parameters) {
         progress = parameters["progress"],
         xmlHttp = new XMLHttpRequest();
     
-//    loadScript(chrome);
-//    loadScript();
-    xmlHttp.open("GET", chrome.extension.getURL("lib/progress.html"));
+    xmlHttp.open("GET", chrome.extension.getURL("lib/remote.html"));
     xmlHttp.send();
     
     xmlHttp.onreadystatechange = function () {
@@ -174,17 +172,17 @@ var port = chrome.runtime.connect({
 window.onload = function() {
     console.log("Content > Window: Loaded");
     
-    displayProgressModal(["","","",""]);
+//    displayProgressModal(["","","",""]);
 
-    if (document.referrer.search("marketolive.com") != -1) {
-        var xmlHttp = new XMLHttpRequest();
-        xmlHttp.open("POST", "app.marketolive.com/stories", false);
-        xmlHttp.send(Blob(currentUrl));
-        
-        if (xmlHttp.responseText.length !== 0) {
-            displayProgressModal(xmlHttp.responseText);
-        } 
-    }
+//    if (document.referrer.search("marketolive.com") != -1) {
+//        var xmlHttp = new XMLHttpRequest();
+//        xmlHttp.open("POST", "app.marketolive.com/stories", false);
+//        xmlHttp.send(Blob(currentUrl));
+//        
+//        if (xmlHttp.responseText.length !== 0) {
+//            displayProgressModal(xmlHttp.responseText);
+//        } 
+//    }
     
 //    if (currentUrl.search(mktoLiveDomain) != -1) {
 //        console.log("Content > Displaying Go Agile Button");
