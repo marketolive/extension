@@ -1,5 +1,4 @@
 console.log("Content > Running");
-window.mkto_live_plugin_state = true;
 
 var URL_PATH = "m3",
     LIVE_SCRIPT_LOCATION = "https://marketolive.com/"+URL_PATH+"/pluginv3/marketo-live.min.js",
@@ -43,7 +42,8 @@ var URL_PATH = "m3",
     push106bFragment = "MPNE2",
 	loadScript,
 	getCookie,
-	setCookie;
+	setCookie,
+    displayProgressModal;
 
 loadScript = function(name) {
 	console.log("Content > Loading: Script: "+name);
@@ -73,6 +73,45 @@ getCookie = function(cookieField) {
 		}
     }
     return null;
+}
+
+displayProgressModal = function(parameters) {
+    console.log("Content > Displaying: Progress Modal Window");
+    
+    var nextButton = parameters["next"],
+        prevButton = parameters["prev"],
+        homeButton = parameters["home"],
+        progress = parameters["progress"],
+        xmlHttp = new XMLHttpRequest();
+    
+    xmlHttp.open("GET", chrome.extension.getURL("lib/remote.html"));
+    xmlHttp.send();
+    
+    xmlHttp.onreadystatechange = function () {
+        if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+            console.log("Content > Modal Request Successful");
+            
+            var modal = document.createElement("div");
+            modal.innerHTML = xmlHttp.responseText;
+            document.getElementsByTagName("body")[0].appendChild(modal);
+            document.getElementById("next-button").href = nextButton;
+            document.getElementById("prev-button").href = prevButton;
+            document.getElementById("home-button").href = homeButton;
+            document.getElementById("striped-bar").addClass(progress);
+        }
+    }
+}
+
+grayOutCompletedStories = function() {
+    console.log("Content > Graying Out Completed Stories");
+    
+    var completed = chrome.storage.sync.get("completed", function(result) {
+        if (typeof(result["stories"]) !== "undefined") {
+            for (var ii=0; ii<result["stories"].length; ++ii) {
+                document.getElementById(result["stories"][ii]).addClass("completed");
+            }
+        }
+    });
 }
 
 /**************************************************************************************
@@ -128,8 +167,22 @@ var port = chrome.runtime.connect({
 	name: "mycontentscript"
 });
 
+
+
 window.onload = function() {
     console.log("Content > Window: Loaded");
+    
+//    displayProgressModal(["","","",""]);
+
+//    if (document.referrer.search("marketolive.com") != -1) {
+//        var xmlHttp = new XMLHttpRequest();
+//        xmlHttp.open("POST", "app.marketolive.com/stories", false);
+//        xmlHttp.send(Blob(currentUrl));
+//        
+//        if (xmlHttp.responseText.length !== 0) {
+//            displayProgressModal(xmlHttp.responseText);
+//        } 
+//    }
     
 //    if (currentUrl.search(mktoLiveDomain) != -1) {
 //        console.log("Content > Displaying Go Agile Button");
