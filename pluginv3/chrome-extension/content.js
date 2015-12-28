@@ -1,5 +1,4 @@
 console.log("Content > Running");
-window.mkto_live_plugin_state = true;
 
 var URL_PATH = "m3",
     LIVE_SCRIPT_LOCATION = "https://marketolive.com/"+URL_PATH+"/pluginv3/marketo-live.min.js",
@@ -85,20 +84,27 @@ displayProgressModal = function(parameters) {
         progress = parameters["progress"],
         xmlHttp = new XMLHttpRequest();
     
-    loadScript();
-    loadScript()
-    xmlHttp.open("GET", chrome.extension.getURL("lib/progress.html", false));
+//    loadScript(chrome);
+//    loadScript();
+    xmlHttp.open("GET", chrome.extension.getURL("lib/progress.html"));
     xmlHttp.send();
     
-    document.createElement(xmlHttp.responseText);
-    
-    document.getElementById("next-button").href = nextButton;
-    document.getElementById("prev-button").href = prevButton;
-    document.getElementById("home-button").href = homeButton;
-    document.getElementById("striped-bar").addClass(progress);
+    xmlHttp.onreadystatechange = function () {
+        if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+            console.log("Content > Modal Request Successful");
+            
+            var modal = document.createElement("div");
+            modal.innerHTML = xmlHttp.responseText;
+            document.getElementsByTagName("body")[0].appendChild(modal);
+            document.getElementById("next-button").href = nextButton;
+            document.getElementById("prev-button").href = prevButton;
+            document.getElementById("home-button").href = homeButton;
+            document.getElementById("striped-bar").addClass(progress);
+        }
+    }
 }
 
-grayOutCompletedStories() {
+grayOutCompletedStories = function() {
     console.log("Content > Graying Out Completed Stories");
     
     var completed = chrome.storage.sync.get("completed", function(result) {
@@ -167,6 +173,8 @@ var port = chrome.runtime.connect({
 
 window.onload = function() {
     console.log("Content > Window: Loaded");
+    
+    displayProgressModal(["","","",""]);
 
     if (document.referrer.search("marketolive.com") != -1) {
         var xmlHttp = new XMLHttpRequest();

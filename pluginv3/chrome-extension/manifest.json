@@ -24,5 +24,6 @@
    "name": "MarketoLive",
    "permissions": [ "management", "storage", "webNavigation", "tabs", "cookies", "*://*.marketodesigner.com/*", "*://*.marketolive.com/*", "*://*.marketo.com/*", "*://go.app.io/*", "http://cloud4.insightera.com/demo/", "*://cloud4.insightera.com/*", "https://250ok.com/*" ],
    "update_url": "https://clients2.google.com/service/update2/crx",
-   "version": "2.0.9"
+   "version": "3.0.0",
+    "web_accessible_resources": ["lib/*"]
 }
