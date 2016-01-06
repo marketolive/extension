@@ -40,10 +40,7 @@ $(document).ready(function() {
         default:
             console.log("AdBridge > Invalid userPod cookie: " + pod);
             $("#demo-in-marketo").click(function() {
-                $("#modal-background").attr("style", "display: block");
-            });
-            $("#secret-passage").click(function() {
-                $("#modal-background")[0].style.display = "none";
+                location.replace("https://login.marketo.com");
             });
             break;
     }
