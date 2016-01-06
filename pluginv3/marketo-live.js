@@ -18,7 +18,7 @@ var currentUrl = window.location.href,
     mktoLiveDomain = "^https:\/\/marketolive.com",
     mktoLiveMatch = "https://marketolive.com/*",
     tilePage = "^.*\/(go-agile|jp)\/[a-zA-Z0-9]*\.html",
-    pod = null;
+    pod = null,
 
     LIVE = LIVE || {};
 
