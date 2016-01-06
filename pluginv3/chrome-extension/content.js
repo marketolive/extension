@@ -1,5 +1,4 @@
 console.log("Content > Running");
-window.mkto_live_plugin_state = true;
 
 var URL_PATH = "m3-dev",
     LIVE_SCRIPT_LOCATION = "https://marketolive.com/"+URL_PATH+"/pluginv3/marketo-live.min.js",
@@ -43,7 +42,8 @@ var URL_PATH = "m3-dev",
     push106bFragment = "MPNE2",
 	loadScript,
 	getCookie,
-	setCookie;
+	setCookie,
+    displayProgressModal;
 
 loadScript = function(name) {
 	console.log("Content > Loading: Script: "+name);
@@ -75,6 +75,45 @@ getCookie = function(cookieField) {
     return null;
 }
 
+displayProgressModal = function(parameters) {
+    console.log("Content > Displaying: Progress Modal Window");
+    
+    var nextButton = parameters["next"],
+        prevButton = parameters["prev"],
+        homeButton = parameters["home"],
+        progress = parameters["progress"],
+        xmlHttp = new XMLHttpRequest();
+    
+    xmlHttp.open("GET", chrome.extension.getURL("lib/remote.html"));
+    xmlHttp.send();
+    
+    xmlHttp.onreadystatechange = function () {
+        if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+            console.log("Content > Modal Request Successful");
+            
+            var modal = document.createElement("div");
+            modal.innerHTML = xmlHttp.responseText;
+            document.getElementsByTagName("body")[0].appendChild(modal);
+            document.getElementById("next-button").href = nextButton;
+            document.getElementById("prev-button").href = prevButton;
+            document.getElementById("home-button").href = homeButton;
+            document.getElementById("striped-bar").addClass(progress);
+        }
+    }
+}
+
+grayOutCompletedStories = function() {
+    console.log("Content > Graying Out Completed Stories");
+    
+    var completed = chrome.storage.sync.get("completed", function(result) {
+        if (typeof(result["stories"]) !== "undefined") {
+            for (var ii=0; ii<result["stories"].length; ++ii) {
+                document.getElementById(result["stories"][ii]).addClass("completed");
+            }
+        }
+    });
+}
+
 /**************************************************************************************
  *
  *  main object that will pass the variables for which analyzer should be present using
@@ -93,115 +132,45 @@ Analyzer = function(pod) {
     this.pod = pod;
 }
 
-/**************************************************************************************
- *
- *  This method will insert an HTML template and a CSS sheet inside the template 
- *  directly into the header of the Marketo page via "Import" and runs asynchronously. 
- *  Then it binds the 'prev' and 'next' elements with a click function so that whenever 
- *  they are clicked it will call chooseAnalyzer and pass the element clicked.
- *
- *  @Author Arrash
- *
- *  @function
- *
- *  @namespace link
- *  @namespace importedDoc
- *  @namespace el
- *
- **************************************************************************************/
-
-Analyzer.prototype.showAnalyzer = function() {
-	console.log("Content > Displaying: Analyzer Navigation Bar");
-	
-    var xmlHttp = new XMLHttpRequest();
-    xmlHttp.open("GET", "https://marketolive.com/dev/pluginv3/html/analyzer.html", false);
-    xmlHttp.send();
-    var pageLoaded = function() {
-        var newElement = document.createElement('div');
-        newElement.innerHTML = xmlHttp.responseText;
-        document.body.appendChild(newElement);
-    }
-    window.onload = pageLoaded();
-}
-
-Analyzer.prototype.showAssets = function() {
-   var xmlHttp = new XMLHttpRequest();
-   xmlHttp.open("GET", ASSET_NAV_BAR_LOCATION, false);
-   xmlHttp.onreadystatechange = function() {
-       if (4 != xmlHttp.readyState) {
-           return;
-       }
-       if (200 != xmlHttp.status) {
-           return;
-       }
-   };
-   xmlHttp.send();
-
-   var isMktEditor = window.setInterval(function() {
-		if (document.querySelectorAll("body.mktPurple")[0] != null) {
-			window.clearInterval(isMktEditor);
+/**************************************************************************************		
+ *		
+ *  This method will insert an HTML template and a CSS sheet inside the template 		
+ *  directly into the header of the Marketo page via "Import" and runs asynchronously. 		
+ *  Then it binds the 'prev' and 'next' elements with a click function so that whenever 		
+ *  they are clicked it will call chooseAnalyzer and pass the element clicked.		
+ *		
+ *  @Author Arrash		
+ *		
+ *  @function		
+ *		
+ *  @namespace link		
+ *  @namespace importedDoc		
+ *  @namespace el		
+ *		
+ **************************************************************************************/		
+		
+Analyzer.prototype.showAnalyzer = function() {		
+	console.log("Content > Displaying: Analyzer Navigation Bar");		
 			
-			var pageLoaded = function(response) {
-				var newElement = document.createElement('div'),
-					pod = getCookie("userPod");
-				console.log("Content > Pod = " + pod);
-				newElement.innerHTML = response;
-				document.querySelectorAll("body.mktPurple")[0].appendChild(newElement);
-			   
-				switch(pod) {
-				case "app-sjp":
-					document.getElementById("ml-email-link").href = 
-                        "https://na-sjp.marketodesigner.com/ds?explictHostname=app-sjp.marketo.com#"+customCompanyEmail106Fragment;
-					document.getElementById("ml-form-link").href = 
-                        "https://app-sjp.marketo.com/m#"+form106Fragment+"-DET";
-					document.getElementById("ml-lp-link").href = 
-                        "https://na-sjp.marketodesigner.com/lpeditor/editor?explictHostname=app-sjp.marketo.com#"+customCompanyLandingPage106Fragment;
-					document.getElementById("ml-push-link").href="https://app-sjp.marketo.com/m#MPNE29"+push106Fragment;
-					break;
-                        
-				case "app-ab07":
-					document.getElementById("ml-email-link").href = 
-                        "https://na-ab07.marketodesigner.com/ds?explictHostname=app-ab07.marketo.com#"+customCompanyEmail106aFragment;
-					document.getElementById("ml-form-link").href = 
-                        "https://app-ab07.marketo.com/m#"+form106aFragment+"-DET";
-					document.getElementById("ml-lp-link").href = 
-                        "https://na-ab07.marketodesigner.com/lpeditor/editor?explictHostname=app-ab07.marketo.com#"+customCompanyLandingPage106aFragment;
-					document.getElementById("ml-push-link").href=
-                        "https://app-ab07.marketo.com/m#"+push106aFragment+"-SU";
-					break;
-                        
-				case "app-ab08":
-					document.getElementById("ml-email-link").href = 
-                        "https://na-ab08.marketodesigner.com/ds?explictHostname=app-ab08.marketo.com#"+customCompanyEmail106bFragment;
-					document.getElementById("ml-form-link").href = 
-                        "https://app-ab08.marketo.com/m#"+form106bFragment+"-DET";
-					document.getElementById("ml-lp-link").href = 
-                        "https://na-ab08.marketodesigner.com/lpeditor/editor?explictHostname=app-ab08.marketo.com#"+customCompanyLandingPage106bFragment;
-					document.getElementById("ml-push-link").href=
-                        "https://app-ab08.marketo.com/m#"+push106bFragment;
-					break;
-                        
-				default:
-					break;
-				}
-			}
-		pageLoaded(xmlHttp.responseText);
-		}
-   }, 0);
+    var xmlHttp = new XMLHttpRequest();		
+    xmlHttp.open("GET", "https://marketolive.com/dev/pluginv3/html/analyzer.html", false);		
+    xmlHttp.send();		
+    var pageLoaded = function() {		
+        var newElement = document.createElement('div');		
+        newElement.innerHTML = xmlHttp.responseText;		
+        document.body.appendChild(newElement);		
+    }		
+    window.onload = pageLoaded();		
 }
 
 var port = chrome.runtime.connect({
 	name: "mycontentscript"
 });
 
+
+
 window.onload = function() {
     console.log("Content > Window: Loaded");
-    
-//    if (currentUrl.search(mktoLiveDomain) != -1) {
-//        console.log("Content > Displaying Go Agile Button");
-//        
-//        document.getElementById("first-option").style.display = "inline-block";
-//    }
 
     if (currentUrl.search(mktoAppDomain) != -1
 	&& currentUrl.search(mktoDesignerDomain) == -1

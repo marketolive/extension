@@ -39,7 +39,8 @@ LIVE.insertDeepLinks = function(pod) {
     
     if (pod == null) {
         $(".image-sizing").click(function(e) {
-            LIVE.displayModalWindow();
+            window.open("https://login.marketo.com");
+//            LIVE.displayModalWindow();
             return false;
         });
     } 
