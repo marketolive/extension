@@ -18,10 +18,11 @@ var currentUrl = window.location.href,
     mktoLiveDomain = "^https:\/\/marketolive.com",
     mktoLiveMatch = "https://marketolive.com/*",
     tilePage = "^.*\/(go-agile|jp)\/[a-zA-Z0-9]*\.html",
+    pod = null;
 
     LIVE = LIVE || {};
 
-LIVE.injectLink = function(e, pod) {
+LIVE.injectLink = function(e) {
 //    console.log($(this).context.id);
 //    console.log(pod[$(this).context.id]);
     window.open(pod[$(this).context.id]);
@@ -53,11 +54,11 @@ LIVE.insertDeepLinks = function(pod) {
     } 
     else {
         console.log("MarketoLive > Inserting: Deep Links for: "+pod.id);
-        $(".image-sizing.deeplink").click(LIVE.injectLink, pod);
+        $(".image-sizing.deeplink").click(LIVE.injectLink);
     }
     
     console.log("MarketoLive > Inserting: Static Links");
-    $(".image-sizing.staticlink").click(LIVE.injectLink, pod);
+    $(".image-sizing.staticlink").click(LIVE.injectLink);
 }
 
 /**************************************************************************************
@@ -91,8 +92,9 @@ LIVE.displayModalWindow = function() {
 
 $(document).ready(function() {
 
-    var podString = PODS.getCookie("userPod"),
-        pod = new PODS.Pod(podString);
+    var podString = PODS.getCookie("userPod");
+    
+    pod = new PODS.Pod(podString);
 
     if (currentUrl.search(tilePage) != -1) {
         if (!podString) {
