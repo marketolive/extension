@@ -21,6 +21,13 @@ var currentUrl = window.location.href,
 
     LIVE = LIVE || {};
 
+LIVE.injectLink = function(e, pod) {
+//    console.log($(this).context.id);
+//    console.log(pod[$(this).context.id]);
+    window.open(pod[$(this).context.id]);
+    return false;
+}
+
 /**************************************************************************************
  *
  *  This function injects the deep links onto the homepage based on which
@@ -38,22 +45,19 @@ var currentUrl = window.location.href,
 LIVE.insertDeepLinks = function(pod) {
     
     if (pod == null) {
-        $(".image-sizing").click(function(e) {
+        $(".image-sizing.deeplink").click(function(e) {
             window.open("https://login.marketo.com");
 //            LIVE.displayModalWindow();
             return false;
         });
     } 
-
     else {
         console.log("MarketoLive > Inserting: Deep Links for: "+pod.id);
-        $(".image-sizing").click(function(e) {
-            console.log($(this).context.id);
-            console.log(pod[$(this).context.id]);
-            window.open(pod[$(this).context.id]);
-            return false;
-        });
+        $(".image-sizing.deeplink").click(LIVE.injectLink, pod);
     }
+    
+    console.log("MarketoLive > Inserting: Static Links");
+    $(".image-sizing.staticlink").click(LIVE.injectLink, pod);
 }
 
 /**************************************************************************************
