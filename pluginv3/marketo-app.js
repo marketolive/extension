@@ -48,6 +48,7 @@ var currentUrl = window.location.href,
     mktoAnalyticsFragment = "AH0A1ZN17",
     mktoAdBridgeSmartListFragment = "SL1B2",
 	mktoChampionChallengerFragment = "CCE418",
+	mktoABTestFragment = "EBE419",
     mktoEmailDesignerFragment = "EME",
     mktoEmailPreviewFragment = "EMP",
     mktoLandingPageDesignerFragment = "LPE",
@@ -3900,8 +3901,9 @@ if (currentUrl.search(mktoAppDomain) != -1
                     APP.overrideAnalyticsTiles();
                 }
 				
-				// Champion/Challenger Page
-				else if (currUrlFragment == mktoChampionChallengerFragment) {
+				// Champion/Challenger Page and A/B Test Page
+				else if (currUrlFragment == mktoChampionChallengerFragment
+				|| currUrlFragment.search(mktoABTestFragment) !== -1) {
 					APP.disableSaving();
 				}
                 
