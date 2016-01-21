@@ -47,6 +47,7 @@ var currentUrl = window.location.href,
     mktoLeadDatabaseJapaneseFragment = "ML0A1ZN19834",
     mktoAnalyticsFragment = "AH0A1ZN17",
     mktoAdBridgeSmartListFragment = "SL1B2",
+	mktoChampionChallengerFragment = "CCE418",
     mktoEmailDesignerFragment = "EME",
     mktoEmailPreviewFragment = "EMP",
     mktoLandingPageDesignerFragment = "LPE",
@@ -3898,6 +3899,11 @@ if (currentUrl.search(mktoAppDomain) != -1
                 else if (currUrlFragment == mktoAnalyticsFragment) {
                     APP.overrideAnalyticsTiles();
                 }
+				
+				// Champion/Challenger Page
+				else if (currUrlFragment == mktoChampionChallengerFragment) {
+					APP.disableSaving();
+				}
                 
                 else if (currUrlFragment == mktoAdBridgeSmartListFragment) {
                     var isAdBridgeSmartList = window.setInterval(function() {
