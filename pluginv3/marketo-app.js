@@ -3937,6 +3937,7 @@ if (currentUrl.search(mktoAppDomain) != -1
             console.log("Marketo App > Location: Marketo Page");
             
             window.clearInterval(isMktPageApp);
+            APP.overrideDeliverabilityToolsMenuItem();
             var accountString = MktPage.savedState.custPrefix,
                 userId = MktPage.userid.toLowerCase();
             
