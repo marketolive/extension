@@ -319,6 +319,7 @@ APP.overrideDeliverabilityToolsMenuItem = function() {
                     if (typeof(MktCanvas.getEl().dom.ownerDocument.body.childNodes[17].childNodes[1].childNodes[0].childNodes[1].childNodes[1].childNodes) !== "undefined") {
                         window.clearInterval(isMktSuperBallMenu1);
                         superBallMenuItems = MktCanvas.getEl().dom.ownerDocument.body.childNodes[17].childNodes[1].childNodes[0].childNodes[1].childNodes[1].childNodes;
+                        console.log("superBallMenuItems(17) = " + superBallMenuItems);
                     }
                 }, 0);
             }
@@ -327,6 +328,7 @@ APP.overrideDeliverabilityToolsMenuItem = function() {
                     if (typeof(MktCanvas.getEl().dom.ownerDocument.body.childNodes[18].childNodes[1].childNodes[0].childNodes[1].childNodes[1].childNodes) !== "undefined") {
                         window.clearInterval(isMktSuperBallMenu2);
                         superBallMenuItems = MktCanvas.getEl().dom.ownerDocument.body.childNodes[18].childNodes[1].childNodes[0].childNodes[1].childNodes[1].childNodes;
+                        console.log("superBallMenuItems(18) = " + superBallMenuItems);
                     }
                 }, 0);
             }
