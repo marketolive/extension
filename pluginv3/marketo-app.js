@@ -3933,7 +3933,7 @@ if (currentUrl.search(mktoAppDomain) != -1
     console.log("Marketo App > Location: Marketo URL");
 
     var isMktPageApp = window.setInterval(function() {
-        if (typeof(MktPage) !== "undefined" && typeof (MktCanvas.getEl().dom) !== "undefined") {
+        if (typeof(MktPage) !== "undefined" && typeof (MktCanvas.getEl().dom.ownerDocument) !== "undefined") {
             console.log("Marketo App > Location: Marketo Page");
             
             window.clearInterval(isMktPageApp);
