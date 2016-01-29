@@ -297,67 +297,72 @@ APP.overrideDeliverabilityToolsTile = function() {
  **************************************************************************************/
 
 APP.overrideDeliverabilityToolsMenuItem = function() {
-    console.log("Marketo App > Overriding: Deliverability Superball Menu Item");
-    
-    var superBallMenuItems,
-        currSuperBallMenuItemSpanTags,
-        currSuperBallMenuItemAtags,
-        deliverabilityToolsMenuItem,
-        communityMenuItemNum,
-        communityMenuItemSpanTags,
-        communityMenuItemAtags,
-        ii,
-        jj;
-    
-    MktPage.showSuperMenu();
-    if (MktCanvas.getEl().dom.ownerDocument.body.childNodes[17].id == "ext4-ext-gen1024") {
-        superBallMenuItems = MktCanvas.getEl().dom.ownerDocument.body.childNodes[17].childNodes[1].childNodes[0].childNodes[1].childNodes[1].childNodes;
-    }
-    else if (MktCanvas.getEl().dom.ownerDocument.body.childNodes[18].id == "ext4-ext-gen1024") {
-        superBallMenuItems = MktCanvas.getEl().dom.ownerDocument.body.childNodes[18].childNodes[1].childNodes[0].childNodes[1].childNodes[1].childNodes;
-    }
-    
-    for (ii = 0; ii < superBallMenuItems.length; ii++) {
-        currSuperBallMenuItemSpanTags = superBallMenuItems[ii].getElementsByTagName("span");
-        for (jj = 0; jj < currSuperBallMenuItemSpanTags.length; jj++) {
-            if (currSuperBallMenuItemSpanTags[jj].innerHTML == "My Marketo") {
-                superBallMenuItems[ii].click();
-                break;
+    var isMktSuperBallMenu = window.setInterval(function() {
+        if (typeof(MktCanvas.getEl().dom.ownerDocument.body.childNodes[17].childNodes[1].childNodes[0].childNodes[1].childNodes[1].childNodes) !== "undefined" || typeof(MktCanvas.getEl().dom.ownerDocument.body.childNodes[18].childNodes[1].childNodes[0].childNodes[1].childNodes[1].childNodes) !== "undefined") {
+            window.clearInterval(isMktSuperBallMenu);
+            console.log("Marketo App > Overriding: Deliverability Superball Menu Item");
+            
+            var superBallMenuItems,
+                currSuperBallMenuItemSpanTags,
+                currSuperBallMenuItemAtags,
+                deliverabilityToolsMenuItem,
+                communityMenuItemNum,
+                communityMenuItemSpanTags,
+                communityMenuItemAtags,
+                ii,
+                jj;
+            
+            MktPage.showSuperMenu();
+            if (MktCanvas.getEl().dom.ownerDocument.body.childNodes[17].id == "ext4-ext-gen1024") {
+                superBallMenuItems = MktCanvas.getEl().dom.ownerDocument.body.childNodes[17].childNodes[1].childNodes[0].childNodes[1].childNodes[1].childNodes;
             }
-            else if (currSuperBallMenuItemSpanTags[jj].innerHTML == "Deliverability Tools") {
-                deliverabilityToolsMenuItem = superBallMenuItems[ii];
-                break;
+            else if (MktCanvas.getEl().dom.ownerDocument.body.childNodes[18].id == "ext4-ext-gen1024") {
+                superBallMenuItems = MktCanvas.getEl().dom.ownerDocument.body.childNodes[18].childNodes[1].childNodes[0].childNodes[1].childNodes[1].childNodes;
             }
-            else if (currSuperBallMenuItemSpanTags[jj].innerHTML == "Community") {
-                communityMenuItemNum = ii;
-                break;
+            
+            for (ii = 0; ii < superBallMenuItems.length; ii++) {
+                currSuperBallMenuItemSpanTags = superBallMenuItems[ii].getElementsByTagName("span");
+                for (jj = 0; jj < currSuperBallMenuItemSpanTags.length; jj++) {
+                    if (currSuperBallMenuItemSpanTags[jj].innerHTML == "My Marketo") {
+                        superBallMenuItems[ii].click();
+                        break;
+                    }
+                    else if (currSuperBallMenuItemSpanTags[jj].innerHTML == "Deliverability Tools") {
+                        deliverabilityToolsMenuItem = superBallMenuItems[ii];
+                        break;
+                    }
+                    else if (currSuperBallMenuItemSpanTags[jj].innerHTML == "Community") {
+                        communityMenuItemNum = ii;
+                        break;
+                    }
+                }
+                currSuperBallMenuItemAtags = superBallMenuItems[ii].getElementsByTagName("a");
+                for (jj = 0; jj < currSuperBallMenuItemAtags.length; jj++) {
+                    if (currSuperBallMenuItemAtags[jj].href.search("/homepage/sso\\?sso=250ok$") != -1) {
+                        currSuperBallMenuItemAtags[jj].href = "https://250ok.com/login";
+                        break;
+                    }
+                }
+            }
+            
+            if (deliverabilityToolsMenuItem == null && communityMenuItemNum != null) {
+                communityMenuItemSpanTags = superBallMenuItems[communityMenuItemNum].getElementsByTagName("span");
+                for (jj = 0; jj < communityMenuItemSpanTags.length; jj++) {
+                    if (communityMenuItemSpanTags[jj].innerHTML == "Community") {
+                        communityMenuItemSpanTags[jj].innerHTML = "Deliverability Tools";
+                        break;
+                    }
+                }
+                communityMenuItemAtags = superBallMenuItems[communityMenuItemNum].getElementsByTagName("a");
+                for (jj = 0; jj < communityMenuItemAtags.length; jj++) {
+                    if (communityMenuItemAtags[jj].href.search("/guide/displaySuccessContent\\?contentTag=main_MarketoCommunityHome$") != -1) {
+                        communityMenuItemAtags[jj].href = "https://250ok.com/login";
+                        break;
+                    }
+                }
             }
         }
-        currSuperBallMenuItemAtags = superBallMenuItems[ii].getElementsByTagName("a");
-        for (jj = 0; jj < currSuperBallMenuItemAtags.length; jj++) {
-            if (currSuperBallMenuItemAtags[jj].href.search("/homepage/sso\\?sso=250ok$") != -1) {
-                currSuperBallMenuItemAtags[jj].href = "https://250ok.com/login";
-                break;
-            }
-        }
-    }
-    
-    if (deliverabilityToolsMenuItem == null && communityMenuItemNum != null) {
-        communityMenuItemSpanTags = superBallMenuItems[communityMenuItemNum].getElementsByTagName("span");
-        for (jj = 0; jj < communityMenuItemSpanTags.length; jj++) {
-            if (communityMenuItemSpanTags[jj].innerHTML == "Community") {
-                communityMenuItemSpanTags[jj].innerHTML = "Deliverability Tools";
-                break;
-            }
-        }
-        communityMenuItemAtags = superBallMenuItems[communityMenuItemNum].getElementsByTagName("a");
-        for (jj = 0; jj < communityMenuItemAtags.length; jj++) {
-            if (communityMenuItemAtags[jj].href.search("/guide/displaySuccessContent\\?contentTag=main_MarketoCommunityHome$") != -1) {
-                communityMenuItemAtags[jj].href = "https://250ok.com/login";
-                break;
-            }
-        }
-    }
+    }, 0);
 }
 
 /**************************************************************************************
@@ -3933,11 +3938,10 @@ if (currentUrl.search(mktoAppDomain) != -1
     console.log("Marketo App > Location: Marketo URL");
 
     var isMktPageApp = window.setInterval(function() {
-        if (typeof(MktPage) !== "undefined" && typeof (MktCanvas.getEl().dom.ownerDocument) !== "undefined") {
+        if (typeof(MktPage) !== "undefined") !== "undefined") {
             console.log("Marketo App > Location: Marketo Page");
             
             window.clearInterval(isMktPageApp);
-            APP.overrideDeliverabilityToolsMenuItem();
             var accountString = MktPage.savedState.custPrefix,
                 userId = MktPage.userid.toLowerCase();
             
@@ -4300,6 +4304,7 @@ if (currentUrl.search(mktoAppDomain) != -1
                     }
                 }
             }
+            APP.overrideDeliverabilityToolsMenuItem();
         }
     }, 0);
 }
