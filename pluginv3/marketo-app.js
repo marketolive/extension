@@ -298,7 +298,7 @@ APP.overrideDeliverabilityToolsTile = function() {
 
 APP.overrideDeliverabilityToolsMenuItem = function() {
     var isMktSuperBallMenu = window.setInterval(function() {
-        if (typeof(MktCanvas.getEl().dom.ownerDocument.body.childNodes[17].childNodes[1].childNodes[0].childNodes[1].childNodes[1].childNodes) !== "undefined" || typeof(MktCanvas.getEl().dom.ownerDocument.body.childNodes[18].childNodes[1].childNodes[0].childNodes[1].childNodes[1].childNodes) !== "undefined") {
+        if (typeof(MktCanvas.getEl().dom.ownerDocument.body.childNodes) !== "undefined") {
             window.clearInterval(isMktSuperBallMenu);
             console.log("Marketo App > Overriding: Deliverability Superball Menu Item");
             
