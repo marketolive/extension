@@ -228,14 +228,15 @@ APP.disableConfirmationMessage = function() {
 
 /**************************************************************************************
  *  
- *  This function overrides the target link for the Deliverability Tools tile. By default,
- *  the tile uses SSO to login to 250ok. However, we only have one 250ok instance that
- *  contains usable demo data, so the plugin must send people into that instance. This
- *  function directs users to the 250ok login page where the deliverability-tools.js script
- *  takes over to automatically login and hide the necessary buttons. This function should
- *  also run inside of SC sandbox instances.
+ *  This function overrides the target link for the Deliverability Tools tile if it 
+ *  exists, otherwise it creates the tile. By default, the tile uses SSO to login to 
+ *  250ok. However, we only have one 250ok instance that contains usable demo data, so 
+ *  the plugin directs people into that instance. This function directs users to the 
+ *  250ok login page where the deliverability-tools.js script will automatically login 
+ *  and hide the necessary buttons. This function should also run inside of SC sandbox 
+ *  instances.
  *
- *  @Author Andrew Garcia
+ *  @Author Brian Fisher
  *
  *  @function
  *
@@ -243,18 +244,118 @@ APP.disableConfirmationMessage = function() {
 
 APP.overrideDeliverabilityToolsTile = function() {
     console.log("Marketo App > Overriding: Deliverability Tools Tile");
-
-    var tiles = document.getElementsByTagName("a"),
-        ii = 0;
-
-    // The tile HTML ids change each time a user clicks away from the home screen,
-    // so they cannot be selected directly by id.
-    for (ii=0; ii<tiles.length; ++ii) {
-        // The question mark below needs to be escaped with two slashes
-        // in order for the search function to work.
-        if (tiles[ii].href.search("homepage/sso\\?sso=250ok") != -1) {
-            tiles[ii].href = "https://250ok.com/login";
+    
+    var tiles = MktCanvas.getEl().dom.nextSibling.childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes,
+        currTileSpanTags,
+        currTileAtags,
+        spareTile,
+        deliverabilityToolsTile,
+        ii,
+        jj;
+        
+    for (ii = 0; ii < tiles.length; ii++) {
+        if (tiles[ii].getAttribute("role") == "presentation") {
+            spareTile = tiles[ii];
             break;
+        }
+        currTileSpanTags = tiles[ii].getElementsByTagName("span");
+        for (jj = 0; jj < currTileSpanTags.length; jj++) {
+            if (currTileSpanTags[jj].innerHTML == "Deliverability Tools") {
+                deliverabilityToolsTile = tiles[ii];
+                break;
+            }
+        }
+        currTileAtags = tiles[ii].getElementsByTagName("a");
+        for (jj = 0; jj < currTileAtags.length; jj++) {
+            if (currTileAtags[jj].href.search("/homepage/sso\\?sso=250ok$") != -1) {
+                currTileAtags[jj].href = "https://250ok.com/login";
+                break;
+            }
+        }
+    }
+    
+    if (deliverabilityToolsTile == null && spareTile != null) {
+        tiles[tiles.length] = spareTile;
+        tiles[tiles.length].outerHTML = '<div class="x4-btn mkt3-homeTile x4-btn-default-small x4-icon-text-left x4-btn-icon-text-left x4-btn-default-small-icon-text-left" style="height: 150px;" id="homeTile-1036"><em id="homeTile-1036-btnWrap"><a id="homeTile-1036-btnEl" href="https://250ok.com/login" class="x4-btn-center" target="_blank" role="link" style="width: 150px; height: 150px;"><span id="homeTile-1036-btnInnerEl" class="x4-btn-inner" style="width: 150px; height: 150px; line-height: 150px;">Deliverability Tools</span><span id="homeTile-1036-btnIconEl" class="x4-btn-icon mki3-mail-sealed-svg"></span></a></em></div>';
+    }
+}
+
+/**************************************************************************************
+ *  
+ *  This function overrides the target link for the Deliverability Tools Superball menu  
+ *  item if it exists, otherwise it creates the tile. By default, the tile uses SSO to 
+ *  login to 250ok. However, we only have one 250ok instance that contains usable demo 
+ *  data, so the plugin directs people into that instance. This function directs users 
+ *  to the 250ok login page where the deliverability-tools.js script will automatically 
+ *  login and hide the necessary buttons. This function should also run inside of SC 
+ *  sandbox instances.
+ *
+ *  @Author Brian Fisher
+ *
+ *  @function
+ *
+ **************************************************************************************/
+
+APP.overrideDeliverabilityToolsMenuItem = function() {
+    console.log("Marketo App > Overriding: Deliverability Superball Menu Item");
+    
+    var superBallMenuItems,
+        currSuperBallMenuItemSpanTags,
+        currSuperBallMenuItemAtags,
+        deliverabilityToolsMenuItem,
+        communityMenuItemNum,
+        communityMenuItemSpanTags,
+        communityMenuItemAtags,
+        ii,
+        jj;
+    
+    MktPage.showSuperMenu();
+    if (MktCanvas.getEl().dom.ownerDocument.body.childNodes[17].id == "ext4-ext-gen1024") {
+        superBallMenuItems = MktCanvas.getEl().dom.ownerDocument.body.childNodes[17].childNodes[1].childNodes[0].childNodes[1].childNodes[1].childNodes;
+    }
+    else if (MktCanvas.getEl().dom.ownerDocument.body.childNodes[18].id == "ext4-ext-gen1024") {
+        superBallMenuItems = MktCanvas.getEl().dom.ownerDocument.body.childNodes[18].childNodes[1].childNodes[0].childNodes[1].childNodes[1].childNodes;
+    }
+    
+    for (ii = 0; ii < superBallMenuItems.length; ii++) {
+        currSuperBallMenuItemSpanTags = superBallMenuItems[ii].getElementsByTagName("span");
+        for (jj = 0; jj < currSuperBallMenuItemSpanTags.length; jj++) {
+            if (currSuperBallMenuItemSpanTags[jj].innerHTML == "My Marketo") {
+                superBallMenuItems[ii].click();
+                break;
+            }
+            else if (currSuperBallMenuItemSpanTags[jj].innerHTML == "Deliverability Tools") {
+                deliverabilityToolsMenuItem = superBallMenuItems[ii];
+                break;
+            }
+            else if (currSuperBallMenuItemSpanTags[jj].innerHTML == "Community") {
+                communityMenuItemNum = ii;
+                break;
+            }
+        }
+        currSuperBallMenuItemAtags = superBallMenuItems[ii].getElementsByTagName("a");
+        for (jj = 0; jj < currSuperBallMenuItemAtags.length; jj++) {
+            if (currSuperBallMenuItemAtags[jj].href.search("/homepage/sso\\?sso=250ok$") != -1) {
+                currSuperBallMenuItemAtags[jj].href = "https://250ok.com/login";
+                break;
+            }
+        }
+    }
+    
+    if (deliverabilityToolsMenuItem == null && communityMenuItemNum != null) {
+        communityMenuItemSpanTags = superBallMenuItems[communityMenuItemNum].getElementsByTagName("span");
+        for (jj = 0; jj < communityMenuItemSpanTags.length; jj++) {
+            if (communityMenuItemSpanTags[jj].innerHTML == "Community") {
+                communityMenuItemSpanTags[jj].innerHTML = "Deliverability Tools";
+                break;
+            }
+        }
+        communityMenuItemAtags = superBallMenuItems[communityMenuItemNum].getElementsByTagName("a");
+        for (jj = 0; jj < communityMenuItemAtags.length; jj++) {
+            if (communityMenuItemAtags[jj].href.search("/guide/displaySuccessContent\\?contentTag=main_MarketoCommunityHome$") != -1) {
+                communityMenuItemAtags[jj].href = "https://250ok.com/login";
+                break;
+            }
         }
     }
 }
@@ -4187,6 +4288,8 @@ if (currentUrl.search(mktoAppDomain) != -1
                 }
             }
             else {
+                APP.overrideDeliverabilityToolsMenuItem();
+                
                 if (currUrlFragment == mktoMyMarketoFragment) {
                     APP.overrideDeliverabilityToolsTile();
                 }
