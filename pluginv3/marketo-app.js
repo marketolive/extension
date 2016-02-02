@@ -4322,7 +4322,7 @@ if (currentUrl.search(mktoAppDomain) != -1
                 }
             }
             else {
-                //APP.overrideDeliverabilityToolsMenuItem();
+                APP.overrideDeliverabilityToolsMenuItem();
                 
                 if (currUrlFragment == mktoMyMarketoFragment) {
                     APP.overrideDeliverabilityToolsTile();
@@ -4333,7 +4333,7 @@ if (currentUrl.search(mktoAppDomain) != -1
                     }
                 }
             }
-            //APP.overrideDeliverabilityToolsMenuItem();
+            APP.overrideDeliverabilityToolsMenuItem();
         }
     }, 0);
 }
