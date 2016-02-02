@@ -4103,11 +4103,13 @@ if (currentUrl.search(mktoAppDomain) != -1
                             // Landing Page
                             lpIds["dpageid_11826"] = "dpageid_11826";
                             // Responsive Landing Page
-                            lpIds["dpageid_11291"] = "dpageid_11291";
+                            lpIds["dpageid_11822"] = "dpageid_11822";
                             // Japanese Landing Page
                             lpIds["dpageid_11548"] = "dpageid_11548";
                             // Japanese Landing Page 2
                             lpIds["dpageid_11546"] = "dpageid_11546";
+                            // Japnese Landing Page 3
+                            lpIds["dpageid_11856"] = "dpageid_11856";
                             // DIY Design and Replicate Success Forms
                             formIds.push(2892, 1749, 1900, 3018, 3020, 3021);  
                             // DIY Design and Mobile Engagement Push Notifications 
