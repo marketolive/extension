@@ -31,7 +31,7 @@ window.onload = function() {
     document.getElementById('training').src = chrome.extension.getURL("images/training-icon-purple-small.png");
     document.getElementById('report-a-bug').src = chrome.extension.getURL("images/report-a-bug-img-purp.png");
 
-    var URL_PATH = "m3",
+    var URL_PATH = "m3-dev",
         background = chrome.extension.getBackgroundPage(),
         priv = true,
         tags = document.getElementsByClassName("link"),
