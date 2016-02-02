@@ -32,8 +32,8 @@ var currentUrl = window.location.href,
     mktoDesignerMatch = "https://*.marketodesigner.com/*",
     mktoEmailDesigner = mktoDesignerDomain + "/ds",
     mktoLandingPageDesigner = mktoDesignerDomain + "/lpeditor/",
-    defaultTurnerLogoGreen = "http://marketolive.com/m3/assets/img/turner-tech-green.png",
-    defaultTurnerLogoWhite = "http://marketolive.com/m3/assets/img/turner-tech-white.png",
+    defaultTurnerLogoGreen = "http://marketolive.com/m3-dev/assets/img/turner-tech-green.png",
+    defaultTurnerLogoWhite = "http://marketolive.com/m3-dev/assets/img/turner-tech-white.png",
     defaultColor = "rgb(42, 83, 112)",
     mktoWizard = mktoAppDomain + "/m#",
     rtpDemoDomain = "^http:\/\/sjrtp1.marketo.com\/demo\/$|^http:\/\/cloud4.insightera.com\/demo\/$",
@@ -47,8 +47,6 @@ var currentUrl = window.location.href,
     mktoLeadDatabaseJapaneseFragment = "ML0A1ZN19834",
     mktoAnalyticsFragment = "AH0A1ZN17",
     mktoAdBridgeSmartListFragment = "SL1B2",
-	mktoChampionChallengerFragment = "CCE418",
-	mktoABTestFragment = "EBE419",
     mktoEmailDesignerFragment = "EME",
     mktoEmailPreviewFragment = "EMP",
     mktoLandingPageDesignerFragment = "LPE",
@@ -299,85 +297,101 @@ APP.overrideDeliverabilityToolsTile = function() {
  **************************************************************************************/
 
 APP.overrideDeliverabilityToolsMenuItem = function() {
-    MktPage.showSuperMenu();
-    var isMktSuperBallMenu = window.setInterval(function() {
-        if (MktCanvas.getEl().dom.ownerDocument.body.childNodes[17].id == "ext4-ext-gen1024"
-        || MktCanvas.getEl().dom.ownerDocument.body.childNodes[18].id == "ext4-ext-gen1024") {
-            window.clearInterval(isMktSuperBallMenu);
-            console.log("Marketo App > Overriding: Deliverability Superball Menu Item");
-            
-            var superBallMenuItems,
-                currSuperBallMenuItemSpanTags,
-                currSuperBallMenuItemAtags,
-                deliverabilityToolsMenuItem,
-                communityMenuItemNum,
-                communityMenuItemSpanTags,
-                communityMenuItemAtags,
-                ii,
-                jj;
-            
-            if (MktCanvas.getEl().dom.ownerDocument.body.childNodes[17].id == "ext4-ext-gen1024") {
-                var isMktSuperBallMenu1 = window.setInterval(function() {
-                    if (typeof(MktCanvas.getEl().dom.ownerDocument.body.childNodes[17].childNodes[1].childNodes[0].childNodes[1].childNodes[1].childNodes) !== "undefined") {
-                        window.clearInterval(isMktSuperBallMenu1);
-                        superBallMenuItems = MktCanvas.getEl().dom.ownerDocument.body.childNodes[17].childNodes[1].childNodes[0].childNodes[1].childNodes[1].childNodes;
-                        console.log("superBallMenuItems(17) = " + superBallMenuItems);
+    console.log("Marketo App > Overriding: Deliverability Tools Superball Menu Item");
+    
+    MktPage.showSuperMenu = function() {
+        console.log("Marketo App > Executing: Deliverability Tools Superball Menu Item");
+        
+        var logoEl = Ext.get(Ext.DomQuery.selectNode('.mkt-app-logo')),
+        menu = logoEl.menu,
+        menuTop = 55;
+        
+        if (!menu) {
+            menu = logoEl.menu = Ext4.widget('appNavigationMenu', {
+                    listeners : {
+                        boxready : function (view) {
+                            var logoRegion = logoEl.getRegion();
+                            
+                            // shift out of the ball way
+                            if (logoRegion.bottom > menuTop) {
+                                view.setBodyStyle('padding-top', logoRegion.bottom - menuTop + 10 + 'px');
+                                view.updateLayout();
+                            }
+                            
+                            // prevent layering in front of the logo
+                            menu.setZIndex(logoEl.getStyle('zIndex') - 5);
+                        },
+                        beforerender : function (view) {
+                            view.addCls(view.componentCls + '-hidden');
+                        },
+                        show : function (view) {
+                            view.removeCls(view.componentCls + '-hidden');
+                            
+                            logoEl.ignoreNextClick = true;
+                            logoEl.removeClass(logoEl.attentionCls);
+                            
+                            if (!MktPage.savedState.isUsedSuperMenu) {
+                                MktPage.savedState.isUsedSuperMenu = true;
+                                
+                                MktSession.ajaxRequest('user/saveUserPref', {
+                                    serializeParms : {
+                                        key : 'isUsedSuperMenu',
+                                        data : MktPage.savedState.isUsedSuperMenu
+                                    }
+                                });
+                            }
+                        },
+                        beforehide : function (view) {
+                            view.addCls(view.componentCls + '-hidden');
+                        },
+                        hide : function () {
+                            (function () {
+                                logoEl.ignoreNextClick = false;
+                            }).defer(250);
+                        }
                     }
-                }, 0);
-            }
-            else if (MktCanvas.getEl().dom.ownerDocument.body.childNodes[18].id == "ext4-ext-gen1024") {
-                var isMktSuperBallMenu2 = window.setInterval(function() {
-                    if (typeof(MktCanvas.getEl().dom.ownerDocument.body.childNodes[18].childNodes[1].childNodes[0].childNodes[1].childNodes[1].childNodes) !== "undefined") {
-                        window.clearInterval(isMktSuperBallMenu2);
-                        superBallMenuItems = MktCanvas.getEl().dom.ownerDocument.body.childNodes[18].childNodes[1].childNodes[0].childNodes[1].childNodes[1].childNodes;
-                        console.log("superBallMenuItems(18) = " + superBallMenuItems);
-                    }
-                }, 0);
-            }
-            
-            for (ii = 0; ii < superBallMenuItems.length; ii++) {
-                currSuperBallMenuItemSpanTags = superBallMenuItems[ii].getElementsByTagName("span");
-                for (jj = 0; jj < currSuperBallMenuItemSpanTags.length; jj++) {
-                    if (currSuperBallMenuItemSpanTags[jj].innerHTML == "My Marketo") {
-                        superBallMenuItems[ii].click();
+                });
+            if (typeof(menu.items.items) !== "undefined") {
+                var ii,
+                    communityMenuItem,
+                    currSuperBallMenuItem,
+                    deliverabilityToolsMenuItemExists = false;
+                    
+                for (ii = 0; ii < menu.items.items.length; ii++) {
+                    currSuperBallMenuItem = menu.items.items[ii];
+                    
+                    if (currSuperBallMenuItem.text == "Deliverability Tools") {
+                        deliverabilityToolsMenuItemExists = true;
+                        if (currSuperBallMenuItem.href.search("/homepage/sso\\?sso=250ok$") != -1) {
+                            currSuperBallMenuItem.href = "https://250ok.com/login";
+                            currSuperBallMenuItem.update();
+                        }
                         break;
                     }
-                    else if (currSuperBallMenuItemSpanTags[jj].innerHTML == "Deliverability Tools") {
-                        deliverabilityToolsMenuItem = superBallMenuItems[ii];
-                        break;
-                    }
-                    else if (currSuperBallMenuItemSpanTags[jj].innerHTML == "Community") {
-                        communityMenuItemNum = ii;
-                        break;
+                    
+                    else if (currSuperBallMenuItem.text == "Community") {
+                        communityMenuItem = currSuperBallMenuItem;
                     }
                 }
-                currSuperBallMenuItemAtags = superBallMenuItems[ii].getElementsByTagName("a");
-                for (jj = 0; jj < currSuperBallMenuItemAtags.length; jj++) {
-                    if (currSuperBallMenuItemAtags[jj].href.search("/homepage/sso\\?sso=250ok$") != -1) {
-                        currSuperBallMenuItemAtags[jj].href = "https://250ok.com/login";
-                        break;
-                    }
-                }
-            }
-            
-            if (deliverabilityToolsMenuItem == null && communityMenuItemNum != null) {
-                communityMenuItemSpanTags = superBallMenuItems[communityMenuItemNum].getElementsByTagName("span");
-                for (jj = 0; jj < communityMenuItemSpanTags.length; jj++) {
-                    if (communityMenuItemSpanTags[jj].innerHTML == "Community") {
-                        communityMenuItemSpanTags[jj].innerHTML = "Deliverability Tools";
-                        break;
-                    }
-                }
-                communityMenuItemAtags = superBallMenuItems[communityMenuItemNum].getElementsByTagName("a");
-                for (jj = 0; jj < communityMenuItemAtags.length; jj++) {
-                    if (communityMenuItemAtags[jj].href.search("/guide/displaySuccessContent\\?contentTag=main_MarketoCommunityHome$") != -1) {
-                        communityMenuItemAtags[jj].href = "https://250ok.com/login";
-                        break;
-                    }
+                
+                if (!deliverabilityToolsMenuItemExists
+                && communityMenuItem != null) {
+                    communityMenuItem.setText("Deliverability Tools");
+                    communityMenuItem.setIconCls("mki3-mail-sealed-svg");
+                    communityMenuItem.href = "https://250ok.com/login";
+                    communityMenuItem.update();
                 }
             }
         }
-    }, 0);
+        
+        if (!menu.isVisible() && !logoEl.ignoreNextClick) {
+            // position below app bar
+            menu.showAt(0, menuTop);
+            
+            // prevent layering in front of the logo
+            menu.setZIndex(logoEl.getStyle('zIndex') - 5);
+        }
+    }
 }
 
 /**************************************************************************************
@@ -4019,12 +4033,6 @@ if (currentUrl.search(mktoAppDomain) != -1
                 else if (currUrlFragment == mktoAnalyticsFragment) {
                     APP.overrideAnalyticsTiles();
                 }
-				
-				// Champion/Challenger Page and A/B Test Page
-				else if (currUrlFragment == mktoChampionChallengerFragment
-				|| currUrlFragment.search(mktoABTestFragment) !== -1) {
-					APP.disableSaving();
-				}
                 
                 else if (currUrlFragment == mktoAdBridgeSmartListFragment) {
                     var isAdBridgeSmartList = window.setInterval(function() {
@@ -4314,7 +4322,7 @@ if (currentUrl.search(mktoAppDomain) != -1
                 }
             }
             else {
-                //APP.overrideDeliverabilityToolsMenuItem();
+                APP.overrideDeliverabilityToolsMenuItem();
                 
                 if (currUrlFragment == mktoMyMarketoFragment) {
                     APP.overrideDeliverabilityToolsTile();
@@ -4325,7 +4333,7 @@ if (currentUrl.search(mktoAppDomain) != -1
                     }
                 }
             }
-            //APP.overrideDeliverabilityToolsMenuItem();
+            APP.overrideDeliverabilityToolsMenuItem();
         }
     }, 0);
 }
