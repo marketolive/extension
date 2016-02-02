@@ -1912,8 +1912,8 @@ APP.disableMenus = function() {
 	Mkt3.controller.mobilePushNotification.MobilePushNotification.prototype.loadToolbar = function(menu, attr) {
 		prevPushNotificationActionsMenu.apply(this, arguments);
 
-		var disable = (this.getSocialApp().get('zoneId') == 1
-                    || this.getSocialApp().get('zoneId') == mktoJapaneseWorkspaceId),
+		var disable = (this.getMobilePushNotification().data.zoneId == 1
+                    || this.getMobilePushNotification().data.zoneId == mktoJapaneseWorkspaceId),
 			mItems = Ext4.ComponentQuery.query(
 							/*"mobilePushNotification contextMenu [action=edit]," +*/ //Edit Draft
 							/*"mobilePushNotification contextMenu [action=sendSample]," +*/ //Send Sample
@@ -4111,9 +4111,9 @@ if (currentUrl.search(mktoAppDomain) != -1
                             // Japnese Landing Page 3
                             lpIds["dpageid_11856"] = "dpageid_11856";
                             // DIY Design and Replicate Success Forms
-                            formIds.push(2892, 1749, 1900, 3018, 3020, 3021);  
+                            formIds.push(3576, 1749, 1900, 3018, 3020, 3021);
                             // DIY Design and Mobile Engagement Push Notifications 
-                            pushIds.push(29, 23, 88, 89);               
+                            pushIds.push(29, 23);
                             break;
                         case "mktodemoaccount106a":
                             // Custom Landing Page
@@ -4121,9 +4121,9 @@ if (currentUrl.search(mktoAppDomain) != -1
                             // Responsive Landing Page
                             lpIds["dpageid_10454"] = "dpageid_10454";
                             // DIY Design and Replicate Success Forms
-                            formIds.push(2532, 1749, 1900);  
+                            formIds.push(2532, 1749, 1900);
                             // DIY Design and Mobile Engagement Push Notifications 
-                            pushIds.push(29, 26); 
+                            pushIds.push(29, 26);
                             break;
                         case "mktodemoaccount106b":
                             // Landing Page
@@ -4131,9 +4131,9 @@ if (currentUrl.search(mktoAppDomain) != -1
                             // Responsive Landing Page
                             lpIds["dpageid_10762"] = "dpageid_10762";
                             // DIY Design and Replicate Success Forms
-                            formIds.push(2472, 1749, 1900);  
+                            formIds.push(2472, 1749, 1900);
                             // DIY Design and Mobile Engagement Push Notifications 
-                            pushIds.push(2, 1); 
+                            pushIds.push(2, 1);
                             break;
                         default:
                             break;
