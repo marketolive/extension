@@ -299,9 +299,7 @@ APP.overrideDeliverabilityToolsTile = function() {
 APP.overrideDeliverabilityToolsMenuItem = function() {
     console.log("Marketo App > Overriding: Deliverability Tools Superball Menu Item");
     
-    MktPage.showSuperMenu = function() {
-        console.log("Marketo App > Executing: Deliverability Tools Superball Menu Item");
-        
+    MktPage.showSuperMenu = function() {        
         var logoEl = Ext.get(Ext.DomQuery.selectNode('.mkt-app-logo')),
         menu = logoEl.menu,
         menuTop = 55;
@@ -352,6 +350,8 @@ APP.overrideDeliverabilityToolsMenuItem = function() {
                     }
                 });
             if (typeof(menu.items.items) !== "undefined") {
+                console.log("Marketo App > Executing: Deliverability Tools Superball Menu Item");
+                
                 var ii,
                     communityMenuItem,
                     currSuperBallMenuItem,
