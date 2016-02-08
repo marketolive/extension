@@ -29,12 +29,12 @@ $(document).ready(function(){
       "words" : "自動化プログラムはトリガーを使い、見込顧客の特定の行動をリアルタイムで捉え、メール送信、営業担当者へのアラート通知、スコアリングいった適切なアクションを瞬時に実行します。"
     },
     "engage2" : {
-      "title" : "Batch",
-      "words" : "When it comes to traditional email marketing efforts, a batch email program is easy to create and execute in Marketo. From the control panel, you can define your audience, choose your content and schedule your batch email program in minutes. Marketo provides you with the flexibility to work in the order that best fits your business needs."
+      "title" : "バッチ",
+      "words" : "従来型の一斉配信メールマーケティングは、Marketoでは非常に簡単に実行できます。コントロールパネルから対象者を定義し、コンテンツを選択、プログラムをスケジューリングして承認する、4ステップ、数分で完了です。Marketoではこのステップに従うだけで、簡単にみなさんのニーズを満たすバッチメールキャンペーンが実行できるのです。"
     },
     "engage3" : {
-      "title" : "Drip",
-      "words" : "Drip email marketing is used to send a series of emails over a specified period of time. With Marketo, a drip email program is easy to create and execute. From the campaign wizard, you can define your audience, create your content workflow and execute your drip email program in minutes."
+      "title" : "ドリップ",
+      "words" : "ドリップメールは一定期間の間に一連のメールを送信するために活用されます。Marketoではこのドリップメールプログラムは簡単に作成、実行可能です。キャンペーンウィザード画面から対象者を定義、コンテンツを配信するワークフローを作成、実行し、数分で完了です。"
     },
     "engage4" : {
       "title" : "ナーチャリング",
