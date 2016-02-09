@@ -32,8 +32,8 @@ var currentUrl = window.location.href,
     mktoDesignerMatch = "https://*.marketodesigner.com/*",
     mktoEmailDesigner = mktoDesignerDomain + "/ds",
     mktoLandingPageDesigner = mktoDesignerDomain + "/lpeditor/",
-    defaultTurnerLogoGreen = "http://marketolive.com/m3/assets/img/turner-tech-green.png",
-    defaultTurnerLogoWhite = "http://marketolive.com/m3/assets/img/turner-tech-white.png",
+    defaultTurnerLogoGreen = "http://marketolive.com/m3-dev/assets/img/turner-tech-green.png",
+    defaultTurnerLogoWhite = "http://marketolive.com/m3-dev/assets/img/turner-tech-white.png",
     defaultColor = "rgb(42, 83, 112)",
     mktoWizard = mktoAppDomain + "/m#",
     rtpDemoDomain = "^http:\/\/sjrtp1.marketo.com\/demo\/$|^http:\/\/cloud4.insightera.com\/demo\/$",
@@ -299,7 +299,8 @@ APP.overrideDeliverabilityToolsTile = function() {
 APP.overrideDeliverabilityToolsMenuItem = function() {
     console.log("Marketo App > Overriding: Deliverability Tools Superball Menu Item");
     
-    MktPage.showSuperMenu = function() {        
+    MktPage.showSuperMenu = function() {
+        debugger;
         var logoEl = Ext.get(Ext.DomQuery.selectNode('.mkt-app-logo')),
         menu = logoEl.menu,
         menuTop = 55;
@@ -1080,104 +1081,184 @@ APP.overrideAssetSaveEdit = function() {
     Mkt.widgets.CanvasHeader.prototype.saveEdit = function() {
         console.log("Marketo App > Executing: Asset Save Edit");
         
-        if ((MktExplorer.getEl().dom.ownerDocument.title.search("Marketing Activities") != -1
-            && (this.titleId == "mpTEName"
-                || this.titleId == "cdhTEName"))
-        || MktExplorer.getEl().dom.ownerDocument.title.search("Marketing Activities") == -1) {
-            var userId = MktPage.userid.toLowerCase(),
-            userName,
-            ii;
-            if (userId.search("\.demo@marketo.com$") != -1) {
-                userName = userId.split(".demo")[0];
-            }
-            else {
-                userName = userId.split("@")[0];
-            }
-                
-            if (this.items.items[1].items.items[0].name.search("Name$") != -1) {
-                if (this.items.items[1].items.items[0].getValue().toLowerCase().search(userName + "$") == -1) {
-                    this.items.items[1].items.items[0].setValue(this.items.items[1].items.items[0].getValue() + " - " + userName);
+        if (MktCanvas != null
+        && MktCanvas.getActiveTab() != null
+        && MktCanvas.getActiveTab().config != null
+        && MktCanvas.getActiveTab().config.accessZoneId != null
+        && MktCanvas.getActiveTab().config.accessZoneId != 1
+        && MktCanvas.getActiveTab().config.accessZoneId != mktoJapaneseWorkspaceId) {
+        
+            if ((MktExplorer.getEl().dom.ownerDocument.title.search("Marketing Activities") != -1
+                && (this.titleId == "mpTEName"
+                    || this.titleId == "cdhTEName"))
+            || MktExplorer.getEl().dom.ownerDocument.title.search("Marketing Activities") == -1) {
+                var userId = MktPage.userid.toLowerCase(),
+                userName,
+                ii;
+                if (userId.search("\.demo@marketo.com$") != -1) {
+                    userName = userId.split(".demo")[0];
                 }
-            }
-            else {
-                for (ii = 0; ii < this.items.items.length; ii++) {
-                    if (this.items.items[ii].defaultType == "textfield") {
-                        var jj;
-                        for (jj = 0; jj < this.items.items[ii].items.items.length; jj++) {
-                            if (this.items.items[ii].items.items[jj].name.search("Name$") != -1) {
-                                if (this.items.items[ii].items.items[jj].getValue().toLowerCase().search(userName + "$") == -1) {
-                                    this.items.items[ii].items.items[jj].setValue(this.items.items[ii].items.items[jj].getValue() + "-" + userName);
+                else {
+                    userName = userId.split("@")[0];
+                }
+                    
+                if (this.items.items[1].items.items[0].name.search("Name$") != -1) {
+                    if (this.items.items[1].items.items[0].getValue().toLowerCase().search(userName + "$") == -1) {
+                        this.items.items[1].items.items[0].setValue(this.items.items[1].items.items[0].getValue() + " - " + userName);
+                    }
+                }
+                else {
+                    for (ii = 0; ii < this.items.items.length; ii++) {
+                        if (this.items.items[ii].defaultType == "textfield") {
+                            var jj;
+                            for (jj = 0; jj < this.items.items[ii].items.items.length; jj++) {
+                                if (this.items.items[ii].items.items[jj].name.search("Name$") != -1) {
+                                    if (this.items.items[ii].items.items[jj].getValue().toLowerCase().search(userName + "$") == -1) {
+                                        this.items.items[ii].items.items[jj].setValue(this.items.items[ii].items.items[jj].getValue() + "-" + userName);
+                                    }
                                 }
                             }
                         }
                     }
                 }
             }
+            
+            var toUpdateNodeText = true;
+            
+            MktSession.clockCursor(true);
+            this.serializeParms[this.titleId] = this.getTitleField().getValue();
+            this.serializeParms[this.descId] = this.getDescField().getValue();
+            
+            this.newTitleValue = MktPage.isFeatureEnabled('treeEncoding') ? this.serializeParms[this.titleId] : Ext.util.Format.htmlEncode(this.serializeParms[this.titleId]);
+            this.newDescValue = Ext.util.Format.htmlEncode(this.serializeParms[this.descId]);
+            this.updateCanvasConfig();
+            
+            this.prevTitleValue = this.titleValue;
+            this.titleValue = this.newTitleValue;
+            this.descValue = this.newDescValue;
+            MktPage.updateFullTitle();
+            var canvasTab = MktCanvas.getActiveTab();
+            canvasTab.updateTabTitle(this.titleValue);
+            var nodeId = null;
+            if (canvasTab.config.expNodeId) {
+                var node = MktExplorer.getNodeById(canvasTab.config.expNodeId);
+                if (node && node.attributes.compType) {
+                    var compType = node.attributes.compType;
+                    if (compType == 'Marketing Program') {
+                        nodeId = canvasTab.config.expNodeId;
+                        MktExplorer.lockSubTree(nodeId);
+                    }
+                    if (compType == 'Image') {
+                        toUpdateNodeText = false;
+                    }
+                }
+                if (toUpdateNodeText) {
+                    MktExplorer.updateNodeText(canvasTab.config.expNodeId, this.titleValue);
+                }
+            }
+            
+            var el = this.getEl();
+            var panelObj = this;
+            var formPanel = this.formPanel;
+            var viewPanel = this.viewPanel;
+            formPanel.hide(true, 0.2);
+            viewPanel.show(true, 0.2);
+            viewPanel.body.update(panelObj.viewTemplate.apply(panelObj));
+            
+            el.animate({
+                height : {
+                    from : this.getHeight(),
+                    to : this.origHeight
+                }
+            }, 0.25, function () {
+                panelObj.setHeight(panelObj.origHeight);
+                panelObj.body.setHeight(panelObj.origHeight);
+                if (isFunction(panelObj.savedCallback)) {
+                    panelObj.savedCallback();
+                }
+            });
+            
+            MktSession.unclockCursor();
+            this._saveInProgress = true;
+            MktSession.ajaxRequest(this.actionUrl, {
+                serializeParms : this.serializeParms,
+                containerId : this.id,
+                onMySuccess : this.saveResponse.createDelegate(this, [nodeId], true),
+                onMyError : this.saveError.createDelegate(this, [nodeId])
+            });
         }
         
-        var toUpdateNodeText = true;
-        
-        MktSession.clockCursor(true);
-        this.serializeParms[this.titleId] = this.getTitleField().getValue();
-        this.serializeParms[this.descId] = this.getDescField().getValue();
-        
-        this.newTitleValue = MktPage.isFeatureEnabled('treeEncoding') ? this.serializeParms[this.titleId] : Ext.util.Format.htmlEncode(this.serializeParms[this.titleId]);
-        this.newDescValue = Ext.util.Format.htmlEncode(this.serializeParms[this.descId]);
-        this.updateCanvasConfig();
-        
-        this.prevTitleValue = this.titleValue;
-        this.titleValue = this.newTitleValue;
-        this.descValue = this.newDescValue;
-        MktPage.updateFullTitle();
-        var canvasTab = MktCanvas.getActiveTab();
-        canvasTab.updateTabTitle(this.titleValue);
-        var nodeId = null;
-        if (canvasTab.config.expNodeId) {
-            var node = MktExplorer.getNodeById(canvasTab.config.expNodeId);
-            if (node && node.attributes.compType) {
-                var compType = node.attributes.compType;
-                if (compType == 'Marketing Program') {
-                    nodeId = canvasTab.config.expNodeId;
-                    MktExplorer.lockSubTree(nodeId);
+        if ((MktCanvas != null
+        && MktCanvas.getActiveTab() != null
+        && MktCanvas.getActiveTab().config != null
+        && MktCanvas.getActiveTab().config.accessZoneId != null)
+           &&
+        (MktCanvas.getActiveTab().config.accessZoneId == 1
+        || MktCanvas.getActiveTab().config.accessZoneId == mktoJapaneseWorkspaceId)) {
+            var toUpdateNodeText = false;
+            
+            MktSession.clockCursor(true);
+            //this.serializeParms[this.titleId] = this.getTitleField().getValue();
+            //this.serializeParms[this.descId] = this.getDescField().getValue();
+            
+            //this.newTitleValue = MktPage.isFeatureEnabled('treeEncoding') ? this.serializeParms[this.titleId] : Ext.util.Format.htmlEncode(this.serializeParms[this.titleId]);
+            //this.newDescValue = Ext.util.Format.htmlEncode(this.serializeParms[this.descId]);
+            //this.updateCanvasConfig();
+            
+            this.prevTitleValue = this.titleValue;
+            //this.titleValue = this.newTitleValue;
+            //this.descValue = this.newDescValue;
+            //MktPage.updateFullTitle();
+            var canvasTab = MktCanvas.getActiveTab();
+            //canvasTab.updateTabTitle(this.titleValue);
+            var nodeId = null;
+            if (canvasTab.config.expNodeId) {
+                var node = MktExplorer.getNodeById(canvasTab.config.expNodeId);
+                if (node && node.attributes.compType) {
+                    var compType = node.attributes.compType;
+                    if (compType == 'Marketing Program') {
+                        nodeId = canvasTab.config.expNodeId;
+                        //MktExplorer.lockSubTree(nodeId);
+                    }
+                    if (compType == 'Image') {
+                        toUpdateNodeText = false;
+                    }
                 }
-                if (compType == 'Image') {
-                    toUpdateNodeText = false;
+                if (toUpdateNodeText) {
+                    //MktExplorer.updateNodeText(canvasTab.config.expNodeId, this.titleValue);
                 }
             }
-            if (toUpdateNodeText) {
-                MktExplorer.updateNodeText(canvasTab.config.expNodeId, this.titleValue);
-            }
+            
+            var el = this.getEl();
+            var panelObj = this;
+            var formPanel = this.formPanel;
+            var viewPanel = this.viewPanel;
+            formPanel.hide(true, 0.2);
+            viewPanel.show(true, 0.2);
+            viewPanel.body.update(panelObj.viewTemplate.apply(panelObj));
+            
+            el.animate({
+                height : {
+                    from : this.getHeight(),
+                    to : this.origHeight
+                }
+            }, 0.25, function () {
+                panelObj.setHeight(panelObj.origHeight);
+                panelObj.body.setHeight(panelObj.origHeight);
+                if (isFunction(panelObj.savedCallback)) {
+                    panelObj.savedCallback();
+                }
+            });
+            
+            MktSession.unclockCursor();
+            this._saveInProgress = false;
+            /*MktSession.ajaxRequest(this.actionUrl, {
+                serializeParms : this.serializeParms,
+                containerId : this.id,
+                onMySuccess : this.saveResponse.createDelegate(this, [nodeId], true),
+                onMyError : this.saveError.createDelegate(this, [nodeId])
+            });*/
         }
-        
-        var el = this.getEl();
-        var panelObj = this;
-        var formPanel = this.formPanel;
-        var viewPanel = this.viewPanel;
-        formPanel.hide(true, 0.2);
-        viewPanel.show(true, 0.2);
-        viewPanel.body.update(panelObj.viewTemplate.apply(panelObj));
-        
-        el.animate({
-            height : {
-                from : this.getHeight(),
-                to : this.origHeight
-            }
-        }, 0.25, function () {
-            panelObj.setHeight(panelObj.origHeight);
-            panelObj.body.setHeight(panelObj.origHeight);
-            if (isFunction(panelObj.savedCallback)) {
-                panelObj.savedCallback();
-            }
-        });
-        
-        MktSession.unclockCursor();
-        this._saveInProgress = true;
-        MktSession.ajaxRequest(this.actionUrl, {
-            serializeParms : this.serializeParms,
-            containerId : this.id,
-            onMySuccess : this.saveResponse.createDelegate(this, [nodeId], true),
-            onMyError : this.saveError.createDelegate(this, [nodeId])
-        });
     }
 }
 
