@@ -56,7 +56,7 @@ var currentUrl = window.location.href,
     mktoSocialAppWizardFragment = "SOAE",
     mktoMarketingWorkspaceId = 172,
     mktoJapaneseWorkspaceId = 173,
-    userWorkspaceName = "Marketing",
+    userWorkspaceName = "My Workspace",
     isMktoLiveInstance = false,
     pod,
 
