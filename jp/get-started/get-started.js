@@ -1,5 +1,7 @@
 $(document).ready(function(){
-    $('#fullpage').fullpage();
+    $('#fullpage').fullpage({
+        anchors: ["drivemoreawareness", "engageyourcustomers", "alignwithsales", "measureyoursuccess"]
+    });
 
     $('.down-arrow-bkg').click(function(){
       $.fn.fullpage.moveSectionDown();
