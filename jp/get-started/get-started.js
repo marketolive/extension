@@ -1,6 +1,6 @@
 $(document).ready(function(){
     $('#fullpage').fullpage({
-        anchors: ["drivemoreawareness", "engageyourcustomers", "alignwithsales", "measureyoursuccess"]
+        anchors: ["home", "drivemoreawareness", "engageyourcustomers", "alignwithsales", "measureyoursuccess"]
     });
 
     $('.down-arrow-bkg').click(function(){
