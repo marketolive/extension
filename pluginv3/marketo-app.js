@@ -4269,7 +4269,7 @@ if (currentUrl.search(mktoAppDomain) != -1
                                 );
                             }
                         };
-                    Ext4.getStore('Landing Page').load(loadParameters);
+                    Ext4.getStore('LandingPage').load(loadParameters);
                     
                     // Overlay Landing Page Designer w/ company logo and color
                     switch (currUrlFragment) {
