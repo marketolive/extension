@@ -1,6 +1,6 @@
 console.log("Content > Running");
 
-var URL_PATH = "m3",
+var URL_PATH = "m3-dev",
     LIVE_SCRIPT_LOCATION = "https://marketolive.com/"+URL_PATH+"/pluginv3/marketo-live.min.js",
     APP_SCRIPT_LOCATION = "https://marketolive.com/"+URL_PATH+"/pluginv3/marketo-app.min.js",
     POD_SCRIPT_LOCATION = "https://marketolive.com/"+URL_PATH+"/pluginv3/pods.min.js",

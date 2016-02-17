@@ -4244,8 +4244,7 @@ if (currentUrl.search(mktoAppDomain) != -1
                         customCompanyLandingPage106aFragment = "LPE10672",
                         customCompanyLandingPagePreview106aFragment = "LPP10672",
                         customCompanyLandingPage106bFragment = "LPE10768",
-                        customCompanyLandingPagePreview106bFragment = "LPP10768",
-                        japanLandingPage = "LPE11546";
+                        customCompanyLandingPagePreview106bFragment = "LPP10768";
                     // Disabling System Error Message for sync conflicts
                     APP.disableSyncErrorMessage();
                     
@@ -4267,9 +4266,6 @@ if (currentUrl.search(mktoAppDomain) != -1
                             APP.overlayLandingPageDesigner();
                             break;
                         case customCompanyLandingPagePreview106bFragment:
-                            APP.overlayLandingPageDesigner();
-                            break;
-                        case japanLandingPage:
                             APP.overlayLandingPageDesigner();
                             break;
                         default:
