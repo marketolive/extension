@@ -4239,7 +4239,8 @@ if (currentUrl.search(mktoAppDomain) != -1
                 else if (currUrlFragment.search("^" + mktoLandingPageDesignerFragment) != -1) {
                     console.log("Marketo App > Location: Landing Page Designer");
 
-                    var customCompanyLandingPage106Fragment = "LPE11826",
+                    var currAssetZoneId,
+                        customCompanyLandingPage106Fragment = "LPE11826",
                         customCompanyLandingPagePreview106Fragment = "LPP11826",
                         customCompanyLandingPage106aFragment = "LPE10672",
                         customCompanyLandingPagePreview106aFragment = "LPP10672",
@@ -4247,6 +4248,27 @@ if (currentUrl.search(mktoAppDomain) != -1
                         customCompanyLandingPagePreview106bFragment = "LPP10768";
                     // Disabling System Error Message for sync conflicts
                     APP.disableSyncErrorMessage();
+                    
+                    loadParameters = {
+                            filters: [{
+                                property: 'id',
+                                value: Mkt3.DL.dl.compId
+                            }],
+                            callback: function(records) {
+                                records.forEach(
+                                    function(record) {
+                                        currAssetZoneId = record.get('zoneId');
+                                        console.log("Marketo App > currAssetZoneId = " + currAssetZoneId);
+                                        if (currAssetZoneId == 1
+                                        || currAssetZoneId == japanWorkspaceId) {
+                                            APP.disableSaving();
+                                        } else if (APP.getCookie("priv") == "false") {
+                                            APP.disableSaving();
+                                        }
+                                    }
+                                );
+                            }
+                        };
                     
                     // Overlay Landing Page Designer w/ company logo and color
                     switch (currUrlFragment) {
