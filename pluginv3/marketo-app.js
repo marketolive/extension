@@ -4245,32 +4245,13 @@ if (currentUrl.search(mktoAppDomain) != -1
                         customCompanyLandingPage106aFragment = "LPE10672",
                         customCompanyLandingPagePreview106aFragment = "LPP10672",
                         customCompanyLandingPage106bFragment = "LPE10768",
-                        customCompanyLandingPagePreview106bFragment = "LPP10768";
+                        customCompanyLandingPagePreview106bFragment = "LPP10768",
+                        japanLPOne = "LPE11856",
+                        japanLPTwo = "LPE11548",
+                        japanLPThree = "LPE11546";
+                    
                     // Disabling System Error Message for sync conflicts
-                    APP.disableSyncErrorMessage();
-                    
-                    loadParameters = {
-                            filters: [{
-                                property: 'id',
-                                value: Mkt3.DL.dl.compId
-                            }],
-                            callback: function(records) {
-                                records.forEach(
-                                    function(record) {
-                                        currAssetZoneId = record.get('zoneId');
-                                        console.log("Marketo App > currAssetZoneId = " + currAssetZoneId);
-                                        if (currAssetZoneId == 1
-                                        || currAssetZoneId == japanWorkspaceId) {
-                                            APP.disableSaving();
-                                        } else if (APP.getCookie("priv") == "false") {
-                                            APP.disableSaving();
-                                        }
-                                    }
-                                );
-                            }
-                        };
-                    Ext4.getStore('LandingPage').load(loadParameters);
-                    
+                    APP.disableSyncErrorMessage();                    
                     // Overlay Landing Page Designer w/ company logo and color
                     switch (currUrlFragment) {
                         case customCompanyLandingPage106Fragment:
@@ -4290,6 +4271,11 @@ if (currentUrl.search(mktoAppDomain) != -1
                             break;
                         case customCompanyLandingPagePreview106bFragment:
                             APP.overlayLandingPageDesigner();
+                            break;
+                        case japanLPOne:
+                        case japanLPTwo:
+                        case japanLPThree:
+                            APP.disableSaving();
                             break;
                         default:
                             break;
