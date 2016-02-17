@@ -4155,7 +4155,8 @@ if (currentUrl.search(mktoAppDomain) != -1
 								
                                 window.clearInterval(isMktCanvas);
 								prevWorkspaceId = MktCanvas.activeTab.config.accessZoneId;
-								if (prevWorkspaceId == 1 || prevWorkspaceId == japanWorkspaceId) {
+								if (prevWorkspaceId == 1
+                                || prevWorkspaceId == japanWorkspaceId) {
 									// Intelligent Nurturing
 									APP.disableSaving();
 								}
@@ -4290,7 +4291,8 @@ if (currentUrl.search(mktoAppDomain) != -1
                                     function(record) {
                                         currAssetZoneId = record.get('zoneId');
                                         console.log("Marketo App > currAssetZoneId = " + currAssetZoneId);
-                                        if (currAssetZoneId == 1) {
+                                        if (currAssetZoneId == 1
+                                        || currAssetZoneId == japanWorkspaceId) {
                                             APP.disableSaving();
                                         } else if (APP.getCookie("priv") == "false") {
                                             APP.disableSaving();
