@@ -4273,12 +4273,12 @@ if (currentUrl.search(mktoAppDomain) != -1
                         case customCompanyLandingPagePreview106bFragment:
                             APP.overlayLandingPageDesigner();
                             break;
-                        case landingPageResponsive:
-                        case japanLPOne:
-                        case japanLPTwo:
-                        case japanLPThree:
-                            APP.disableSaving();
-                            break;
+//                        case landingPageResponsive:
+//                        case japanLPOne:
+//                        case japanLPTwo:
+//                        case japanLPThree:
+//                            APP.disableSaving();
+//                            break;
                         default:
                             break;
                     }
