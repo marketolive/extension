@@ -4269,6 +4269,7 @@ if (currentUrl.search(mktoAppDomain) != -1
                                 );
                             }
                         };
+                    Ext4.getStore('Email').load(loadParameters);
                     
                     // Overlay Landing Page Designer w/ company logo and color
                     switch (currUrlFragment) {
