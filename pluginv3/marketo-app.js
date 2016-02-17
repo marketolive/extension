@@ -4242,6 +4242,7 @@ if (currentUrl.search(mktoAppDomain) != -1
                     var currAssetZoneId,
                         customCompanyLandingPage106Fragment = "LPE11826",
                         customCompanyLandingPagePreview106Fragment = "LPP11826",
+                        landingPageResponsive = "LPE11822";
                         customCompanyLandingPage106aFragment = "LPE10672",
                         customCompanyLandingPagePreview106aFragment = "LPP10672",
                         customCompanyLandingPage106bFragment = "LPE10768",
@@ -4272,6 +4273,7 @@ if (currentUrl.search(mktoAppDomain) != -1
                         case customCompanyLandingPagePreview106bFragment:
                             APP.overlayLandingPageDesigner();
                             break;
+                        case landingPageResponsive:
                         case japanLPOne:
                         case japanLPTwo:
                         case japanLPThree:
