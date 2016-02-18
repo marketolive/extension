@@ -3996,18 +3996,30 @@ APP.getEmailIds = function(pod) {
         case "app-sjp":
             // DIY Design
             emIds.push(15464);
-            // Intelligent Nurturing
-            emIds.push(12818, 12820, 12819, 12816, 12811, 12815, 12812, 12821, 12813, 12814, 12817, 12823);
-            // Replicate Success Roadshow
+            // Email Marketing: AB Test Configuration, AB Test Dashboard, Champion/Chalenger, Email Program Dashboard
+            emIds.push(18113, 18106, 18111, 18110);
+            // Replicate Success: Roadshow Example
             emIds.push(10010, 10179, 10180, 12845, 10181, 10182, 10183, 10184);
-            // Replicate Success Webinar
+            // Replicate Success: Webinar Example
             emIds.push(4894, 3764, 3765, 3767, 3766, 3762);
+            // Intelligent Nurturing
+            emIds.push(12818, 12820, 12819, 12816, 12811, 12815, 12812, 12813, 12814, 12821, 12817, 12823);
+            // Actionable Insight: BANT Nurture for Sales
+            emIds.push(12900, 12901, 12899, 12898);
+            // Actionable Insight: Sales Auto Reach Out
+            emIds.push(12902, 12903, 12904);
+            // Japanese Default Content Unknown
+            emIds.push(16474, 17254, 16403);
+            // Japanese Event Roadshow Unknown
+            emIds.push(18117, 18118, 18122, 18119, 18116, 18123, 18120, 18121, 18124);
             // Japanese Replicate Success Webinar
             emIds.push(16118, 16119, 16120, 16122, 16121, 16117);
             // Japanese Replicate Success Roadshow
-            emIds.push(16123);
+            emIds.push(16331, 16332, 16338, 16333, 16123, 16339, 16335, 16336, 17868);
             // Japanese Intelligent Nurturing
-            emIds.push(16137, 16129, 16125, 16126, 16124, 16136, 16128, 16130, 16131, 16132, 16127, 16133);
+            emIds.push(16125, 16129, 16126, 16124, 16132, 16131, 16130, 16128, 16127, 16133, 16137, 16136);
+            // Japanese Default Email Blast Unknown
+            emIds.push(18126);
             break;
         case "app-ab07":
             // DIY Design
@@ -4182,20 +4194,38 @@ if (currentUrl.search(mktoAppDomain) != -1
                         emIds = APP.getEmailIds(APP.getCookie("userPod"));
                     switch (accountString) {
                         case "mktodemoaccount106":
-                            // Landing Page
+                            // DIY Design: Landing Page, Landing Page Responsive
                             lpIds["dpageid_11826"] = "dpageid_11826";
-                            // Responsive Landing Page
                             lpIds["dpageid_11822"] = "dpageid_11822";
-                            // Japanese Landing Page
-                            lpIds["dpageid_11548"] = "dpageid_11548";
-                            // Japanese Landing Page 2
-                            lpIds["dpageid_11546"] = "dpageid_11546";
-                            // Japnese Landing Page 3
+                            // Replicate Success Roadshow Example: Registration Page, Thank You for Registering
+                            lpIds["dpageid_8819"] = "dpageid_8819";
+                            lpIds["dpageid_8941"] = "dpageid_8941";
+                            // Replicate Success Webinar Example: Recorded Webinar LP, Registration Landing Page, Thank You LP
+                            lpIds["dpageid_4876"] = "dpageid_4876";
+                            lpIds["dpageid_4872"] = "dpageid_4872";
+                            lpIds["dpageid_4874"] = "dpageid_4874";
+                            // Japanese DIY Design: 1, 2, 3
                             lpIds["dpageid_11856"] = "dpageid_11856";
-                            // DIY Design and Replicate Success Forms
-                            formIds.push(3576, 1749, 1900, 3018, 3020, 3021);
-                            // DIY Design and Mobile Engagement Push Notifications 
+                            lpIds["dpageid_11548"] = "dpageid_11548";
+                            lpIds["dpageid_11546"] = "dpageid_11546";
+                            // Japanese Event Roadshow Unknown: 1, 2
+                            lpIds["dpageid_12420"] = "dpageid_12420";
+                            lpIds["dpageid_12418"] = "dpageid_12418";
+                            // Japanese Replicate Success Webinar Example: 1, 2, 3
+                            lpIds["dpageid_11552"] = "dpageid_11552";
+                            lpIds["dpageid_11550"] = "dpageid_11550";
+                            lpIds["dpageid_11553"] = "dpageid_11553";
+                            // Japanese Replicate Success Roadshow Example: 1, 2
+                            lpIds["dpageid_12345"] = "dpageid_12345";
+                            lpIds["dpageid_11556"] = "dpageid_11556";
+                            // Forms: DIY Design, Replicate Success Roadshow Example, Replicate Success Webinar Example
+                            formIds.push(3576, 1749, 1900);
+                            // Forms: Japanese Default DIY Design, Japanese Event Roadshow Unknown, Japanese Replicate Success Webinar Example, Japanese Replicate Success Roadshow Example
+                            formIds.push(3018, 3708, 3020, 3021);
+                            // Push Notifications: DIY Design, Mobile Engagement
                             pushIds.push(29, 23);
+                            // Push Notifications: DIY Design, Mobile Engagement, Unknown
+                            formIds.push(99, 94, 103);
                             break;
                         case "mktodemoaccount106a":
                             // Custom Landing Page
