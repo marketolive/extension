@@ -4073,8 +4073,10 @@ if (currentUrl.search(mktoAppDomain) != -1
             || accountString == "mktodemoaccount106a"
             || accountString == "mktodemoaccount106b") {
                 console.log("Marketo App > Location: MarketoLive Instance");
-                
+
                 window.mkto_live_plugin_state = true;
+                
+                APP.overrideDeliverabilityToolsMenuItem();
 
                 // If the user is the admin or ghost, disable
                 if (userId.search("^admin@mktodemoaccount") != -1
