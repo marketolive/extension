@@ -4436,7 +4436,7 @@ if (currentUrl.search(mktoAppDomain) != -1
                     }
                 }
             }
-            else {
+            else if (accountString.search("mktodemoaccount3[0-9][0-9]") !== -1){
                 APP.overrideDeliverabilityToolsMenuItem();
                 
                 if (currUrlFragment == mktoMyMarketoFragment) {
@@ -4448,7 +4448,7 @@ if (currentUrl.search(mktoAppDomain) != -1
                     }
                 }
             }
-            APP.overrideDeliverabilityToolsMenuItem();
+//            APP.overrideDeliverabilityToolsMenuItem();
         }
     }, 0);
 }
