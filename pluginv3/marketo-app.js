@@ -3675,7 +3675,9 @@ APP.limitNurturePrograms = function() {
                 },
                 undefined, [compType]);
 
-        if (matches.length >= 3) {
+        var userId = MktPage.userid.toLowerCase();
+        // ROBERT FRANKS NEEDS THIS LIFTED
+        if (matches.length >= 3 && userId !== "rfranks.demo@marketo.com") {
             limit_exceeded = true;
         }
 
