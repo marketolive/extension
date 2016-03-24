@@ -300,7 +300,7 @@ APP.overrideDeliverabilityToolsMenuItem = function() {
     console.log("Marketo App > Overriding: Deliverability Tools Superball Menu Item");
     
     MktPage.showSuperMenu = function() {
-        debugger;
+
         var logoEl = Ext.get(Ext.DomQuery.selectNode('.mkt-app-logo')),
         menu = logoEl.menu,
         menuTop = 55;
@@ -1077,9 +1077,8 @@ APP.overrideNewProgramCreate = function() {
  
 APP.overrideAssetSaveEdit = function() {
     console.log("Marketo App > Overriding: Asset Save Edit");
-    
+
     Mkt.widgets.CanvasHeader.prototype.saveEdit = function() {
-        debugger;
         console.log("Marketo App > Executing: Asset Save Edit");
         
         if (MktCanvas != null
