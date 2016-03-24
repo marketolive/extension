@@ -300,7 +300,7 @@ APP.overrideDeliverabilityToolsMenuItem = function() {
     console.log("Marketo App > Overriding: Deliverability Tools Superball Menu Item");
     
     MktPage.showSuperMenu = function() {
-        debugger;
+
         var logoEl = Ext.get(Ext.DomQuery.selectNode('.mkt-app-logo')),
         menu = logoEl.menu,
         menuTop = 55;
@@ -1077,7 +1077,7 @@ APP.overrideNewProgramCreate = function() {
  
 APP.overrideAssetSaveEdit = function() {
     console.log("Marketo App > Overriding: Asset Save Edit");
-    
+
     Mkt.widgets.CanvasHeader.prototype.saveEdit = function() {
         console.log("Marketo App > Executing: Asset Save Edit");
         
@@ -1087,10 +1087,12 @@ APP.overrideAssetSaveEdit = function() {
         && MktCanvas.getActiveTab().config.accessZoneId != null
         && MktCanvas.getActiveTab().config.accessZoneId != 1
         && MktCanvas.getActiveTab().config.accessZoneId != mktoJapaneseWorkspaceId) {
+            var isFolderEdit = false;
         
             if ((MktExplorer.getEl().dom.ownerDocument.title.search("Marketing Activities") != -1
                 && (this.titleId == "mpTEName"
-                    || this.titleId == "cdhTEName"))
+                    || this.titleId == "cdhTEName"
+                    || this.titleId == "pname"))
             || MktExplorer.getEl().dom.ownerDocument.title.search("Marketing Activities") == -1) {
                 var userId = MktPage.userid.toLowerCase(),
                 userName,
@@ -1102,7 +1104,18 @@ APP.overrideAssetSaveEdit = function() {
                     userName = userId.split("@")[0];
                 }
                     
-                if (this.items.items[1].items.items[0].name.search("Name$") != -1) {
+                if (MktCanvas.getActiveTab().config.accessZoneId == mktoMarketingWorkspaceId
+                && this.titleId == "pname") {
+                    if (this.prevTitleValue == userName) {
+                        isFolderEdit = true;
+                    }
+                    else if (typeof(this.items.items[1].items.items[0].blankText) != "undefined"
+                    && this.items.items[1].items.items[0].getValue().toLowerCase().search(userName + "$") == -1) {
+                        this.items.items[1].items.items[0].setValue(this.items.items[1].items.items[0].getValue() + " - " + userName);
+                    }
+                }
+                
+                else if (this.items.items[1].items.items[0].name.search("Name$") != -1) {
                     if (this.items.items[1].items.items[0].getValue().toLowerCase().search(userName + "$") == -1) {
                         this.items.items[1].items.items[0].setValue(this.items.items[1].items.items[0].getValue() + " - " + userName);
                     }
@@ -1122,70 +1135,136 @@ APP.overrideAssetSaveEdit = function() {
                     }
                 }
             }
-            
-            var toUpdateNodeText = true;
-            
-            MktSession.clockCursor(true);
-            this.serializeParms[this.titleId] = this.getTitleField().getValue();
-            this.serializeParms[this.descId] = this.getDescField().getValue();
-            
-            this.newTitleValue = MktPage.isFeatureEnabled('treeEncoding') ? this.serializeParms[this.titleId] : Ext.util.Format.htmlEncode(this.serializeParms[this.titleId]);
-            this.newDescValue = Ext.util.Format.htmlEncode(this.serializeParms[this.descId]);
-            this.updateCanvasConfig();
-            
-            this.prevTitleValue = this.titleValue;
-            this.titleValue = this.newTitleValue;
-            this.descValue = this.newDescValue;
-            MktPage.updateFullTitle();
-            var canvasTab = MktCanvas.getActiveTab();
-            canvasTab.updateTabTitle(this.titleValue);
-            var nodeId = null;
-            if (canvasTab.config.expNodeId) {
-                var node = MktExplorer.getNodeById(canvasTab.config.expNodeId);
-                if (node && node.attributes.compType) {
-                    var compType = node.attributes.compType;
-                    if (compType == 'Marketing Program') {
-                        nodeId = canvasTab.config.expNodeId;
-                        MktExplorer.lockSubTree(nodeId);
+            if (isFolderEdit) {
+                var toUpdateNodeText = false;
+
+                MktSession.clockCursor(true);
+                //this.serializeParms[this.titleId] = this.getTitleField().getValue();
+                //this.serializeParms[this.descId] = this.getDescField().getValue();
+
+                //this.newTitleValue = MktPage.isFeatureEnabled('treeEncoding') ? this.serializeParms[this.titleId] : Ext.util.Format.htmlEncode(this.serializeParms[this.titleId]);
+                //this.newDescValue = Ext.util.Format.htmlEncode(this.serializeParms[this.descId]);
+                //this.updateCanvasConfig();
+
+                //this.prevTitleValue = this.titleValue;
+                //this.titleValue = this.newTitleValue;
+                //this.descValue = this.newDescValue;
+                //MktPage.updateFullTitle();
+                var canvasTab = MktCanvas.getActiveTab();
+                //canvasTab.updateTabTitle(this.titleValue);
+                var nodeId = null;
+                if (canvasTab.config.expNodeId) {
+                    var node = MktExplorer.getNodeById(canvasTab.config.expNodeId);
+                    if (node && node.attributes.compType) {
+                        var compType = node.attributes.compType;
+                        if (compType == 'Marketing Program') {
+                            nodeId = canvasTab.config.expNodeId;
+                            //MktExplorer.lockSubTree(nodeId);
+                        }
+                        if (compType == 'Image') {
+                            toUpdateNodeText = false;
+                        }
                     }
-                    if (compType == 'Image') {
-                        toUpdateNodeText = false;
+                    if (toUpdateNodeText) {
+                        //MktExplorer.updateNodeText(canvasTab.config.expNodeId, this.titleValue);
                     }
                 }
-                if (toUpdateNodeText) {
-                    MktExplorer.updateNodeText(canvasTab.config.expNodeId, this.titleValue);
-                }
-            }
-            
-            var el = this.getEl();
-            var panelObj = this;
-            var formPanel = this.formPanel;
-            var viewPanel = this.viewPanel;
-            formPanel.hide(true, 0.2);
-            viewPanel.show(true, 0.2);
-            viewPanel.body.update(panelObj.viewTemplate.apply(panelObj));
-            
-            el.animate({
-                height : {
-                    from : this.getHeight(),
-                    to : this.origHeight
-                }
-            }, 0.25, function () {
-                panelObj.setHeight(panelObj.origHeight);
-                panelObj.body.setHeight(panelObj.origHeight);
-                if (isFunction(panelObj.savedCallback)) {
-                    panelObj.savedCallback();
-                }
-            });
-            
-            MktSession.unclockCursor();
-            this._saveInProgress = true;
-            MktSession.ajaxRequest(this.actionUrl, {
+
+                var el = this.getEl();
+                var panelObj = this;
+                var formPanel = this.formPanel;
+                var viewPanel = this.viewPanel;
+                formPanel.hide(true, 0.2);
+                viewPanel.show(true, 0.2);
+                viewPanel.body.update(panelObj.viewTemplate.apply(panelObj));
+
+                el.animate({
+                    height : {
+                        from : this.getHeight(),
+                        to : this.origHeight
+                    }
+                }, 0.25, function() {
+                    panelObj.setHeight(panelObj.origHeight);
+                    panelObj.body.setHeight(panelObj.origHeight);
+                    if (isFunction(panelObj.savedCallback)) {
+                        panelObj.savedCallback();
+                    }
+                });
+
+                MktSession.unclockCursor();
+                this._saveInProgress = false;
+                /*MktSession.ajaxRequest(this.actionUrl, {
                 serializeParms : this.serializeParms,
                 containerId : this.id,
                 onMySuccess : this.saveResponse.createDelegate(this, [nodeId], true),
                 onMyError : this.saveError.createDelegate(this, [nodeId])
-            });
+                });*/
+            }
+            else {
+                var toUpdateNodeText = true;
+
+                MktSession.clockCursor(true);
+                this.serializeParms[this.titleId] = this.getTitleField().getValue();
+                this.serializeParms[this.descId] = this.getDescField().getValue();
+
+                this.newTitleValue = MktPage.isFeatureEnabled('treeEncoding') ? this.serializeParms[this.titleId] : Ext.util.Format.htmlEncode(this.serializeParms[this.titleId]);
+                this.newDescValue = Ext.util.Format.htmlEncode(this.serializeParms[this.descId]);
+                this.updateCanvasConfig();
+
+                this.prevTitleValue = this.titleValue;
+                this.titleValue = this.newTitleValue;
+                this.descValue = this.newDescValue;
+                MktPage.updateFullTitle();
+                var canvasTab = MktCanvas.getActiveTab();
+                canvasTab.updateTabTitle(this.titleValue);
+                var nodeId = null;
+                if (canvasTab.config.expNodeId) {
+                    var node = MktExplorer.getNodeById(canvasTab.config.expNodeId);
+                    if (node && node.attributes.compType) {
+                        var compType = node.attributes.compType;
+                        if (compType == 'Marketing Program') {
+                            nodeId = canvasTab.config.expNodeId;
+                            MktExplorer.lockSubTree(nodeId);
+                        }
+                        if (compType == 'Image') {
+                            toUpdateNodeText = false;
+                        }
+                    }
+                    if (toUpdateNodeText) {
+                        MktExplorer.updateNodeText(canvasTab.config.expNodeId, this.titleValue);
+                    }
+                }
+
+                var el = this.getEl();
+                var panelObj = this;
+                var formPanel = this.formPanel;
+                var viewPanel = this.viewPanel;
+                formPanel.hide(true, 0.2);
+                viewPanel.show(true, 0.2);
+                viewPanel.body.update(panelObj.viewTemplate.apply(panelObj));
+
+                el.animate({
+                    height : {
+                        from : this.getHeight(),
+                        to : this.origHeight
+                    }
+                }, 0.25, function() {
+                    panelObj.setHeight(panelObj.origHeight);
+                    panelObj.body.setHeight(panelObj.origHeight);
+                    if (isFunction(panelObj.savedCallback)) {
+                        panelObj.savedCallback();
+                    }
+                });
+
+                MktSession.unclockCursor();
+                this._saveInProgress = true;
+                MktSession.ajaxRequest(this.actionUrl, {
+                    serializeParms : this.serializeParms,
+                    containerId : this.id,
+                    onMySuccess : this.saveResponse.createDelegate(this, [nodeId], true),
+                    onMyError : this.saveError.createDelegate(this, [nodeId])
+                });
+            }
         }
         
         if ((MktCanvas != null
@@ -1196,16 +1275,16 @@ APP.overrideAssetSaveEdit = function() {
         (MktCanvas.getActiveTab().config.accessZoneId == 1
         || MktCanvas.getActiveTab().config.accessZoneId == mktoJapaneseWorkspaceId)) {
             var toUpdateNodeText = false;
-            
+
             MktSession.clockCursor(true);
             //this.serializeParms[this.titleId] = this.getTitleField().getValue();
             //this.serializeParms[this.descId] = this.getDescField().getValue();
-            
+
             //this.newTitleValue = MktPage.isFeatureEnabled('treeEncoding') ? this.serializeParms[this.titleId] : Ext.util.Format.htmlEncode(this.serializeParms[this.titleId]);
             //this.newDescValue = Ext.util.Format.htmlEncode(this.serializeParms[this.descId]);
             //this.updateCanvasConfig();
-            
-            this.prevTitleValue = this.titleValue;
+
+            //this.prevTitleValue = this.titleValue;
             //this.titleValue = this.newTitleValue;
             //this.descValue = this.newDescValue;
             //MktPage.updateFullTitle();
@@ -1228,7 +1307,7 @@ APP.overrideAssetSaveEdit = function() {
                     //MktExplorer.updateNodeText(canvasTab.config.expNodeId, this.titleValue);
                 }
             }
-            
+
             var el = this.getEl();
             var panelObj = this;
             var formPanel = this.formPanel;
@@ -1236,27 +1315,27 @@ APP.overrideAssetSaveEdit = function() {
             formPanel.hide(true, 0.2);
             viewPanel.show(true, 0.2);
             viewPanel.body.update(panelObj.viewTemplate.apply(panelObj));
-            
+
             el.animate({
                 height : {
                     from : this.getHeight(),
                     to : this.origHeight
                 }
-            }, 0.25, function () {
+            }, 0.25, function() {
                 panelObj.setHeight(panelObj.origHeight);
                 panelObj.body.setHeight(panelObj.origHeight);
                 if (isFunction(panelObj.savedCallback)) {
                     panelObj.savedCallback();
                 }
             });
-            
+
             MktSession.unclockCursor();
             this._saveInProgress = false;
             /*MktSession.ajaxRequest(this.actionUrl, {
-                serializeParms : this.serializeParms,
-                containerId : this.id,
-                onMySuccess : this.saveResponse.createDelegate(this, [nodeId], true),
-                onMyError : this.saveError.createDelegate(this, [nodeId])
+            serializeParms : this.serializeParms,
+            containerId : this.id,
+            onMySuccess : this.saveResponse.createDelegate(this, [nodeId], true),
+            onMyError : this.saveError.createDelegate(this, [nodeId])
             });*/
         }
     }
@@ -3675,9 +3754,7 @@ APP.limitNurturePrograms = function() {
                 },
                 undefined, [compType]);
 
-        var userId = MktPage.userid.toLowerCase();
-        // ROBERT FRANKS NEEDS THIS LIFTED
-        if (matches.length >= 3 && userId !== "rfranks.demo@marketo.com") {
+        if (matches.length >= 3) {
             limit_exceeded = true;
         }
 
@@ -4075,10 +4152,8 @@ if (currentUrl.search(mktoAppDomain) != -1
             || accountString == "mktodemoaccount106a"
             || accountString == "mktodemoaccount106b") {
                 console.log("Marketo App > Location: MarketoLive Instance");
-
-                window.mkto_live_plugin_state = true;
                 
-                APP.overrideDeliverabilityToolsMenuItem();
+                window.mkto_live_plugin_state = true;
 
                 // If the user is the admin or ghost, disable
                 if (userId.search("^admin@mktodemoaccount") != -1
@@ -4440,7 +4515,7 @@ if (currentUrl.search(mktoAppDomain) != -1
                     }
                 }
             }
-            else if (accountString.search("mktodemoaccount3[0-9][0-9]") !== -1){
+            else {
                 APP.overrideDeliverabilityToolsMenuItem();
                 
                 if (currUrlFragment == mktoMyMarketoFragment) {
@@ -4452,7 +4527,7 @@ if (currentUrl.search(mktoAppDomain) != -1
                     }
                 }
             }
-//            APP.overrideDeliverabilityToolsMenuItem();
+            APP.overrideDeliverabilityToolsMenuItem();
         }
     }, 0);
 }
