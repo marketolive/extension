@@ -978,34 +978,32 @@ APP.overrideNewProgramCreate = function() {
             }
                 
             if (this.title == "New Program") {
-                if (this.items.items[2].fieldLabel == "Name") {
-                    if (this.items.items[2].getValue().toLowerCase().search(userName + "$") == -1) {
-                        this.items.items[2].setValue(this.items.items[2].getValue() + " - " + userName);
+                if (this.getInputItems()[1].fieldLabel == "Name") {
+                    if (this.getInputItems()[1].getValue().toLowerCase().search(userName + "$") == -1) {
+                        this.getInputItems()[1].setValue(this.getInputItems()[1].getValue() + " - " + userName);
                     }
                 }
                 else {
-                    for (ii = 0; ii < this.items.items.length; ii++) {
-                        if (this.items.items[ii].fieldLabel == "Name") {
-                            if (this.items.items[ii].getValue().toLowerCase().search(userName + "$") == -1) {
-                                this.items.items[ii].setValue(this.items.items[ii].getValue() + " - " + userName);
+                    for (ii = 0; ii < this.getInputItems().length; ii++) {
+                        if (this.getInputItems()[ii].fieldLabel == "Name") {
+                            if (this.getInputItems()[ii].getValue().toLowerCase().search(userName + "$") == -1) {
+                                this.getInputItems()[ii].setValue(this.getInputItems()[ii].getValue() + " - " + userName);
                             }
                         }
                     }
                 }
             }
             else if (this.title == "New Segmentation") {
-                if (this.items.items[1].items.items[0].fieldLabel == "Name") {
-                    if (this.items.items[1].items.items[0].getValue().toLowerCase().search(userName + "$") == -1) {
-                        this.items.items[1].items.items[0].setValue(this.items.items[1].items.items[0].getValue() + " - " + userName);
+                if (this.findByType("textfield")[0].fieldLabel == "Name") {
+                    if (this.findByType("textfield")[0].getValue().toLowerCase().search(userName + "$") == -1) {
+                        this.findByType("textfield")[0].setValue(this.findByType("textfield")[0].getValue() + " - " + userName);
                     }
                 }
                 else {
-                    for (ii = 0; ii < this.items.items.length; ii++) {
-                        for (jj = 0; jj < this.items.items[ii].items.items.length; jj++) {
-                            if (this.items.items[ii].items.items[jj].fieldLabel == "Name") {
-                                if (this.items.items[ii].items.items[jj].getValue().toLowerCase().search(userName + "$") == -1) {
-                                    this.items.items[ii].items.items[jj].setValue(this.items.items[ii].items.items[jj].getValue() + " - " + userName);
-                                }
+                    for (ii = 0; ii < this.findByType("textfield").length; ii++) {
+                        if (this.findByType("textfield")[ii].fieldLabel == "Name") {
+                            if (this.findByType("textfield")[ii].getValue().toLowerCase().search(userName + "$") == -1) {
+                                this.findByType("textfield")[ii].setValue(this.findByType("textfield")[ii].getValue() + " - " + userName);
                             }
                         }
                     }
@@ -1066,8 +1064,10 @@ APP.overrideNewProgramCreate = function() {
 /**************************************************************************************
  *  
  *  This function overrides the save edit function for renaming exisiting Programs, 
- *  Smart Campaigns, and Assets in order to enforce a naming convention by appending the 
- *  user's username to the name of the program, smart campaign, or asset
+ *  Smart Campaigns, Assets, and Folders in order to enforce a naming convention by 
+ *  appending the user's username to the name of the program, smart campaign, asset, or 
+ *  folder; additionally, it prevents the renaming of the user's root folder via the 
+ *  Marketo canvas tab
  *
  *  @Author Brian Fisher
  *
@@ -1106,39 +1106,21 @@ APP.overrideAssetSaveEdit = function() {
                     
                 if (MktCanvas.getActiveTab().config.accessZoneId == mktoMarketingWorkspaceId
                 && this.titleId == "pname") {
-                    if (this.prevTitleValue == userName) {
+                    if (this.titleValue == userName) {
                         isFolderEdit = true;
-                    }
-                    else if (typeof(this.items.items[1].items.items[0].blankText) != "undefined"
-                    && this.items.items[1].items.items[0].getValue().toLowerCase().search(userName + "$") == -1) {
-                        this.items.items[1].items.items[0].setValue(this.items.items[1].items.items[0].getValue() + " - " + userName);
                     }
                 }
                 
-                else if (this.items.items[1].items.items[0].name.search("Name$") != -1) {
-                    if (this.items.items[1].items.items[0].getValue().toLowerCase().search(userName + "$") == -1) {
-                        this.items.items[1].items.items[0].setValue(this.items.items[1].items.items[0].getValue() + " - " + userName);
-                    }
-                }
-                else {
-                    for (ii = 0; ii < this.items.items.length; ii++) {
-                        if (this.items.items[ii].defaultType == "textfield") {
-                            var jj;
-                            for (jj = 0; jj < this.items.items[ii].items.items.length; jj++) {
-                                if (this.items.items[ii].items.items[jj].name.search("Name$") != -1) {
-                                    if (this.items.items[ii].items.items[jj].getValue().toLowerCase().search(userName + "$") == -1) {
-                                        this.items.items[ii].items.items[jj].setValue(this.items.items[ii].items.items[jj].getValue() + "-" + userName);
-                                    }
-                                }
-                            }
-                        }
-                    }
+                if (this.getTitleField().getValue().toLowerCase().search(userName + "$") == -1) {
+                    this.getTitleField().setValue(this.getTitleField().getValue() + " - " + userName);
                 }
             }
+            
             if (isFolderEdit) {
                 var toUpdateNodeText = false;
 
                 MktSession.clockCursor(true);
+                this.getTitleField().setValue(this.titleValue);
                 //this.serializeParms[this.titleId] = this.getTitleField().getValue();
                 //this.serializeParms[this.descId] = this.getDescField().getValue();
 
@@ -1277,6 +1259,7 @@ APP.overrideAssetSaveEdit = function() {
             var toUpdateNodeText = false;
 
             MktSession.clockCursor(true);
+            this.getTitleField().setValue(this.titleValue);
             //this.serializeParms[this.titleId] = this.getTitleField().getValue();
             //this.serializeParms[this.descId] = this.getDescField().getValue();
 
@@ -1398,6 +1381,165 @@ APP.overrideNewAssetCreate = function() {
         else {
             form.showDefaultMessage();
             form.setSubmitting(false);
+        }
+    }
+}
+
+/**************************************************************************************
+ *  
+ *  This function overrides the new folder create function via Right-click > New  
+ *  Campaign Folder, New Folder in order to enforce a naming convention by appending 
+ *  the user's username to the new name of any folder that is not a child of a program
+ *
+ *  @Author Brian Fisher
+ *
+ *  @function
+ *
+ **************************************************************************************/
+ 
+APP.overrideNewFolders = function() {
+    console.log("Marketo App > Overriding: New Folders");
+    
+    MktMa.newProgramFolderSubmit = function (text, parentId, tempNodeId) {
+        console.log("Marketo App > Executing: New Folders");
+        
+        MktSession.clockCursor(true);
+        var userId = MktPage.userid.toLowerCase(),
+        userName,
+        parms = {};
+        if (userId.search("\.demo@marketo.com$") != -1) {
+            userName = userId.split(".demo")[0];
+        }
+        else {
+            userName = userId.split("@")[0];
+        }
+        
+        if (text == userName) {
+            text = text + " - " + userName;
+        }
+        else if (this.currNode.parentNode.attributes.compType.search("Folder$") != -1
+        && text.toLowerCase().search(userName + "$") == -1) {
+            text = text + " - " + userName;
+        }
+        parms.text = text;
+        parms.parentId = parentId;
+        parms.tempNodeId = tempNodeId;
+        MktSession.ajaxRequest('explorer/createProgramFolder', {
+            serializeParms : parms,
+            onMySuccess : MktMa.newProgramFolderDone,
+            onMyFailure : function (tempNodeId) {
+                var tempNode = MktExplorer.getNodeById(tempNodeId);
+                if (tempNode) {
+                    tempNode.remove();
+                }
+            }.createDelegate(this, [tempNodeId])
+        });
+        if (MktMa.currNode) {
+            MktMa.currNode.unselect();
+        }
+    }
+}
+
+/**************************************************************************************
+ *  
+ *  This function overrides the folder renaming functions in order to prevent renaming 
+ *  of the user's root folder via Right-click > Rename Folder and to enforce a naming 
+ *  convention by appending the user's username to the new name of any folder that is 
+ *  not a child of a program
+ *
+ *  @Author Brian Fisher
+ *
+ *  @function
+ *
+ **************************************************************************************/
+ 
+APP.overrideRenamingFolders = function() {
+    console.log("Marketo App > Overriding: Renaming Folders");
+    
+    MktMa.renameProgramFolderSubmit = function (value, startValue, folderId) {
+        console.log("Marketo App > Executing: Renaming Folders in Marketing Activities");
+        
+        MktSession.clockCursor(true);
+        var userId = MktPage.userid.toLowerCase(),
+            folder = MktExplorer.getNodeById(folderId),
+            userName,
+            parms = {};
+        if (userId.search("\.demo@marketo.com$") != -1) {
+            userName = userId.split(".demo")[0];
+        }
+        else {
+            userName = userId.split("@")[0];
+        }
+        
+        if (startValue == userName
+        && this.currNode.parentNode.attributes.system == true
+        && this.currNode.attributes.accessZoneId == mktoMarketingWorkspaceId) {
+            if (folder) {
+                folder.setText(startValue);
+            }
+            MktSession.unclockCursor();
+        }
+        else {
+            if (this.currNode.parentNode.attributes.compType.search("Folder$") != -1
+            && value.toLowerCase().search(userName + "$") == -1) {
+                value = value + " - " + userName;
+                if (folder) {
+                    folder.setText(value);
+                }
+            }
+            parms.origProgramName = startValue;
+            parms.newProgramName = value;
+            parms.folderId = folderId;
+            MktSession.ajaxRequest('explorer/renameProgramFolder', {
+                serializeParms : parms,
+                onMySuccess : MktMa.renameProgramFolderSubmitDone,
+                onMyFailure : function (folderId, origName) {
+                    var folder = MktExplorer.getNodeById(folderId);
+                    if (folder) {
+                        folder.setText(origName);
+                    }
+                }.createDelegate(this, [folderId, startValue])
+            });
+        }
+    }
+    
+    MktFolder.renameFolderSubmit = function (text, startValue, nodeId) {
+        console.log("Marketo App > Executing: Renaming Folders");
+        
+        MktSession.clockCursor(true);
+        var userId = MktPage.userid.toLowerCase(),
+            userName,
+            parms = {};
+        if (userId.search("\.demo@marketo.com$") != -1) {
+            userName = userId.split(".demo")[0];
+        }
+        else {
+            userName = userId.split("@")[0];
+        }
+        
+        if (startValue == userName
+        && this.currNode.parentNode.attributes.system == true
+        && this.currNode.attributes.accessZoneId == mktoMarketingWorkspaceId) {
+            MktFolder.currNode.setText(startValue);
+            MktSession.unclockCursor();
+        }
+        else {
+            if (text.toLowerCase().search(userName + "$") == -1) {
+                text = text + " - " + userName;
+                MktFolder.currNode.setText(text);
+            }
+            parms.text = text;
+            parms.nodeId = nodeId;
+            MktSession.ajaxRequest('folder/renameFolderSubmit', {
+                serializeParms : parms,
+                onMySuccess : MktFolder.renameFolderSubmitDone.createDelegate({
+                    parms : parms,
+                    startValue : startValue
+                }),
+                onMyFailure : function() {
+                    MktFolder.currNode.setText(startValue);
+                }.createDelegate(this)
+            });
         }
     }
 }
@@ -4234,6 +4376,8 @@ if (currentUrl.search(mktoAppDomain) != -1
                     APP.overrideNewProgramCreate();
                     APP.overrideAssetSaveEdit();
                     APP.overrideNewAssetCreate();
+                    APP.overrideNewFolders();
+                    APP.overrideRenamingFolders();
                     //APP.hidePageGrid();
                     APP.hideFoldersOnImport();
                     APP.disableConfirmationMessage();
