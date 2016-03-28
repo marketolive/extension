@@ -1401,7 +1401,7 @@ APP.overrideNewFolders = function() {
     console.log("Marketo App > Overriding: New Folders");
     
     MktMa.newProgramFolderSubmit = function (text, parentId, tempNodeId) {
-        console.log("Marketo App > Executing: New Folders");
+        console.log("Marketo App > Executing: New Folders in Marketing Activities");
         
         MktSession.clockCursor(true);
         var userId = MktPage.userid.toLowerCase(),
@@ -1414,11 +1414,9 @@ APP.overrideNewFolders = function() {
             userName = userId.split("@")[0];
         }
         
-        if (text == userName) {
-            text = text + " - " + userName;
-        }
-        else if (this.currNode.parentNode.attributes.compType.search("Folder$") != -1
-        && text.toLowerCase().search(userName + "$") == -1) {
+        if ((this.currNode.parentNode.attributes.compType.search("Folder$") != -1
+            && text.toLowerCase().search(userName + "$") == -1)
+        || text == userName) {
             text = text + " - " + userName;
         }
         parms.text = text;
@@ -1437,6 +1435,39 @@ APP.overrideNewFolders = function() {
         if (MktMa.currNode) {
             MktMa.currNode.unselect();
         }
+    }
+    
+    MktFolder.newFolderSubmit = function (text, parentNodeId, tempNodeId) {
+        console.log("Marketo App > Executing: New Folders");
+        
+        MktSession.clockCursor(true);
+        var userId = MktPage.userid.toLowerCase(),
+            userName,
+            parms = {};
+        if (userId.search("\.demo@marketo.com$") != -1) {
+            userName = userId.split(".demo")[0];
+        }
+        else {
+            userName = userId.split("@")[0];
+        }
+        
+        if (text.toLowerCase().search(userName + "$") == -1
+        || text == userName) {
+            text = text + " - " + userName;
+        }
+        parms.text = text;
+        parms.parentNodeId = parentNodeId;
+        parms.tempNodeId = tempNodeId;
+        MktSession.ajaxRequest('folder/createFolderSubmit', {
+            serializeParms : parms,
+            onMySuccess : MktFolder.newFolderSubmitDone.createDelegate(this, [tempNodeId]),
+            onMyFailure : function (tempNodeId) {
+                var tempNode = MktExplorer.getNodeById(tempNodeId);
+                if (tempNode) {
+                    tempNode.remove();
+                }
+            }.createDelegate(this, [tempNodeId])
+        });
     }
 }
 
@@ -2515,7 +2546,169 @@ APP.disableMenus = function() {
 		return menu;
 	}
 	
-	// Disables Lead Database > System Smart List, Smart List, List, Segment > Right-click menus
+	// Disables Lead Database > ALL > Right-click menus
+    var prevLeadDatabaseShowContextMenu = MktLeadDbMenu.showContextMenu;
+    MktLeadDbMenu.showContextMenu = function (node, e) {
+        prevLeadDatabaseShowContextMenu.apply(this, arguments);
+        
+        var compType,
+        menu;
+        var attr = node.attributes;
+        var xtraAttr = attr.xtra;
+        var type;
+        var isTempNode = Ext.isString(node.id) ? (node.id.indexOf('xnode-') > -1) : false;
+        
+        if (!isTempNode) {
+            if (attr.nodeType == 'Marketing Folder') {
+                return; //Ignore context menu event on program folders
+            } else if (xtraAttr && xtraAttr.type) {
+                type = xtraAttr.type;
+            } else if ((attr && attr.folder)
+                 || attr.nodeType == 'List'
+                 || attr.nodeType == 'Smart List'
+                 || attr.nodeType == 'Segmentation') {
+                //Get the folder menu for List and Smart List
+                type = 'LeadDb';
+            } else {
+                return;
+            }
+            
+            menu = MktMenuMgr.getMenu(type, attr);
+            debugger;
+            var userId = MktPage.userid.toLowerCase(),
+                userName;
+            if (userId.search("\.demo@marketo.com$") != -1) {
+                userName = userId.split(".demo")[0];
+            }
+            else {
+                userName = userId.split("@")[0];
+            }
+            if (menu
+            && menu.items) {
+                var mItems = menu.items,
+                    canvas = MktCanvas.getActiveTab(),
+                    disable = (attr
+                                && attr.accessZoneId 
+                                && (attr.accessZoneId == 1
+                                    || attr.accessZoneId == mktoJapaneseWorkspaceId
+                                    || (attr.accessZoneId == mktoMarketingWorkspaceId
+                                        && (attr.system == true
+                                            || (attr.menu.currNode.parentNode.attributes.system == true
+                                                && attr.text != userName)))))
+                            || (attr
+                                && attr.depth
+                                && attr.depth == 1
+                                && attr.accessZoneId
+                                && attr.accessZoneId == mktoMarketingWorkspaceId)
+                            || (!attr
+                                || !attr.accessZoneId
+                                && menu
+                                && menu.currNode
+                                && menu.currNode.attributes
+                                && menu.currNode.attributes.accessZoneId
+                                && (menu.currNode.attributes.accessZoneId == 1
+                                    || menu.currNode.attributes.accessZoneId == mktoJapaneseWorkspaceId
+                                    || (menu.currNode.attributes.accessZoneId == mktoMarketingWorkspaceId
+                                        && (menu.currNode.attributes.system == true
+                                            || (menu.currNode.parentNode.attributes.system == true
+                                                && menu.currNode.text != userName)))))
+                            || (!menu
+                                || !menu.currNode
+                                && canvas
+                                && canvas.config
+                                && canvas.config.accessZoneId
+                                && (canvas.config.accessZoneId == 1
+                                    || canvas.config.accessZoneId == mktoJapaneseWorkspaceId)),
+                    itemsToDisable = [
+                                    "newSmartList",//New Smart List
+                                    "newList",//New List
+                                    "importList",//Import List
+                                    "cloneSmartlist",//Clone Smart List
+                                    "cloneList",//Clone List
+                                    "deleteList",//Delete List
+                                    //"navigateToMembership",//View Leads
+                                    //"navigateToSmartList",//View Smart List
+                                    //"navigateToFilterView",//Filter View
+                                    //"newSmartListReportSubscription",//New Smart List Subscription
+                                    "newSegmentation",//New Segmentation
+                                    "createDraftSegmentation",//Create Draft
+                                    //"editSegmentation",//Edit Segments
+                                    "approveSegmentation",//Approve
+                                    "unapproveSegmentation",//Unapprove
+                                    "deleteSegmentation",//Delete
+                                    "refreshSegmentation",//Refresh Status
+                                    //"editDraftSegmentation",//Edit Segments
+                                    "approveDraftSegmentation",//Approve Draft
+                                    //"discardDraftSegmentation",//Discard Draft
+                                    "share",//Share Folder
+                                    "createFolder",//New Folder
+                                    "renameFolder",//Rename Folder
+                                    "deleteFolder",//Delete Folder
+                                    "convertToArchiveFolder",//Convert To Archive Folder
+                                    "convertToFolder",//Convert To Folder
+                                    ];
+                itemsToDisable.forEach(function(itemToDisable) {
+                    var item = mItems.get(itemToDisable);
+                    if (item) {
+                        item.setDisabled(disable);
+                    }
+                });
+            }
+            
+            if (menu) {
+                menu.currNode = node; // must be set before calling preShowContextMenu
+                MktLeadDbMenu.showContextItems(menu, true);
+                
+                var s = menu.items.get('removeBookmark');
+                if (s) {
+                    s.setVisible(false);
+                }
+                
+                // Choose the context menu based on compType and compSubtype
+                if (xtraAttr && !attr.folder) {
+                    var compType = xtraAttr.compType;
+                    var compSubtype = xtraAttr.compSubtype;
+                    
+                    if (compType == 'List') {
+                        MktLeadDbMenu.preShowListListMenu(menu);
+                    } else if (compSubtype == 'Smart Campaign') {
+                        MktLeadDbMenu.preShowCampaignListMenu(menu);
+                    } else if (compSubtype == 'Report') {
+                        console.debug('showing report menu');
+                        MktLeadDbMenu.preShowReportListMenu(menu);
+                    }
+                    /* We don't need this right now, but it may be handy later
+                    else if (compType == 'Smart List' && attr.system) {
+                    MktLeadDbMenu.preShowUserListMenu(menu);
+                    }*/
+                    else if (compType == 'Smart List') {
+                        MktLeadDbMenu.preShowUserListMenu(menu, attr);
+                    } else if (compType == 'Segmentation') {
+                        MktLeadDbMenu.preShowSegmentationMenu(menu, attr);
+                    } else {
+                        return;
+                    }
+                }
+                
+                // Show the menu if we haven't aborted by now
+                menu.showAt(e.xy);
+                if (xtraAttr) {
+                    menu.listCompType = attr.nodeType;
+                    menu.leadDbSmartListId = xtraAttr.compId;
+                    menu.compId = xtraAttr.compId;
+                    menu.leadDbNodeId = xtraAttr.nodeId;
+                    menu.listName = attr.text;
+                    menu.name = attr.text;
+                }
+                
+                Mkt.main.ExplorerPanel.nodeContextMenuSetup(node, menu);
+                
+                e.stopEvent();
+            }
+        }
+    }
+    
+    // Disables Lead Database > System Smart List, Smart List, List, Segment > Right-click menus
 	var prevLeadDatabaseContextMenu = MktLeadDbMenu.preShowContextMenu;
 	MktLeadDbMenu.preShowContextMenu = function(menu, attr) {
 		prevLeadDatabaseContextMenu.apply(this, arguments);
