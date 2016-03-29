@@ -1511,8 +1511,9 @@ APP.overrideRenamingFolders = function() {
             MktSession.unclockCursor();
         }
         else {
-            if (this.currNode.parentNode.attributes.compType.search("Folder$") != -1
-            && value.toLowerCase().search(userName + "$") == -1) {
+            if ((this.currNode.parentNode.attributes.compType.search("Folder$") != -1
+                && value.toLowerCase().search(userName + "$")) == -1
+            || value == userName) {
                 value = value + " - " + userName;
                 if (folder) {
                     folder.setText(value);
@@ -1555,7 +1556,8 @@ APP.overrideRenamingFolders = function() {
             MktSession.unclockCursor();
         }
         else {
-            if (text.toLowerCase().search(userName + "$") == -1) {
+            if (text.toLowerCase().search(userName + "$") == -1
+            || text == userName) {
                 text = text + " - " + userName;
                 MktFolder.currNode.setText(text);
             }
