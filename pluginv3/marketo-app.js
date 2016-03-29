@@ -4480,8 +4480,10 @@ if (currentUrl.search(mktoAppDomain) != -1
             console.log("Marketo App > Location: Marketo Page");
             
             window.clearInterval(isMktPageApp);
+                
             var accountString = MktPage.savedState.custPrefix,
-                userId = MktPage.userid.toLowerCase();
+                userId = MktPage.userid.toLowerCase(),
+                currUrlFragment = Mkt3.DL.getDlToken();
             
             // This checks to see if the username is one that would be associated
             // with a MarketoLive subscription.
@@ -4511,8 +4513,7 @@ if (currentUrl.search(mktoAppDomain) != -1
                     }
                 }
 
-                var currUrlFragment,
-                    prevWorkspaceId,
+                var prevWorkspaceId,
                     japanWorkspaceId = 173,
                     oppInfluenceAnalyzerFragment = "AR1559A1!",
                     programAnalyzerFragment = "AR1544A1!",
@@ -4522,9 +4523,6 @@ if (currentUrl.search(mktoAppDomain) != -1
                 
                 // Disabling Demo Plugin Check
                 APP.disableDemoPluginCheck();
-
-                // Getting the URL fragment, the part after the #
-                currUrlFragment = Mkt3.DL.getDlToken();
 
                 // Email Deliverability
                 if (currUrlFragment == mktoMyMarketoFragment) {
@@ -4861,6 +4859,9 @@ if (currentUrl.search(mktoAppDomain) != -1
                     APP.overrideDeliverabilityToolsTile();
                 }
                 window.onhashchange = function () {
+                    // Getting the URL fragment, the part after the #
+                    currUrlFragment = Mkt3.DL.getDlToken();
+                
                     if (currUrlFragment == mktoMyMarketoFragment) {
                         APP.overrideDeliverabilityToolsTile();
                     }
