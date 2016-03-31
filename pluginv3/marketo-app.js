@@ -3677,7 +3677,7 @@ APP.limitNurturePrograms = function() {
 
         var userId = MktPage.userid.toLowerCase();
         // ROBERT FRANKS NEEDS THIS LIFTED
-        if (matches.length >= 3 && userId !== "rfranks.demo@marketo.com") {
+        if (matches.length >= 5 && userId !== "rfranks.demo@marketo.com") {
             limit_exceeded = true;
         }
 
