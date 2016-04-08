@@ -1764,14 +1764,16 @@ APP.evaluateMenu = function (triggeredFrom, attr, menu, canvas, toolbar) {
                     }
                 }
             }
-            else if (!attr
-                    || !attr.accessZoneId
-                        && menu
+            else if ((!attr
+                        || !attr.accessZoneId
+                        || !attr.menu
+                        || !attr.menu.currNode)
+                    && (menu
                         && menu.currNode
                         && menu.currNode.attributes
                         && (menu.currNode.attributes.accessZoneId == 1
                             || menu.currNode.attributes.accessZoneId == mktoJapaneseWorkspaceId
-                            || menu.currNode.attributes.accessZoneId == mktoMarketingWorkspaceId)) {
+                            || menu.currNode.attributes.accessZoneId == mktoMarketingWorkspaceId))) {
                                 
                 toBeDisabled = true;
                 if (menu.currNode.attributes.accessZoneId == mktoMarketingWorkspaceId) {
@@ -1788,15 +1790,16 @@ APP.evaluateMenu = function (triggeredFrom, attr, menu, canvas, toolbar) {
                     }
                 }                
             }
-            else if (!menu
-                    || !menu.currNode
-                    && canvas
-                    && canvas.config
-                    && (canvas.config.accessZoneId == 1
-                        || canvas.config.accessZoneId == mktoJapaneseWorkspaceId
-                        || (canvas.config.accessZoneId == mktoMarketingWorkspaceId
-                            && canvas.config.expNodeId
-                            && MktExplorer.getNodeById(canvas.config.expNodeId)))) {
+            else if ((!menu
+                        || !menu.currNode
+                        || !menu.currNode.attributes)
+                    && (canvas
+                        && canvas.config
+                        && (canvas.config.accessZoneId == 1
+                            || canvas.config.accessZoneId == mktoJapaneseWorkspaceId
+                            || (canvas.config.accessZoneId == mktoMarketingWorkspaceId
+                                && canvas.config.expNodeId
+                                && MktExplorer.getNodeById(canvas.config.expNodeId))))) {
                                 
                 toBeDisabled = true;
                 if (canvas.config.accessZoneId == mktoMarketingWorkspaceId) {
@@ -1914,10 +1917,10 @@ APP.disableMenus = function() {
     console.log("Marketo App > Disabling: Menus");
 	
 	//Disables Marketing Activities > Marketing Program, Nurture Program, Event Program, and Email Batch Program > New menu
-	var prevMarketingNewEventMenu = Mkt.app.MarketingActivities.Toolbar.getNewEventMenuButton;
+	var prevMarketingActivitiesNewEventMenuButton = Mkt.app.MarketingActivities.Toolbar.getNewEventMenuButton;
 	Mkt.app.MarketingActivities.Toolbar.getNewEventMenuButton = function() {
         console.log ("Marketo App > Executing: Disabling New menu for Marketing, Nurture, Event, and Email Batch Programs in Marketing Activities");
-		prevMarketingNewEventMenu.apply(this, arguments);
+		prevMarketingActivitiesNewEventMenuButton.apply(this, arguments);
 		return {
 			text : MktLang.getStr('mktMaMenu.New'),
 			iconCls : 'mkiBooksBlue',
@@ -1934,10 +1937,10 @@ APP.disableMenus = function() {
 	}
 	
 	// Disables Marketing Activities > Folder and Smart Campaign > New menu
-	var prevMarketingNewMenu = Mkt.app.MarketingActivities.Toolbar.getNewMenuButton;
+	var prevMarketingActivitiesNewMenuButton = Mkt.app.MarketingActivities.Toolbar.getNewMenuButton;
 	Mkt.app.MarketingActivities.Toolbar.getNewMenuButton = function() {
         console.log ("Marketo App > Executing: Disabling New menu for Folders and Smart Campaigns in Marketing Activities");
-		prevMarketingNewMenu.apply(this, arguments);
+		prevMarketingActivitiesNewMenuButton.apply(this, arguments);
 		return {
 			text : MktLang.getStr('mktMaMenu.New'),
 			iconCls : 'mkiBooksBlue',
@@ -1953,31 +1956,11 @@ APP.disableMenus = function() {
 		};
 	}
 	
-	// Disables Design Studio > ALL > New menu
-	var prevDesignNewMenu = Mkt.app.DesignStudio.Toolbar.getNewMenuButton;
-	Mkt.app.DesignStudio.Toolbar.getNewMenuButton = function() {
-        console.log ("Marketo App > Executing: Disabling New menu for ALL in Design Studio");
-		prevDesignNewMenu.apply(this, arguments);
-		return {
-			text : MktLang.getStr('mktDsMenu.New'),
-			iconCls : 'mkiColorsCmyk',
-			xtype : 'mkttbbutton',
-			menu : MktMaMenu.maMenu(),
-			handler : function(button) {
-				var canvas = MktCanvas.getActiveTab(),
-                    disableMenu = APP.evaluateMenu("button", null, null, canvas, null);
-				button.menu.items.each(function(item) {
-					item.setDisabled(disableMenu);
-				});
-			}
-		};
-	}
-	
 	// Disables Marketing Activities > Marketing Program, Nurture Program, Event Program, and Email Batch Program > Actions menus
-	var prevActionsMenu = Mkt.menus.marketingEvent.Toolbar.preShowMarketingProgramActions;
+	var prevPreShowMarketingProgramActions = Mkt.menus.marketingEvent.Toolbar.preShowMarketingProgramActions;
 	Mkt.menus.marketingEvent.Toolbar.preShowMarketingProgramActions = Mkt.menus.marketingEvent.Toolbar.preShowMarketingEventActions = function(menu) {
         console.log ("Marketo App > Executing: Disabling Actions menu for Marketing, Nurture, Event, and Email Batch Programs in Marketing Activities");
-		prevActionsMenu.apply(this, arguments);
+		prevPreShowMarketingProgramActions.apply(this, arguments);
 		var mItems = menu.items,
 			canvas = MktCanvas.getActiveTab(),
 			disable = APP.evaluateMenu("button", null, null, canvas, null),
@@ -2008,11 +1991,11 @@ APP.disableMenus = function() {
 		});
 	}
 	
-	// Disables Marketing Activities > Marketing Program, Nurture Program, Event Program, and Email Batch Program > Right-click menus
-	var prevRightClickMenu = MktMaMenu.preShowProgramActionsMenu;
+	// Disables Marketing Activities > Marketing Program, Nurture Program, Event Program, Email Batch Program, and Folder > Right-click menus
+	var prevPreShowProgramActionsMenu = MktMaMenu.preShowProgramActionsMenu;
     MktMaMenu.preShowProgramActionsMenu = function(menu, attr) {
-        console.log ("Marketo App > Executing: Disabling Right-click menu for Marketing, Nurture, Event, and Email Batch Programs in Marketing Activities");
-        prevRightClickMenu.apply(this, arguments);
+        console.log ("Marketo App > Executing: Disabling Right-click menu for Marketing, Nurture, Event, Email Batch Programs, and Folders in Marketing Activities");
+        prevPreShowProgramActionsMenu.apply(this, arguments);
         var mItems = menu.items,
             canvas = MktCanvas.getActiveTab(),
             disable = APP.evaluateMenu("tree", attr, menu, canvas, null),
@@ -2072,10 +2055,10 @@ APP.disableMenus = function() {
     }
 	
 	// Disables Marketing Activities > Email > Right-click menu
-	var prevEmailRightClickMenu = MktDsMenu.preShowEmailMenu;
+	var prevPreShowEmailMenu = MktDsMenu.preShowEmailMenu;
 	MktDsMenu.preShowEmailMenu = function(menu, attr) {
         console.log ("Marketo App > Executing: Disabling Right-click menu for Emails in Marketing Activities");
-		prevEmailRightClickMenu.apply(this, arguments);
+		prevPreShowEmailMenu.apply(this, arguments);
 		var mItems = menu.items,
 			canvas = MktCanvas.getActiveTab(),
 			disable = APP.evaluateMenu("tree", attr, menu, canvas, null),
@@ -2115,10 +2098,10 @@ APP.disableMenus = function() {
 	}
 
 	// Disables Marketing Activities > Landing Page > Right-click menu
-	var prevLandingPageRightClickMenu = MktDsMenu.preShowPageMenu;
+	var prevPreShowPageMenu = MktDsMenu.preShowPageMenu;
 	MktDsMenu.preShowPageMenu = function(menu, attr) {
         console.log ("Marketo App > Executing: Disabling Right-click menu for Landing Pages in Marketing Activities");
-		prevLandingPageRightClickMenu.apply(this, arguments);
+		prevPreShowPageMenu.apply(this, arguments);
 		var mItems = menu.items,
 			canvas = MktCanvas.getActiveTab(),
 			disable = APP.evaluateMenu("tree", attr, menu, canvas, null),
@@ -2152,10 +2135,10 @@ APP.disableMenus = function() {
 	}
 	
 	// Disables Marketing Activities > Form > Right-click menu
-	var prevFormRightClickMenu = MktDsMenu.preShowFormMenu;
+	var prevPreShowFormMenu = MktDsMenu.preShowFormMenu;
 	MktDsMenu.preShowFormMenu = function(menu, attr) {
         console.log ("Marketo App > Executing: Disabling Right-click menu for Forms in Marketing Activities");
-		prevFormRightClickMenu.apply(this, arguments);
+		prevPreShowFormMenu.apply(this, arguments);
 		var mItems = menu.items,
 			canvas = MktCanvas.getActiveTab(),
 			disable = APP.evaluateMenu("tree", attr, menu, canvas, null),
@@ -2186,10 +2169,10 @@ APP.disableMenus = function() {
 	}
 	
 	// Disables Marketing Activities > Social App > Right-click menu
-	var prevSocialAppRightClickMenu = MktDsMenu.preShowSocialAppMenu;
+	var prevPreShowSocialAppMenu = MktDsMenu.preShowSocialAppMenu;
 	MktDsMenu.preShowSocialAppMenu = function(menu, attr) {
         console.log ("Marketo App > Executing: Disabling Right-click menu for Social Apps in Marketing Activities");
-		prevSocialAppRightClickMenu.apply(this, arguments);
+		prevPreShowSocialAppMenu.apply(this, arguments);
 		var mItems = menu.items,
 			canvas = MktCanvas.getActiveTab(),
 			disable = APP.evaluateMenu("tree", attr, menu, canvas, null),
@@ -2218,10 +2201,10 @@ APP.disableMenus = function() {
 	}
 	
 	// Disable Marketing Activities > Social App > Actions menu
-	var prevSocialAppActionsMenu = Mkt3.controller.socialApp.SocialApp.prototype.loadToolbar;
+	var prevSocialAppToolbar = Mkt3.controller.socialApp.SocialApp.prototype.loadToolbar;
 	Mkt3.controller.socialApp.SocialApp.prototype.loadToolbar = function(menu, attr) {
         console.log ("Marketo App > Executing: Disabling Actions menu for Social Apps in Marketing Activities");
-		prevSocialAppActionsMenu.apply(this, arguments);
+		prevSocialAppToolbar.apply(this, arguments);
 
 		var disable = APP.evaluateMenu("socialAppToolbar", null, null, null, this),
 			mItems = Ext4.ComponentQuery.query(
@@ -2246,10 +2229,10 @@ APP.disableMenus = function() {
 	}
 	
 	// Disables Marketing Activities > Push Notification > Right-click menu
-	var prevPushNotificationRightClickMenu = MktDsMenu.preShowPushNotificationMenu;
+	var prevPreShowPushNotificationMenu = MktDsMenu.preShowPushNotificationMenu;
 	MktDsMenu.preShowPushNotificationMenu = function(menu, attr) {
         console.log ("Marketo App > Executing: Disabling Right-click menu for Push Notifications in Marketing Activities");
-		prevPushNotificationRightClickMenu.apply(this, arguments);
+		prevPreShowPushNotificationMenu.apply(this, arguments);
 		
 		var mItems = menu.items,
 			canvas = MktCanvas.getActiveTab(),
@@ -2276,10 +2259,10 @@ APP.disableMenus = function() {
 	}
 	
 	// Disable Marketing Activities > Push Notification > Actions menu
-	var prevPushNotificationActionsMenu = Mkt3.controller.mobilePushNotification.MobilePushNotification.prototype.loadToolbar;
+	var prevMobilePushNotificationToolbar = Mkt3.controller.mobilePushNotification.MobilePushNotification.prototype.loadToolbar;
 	Mkt3.controller.mobilePushNotification.MobilePushNotification.prototype.loadToolbar = function(menu, attr) {
         console.log ("Marketo App > Executing: Disabling Actions menu for Push Notifications in Marketing Activities");
-		prevPushNotificationActionsMenu.apply(this, arguments);
+		prevMobilePushNotificationToolbar.apply(this, arguments);
 
 		var disable = APP.evaluateMenu("mobilePushNotification", null, null, null, this),
 			mItems = Ext4.ComponentQuery.query(
@@ -2302,12 +2285,32 @@ APP.disableMenus = function() {
 		});
 		return menu;
 	}
+    
+    // Disables Design Studio > ALL > New menu
+	var prevDesignStudioNewMenuButton = Mkt.app.DesignStudio.Toolbar.getNewMenuButton;
+	Mkt.app.DesignStudio.Toolbar.getNewMenuButton = function() {
+        console.log ("Marketo App > Executing: Disabling New menu for ALL in Design Studio");
+		prevDesignStudioNewMenuButton.apply(this, arguments);
+		return {
+			text : MktLang.getStr('mktDsMenu.New'),
+			iconCls : 'mkiColorsCmyk',
+			xtype : 'mkttbbutton',
+			menu : MktMaMenu.maMenu(),
+			handler : function(button) {
+				var canvas = MktCanvas.getActiveTab(),
+                    disableMenu = APP.evaluateMenu("button", null, null, canvas, null);
+				button.menu.items.each(function(item) {
+					item.setDisabled(disableMenu);
+				});
+			}
+		};
+	}
 	
 	// Disables Design Studio > ALL > Right-click menu
-	var prevDesignStudioContextMenu = MktDsMenu.preShowContextMenu;
+	var prevDesignStudioPreShowContextMenu = MktDsMenu.preShowContextMenu;
 	MktDsMenu.preShowContextMenu = function(menu, attr) {
         console.log ("Marketo App > Executing: Disabling Right-click menu for ALL in Design Studio");
-		prevDesignStudioContextMenu.apply(this, arguments);
+		prevDesignStudioPreShowContextMenu.apply(this, arguments);
 		
 		var mItems = menu.items,
 			canvas = MktCanvas.getActiveTab(),
@@ -2344,10 +2347,10 @@ APP.disableMenus = function() {
 	}
 	
 	// Disables Design Studio > Landing Page Template > Right-click and Actions menus
-	var prevLandingPageTemplateMenu = MktDsMenu.preShowTemplateMenu;
+	var prevDesignStudioPreShowTemplateMenu = MktDsMenu.preShowTemplateMenu;
 	MktDsMenu.preShowTemplateMenu = function(menu, attr) {
         console.log ("Marketo App > Executing: Disabling Right-click and Actions menus for Landing Page Templates in Design Studio");
-		prevLandingPageTemplateMenu.apply(this, arguments);
+		prevDesignStudioPreShowTemplateMenu.apply(this, arguments);
 		
 		var mItems = menu.items,
 			canvas = MktCanvas.getActiveTab(),
@@ -2378,10 +2381,10 @@ APP.disableMenus = function() {
 	}
 	
 	// Disables Design Studio > Email Template > Right-click and Actions menus
-	var prevEmailTemplateMenu = MktDsMenu.preShowEmailTemplateMenu;
+	var prevDesignStudioPreShowEmailTemplateMenu = MktDsMenu.preShowEmailTemplateMenu;
 	MktDsMenu.preShowEmailTemplateMenu = function(menu, attr) {
         console.log ("Marketo App > Executing: Disabling Right-click and Actions menus for Email Templates in Design Studio");
-		prevEmailTemplateMenu.apply(this, arguments);
+		prevDesignStudioPreShowEmailTemplateMenu.apply(this, arguments);
 		
 		var mItems = menu.items,
 			canvas = MktCanvas.getActiveTab(),
@@ -2413,10 +2416,10 @@ APP.disableMenus = function() {
 	}
 	
 	// Disables Design Studio > Snippet > Right-click and Actions menus
-	var prevSnippetMenu = MktDsMenu.preShowSnippetMenu;
+	var prevDesignStudioPreShowSnippetMenu = MktDsMenu.preShowSnippetMenu;
 	MktDsMenu.preShowSnippetMenu = function(menu, attr) {
         console.log ("Marketo App > Executing: Disabling Right-click and Actions menus for Snippets in Design Studio");
-		prevSnippetMenu.apply(this, arguments);
+		prevDesignStudioPreShowSnippetMenu.apply(this, arguments);
 		
 		var mItems = menu.items,
 			canvas = MktCanvas.getActiveTab(),
@@ -2446,10 +2449,10 @@ APP.disableMenus = function() {
 	}
 	
 	// Disables Design Studio > Image > Right-click and Actions menus
-	var prevImageMenu = MktDsMenu.preShowImageMenu;
+	var prevDesignStudioPreShowImageMenu = MktDsMenu.preShowImageMenu;
 	MktDsMenu.preShowImageMenu = function(menu, attr) {
         console.log ("Marketo App > Executing: Disabling Right-click and Actions menus for Images in Design Studio");
-		prevImageMenu.apply(this, arguments);
+		prevDesignStudioPreShowImageMenu.apply(this, arguments);
 		
 		var mItems = menu.items,
 			canvas = MktCanvas.getActiveTab(),
@@ -2595,10 +2598,10 @@ APP.disableMenus = function() {
     }
     
     // Disables Lead Database > System Smart List, Smart List, List, Segment > Right-click menus
-	var prevLeadDatabaseContextMenu = MktLeadDbMenu.preShowContextMenu;
+	var prevLeadDatabasePreContextMenu = MktLeadDbMenu.preShowContextMenu;
 	MktLeadDbMenu.preShowContextMenu = function(menu, attr) {
         console.log ("Marketo App > Executing: Disabling Right-click menu for System Smart Lists, Smart Lists, Lists, Segments in Lead Database");
-		prevLeadDatabaseContextMenu.apply(this, arguments);
+		prevLeadDatabasePreContextMenu.apply(this, arguments);
 		
 		var mItems = menu.items,
 			canvas = MktCanvas.getActiveTab(),
@@ -2633,10 +2636,10 @@ APP.disableMenus = function() {
 	}
 	
 	// Disables Lead Database > List > Right-click and Actions menus
-	var prevListMenu = MktLeadDbMenu.preShowListListMenu;
+	var prevLeadDatabasePreShowListListMenu = MktLeadDbMenu.preShowListListMenu;
 	MktLeadDbMenu.preShowListListMenu = function(menu, attr) {
         console.log ("Marketo App > Executing: Disabling Right-click and Actions menus for Lists in Lead Database");
-		prevListMenu.apply(this, arguments);
+		prevLeadDatabasePreShowListListMenu.apply(this, arguments);
 		
 		var mItems = menu.items,
 			canvas = MktCanvas.getActiveTab(),
@@ -2671,10 +2674,10 @@ APP.disableMenus = function() {
 	}
 	
 	// Disables Lead Database > Segmentation > Right-click and Actions menus
-	var prevSegmentationMenu = MktLeadDbMenu.preShowSegmentationMenu;
+	var prevLeadDatabasePreShowSegmentationMenu = MktLeadDbMenu.preShowSegmentationMenu;
 	MktLeadDbMenu.preShowSegmentationMenu = function(menu, attr) {
         console.log ("Marketo App > Executing: Disabling Right-click and Actions menus for Segmentations in Lead Database");
-		prevSegmentationMenu.apply(this, arguments);
+		prevLeadDatabasePreShowSegmentationMenu.apply(this, arguments);
 		
 		var mItems = menu.items,
 			canvas = MktCanvas.getActiveTab(),
@@ -2701,10 +2704,10 @@ APP.disableMenus = function() {
 	}
 	
 	// Disables Lead Database > Segmentation Folder > Right-click and Actions menus
-	var prevSegmentationFolderMenu = MktLeadDbMenu.preShowSegmentationFolderMenu;
+	var prevLeadDatabasePreShowSegmentationFolderMenu = MktLeadDbMenu.preShowSegmentationFolderMenu;
 	MktLeadDbMenu.preShowSegmentationFolderMenu = function(menu, attr) {
         console.log ("Marketo App > Executing: Disabling Right-click and Actions menus for Segmentation Folders in Lead Database");
-		prevSegmentationFolderMenu.apply(this, arguments);
+		prevLeadDatabasePreShowSegmentationFolderMenu.apply(this, arguments);
 		
 		var mItems = menu.items,
 			canvas = MktCanvas.getActiveTab(),
@@ -2729,10 +2732,10 @@ APP.disableMenus = function() {
 	}
 	
 	// Disables Lead Database > Smart List and Segment > Right-click and Actions menus
-	var prevSmartListMenu = MktLeadDbMenu.preShowUserListMenu;
+	var prevLeadDatabasePreShowUserListMenu = MktLeadDbMenu.preShowUserListMenu;
 	MktLeadDbMenu.preShowUserListMenu = function(menu, attr) {
         console.log ("Marketo App > Executing: Disabling Right-click and Actions menus for Smart Lists and Segments in Lead Database");
-		prevSmartListMenu.apply(this, arguments);
+		prevLeadDatabasePreShowUserListMenu.apply(this, arguments);
 		
 		var mItems = menu.items,
 			canvas = MktCanvas.getActiveTab(),
@@ -2777,10 +2780,10 @@ APP.disableMenus = function() {
 	}
 	
 	// Disables Analytics > Analyzer and Report > Right-click menu
-	var prevReportMenu = MktAnalyticsMenu.preShowReportMenu;
+	var prevAnalyticsPreShowReportMenu = MktAnalyticsMenu.preShowReportMenu;
 	MktAnalyticsMenu.preShowReportMenu = function(menu, attr) {
         console.log ("Marketo App > Executing: Disabling Right-click menu for Analyzers and Reports in Analytics");
-		prevReportMenu.apply(this, arguments);
+		prevAnalyticsPreShowReportMenu.apply(this, arguments);
 		
 		var mItems = menu.items,
 			canvas = MktCanvas.getActiveTab(),
@@ -2808,10 +2811,10 @@ APP.disableMenus = function() {
 	}
 	
 	// Disables Analytics > Folder > Right-click menu
-	var prevReportFolderMenu = MktAnalyticsMenu.preshowReportFolderMenu ;
+	var prevAnalyticsPreshowReportFolderMenu = MktAnalyticsMenu.preshowReportFolderMenu ;
 	MktAnalyticsMenu.preshowReportFolderMenu  = function(menu, attr) {
         console.log ("Marketo App > Executing: Disabling Right-click menu for Folders in Analytics");
-		prevReportFolderMenu.apply(this, arguments);
+		prevAnalyticsPreshowReportFolderMenu.apply(this, arguments);
 		
 		var mItems = menu.items,
 			canvas = MktCanvas.getActiveTab(),
