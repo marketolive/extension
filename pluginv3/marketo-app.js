@@ -1731,7 +1731,7 @@ APP.evaluateMenu = function (triggeredFrom, attr, menu, canvas, toolbar) {
     console.log("Marketo App > Evaluating: Menu");
     
     var userName,
-        toBeDisabled = false,
+        toBeDisabled = true,
         userId = MktPage.userid.toLowerCase();
     if (userId.search("\.demo@marketo.com$") != -1) {
         userName = userId.split(".demo")[0];
@@ -1747,15 +1747,23 @@ APP.evaluateMenu = function (triggeredFrom, attr, menu, canvas, toolbar) {
                     && (attr.accessZoneId == 1
                         || attr.accessZoneId == mktoJapaneseWorkspaceId
                         || (attr.accessZoneId == mktoMarketingWorkspaceId
-                            && attr.menu
-                            && attr.menu.currNode)))) {
+                            && ((attr.id
+                                    && MktExplorer.getNodeById(attr.id))
+                                || (attr.menu
+                                    && attr.menu.currNode)))))) {
                                 
-                toBeDisabled = true;
                 if (attr.accessZoneId == mktoMarketingWorkspaceId) {
-                    var ii,
+                    
+                    if (MktExplorer.getNodeById(attr.id)) {
+                        currNode = MktExplorer.getNodeById(attr.id);
+                    }
+                    else {
                         currNode = attr.menu.currNode;
+                    }
+                    var ii,
+                        depth = currNode.getDepth();
                         
-                    for (ii = 0; ii < currNode.getDepth(); ii++) {
+                    for (ii = 0; ii < depth; ii++) {
                         if (currNode.text == userName) {
                             toBeDisabled = false;
                             break;
@@ -1766,8 +1774,10 @@ APP.evaluateMenu = function (triggeredFrom, attr, menu, canvas, toolbar) {
             }
             else if ((!attr
                         || !attr.accessZoneId
-                        || !attr.menu
-                        || !attr.menu.currNode)
+                        || ((!attr.menu
+                                || !attr.menu.currNode)
+                            && (!attr.id
+                                || !MktExplorer.getNodeById(attr.id))))
                     && (menu
                         && menu.currNode
                         && menu.currNode.attributes
@@ -1775,7 +1785,6 @@ APP.evaluateMenu = function (triggeredFrom, attr, menu, canvas, toolbar) {
                             || menu.currNode.attributes.accessZoneId == mktoJapaneseWorkspaceId
                             || menu.currNode.attributes.accessZoneId == mktoMarketingWorkspaceId))) {
                                 
-                toBeDisabled = true;
                 if (menu.currNode.attributes.accessZoneId == mktoMarketingWorkspaceId) {
                     var ii,
                         currNode = menu.currNode,
@@ -1801,13 +1810,12 @@ APP.evaluateMenu = function (triggeredFrom, attr, menu, canvas, toolbar) {
                                 && canvas.config.expNodeId
                                 && MktExplorer.getNodeById(canvas.config.expNodeId))))) {
                                 
-                toBeDisabled = true;
                 if (canvas.config.accessZoneId == mktoMarketingWorkspaceId) {
                     var ii,
                         currNode = MktExplorer.getNodeById(canvas.config.expNodeId),
                         depth = currNode.getDepth();
                         
-                    for (ii = 0; ii < currNode.getDepth(); ii++) {
+                    for (ii = 0; ii < depth; ii++) {
                         if (currNode.text == userName) {
                             toBeDisabled = false;
                             break;
@@ -1828,7 +1836,6 @@ APP.evaluateMenu = function (triggeredFrom, attr, menu, canvas, toolbar) {
                         && canvas.config.expNodeId
                         && MktExplorer.getNodeById(canvas.config.expNodeId)))) {
                                 
-                toBeDisabled = true;
                 if (canvas.config.accessZoneId == mktoMarketingWorkspaceId) {
                     var ii,
                         currNode = MktExplorer.getNodeById(canvas.config.expNodeId),
@@ -1855,7 +1862,6 @@ APP.evaluateMenu = function (triggeredFrom, attr, menu, canvas, toolbar) {
                     && toolbar.getSocialApp().getNodeJson().id
                     && MktExplorer.getNodeById(toolbar.getSocialApp().getNodeJson().id))) {
                 
-                toBeDisabled = true;
                 if (toolbar.getSocialApp().get('zoneId') == mktoMarketingWorkspaceId) {
                     var ii,
                         currNode = MktExplorer.getNodeById(toolbar.getSocialApp().getNodeJson().id),
@@ -1882,7 +1888,6 @@ APP.evaluateMenu = function (triggeredFrom, attr, menu, canvas, toolbar) {
                     && toolbar.getMobilePushNotification().getNodeJson().id
                     && MktExplorer.getNodeById(toolbar.getMobilePushNotification().getNodeJson().id))) {
                 
-                toBeDisabled = true;
                 if (toolbar.getMobilePushNotification().get('zoneId') == mktoMarketingWorkspaceId) {
                     var ii,
                         currNode = MktExplorer.getNodeById(toolbar.getMobilePushNotification().getNodeJson().id),
@@ -1897,6 +1902,10 @@ APP.evaluateMenu = function (triggeredFrom, attr, menu, canvas, toolbar) {
                     }
                 }
             }
+            return toBeDisabled;
+        break;
+        
+        default:
             return toBeDisabled;
         break;
     }
