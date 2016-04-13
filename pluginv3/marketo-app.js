@@ -1731,7 +1731,7 @@ APP.evaluateMenu = function (triggeredFrom, attr, menu, canvas, toolbar) {
     console.log("Marketo App > Evaluating: Menu");
     
     var userName,
-        toBeDisabled = true,
+        toBeDisabled = false,
         userId = MktPage.userid.toLowerCase();
     if (userId.search("\.demo@marketo.com$") != -1) {
         userName = userId.split(".demo")[0];
@@ -1751,6 +1751,7 @@ APP.evaluateMenu = function (triggeredFrom, attr, menu, canvas, toolbar) {
                                     && MktExplorer.getNodeById(attr.id))
                                 || (attr.menu
                                     && attr.menu.currNode)))))) {
+                toBeDisabled = true;
                                 
                 if (attr.accessZoneId == mktoMarketingWorkspaceId) {
                     
@@ -1784,6 +1785,7 @@ APP.evaluateMenu = function (triggeredFrom, attr, menu, canvas, toolbar) {
                         && (menu.currNode.attributes.accessZoneId == 1
                             || menu.currNode.attributes.accessZoneId == mktoJapaneseWorkspaceId
                             || menu.currNode.attributes.accessZoneId == mktoMarketingWorkspaceId))) {
+                toBeDisabled = true;
                                 
                 if (menu.currNode.attributes.accessZoneId == mktoMarketingWorkspaceId) {
                     var ii,
@@ -1809,6 +1811,7 @@ APP.evaluateMenu = function (triggeredFrom, attr, menu, canvas, toolbar) {
                             || (canvas.config.accessZoneId == mktoMarketingWorkspaceId
                                 && canvas.config.expNodeId
                                 && MktExplorer.getNodeById(canvas.config.expNodeId))))) {
+                toBeDisabled = true;
                                 
                 if (canvas.config.accessZoneId == mktoMarketingWorkspaceId) {
                     var ii,
@@ -1835,6 +1838,7 @@ APP.evaluateMenu = function (triggeredFrom, attr, menu, canvas, toolbar) {
                     || (canvas.config.accessZoneId == mktoMarketingWorkspaceId
                         && canvas.config.expNodeId
                         && MktExplorer.getNodeById(canvas.config.expNodeId)))) {
+                toBeDisabled = true;
                                 
                 if (canvas.config.accessZoneId == mktoMarketingWorkspaceId) {
                     var ii,
@@ -1861,6 +1865,7 @@ APP.evaluateMenu = function (triggeredFrom, attr, menu, canvas, toolbar) {
                     && toolbar.getSocialApp().getNodeJson()
                     && toolbar.getSocialApp().getNodeJson().id
                     && MktExplorer.getNodeById(toolbar.getSocialApp().getNodeJson().id))) {
+                toBeDisabled = true;
                 
                 if (toolbar.getSocialApp().get('zoneId') == mktoMarketingWorkspaceId) {
                     var ii,
@@ -1887,6 +1892,7 @@ APP.evaluateMenu = function (triggeredFrom, attr, menu, canvas, toolbar) {
                     && toolbar.getMobilePushNotification().getNodeJson()
                     && toolbar.getMobilePushNotification().getNodeJson().id
                     && MktExplorer.getNodeById(toolbar.getMobilePushNotification().getNodeJson().id))) {
+                toBeDisabled = true;
                 
                 if (toolbar.getMobilePushNotification().get('zoneId') == mktoMarketingWorkspaceId) {
                     var ii,
@@ -1906,7 +1912,7 @@ APP.evaluateMenu = function (triggeredFrom, attr, menu, canvas, toolbar) {
         break;
         
         default:
-            return toBeDisabled;
+            return true;
         break;
     }
 }
