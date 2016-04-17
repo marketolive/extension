@@ -1718,7 +1718,115 @@ APP.disableButtons = function() {
 
 /**************************************************************************************
  *  
- *  This function evaluates the current menu context to determine if items should be    
+ *  This function evaluates the current node context being moved to determine if the 
+ *  item should be moved
+ *
+ *  @Author Brian Fisher
+ *
+ *  @function
+ *
+ **************************************************************************************/
+
+APP.evaluateMoveItem = function (nodeToMove, destNode) {
+    console.log("Marketo App > Evaluating: Move Item");
+    
+    var ii,
+        userName,
+        currNode,
+        depth,
+        fromUserFolder = false,
+        toUserFolder = false,
+        userId = MktPage.userid.toLowerCase();
+    if (userId.search("\.demo@marketo.com$") != -1) {
+        userName = userId.split(".demo")[0];
+    }
+    else {
+        userName = userId.split("@")[0];
+    }
+    
+    currNode = nodeToMove;
+    depth = currNode.getDepth();
+    for (ii = 0; ii < depth; ii++) {
+        if (currNode.text == userName) {
+            fromUserFolder = true;
+            break;
+        }
+        currNode = currNode.parentNode;
+    }
+    
+    if (fromUserFolder) {
+        currNode = destNode;
+        depth = currNode.getDepth();
+        for (ii = 0; ii < depth; ii++) {
+            if (currNode.text == userName) {
+                toUserFolder = true;
+                return true;
+                break;
+            }
+            currNode = currNode.parentNode;
+        }
+    }
+    else {
+        return false;
+    }
+}
+
+/**************************************************************************************
+ *  
+ *  This function disables dragging and dropping tree node items other than those that 
+ *  originate and are destined for a location within the user's root folder
+ *
+ *  @Author Brian Fisher
+ *
+ *  @function
+ *
+ **************************************************************************************/
+
+APP.disableDragAndDrop = function() {
+    console.log("Marketo App > Disabling: Tree Node Drop");
+
+    Ext.tree.TreeDropZone.prototype.processDrop = function (target, data, point, dd, e, dropNode) {
+        console.log("Marketo App > Executing: Tree Node Drop");
+        
+        if (APP.evaluateMoveItem(dropNode, target)) {
+            var dropEvent = {
+                tree : this.tree,
+                target : target,
+                data : data,
+                point : point,
+                source : dd,
+                rawEvent : e,
+                dropNode : dropNode,
+                cancel : !dropNode,
+                dropStatus : false
+            };
+            var retval = this.tree.fireEvent("beforenodedrop", dropEvent);
+            if (retval === false || dropEvent.cancel === true || !dropEvent.dropNode) {
+                target.ui.endDrop();
+                return dropEvent.dropStatus;
+            }
+            
+            target = dropEvent.target;
+            if (point == 'append' && !target.isExpanded()) {
+                target.expand(false, null, function () {
+                    this.completeDrop(dropEvent);
+                }
+                    .createDelegate(this));
+            }
+            else {
+                this.completeDrop(dropEvent);
+            }
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+}
+
+/**************************************************************************************
+ *  
+ *  This function evaluates the current menu context to determine if items should be 
  *  disabled
  *
  *  @Author Brian Fisher
@@ -4346,6 +4454,7 @@ if (currentUrl.search(mktoAppDomain) != -1
                     
                     APP.overrideTreeNodeExpand();
                     APP.overrideTreeNodeCollapse();
+                    APP.disableDragAndDrop();
                     APP.disableMenus();
                     APP.overrideSmartCampaignSaving();
                     APP.overrideSmartCampaignCanvas();
