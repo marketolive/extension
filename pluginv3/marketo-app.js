@@ -1796,6 +1796,9 @@ APP.evaluateMoveItem = function (nodeToMove, destNode) {
         }
         return false;
     }
+    else {
+        return true;
+    }
 }
 
 /**************************************************************************************
