@@ -1734,8 +1734,6 @@ APP.evaluateMoveItem = function (nodeToMove, destNode) {
         userName,
         currNode,
         depth,
-        fromUserFolder = false,
-        toUserFolder = false,
         userId = MktPage.userid.toLowerCase();
     if (userId.search("\.demo@marketo.com$") != -1) {
         userName = userId.split(".demo")[0];
@@ -1744,29 +1742,58 @@ APP.evaluateMoveItem = function (nodeToMove, destNode) {
         userName = userId.split("@")[0];
     }
     
-    currNode = nodeToMove;
-    depth = currNode.getDepth();
-    for (ii = 0; ii < depth; ii++) {
-        if (currNode.text == userName) {
-            fromUserFolder = true;
-            break;
-        }
-        currNode = currNode.parentNode;
+    if ((nodeToMove.attributes
+        && (nodeToMove.attributes.accessZoneId == 1
+            || nodeToMove.attributes.accessZoneId == mktoJapaneseWorkspaceId))
+    || (destNode.attributes
+        && (destNode.attributes.accessZoneId == 1
+            || destNode.attributes.accessZoneId == mktoJapaneseWorkspaceId))) {
+        
+        return false;
     }
+    else if (nodeToMove.attributes.accessZoneId == mktoMarketingWorkspaceId
+    && destNode.attributes.accessZoneId == mktoMarketingWorkspaceId) {
     
-    if (fromUserFolder) {
+        currNode = nodeToMove;
+        depth = currNode.getDepth();
+        for (ii = 0; ii < depth; ii++) {
+            if (currNode.text == userName) {
+                currNode = destNode;
+                depth = currNode.getDepth();
+                for (ii = 0; ii < depth; ii++) {
+                    if (currNode.text == userName) {
+                        return true;
+                    }
+                    currNode = currNode.parentNode;
+                }
+                return false;
+            }
+            currNode = currNode.parentNode;
+        }
+        return false;
+    }
+    else if (nodeToMove.attributes.accessZoneId == mktoMarketingWorkspaceId) {
+        
+        currNode = nodeToMove;
+        depth = currNode.getDepth();
+        for (ii = 0; ii < depth; ii++) {
+            if (currNode.text == userName) {
+                return true;
+            }
+            currNode = currNode.parentNode;
+        }
+        return false;
+    }
+    else if (destNode.attributes.accessZoneId == mktoMarketingWorkspaceId) {
+        
         currNode = destNode;
         depth = currNode.getDepth();
         for (ii = 0; ii < depth; ii++) {
             if (currNode.text == userName) {
-                toUserFolder = true;
                 return true;
-                break;
             }
             currNode = currNode.parentNode;
         }
-    }
-    else {
         return false;
     }
 }
