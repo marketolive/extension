@@ -22,7 +22,7 @@ $(document).ready(function() {
         case "app-sjp":
             console.log("AdBridge > Deeplinking: 106");
             $("#demo-in-marketo").click(function () {
-                location.replace("https://app-sjp.marketo.com/#SL1119566A1LA1");
+                location.replace("https://app-sjp.marketo.com/#SL1119566B2LA1");
             });
             break;
         case "app-ab07":
