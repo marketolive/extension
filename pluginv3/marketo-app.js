@@ -2201,6 +2201,10 @@ APP.disableMenus = function() {
                                     "changeStatusInSFDCCampaign",//Change Status in SFDC Campaign...
                                     "removeFromSFDCCampaign",//Remove from SFDC Campaign...
                                 
+                                // Global > Programs, Analyzers, and Reports > Setup Right-click Tree
+                                //"editItem",//Edit
+                                "deleteItem",//Delete
+                                
                                 // Marketing Activities > New Button
                                 "createProgramFolder",//New Campaign Folder
                                 "newSmartCampaign",//New Smart Campaign
@@ -2271,6 +2275,7 @@ APP.disableMenus = function() {
                                 "deleteEmailBatchProgram",//Delete
                                 "cloneInAppProgram",//Clone
                                 "deleteInAppProgram",//Delete
+                                "shareProgramFolder",//Share Folder
                                 "scActivate",//Activate
                                 "scAbort",//Abort Campaign
                                 //"addToFavorites",//Add to Favorites
@@ -2321,10 +2326,6 @@ APP.disableMenus = function() {
                                 // Marketing Activities > ALL Programs & Folders > My Tokens Right-click Tree
                                 //"editCustomToken",//Edit Token
                                 "deleteCustomToken",//Delete Token
-                                
-                                // Marketing Activities > ALL Programs, Analyzers, and Reports > Setup Right-click Tree
-                                "editItem",//Edit
-                                "deleteItem",//Delete
                                 
                                 // Design Studio > Folder > Right-click Tree
                                 "newLandingPage",//New Landing Page
@@ -2430,11 +2431,11 @@ APP.disableMenus = function() {
                                 //"discardDraftSegmentation",//Discard Draft
                                 
                                 // Analytics > New Button
-                                "newSubscription_atxCanvasOverview",//New Report Subscription
+                                //"newSubscription_atxCanvasOverview",//New Report Subscription
                                 "newRcm_atxCanvasOverview",//New Revenue Cycle Model
-                                "newSubscription_rcmCanvasOverview",//New Report Subscription
+                                //"newSubscription_rcmCanvasOverview",//New Report Subscription
                                 "newRcm_rcmCanvasOverview",//New Revenue Cycle Model
-                                "newSubscription_atxCanvasSubscriptions",//New Report Subscription
+                                //"newSubscription_atxCanvasSubscriptions",//New Report Subscription
                                 "newRcm_atxCanvasSubscriptions",//New Revenue Cycle Model
                                 
                                 // Analytics > Folder > Right-click Tree
@@ -2493,6 +2494,10 @@ APP.disableMenus = function() {
             && this.triggeredFrom != "button") {
                 disable = APP.evaluateMenu("tree", attr, this, canvas, null);
             }
+            else if (this.id == "leadDbListMenu"
+            || this.id == "segmentationMenu") {
+                disable = APP.evaluateMenu("tree", attr, this, canvas, null);
+            }
             else {
                 disable = APP.evaluateMenu(this.triggeredFrom, attr, this, canvas, null);
             }
@@ -2504,7 +2509,8 @@ APP.disableMenus = function() {
                 }
             });
             
-            if (this.ownerCt.text.search("^View:") != -1) {
+            if (this.ownerCt
+            && this.ownerCt.text.search("^View:") != -1) {
                 var ii;
                 for (ii = 0; ii < this.items.items.length; ii++) {
                     switch (this.items.items[ii].text) {
