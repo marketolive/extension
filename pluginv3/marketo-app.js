@@ -1865,7 +1865,7 @@ APP.disableDragAndDrop = function() {
  *
  **************************************************************************************/
 
-APP.evaluateMenu = function (triggeredFrom, attr, menu, canvas, toolbar) {
+APP.evaluateMenu = function (triggeredFrom, menu, canvas, toolbar) {
     console.log("Marketo App > Evaluating: Menu");
     
     var userName,
@@ -2066,440 +2066,440 @@ APP.disableMenus = function() {
                 mItems = this.items,
                 canvas = MktCanvas.getActiveTab(),
                 itemsToDisable = [
-                                // Global > Form > Actions Button & Right-click Tree
-                                //"formEditDraft",//Edit Draft
-                                //"formPreview",//Preview
-                                //"formEdit",//Edit Form
-                                "formApprove",//Approve
-                                "formClone",//Clone Form
-                                "formDelete",//Delete Form
-                                //"formEmbed",//Embed Code
-                                "formMove",//Move
-                                //"addToFavorites",//Add to Favorites
-                                //"removeFromFavorites",//Remove from Favorites
-                                //"formDraftPreview",//Preview Draft
-                                //"formDraftEdit",//Edit Draft
-                                "formDraftApprove",//Approve Draft
-                                //"formDraftDiscard",//Discard Draft
+                    // Global > Form > Actions Button & Right-click Tree
+                    //"formEditDraft",//Edit Draft
+                    //"formPreview",//Preview
+                    //"formEdit",//Edit Form
+                    "formApprove",//Approve
+                    "formClone",//Clone Form
+                    "formDelete",//Delete Form
+                    //"formEmbed",//Embed Code
+                    "formMove",//Move
+                    //"addToFavorites",//Add to Favorites
+                    //"removeFromFavorites",//Remove from Favorites
+                    //"formDraftPreview",//Preview Draft
+                    //"formDraftEdit",//Edit Draft
+                    "formDraftApprove",//Approve Draft
+                    //"formDraftDiscard",//Discard Draft
                                 
-                                // Global > Landing Page > Actions Button & Right-click Tree
-                                //"pageEdit",//Edit Draft
-                                //"pagePreview",//Preview
-                                //"deviceSwitch",//Device Switch
-                                "pageApprove",//Approve
-                                "pageUnapprove",//Unapprove
-                                //"publishToFacebook",//Publish To Facebook
-                                "pageConvertToTestGroup",//Convert to Test Group
-                                "pageClone",//Clone
-                                "pageDelete",//Delete
-                                //"urlTools",//URL Tools
-                                    //"editUrlSettings",//Edit URL Settings
-                                    //"urlBuilder",//URL Builder
-                                    //"devicePreview",//Generate Preview URL
-                                "pageMove",//Move
-                                //"addToFavorites",//Add to Favorites
-                                //"removeFromFavorites",//Remove from Favorites
-                                //"pageDraftEdit",//Edit Draft
-                                //"pageDraftPreview",//Preview Draft
-                                "pageDraftApprove",//Approve Draft
-                                //"pageDraftDiscard",//Discard Draft
+                    // Global > Landing Page > Actions Button & Right-click Tree
+                    //"pageEdit",//Edit Draft
+                    //"pagePreview",//Preview
+                    //"deviceSwitch",//Device Switch
+                    "pageApprove",//Approve
+                    "pageUnapprove",//Unapprove
+                    //"publishToFacebook",//Publish To Facebook
+                    "pageConvertToTestGroup",//Convert to Test Group
+                    "pageClone",//Clone
+                    "pageDelete",//Delete
+                    //"urlTools",//URL Tools
+                        //"editUrlSettings",//Edit URL Settings
+                        //"urlBuilder",//URL Builder
+                        //"devicePreview",//Generate Preview URL
+                    "pageMove",//Move
+                    //"addToFavorites",//Add to Favorites
+                    //"removeFromFavorites",//Remove from Favorites
+                    //"pageDraftEdit",//Edit Draft
+                    //"pageDraftPreview",//Preview Draft
+                    "pageDraftApprove",//Approve Draft
+                    //"pageDraftDiscard",//Discard Draft
                                 
-                                // Global > Email > Actions Button & Right-click Tree
-                                //"emailEdit",//Edit Draft
-                                //"emailPreview",//Preview
-                                "emailApprove",//Approve
-                                "emailUnapprove",//Unapprove
-                                //"emailDownloadHtml",//Download HTML
-                                //"emailSendTest",//Send Sample
-                                "emailClone",//Clone
-                                "emailDelete",//Delete
-                                "emailMove",//Move
-                                "emailNewTest",//New Test
-                                //"addToFavorites",//Add to Favorites
-                                //"removeFromFavorites",//Remove from Favorites
-                                //"emailDraftEdit",//Edit Draft
-                                //"emailDraftPreview",//Preview Draft
-                                //"emailDraftSendTest",//Send Sample of Draft
-                                "emailDraftApprove",//Approve Draft
-                                //"emailDraftDiscard",//Discard Draft
-                                "emailApproveTest",//Approve Test
-                                //"emailSendSampleTest",//Send Sample Test
-                                //"emailEditTest",//Edit Test
-                                //"emailViewTestSummary",//View Test Summary
-                                //"emailTestDeclareChampion",//Declare Champion
-                                //"emailDiscardTest",//Discard Test
+                    // Global > Email > Actions Button & Right-click Tree
+                    //"emailEdit",//Edit Draft
+                    //"emailPreview",//Preview
+                    "emailApprove",//Approve
+                    "emailUnapprove",//Unapprove
+                    //"emailDownloadHtml",//Download HTML
+                    //"emailSendTest",//Send Sample
+                    "emailClone",//Clone
+                    "emailDelete",//Delete
+                    "emailMove",//Move
+                    "emailNewTest",//New Test
+                    //"addToFavorites",//Add to Favorites
+                    //"removeFromFavorites",//Remove from Favorites
+                    //"emailDraftEdit",//Edit Draft
+                    //"emailDraftPreview",//Preview Draft
+                    //"emailDraftSendTest",//Send Sample of Draft
+                    "emailDraftApprove",//Approve Draft
+                    //"emailDraftDiscard",//Discard Draft
+                    "emailApproveTest",//Approve Test
+                    //"emailSendSampleTest",//Send Sample Test
+                    //"emailEditTest",//Edit Test
+                    //"emailViewTestSummary",//View Test Summary
+                    //"emailTestDeclareChampion",//Declare Champion
+                    //"emailDiscardTest",//Discard Test
                                 
-                                // Global > Smart List, List, Segment > Actions Button & Right-click Tree
-                                //"navigateToMembership",//View Leads
-                                //"navigateToSmartList",//View Smart List
-                                //"navigateToFilterView",//Filter View
-                                //"showImportStatus",//Show Import Status
-                                //"showExportStatus",//Show Export Status
-                                "importList",//Import List
-                                //"exportList",//Export List
-                                //"exportAdBridge",//Send via Ad Bridge
-                                //"newSmartListReportSubscription",//New Smart List Subscription
-                                "cloneSmartlist",//Clone Smart List
-                                "cloneList",//Clone List
-                                "deleteList",//Delete List
-                                "showSupportHistory",//Support Tools - History
-                                "showSupportUsagePerf",//Support Tools - Run Stats
-                                "showSmartListProcessorDiag",//Processor Diagnostics
-                                "showSmartListProcessorOverride",//Override Processor
-                                //"addToFavorites",//Add to Favorites
-                                //"removeFromFavorites",//Remove from Favorites
+                    // Global > Smart List, List, Segment > Actions Button & Right-click Tree
+                    //"navigateToMembership",//View Leads
+                    //"navigateToSmartList",//View Smart List
+                    //"navigateToFilterView",//Filter View
+                    //"showImportStatus",//Show Import Status
+                    //"showExportStatus",//Show Export Status
+                    "importList",//Import List
+                    //"exportList",//Export List
+                    //"exportAdBridge",//Send via Ad Bridge
+                    //"newSmartListReportSubscription",//New Smart List Subscription
+                    "cloneSmartlist",//Clone Smart List
+                    "cloneList",//Clone List
+                    "deleteList",//Delete List
+                    "showSupportHistory",//Support Tools - History
+                    "showSupportUsagePerf",//Support Tools - Run Stats
+                    "showSmartListProcessorDiag",//Processor Diagnostics
+                    "showSmartListProcessorOverride",//Override Processor
+                    //"addToFavorites",//Add to Favorites
+                    //"removeFromFavorites",//Remove from Favorites
                                 
-                                // Global > Report > Actions Button
-                                "cloneReport_atxCanvasOverview",//Clone Report
-                                "deleteReport",//Delete Report
-                                //"newDrillDown_atxCanvasOverview",//Drill-Down
+                    // Global > Report > Actions Button
+                    "cloneReport_atxCanvasOverview",//Clone Report
+                    "deleteReport",//Delete Report
+                    //"newDrillDown_atxCanvasOverview",//Drill-Down
                                 
-                                // Global > Report > Right-click Tree
-                                //"navigateToOverviewReport",//View Overview
-                                //"navigateToDetailReport",//View Report
-                                //"navigateToSmartList",//View Smart List
-                                //"navigateToSetup",//View Setup
-                                //"navigateToSubscriptions",//View Subscriptions
-                                "cloneReport",//Clone Report
-                                "deleteReport",//Delete Report
-                                "moveReport",//Move Report
-                                //"addToFavorites",//Add to Favorites
-                                //"removeFromFavorites",//Remove from Favorites
+                    // Global > Report > Right-click Tree
+                    //"navigateToOverviewReport",//View Overview
+                    //"navigateToDetailReport",//View Report
+                    //"navigateToSmartList",//View Smart List
+                    //"navigateToSetup",//View Setup
+                    //"navigateToSubscriptions",//View Subscriptions
+                    "cloneReport",//Clone Report
+                    "deleteReport",//Delete Report
+                    "moveReport",//Move Report
+                    //"addToFavorites",//Add to Favorites
+                    //"removeFromFavorites",//Remove from Favorites
                                 
-                                // Global > Lead > Actions Button & Right-click Tree
-                                //"viewLeadDetails",//View Lead Details
-                                "blackCatDiag",//BlackCat Diagnostics
-                                "mergeLeads",//Merge Leads
-                                //"leadDbMenuFlowActions",//Marketing
-                                    "sendEmail",//Send Email...
-                                    "sendPushNotification",//Send Push Notification...
-                                    "addToList",//Add to List...
-                                    "removeFromList",//Remove from List...
-                                    "interestingMoment",//Interesting Moment...
-                                    "sendAlert",//Send Alert...
-                                    "changeScore",//Change Score...
-                                    "changeDataValue",//Change Data Value...
-                                //"programsFolder",//Programs
-                                    "changeStatusInProgression",//Change Program Status...
-                                    "addToNurture",//Add to Engagement Program...
-                                    "changeNurtureCadence",//Change Engagement Program Cadence...
-                                    "changeNurtureTrack",//Change Engagement Program Stream...
-                                //"specialFolder",//Special
-                                    "changeLeadPartition",//Change Lead Partition...
-                                    "changeRevenueStage",//Change Revenue Stage...
-                                    "deleteLead",//Delete Lead...
-                                    "giveCreditToReferrer",//Give Credit to Referrer
-                                    "requestCampaign",//Request Campaign...
-                                    "removeFromFlow",//Remove from Flow...
-                                //"salesforceFolder",//Salesforce
-                                    "pushLeadToSFDC",//Sync Lead to SFDC...
-                                    "createTask",//Create Task...
-                                    "convertLead",//Convert Lead...
-                                    "changeOwner",//Change Owner...
-                                    "deleteLeadFromSFDC",//Delete Lead from SFDC...
-                                    "addToSFDCCampaign",//Add to SFDC Campaign...
-                                    "changeStatusInSFDCCampaign",//Change Status in SFDC Campaign...
-                                    "removeFromSFDCCampaign",//Remove from SFDC Campaign...
+                    // Global > Lead > Actions Button & Right-click Tree
+                    //"viewLeadDetails",//View Lead Details
+                    "blackCatDiag",//BlackCat Diagnostics
+                    "mergeLeads",//Merge Leads
+                    //"leadDbMenuFlowActions",//Marketing
+                        "sendEmail",//Send Email...
+                        "sendPushNotification",//Send Push Notification...
+                        "addToList",//Add to List...
+                        "removeFromList",//Remove from List...
+                        "interestingMoment",//Interesting Moment...
+                        "sendAlert",//Send Alert...
+                        "changeScore",//Change Score...
+                        "changeDataValue",//Change Data Value...
+                    //"programsFolder",//Programs
+                        "changeStatusInProgression",//Change Program Status...
+                        "addToNurture",//Add to Engagement Program...
+                        "changeNurtureCadence",//Change Engagement Program Cadence...
+                        "changeNurtureTrack",//Change Engagement Program Stream...
+                    //"specialFolder",//Special
+                        "changeLeadPartition",//Change Lead Partition...
+                        "changeRevenueStage",//Change Revenue Stage...
+                        "deleteLead",//Delete Lead...
+                        "giveCreditToReferrer",//Give Credit to Referrer
+                        "requestCampaign",//Request Campaign...
+                        "removeFromFlow",//Remove from Flow...
+                    //"salesforceFolder",//Salesforce
+                        "pushLeadToSFDC",//Sync Lead to SFDC...
+                        "createTask",//Create Task...
+                        "convertLead",//Convert Lead...
+                        "changeOwner",//Change Owner...
+                        "deleteLeadFromSFDC",//Delete Lead from SFDC...
+                        "addToSFDCCampaign",//Add to SFDC Campaign...
+                        "changeStatusInSFDCCampaign",//Change Status in SFDC Campaign...
+                        "removeFromSFDCCampaign",//Remove from SFDC Campaign...
                                 
-                                // Global > Programs, Analyzers, and Reports > Setup Right-click Tree
-                                //"editItem",//Edit
-                                "deleteItem",//Delete
+                    // Global > Programs, Analyzers, and Reports > Setup Right-click Tree
+                    //"editItem",//Edit
+                    "deleteItem",//Delete
                                 
-                                // Marketing Activities > New Button
-                                "createProgramFolder",//New Campaign Folder
-                                "newSmartCampaign",//New Smart Campaign
-                                "createNewMarketingProgram",//New Program
-                                "importProgram",//Import Program
+                    // Marketing Activities > New Button
+                    "createProgramFolder",//New Campaign Folder
+                    "newSmartCampaign",//New Smart Campaign
+                    "createNewMarketingProgram",//New Program
+                    "importProgram",//Import Program
                                 
-                                // Marketing Activities > Default & Email Send Programs > Actions Button
-                                "entryRescheduleEntries",//Reschedule Entries
-                                "sfdcCampaignSync",//Salesforce Campaign Sync
-                                "cloneMarketingProgram",//Clone
-                                "deleteMarketingProgram",//Delete
-                                //"showImportMemberStatus",//Show Import Status
-                                //"showExportMemberStatus",//Show Export Status
+                    // Marketing Activities > Default & Email Send Programs > Actions Button
+                    "entryRescheduleEntries",//Reschedule Entries
+                    "sfdcCampaignSync",//Salesforce Campaign Sync
+                    "cloneMarketingProgram",//Clone
+                    "deleteMarketingProgram",//Delete
+                    //"showImportMemberStatus",//Show Import Status
+                    //"showExportMemberStatus",//Show Export Status
                                 
-                                // Marketing Activities > Event Program > Actions Button
-                                "eventSchedule",//Schedule
-                                "entryRescheduleEntries",//Reschedule Entries
-                                "webinarSettings",//Event Settings
-                                "sfdcCampaignSync",//Salesforce Campaign Sync
-                                "cloneMarketingEvent",//Clone
-                                "deleteMarketingEvent",//Delete
-                                "refreshFromWebinarProvider",//Refresh from Webinar Provider
-                                //"showImportMemberStatus",//Show Import Status
-                                //"showExportMemberStatus",//Show Export Status
+                    // Marketing Activities > Event Program > Actions Button
+                    "eventSchedule",//Schedule
+                    "entryRescheduleEntries",//Reschedule Entries
+                    "webinarSettings",//Event Settings
+                    "sfdcCampaignSync",//Salesforce Campaign Sync
+                    "cloneMarketingEvent",//Clone
+                    "deleteMarketingEvent",//Delete
+                    "refreshFromWebinarProvider",//Refresh from Webinar Provider
+                    //"showImportMemberStatus",//Show Import Status
+                    //"showExportMemberStatus",//Show Export Status
                                 
-                                // Marketing Activities > Nurturing Program > Actions Button
-                                "sfdcCampaignSync",//Salesforce Campaign Sync
-                                "cloneNurtureProgram",//Clone
-                                "deleteNurtureProgram",//Delete
-                                "testNurtureProgram",//Test Stream
-                                //"showImportMemberStatus",//Show Import Status
-                                //"showExportMemberStatus",//Show Export Status
+                    // Marketing Activities > Nurturing Program > Actions Button
+                    "sfdcCampaignSync",//Salesforce Campaign Sync
+                    "cloneNurtureProgram",//Clone
+                    "deleteNurtureProgram",//Delete
+                    "testNurtureProgram",//Test Stream
+                    //"showImportMemberStatus",//Show Import Status
+                    //"showExportMemberStatus",//Show Export Status
                                 
-                                // Marketing Activities > Smart Campaign > Actions Button
-                                // Default, Email Send, Event, and Nurturing Programs; Smart Campaign, Folder > Right-click Tree
-                                //"navigateToNurtureTracks",//View Streams
-                                //"navigateToCFSmartCamp",//View Smart Campaigns
-                                //"navigateToLocalAssets",//View Assets
-                                //"navigateToProgramSmartList",//View Smart List
-                                //"navigateToEventSettings",//View Setup
-                                //"navigateToCFTokens",//View My Tokens
-                                //"navigateToEventMembers",//View Members
-                                //"navigateToCFResults",//View Results
-                                //"navigateToSmartCampaign",//View Campaign
-                                //"navigateToSmartList",//View Smart List
-                                //"navigateToFlow",//View Flow
-                                //"navigateToSchedule",//View Schedule
-                                //"navigateToResults",//View Results
-                                //"navigateToCampaignMembers",//View Campaign Members
-                                "newSmartCampaign",//New Smart Campaign
-                                "createNewMarketingProgram",//New Program
-                                "newLocalAsset",//New Local Asset
-                                "createProgramFolder",//New Campaign Folder
-                                "renameProgramFolder",//Rename Folder
-                                "deleteProgramFolder",//Delete Folder
-                                "convertToArchiveFolder",//Convert To Archive Folder
-                                "convertToCampaignFolder",//Convert To Campaign Folder
-                                "scClone",//Clone
-                                "scArchive",//Delete
-                                "scMove",//Move
-                                "cloneMarketingProgram",//Clone
-                                "deleteMarketingProgram",//Delete
-                                "cloneMarketingEvent",//Clone
-                                "deleteMarketingEvent",//Delete
-                                "cloneNurtureProgram",//Clone
-                                "deleteNurtureProgram",//Delete
-                                "cloneEmailBatchProgram",//Clone
-                                "deleteEmailBatchProgram",//Delete
-                                "cloneInAppProgram",//Clone
-                                "deleteInAppProgram",//Delete
-                                "shareProgramFolder",//Share Folder
-                                "scActivate",//Activate
-                                "scAbort",//Abort Campaign
-                                //"addToFavorites",//Add to Favorites
-                                //"removeFromFavorites",//Remove from Favorites
-                                //"importProgramStatus",//Import Program Status
-                                "scCampChangeHistory",//Support Tools - Change History
-                                "scCampRunHistory",//Support Tools - Run History
-                                "scClearPalette",//Clear Palette Cache
-                                "scClearSmartList",//Clear Smart List
-                                "scClearFlow",//Clear Flow
-                                "progGenerateRef",//Build Campaign References
-                                "checkForCorruptEmails",//Check For Corrupt Emails
+                    // Marketing Activities > Smart Campaign > Actions Button
+                    // Default, Email Send, Event, and Nurturing Programs; Smart Campaign, Folder > Right-click Tree
+                    //"navigateToNurtureTracks",//View Streams
+                    //"navigateToCFSmartCamp",//View Smart Campaigns
+                    //"navigateToLocalAssets",//View Assets
+                    //"navigateToProgramSmartList",//View Smart List
+                    //"navigateToEventSettings",//View Setup
+                    //"navigateToCFTokens",//View My Tokens
+                    //"navigateToEventMembers",//View Members
+                    //"navigateToCFResults",//View Results
+                    //"navigateToSmartCampaign",//View Campaign
+                    //"navigateToSmartList",//View Smart List
+                    //"navigateToFlow",//View Flow
+                    //"navigateToSchedule",//View Schedule
+                    //"navigateToResults",//View Results
+                    //"navigateToCampaignMembers",//View Campaign Members
+                    "newSmartCampaign",//New Smart Campaign
+                    "createNewMarketingProgram",//New Program
+                    "newLocalAsset",//New Local Asset
+                    "createProgramFolder",//New Campaign Folder
+                    "renameProgramFolder",//Rename Folder
+                    "deleteProgramFolder",//Delete Folder
+                    "convertToArchiveFolder",//Convert To Archive Folder
+                    "convertToCampaignFolder",//Convert To Campaign Folder
+                    "scClone",//Clone
+                    "scArchive",//Delete
+                    "scMove",//Move
+                    "cloneMarketingProgram",//Clone
+                    "deleteMarketingProgram",//Delete
+                    "cloneMarketingEvent",//Clone
+                    "deleteMarketingEvent",//Delete
+                    "cloneNurtureProgram",//Clone
+                    "deleteNurtureProgram",//Delete
+                    "cloneEmailBatchProgram",//Clone
+                    "deleteEmailBatchProgram",//Delete
+                    "cloneInAppProgram",//Clone
+                    "deleteInAppProgram",//Delete
+                    "shareProgramFolder",//Share Folder
+                    "scActivate",//Activate
+                    "scAbort",//Abort Campaign
+                    //"addToFavorites",//Add to Favorites
+                    //"removeFromFavorites",//Remove from Favorites
+                    //"importProgramStatus",//Import Program Status
+                    "scCampChangeHistory",//Support Tools - Change History
+                    "scCampRunHistory",//Support Tools - Run History
+                    "scClearPalette",//Clear Palette Cache
+                    "scClearSmartList",//Clear Smart List
+                    "scClearFlow",//Clear Flow
+                    "progGenerateRef",//Build Campaign References
+                    "checkForCorruptEmails",//Check For Corrupt Emails
                                 
-                                // Marketing Activities > Social App: Poll, Referral Offer, Social Button, Sweepstakes, Video > Right-click Tree
-                                //"socialAppEdit",//Edit Draft
-                                //"socialAppPreview",//Preview
-                                "socialAppApprove",//Approve
-                                "socialAppClone",//Clone
-                                "socialAppDelete",//Delete
-                                //"socialAppWidgetCode",//Embed Code
-                                //"addToFavorites",//Add to Favorites
-                                //"removeFromFavorites",//Remove from Favorites
-                                //"socialAppDraftEdit",//Edit Draft
-                                //"socialAppDraftPreview",//Preview Draft
-                                "socialAppDraftApprove",//Approve Draft
-                                //"socialAppDraftDiscard",//Discard Draft
+                    // Marketing Activities > Social App: Poll, Referral Offer, Social Button, Sweepstakes, Video > Right-click Tree
+                    //"socialAppEdit",//Edit Draft
+                    //"socialAppPreview",//Preview
+                    "socialAppApprove",//Approve
+                    "socialAppClone",//Clone
+                    "socialAppDelete",//Delete
+                    //"socialAppWidgetCode",//Embed Code
+                    //"addToFavorites",//Add to Favorites
+                    //"removeFromFavorites",//Remove from Favorites
+                    //"socialAppDraftEdit",//Edit Draft
+                    //"socialAppDraftPreview",//Preview Draft
+                    "socialAppDraftApprove",//Approve Draft
+                    //"socialAppDraftDiscard",//Discard Draft
                                 
-                                // Marketing Activities > Push Notification > Right-click Tree
-                                //"pushNotificationEdit",//Edit Draft
-                                //"pushNotificationPreview",//Preview
-                                "pushNotificationUnapprove",//Unapprove
-                                "pushNotificationApprove",//Approve
-                                //"pushNotificationSendSample",//Send Sample
-                                "pushNotificationClone",//Clone
-                                "pushNotificationDelete",//Delete
-                                //"pushNotificationDraftEdit",//Edit Draft
-                                //"pushNotificationDraftPreview",//Preview Draft
-                                //"pushNotificationDraftSendSample",//Send Sample of Draft
-                                "pushNotificationDraftApprove",//Approve Draft
-                                //"pushNotificationDraftDiscard",//Discard Draft
+                    // Marketing Activities > Push Notification > Right-click Tree
+                    //"pushNotificationEdit",//Edit Draft
+                    //"pushNotificationPreview",//Preview
+                    "pushNotificationUnapprove",//Unapprove
+                    "pushNotificationApprove",//Approve
+                    //"pushNotificationSendSample",//Send Sample
+                    "pushNotificationClone",//Clone
+                    "pushNotificationDelete",//Delete
+                    //"pushNotificationDraftEdit",//Edit Draft
+                    //"pushNotificationDraftPreview",//Preview Draft
+                    //"pushNotificationDraftSendSample",//Send Sample of Draft
+                    "pushNotificationDraftApprove",//Approve Draft
+                    //"pushNotificationDraftDiscard",//Discard Draft
                                 
-                                // Marketing Activities > ALL Programs > Change Status Button
-                                "Not in ProgramStatusMarketingEvent",//Not in Program
-                                "SentStatusMarketingEvent",//Sent
-                                "VisitedStatusMarketingEvent",//Visited
-                                "EngagedStatusMarketingEvent",//Engaged
+                    // Marketing Activities > ALL Programs > Change Status Button
+                    "Not in ProgramStatusMarketingEvent",//Not in Program
+                    "SentStatusMarketingEvent",//Sent
+                    "VisitedStatusMarketingEvent",//Visited
+                    "EngagedStatusMarketingEvent",//Engaged
                                 
-                                // Marketing Activities > ALL Programs & Folders > My Tokens Right-click Tree
-                                //"editCustomToken",//Edit Token
-                                "deleteCustomToken",//Delete Token
+                    // Marketing Activities > ALL Programs & Folders > My Tokens Right-click Tree
+                    //"editCustomToken",//Edit Token
+                    "deleteCustomToken",//Delete Token
                                 
-                                // Design Studio > Folder > Right-click Tree
-                                "newLandingPage",//New Landing Page
-                                "newTestGroup",//New Test Group
-                                "newPageTemplate",//New Landing Page Template
-                                "pageTemplateImport",//Import Template
-                                "newForm",//New Form
-                                "newVideoShare",//New YouTube Video
-                                "newShareButton",//New Social Button
-                                "newReferralOffer",//New Referral Offer
-                                "newEmail",//New Email
-                                "newEmailTemplate",//New Email Template
-                                "newSnippet",//New Snippet
-                                "uploadImage",//Upload Image or File
-                                //"grabFromWebPage",//Grab Images from Web
-                                "share",//Share Folder
-                                "createFolder",//New Folder
-                                "renameFolder",//Rename Folder
-                                "deleteFolder",//Delete Folder
-                                "convertToArchiveFolder",//Convert To Archive Folder
-                                "convertToFolder",//Convert To Folder
+                    // Design Studio > Folder > Right-click Tree
+                    "newLandingPage",//New Landing Page
+                    "newTestGroup",//New Test Group
+                    "newPageTemplate",//New Landing Page Template
+                    "pageTemplateImport",//Import Template
+                    "newForm",//New Form
+                    "newVideoShare",//New YouTube Video
+                    "newShareButton",//New Social Button
+                    "newReferralOffer",//New Referral Offer
+                    "newEmail",//New Email
+                    "newEmailTemplate",//New Email Template
+                    "newSnippet",//New Snippet
+                    "uploadImage",//Upload Image or File
+                    //"grabFromWebPage",//Grab Images from Web
+                    "share",//Share Folder
+                    "createFolder",//New Folder
+                    "renameFolder",//Rename Folder
+                    "deleteFolder",//Delete Folder
+                    "convertToArchiveFolder",//Convert To Archive Folder
+                    "convertToFolder",//Convert To Folder
                                 
-                                // Design Studio > Landing Page Template > Actions Button & Right-click Tree
-                                //"editPageTemplate",//Edit Draft
-                                //"previewPageTemplate",//Preview
-                                "approvePageTemplate",//Approve
-                                "unapprovePageTemplate",//Unapprove
-                                "clonePageTemplate",//Clone
-                                "pageTemplateDelete",//Delete
-                                //"pageTemplateExport",//Export
-                                //"addToFavorites",//Add to Favorites
-                                //"removeFromFavorites",//Remove from Favorites
-                                //"editPageTemplateDraft",//Edit Draft
-                                //"previewDraftPageTemplate",//Preview Draft
-                                "approveDraftPageTemplate",//Approve Draft
-                                //"discardDraftPageTemplate",//Discard Draft
+                    // Design Studio > Landing Page Template > Actions Button & Right-click Tree
+                    //"editPageTemplate",//Edit Draft
+                    //"previewPageTemplate",//Preview
+                    "approvePageTemplate",//Approve
+                    "unapprovePageTemplate",//Unapprove
+                    "clonePageTemplate",//Clone
+                    "pageTemplateDelete",//Delete
+                    //"pageTemplateExport",//Export
+                    //"addToFavorites",//Add to Favorites
+                    //"removeFromFavorites",//Remove from Favorites
+                    //"editPageTemplateDraft",//Edit Draft
+                    //"previewDraftPageTemplate",//Preview Draft
+                    "approveDraftPageTemplate",//Approve Draft
+                    //"discardDraftPageTemplate",//Discard Draft
                                 
-                                // Design Studio > Email Template > Actions Button & Right-click Tree
-                                //"emailTemplateEdit",//Edit Draft
-                                //"emailTemplatePreview",//Preview
-                                //"emailTemplateSendTest",//Send Sample
-                                "emailTemplateApprove",//Approve
-                                "emailTemplateUnapprove",//Unapprove
-                                "emailTemplateClone",//Clone
-                                "emailTemplateDelete",//Delete
-                                //"addToFavorites",//Add to Favorites
-                                //"removeFromFavorites",//Remove from Favorites
-                                //"emailTemplateDraftEdit",//Edit Draft
-                                //"emailTemplateDraftPreview",//Preview Draft
-                                //"emailTemplateDraftSendTest",//Send Sample of Draft
-                                "emailTemplateDraftApprove",//Approve Draft
-                                //"emailTemplateDraftDiscard",//Discard Draft
+                    // Design Studio > Email Template > Actions Button & Right-click Tree
+                    //"emailTemplateEdit",//Edit Draft
+                    //"emailTemplatePreview",//Preview
+                    //"emailTemplateSendTest",//Send Sample
+                    "emailTemplateApprove",//Approve
+                    "emailTemplateUnapprove",//Unapprove
+                    "emailTemplateClone",//Clone
+                    "emailTemplateDelete",//Delete
+                    //"addToFavorites",//Add to Favorites
+                    //"removeFromFavorites",//Remove from Favorites
+                    //"emailTemplateDraftEdit",//Edit Draft
+                    //"emailTemplateDraftPreview",//Preview Draft
+                    //"emailTemplateDraftSendTest",//Send Sample of Draft
+                    "emailTemplateDraftApprove",//Approve Draft
+                    //"emailTemplateDraftDiscard",//Discard Draft
                                 
-                                // Design Studio > Snippet > Actions Button & Right-click Tree
-                                //"snippetNoDraftApprovalStatus",//Show Approval Status
-                                //"snippetEdit",//Edit Draft
-                                //"snippetPreview",//Preview
-                                "snippetApprove",//Approve
-                                "snippetUnapprove",//Unapprove
-                                "snippetClone",//Clone
-                                "snippetDelete",//Delete
-                                //"addToFavorites",//Add to Favorites
-                                //"removeFromFavorites",//Remove from Favorites
-                                //"snippetDraftEdit",//Edit Draft
-                                //"snippetDraftPreview",//Preview Draft
-                                "snippetDraftApprove",//Approve Draft
-                                //"snippetDraftDiscard",//Discard Draft
+                    // Design Studio > Snippet > Actions Button & Right-click Tree
+                    //"snippetNoDraftApprovalStatus",//Show Approval Status
+                    //"snippetEdit",//Edit Draft
+                    //"snippetPreview",//Preview
+                    "snippetApprove",//Approve
+                    "snippetUnapprove",//Unapprove
+                    "snippetClone",//Clone
+                    "snippetDelete",//Delete
+                    //"addToFavorites",//Add to Favorites
+                    //"removeFromFavorites",//Remove from Favorites
+                    //"snippetDraftEdit",//Edit Draft
+                    //"snippetDraftPreview",//Preview Draft
+                    "snippetDraftApprove",//Approve Draft
+                    //"snippetDraftDiscard",//Discard Draft
                                 
-                                // Design Studio > Image & File > Actions Button
-                                "uploadImage",//Upload Image or File
-                                //"grabFromWebPage",//Grab Images from Web
-                                //"imagePreview",//View
-                                "imageDelete",//Delete
-                                "replaceImage",//Replace Image or File
+                    // Design Studio > Image & File > Actions Button
+                    "uploadImage",//Upload Image or File
+                    //"grabFromWebPage",//Grab Images from Web
+                    //"imagePreview",//View
+                    "imageDelete",//Delete
+                    "replaceImage",//Replace Image or File
                                 
-                                // Lead Database > New Button
-                                "newSmartList",//New Smart List
-                                "newList",//New List
-                                "newSegmentation",//New Segmentation
-                                "importList",//Import List
-                                "newLead",//New Lead
-                                "newDataMgr",//New Field Organizer
+                    // Lead Database > New Button
+                    "newSmartList",//New Smart List
+                    "newList",//New List
+                    "newSegmentation",//New Segmentation
+                    "importList",//Import List
+                    "newLead",//New Lead
+                    "newDataMgr",//New Field Organizer
                                 
-                                // Lead Database > Folder > Right-click Tree
-                                "newSegmentation",//New Segmentation
-                                "newSmartList",//New Smart List
-                                "share",//Share Folder
-                                "createFolder",//New Folder
-                                "renameFolder",//Rename Folder
-                                "deleteFolder",//Delete Folder
-                                "convertToArchiveFolder",//Convert To Archive Folder
-                                "convertToFolder",//Convert To Folder
+                    // Lead Database > Folder > Right-click Tree
+                    "newSegmentation",//New Segmentation
+                    "newSmartList",//New Smart List
+                    "share",//Share Folder
+                    "createFolder",//New Folder
+                    "renameFolder",//Rename Folder
+                    "deleteFolder",//Delete Folder
+                    "convertToArchiveFolder",//Convert To Archive Folder
+                    "convertToFolder",//Convert To Folder
                                 
-                                // Lead Database > Segmentation > Actions Button & Right-click Tree
-                                "createDraftSegmentation",//Create Draft
-                                //"editSegmentation",//Edit Segments
-                                "approveSegmentation",//Approve
-                                "unapproveSegmentation",//Unapprove
-                                "deleteSegmentation",//Delete
-                                "refreshSegmentation",//Refresh Status
-                                //"editDraftSegmentation",//Edit Segments
-                                "approveDraftSegmentation",//Approve Draft
-                                //"discardDraftSegmentation",//Discard Draft
+                    // Lead Database > Segmentation > Actions Button & Right-click Tree
+                    "createDraftSegmentation",//Create Draft
+                    //"editSegmentation",//Edit Segments
+                    "approveSegmentation",//Approve
+                    "unapproveSegmentation",//Unapprove
+                    "deleteSegmentation",//Delete
+                    "refreshSegmentation",//Refresh Status
+                    //"editDraftSegmentation",//Edit Segments
+                    "approveDraftSegmentation",//Approve Draft
+                    //"discardDraftSegmentation",//Discard Draft
                                 
-                                // Analytics > New Button
-                                //"newSubscription_atxCanvasOverview",//New Report Subscription
-                                "newRcm_atxCanvasOverview",//New Revenue Cycle Model
-                                //"newSubscription_rcmCanvasOverview",//New Report Subscription
-                                "newRcm_rcmCanvasOverview",//New Revenue Cycle Model
-                                //"newSubscription_atxCanvasSubscriptions",//New Report Subscription
-                                "newRcm_atxCanvasSubscriptions",//New Revenue Cycle Model
+                    // Analytics > New Button
+                    //"newSubscription_atxCanvasOverview",//New Report Subscription
+                    "newRcm_atxCanvasOverview",//New Revenue Cycle Model
+                    //"newSubscription_rcmCanvasOverview",//New Report Subscription
+                    "newRcm_rcmCanvasOverview",//New Revenue Cycle Model
+                    //"newSubscription_atxCanvasSubscriptions",//New Report Subscription
+                    "newRcm_atxCanvasSubscriptions",//New Revenue Cycle Model
                                 
-                                // Analytics > Folder > Right-click Tree
-                                "newRcm",//New Revenue Cycle Model
-                                "share",//Share Folder
-                                "createFolder",//New Folder
-                                "renameFolder",//Rename Folder
-                                "deleteFolder",//Delete Folder
-                                "convertToArchiveFolder",//Convert To Archive Folder
-                                "convertToFolder",//Convert To Folder
+                    // Analytics > Folder > Right-click Tree
+                    "newRcm",//New Revenue Cycle Model
+                    "share",//Share Folder
+                    "createFolder",//New Folder
+                    "renameFolder",//Rename Folder
+                    "deleteFolder",//Delete Folder
+                    "convertToArchiveFolder",//Convert To Archive Folder
+                    "convertToFolder",//Convert To Folder
                                 
-                                // Analytics > Analyzer & Report > Actions Button
-                                "newReport_atxCanvasOverview",//Export Data
-                                "cloneReport_atxCanvasOverview",//Clone Analyzer
-                                "deleteReport",//Delete Analyzer
+                    // Analytics > Analyzer & Report > Actions Button
+                    "newReport_atxCanvasOverview",//Export Data
+                    "cloneReport_atxCanvasOverview",//Clone Analyzer
+                    "deleteReport",//Delete Analyzer
                                 
-                                // Analytics > Analyzer > Right-click Tree
-                                //"navigateToAnalyzer",//View Analyzer
-                                //"navigateToAnalyzerSetup",//View Setup
-                                "cloneReport",//Clone Analyzer
-                                "deleteReport",//Delete Analyzer
-                                //"addToFavorites",//Add to Favorites
-                                //"removeFromFavorites",//Remove from Favorites
+                    // Analytics > Analyzer > Right-click Tree
+                    //"navigateToAnalyzer",//View Analyzer
+                    //"navigateToAnalyzerSetup",//View Setup
+                    "cloneReport",//Clone Analyzer
+                    "deleteReport",//Delete Analyzer
+                    //"addToFavorites",//Add to Favorites
+                    //"removeFromFavorites",//Remove from Favorites
                                 
-                                // Analytics > Report > Right-click Tree
-                                //"navigateToOverviewReport",//View Overview
-                                //"navigateToDetailReport",//View Report
-                                //"navigateToSmartList",//View Smart List
-                                //"navigateToSetup",//View Setup
-                                //"navigateToSubscriptions",//View Subscriptions
-                                "cloneReport",//Clone Report
-                                "deleteReport",//Delete Report
-                                "moveReport",//Move Report
-                                //"addToFavorites",//Add to Favorites
-                                //"removeFromFavorites",//Remove from Favorites
+                    // Analytics > Report > Right-click Tree
+                    //"navigateToOverviewReport",//View Overview
+                    //"navigateToDetailReport",//View Report
+                    //"navigateToSmartList",//View Smart List
+                    //"navigateToSetup",//View Setup
+                    //"navigateToSubscriptions",//View Subscriptions
+                    "cloneReport",//Clone Report
+                    "deleteReport",//Delete Report
+                    "moveReport",//Move Report
+                    //"addToFavorites",//Add to Favorites
+                    //"removeFromFavorites",//Remove from Favorites
                                 
-                                // Analytics > Model > Actions Button & Right-click Tree
-                                //"rcmEdit",//Edit Draft
-                                //"rcmPreview",//Preview Model
-                                "rcmApproveStages",//Approve Stages
-                                "rcmUnapproveStages",//Unapprove Stages
-                                "rcmApprove",//Approve Model
-                                "rcmUnapprove",//Unapprove Model
-                                "rcmClone",//Clone Model
-                                "rcmDelete",//Delete Model
-                                //"rcmExport",//Export Model
-                                //"addToFavorites",//Add to Favorites
-                                //"removeFromFavorites",//Remove from Favorites
-                                //"rcmEditDraft",//Edit Draft
-                                //"rcmPreviewDraft",//Preview Draft
-                                "rcmApproveDraft",//Approve Model Draft
-                                //"rcmDiscardDraft",//Discard Model Draft
-                                "rcmAassignmentRules",//Assignment Rules
-                                ];
+                    // Analytics > Model > Actions Button & Right-click Tree
+                    //"rcmEdit",//Edit Draft
+                    //"rcmPreview",//Preview Model
+                    "rcmApproveStages",//Approve Stages
+                    "rcmUnapproveStages",//Unapprove Stages
+                    "rcmApprove",//Approve Model
+                    "rcmUnapprove",//Unapprove Model
+                    "rcmClone",//Clone Model
+                    "rcmDelete",//Delete Model
+                    //"rcmExport",//Export Model
+                    //"addToFavorites",//Add to Favorites
+                    //"removeFromFavorites",//Remove from Favorites
+                    //"rcmEditDraft",//Edit Draft
+                    //"rcmPreviewDraft",//Preview Draft
+                    "rcmApproveDraft",//Approve Model Draft
+                    //"rcmDiscardDraft",//Discard Model Draft
+                    "rcmAassignmentRules",//Assignment Rules
+                            ];
             if (this.triggeredFrom != "tree"
             && this.triggeredFrom != "button") {
-                disable = APP.evaluateMenu("tree", attr, this, canvas, null);
+                disable = APP.evaluateMenu("tree", this, canvas, null);
             }
             else if (this.id == "leadDbListMenu"
             || this.id == "segmentationMenu") {
-                disable = APP.evaluateMenu("tree", attr, this, canvas, null);
+                disable = APP.evaluateMenu("tree", this, canvas, null);
             }
             else {
-                disable = APP.evaluateMenu(this.triggeredFrom, attr, this, canvas, null);
+                disable = APP.evaluateMenu(this.triggeredFrom, this, canvas, null);
             }
 
             itemsToDisable.forEach(function(itemToDisable) {
@@ -2515,11 +2515,11 @@ APP.disableMenus = function() {
                 for (ii = 0; ii < this.items.items.length; ii++) {
                     switch (this.items.items[ii].text) {
                         case "Create View":
-                            this.items.items[ii].setDisabled(disable);
+                            this.items.items[ii].setDisabled(true);
                             break;
                         
                         case "Edit Default":
-                            this.items.items[ii].setDisabled(disable);
+                            this.items.items[ii].setDisabled(true);
                             break;
                         
                         default:
@@ -2561,25 +2561,26 @@ APP.disableMenus = function() {
         console.log ("Marketo App > Executing: Disabling Actions menu for Social Apps in Marketing Activities");
 		prevSocialAppToolbar.apply(this, arguments);
 
-		var disable = APP.evaluateMenu("socialAppToolbar", null, null, null, this),
+		var disable = APP.evaluateMenu("socialAppToolbar", null, null, this),
 			mItems = Ext4.ComponentQuery.query(
-							/*"socialAppToolbar contextMenu [action=edit]," +*/ //Edit
-							/*"socialAppToolbar contextMenu [action=preview]," +*/ //Preview
-							"socialAppToolbar contextMenu [action=approve]," + //Approve
-							"socialAppToolbar contextMenu [action=clone]," + //Clone
-							"socialAppToolbar contextMenu [action=delete]," + //Delete
-							/*"socialAppToolbar contextMenu [action=getWidgetEmbedCode]," +*/ //Embed Code
-							"socialAppToolbar contextMenu [action=editDraft]," + //Edit Draft
-							"socialAppToolbar contextMenu [action=previewDraft]," + //Preview Draft
-							"socialAppToolbar contextMenu [action=approveDraft]," /*+*/ //Approve Draft
-							/*"socialAppToolbar contextMenu [action=discardDraft],"*/ //Discard Draft
-							);
+                /*"socialAppToolbar contextMenu [action=edit]," +*/ //Edit
+                /*"socialAppToolbar contextMenu [action=preview]," +*/ //Preview
+                "socialAppToolbar contextMenu [action=approve]," + //Approve
+                "socialAppToolbar contextMenu [action=clone]," + //Clone
+                "socialAppToolbar contextMenu [action=delete]," + //Delete
+                /*"socialAppToolbar contextMenu [action=getWidgetEmbedCode]," +*/ //Embed Code
+                /*"socialAppToolbar contextMenu [action=editDraft]," +*/ //Edit Draft
+                /*"socialAppToolbar contextMenu [action=previewDraft]," +*/ //Preview Draft
+                "socialAppToolbar contextMenu [action=approveDraft]," /*+*/ //Approve Draft
+                /*"socialAppToolbar contextMenu [action=discardDraft],"*/ //Discard Draft
+            );
 		
 		mItems.forEach(function(item) {
 			if (item) {
 				item.setDisabled(disable);
 			}
 		});
+        
 		return menu;
 	}
     
@@ -2589,27 +2590,158 @@ APP.disableMenus = function() {
         console.log ("Marketo App > Executing: Disabling Actions menu for Push Notifications in Marketing Activities");
 		prevMobilePushNotificationToolbar.apply(this, arguments);
 
-		var disable = APP.evaluateMenu("mobilePushNotification", null, null, null, this),
+		var disable = APP.evaluateMenu("mobilePushNotification", null, null, this),
 			mItems = Ext4.ComponentQuery.query(
-							/*"mobilePushNotification contextMenu [action=edit]," +*/ //Edit Draft
-							/*"mobilePushNotification contextMenu [action=sendSample]," +*/ //Send Sample
-							"mobilePushNotification contextMenu [action=approve]," + //Approve
-							"mobilePushNotification contextMenu [action=unapprove]," + //Unapprove
-							"mobilePushNotification contextMenu [action=clone]," + //Clone
-							"mobilePushNotification contextMenu [action=delete]," + //Delete
-							"mobilePushNotification contextMenu [action=editDraft]," + //Edit Draft
-							"mobilePushNotification contextMenu [action=sendDraftSample]," + //Send Sample of Draft
-							"mobilePushNotification contextMenu [action=approveDraft]," /*+*/ //Approve Draft
-							/*"mobilePushNotification contextMenu [action=discardDraft],"*/ //Discard Draft
-							);
+                /*"mobilePushNotification contextMenu [action=edit]," +*/ //Edit
+                /*"mobilePushNotification contextMenu [action=sendSample]," +*/ //Send Sample
+                "mobilePushNotification contextMenu [action=approve]," + //Approve
+                "mobilePushNotification contextMenu [action=unapprove]," + //Unapprove
+                "mobilePushNotification contextMenu [action=clone]," + //Clone
+                "mobilePushNotification contextMenu [action=delete]," + //Delete
+                /*"mobilePushNotification contextMenu [action=editDraft]," +*/ //Edit Draft
+                /*"mobilePushNotification contextMenu [action=sendDraftSample]," +*/ //Send Sample of Draft
+                "mobilePushNotification contextMenu [action=approveDraft]," /*+*/ //Approve Draft
+                /*"mobilePushNotification contextMenu [action=discardDraft],"*/ //Discard Draft
+            );
 		
 		mItems.forEach(function(item) {
 			if (item) {
 				item.setDisabled(disable);
 			}
 		});
+        
 		return menu;
 	}
+}
+
+/**************************************************************************************
+ *  
+ *  This function hides Toolbar items for all asset types in all areas.
+ *
+ *  @Author Brian Fisher
+ *
+ *  @function
+ *
+ **************************************************************************************/
+
+APP.hideToolbarItems = function() {
+    console.log("Marketo App > Hiding: Toolbar Items");
+    
+    // Disable ALL areas > ALL assets > ALL Toolbar items except for Smart Campaigns, Smart Lists, Lists, Social Apps, and Push Notifications
+    Ext.layout.ContainerLayout.prototype.renderItem = function (c, position, target) {
+        if (c
+        && c.topToolbar
+        && c.topToolbar.items) {
+            console.log("Marketo App > Executing: Disabling Toolbar items for ALL in ALL");
+            
+            var mItems = this.items,
+                canvas = MktCanvas.getActiveTab(),
+                visible = !APP.evaluateMenu("button", null, canvas, null),
+                itemsToHide = [
+                
+                    // Global > Programs, Analyzers, and Reports > Setup
+                    //"editItem",//Edit
+                    "deleteItem",//Delete
+                    
+                    // Global > Analyzers & Reports > Subscriptions
+                    //"newSubscription_atxCanvasSubscriptions",//New Report Subscription
+                    //"deleteSubscription_atxCanvasSubscriptions",//Delete Subscription
+                    
+                    // Global > Form
+                    //"formEdit_landingFODetail",//Edit Form
+                    
+                    // Global > Landing Page
+                    //"pageEdit_landingLPDetail",//Edit Draft
+                    //"pagePreview_landingLPDetail",//Preview Page
+                    
+                    // Global > Email
+                    //"emailEdit_landingEMDetail",//Edit Draft
+                    //"emailPreview_landingEMDetail",//Preview Email
+                    "gotoDeliverability_landingEMDetail",//Deliverability Tools
+                    
+                    // Marketing Activities > Programs & Folders > My Tokens
+                    //"editCustomToken",//Edit Token
+                    "deleteCustomToken",//Delete Token
+                    
+                    // Marketing Activities > Programs > Members
+                    "importMembers",//Import Members
+                    
+                    // Design Studio > Forms (System Folder)
+                    //"formEdit_landingCanvasFO",//Edit Form
+                    
+                    // Design Studio > Landing Pages (System Folder)
+                    //"pageEdit_landingCanvasLP",//Edit Draft
+                    //"pagePreview_landingCanvasLP",//Preview Page
+                    
+                    // Design Studio > Landing Page Templates (System Folder)
+                    //"pageTemplateEditDraft_landingCanvasTM",//Edit Draft
+                    //"pageTemplatePreview_landingCanvasTM",//Preview Template
+                    "importTemplate_landingCanvasTM",//Import Template
+                    
+                    // Design Studio > Landing Page Template
+                    //"pageTemplateEditDraft_landingTMDetail",//Edit Draft
+                    //"pageTemplatePreview_landingTMDetail",//Preview Template
+                    "importTemplate_landingTMDetail",//Import Template
+                    
+                    // Design Studio > Emails (System Folder)
+                    //"emailEdit_landingCanvasEM",//Edit Draft
+                    //"emailPreview_landingCanvasEM",//Preview Email
+                    "gotoDeliverability_landingCanvasEM",//Deliverability Tools
+                    
+                    // Design Studio > Email Templates (System Folder)
+                    //"emailTemplateEdit_emailTemplates",//Edit Draft
+                    //"emailTemplatePreview_emailTemplates",//Preview Template
+                    
+                    // Design Studio > Email Template
+                    //"emailTemplateEdit_EMTemplateDetail",//Edit Draft
+                    //"emailTemplatePreview_EMTemplateDetail",//Preview Template
+                    
+                    // Design Studio > Snippets (System Folder)
+                    //"snippetEdit_landingCanvasSnippet",//Edit Draft
+                    //"snippetPreview_landingCanvasSnippet",//Preview Snippet
+                    
+                    // Design Studio > Snippet
+                    //"snippetEdit_snippetDetail",//Edit Draft
+                    //"snippetPreview_snippetDetail",//Preview Snippet
+                    
+                    // Design Studio > Images and Files
+                    "imageUpload_landingCanvasIM",//Upload Image or File
+                    "imageReplace_landingCanvasIM",//Replace Image or File
+                    
+                    // Analytics > Model
+                    //"editDraft_rcmCanvasOverview",//Edit Draft
+                    //"previewModel_rcmCanvasOverview",//Preview Model
+                ];
+            
+            itemsToHide.forEach(function(itemToHide) {
+                var item = c.topToolbar.items.get(itemToHide);
+                if (item) {
+                    if (itemToHide == "gotoDeliverability_landingEMDetail") {
+                        item.setVisible(false);
+                    }
+                    else {
+                        item.setVisible(visible);
+                    }
+                }
+            });
+        }
+        
+        if (c) {
+            if (!c.rendered) {
+                c.render(target, position);
+                this.configureItem(c, position);
+            }
+            else if (!this.isValidParent(c, target)) {
+                if (Ext.isNumber(position)) {
+                    position = target.dom.childNodes[position];
+                }
+                
+                target.dom.insertBefore(c.getPositionEl().dom, position || null);
+                c.container = target;
+                this.configureItem(c, position);
+            }
+        }
+    }   
 }
 
 /**************************************************************************************
@@ -3120,6 +3252,7 @@ if (currentUrl.search(mktoAppDomain) != -1
                     APP.overrideTreeNodeCollapse();
                     APP.disableDragAndDrop();
                     APP.disableMenus();
+                    APP.hideToolbarItems();
                     APP.overrideSmartCampaignSaving();
                     APP.overrideSmartCampaignCanvas();
                     APP.overrideNewProgramCreate();
