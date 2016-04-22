@@ -1865,7 +1865,7 @@ APP.disableDragAndDrop = function() {
  *
  **************************************************************************************/
 
-APP.evaluateMenu = function (triggeredFrom, attr, menu, canvas, toolbar) {
+APP.evaluateMenu = function (triggeredFrom, menu, canvas, toolbar) {
     console.log("Marketo App > Evaluating: Menu");
     
     var userName,
@@ -2492,14 +2492,14 @@ APP.disableMenus = function() {
                                 ];
             if (this.triggeredFrom != "tree"
             && this.triggeredFrom != "button") {
-                disable = APP.evaluateMenu("tree", attr, this, canvas, null);
+                disable = APP.evaluateMenu("tree", this, canvas, null);
             }
             else if (this.id == "leadDbListMenu"
             || this.id == "segmentationMenu") {
-                disable = APP.evaluateMenu("tree", attr, this, canvas, null);
+                disable = APP.evaluateMenu("tree", this, canvas, null);
             }
             else {
-                disable = APP.evaluateMenu(this.triggeredFrom, attr, this, canvas, null);
+                disable = APP.evaluateMenu(this.triggeredFrom, this, canvas, null);
             }
 
             itemsToDisable.forEach(function(itemToDisable) {
@@ -2515,11 +2515,11 @@ APP.disableMenus = function() {
                 for (ii = 0; ii < this.items.items.length; ii++) {
                     switch (this.items.items[ii].text) {
                         case "Create View":
-                            this.items.items[ii].setDisabled(disable);
+                            this.items.items[ii].setDisabled(true);
                             break;
                         
                         case "Edit Default":
-                            this.items.items[ii].setDisabled(disable);
+                            this.items.items[ii].setDisabled(true);
                             break;
                         
                         default:
@@ -2561,7 +2561,7 @@ APP.disableMenus = function() {
         console.log ("Marketo App > Executing: Disabling Actions menu for Social Apps in Marketing Activities");
 		prevSocialAppToolbar.apply(this, arguments);
 
-		var disable = APP.evaluateMenu("socialAppToolbar", null, null, null, this),
+		var disable = APP.evaluateMenu("socialAppToolbar", null, null, this),
 			mItems = Ext4.ComponentQuery.query(
 							/*"socialAppToolbar contextMenu [action=edit]," +*/ //Edit
 							/*"socialAppToolbar contextMenu [action=preview]," +*/ //Preview
@@ -2589,7 +2589,7 @@ APP.disableMenus = function() {
         console.log ("Marketo App > Executing: Disabling Actions menu for Push Notifications in Marketing Activities");
 		prevMobilePushNotificationToolbar.apply(this, arguments);
 
-		var disable = APP.evaluateMenu("mobilePushNotification", null, null, null, this),
+		var disable = APP.evaluateMenu("mobilePushNotification", null, null, this),
 			mItems = Ext4.ComponentQuery.query(
 							/*"mobilePushNotification contextMenu [action=edit]," +*/ //Edit Draft
 							/*"mobilePushNotification contextMenu [action=sendSample]," +*/ //Send Sample
