@@ -540,7 +540,7 @@ APP.overrideSmartCampaignSaving = function() {
     Mkt.widgets.DataPanelManager.prototype.save = function(cause, dp, acceptUpdates) {
         this._updateDataPanelOrder(true);
         var canvas = MktCanvas.getActiveTab();
-        if (!APP.evaluateMenu("button", null, null, canvas, null)
+        if (!APP.evaluateMenu("button", null, canvas, null)
         && APP.getCookie("priv") != "false") {
             
             if (this.saveQueue.blockingSaveInProgress) {
