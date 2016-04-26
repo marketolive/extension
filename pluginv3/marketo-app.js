@@ -3006,10 +3006,10 @@ APP.overlayEmailDesigner = function() {
             console.log("Marketo App > Overlaying: iframe");
             window.clearInterval(isEmailIframeElement);
             
-            logoSwapContainer.style.display = "none";
-            logoSwapCompanyContainer.style.display = "block";
-            logoBkg.style.backgroundColor = color;
-            buttonBkg.style.backgroundColor = color;
+//            logoSwapContainer.style.display = "none";
+//            logoSwapCompanyContainer.style.display = "block";
+//            logoBkg.style.backgroundColor = color;
+//            buttonBkg.style.backgroundColor = color;
             logoSwapCompany.src = logo;
         }
     }, 0);
