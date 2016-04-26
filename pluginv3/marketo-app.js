@@ -3447,8 +3447,14 @@ if (currentUrl.search(mktoAppDomain) != -1
                             // Overlay Email Designer w/ Company Logo and Color
                             switch (currUrlFragment) {
                                 case customCompanyEmail106Fragment:
+                                    APP.overlayEmailDesigner();
+                                    break;
                                 case customCompanyHealthcareFragment:
+                                    APP.overlayEmailDesigner();
+                                    break;
                                 case customCompanyFinservFragment:
+                                    APP.overlayEmailDesigner();
+                                    break;
                                 case customCompanyHigherEdFragment:
                                     APP.overlayEmailDesigner();
                                     break;
