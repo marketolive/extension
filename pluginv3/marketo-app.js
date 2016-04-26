@@ -3248,6 +3248,8 @@ if (currentUrl.search(mktoAppDomain) != -1
                 && currUrlFragment.search("^" + mktoMobilePushNotificationWizardFragment) == -1 
                 && currUrlFragment.search("^" + mktoSocialAppWizardFragment) == -1) {
                     
+                    console.log("Marketo App > Not On a Designer Page");
+                    
                     APP.overrideTreeNodeExpand();
                     APP.overrideTreeNodeCollapse();
                     APP.disableDragAndDrop();
