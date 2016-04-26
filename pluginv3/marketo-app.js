@@ -46,7 +46,7 @@ var currentUrl = window.location.href,
     mktoLeadDatabaseMarketingFragment = "ML0A1ZN19788",
     mktoLeadDatabaseJapaneseFragment = "ML0A1ZN19834",
     mktoAnalyticsFragment = "AH0A1ZN17",
-    mktoAdBridgeSmartListFragment = "SL1B2",
+    mktoAdBridgeSmartListFragment = "SL1119566B2LA1",
     mktoEmailDesignerFragment = "EME",
     mktoEmailPreviewFragment = "EMP",
     mktoLandingPageDesignerFragment = "LPE",
@@ -539,10 +539,10 @@ APP.overrideSmartCampaignSaving = function() {
     
     Mkt.widgets.DataPanelManager.prototype.save = function(cause, dp, acceptUpdates) {
         this._updateDataPanelOrder(true);
-        var workspaceId = MktCanvas.getActiveTab().config.accessZoneId;
-        if (workspaceId != 1
-        && workspaceId != mktoJapaneseWorkspaceId
+        var canvas = MktCanvas.getActiveTab();
+        if (!APP.evaluateMenu("button", null, canvas, null)
         && APP.getCookie("priv") != "false") {
+            
             if (this.saveQueue.blockingSaveInProgress) {
                 this.saveQueue.pendingChangesCount++;
                 this.saveQueue.dataPanelMetas = this._serializeDataPanels();
@@ -1718,8 +1718,335 @@ APP.disableButtons = function() {
 
 /**************************************************************************************
  *  
- *  This function disables the Program actions menu items: New Smart Campaign, New 
- *  Local Asset, New Folder, and Delete.
+ *  This function evaluates the current node context being moved to determine if the 
+ *  item should be moved
+ *
+ *  @Author Brian Fisher
+ *
+ *  @function
+ *
+ **************************************************************************************/
+
+APP.evaluateMoveItem = function (nodeToMove, destNode) {
+    console.log("Marketo App > Evaluating: Move Item");
+    
+    var ii,
+        userName,
+        currNode,
+        depth,
+        userId = MktPage.userid.toLowerCase();
+    if (userId.search("\.demo@marketo.com$") != -1) {
+        userName = userId.split(".demo")[0];
+    }
+    else {
+        userName = userId.split("@")[0];
+    }
+    
+    if ((nodeToMove.attributes
+        && (nodeToMove.attributes.accessZoneId == 1
+            || nodeToMove.attributes.accessZoneId == mktoJapaneseWorkspaceId))
+    || (destNode.attributes
+        && (destNode.attributes.accessZoneId == 1
+            || destNode.attributes.accessZoneId == mktoJapaneseWorkspaceId))) {
+        
+        return false;
+    }
+    else if (nodeToMove.attributes.accessZoneId == mktoMarketingWorkspaceId
+    && destNode.attributes.accessZoneId == mktoMarketingWorkspaceId) {
+    
+        currNode = nodeToMove;
+        depth = currNode.getDepth();
+        for (ii = 0; ii < depth; ii++) {
+            if (currNode.text == userName) {
+                currNode = destNode;
+                depth = currNode.getDepth();
+                for (ii = 0; ii < depth; ii++) {
+                    if (currNode.text == userName) {
+                        return true;
+                    }
+                    currNode = currNode.parentNode;
+                }
+                return false;
+            }
+            currNode = currNode.parentNode;
+        }
+        return false;
+    }
+    else if (nodeToMove.attributes.accessZoneId == mktoMarketingWorkspaceId) {
+        
+        currNode = nodeToMove;
+        depth = currNode.getDepth();
+        for (ii = 0; ii < depth; ii++) {
+            if (currNode.text == userName) {
+                return true;
+            }
+            currNode = currNode.parentNode;
+        }
+        return false;
+    }
+    else if (destNode.attributes.accessZoneId == mktoMarketingWorkspaceId) {
+        
+        currNode = destNode;
+        depth = currNode.getDepth();
+        for (ii = 0; ii < depth; ii++) {
+            if (currNode.text == userName) {
+                return true;
+            }
+            currNode = currNode.parentNode;
+        }
+        return false;
+    }
+    else {
+        return true;
+    }
+}
+
+/**************************************************************************************
+ *  
+ *  This function disables dragging and dropping tree node items other than those that 
+ *  originate and are destined for a location within the user's root folder
+ *
+ *  @Author Brian Fisher
+ *
+ *  @function
+ *
+ **************************************************************************************/
+
+APP.disableDragAndDrop = function() {
+    console.log("Marketo App > Disabling: Tree Node Drop");
+
+    Ext.tree.TreeDropZone.prototype.processDrop = function (target, data, point, dd, e, dropNode) {
+        console.log("Marketo App > Executing: Tree Node Drop");
+        
+        if (APP.evaluateMoveItem(dropNode, target)) {
+            var dropEvent = {
+                tree : this.tree,
+                target : target,
+                data : data,
+                point : point,
+                source : dd,
+                rawEvent : e,
+                dropNode : dropNode,
+                cancel : !dropNode,
+                dropStatus : false
+            };
+            var retval = this.tree.fireEvent("beforenodedrop", dropEvent);
+            if (retval === false || dropEvent.cancel === true || !dropEvent.dropNode) {
+                target.ui.endDrop();
+                return dropEvent.dropStatus;
+            }
+            
+            target = dropEvent.target;
+            if (point == 'append' && !target.isExpanded()) {
+                target.expand(false, null, function () {
+                    this.completeDrop(dropEvent);
+                }
+                    .createDelegate(this));
+            }
+            else {
+                this.completeDrop(dropEvent);
+            }
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+}
+
+/**************************************************************************************
+ *  
+ *  This function evaluates the current menu context to determine if items should be 
+ *  disabled
+ *
+ *  @Author Brian Fisher
+ *
+ *  @function
+ *
+ **************************************************************************************/
+
+APP.evaluateMenu = function (triggeredFrom, menu, canvas, toolbar) {
+    console.log("Marketo App > Evaluating: Menu");
+    
+    var userName,
+        toBeDisabled = false,
+        userId = MktPage.userid.toLowerCase();
+    if (userId.search("\.demo@marketo.com$") != -1) {
+        userName = userId.split(".demo")[0];
+    }
+    else {
+        userName = userId.split("@")[0];
+    }
+    
+    switch (triggeredFrom) {
+        
+        case "tree":
+            if (menu
+            && menu.currNode
+            && menu.currNode.attributes
+            && (menu.currNode.attributes.accessZoneId == 1
+                || menu.currNode.attributes.accessZoneId == mktoJapaneseWorkspaceId
+                || menu.currNode.attributes.accessZoneId == mktoMarketingWorkspaceId)) {
+            
+                toBeDisabled = true;
+                
+                if (menu.currNode.attributes.accessZoneId == mktoMarketingWorkspaceId) {
+                    var ii,
+                        currNode = menu.currNode,
+                        depth = currNode.getDepth();
+                        
+                    for (ii = 0; ii < depth; ii++) {
+                        if (currNode.attributes.text == userName) {
+                            toBeDisabled = false;
+                            break;
+                        }
+                        currNode = currNode.parentNode;
+                    }
+                }
+            }
+            else if ((!menu
+                        || !menu.currNode
+                        || !menu.currNode.attributes
+                        || !menu.currNode.attributes.accessZoneId)
+                    && (canvas
+                        && canvas.config
+                        && (canvas.config.accessZoneId == 1
+                            || canvas.config.accessZoneId == mktoJapaneseWorkspaceId
+                            || (canvas.config.accessZoneId == mktoMarketingWorkspaceId
+                                && ((canvas.config.expNodeId
+                                        && MktExplorer.getNodeById(canvas.config.expNodeId))
+                                    || (canvas.config.dlZoneFolderId
+                                        && MktExplorer.getNodeById(canvas.config.dlZoneFolderId))))))) {
+                
+                toBeDisabled = true;
+                                
+                if (canvas.config.accessZoneId == mktoMarketingWorkspaceId) {
+                    var ii,
+                        currNode,
+                        depth;
+                        
+                    if (canvas.config.expNodeId) {
+                        currNode = MktExplorer.getNodeById(canvas.config.expNodeId);
+                    }
+                    else {
+                        currNode = MktExplorer.getNodeById(canvas.config.dlZoneFolderId);
+                    }
+                    depth = currNode.getDepth();
+                        
+                    for (ii = 0; ii < depth; ii++) {
+                        if (currNode.attributes.text == userName) {
+                            toBeDisabled = false;
+                            break;
+                        }
+                        currNode = currNode.parentNode;
+                    }
+                }
+            }
+            return toBeDisabled;
+        break;
+        
+        case "button":
+            if (canvas
+                && canvas.config
+                && (canvas.config.accessZoneId == 1
+                    || canvas.config.accessZoneId == mktoJapaneseWorkspaceId
+                    || (canvas.config.accessZoneId == mktoMarketingWorkspaceId
+                        && ((canvas.config.expNodeId
+                                && MktExplorer.getNodeById(canvas.config.expNodeId))
+                            || (canvas.config.dlZoneFolderId
+                                && MktExplorer.getNodeById(canvas.config.dlZoneFolderId)))))) {
+                
+                toBeDisabled = true;
+                                
+                if (canvas.config.accessZoneId == mktoMarketingWorkspaceId) {
+                    var ii,
+                        currNode,
+                        depth;
+                        
+                    if (canvas.config.expNodeId) {
+                        currNode = MktExplorer.getNodeById(canvas.config.expNodeId);
+                    }
+                    else {
+                        currNode = MktExplorer.getNodeById(canvas.config.dlZoneFolderId);
+                    }
+                    depth = currNode.getDepth();
+                        
+                    for (ii = 0; ii < depth; ii++) {
+                        if (currNode.attributes.text == userName) {
+                            toBeDisabled = false;
+                            break;
+                        }
+                        currNode = currNode.parentNode;
+                    }
+                }
+            }
+            return toBeDisabled;
+        break;
+        
+        case "socialAppToolbar":
+            if (toolbar.getSocialApp()
+                && (toolbar.getSocialApp().get('zoneId') == 1
+                    || toolbar.getSocialApp().get('zoneId') == mktoJapaneseWorkspaceId)
+                || (toolbar.getSocialApp().get('zoneId') == mktoMarketingWorkspaceId
+                    && toolbar.getSocialApp().getNodeJson()
+                    && toolbar.getSocialApp().getNodeJson().id
+                    && MktExplorer.getNodeById(toolbar.getSocialApp().getNodeJson().id))) {
+                toBeDisabled = true;
+                
+                if (toolbar.getSocialApp().get('zoneId') == mktoMarketingWorkspaceId) {
+                    var ii,
+                        currNode = MktExplorer.getNodeById(toolbar.getSocialApp().getNodeJson().id),
+                        depth = currNode.getDepth();
+                    
+                    for (ii = 0; ii < depth; ii++) {
+                        if (currNode.attributes.text == userName) {
+                            toBeDisabled = false;
+                            break;
+                        }
+                        currNode = currNode.parentNode;
+                    }
+                }
+            }
+            return toBeDisabled;
+        break;
+        
+        case "mobilePushNotification":
+            if (toolbar.getMobilePushNotification()
+                && (toolbar.getMobilePushNotification().get('zoneId') == 1
+                    || toolbar.getMobilePushNotification().get('zoneId') == mktoJapaneseWorkspaceId)
+                || (toolbar.getMobilePushNotification().get('zoneId') == mktoMarketingWorkspaceId
+                    && toolbar.getMobilePushNotification().getNodeJson()
+                    && toolbar.getMobilePushNotification().getNodeJson().id
+                    && MktExplorer.getNodeById(toolbar.getMobilePushNotification().getNodeJson().id))) {
+                toBeDisabled = true;
+                
+                if (toolbar.getMobilePushNotification().get('zoneId') == mktoMarketingWorkspaceId) {
+                    var ii,
+                        currNode = MktExplorer.getNodeById(toolbar.getMobilePushNotification().getNodeJson().id),
+                        depth = currNode.getDepth();
+                    
+                    for (ii = 0; ii < depth; ii++) {
+                        if (currNode.attributes.text == userName) {
+                            toBeDisabled = false;
+                            break;
+                        }
+                        currNode = currNode.parentNode;
+                    }
+                }
+            }
+            return toBeDisabled;
+        break;
+        
+        default:
+            return true;
+        break;
+    }
+}
+
+/**************************************************************************************
+ *  
+ *  This function disables menu items for all asset types for all Actions Buttons and 
+ *  Right-click Tree menus in all areas.
  *
  *  @Author Brian Fisher
  *
@@ -1729,2332 +2056,692 @@ APP.disableButtons = function() {
 
 APP.disableMenus = function() {
     console.log("Marketo App > Disabling: Menus");
-	
-	//Disables Marketing Activities > Marketing Program, Nurture Program, Event Program, and Email Batch Program > New menu
-	var prevMarketingNewEventMenu = Mkt.app.MarketingActivities.Toolbar.getNewEventMenuButton;
-	Mkt.app.MarketingActivities.Toolbar.getNewEventMenuButton = function() {
-		prevMarketingNewEventMenu.apply(this, arguments);
-		return {
-			text : MktLang.getStr('mktMaMenu.New'),
-			iconCls : 'mkiBooksBlue',
-			xtype : 'mkttbbutton',
-			menu : MktMaMenu.maMenu(),
-			handler : function(button) {
-				var canvas = MktCanvas.getActiveTab(),
-				disableMenu = canvas
-							&& canvas.config
-							&& canvas.config.accessZoneId
-							&& (canvas.config.accessZoneId == 1
-                                || canvas.config.accessZoneId == mktoJapaneseWorkspaceId);
-				button.menu.items.each(function(item) {
-					item.setDisabled(disableMenu);
-				});
-			}
-		};
-	}
-	
-	// Disables Marketing Activities > Folder and Smart Campaign > New menu
-	var prevMarketingNewMenu = Mkt.app.MarketingActivities.Toolbar.getNewMenuButton;
-	Mkt.app.MarketingActivities.Toolbar.getNewMenuButton = function() {
-		prevMarketingNewMenu.apply(this, arguments);
-		return {
-			text : MktLang.getStr('mktMaMenu.New'),
-			iconCls : 'mkiBooksBlue',
-			xtype : 'mkttbbutton',
-			menu : MktMaMenu.maMenu(),
-			handler : function(button) {
-				var canvas = MktCanvas.getActiveTab(),
-				disableMenu = (canvas
-							&& canvas.config
-							&& canvas.config.accessZoneId)
-							&& ((canvas.config.accessZoneId == 1
-                                    || canvas.config.accessZoneId == mktoJapaneseWorkspaceId)
-                                || (canvas.config.title == "Marketing Activities"
-                                    && canvas.config.accessZoneId == mktoMarketingWorkspaceId))
-				button.menu.items.each(function(item) {
-					item.setDisabled(disableMenu);
-				});
-			}
-		};
-	}
-	
-	// Disables Design Studio > ALL > New menu
-	var prevDesignNewMenu = Mkt.app.DesignStudio.Toolbar.getNewMenuButton;
-	Mkt.app.DesignStudio.Toolbar.getNewMenuButton = function() {
-		prevDesignNewMenu.apply(this, arguments);
-		return {
-			text : MktLang.getStr('mktDsMenu.New'),
-			iconCls : 'mkiColorsCmyk',
-			xtype : 'mkttbbutton',
-			menu : MktMaMenu.maMenu(),
-			handler : function(button) {
-				var canvas = MktCanvas.getActiveTab(),
-				disableMenu = canvas
-							&& canvas.config
-							&& canvas.config.accessZoneId
-							&& (canvas.config.accessZoneId == 1
-                                || canvas.config.accessZoneId == mktoJapaneseWorkspaceId);
-				button.menu.items.each(function(item) {
-					item.setDisabled(disableMenu);
-				});
-			}
-		};
-	}
-	
-	// Disables Marketing Activities > Marketing Program, Nurture Program, Event Program, and Email Batch Program > Actions menus
-	var prevActionsMenu = Mkt.menus.marketingEvent.Toolbar.preShowMarketingProgramActions;
-	Mkt.menus.marketingEvent.Toolbar.preShowMarketingProgramActions = Mkt.menus.marketingEvent.Toolbar.preShowMarketingEventActions = function(menu) {
-		prevActionsMenu.apply(this, arguments);
-		var mItems = menu.items,
-			canvas = MktCanvas.getActiveTab(),
-			disable = canvas
-					&& canvas.config
-					&& canvas.config.accessZoneId
-					&& (canvas.config.accessZoneId == 1
-                        || canvas.config.accessZoneId == mktoJapaneseWorkspaceId),
-			itemsToDisable = [
-							"cloneMarketingProgram",//Clone
-							"cloneMarketingEvent",//Clone
-							"cloneNurtureProgram",//Clone
-							"cloneEmailBatchProgram",//Clone
-							"deleteMarketingProgram",//Delete
-							"deleteMarketingEvent",//Delete
-							"deleteNurtureProgram",//Delete
-							"deleteEmailBatchProgram",//Delete
-							"testNurtureProgram",//Test Stream
-							"eventSchedule",//Schedule
-							"entryRescheduleEntries",//Reschedule Entries
-							//"webinarSettings",//Event Settings
-							"sfdcCampaignSync",//Salesforce Campaign Sync
-							"refreshFromWebinarProvider",//Refresh from Webinar Provider
-							//"showImportMemberStatus",//Show Import Status
-							//"showExportMemberStatus"//Show Export Status
-							];
-
-		itemsToDisable.forEach(function(itemToDisable) {
-			var item = mItems.get(itemToDisable);
-			if (item) {
-				item.setDisabled(disable);
-			}
-		});
-	}
-	
-	// Disables Marketing Activities > Marketing Program, Nurture Program, Event Program, and Email Batch Program > Right-click menus
-	var prevRightClickMenu = MktMaMenu.preShowProgramActionsMenu;
-    MktMaMenu.preShowProgramActionsMenu = function(menu, attr) {
-        prevRightClickMenu.apply(this, arguments);
-		
-        var mItems = menu.items,
-            canvas = MktCanvas.getActiveTab(),
-            disable = (attr
-                        && attr.accessZoneId 
-                        && (attr.accessZoneId == 1
-                            || attr.accessZoneId == mktoJapaneseWorkspaceId))
-                    || (attr
-                        && attr.depth
-                        && attr.depth == 1
-                        && attr.accessZoneId
-                        && attr.accessZoneId == mktoMarketingWorkspaceId)
-                    || (!attr
-                        || !attr.accessZoneId
-                        && menu
-                        && menu.currNode
-                        && menu.currNode.attributes
-                        && menu.currNode.attributes.accessZoneId
-                        && (menu.currNode.attributes.accessZoneId == 1
-                            || menu.currNode.attributes.accessZoneId == mktoJapaneseWorkspaceId))
-                    || (!menu
-                        || !menu.currNode
-                        && canvas
-                        && canvas.config
-                        && canvas.config.accessZoneId
-                        && (canvas.config.accessZoneId == 1
-                            || canvas.config.accessZoneId == mktoJapaneseWorkspaceId)),
-            itemsToDisable = [
-							//"navigateToNurtureTracks",//View Streams
-							//"navigateToCFSmartCamp",//View Smart Campaigns
-							//"navigateToLocalAssets",//View Assets
-							//"navigateToProgramSmartList",//View Smart List
-							//"navigateToEventSettings",//View Setup
-							//"navigateToCFTokens",//View My Tokens
-							//"navigateToEventMembers",//View Members
-							//"navigateToCFResults",//View Results
-							//"navigateToSmartCampaign",//View Campaign
-							//"navigateToSmartList",//View Smart List
-							//"navigateToFlow",//View Flow
-							//"navigateToSchedule",//View Schedule
-							//"navigateToResults",//View Results
-							//"navigateToCampaignMembers",//View Campaign Members
-							"newSmartCampaign",//New Smart Campaign
-							"newLocalAsset",//New Local Asset
-							"createNewMarketingProgram", //New Program
-							"createProgramFolder",//New Folder
-							"renameProgramFolder",//Rename Folder
-							"deleteProgramFolder",//Delete Folder
-							"convertToArchiveFolder",//Convert To Archive Folder
-							"convertToCampaignFolder",//Convert To Campaign Folder
-							"scClone",//Clone
-							"cloneMarketingProgram",//Clone
-							"cloneMarketingEvent",//Clone
-							"cloneNurtureProgram",//Clone
-							"cloneEmailBatchProgram",//Clone
-							"scArchive",//Delete
-							"deleteMarketingProgram",//Delete
-							"deleteMarketingEvent",//Delete
-							"deleteNurtureProgram",//Delete
-							"deleteEmailBatchProgram",//Delete
-							"scMove",//Move
-							"scActivate",//Activate
-							"scAbort",//Abort Campaign
-							"scClearPalette",//Clear Palette Cache
-							"scClearSmartList",//Clear Smart List
-							"scClearFlow",//Clear Flow
-							"shareProgramFolder",//Share Folder
-							//"addToFavorites",//Add to Favorites
-							//"removeFromFavorites",//Remove from Favorites
-							"progGenerateRef",//Build Campaign References
-							"checkForCorruptEmails"//Check For Corrupt Emails
-							];
-							
-        itemsToDisable.forEach(function(itemToDisable) {
-            var item = mItems.get(itemToDisable);
-            if (item) {
-                item.setDisabled(disable);
-            }
-        });
-        return menu;
-    }
-	
-	// Disables Marketing Activities > Email > Right-click menu
-	var prevEmailRightClickMenu = MktDsMenu.preShowEmailMenu;
-	MktDsMenu.preShowEmailMenu = function(menu, attr) {
-		prevEmailRightClickMenu.apply(this, arguments);
-		var mItems = menu.items,
-			canvas = MktCanvas.getActiveTab(),
-			disable = (attr
-                        && attr.accessZoneId 
-                        && (attr.accessZoneId == 1
-                            || attr.accessZoneId == mktoJapaneseWorkspaceId))
-                    || (attr
-                        && attr.depth
-                        && attr.depth == 1
-                        && attr.accessZoneId
-                        && attr.accessZoneId == mktoMarketingWorkspaceId)
-                    || (!attr
-                        || !attr.accessZoneId
-                        && menu
-                        && menu.currNode
-                        && menu.currNode.attributes
-                        && menu.currNode.attributes.accessZoneId
-                        && (menu.currNode.attributes.accessZoneId == 1
-                            || menu.currNode.attributes.accessZoneId == mktoJapaneseWorkspaceId))
-                    || (!menu
-                        || !menu.currNode
-                        && canvas
-                        && canvas.config
-                        && canvas.config.accessZoneId
-                        && (canvas.config.accessZoneId == 1
-                            || canvas.config.accessZoneId == mktoJapaneseWorkspaceId)),
-			itemsToDisable = [
-							//"emailEdit",//Edit Draft
-							//"emailPreview",//Preview
-							"emailApprove",//Approve
-							"emailUnapprove",//Unapprove
-							//"emailDownloadHtml",//Download HTML
-							//"emailSendTest",//Send Sample
-							"emailClone",//Clone
-							"emailDelete",//Delete
-							"emailMove",//Move
-							"emailNewTest",//New Test
-							//"addToFavorites",//Add to Favorites
-							//"removeFromFavorites",//Remove from Favorites
-							//"emailDraftEdit",//Edit Draft
-							//"emailDraftPreview",//Preview Draft
-							"emailDraftSendTest",//Send Sample of Draft
-							"emailDraftApprove",//Approve Draft
-							//"emailDraftDiscard",//Discard Draft
-							"emailApproveTest",//Approve Test
-							//"emailSendSampleTest",//Send Sample Test
-							//"emailEditTest",//Edit Test
-							//"emailViewTestSummary",//View Test Summary
-							//"emailTestDeclareChampion",//Declare Champion
-							"emailDiscardTest"//Discard Test
-									];
-								
-		itemsToDisable.forEach(function(itemToDisable) {
-			var item = mItems.get(itemToDisable);
-			if (item) {
-				item.setDisabled(disable);
-			}
-		});
-		return menu;
-	}
-
-	// Disables Marketing Activities > Landing Page > Right-click menu
-	var prevLandingPageRightClickMenu = MktDsMenu.preShowPageMenu;
-	MktDsMenu.preShowPageMenu = function(menu, attr) {
-		prevLandingPageRightClickMenu.apply(this, arguments);
-		
-		var mItems = menu.items,
-			canvas = MktCanvas.getActiveTab(),
-			disable = (attr
-                        && attr.accessZoneId 
-                        && (attr.accessZoneId == 1
-                            || attr.accessZoneId == mktoJapaneseWorkspaceId))
-                    || (attr
-                        && attr.depth
-                        && attr.depth == 1
-                        && attr.accessZoneId
-                        && attr.accessZoneId == mktoMarketingWorkspaceId)
-                    || (!attr
-                        || !attr.accessZoneId
-                        && menu
-                        && menu.currNode
-                        && menu.currNode.attributes
-                        && menu.currNode.attributes.accessZoneId
-                        && (menu.currNode.attributes.accessZoneId == 1
-                            || menu.currNode.attributes.accessZoneId == mktoJapaneseWorkspaceId))
-                    || (!menu
-                        || !menu.currNode
-                        && canvas
-                        && canvas.config
-                        && canvas.config.accessZoneId
-                        && (canvas.config.accessZoneId == 1
-                            || canvas.config.accessZoneId == mktoJapaneseWorkspaceId)),
-			itemsToDisable = [
-							//"pageEdit",//Edit Draft
-							//"pagePreview",//Preview
-							//"deviceSwitch",//Device Switch
-							"pageApprove",//Approve
-							"pageUnapprove",//Unapprove
-							//"publishToFacebook",//Publish To Facebook
-							"pageConvertToTestGroup",//Convert to Test Group
-							"pageClone",//Clone
-							"pageDelete",//Delete
-							"urlTools",//URL Tools
-							"pageMove",//Move
-							//"addToFavorites",//Add to Favorites
-							//"removeFromFavorites",//Remove from Favorites
-							//"pageDraftEdit",//Edit Draft
-							//"pageDraftPreview",//Preview Draft
-							"pageDraftApprove",//Approve Draft
-							//"pageDraftDiscard"//Discard Draft
-							];
-
-		itemsToDisable.forEach(function(itemToDisable) {
-			var item = mItems.get(itemToDisable);
-			if (item) {
-				item.setDisabled(disable);
-			}
-		});
-		return menu;
-	}
-	
-	// Disables Marketing Activities > Form > Right-click menu
-	var prevFormRightClickMenu = MktDsMenu.preShowFormMenu;
-	MktDsMenu.preShowFormMenu = function(menu, attr) {
-		prevFormRightClickMenu.apply(this, arguments);
-
-		var mItems = menu.items,
-			canvas = MktCanvas.getActiveTab(),
-			disable = (attr
-                        && attr.accessZoneId 
-                        && (attr.accessZoneId == 1
-                            || attr.accessZoneId == mktoJapaneseWorkspaceId))
-                    || (attr
-                        && attr.depth
-                        && attr.depth == 1
-                        && attr.accessZoneId
-                        && attr.accessZoneId == mktoMarketingWorkspaceId)
-                    || (!attr
-                        || !attr.accessZoneId
-                        && menu
-                        && menu.currNode
-                        && menu.currNode.attributes
-                        && menu.currNode.attributes.accessZoneId
-                        && (menu.currNode.attributes.accessZoneId == 1
-                            || menu.currNode.attributes.accessZoneId == mktoJapaneseWorkspaceId))
-                    || (!menu
-                        || !menu.currNode
-                        && canvas
-                        && canvas.config
-                        && canvas.config.accessZoneId
-                        && (canvas.config.accessZoneId == 1
-                            || canvas.config.accessZoneId == mktoJapaneseWorkspaceId)),
-			itemsToDisable = [
-							//"formEditDraft",//Edit Draft
-							//"formPreview",//Preview
-							//"formEdit",//Edit Form
-							"formApprove",//Approve
-							"formClone",//Clone Form
-							"formDelete",//Delete Form
-							//"formEmbed",//Embed Code
-							"formMove",//Move
-							//"addToFavorites",//Add to Favorites
-							//"removeFromFavorites",//Remove from Favorites
-							//"formDraftPreview",//Preview Draft
-							//"formDraftEdit",//Edit Draft
-							"formDraftApprove",//Approve Draft
-							//"formDraftDiscard"//Discard Draft
-							];
-
-		itemsToDisable.forEach(function(itemToDisable) {
-			var item = mItems.get(itemToDisable);
-			if (item) {
-				item.setDisabled(disable);
-			}
-		});
-		return menu;
-	}
-	
-	// Disables Marketing Activities > Social App > Right-click menu
-	var prevSocialAppRightClickMenu = MktDsMenu.preShowSocialAppMenu;
-	MktDsMenu.preShowSocialAppMenu = function(menu, attr) {
-		prevSocialAppRightClickMenu.apply(this, arguments);
-		
-		var mItems = menu.items,
-			canvas = MktCanvas.getActiveTab(),
-			disable = (attr
-                        && attr.accessZoneId 
-                        && (attr.accessZoneId == 1
-                            || attr.accessZoneId == mktoJapaneseWorkspaceId))
-                    || (attr
-                        && attr.depth
-                        && attr.depth == 1
-                        && attr.accessZoneId
-                        && attr.accessZoneId == mktoMarketingWorkspaceId)
-                    || (!attr
-                        || !attr.accessZoneId
-                        && menu
-                        && menu.currNode
-                        && menu.currNode.attributes
-                        && menu.currNode.attributes.accessZoneId
-                        && (menu.currNode.attributes.accessZoneId == 1
-                            || menu.currNode.attributes.accessZoneId == mktoJapaneseWorkspaceId))
-                    || (!menu
-                        || !menu.currNode
-                        && canvas
-                        && canvas.config
-                        && canvas.config.accessZoneId
-                        && (canvas.config.accessZoneId == 1
-                            || canvas.config.accessZoneId == mktoJapaneseWorkspaceId)),
-			itemsToDisable = [
-							//"socialAppEdit",//Edit Draft
-							//"socialAppPreview",//Preview
-							"socialAppApprove",//Approve
-							"socialAppClone",//Clone
-							"socialAppDelete",//Delete
-							//"socialAppWidgetCode",//Embed Code
-							//"addToFavorites",//Add to Favorites
-							//"removeFromFavorites",//Remove from Favorites
-							//"socialAppDraftEdit",//Edit Draft
-							//"socialAppDraftPreview",//Preview Draft
-							"socialAppDraftApprove",//Approve Draft
-							//"socialAppDraftDiscard"//Discard Draft
-							];
-			
-		itemsToDisable.forEach(function(itemToDisable) {
-			var item = mItems.get(itemToDisable);
-			if (item) {
-				item.setDisabled(disable);
-			}
-		});
-		return menu;
-	}
-	
-	// Disable Marketing Activities > Social App > Action menu
-	var prevSocialAppActionsMenu = Mkt3.controller.socialApp.SocialApp.prototype.loadToolbar;
-	Mkt3.controller.socialApp.SocialApp.prototype.loadToolbar = function(menu, attr) {
-		prevSocialAppActionsMenu.apply(this, arguments);
-
-		var disable = (this.getSocialApp().get('zoneId') == 1
-                    || this.getSocialApp().get('zoneId') == mktoJapaneseWorkspaceId),
-			mItems = Ext4.ComponentQuery.query(
-							/*"socialAppToolbar contextMenu [action=edit]," +*/ //Edit
-							/*"socialAppToolbar contextMenu [action=preview]," +*/ //Preview
-							"socialAppToolbar contextMenu [action=approve]," + //Approve
-							"socialAppToolbar contextMenu [action=clone]," + //Clone
-							"socialAppToolbar contextMenu [action=delete]," + //Delete
-							/*"socialAppToolbar contextMenu [action=getWidgetEmbedCode]," +*/ //Embed Code
-							"socialAppToolbar contextMenu [action=editDraft]," + //Edit Draft
-							"socialAppToolbar contextMenu [action=previewDraft]," + //Preview Draft
-							"socialAppToolbar contextMenu [action=approveDraft]," /*+*/ //Approve Draft
-							/*"socialAppToolbar contextMenu [action=discardDraft],"*/ //Discard Draft
-							);
-		
-		mItems.forEach(function(item) {
-			if (item) {
-				item.setDisabled(disable);
-			}
-		});
-		return menu;
-	}
-	
-	// Disables Marketing Activities > Push Notification > Right-click menu
-	var prevPushNotificationRightClickMenu = MktDsMenu.preShowPushNotificationMenu;
-	MktDsMenu.preShowPushNotificationMenu = function(menu, attr) {
-		prevPushNotificationRightClickMenu.apply(this, arguments);
-		
-		var mItems = menu.items,
-			canvas = MktCanvas.getActiveTab(),
-			disable = (attr
-                        && attr.accessZoneId 
-                        && (attr.accessZoneId == 1
-                            || attr.accessZoneId == mktoJapaneseWorkspaceId))
-                    || (attr
-                        && attr.depth
-                        && attr.depth == 1
-                        && attr.accessZoneId
-                        && attr.accessZoneId == mktoMarketingWorkspaceId)
-                    || (!attr
-                        || !attr.accessZoneId
-                        && menu
-                        && menu.currNode
-                        && menu.currNode.attributes
-                        && menu.currNode.attributes.accessZoneId
-                        && (menu.currNode.attributes.accessZoneId == 1
-                            || menu.currNode.attributes.accessZoneId == mktoJapaneseWorkspaceId))
-                    || (!menu
-                        || !menu.currNode
-                        && canvas
-                        && canvas.config
-                        && canvas.config.accessZoneId
-                        && (canvas.config.accessZoneId == 1
-                            || canvas.config.accessZoneId == mktoJapaneseWorkspaceId)),
-			itemsToDisable = [
-							//"pushNotificationEdit",//Edit Draft
-							"pushNotificationApprove",//Approve
-							//"pushNotificationSendSample",//Send Sample
-							"pushNotificationUnapprove",//Unapprove
-							"pushNotificationDelete",//Delete
-							"pushNotificationDraftEdit",//Edit Draft
-							"pushNotificationDraftSendSample",//Send Sample of Draft
-							"pushNotificationDraftApprove",//Approve Draft
-							//"pushNotificationDraftDiscard",//Discard Draft
-							];
-			
-		itemsToDisable.forEach(function(itemToDisable) {
-			var item = mItems.get(itemToDisable);
-			if (item) {
-				item.setDisabled(disable);
-			}
-		});
-		return menu;
-	}
-	
-	// Disable Marketing Activities > Push Notification > Action menu
-	var prevPushNotificationActionsMenu = Mkt3.controller.mobilePushNotification.MobilePushNotification.prototype.loadToolbar;
-	Mkt3.controller.mobilePushNotification.MobilePushNotification.prototype.loadToolbar = function(menu, attr) {
-		prevPushNotificationActionsMenu.apply(this, arguments);
-
-		var disable = (this.getMobilePushNotification().data.zoneId == 1
-                    || this.getMobilePushNotification().data.zoneId == mktoJapaneseWorkspaceId),
-			mItems = Ext4.ComponentQuery.query(
-							/*"mobilePushNotification contextMenu [action=edit]," +*/ //Edit Draft
-							/*"mobilePushNotification contextMenu [action=sendSample]," +*/ //Send Sample
-							"mobilePushNotification contextMenu [action=approve]," + //Approve
-							"mobilePushNotification contextMenu [action=unapprove]," + //Unapprove
-							"mobilePushNotification contextMenu [action=clone]," + //Clone
-							"mobilePushNotification contextMenu [action=delete]," + //Delete
-							"mobilePushNotification contextMenu [action=editDraft]," + //Edit Draft
-							"mobilePushNotification contextMenu [action=sendDraftSample]," + //Send Sample of Draft
-							"mobilePushNotification contextMenu [action=approveDraft]," /*+*/ //Approve Draft
-							/*"mobilePushNotification contextMenu [action=discardDraft],"*/ //Discard Draft
-							);
-		
-		mItems.forEach(function(item) {
-			if (item) {
-				item.setDisabled(disable);
-			}
-		});
-		return menu;
-	}
-	
-	// Disables Design Studio > ALL > Right-click menus
-	var prevDesignStudioContextMenu = MktDsMenu.preShowContextMenu;
-	MktDsMenu.preShowContextMenu = function(menu, attr) {
-		prevDesignStudioContextMenu.apply(this, arguments);
-		
-		var mItems = menu.items,
-			canvas = MktCanvas.getActiveTab(),
-			disable = (attr
-                        && attr.accessZoneId 
-                        && (attr.accessZoneId == 1
-                            || attr.accessZoneId == mktoJapaneseWorkspaceId))
-                    || (attr
-                        && attr.depth
-                        && attr.depth == 1
-                        && attr.accessZoneId
-                        && attr.accessZoneId == mktoMarketingWorkspaceId)
-                    || (!attr
-                        || !attr.accessZoneId
-                        && menu
-                        && menu.currNode
-                        && menu.currNode.attributes
-                        && menu.currNode.attributes.accessZoneId
-                        && (menu.currNode.attributes.accessZoneId == 1
-                            || menu.currNode.attributes.accessZoneId == mktoJapaneseWorkspaceId))
-                    || (!menu
-                        || !menu.currNode
-                        && canvas
-                        && canvas.config
-                        && canvas.config.accessZoneId
-                        && (canvas.config.accessZoneId == 1
-                            || canvas.config.accessZoneId == mktoJapaneseWorkspaceId)),
-			itemsToDisable = [
-							"newLandingPage",//New Landing Page
-							"newTestGroup",//New Test Group
-							"newPageTemplate",//New Landing Page Template
-							"pageTemplateImport",//Import Template
-							"newForm",//New Form
-							"newVideoShare",//New YouTube Video
-							"newShareButton",//New Social Button
-							"newReferralOffer",//New Referral Offer
-							"newEmail",//New Email
-							"newEmailTemplate",//New Email Template
-							"newSnippet",//New Snippet
-							"uploadImage",//"Upload Image or File"
-							//"grabFromWebPage",//Grab Images from Web
-							"share",//Share Folder
-							"createFolder",//New Folder
-							"renameFolder",//Rename Folder
-							"deleteFolder",//Delete Folder
-							"convertToArchiveFolder",//Convert To Archive Folder
-							"convertToFolder",//Convert To Folder
-							];
-			
-		itemsToDisable.forEach(function(itemToDisable) {
-			var item = mItems.get(itemToDisable);
-			if (item) {
-				item.setDisabled(disable);
-			}
-		});
-		return menu;
-	}
-	
-	// Disables Design Studio > Landing Page Template > Right-click and Actions menus
-	var prevLandingPageTemplateMenu = MktDsMenu.preShowTemplateMenu;
-	MktDsMenu.preShowTemplateMenu = function(menu, attr) {
-		prevLandingPageTemplateMenu.apply(this, arguments);
-		
-		var mItems = menu.items,
-			canvas = MktCanvas.getActiveTab(),
-            disable = (attr
-                        && attr.accessZoneId 
-                        && (attr.accessZoneId == 1
-                            || attr.accessZoneId == mktoJapaneseWorkspaceId))
-                    || (attr
-                        && attr.depth
-                        && attr.depth == 1
-                        && attr.accessZoneId
-                        && attr.accessZoneId == mktoMarketingWorkspaceId)
-                    || (!attr
-                        || !attr.accessZoneId
-                        && menu
-                        && menu.currNode
-                        && menu.currNode.attributes
-                        && menu.currNode.attributes.accessZoneId
-                        && (menu.currNode.attributes.accessZoneId == 1
-                            || menu.currNode.attributes.accessZoneId == mktoJapaneseWorkspaceId))
-                    || (!menu
-                        || !menu.currNode
-                        && canvas
-                        && canvas.config
-                        && canvas.config.accessZoneId
-                        && (canvas.config.accessZoneId == 1
-                            || canvas.config.accessZoneId == mktoJapaneseWorkspaceId)),
-			itemsToDisable = [
-							//"editPageTemplate",//Edit Draft
-							//"previewPageTemplate",//Preview
-							"approvePageTemplate",//Approve
-							"unapprovePageTemplate",//Unapprove
-							"clonePageTemplate",//Clone
-							"pageTemplateDelete",//Delete
-							//"pageTemplateExport",//Export
-							//"addToFavorites",//Add to Favorites
-							//"removeFromFavorites",//Remove from Favorites
-							//"editPageTemplateDraft",//Edit Draft
-							//"previewDraftPageTemplate",//Preview Draft
-							"approveDraftPageTemplate",//Approve Draft
-							//"discardDraftPageTemplate",//Discard Draft
-							];
-			
-		itemsToDisable.forEach(function(itemToDisable) {
-			var item = mItems.get(itemToDisable);
-			if (item) {
-				item.setDisabled(disable);
-			}
-		});
-		return menu;
-	}
-	
-	// Disables Design Studio > Email Template > Right-click and Actions menus
-	var prevEmailTemplateMenu = MktDsMenu.preShowEmailTemplateMenu;
-	MktDsMenu.preShowEmailTemplateMenu = function(menu, attr) {
-		prevEmailTemplateMenu.apply(this, arguments);
-		
-		var mItems = menu.items,
-			canvas = MktCanvas.getActiveTab(),
-			disable = (attr
-                        && attr.accessZoneId 
-                        && (attr.accessZoneId == 1
-                            || attr.accessZoneId == mktoJapaneseWorkspaceId))
-                    || (attr
-                        && attr.depth
-                        && attr.depth == 1
-                        && attr.accessZoneId
-                        && attr.accessZoneId == mktoMarketingWorkspaceId)
-                    || (!attr
-                        || !attr.accessZoneId
-                        && menu
-                        && menu.currNode
-                        && menu.currNode.attributes
-                        && menu.currNode.attributes.accessZoneId
-                        && (menu.currNode.attributes.accessZoneId == 1
-                            || menu.currNode.attributes.accessZoneId == mktoJapaneseWorkspaceId))
-                    || (!menu
-                        || !menu.currNode
-                        && canvas
-                        && canvas.config
-                        && canvas.config.accessZoneId
-                        && (canvas.config.accessZoneId == 1
-                            || canvas.config.accessZoneId == mktoJapaneseWorkspaceId)),
-			itemsToDisable = [
-							//"emailTemplateEdit",//Edit Draft
-							//"emailTemplatePreview",//Preview
-							//"emailTemplateSendTest",//Send Sample
-							"emailTemplateApprove",//Approve
-							"emailTemplateUnapprove",//Unapprove
-							"emailTemplateClone",//Clone
-							"emailTemplateDelete",//Delete
-							//"addToFavorites",//Add to Favorites
-							//"removeFromFavorites",//Remove from Favorites
-							//"emailTemplateDraftEdit",//Edit Draft
-							//"emailTemplateDraftPreview",//Preview Draft
-							"emailTemplateDraftSendTest",//Send Sample of Draft
-							"emailTemplateDraftApprove",//Approve Draft
-							//"emailTemplateDraftDiscard",//Discard Draft
-							];
-			
-		itemsToDisable.forEach(function(itemToDisable) {
-			var item = mItems.get(itemToDisable);
-			if (item) {
-				item.setDisabled(disable);
-			}
-		});
-		return menu;
-	}
-	
-	// Disables Design Studio > Snippet > Right-click and Actions menus
-	var prevSnippetMenu = MktDsMenu.preShowSnippetMenu;
-	MktDsMenu.preShowSnippetMenu = function(menu, attr) {
-		prevSnippetMenu.apply(this, arguments);
-		
-		var mItems = menu.items,
-			canvas = MktCanvas.getActiveTab(),
-			disable = (attr
-                        && attr.accessZoneId 
-                        && (attr.accessZoneId == 1
-                            || attr.accessZoneId == mktoJapaneseWorkspaceId))
-                    || (attr
-                        && attr.depth
-                        && attr.depth == 1
-                        && attr.accessZoneId
-                        && attr.accessZoneId == mktoMarketingWorkspaceId)
-                    || (!attr
-                        || !attr.accessZoneId
-                        && menu
-                        && menu.currNode
-                        && menu.currNode.attributes
-                        && menu.currNode.attributes.accessZoneId
-                        && (menu.currNode.attributes.accessZoneId == 1
-                            || menu.currNode.attributes.accessZoneId == mktoJapaneseWorkspaceId))
-                    || (!menu
-                        || !menu.currNode
-                        && canvas
-                        && canvas.config
-                        && canvas.config.accessZoneId
-                        && (canvas.config.accessZoneId == 1
-                            || canvas.config.accessZoneId == mktoJapaneseWorkspaceId)),
-			itemsToDisable = [
-							//"snippetEdit",//Edit Draft
-							//"snippetPreview",//Preview
-							"snippetApprove",//Approve
-							"snippetUnapprove",//Unapprove
-							"snippetClone",//Clone
-							"snippetDelete",//Delete
-							//"addToFavorites",//Add to Favorites
-							//"removeFromFavorites",//Remove from Favorites
-							//"snippetDraftEdit",//Edit Draft
-							//"snippetDraftPreview",//Preview Draft
-							"snippetDraftApprove",//Approve Draft
-							//"snippetDraftDiscard",//Discard Draft
-							];
-			
-		itemsToDisable.forEach(function(itemToDisable) {
-			var item = mItems.get(itemToDisable);
-			if (item) {
-				item.setDisabled(disable);
-			}
-		});
-		return menu;
-	}
-	
-	// Disables Design Studio > Image > Right-click and Actions menus
-	var prevImageMenu = MktDsMenu.preShowImageMenu;
-	MktDsMenu.preShowImageMenu = function(menu, attr) {
-		prevImageMenu.apply(this, arguments);
-		
-		var mItems = menu.items,
-			canvas = MktCanvas.getActiveTab(),
-			disable = (attr
-                        && attr.accessZoneId 
-                        && (attr.accessZoneId == 1
-                            || attr.accessZoneId == mktoJapaneseWorkspaceId))
-                    || (attr
-                        && attr.depth
-                        && attr.depth == 1
-                        && attr.accessZoneId
-                        && attr.accessZoneId == mktoMarketingWorkspaceId)
-                    || (!attr
-                        || !attr.accessZoneId
-                        && menu
-                        && menu.currNode
-                        && menu.currNode.attributes
-                        && menu.currNode.attributes.accessZoneId
-                        && (menu.currNode.attributes.accessZoneId == 1
-                            || menu.currNode.attributes.accessZoneId == mktoJapaneseWorkspaceId))
-                    || (!menu
-                        || !menu.currNode
-                        && canvas
-                        && canvas.config
-                        && canvas.config.accessZoneId
-                        && (canvas.config.accessZoneId == 1
-                            || canvas.config.accessZoneId == mktoJapaneseWorkspaceId)),
-			itemsToDisable = [
-							"uploadImage",//Upload Image or File
-							//"grabFromWebPage",//Grab Images from Web
-							//"imagePreview",//View
-							"imageDelete",//Delete
-							"replaceImage",//Replace Image or File
-							];
-			
-		itemsToDisable.forEach(function(itemToDisable) {
-			var item = mItems.get(itemToDisable);
-			if (item) {
-				item.setDisabled(disable);
-			}
-		});
-		return menu;
-	}
-	
-	// Disables Lead Database > ALL > Right-click menus
-    var prevLeadDatabaseShowContextMenu = MktLeadDbMenu.showContextMenu;
-    MktLeadDbMenu.showContextMenu = function (node, e) {
-        prevLeadDatabaseShowContextMenu.apply(this, arguments);
+    
+    // Disable ALL areas > ALL assets > ALL menus except Social App & Push Notification Actions Buttons
+    Ext.menu.Menu.prototype.showAt = function (xy, parentMenu) {
+        console.log ("Marketo App > Executing: Disabling Actions and Right-click menus for ALL in ALL");
         
-        var compType,
-        menu;
-        var attr = node.attributes;
-        var xtraAttr = attr.xtra;
-        var type;
-        var isTempNode = Ext.isString(node.id) ? (node.id.indexOf('xnode-') > -1) : false;
-        
-        if (!isTempNode) {
-            if (attr.nodeType == 'Marketing Folder') {
-                return; //Ignore context menu event on program folders
-            } else if (xtraAttr && xtraAttr.type) {
-                type = xtraAttr.type;
-            } else if ((attr && attr.folder)
-                 || attr.nodeType == 'List'
-                 || attr.nodeType == 'Smart List'
-                 || attr.nodeType == 'Segmentation') {
-                //Get the folder menu for List and Smart List
-                type = 'LeadDb';
-            } else {
-                return;
+        if (this.fireEvent('beforeshow', this) !== false) {
+            var disable,
+                mItems = this.items,
+                canvas = MktCanvas.getActiveTab(),
+                itemsToDisable = [
+                    // Global > Form > Actions Button & Right-click Tree
+                    //"formEditDraft",//Edit Draft
+                    //"formPreview",//Preview
+                    //"formEdit",//Edit Form
+                    "formApprove",//Approve
+                    "formClone",//Clone Form
+                    "formDelete",//Delete Form
+                    //"formEmbed",//Embed Code
+                    "formMove",//Move
+                    //"addToFavorites",//Add to Favorites
+                    //"removeFromFavorites",//Remove from Favorites
+                    //"formDraftPreview",//Preview Draft
+                    //"formDraftEdit",//Edit Draft
+                    "formDraftApprove",//Approve Draft
+                    //"formDraftDiscard",//Discard Draft
+                                
+                    // Global > Landing Page > Actions Button & Right-click Tree
+                    //"pageEdit",//Edit Draft
+                    //"pagePreview",//Preview
+                    //"deviceSwitch",//Device Switch
+                    "pageApprove",//Approve
+                    "pageUnapprove",//Unapprove
+                    //"publishToFacebook",//Publish To Facebook
+                    "pageConvertToTestGroup",//Convert to Test Group
+                    "pageClone",//Clone
+                    "pageDelete",//Delete
+                    //"urlTools",//URL Tools
+                        //"editUrlSettings",//Edit URL Settings
+                        //"urlBuilder",//URL Builder
+                        //"devicePreview",//Generate Preview URL
+                    "pageMove",//Move
+                    //"addToFavorites",//Add to Favorites
+                    //"removeFromFavorites",//Remove from Favorites
+                    //"pageDraftEdit",//Edit Draft
+                    //"pageDraftPreview",//Preview Draft
+                    "pageDraftApprove",//Approve Draft
+                    //"pageDraftDiscard",//Discard Draft
+                                
+                    // Global > Email > Actions Button & Right-click Tree
+                    //"emailEdit",//Edit Draft
+                    //"emailPreview",//Preview
+                    "emailApprove",//Approve
+                    "emailUnapprove",//Unapprove
+                    //"emailDownloadHtml",//Download HTML
+                    //"emailSendTest",//Send Sample
+                    "emailClone",//Clone
+                    "emailDelete",//Delete
+                    "emailMove",//Move
+                    "emailNewTest",//New Test
+                    //"addToFavorites",//Add to Favorites
+                    //"removeFromFavorites",//Remove from Favorites
+                    //"emailDraftEdit",//Edit Draft
+                    //"emailDraftPreview",//Preview Draft
+                    //"emailDraftSendTest",//Send Sample of Draft
+                    "emailDraftApprove",//Approve Draft
+                    //"emailDraftDiscard",//Discard Draft
+                    "emailApproveTest",//Approve Test
+                    //"emailSendSampleTest",//Send Sample Test
+                    //"emailEditTest",//Edit Test
+                    //"emailViewTestSummary",//View Test Summary
+                    //"emailTestDeclareChampion",//Declare Champion
+                    //"emailDiscardTest",//Discard Test
+                                
+                    // Global > Smart List, List, Segment > Actions Button & Right-click Tree
+                    //"navigateToMembership",//View Leads
+                    //"navigateToSmartList",//View Smart List
+                    //"navigateToFilterView",//Filter View
+                    //"showImportStatus",//Show Import Status
+                    //"showExportStatus",//Show Export Status
+                    "importList",//Import List
+                    //"exportList",//Export List
+                    //"exportAdBridge",//Send via Ad Bridge
+                    //"newSmartListReportSubscription",//New Smart List Subscription
+                    "cloneSmartlist",//Clone Smart List
+                    "cloneList",//Clone List
+                    "deleteList",//Delete List
+                    "showSupportHistory",//Support Tools - History
+                    "showSupportUsagePerf",//Support Tools - Run Stats
+                    "showSmartListProcessorDiag",//Processor Diagnostics
+                    "showSmartListProcessorOverride",//Override Processor
+                    //"addToFavorites",//Add to Favorites
+                    //"removeFromFavorites",//Remove from Favorites
+                                
+                    // Global > Report > Actions Button
+                    "cloneReport_atxCanvasOverview",//Clone Report
+                    "deleteReport",//Delete Report
+                    //"newDrillDown_atxCanvasOverview",//Drill-Down
+                                
+                    // Global > Report > Right-click Tree
+                    //"navigateToOverviewReport",//View Overview
+                    //"navigateToDetailReport",//View Report
+                    //"navigateToSmartList",//View Smart List
+                    //"navigateToSetup",//View Setup
+                    //"navigateToSubscriptions",//View Subscriptions
+                    "cloneReport",//Clone Report
+                    "deleteReport",//Delete Report
+                    "moveReport",//Move Report
+                    //"addToFavorites",//Add to Favorites
+                    //"removeFromFavorites",//Remove from Favorites
+                                
+                    // Global > Lead > Actions Button & Right-click Tree
+                    //"viewLeadDetails",//View Lead Details
+                    "blackCatDiag",//BlackCat Diagnostics
+                    "mergeLeads",//Merge Leads
+                    //"leadDbMenuFlowActions",//Marketing
+                        "sendEmail",//Send Email...
+                        "sendPushNotification",//Send Push Notification...
+                        "addToList",//Add to List...
+                        "removeFromList",//Remove from List...
+                        "interestingMoment",//Interesting Moment...
+                        "sendAlert",//Send Alert...
+                        "changeScore",//Change Score...
+                        "changeDataValue",//Change Data Value...
+                    //"programsFolder",//Programs
+                        "changeStatusInProgression",//Change Program Status...
+                        "addToNurture",//Add to Engagement Program...
+                        "changeNurtureCadence",//Change Engagement Program Cadence...
+                        "changeNurtureTrack",//Change Engagement Program Stream...
+                    //"specialFolder",//Special
+                        "changeLeadPartition",//Change Lead Partition...
+                        "changeRevenueStage",//Change Revenue Stage...
+                        "deleteLead",//Delete Lead...
+                        "giveCreditToReferrer",//Give Credit to Referrer
+                        "requestCampaign",//Request Campaign...
+                        "removeFromFlow",//Remove from Flow...
+                    //"salesforceFolder",//Salesforce
+                        "pushLeadToSFDC",//Sync Lead to SFDC...
+                        "createTask",//Create Task...
+                        "convertLead",//Convert Lead...
+                        "changeOwner",//Change Owner...
+                        "deleteLeadFromSFDC",//Delete Lead from SFDC...
+                        "addToSFDCCampaign",//Add to SFDC Campaign...
+                        "changeStatusInSFDCCampaign",//Change Status in SFDC Campaign...
+                        "removeFromSFDCCampaign",//Remove from SFDC Campaign...
+                                
+                    // Global > Programs, Analyzers, and Reports > Setup Right-click Tree
+                    //"editItem",//Edit
+                    "deleteItem",//Delete
+                                
+                    // Marketing Activities > New Button
+                    "createProgramFolder",//New Campaign Folder
+                    "newSmartCampaign",//New Smart Campaign
+                    "createNewMarketingProgram",//New Program
+                    "importProgram",//Import Program
+                                
+                    // Marketing Activities > Default & Email Send Programs > Actions Button
+                    "entryRescheduleEntries",//Reschedule Entries
+                    "sfdcCampaignSync",//Salesforce Campaign Sync
+                    "cloneMarketingProgram",//Clone
+                    "deleteMarketingProgram",//Delete
+                    //"showImportMemberStatus",//Show Import Status
+                    //"showExportMemberStatus",//Show Export Status
+                                
+                    // Marketing Activities > Event Program > Actions Button
+                    "eventSchedule",//Schedule
+                    "entryRescheduleEntries",//Reschedule Entries
+                    "webinarSettings",//Event Settings
+                    "sfdcCampaignSync",//Salesforce Campaign Sync
+                    "cloneMarketingEvent",//Clone
+                    "deleteMarketingEvent",//Delete
+                    "refreshFromWebinarProvider",//Refresh from Webinar Provider
+                    //"showImportMemberStatus",//Show Import Status
+                    //"showExportMemberStatus",//Show Export Status
+                                
+                    // Marketing Activities > Nurturing Program > Actions Button
+                    "sfdcCampaignSync",//Salesforce Campaign Sync
+                    "cloneNurtureProgram",//Clone
+                    "deleteNurtureProgram",//Delete
+                    "testNurtureProgram",//Test Stream
+                    //"showImportMemberStatus",//Show Import Status
+                    //"showExportMemberStatus",//Show Export Status
+                                
+                    // Marketing Activities > Smart Campaign > Actions Button
+                    // Default, Email Send, Event, and Nurturing Programs; Smart Campaign, Folder > Right-click Tree
+                    //"navigateToNurtureTracks",//View Streams
+                    //"navigateToCFSmartCamp",//View Smart Campaigns
+                    //"navigateToLocalAssets",//View Assets
+                    //"navigateToProgramSmartList",//View Smart List
+                    //"navigateToEventSettings",//View Setup
+                    //"navigateToCFTokens",//View My Tokens
+                    //"navigateToEventMembers",//View Members
+                    //"navigateToCFResults",//View Results
+                    //"navigateToSmartCampaign",//View Campaign
+                    //"navigateToSmartList",//View Smart List
+                    //"navigateToFlow",//View Flow
+                    //"navigateToSchedule",//View Schedule
+                    //"navigateToResults",//View Results
+                    //"navigateToCampaignMembers",//View Campaign Members
+                    "newSmartCampaign",//New Smart Campaign
+                    "createNewMarketingProgram",//New Program
+                    "newLocalAsset",//New Local Asset
+                    "createProgramFolder",//New Campaign Folder
+                    "renameProgramFolder",//Rename Folder
+                    "deleteProgramFolder",//Delete Folder
+                    "convertToArchiveFolder",//Convert To Archive Folder
+                    "convertToCampaignFolder",//Convert To Campaign Folder
+                    "scClone",//Clone
+                    "scArchive",//Delete
+                    "scMove",//Move
+                    "cloneMarketingProgram",//Clone
+                    "deleteMarketingProgram",//Delete
+                    "cloneMarketingEvent",//Clone
+                    "deleteMarketingEvent",//Delete
+                    "cloneNurtureProgram",//Clone
+                    "deleteNurtureProgram",//Delete
+                    "cloneEmailBatchProgram",//Clone
+                    "deleteEmailBatchProgram",//Delete
+                    "cloneInAppProgram",//Clone
+                    "deleteInAppProgram",//Delete
+                    "shareProgramFolder",//Share Folder
+                    "scActivate",//Activate
+                    "scAbort",//Abort Campaign
+                    //"addToFavorites",//Add to Favorites
+                    //"removeFromFavorites",//Remove from Favorites
+                    //"importProgramStatus",//Import Program Status
+                    "scCampChangeHistory",//Support Tools - Change History
+                    "scCampRunHistory",//Support Tools - Run History
+                    "scClearPalette",//Clear Palette Cache
+                    "scClearSmartList",//Clear Smart List
+                    "scClearFlow",//Clear Flow
+                    "progGenerateRef",//Build Campaign References
+                    "checkForCorruptEmails",//Check For Corrupt Emails
+                                
+                    // Marketing Activities > Social App: Poll, Referral Offer, Social Button, Sweepstakes, Video > Right-click Tree
+                    //"socialAppEdit",//Edit Draft
+                    //"socialAppPreview",//Preview
+                    "socialAppApprove",//Approve
+                    "socialAppClone",//Clone
+                    "socialAppDelete",//Delete
+                    //"socialAppWidgetCode",//Embed Code
+                    //"addToFavorites",//Add to Favorites
+                    //"removeFromFavorites",//Remove from Favorites
+                    //"socialAppDraftEdit",//Edit Draft
+                    //"socialAppDraftPreview",//Preview Draft
+                    "socialAppDraftApprove",//Approve Draft
+                    //"socialAppDraftDiscard",//Discard Draft
+                                
+                    // Marketing Activities > Push Notification > Right-click Tree
+                    //"pushNotificationEdit",//Edit Draft
+                    //"pushNotificationPreview",//Preview
+                    "pushNotificationUnapprove",//Unapprove
+                    "pushNotificationApprove",//Approve
+                    //"pushNotificationSendSample",//Send Sample
+                    "pushNotificationClone",//Clone
+                    "pushNotificationDelete",//Delete
+                    //"pushNotificationDraftEdit",//Edit Draft
+                    //"pushNotificationDraftPreview",//Preview Draft
+                    //"pushNotificationDraftSendSample",//Send Sample of Draft
+                    "pushNotificationDraftApprove",//Approve Draft
+                    //"pushNotificationDraftDiscard",//Discard Draft
+                                
+                    // Marketing Activities > ALL Programs > Change Status Button
+                    "Not in ProgramStatusMarketingEvent",//Not in Program
+                    "SentStatusMarketingEvent",//Sent
+                    "VisitedStatusMarketingEvent",//Visited
+                    "EngagedStatusMarketingEvent",//Engaged
+                                
+                    // Marketing Activities > ALL Programs & Folders > My Tokens Right-click Tree
+                    //"editCustomToken",//Edit Token
+                    "deleteCustomToken",//Delete Token
+                                
+                    // Design Studio > Folder > Right-click Tree
+                    "newLandingPage",//New Landing Page
+                    "newTestGroup",//New Test Group
+                    "newPageTemplate",//New Landing Page Template
+                    "pageTemplateImport",//Import Template
+                    "newForm",//New Form
+                    "newVideoShare",//New YouTube Video
+                    "newShareButton",//New Social Button
+                    "newReferralOffer",//New Referral Offer
+                    "newEmail",//New Email
+                    "newEmailTemplate",//New Email Template
+                    "newSnippet",//New Snippet
+                    "uploadImage",//Upload Image or File
+                    //"grabFromWebPage",//Grab Images from Web
+                    "share",//Share Folder
+                    "createFolder",//New Folder
+                    "renameFolder",//Rename Folder
+                    "deleteFolder",//Delete Folder
+                    "convertToArchiveFolder",//Convert To Archive Folder
+                    "convertToFolder",//Convert To Folder
+                                
+                    // Design Studio > Landing Page Template > Actions Button & Right-click Tree
+                    //"editPageTemplate",//Edit Draft
+                    //"previewPageTemplate",//Preview
+                    "approvePageTemplate",//Approve
+                    "unapprovePageTemplate",//Unapprove
+                    "clonePageTemplate",//Clone
+                    "pageTemplateDelete",//Delete
+                    //"pageTemplateExport",//Export
+                    //"addToFavorites",//Add to Favorites
+                    //"removeFromFavorites",//Remove from Favorites
+                    //"editPageTemplateDraft",//Edit Draft
+                    //"previewDraftPageTemplate",//Preview Draft
+                    "approveDraftPageTemplate",//Approve Draft
+                    //"discardDraftPageTemplate",//Discard Draft
+                                
+                    // Design Studio > Email Template > Actions Button & Right-click Tree
+                    //"emailTemplateEdit",//Edit Draft
+                    //"emailTemplatePreview",//Preview
+                    //"emailTemplateSendTest",//Send Sample
+                    "emailTemplateApprove",//Approve
+                    "emailTemplateUnapprove",//Unapprove
+                    "emailTemplateClone",//Clone
+                    "emailTemplateDelete",//Delete
+                    //"addToFavorites",//Add to Favorites
+                    //"removeFromFavorites",//Remove from Favorites
+                    //"emailTemplateDraftEdit",//Edit Draft
+                    //"emailTemplateDraftPreview",//Preview Draft
+                    //"emailTemplateDraftSendTest",//Send Sample of Draft
+                    "emailTemplateDraftApprove",//Approve Draft
+                    //"emailTemplateDraftDiscard",//Discard Draft
+                                
+                    // Design Studio > Snippet > Actions Button & Right-click Tree
+                    //"snippetNoDraftApprovalStatus",//Show Approval Status
+                    //"snippetEdit",//Edit Draft
+                    //"snippetPreview",//Preview
+                    "snippetApprove",//Approve
+                    "snippetUnapprove",//Unapprove
+                    "snippetClone",//Clone
+                    "snippetDelete",//Delete
+                    //"addToFavorites",//Add to Favorites
+                    //"removeFromFavorites",//Remove from Favorites
+                    //"snippetDraftEdit",//Edit Draft
+                    //"snippetDraftPreview",//Preview Draft
+                    "snippetDraftApprove",//Approve Draft
+                    //"snippetDraftDiscard",//Discard Draft
+                                
+                    // Design Studio > Image & File > Actions Button
+                    "uploadImage",//Upload Image or File
+                    //"grabFromWebPage",//Grab Images from Web
+                    //"imagePreview",//View
+                    "imageDelete",//Delete
+                    "replaceImage",//Replace Image or File
+                                
+                    // Lead Database > New Button
+                    "newSmartList",//New Smart List
+                    "newList",//New List
+                    "newSegmentation",//New Segmentation
+                    "importList",//Import List
+                    "newLead",//New Lead
+                    "newDataMgr",//New Field Organizer
+                                
+                    // Lead Database > Folder > Right-click Tree
+                    "newSegmentation",//New Segmentation
+                    "newSmartList",//New Smart List
+                    "share",//Share Folder
+                    "createFolder",//New Folder
+                    "renameFolder",//Rename Folder
+                    "deleteFolder",//Delete Folder
+                    "convertToArchiveFolder",//Convert To Archive Folder
+                    "convertToFolder",//Convert To Folder
+                                
+                    // Lead Database > Segmentation > Actions Button & Right-click Tree
+                    "createDraftSegmentation",//Create Draft
+                    //"editSegmentation",//Edit Segments
+                    "approveSegmentation",//Approve
+                    "unapproveSegmentation",//Unapprove
+                    "deleteSegmentation",//Delete
+                    "refreshSegmentation",//Refresh Status
+                    //"editDraftSegmentation",//Edit Segments
+                    "approveDraftSegmentation",//Approve Draft
+                    //"discardDraftSegmentation",//Discard Draft
+                                
+                    // Analytics > New Button
+                    //"newSubscription_atxCanvasOverview",//New Report Subscription
+                    "newRcm_atxCanvasOverview",//New Revenue Cycle Model
+                    //"newSubscription_rcmCanvasOverview",//New Report Subscription
+                    "newRcm_rcmCanvasOverview",//New Revenue Cycle Model
+                    //"newSubscription_atxCanvasSubscriptions",//New Report Subscription
+                    "newRcm_atxCanvasSubscriptions",//New Revenue Cycle Model
+                                
+                    // Analytics > Folder > Right-click Tree
+                    "newRcm",//New Revenue Cycle Model
+                    "share",//Share Folder
+                    "createFolder",//New Folder
+                    "renameFolder",//Rename Folder
+                    "deleteFolder",//Delete Folder
+                    "convertToArchiveFolder",//Convert To Archive Folder
+                    "convertToFolder",//Convert To Folder
+                                
+                    // Analytics > Analyzer & Report > Actions Button
+                    "newReport_atxCanvasOverview",//Export Data
+                    "cloneReport_atxCanvasOverview",//Clone Analyzer
+                    "deleteReport",//Delete Analyzer
+                                
+                    // Analytics > Analyzer > Right-click Tree
+                    //"navigateToAnalyzer",//View Analyzer
+                    //"navigateToAnalyzerSetup",//View Setup
+                    "cloneReport",//Clone Analyzer
+                    "deleteReport",//Delete Analyzer
+                    //"addToFavorites",//Add to Favorites
+                    //"removeFromFavorites",//Remove from Favorites
+                                
+                    // Analytics > Report > Right-click Tree
+                    //"navigateToOverviewReport",//View Overview
+                    //"navigateToDetailReport",//View Report
+                    //"navigateToSmartList",//View Smart List
+                    //"navigateToSetup",//View Setup
+                    //"navigateToSubscriptions",//View Subscriptions
+                    "cloneReport",//Clone Report
+                    "deleteReport",//Delete Report
+                    "moveReport",//Move Report
+                    //"addToFavorites",//Add to Favorites
+                    //"removeFromFavorites",//Remove from Favorites
+                                
+                    // Analytics > Model > Actions Button & Right-click Tree
+                    //"rcmEdit",//Edit Draft
+                    //"rcmPreview",//Preview Model
+                    "rcmApproveStages",//Approve Stages
+                    "rcmUnapproveStages",//Unapprove Stages
+                    "rcmApprove",//Approve Model
+                    "rcmUnapprove",//Unapprove Model
+                    "rcmClone",//Clone Model
+                    "rcmDelete",//Delete Model
+                    //"rcmExport",//Export Model
+                    //"addToFavorites",//Add to Favorites
+                    //"removeFromFavorites",//Remove from Favorites
+                    //"rcmEditDraft",//Edit Draft
+                    //"rcmPreviewDraft",//Preview Draft
+                    "rcmApproveDraft",//Approve Model Draft
+                    //"rcmDiscardDraft",//Discard Model Draft
+                    "rcmAassignmentRules",//Assignment Rules
+                            ];
+            if (this.triggeredFrom != "tree"
+            && this.triggeredFrom != "button") {
+                disable = APP.evaluateMenu("tree", this, canvas, null);
             }
-            
-            menu = MktMenuMgr.getMenu(type, attr);
-            debugger;
-            var userId = MktPage.userid.toLowerCase(),
-                userName;
-            if (userId.search("\.demo@marketo.com$") != -1) {
-                userName = userId.split(".demo")[0];
+            else if (this.id == "leadDbListMenu"
+            || this.id == "segmentationMenu") {
+                disable = APP.evaluateMenu("tree", this, canvas, null);
             }
             else {
-                userName = userId.split("@")[0];
+                disable = APP.evaluateMenu(this.triggeredFrom, this, canvas, null);
             }
-            if (menu
-            && menu.items) {
-                var mItems = menu.items,
-                    canvas = MktCanvas.getActiveTab(),
-                    disable = (attr
-                                && attr.accessZoneId 
-                                && (attr.accessZoneId == 1
-                                    || attr.accessZoneId == mktoJapaneseWorkspaceId
-                                    || (attr.accessZoneId == mktoMarketingWorkspaceId
-                                        && (attr.system == true
-                                            || (attr.menu.currNode.parentNode.attributes.system == true
-                                                && attr.text != userName)))))
-                            || (attr
-                                && attr.depth
-                                && attr.depth == 1
-                                && attr.accessZoneId
-                                && attr.accessZoneId == mktoMarketingWorkspaceId)
-                            || (!attr
-                                || !attr.accessZoneId
-                                && menu
-                                && menu.currNode
-                                && menu.currNode.attributes
-                                && menu.currNode.attributes.accessZoneId
-                                && (menu.currNode.attributes.accessZoneId == 1
-                                    || menu.currNode.attributes.accessZoneId == mktoJapaneseWorkspaceId
-                                    || (menu.currNode.attributes.accessZoneId == mktoMarketingWorkspaceId
-                                        && (menu.currNode.attributes.system == true
-                                            || (menu.currNode.parentNode.attributes.system == true
-                                                && menu.currNode.text != userName)))))
-                            || (!menu
-                                || !menu.currNode
-                                && canvas
-                                && canvas.config
-                                && canvas.config.accessZoneId
-                                && (canvas.config.accessZoneId == 1
-                                    || canvas.config.accessZoneId == mktoJapaneseWorkspaceId)),
-                    itemsToDisable = [
-                                    "newSmartList",//New Smart List
-                                    "newList",//New List
-                                    "importList",//Import List
-                                    "cloneSmartlist",//Clone Smart List
-                                    "cloneList",//Clone List
-                                    "deleteList",//Delete List
-                                    //"navigateToMembership",//View Leads
-                                    //"navigateToSmartList",//View Smart List
-                                    //"navigateToFilterView",//Filter View
-                                    //"newSmartListReportSubscription",//New Smart List Subscription
-                                    "newSegmentation",//New Segmentation
-                                    "createDraftSegmentation",//Create Draft
-                                    //"editSegmentation",//Edit Segments
-                                    "approveSegmentation",//Approve
-                                    "unapproveSegmentation",//Unapprove
-                                    "deleteSegmentation",//Delete
-                                    "refreshSegmentation",//Refresh Status
-                                    //"editDraftSegmentation",//Edit Segments
-                                    "approveDraftSegmentation",//Approve Draft
-                                    //"discardDraftSegmentation",//Discard Draft
-                                    "share",//Share Folder
-                                    "createFolder",//New Folder
-                                    "renameFolder",//Rename Folder
-                                    "deleteFolder",//Delete Folder
-                                    "convertToArchiveFolder",//Convert To Archive Folder
-                                    "convertToFolder",//Convert To Folder
-                                    ];
-                itemsToDisable.forEach(function(itemToDisable) {
-                    var item = mItems.get(itemToDisable);
-                    if (item) {
-                        item.setDisabled(disable);
-                    }
-                });
-            }
+
+            itemsToDisable.forEach(function(itemToDisable) {
+                var item = mItems.get(itemToDisable);
+                if (item) {
+                    item.setDisabled(disable);
+                }
+            });
             
-            if (menu) {
-                menu.currNode = node; // must be set before calling preShowContextMenu
-                MktLeadDbMenu.showContextItems(menu, true);
-                
-                var s = menu.items.get('removeBookmark');
-                if (s) {
-                    s.setVisible(false);
-                }
-                
-                // Choose the context menu based on compType and compSubtype
-                if (xtraAttr && !attr.folder) {
-                    var compType = xtraAttr.compType;
-                    var compSubtype = xtraAttr.compSubtype;
-                    
-                    if (compType == 'List') {
-                        MktLeadDbMenu.preShowListListMenu(menu);
-                    } else if (compSubtype == 'Smart Campaign') {
-                        MktLeadDbMenu.preShowCampaignListMenu(menu);
-                    } else if (compSubtype == 'Report') {
-                        console.debug('showing report menu');
-                        MktLeadDbMenu.preShowReportListMenu(menu);
-                    }
-                    /* We don't need this right now, but it may be handy later
-                    else if (compType == 'Smart List' && attr.system) {
-                    MktLeadDbMenu.preShowUserListMenu(menu);
-                    }*/
-                    else if (compType == 'Smart List') {
-                        MktLeadDbMenu.preShowUserListMenu(menu, attr);
-                    } else if (compType == 'Segmentation') {
-                        MktLeadDbMenu.preShowSegmentationMenu(menu, attr);
-                    } else {
-                        return;
-                    }
-                }
-                
-                // Show the menu if we haven't aborted by now
-                menu.showAt(e.xy);
-                if (xtraAttr) {
-                    menu.listCompType = attr.nodeType;
-                    menu.leadDbSmartListId = xtraAttr.compId;
-                    menu.compId = xtraAttr.compId;
-                    menu.leadDbNodeId = xtraAttr.nodeId;
-                    menu.listName = attr.text;
-                    menu.name = attr.text;
-                }
-                
-                Mkt.main.ExplorerPanel.nodeContextMenuSetup(node, menu);
-                
-                e.stopEvent();
-            }
-        }
-    }
-    
-    // Disables Lead Database > System Smart List, Smart List, List, Segment > Right-click menus
-	var prevLeadDatabaseContextMenu = MktLeadDbMenu.preShowContextMenu;
-	MktLeadDbMenu.preShowContextMenu = function(menu, attr) {
-		prevLeadDatabaseContextMenu.apply(this, arguments);
-		
-		var mItems = menu.items,
-			canvas = MktCanvas.getActiveTab(),
-			disable = (attr
-                        && attr.accessZoneId 
-                        && (attr.accessZoneId == 1
-                            || attr.accessZoneId == mktoJapaneseWorkspaceId))
-                    || (attr
-                        && attr.depth
-                        && attr.depth == 1
-                        && attr.accessZoneId
-                        && attr.accessZoneId == mktoMarketingWorkspaceId)
-                    || (!attr
-                        || !attr.accessZoneId
-                        && menu
-                        && menu.currNode
-                        && menu.currNode.attributes
-                        && menu.currNode.attributes.accessZoneId
-                        && (menu.currNode.attributes.accessZoneId == 1
-                            || menu.currNode.attributes.accessZoneId == mktoJapaneseWorkspaceId))
-                    || (!menu
-                        || !menu.currNode
-                        && canvas
-                        && canvas.config
-                        && canvas.config.accessZoneId
-                        && (canvas.config.accessZoneId == 1
-                            || canvas.config.accessZoneId == mktoJapaneseWorkspaceId)),
-			itemsToDisable = [
-							//"navigateToMembership",//View Leads
-							//"navigateToSmartList",//View Smart List
-							//"navigateToFilterView",//Filter View
-							//"showImportStatus",//Show Import Status
-							//"showExportStatus",//Show Export Status
-							//"importList",//Import List
-							//"exportList",//Export List
-							//"exportAdBridge",//Send via Ad Bridge
-							"cloneSmartlist",//Clone Smart List
-							"cloneList",//Clone List
-							"deleteList",//Delete List
-							"showSupportHistory",//Support Tools - History
-							"showSupportUsagePerf",//Support Tools - Run Stats
-							"showSmartListProcessorDiag",//Processor Diagnostics
-							"showSmartListProcessorOverride",//Override Processor
-							//"addToFavorites",//Add to Favorites
-							//"removeFromFavorites"//Remove from Favorites
-							];
-
-		itemsToDisable.forEach(function(itemToDisable) {
-			var item = mItems.get(itemToDisable);
-			if (item) {
-				item.setDisabled(disable);
-			}
-		});
-		return menu;
-	}
-	
-	// Disables Lead Database > List > Right-click and Actions menu
-	var prevListMenu = MktLeadDbMenu.preShowListListMenu;
-	MktLeadDbMenu.preShowListListMenu = function(menu, attr) {
-		prevListMenu.apply(this, arguments);
-		
-		var mItems = menu.items,
-			canvas = MktCanvas.getActiveTab(),
-			disable = (attr
-                        && attr.accessZoneId 
-                        && (attr.accessZoneId == 1
-                            || attr.accessZoneId == mktoJapaneseWorkspaceId))
-                    || (attr
-                        && attr.depth
-                        && attr.depth == 1
-                        && attr.accessZoneId
-                        && attr.accessZoneId == mktoMarketingWorkspaceId)
-                    || (!attr
-                        || !attr.accessZoneId
-                        && menu
-                        && menu.currNode
-                        && menu.currNode.attributes
-                        && menu.currNode.attributes.accessZoneId
-                        && (menu.currNode.attributes.accessZoneId == 1
-                            || menu.currNode.attributes.accessZoneId == mktoJapaneseWorkspaceId))
-                    || (!menu
-                        || !menu.currNode
-                        && canvas
-                        && canvas.config
-                        && canvas.config.accessZoneId
-                        && (canvas.config.accessZoneId == 1
-                            || canvas.config.accessZoneId == mktoJapaneseWorkspaceId)),
-			itemsToDisable = [
-							//"navigateToMembership",//View Leads
-							//"navigateToSmartList",//View Smart List
-							//"navigateToFilterView",//Filter View
-							//"showImportStatus",//Show Import Status
-							//"showExportStatus",//Show Export Status
-							//"importList",//Import List
-							//"exportList",//Export List
-							//"exportAdBridge",//Send via Ad Bridge
-							"cloneSmartlist",//Clone Smart List
-							"cloneList",//Clone List
-							"deleteList",//Delete List
-							"showSupportHistory",//Support Tools - History
-							"showSupportUsagePerf",//Support Tools - Run Stats
-							"showSmartListProcessorDiag",//Processor Diagnostics
-							"showSmartListProcessorOverride",//Override Processor
-							//"addToFavorites",//Add to Favorites
-							//"removeFromFavorites"//Remove from Favorites
-							];
-
-		itemsToDisable.forEach(function(itemToDisable) {
-			var item = mItems.get(itemToDisable);
-			if (item) {
-				item.setDisabled(disable);
-			}
-		});
-		return menu;
-	}
-	
-	// Disables Lead Database > Segmentation > Right-click and Actions menu
-	var prevSegmentationMenu = MktLeadDbMenu.preShowSegmentationMenu;
-	MktLeadDbMenu.preShowSegmentationMenu = function(menu, attr) {
-		prevSegmentationMenu.apply(this, arguments);
-		
-		var mItems = menu.items,
-			canvas = MktCanvas.getActiveTab(),
-			disable = (attr
-                        && attr.accessZoneId 
-                        && (attr.accessZoneId == 1
-                            || attr.accessZoneId == mktoJapaneseWorkspaceId))
-                    || (attr
-                        && attr.depth
-                        && attr.depth == 1
-                        && attr.accessZoneId
-                        && attr.accessZoneId == mktoMarketingWorkspaceId)
-                    || (!attr
-                        || !attr.accessZoneId
-                        && menu
-                        && menu.currNode
-                        && menu.currNode.attributes
-                        && menu.currNode.attributes.accessZoneId
-                        && (menu.currNode.attributes.accessZoneId == 1
-                            || menu.currNode.attributes.accessZoneId == mktoJapaneseWorkspaceId))
-                    || (!menu
-                        || !menu.currNode
-                        && canvas
-                        && canvas.config
-                        && canvas.config.accessZoneId
-                        && (canvas.config.accessZoneId == 1
-                            || canvas.config.accessZoneId == mktoJapaneseWorkspaceId)),
-			itemsToDisable = [
-							"createDraftSegmentation",//Create Draft
-							//"editSegmentation",//Edit Segments
-							"approveSegmentation",//Approve
-							"unapproveSegmentation",//Unapprove
-							"deleteSegmentation",//Delete
-							//"refreshSegmentation",//Refresh Status
-							//"editDraftSegmentation",//Edit Segments
-							"approveDraftSegmentation",//Approve Draft
-							//"discardDraftSegmentation",//Discard Draft
-							];
-
-		itemsToDisable.forEach(function(itemToDisable) {
-			var item = mItems.get(itemToDisable);
-			if (item) {
-				item.setDisabled(disable);
-			}
-		});
-		return menu;
-	}
-	
-	// Disables Lead Database > Segmentation Folder > Right-click and Actions menu
-	var prevSegmentationFolderMenu = MktLeadDbMenu.preShowSegmentationFolderMenu;
-	MktLeadDbMenu.preShowSegmentationFolderMenu = function(menu, attr) {
-		prevSegmentationFolderMenu.apply(this, arguments);
-		
-		var mItems = menu.items,
-			canvas = MktCanvas.getActiveTab(),
-			disable = (attr
-                        && attr.accessZoneId 
-                        && (attr.accessZoneId == 1
-                            || attr.accessZoneId == mktoJapaneseWorkspaceId))
-                    || (attr
-                        && attr.depth
-                        && attr.depth == 1
-                        && attr.accessZoneId
-                        && attr.accessZoneId == mktoMarketingWorkspaceId)
-                    || (!attr
-                        || !attr.accessZoneId
-                        && menu
-                        && menu.currNode
-                        && menu.currNode.attributes
-                        && menu.currNode.attributes.accessZoneId
-                        && (menu.currNode.attributes.accessZoneId == 1
-                            || menu.currNode.attributes.accessZoneId == mktoJapaneseWorkspaceId))
-                    || (!menu
-                        || !menu.currNode
-                        && canvas
-                        && canvas.config
-                        && canvas.config.accessZoneId
-                        && (canvas.config.accessZoneId == 1
-                            || canvas.config.accessZoneId == mktoJapaneseWorkspaceId)),
-			itemsToDisable = [
-							"newSegmentation",//New Segmentation
-							"share",//Share Folder
-							"createFolder",//New Folder
-							"renameFolder",//Rename Folder
-							"deleteFolder",//Delete Folder
-							"convertToArchiveFolder",//Convert To Archive Folder
-							"convertToFolder",//Convert To Folder
-							];
-
-		itemsToDisable.forEach(function(itemToDisable) {
-			var item = mItems.get(itemToDisable);
-			if (item) {
-				item.setDisabled(disable);
-			}
-		});
-		return menu;
-	}
-	
-	// Disables Lead Database > Smart List and Segments > Right-click and Actions menu
-	var prevSmartListMenu = MktLeadDbMenu.preShowUserListMenu;
-	MktLeadDbMenu.preShowUserListMenu = function(menu, attr) {
-		prevSmartListMenu.apply(this, arguments);
-		
-		var mItems = menu.items,
-			canvas = MktCanvas.getActiveTab(),
-			disable = (attr
-                        && attr.accessZoneId 
-                        && (attr.accessZoneId == 1
-                            || attr.accessZoneId == mktoJapaneseWorkspaceId))
-                    || (attr
-                        && attr.depth
-                        && attr.depth == 1
-                        && attr.accessZoneId
-                        && attr.accessZoneId == mktoMarketingWorkspaceId)
-                    || (!attr
-                        || !attr.accessZoneId
-                        && menu
-                        && menu.currNode
-                        && menu.currNode.attributes
-                        && menu.currNode.attributes.accessZoneId
-                        && (menu.currNode.attributes.accessZoneId == 1
-                            || menu.currNode.attributes.accessZoneId == mktoJapaneseWorkspaceId))
-                    || (!menu
-                        || !menu.currNode
-                        && canvas
-                        && canvas.config
-                        && canvas.config.accessZoneId
-                        && (canvas.config.accessZoneId == 1
-                            || canvas.config.accessZoneId == mktoJapaneseWorkspaceId)),
-			itemsToDisable = [
-							//"navigateToMembership",//View Leads
-							//"navigateToSmartList",//View Smart List
-							//"navigateToFilterView",//Filter View
-							//"showImportStatus",//Show Import Status
-							//"showExportStatus",//Show Export Status
-							//"importList",//Import List
-							//"exportList",//Export List
-							//"exportAdBridge",//Send via Ad Bridge
-							"cloneSmartlist",//Clone Smart List
-							"cloneList",//Clone List
-							"deleteList",//Delete List
-							//"addToFavorites",//Add to Favorites
-							//"removeFromFavorites"//Remove from Favorites
-							];
-			/*
-			itemsToRemove = [
-							
-							];
-			*/
-
-		itemsToDisable.forEach(function(itemToDisable) {
-			var item = mItems.get(itemToDisable);
-			if (item) {
-				item.setDisabled(disable);
-			}
-		});
-
-		/* Use itemsToRemove to disable visibility of menu items rather than graying-out
-		itemsToRemove.forEach(function(itemToRemove) {
-			var item = mItems.get(itemToRemove);
-			if (item) {
-				item.setVisible(!disable);
-			}
-		});
-		*/
-		return menu;
-	}
-	
-	// Disables Analytics > Analyzer and Report > Right-click menus
-	var prevReportMenu = MktAnalyticsMenu.preShowReportMenu;
-	MktAnalyticsMenu.preShowReportMenu = function(menu, attr) {
-		prevReportMenu.apply(this, arguments);
-		
-		var mItems = menu.items,
-			canvas = MktCanvas.getActiveTab(),
-			disable = (attr
-                        && attr.accessZoneId 
-                        && (attr.accessZoneId == 1
-                            || attr.accessZoneId == mktoJapaneseWorkspaceId))
-                    || (attr
-                        && attr.depth
-                        && attr.depth == 1
-                        && attr.accessZoneId
-                        && attr.accessZoneId == mktoMarketingWorkspaceId)
-                    || (!attr
-                        || !attr.accessZoneId
-                        && menu
-                        && menu.currNode
-                        && menu.currNode.attributes
-                        && menu.currNode.attributes.accessZoneId
-                        && (menu.currNode.attributes.accessZoneId == 1
-                            || menu.currNode.attributes.accessZoneId == mktoJapaneseWorkspaceId))
-                    || (!menu
-                        || !menu.currNode
-                        && canvas
-                        && canvas.config
-                        && canvas.config.accessZoneId
-                        && (canvas.config.accessZoneId == 1
-                            || canvas.config.accessZoneId == mktoJapaneseWorkspaceId)),
-			itemsToDisable = [
-							//"navigateToAnalyzer",//View Analyzer
-							//"navigateToSmartList",//View Smart List
-							//"navigateToAnalyzerSetup",//View Setup
-							//"navigateToSetup",//View Setup
-							//"navigateToSubscriptions",//View Subscriptions
-							"cloneReport",//Clone Analyzer or Report
-							"deleteReport",//Delete Analyzer or Report
-							"moveReport",//Move Report
-							//"addToFavorites",//Add to Favorites
-							//"removeFromFavorites"//Remove from Favorites
-							];
-
-		itemsToDisable.forEach(function(itemToDisable) {
-			var item = mItems.get(itemToDisable);
-			if (item) {
-				item.setDisabled(disable);
-			}
-		});
-		return menu;
-	}
-	
-	// Disables Analytics > Folder > Right-click menu
-	var prevReportFolderMenu = MktAnalyticsMenu.preshowReportFolderMenu ;
-	MktAnalyticsMenu.preshowReportFolderMenu  = function(menu, attr) {
-		prevReportFolderMenu.apply(this, arguments);
-		
-		var mItems = menu.items,
-			canvas = MktCanvas.getActiveTab(),
-			disable = (attr
-                        && attr.accessZoneId 
-                        && (attr.accessZoneId == 1
-                            || attr.accessZoneId == mktoJapaneseWorkspaceId))
-                    || (attr
-                        && attr.depth
-                        && attr.depth == 1
-                        && attr.accessZoneId
-                        && attr.accessZoneId == mktoMarketingWorkspaceId)
-                    || (!attr
-                        || !attr.accessZoneId
-                        && menu
-                        && menu.currNode
-                        && menu.currNode.attributes
-                        && menu.currNode.attributes.accessZoneId
-                        && (menu.currNode.attributes.accessZoneId == 1
-                            || menu.currNode.attributes.accessZoneId == mktoJapaneseWorkspaceId))
-                    || (!menu
-                        || !menu.currNode
-                        && canvas
-                        && canvas.config
-                        && canvas.config.accessZoneId
-                        && (canvas.config.accessZoneId == 1
-                            || canvas.config.accessZoneId == mktoJapaneseWorkspaceId)),
-			itemsToDisable = [
-							"createFolder",//New Folder
-							"renameFolder",//Rename Folder
-							"deleteFolder",//Delete Folder
-							"convertToArchiveFolder",//Convert To Archive Folder
-							"convertToFolder",//Convert To Folder
-							"newRcm",//New Revenue Cycle Model
-							"share",//Share Folder
-							"moveReport",//Move Report
-							//"addToFavorites",//Add to Favorites
-							//"removeFromFavorites"//Remove from Favorites
-							];
-
-		itemsToDisable.forEach(function(itemToDisable) {
-			var item = mItems.get(itemToDisable);
-			if (item) {
-				item.setDisabled(disable);
-			}
-		});
-		return menu;
-	}
-    
-    Mkt.widgets.ToolbarButton.prototype.showMenu = function() {
-        var ii;
-            
-        if (MktCanvas
-            && MktCanvas.getActiveTab()
-            && MktCanvas.getActiveTab().config
-            && MktCanvas.getActiveTab().config.accessZoneId
-            && (MktCanvas.getActiveTab().config.accessZoneId == 1
-                || MktCanvas.getActiveTab().config.accessZoneId == mktoJapaneseWorkspaceId)) {
-        
-            // Lead Database > Lead Actions > Sub-menu
-            if (this.menu.itemId == "leadDbLeadMenu") {
-                for (ii = 0; ii < this.menu.items.items.length; ii++) {
-                    if (typeof(this.menu.items.items[ii].menu) != "undefined") {
-                        var jj;
+            if (this.ownerCt
+            && this.ownerCt.text.search("^View:") != -1) {
+                var ii;
+                for (ii = 0; ii < this.items.items.length; ii++) {
+                    switch (this.items.items[ii].text) {
+                        case "Create View":
+                            this.items.items[ii].setDisabled(true);
+                            break;
                         
-                        for (jj = 0; jj < this.menu.items.items[ii].menu.items.items.length; jj++) {
-                            this.menu.items.items[ii].menu.items.items[jj].disable(true);
-                        }
+                        case "Edit Default":
+                            this.items.items[ii].setDisabled(true);
+                            break;
+                        
+                        default:
+                            break;
                     }
                 }
             }
             
-            for (ii = 0; ii < this.menu.items.items.length; ii++) {
-                switch (this.menu.items.items[ii].itemId) {
-                
-                // Marketing Activities & Design Studio > New
-                // New Campaign Folder
-                case "createProgramFolder":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // New Smart Campaign
-                case "newSmartCampaign":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // New Program
-                case "createNewMarketingProgram":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // Import Program
-                case "importProgram":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // New Campaign Folder
-                case "createProgramFolder":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                    
-                // Marketing Activities > Program Actions
-                // Reschedule Entries
-                case "entryRescheduleEntries":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // Salesforce Campaign Sync
-                case "sfdcCampaignSync":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // Clone
-                case "cloneMarketingProgram":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // Delete
-                case "deleteMarketingProgram":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // Show Import Status
-                case "showImportMemberStatus":
-                    //this.menu.items.items[ii].disable(true);
-                    break;
-                // Show Export Status
-                case "showExportMemberStatus":
-                    //this.menu.items.items[ii].disable(true);
-                    break;
-                    
-                // Marketing Activities > Change Status
-                // Not in Program
-                case "Not in ProgramStatusMarketingEvent":
-                    this.menu.disable(true);
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // Member
-                case "MemberStatusMarketingEvent":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // Sent
-                case "SentStatusMarketingEvent":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // Visited
-                case "VisitedStatusMarketingEvent":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // Engaged
-                case "EngagedStatusMarketingEvent":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // Invited
-                case "InvitedStatusMarketingEvent":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // Registered
-                case "RegisteredStatusMarketingEvent":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // Attended
-                case "AttendedStatusMarketingEvent":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // No Show
-                case "No ShowStatusMarketingEvent":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // Opened
-                case "OpenedStatusMarketingEvent":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // Clicked
-                case "ClickedStatusMarketingEvent":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // Bounced
-                case "BouncedStatusMarketingEvent":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // Unsubscribed
-                case "UnsubscribedStatusMarketingEvent":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                    
-                // Marketing Activities > Email Batch Program
-                // Clone
-                case "cloneEmailBatchProgram":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // Delete
-                case "deleteEmailBatchProgram":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                    
-                // Marketing Activities > Nurture Program Actions
-                // Clone
-                case "cloneNurtureProgram":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // Delete
-                case "deleteNurtureProgram":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // Test Stream
-                case "testNurtureProgram":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                    
-                // Marketing Activities > Event Program Actions
-                // Schedule
-                case "eventSchedule":
-                    //this.menu.items.items[ii].disable(true);
-                    break;
-                // Reschedule Entries
-                case "entryRescheduleEntries":
-                    //this.menu.items.items[ii].disable(true);
-                    break;
-                // Clone
-                case "cloneMarketingEvent":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // Delete
-                case "deleteMarketingEvent":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // Refresh from Webinar Provider
-                case "refreshFromWebinarProvider":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                    
-                // Marketing Activities > Smart Campaign Actions
-                // View Streams
-                case "navigateToNurtureTracks":
-                    //this.menu.items.items[ii].disable(true);
-                    break;
-                // View Smart Campaigns
-                case "navigateToCFSmartCamp":
-                    //this.menu.items.items[ii].disable(true);
-                    break;
-                // View Assets
-                case "navigateToLocalAssets":
-                    //this.menu.items.items[ii].disable(true);
-                    break;
-                // View Smart List
-                case "navigateToProgramSmartList":
-                    //this.menu.items.items[ii].disable(true);
-                    break;
-                // View Setup
-                case "navigateToEventSettings":
-                    //this.menu.items.items[ii].disable(true);
-                    break;
-                // View My Tokens
-                case "navigateToCFTokens":
-                    //this.menu.items.items[ii].disable(true);
-                    break;
-                // View Members
-                case "navigateToEventMembers":
-                    //this.menu.items.items[ii].disable(true);
-                    break;
-                // View Results
-                case "navigateToCFResults":
-                    //this.menu.items.items[ii].disable(true);
-                    break;
-                // View Campaign
-                case "navigateToSmartCampaign":
-                    //this.menu.items.items[ii].disable(true);
-                    break;
-                // View Smart List
-                case "navigateToSmartList":
-                    //this.menu.items.items[ii].disable(true);
-                    break;
-                // View Flow
-                case "navigateToFlow":
-                    //this.menu.items.items[ii].disable(true);
-                    break;
-                // View Schedule
-                case "navigateToSchedule":
-                    //this.menu.items.items[ii].disable(true);
-                    break;
-                // View Results
-                case "navigateToResults":
-                    //this.menu.items.items[ii].disable(true);
-                    break;
-                // View Campaign Members
-                case "navigateToCampaignMembers":
-                    //this.menu.items.items[ii].disable(true);
-                    break;
-                // New Local Asset
-                case "newLocalAsset":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // Rename Folder
-                case "renameProgramFolder":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // Delete Folder
-                case "deleteProgramFolder":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // Convert To Archive Folder
-                case "convertToArchiveFolder":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // Convert To Campaign Folder
-                case "convertToCampaignFolder":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // Clone
-                case "scClone":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // Delete
-                case "scArchive":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // Move
-                case "scMove":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // Clone
-                case "cloneMarketingEvent":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // Delete
-                case "deleteMarketingEvent":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // Clone
-                case "cloneNurtureProgram":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // Delete
-                case "deleteNurtureProgram":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // Clone
-                case "cloneEmailBatchProgram":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // Delete
-                case "deleteEmailBatchProgram":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // Activate
-                case "scActivate":
-                    //this.menu.items.items[ii].disable(true);
-                    break;
-                // Abort Campaign
-                case "scAbort":
-                    //this.menu.items.items[ii].disable(true);
-                    break;
-                // Add To Favorites
-                case "addToFavorites":
-                    //this.menu.items.items[ii].disable(true);
-                    break;
-                // Remove From Favorites
-                case "removeFromFavorites":
-                    //this.menu.items.items[ii].disable(true);
-                    break;
-                // Import Program Status
-                case "importProgramStatus":
-                    //this.menu.items.items[ii].disable(true);
-                    break;
-                // Support Tools - Change History
-                case "scCampChangeHistory":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // Support Tools - Run History
-                case "scCampRunHistory":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // Clear Palette Cache
-                case "scClearPalette":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // Clear Smart List
-                case "scClearSmartList":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // Clear Flow
-                case "scClearFlow":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // Build Campaign References
-                case "progGenerateRef":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // Check For Corrupt Emails
-                case "checkForCorruptEmails":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                    
-                // Marketing Activities & Design Studio > Email Actions
-                // Edit Draft
-                case "emailEdit":
-                    //this.menu.items.items[ii].disable(true);
-                    break;
-                // Preview
-                case "emailPreview":
-                    //this.menu.items.items[ii].disable(true);
-                    break;
-                // Approve
-                case "emailApprove":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // Unapprove
-                case "emailUnapprove":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // Download HTML
-                case "emailDownloadHtml":
-                    //this.menu.items.items[ii].disable(true);
-                    break;
-                // Send Sample
-                case "emailSendTest":
-                    //this.menu.items.items[ii].disable(true);
-                    break;
-                // Clone
-                case "emailClone":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // Delete
-                case "emailDelete":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // Move
-                case "emailMove":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // New Test
-                case "emailNewTest":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // Edit Draft
-                case "emailDraftEdit":
-                    //this.menu.items.items[ii].disable(true);
-                    break;
-                // Preview Draft
-                case "emailDraftPreview":
-                    //this.menu.items.items[ii].disable(true);
-                    break;
-                // Send Sample of Draft
-                case "emailDraftSendTest":
-                    //this.menu.items.items[ii].disable(true);
-                    break;
-                // Approve Draft
-                case "emailDraftApprove":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // Discard Draft
-                case "emailDraftDiscard":
-                    //this.menu.items.items[ii].disable(true);
-                    break;
-                // Approve Test
-                case "emailApproveTest":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // Send Sample Test
-                case "emailSendSampleTest":
-                    //this.menu.items.items[ii].disable(true);
-                    break;
-                // Edit Test
-                case "emailEditTest":
-                    //this.menu.items.items[ii].disable(true);
-                    break;
-                // View Test Summary
-                case "emailViewTestSummary":
-                    //this.menu.items.items[ii].disable(true);
-                    break;
-                // Declare Champion
-                case "emailTestDeclareChampion":
-                    //this.menu.items.items[ii].disable(true);
-                    break;
-                // Discard Test
-                case "emailDiscardTest":
-                    //this.menu.items.items[ii].disable(true);
-                    break;
-                    
-                // Design Studio > Email Template Actions
-                // Edit Draft
-                case "emailTemplateEdit":
-                    //this.menu.items.items[ii].disable(true);
-                    break;
-                // Preview
-                case "emailTemplatePreview":
-                    //this.menu.items.items[ii].disable(true);
-                    break;
-                // Send Sample
-                case "emailTemplateSendTest":
-                    //this.menu.items.items[ii].disable(true);
-                    break;
-                // Approve
-                case "emailTemplateApprove":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // Unapprove
-                case "emailTemplateUnapprove":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // Clone
-                case "emailTemplateClone":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // Delete
-                case "emailTemplateDelete":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // Edit Draft
-                case "emailTemplateDraftEdit":
-                    //this.menu.items.items[ii].disable(true);
-                    break;
-                // Preview Draft
-                case "emailTemplateDraftPreview":
-                    //this.menu.items.items[ii].disable(true);
-                    break;
-                // Send Sample of Draft
-                case "emailTemplateDraftSendTest":
-                    //this.menu.items.items[ii].disable(true);
-                    break;
-                // Approve Draft
-                case "emailTemplateDraftApprove":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // Discard Draft
-                case "emailTemplateDraftDiscard":
-                    //this.menu.items.items[ii].disable(true);
-                    break;
-                    
-                // Marketing Activities & Design Studio > Form Actions
-                // Edit Draft
-                case "formEditDraft":
-                    //this.menu.items.items[ii].disable(true);
-                    break;
-                // Preview
-                case "formPreview":
-                    //this.menu.items.items[ii].disable(true);
-                    break;
-                // Edit Form
-                case "formEdit":
-                    //this.menu.items.items[ii].disable(true);
-                    break;
-                // Approve
-                case "formApprove":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // Clone Form
-                case "formClone":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // Delete Form
-                case "formDelete":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // Embed Code
-                case "formEmbed":
-                    //this.menu.items.items[ii].disable(true);
-                    break;
-                // Move
-                case "formMove":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // Preview Draft
-                case "formDraftPreview":
-                    //this.menu.items.items[ii].disable(true);
-                    break;
-                // Edit Draft
-                case "formDraftEdit":
-                    //this.menu.items.items[ii].disable(true);
-                    break;
-                // Approve Draft
-                case "formDraftApprove":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // Discard Draft
-                case "formDraftDiscard":
-                    //this.menu.items.items[ii].disable(true);
-                    break;
-                    
-                // Marketing Activities & Design Studio > Landing Page Actions
-                // Edit Draft
-                case "pageEdit":
-                    //this.menu.items.items[ii].disable(true);
-                    break;
-                // Preview
-                case "pagePreview":
-                    //this.menu.items.items[ii].disable(true);
-                    break;
-                // Device Switch
-                case "deviceSwitch":
-                    //this.menu.items.items[ii].disable(true);
-                    break;
-                // Approve
-                case "pageApprove":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // Unapprove
-                case "pageUnapprove":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // Publish To Facebook
-                case "publishToFacebook":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // Convert to Test Group
-                case "pageConvertToTestGroup":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // Clone
-                case "pageClone":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // Delete
-                case "pageDelete":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // URL Tools
-                case "urlTools":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // Move
-                case "pageMove":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // Edit Draft
-                case "pageDraftEdit":
-                    //this.menu.items.items[ii].disable(true);
-                    break;
-                // Preview Draft
-                case "pageDraftPreview":
-                    //this.menu.items.items[ii].disable(true);
-                    break;
-                // Approve Draft
-                case "pageDraftApprove":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // Discard Draft
-                case "pageDraftDiscard":
-                    //this.menu.items.items[ii].disable(true);
-                    break;
-                    
-                // Design Studio > Landing Page Template Actions
-                // Edit Draft
-                case "editPageTemplate":
-                    //this.menu.items.items[ii].disable(true);
-                    break;
-                // Preview
-                case "previewPageTemplate":
-                    //this.menu.items.items[ii].disable(true);
-                    break;
-                // Approve
-                case "approvePageTemplate":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // Unapprove
-                case "unapprovePageTemplate":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // Clone
-                case "clonePageTemplate":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // Delete
-                case "pageTemplateDelete":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // Export
-                case "pageTemplateExport":
-                    //this.menu.items.items[ii].disable(true);
-                    break;
-                // Edit Draft
-                case "editPageTemplateDraft":
-                    //this.menu.items.items[ii].disable(true);
-                    break;
-                // Preview Draft
-                case "previewDraftPageTemplate":
-                    //this.menu.items.items[ii].disable(true);
-                    break;
-                // Approve Draft
-                case "approveDraftPageTemplate":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // Discard Draft
-                case "discardDraftPageTemplate":
-                    //this.menu.items.items[ii].disable(true);
-                    break;
-                    
-                // Design Studio > Snippet Actions
-                // Edit Draft
-                case "snippetEdit":
-                    //this.menu.items.items[ii].disable(true);
-                    break;
-                // Preview
-                case "snippetPreview":
-                    //this.menu.items.items[ii].disable(true);
-                    break;
-                // Approve
-                case "snippetApprove":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // Unapprove
-                case "snippetUnapprove":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // Clone
-                case "snippetClone":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // Delete
-                case "snippetDelete":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // Edit Draft
-                case "snippetDraftEdit":
-                    //this.menu.items.items[ii].disable(true);
-                    break;
-                // Preview Draft
-                case "snippetDraftPreview":
-                    //this.menu.items.items[ii].disable(true);
-                    break;
-                // Approve Draft
-                case "snippetDraftApprove":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // Discard Draft
-                case "snippetDraftDiscard":
-                    //this.menu.items.items[ii].disable(true);
-                    break;
-                    
-                // Design Studio > File Actions
-                // Upload Image or File
-                case "uploadImage":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // Grab Images from Web
-                case "grabFromWebPage":
-                    //this.menu.items.items[ii].disable(true);
-                    break;
-                // View
-                case "imagePreview":
-                    //this.menu.items.items[ii].disable(true);
-                    break;
-                // Delete
-                case "imageDelete":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // Replace Image or File
-                case "replaceImage":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                    
-                // Lead Database > New
-                // New Smart List
-                case "newSmartList":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // New List
-                case "newList":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // New Segmentation
-                case "newSegmentation":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // Import List
-                case "importList":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // New Lead
-                case "newLead":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // New Field Organizer
-                case "newDataMgr":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                
-                // Lead Database > Smart List / List Actions
-                // View Leads
-                case "navigateToMembership":
-                    //this.menu.items.items[ii].disable(true);
-                    break;
-                // View Smart List
-                case "navigateToSmartList":
-                    //this.menu.items.items[ii].disable(true);
-                    break;
-                // Filter View
-                case "navigateToFilterView":
-                    //this.menu.items.items[ii].disable(true);
-                    break;
-                // Show Import Status
-                case "showImportStatus":
-                    //this.menu.items.items[ii].disable(true);
-                    break;
-                // showExportStatus
-                case "showExportStatus":
-                    //this.menu.items.items[ii].disable(true);
-                    break;
-                // Import List
-                case "importList":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // Export List
-                case "exportList":
-                    //this.menu.items.items[ii].disable(true);
-                    break;
-                // Send via Ad Bridge
-                case "exportAdBridge":
-                    //this.menu.items.items[ii].disable(true);
-                    break;
-                // New Smart List Subscription
-                case "newSmartListReportSubscription":
-                    //this.menu.items.items[ii].disable(true);
-                    break;
-                // Clone Smart List
-                case "cloneSmartlist":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // Clone List
-                case "cloneList":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // Delete List
-                case "deleteList":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // Support Tools - History
-                case "showSupportHistory":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // Support Tools - Run Stats
-                case "showSupportUsagePerf":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // Processor Diagnostics
-                case "showSmartListProcessorDiag":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // Override Processor
-                case "showSmartListProcessorOverride":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                    
-                // Lead Database > Lead Actions
-                // View Lead Details
-                case "viewLeadDetails":
-                    //this.menu.items.items[ii].disable(true);
-                    break;
-                // BlackCat Diagnostics
-                case "blackCatDiag":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // Merge Leads
-                case "mergeLeads":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // Marketing
-                case "leadDbMenuFlowActions":
-                    //this.menu.items.items[ii].disable(true);
-                    break;
-                // Programs
-                case "programsFolder":
-                    //this.menu.items.items[ii].disable(true);
-                    break;
-                // Special
-                case "specialFolder":
-                    //this.menu.items.items[ii].disable(true);
-                    break;
-                // Salesforce
-                case "salesforceFolder":
-                    //this.menu.items.items[ii].disable(true);
-                    break;
-                    
-                // Lead Database > Segmentation Actions
-                // Create Draft
-                case "createDraftSegmentation":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // Edit Segments
-                case "editSegmentation":
-                    //this.menu.items.items[ii].disable(true);
-                    break;
-                // Approve
-                case "approveSegmentation":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // Unapprove
-                case "unapproveSegmentation":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // Delete
-                case "deleteSegmentation":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // Refresh Status
-                case "refreshSegmentation":
-                    //this.menu.items.items[ii].disable(true);
-                    break;
-                // Edit Segments
-                case "editDraftSegmentation":
-                    //this.menu.items.items[ii].disable(true);
-                    break;
-                // Approve Draft
-                case "approveDraftSegmentation":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // Discard Draft
-                case "discardDraftSegmentation":
-                    //this.menu.items.items[ii].disable(true);
-                    break;
-                default:
-                    break;
-                    
-                // Analytics > Report Actions
-                // Delete Report
-                case "deleteReport":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // Drill-Down
-                case "newDrillDown_atxCanvasOverview":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                    
-                // Analytics > Analyzer Actions
-                // Export Data
-                case "newReport_atxCanvasOverview":
-                    //this.menu.items.items[ii].disable(true);
-                    break;
-                // Delete Analyzer
-                case "deleteReport":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                
-                // Analytics > Model Actions
-                // Edit Draft
-                case "rcmEdit":
-                    //this.menu.items.items[ii].disable(true);
-                    break;
-                // Preview Model
-                case "rcmPreview":
-                    //this.menu.items.items[ii].disable(true);
-                    break;
-                // Approve Stages
-                case "rcmApproveStages":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // Unapprove Stages
-                case "rcmUnapproveStages":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // Approve Model
-                case "rcmApprove":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // Unapprove Model
-                case "rcmUnapprove":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // Clone Model
-                case "rcmClone":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // Delete Model
-                case "rcmDelete":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // Export Model
-                case "rcmExport":
-                    //this.menu.items.items[ii].disable(true);
-                    break;
-                // Edit Draft
-                case "rcmEditDraft":
-                    //this.menu.items.items[ii].disable(true);
-                    break;
-                // Preview Draft
-                case "rcmPreviewDraft":
-                    //this.menu.items.items[ii].disable(true);
-                    break;
-                // Approve Model Draft
-                case "rcmApproveDraft":
-                    this.menu.items.items[ii].disable(true);
-                    break;
-                // Discard Model Draft
-                case "rcmDiscardDraft":
-                    //this.menu.items.items[ii].disable(true);
-                    break;
-                // Assignment Rules
-                case "rcmAassignmentRules":
-                    this.menu.items.items[ii].disable(true);
-                    break;
+            this.parentMenu = parentMenu;
+            if (!this.el) {
+                this.render();
+            }
+            if (this.enableScrolling) {
+                this.el.setXY(xy);
+                xy[1] = this.constrainScroll(xy[1]);
+                xy = [this.el.adjustForConstraints(xy)[0], xy[1]];
+            }
+            else {
+                xy = this.el.adjustForConstraints(xy);
+            }
+            this.el.setXY(xy);
+            this.el.show();
+            Ext.menu.Menu.superclass.onShow.call(this);
+            if (Ext.isIE) {
+                this.fireEvent('autosize', this);
+                if (!Ext.isIE8) {
+                    this.el.repaint();
                 }
             }
+            this.hidden = false;
+            this.focus();
+            this.fireEvent('show', this);
         }
-            
-        this.showingMenu = true;
-        if (this.menu.xtra) {
-            delete this.menu.xtra;
-        }
-        this.menu.triggeredFrom = 'button';
-        this.fireEvent('beforemenushow', this.menu);
-        Mkt.widgets.ToolbarButton.superclass.showMenu.call(this);
-        this.showingMenu = false;
     }
+    
+    // Disable Marketing Activities > Social App > Actions menu
+	var prevSocialAppToolbar = Mkt3.controller.socialApp.SocialApp.prototype.loadToolbar;
+	Mkt3.controller.socialApp.SocialApp.prototype.loadToolbar = function(menu, attr) {
+        console.log ("Marketo App > Executing: Disabling Actions menu for Social Apps in Marketing Activities");
+		prevSocialAppToolbar.apply(this, arguments);
+
+		var disable = APP.evaluateMenu("socialAppToolbar", null, null, this),
+			mItems = Ext4.ComponentQuery.query(
+                /*"socialAppToolbar contextMenu [action=edit]," +*/ //Edit
+                /*"socialAppToolbar contextMenu [action=preview]," +*/ //Preview
+                "socialAppToolbar contextMenu [action=approve]," + //Approve
+                "socialAppToolbar contextMenu [action=clone]," + //Clone
+                "socialAppToolbar contextMenu [action=delete]," + //Delete
+                /*"socialAppToolbar contextMenu [action=getWidgetEmbedCode]," +*/ //Embed Code
+                /*"socialAppToolbar contextMenu [action=editDraft]," +*/ //Edit Draft
+                /*"socialAppToolbar contextMenu [action=previewDraft]," +*/ //Preview Draft
+                "socialAppToolbar contextMenu [action=approveDraft]," /*+*/ //Approve Draft
+                /*"socialAppToolbar contextMenu [action=discardDraft],"*/ //Discard Draft
+            );
+		
+		mItems.forEach(function(item) {
+			if (item) {
+				item.setDisabled(disable);
+			}
+		});
+        
+		return menu;
+	}
+    
+    // Disable Marketing Activities > Push Notification > Actions menu
+	var prevMobilePushNotificationToolbar = Mkt3.controller.mobilePushNotification.MobilePushNotification.prototype.loadToolbar;
+	Mkt3.controller.mobilePushNotification.MobilePushNotification.prototype.loadToolbar = function(menu, attr) {
+        console.log ("Marketo App > Executing: Disabling Actions menu for Push Notifications in Marketing Activities");
+		prevMobilePushNotificationToolbar.apply(this, arguments);
+
+		var disable = APP.evaluateMenu("mobilePushNotification", null, null, this),
+			mItems = Ext4.ComponentQuery.query(
+                /*"mobilePushNotification contextMenu [action=edit]," +*/ //Edit
+                /*"mobilePushNotification contextMenu [action=sendSample]," +*/ //Send Sample
+                "mobilePushNotification contextMenu [action=approve]," + //Approve
+                "mobilePushNotification contextMenu [action=unapprove]," + //Unapprove
+                "mobilePushNotification contextMenu [action=clone]," + //Clone
+                "mobilePushNotification contextMenu [action=delete]," + //Delete
+                /*"mobilePushNotification contextMenu [action=editDraft]," +*/ //Edit Draft
+                /*"mobilePushNotification contextMenu [action=sendDraftSample]," +*/ //Send Sample of Draft
+                "mobilePushNotification contextMenu [action=approveDraft]," /*+*/ //Approve Draft
+                /*"mobilePushNotification contextMenu [action=discardDraft],"*/ //Discard Draft
+            );
+		
+		mItems.forEach(function(item) {
+			if (item) {
+				item.setDisabled(disable);
+			}
+		});
+        
+		return menu;
+	}
+}
+
+/**************************************************************************************
+ *  
+ *  This function hides Toolbar items for all asset types in all areas.
+ *
+ *  @Author Brian Fisher
+ *
+ *  @function
+ *
+ **************************************************************************************/
+
+APP.hideToolbarItems = function() {
+    console.log("Marketo App > Hiding: Toolbar Items");
+    
+    // Disable ALL areas > ALL assets > ALL Toolbar items except for Smart Campaigns, Smart Lists, Lists, Social Apps, and Push Notifications
+    Ext.layout.ContainerLayout.prototype.renderItem = function (c, position, target) {
+        if (c
+        && c.topToolbar
+        && c.topToolbar.items) {
+            console.log("Marketo App > Executing: Disabling Toolbar items for ALL in ALL");
+            
+            var mItems = this.items,
+                canvas = MktCanvas.getActiveTab(),
+                visible = !APP.evaluateMenu("button", null, canvas, null),
+                itemsToHide = [
+                
+                    // Global > Programs, Analyzers, and Reports > Setup
+                    //"editItem",//Edit
+                    "deleteItem",//Delete
+                    
+                    // Global > Analyzers & Reports > Subscriptions
+                    //"newSubscription_atxCanvasSubscriptions",//New Report Subscription
+                    //"deleteSubscription_atxCanvasSubscriptions",//Delete Subscription
+                    
+                    // Global > Form
+                    //"formEdit_landingFODetail",//Edit Form
+                    
+                    // Global > Landing Page
+                    //"pageEdit_landingLPDetail",//Edit Draft
+                    //"pagePreview_landingLPDetail",//Preview Page
+                    
+                    // Global > Email
+                    //"emailEdit_landingEMDetail",//Edit Draft
+                    //"emailPreview_landingEMDetail",//Preview Email
+                    "gotoDeliverability_landingEMDetail",//Deliverability Tools
+                    
+                    // Marketing Activities > Programs & Folders > My Tokens
+                    //"editCustomToken",//Edit Token
+                    "deleteCustomToken",//Delete Token
+                    
+                    // Marketing Activities > Programs > Members
+                    "importMembers",//Import Members
+                    
+                    // Design Studio > Forms (System Folder)
+                    //"formEdit_landingCanvasFO",//Edit Form
+                    
+                    // Design Studio > Landing Pages (System Folder)
+                    //"pageEdit_landingCanvasLP",//Edit Draft
+                    //"pagePreview_landingCanvasLP",//Preview Page
+                    
+                    // Design Studio > Landing Page Templates (System Folder)
+                    //"pageTemplateEditDraft_landingCanvasTM",//Edit Draft
+                    //"pageTemplatePreview_landingCanvasTM",//Preview Template
+                    "importTemplate_landingCanvasTM",//Import Template
+                    
+                    // Design Studio > Landing Page Template
+                    //"pageTemplateEditDraft_landingTMDetail",//Edit Draft
+                    //"pageTemplatePreview_landingTMDetail",//Preview Template
+                    "importTemplate_landingTMDetail",//Import Template
+                    
+                    // Design Studio > Emails (System Folder)
+                    //"emailEdit_landingCanvasEM",//Edit Draft
+                    //"emailPreview_landingCanvasEM",//Preview Email
+                    "gotoDeliverability_landingCanvasEM",//Deliverability Tools
+                    
+                    // Design Studio > Email Templates (System Folder)
+                    //"emailTemplateEdit_emailTemplates",//Edit Draft
+                    //"emailTemplatePreview_emailTemplates",//Preview Template
+                    
+                    // Design Studio > Email Template
+                    //"emailTemplateEdit_EMTemplateDetail",//Edit Draft
+                    //"emailTemplatePreview_EMTemplateDetail",//Preview Template
+                    
+                    // Design Studio > Snippets (System Folder)
+                    //"snippetEdit_landingCanvasSnippet",//Edit Draft
+                    //"snippetPreview_landingCanvasSnippet",//Preview Snippet
+                    
+                    // Design Studio > Snippet
+                    //"snippetEdit_snippetDetail",//Edit Draft
+                    //"snippetPreview_snippetDetail",//Preview Snippet
+                    
+                    // Design Studio > Images and Files
+                    "imageUpload_landingCanvasIM",//Upload Image or File
+                    "imageReplace_landingCanvasIM",//Replace Image or File
+                    
+                    // Analytics > Model
+                    //"editDraft_rcmCanvasOverview",//Edit Draft
+                    //"previewModel_rcmCanvasOverview",//Preview Model
+                ];
+            
+            itemsToHide.forEach(function(itemToHide) {
+                var item = c.topToolbar.items.get(itemToHide);
+                if (item) {
+                    if (itemToHide == "gotoDeliverability_landingEMDetail") {
+                        item.setVisible(false);
+                    }
+                    else {
+                        item.setVisible(visible);
+                    }
+                }
+            });
+        }
+        
+        if (c) {
+            if (!c.rendered) {
+                c.render(target, position);
+                this.configureItem(c, position);
+            }
+            else if (!this.isValidParent(c, target)) {
+                if (Ext.isNumber(position)) {
+                    position = target.dom.childNodes[position];
+                }
+                
+                target.dom.insertBefore(c.getPositionEl().dom, position || null);
+                c.container = target;
+                this.configureItem(c, position);
+            }
+        }
+    }   
 }
 
 /**************************************************************************************
@@ -4091,9 +2778,7 @@ APP.limitNurturePrograms = function() {
                 },
                 undefined, [compType]);
 
-        var userId = MktPage.userid.toLowerCase();
-        // ROBERT FRANKS NEEDS THIS LIFTED
-        if (matches.length >= 5 && userId !== "rfranks.demo@marketo.com") {
+        if (matches.length >= 3) {
             limit_exceeded = true;
         }
 
@@ -4565,7 +3250,9 @@ if (currentUrl.search(mktoAppDomain) != -1
                     
                     APP.overrideTreeNodeExpand();
                     APP.overrideTreeNodeCollapse();
+                    APP.disableDragAndDrop();
                     APP.disableMenus();
+                    APP.hideToolbarItems();
                     APP.overrideSmartCampaignSaving();
                     APP.overrideSmartCampaignCanvas();
                     APP.overrideNewProgramCreate();
