@@ -3003,8 +3003,8 @@ APP.overlayEmailDesigner = function() {
             logoSwapCompany = document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("logo-swap-company"),
 //        console.log("Marketo App > Logo Element:");
 //        console.log(logoSwapCompany);
-            logoSwapContainer = document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("logo-swap-container");
-//            logoSwapCompanyContainer = document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("logo-swap-company-container");
+            logoSwapContainer = document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("logo-swap-container"),
+            logoSwapCompanyContainer = document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("logo-swap-company-container");
         
         if (logoBkg != null &&
             logoSwapCompany != null &&
@@ -3012,8 +3012,8 @@ APP.overlayEmailDesigner = function() {
             console.log("Marketo App > Overlaying: iframe");
             window.clearInterval(isEmailIframeElement);
             
-//            logoSwapContainer.style.display = "none";
-//            logoSwapCompanyContainer.style.display = "block";
+            logoSwapContainer.style.display = "none";
+            logoSwapCompanyContainer.style.display = "block";
 //            logoBkg.style.backgroundColor = color;
 //            buttonBkg.style.backgroundColor = color;
             logoSwapCompany.src = logo;
