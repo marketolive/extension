@@ -525,8 +525,8 @@ APP.overrideAnalyticsTiles = function() {
 /**************************************************************************************
  *  
  *  This function overrides the save function of Smart Campaigns in order to disable   
- *  saving within the Default Workspace at all times and within the Marketing Worksapce 
- *  if edit privileges is false
+ *  saving within the Default Workspace at all times and within My Worksapce if the 
+ *  Smart Campaign is NOT within the user's root folder or if edit privileges is false
  *
  *  @Author Brian Fisher
  *
@@ -714,6 +714,50 @@ APP.overrideSmartCampaignCanvas = function() {
             MktCanvas.addHook(this.canvas, {
                 dp: this
             });
+        }
+    }
+}
+
+/**************************************************************************************
+ *  
+ *  This function overrides the updatePortletOrder function of Program > Assets tab in 
+ *  order to disable reordering of asset portlets within the Default Workspace at all 
+ *  times and within My Worksapce if the Program is NOT within the user's root folder
+ *
+ *  @Author Brian Fisher
+ *
+ *  @function
+ *
+ **************************************************************************************/
+
+APP.overrideUpdatePortletOrder = function() {
+    console.log("Marketo App > Overriding: Updating of Portlet Order");
+
+    Mkt.apps.localasset.LocalAssetPortal.prototype.updatePortletOrder = function (e) {
+        var canvas = MktCanvas.getActiveTab(),
+            disable = APP.evaluateMenu("button", null, canvas, null);
+        if (!disable) {
+            // Gets the current portlet order array
+            var newPortletOrder = [];
+            for (var i = 0; i < this.items.length; i++) {
+                var itemInfo = this.items.get(i).smartCampaignMetaData;
+                newPortletOrder.push(itemInfo.compTypeId + ":" + itemInfo.compId);
+            }
+            
+            // Save the current order on the server
+            var params = {
+                compId : this.programId,
+                portletOrdering : Ext.encode(newPortletOrder)
+            };
+            MktSession.ajaxRequest('marketingEvent/orderLocalAssetPortlets', {
+                serializeParms : params,
+                localAssetManager : this,
+                portletOrdering : newPortletOrder,
+                onMySuccess : this.updatePortletOrderSuccess
+            });
+        }
+        else {
+            console.log("Marketo App > Disabling: Updating of Portlet Order");
         }
     }
 }
