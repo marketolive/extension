@@ -4729,6 +4729,9 @@ if (currentUrl.search(mktoAppDomain) != -1
                         customCompanyEmail106Fragment = "EME15464",
                         customCompanyEmail106aFragment = "EME14240",
                         customCompanyEmail106bFragment = "EME13924",
+                        customCompanyHealthcareFragment = "EME18656",
+                        customCompanyFinservFragment = "EME19059",
+                        customCompanyHigherEdFragment = "EME17725",
                         loadParameters = {
                             filters: [{
                                 property: 'id',
@@ -4757,6 +4760,9 @@ if (currentUrl.search(mktoAppDomain) != -1
                             // Overlay Email Designer w/ Company Logo and Color
                             switch (currUrlFragment) {
                                 case customCompanyEmail106Fragment:
+                                case customCompanyHealthcareFragment:
+                                case customCompanyFinservFragment:
+                                case customCompanyHigherEdFragment:
                                     APP.overlayEmailDesigner();
                                     break;
                                 case customCompanyEmail106aFragment:
