@@ -2987,8 +2987,6 @@ APP.overlayEmailDesigner = function() {
 
     var logo = APP.getCookie("logo"),
         color = APP.getCookie("color");
-    
-    console.log("Marketo App > Logo Cookie is: "+logo);
 
     if (logo == null) {
         logo = defaultTurnerLogoWhite;
@@ -2999,23 +2997,21 @@ APP.overlayEmailDesigner = function() {
 
     var isEmailIframeElement = window.setInterval(function() {
         var logoBkg = document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("logo-bkg"),
-//            buttonBkg = document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("button-bkg"),
+            buttonBkg = document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("button-bkg"),
             logoSwapCompany = document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("logo-swap-company"),
-//        console.log("Marketo App > Logo Element:");
-//        console.log(logoSwapCompany);
             logoSwapContainer = document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("logo-swap-container"),
             logoSwapCompanyContainer = document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("logo-swap-company-container");
         
-        if (logoBkg != null &&
-            logoSwapCompany != null &&
-            logoSwapContainer != null) {
+        if (logoBkg != null
+		&& buttonBkg != null
+		&& logoSwapCompany != null) {
             console.log("Marketo App > Overlaying: iframe");
             window.clearInterval(isEmailIframeElement);
             
             logoSwapContainer.style.display = "none";
             logoSwapCompanyContainer.style.display = "block";
-//            logoBkg.style.backgroundColor = color;
-//            buttonBkg.style.backgroundColor = color;
+            logoBkg.style.backgroundColor = color;
+            buttonBkg.style.backgroundColor = color;
             logoSwapCompany.src = logo;
         }
     }, 0);
@@ -3252,8 +3248,6 @@ if (currentUrl.search(mktoAppDomain) != -1
                 && currUrlFragment.search("^" + mktoMobilePushNotificationWizardFragment) == -1 
                 && currUrlFragment.search("^" + mktoSocialAppWizardFragment) == -1) {
                     
-                    console.log("Marketo App > Not On a Designer Page");
-                    
                     APP.overrideTreeNodeExpand();
                     APP.overrideTreeNodeCollapse();
                     APP.disableDragAndDrop();
@@ -3422,9 +3416,6 @@ if (currentUrl.search(mktoAppDomain) != -1
                         customCompanyEmail106Fragment = "EME15464",
                         customCompanyEmail106aFragment = "EME14240",
                         customCompanyEmail106bFragment = "EME13924",
-                        customCompanyHealthcareFragment = "EME18656",
-                        customCompanyFinservFragment = "EME19059",
-                        customCompanyHigherEdFragment = "EME17725",
                         loadParameters = {
                             filters: [{
                                 property: 'id',
@@ -3453,15 +3444,6 @@ if (currentUrl.search(mktoAppDomain) != -1
                             // Overlay Email Designer w/ Company Logo and Color
                             switch (currUrlFragment) {
                                 case customCompanyEmail106Fragment:
-                                    APP.overlayEmailDesigner();
-                                    break;
-                                case customCompanyHealthcareFragment:
-                                    APP.overlayEmailDesigner();
-                                    break;
-                                case customCompanyFinservFragment:
-                                    APP.overlayEmailDesigner();
-                                    break;
-                                case customCompanyHigherEdFragment:
                                     APP.overlayEmailDesigner();
                                     break;
                                 case customCompanyEmail106aFragment:
