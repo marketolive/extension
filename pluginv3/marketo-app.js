@@ -1701,7 +1701,7 @@ APP.hidePageGrid = function() {
     console.log("Marketo App > Hiding: Page Grid via Override");
     
     MktGrids.CanvasGridPanel.prototype.loadPagedGrid = function() {
-        if (MktCanvas.activeTab.config.accessZoneId == mktoMarketingWorkspaceId) {
+        if (MktCanvas.getActiveTab().config.accessZoneId == mktoMarketingWorkspaceId) {
             switch (this.canvas) {
                 // Design Studio > Landing Pages
                 case "landingCanvasLP":
@@ -2815,7 +2815,7 @@ APP.limitNurturePrograms = function() {
             node = rootNode.cascade(function() {
                     var attr = this.attributes;
                     if (attr && attr.xtra) {
-                        if (attr.xtra.compType == compType && attr.xtra.accessZoneId == MktCanvas.activeTab.config.accessZoneId) {
+                        if (attr.xtra.compType == compType && attr.xtra.accessZoneId == MktCanvas.getActiveTab().config.accessZoneId) {
                             matches.push(this);
                         }
                     }
@@ -2888,6 +2888,114 @@ APP.injectAnalyzerNavBar = function() {
             }
         }
     }, 0);
+}
+
+/**************************************************************************************
+ *  
+ *  This function overrides the function for saving additions and deletions to Nurture 
+ *  Streams.
+ *
+ *  @Author Brian Fisher
+ *
+ *  @function
+ *
+ **************************************************************************************/
+
+APP.overrideSaving = function() {
+    console.log("Marketo App > Overriding: Saving for Nurture Streams");
+
+    Mkt3.data.Store.prototype.sync = function() {
+        var disable;
+        if (MktCanvas
+        && MktCanvas.getActiveTab()
+        && APP.getCookie("priv") != "false") {
+            disable = APP.evaluateMenu("button", null, MktCanvas.getActiveTab(), null);
+        }
+        else if (APP.getCookie("priv") == "false") {
+            disable = true;
+        }
+        
+        if (!disable) {
+            if (this.autoSyncSuspended) {
+                this.autoSync = true;
+                this.autoSyncSuspended = false;
+            }
+
+            if (this.getProxy() instanceof Mkt3.data.proxy.AjaxPost) {
+                Mkt3.Synchronizer.sync(this);
+            }
+            else {
+                this.callParent(arguments);
+            }
+        }
+        else {
+            console.log("Marketo App > Disabling: Saving for Nurture Streams (sync)");
+        }
+    }
+
+    Ext4.data.Model.prototype.destroy = function(options) {
+        var disable;
+        if (MktCanvas
+        && MktCanvas.getActiveTab()
+        && APP.getCookie("priv") != "false") {
+            disable = APP.evaluateMenu("button", null, MktCanvas.getActiveTab(), null);
+        }
+        else if (APP.getCookie("priv") == "false") {
+            disable = true;
+        }
+        
+        if (!disable) {
+            options = Ext.apply({
+                records: [this],
+                action: 'destroy'
+            }, options);
+
+            var me = this,
+                isNotPhantom = me.phantom !== true,
+                scope = options.scope || me,
+                stores = me.stores,
+                i = 0,
+                storeCount,
+                store,
+                args,
+                operation,
+                callback;
+
+            operation = new Ext.data.Operation(options);
+
+            callback = function(operation) {
+                args = [me, operation];
+                if (operation.wasSuccessful()) {
+                    for (storeCount = stores.length; i < storeCount; i++) {
+                        store = stores[i];
+                        store.remove(me, true);
+                        if (isNotPhantom) {
+                            store.fireEvent('write', store, operation);
+                        }
+                    }
+                    me.clearListeners();
+                    Ext.callback(options.success, scope, args);
+                }
+                else {
+                    Ext.callback(options.failure, scope, args);
+                }
+                Ext.callback(options.callback, scope, args);
+            };
+
+            if (isNotPhantom) {
+                me.getProxy().destroy(operation, callback, me);
+            }
+            else {
+                operation.complete = operation.success = true;
+                operation.resultSet = me.getProxy().reader.nullResultSet;
+                callback(operation);
+            }
+            return me;
+        }
+        else {
+            console.log("Marketo App > Disabling: Saving for Nurture Streams (destroy)");
+        }
+    }
 }
 
 /**************************************************************************************
@@ -3244,7 +3352,7 @@ if (currentUrl.search(mktoAppDomain) != -1
                     }
                 }
 
-                var prevWorkspaceId,
+                var //prevWorkspaceId,
                     japanWorkspaceId = 173,
                     oppInfluenceAnalyzerFragment = "AR1559A1!",
                     programAnalyzerFragment = "AR1544A1!",
@@ -3295,6 +3403,7 @@ if (currentUrl.search(mktoAppDomain) != -1
                     APP.overrideTreeNodeExpand();
                     APP.overrideTreeNodeCollapse();
                     APP.disableDragAndDrop();
+                    APP.overrideSaving();
                     APP.disableMenus();
                     APP.hideToolbarItems();
                     APP.overrideSmartCampaignSaving();
@@ -3310,21 +3419,20 @@ if (currentUrl.search(mktoAppDomain) != -1
                     APP.disableConfirmationMessage();
                     
                     // Storing previous Workspace ID
+                    /*
                     if (currUrlFragment != mktoMyMarketoFragment) {
 						var isMktCanvas = window.setInterval(function() {
-							if (MktCanvas.activeTab !== null) {
-								console.log("Marketo App > Location: Marketo Canvas");
+							if (MktCanvas
+                            && MktCanvas.getActiveTab()
+                            && MktCanvas.getActiveTab().config) {
+								console.log("Marketo App > Location: Marketo Canvas Active Tab");
 								
                                 window.clearInterval(isMktCanvas);
-								prevWorkspaceId = MktCanvas.activeTab.config.accessZoneId;
-								if (prevWorkspaceId == 1
-                                || prevWorkspaceId == japanWorkspaceId) {
-									// Intelligent Nurturing
-									APP.disableSaving();
-								}
+								prevWorkspaceId = MktCanvas.getActiveTab().config.accessZoneId;
 							}
 						}, 0);
 					}
+                    */
 
                     // Marketing ROI, Funnel Analysis
                     if (currUrlFragment == oppInfluenceAnalyzerFragment
@@ -3549,29 +3657,21 @@ if (currentUrl.search(mktoAppDomain) != -1
 					&& currUrlFragment.search("^" + mktoMobilePushNotificationWizardFragment) == -1
 					&& currUrlFragment.search("^" + mktoSocialAppWizardFragment) == -1
 					&& currUrlFragment != mktoMyMarketoFragment) {
-
+                        /*
                         var isMktCanvasHash = window.setInterval(function() {
-							if (MktCanvas.activeTab !== null) {
-								console.log("Marketo App > Location: Marketo Canvas");
+							if (MktCanvas
+                            && MktCanvas.getActiveTab()
+                            && MktCanvas.getActiveTab().config) {
+								console.log("Marketo App > Location: Marketo Canvas Active Tab");
 								
 								window.clearInterval(isMktCanvasHash);
-								var currWorkspaceId = MktCanvas.activeTab.config.accessZoneId;
-								if (currWorkspaceId == prevWorkspaceId) {
-								}
-								else if (currWorkspaceId == 1 || currWorkspaceId == japanWorkspaceId) {
-									// Intelligent Nurturing
-									APP.disableSaving();
-									prevWorkspaceId = currWorkspaceId;
-								} 
-								else {
-									// Enable Smart Campaign & Nurture Stream Saving for their Workspace
-									if (APP.getCookie("priv") != "false") {
-										APP.enableSaving();
-									}
-									prevWorkspaceId = currWorkspaceId;
+								var currWorkspaceId = MktCanvas.getActiveTab().config.accessZoneId;
+								if (currWorkspaceId != prevWorkspaceId) {
+                                    prevWorkspaceId = currWorkspaceId
 								}
 							}
 						}, 0);
+                        */
 
                         // Marketing ROI, Funnel Analysis
                         if (currUrlFragment == oppInfluenceAnalyzerFragment
