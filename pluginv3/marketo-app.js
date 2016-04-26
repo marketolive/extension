@@ -2656,6 +2656,175 @@ APP.disableMenus = function() {
         
 		return menu;
 	}
+    
+    // Disable Marketing Activities > Nurture Program > Stream & Content Actions menus
+    Ext4.Component.prototype.showAt = function (x, y, animate) {
+        var me = this;
+        if (!me.rendered
+        && (me.autoRender
+            || me.floating)) {
+            
+            me.doAutoRender();
+            me.hidden = true
+        }
+        if (me.floating) {
+            me.setPosition(x, y, animate)
+        }
+        else {
+            me.setPagePosition(x, y, animate)
+        }
+        me.show()
+        
+        if (MktCanvas
+        && MktCanvas.getActiveTab()) {
+            var ii,
+                disable = APP.evaluateMenu("button", null, MktCanvas.getActiveTab(), null);
+            for (ii = 0; ii < me.items.items.length; ii++) {
+                switch (me.items.items[ii].action) {
+                    
+                    // Marketing Activities > Nurture Program > Stream Actions
+                    // Edit Name
+                    case "edit":
+                        //me.items.items[ii].setDisabled(disable);
+                        break;
+                    // Clone
+                    case "clone":
+                        me.items.items[ii].setDisabled(disable);
+                        break;
+                    // Activate all content
+                    case "activateAllContent":
+                        //me.items.items[ii].setDisabled(disable);
+                        break;
+                    // Show archived content
+                    case "showArchivedContent":
+                        //me.items.items[ii].setDisabled(disable);
+                        break;
+                    // Hide archived content
+                    case "hideArchivedContent":
+                        //me.items.items[ii].setDisabled(disable);
+                        break;
+                    // Edit Transition Rules
+                    case "editTransitionRules":
+                        //me.items.items[ii].setDisabled(disable);
+                        break;
+                    // Delete
+                    case "delete":
+                        me.items.items[ii].setDisabled(disable);
+                        break;
+                    
+                    // Marketing Activities > Nurture Program > Content Actions
+                    // All //
+                    // Activate
+                    case "activate":
+                        //me.items.items[ii].setDisabled(disable);
+                        break;
+                    // Deactivate
+                    case "deactivate":
+                        //me.items.items[ii].setDisabled(disable);
+                        break;
+                    // Edit Availability
+                    case "schedule":
+                        //me.items.items[ii].setDisabled(disable);
+                        break;
+                    // Archive
+                    case "archive":
+                        me.items.items[ii].setDisabled(disable);
+                        break;
+                    // Unarchive
+                    case "unarchive":
+                        me.items.items[ii].setDisabled(disable);
+                        break;
+                    // Remove
+                    case "remove":
+                        //me.items.items[ii].setDisabled(disable);
+                        break;
+                    // Email //
+                    // Edit Draft
+                    case "emailEditDraft":
+                        //me.items.items[ii].setDisabled(disable);
+                        break;
+                    // Preview
+                    case "emailPreview":
+                        //me.items.items[ii].setDisabled(disable);
+                        break;
+                    // Approve
+                    case "emailApproveDraft":
+                        me.items.items[ii].setDisabled(disable);
+                        break;
+                    // Send Sample
+                    case "emailSendTest":
+                        //me.items.items[ii].setDisabled(disable);
+                        break;
+                    // Go to Email
+                    case "goToEmail":
+                        //me.items.items[ii].setDisabled(disable);
+                        break;
+                    // Email Draft //
+                    // Edit Draft
+                    case "emailEditDraft":
+                        //me.items.items[ii].setDisabled(disable);
+                        break;
+                    // Preview Draft
+                    case "emailPreviewDraft":
+                        //me.items.items[ii].setDisabled(disable);
+                        break;
+                    // Send Sample of Draft
+                    case "emailSendTestOfDraft":
+                        //me.items.items[ii].setDisabled(disable);
+                        break;
+                    // Approve Draft
+                    case "emailApproveDraft":
+                        me.items.items[ii].setDisabled(disable);
+                        break;
+                    // Program //
+                    // View Assets
+                    case "programViewAssets":
+                        //me.items.items[ii].setDisabled(disable);
+                        break;
+                    // View Setup
+                    case "programViewSetup":
+                        //me.items.items[ii].setDisabled(disable);
+                        break;
+                    // View My Tokens
+                    case "programViewTokens":
+                        //me.items.items[ii].setDisabled(disable);
+                        break;
+                    // View Members
+                    case "programViewMembers":
+                        //me.items.items[ii].setDisabled(disable);
+                        break;
+                    // Go to Program
+                    case "goToProgram":
+                        //me.items.items[ii].setDisabled(disable);
+                        break;
+                    // Push Notification //
+                    // Edit Draft
+                    case "mobilePushEditDraft":
+                        //me.items.items[ii].setDisabled(disable);
+                        break;
+                    // Preview
+                    case "mobilePushPreview":
+                        //me.items.items[ii].setDisabled(disable);
+                        break;
+                    // Approve
+                    case "mobilePushApprove":
+                        me.items.items[ii].setDisabled(disable);
+                        break;
+                    // Send Sample
+                    case "mobilePushSendTest":
+                        //me.items.items[ii].setDisabled(disable);
+                        break;
+                    // Go to Push Notification
+                    case "goToPushNotification":
+                        //me.items.items[ii].setDisabled(disable);
+                        break;
+                    
+                    default:
+                        break;
+                }
+            }
+        }
+    }
 }
 
 /**************************************************************************************
