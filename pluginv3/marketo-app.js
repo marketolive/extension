@@ -2987,6 +2987,8 @@ APP.overlayEmailDesigner = function() {
 
     var logo = APP.getCookie("logo"),
         color = APP.getCookie("color");
+    
+    console.log("Marketo App > Logo Cookie is: "+logo);
 
     if (logo == null) {
         logo = defaultTurnerLogoWhite;
@@ -2999,6 +3001,8 @@ APP.overlayEmailDesigner = function() {
 //        var logoBkg = document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("logo-bkg"),
 //            buttonBkg = document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("button-bkg"),
         var logoSwapCompany = document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("logo-swap-company");
+        console.log("Marketo App > Logo Element:");
+        console.log(logoSwapCompany);
 //            logoSwapContainer = document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("logo-swap-container"),
 //            logoSwapCompanyContainer = document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("logo-swap-company-container");
         
