@@ -32,8 +32,8 @@ var currentUrl = window.location.href,
     mktoDesignerMatch = "https://*.marketodesigner.com/*",
     mktoEmailDesigner = mktoDesignerDomain + "/ds",
     mktoLandingPageDesigner = mktoDesignerDomain + "/lpeditor/",
-    defaultTurnerLogoGreen = "http://marketolive.com/m3/assets/img/turner-tech-green.png",
-    defaultTurnerLogoWhite = "http://marketolive.com/m3/assets/img/turner-tech-white.png",
+    defaultTurnerLogoGreen = "http://marketolive.com/m3-dev/assets/img/turner-tech-green.png",
+    defaultTurnerLogoWhite = "http://marketolive.com/m3-dev/assets/img/turner-tech-white.png",
     defaultColor = "rgb(42, 83, 112)",
     mktoWizard = mktoAppDomain + "/m#",
     rtpDemoDomain = "^http:\/\/sjrtp1.marketo.com\/demo\/$|^http:\/\/cloud4.insightera.com\/demo\/$",
@@ -3374,15 +3374,20 @@ if (currentUrl.search(mktoAppDomain) != -1
                 else if (currUrlFragment.search("^" + mktoLandingPageDesignerFragment) != -1) {
                     console.log("Marketo App > Location: Landing Page Designer");
 
-                    var customCompanyLandingPage106Fragment = "LPE11826",
+                    var currAssetZoneId,
+                        customCompanyLandingPage106Fragment = "LPE11826",
                         customCompanyLandingPagePreview106Fragment = "LPP11826",
+                        landingPageResponsive = "LPE11822";
                         customCompanyLandingPage106aFragment = "LPE10672",
                         customCompanyLandingPagePreview106aFragment = "LPP10672",
                         customCompanyLandingPage106bFragment = "LPE10768",
-                        customCompanyLandingPagePreview106bFragment = "LPP10768";
-                    // Disabling System Error Message for sync conflicts
-                    APP.disableSyncErrorMessage();
+                        customCompanyLandingPagePreview106bFragment = "LPP10768",
+                        japanLPOne = "LPE11856",
+                        japanLPTwo = "LPE11548",
+                        japanLPThree = "LPE11546";
                     
+                    // Disabling System Error Message for sync conflicts
+                    APP.disableSyncErrorMessage();                    
                     // Overlay Landing Page Designer w/ company logo and color
                     switch (currUrlFragment) {
                         case customCompanyLandingPage106Fragment:
@@ -3403,6 +3408,12 @@ if (currentUrl.search(mktoAppDomain) != -1
                         case customCompanyLandingPagePreview106bFragment:
                             APP.overlayLandingPageDesigner();
                             break;
+//                        case landingPageResponsive:
+//                        case japanLPOne:
+//                        case japanLPTwo:
+//                        case japanLPThree:
+//                            APP.disableSaving();
+//                            break;
                         default:
                             break;
                     }
