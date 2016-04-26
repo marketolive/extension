@@ -3298,7 +3298,8 @@ if (currentUrl.search(mktoAppDomain) != -1
                     APP.disableMenus();
                     APP.hideToolbarItems();
                     APP.overrideSmartCampaignSaving();
-                    APP.overrideSmartCampaignCanvas();
+                    //APP.overrideSmartCampaignCanvas();
+                    APP.overrideUpdatePortletOrder();
                     APP.overrideNewProgramCreate();
                     APP.overrideAssetSaveEdit();
                     APP.overrideNewAssetCreate();
