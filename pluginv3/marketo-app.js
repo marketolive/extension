@@ -3324,7 +3324,7 @@ APP.overlayEmailDesigner = function() {
             logoSwapCompanyContainer = document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("logo-swap-company-container");
         
         if (logoBkg != null
-		&& buttonBkg != null
+//		&& buttonBkg != null
 		&& logoSwapCompany != null) {
             console.log("Marketo App > Overlaying: iframe");
             window.clearInterval(isEmailIframeElement);
