@@ -450,17 +450,17 @@ APP.overrideAnalyticsTiles = function() {
                             break;
 
                         case "Opportunity Influence Analyzer":
-                            currTileHTML = '<a href="' + host + '/#AR1559A1!">' + currTileHTML + '</a>';
+                            currTileHTML = '<a href="' + host + '/#AR1559A1">' + currTileHTML + '</a>';
                             MktCanvas.getActiveTab().el.dom.childNodes[0].childNodes[1].childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[ii].outerHTML = currTileHTML;
                             break;
 
                         case "Program Analyzer":
-                            currTileHTML = '<a href="' + host + '/#AR1544A1!">' + currTileHTML + '</a>';
+                            currTileHTML = '<a href="' + host + '/#AR1544A1">' + currTileHTML + '</a>';
                             MktCanvas.getActiveTab().el.dom.childNodes[0].childNodes[1].childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[ii].outerHTML = currTileHTML;
                             break;
 
                         case "Success Path Analyzer":
-                            currTileHTML = '<a href="' + host + '/#AR1682A1!">' + currTileHTML + '</a>';
+                            currTileHTML = '<a href="' + host + '/#AR1682A1">' + currTileHTML + '</a>';
                             MktCanvas.getActiveTab().el.dom.childNodes[0].childNodes[1].childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[ii].outerHTML = currTileHTML;
                             break;
 
