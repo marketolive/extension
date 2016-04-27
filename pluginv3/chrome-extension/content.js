@@ -221,7 +221,7 @@ window.onload = function() {
         || currentUrl.search(push106bFragment) != -1) {
             console.log("Content > Location: Asset with Nav Bar");
             
-            Analyzer.prototype.showAssets();
+            //Analyzer.prototype.showAssets();
         }
     }
 	

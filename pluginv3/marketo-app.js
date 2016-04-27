@@ -54,6 +54,7 @@ var currentUrl = window.location.href,
     mktoFormWizardFragment = "FOE",
     mktoMobilePushNotificationWizardFragment = "MPNE",
     mktoSocialAppWizardFragment = "SOAE",
+    mktoABtestWizardFragment = "EBE",
     mktoMarketingWorkspaceId = 172,
     mktoJapaneseWorkspaceId = 173,
     userWorkspaceName = "My Workspace",
@@ -3562,12 +3563,13 @@ if (currentUrl.search(mktoAppDomain) != -1
 
                 // Only execute this block if the user is not on an editor page.
                 if (currUrlFragment.search("^" + mktoEmailDesignerFragment) == -1
-                && currUrlFragment.search("^" + mktoEmailPreviewFragment)
+                && currUrlFragment.search("^" + mktoEmailPreviewFragment) == -1
                 && currUrlFragment.search("^" + mktoLandingPageDesignerFragment) == -1
                 && currUrlFragment.search("^" + mktoLandingPagePreviewFragment) == -1
                 && currUrlFragment.search("^" + mktoFormWizardFragment) == -1 
                 && currUrlFragment.search("^" + mktoMobilePushNotificationWizardFragment) == -1 
-                && currUrlFragment.search("^" + mktoSocialAppWizardFragment) == -1) {
+                && currUrlFragment.search("^" + mktoSocialAppWizardFragment) == -1
+                && currUrlFragment.search("^" + mktoABtestWizardFragment) == -1) {
                     
                     APP.overrideTreeNodeExpand();
                     APP.overrideTreeNodeCollapse();
@@ -3833,10 +3835,13 @@ if (currentUrl.search(mktoAppDomain) != -1
                     }
 
                     if (currUrlFragment.search("^" + mktoEmailDesignerFragment) == -1
-					&& currUrlFragment.search("^" + mktoLandingPageDesignerFragment) == -1
-					&& currUrlFragment.search("^" + mktoFormWizardFragment) == -1
-					&& currUrlFragment.search("^" + mktoMobilePushNotificationWizardFragment) == -1
-					&& currUrlFragment.search("^" + mktoSocialAppWizardFragment) == -1
+                    && currUrlFragment.search("^" + mktoEmailPreviewFragment) == -1
+                    && currUrlFragment.search("^" + mktoLandingPageDesignerFragment) == -1
+                    && currUrlFragment.search("^" + mktoLandingPagePreviewFragment) == -1
+                    && currUrlFragment.search("^" + mktoFormWizardFragment) == -1 
+                    && currUrlFragment.search("^" + mktoMobilePushNotificationWizardFragment) == -1 
+                    && currUrlFragment.search("^" + mktoSocialAppWizardFragment) == -1
+                    && currUrlFragment.search("^" + mktoABtestWizardFragment) == -1
 					&& currUrlFragment != mktoMyMarketoFragment) {
                         /*
                         var isMktCanvasHash = window.setInterval(function() {
