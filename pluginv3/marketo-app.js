@@ -3787,7 +3787,7 @@ if (currentUrl.search(mktoAppDomain) != -1
 
                     switch (Mkt3.DL.dl.dlCompCode) {
                         case mktoEmailDesignerFragment:
-                            console.log("Callback for email editor");
+                            console.log("Callback for Email Editor");
                             Ext4.getStore('Email').load(loadParameters);
                             // Overlay Email Designer w/ Company Logo and Color
                             switch (currUrlFragment) {
@@ -3814,23 +3814,23 @@ if (currentUrl.search(mktoAppDomain) != -1
                             }
                             break;
                         case mktoLandingPageDesignerFragment:
-                            console.log("Callback for email editor");
+                            console.log("Callback for Landing Page Editor");
                             Ext4.getStore('LandingPage').load(lpParameters);
                             break;
                         case mktoFormWizardFragment:
-                            console.log("Callback for form editor");
+                            console.log("Callback for Form Editor");
                             Ext4.getStore('Form').load(loadParameters);
                             break;
                         case mktoMobilePushNotificationWizardFragment:
-                            console.log("Callback for push editor");
+                            console.log("Callback for Push Notification Editor");
                             Ext4.getStore('MobilePushNotification').load(loadParameters);
                             break;
                         case mktoSocialAppWizardFragment:
-                            console.log("Callback for social editor");
+                            console.log("Callback for Social App Editor");
                             Ext4.getStore('SocialApp').load(loadParameters);
                             break;
                         case mktoABtestWizardFragment:
-                            console.log("Callback for social editor");
+                            console.log("Callback for A/B Test Editor");
                             Ext4.getStore('TestGroup').load(loadParameters);
                             break;
                         default:
