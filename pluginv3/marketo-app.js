@@ -116,8 +116,9 @@ APP.disableDemoPluginCheck = function() {
 
 /**************************************************************************************
  *  
- *  This function disables the system error message for sync errors on Landing Pages.
- *  These errors would occur when two users edit the same landing page simultaneously.
+ *  This function disables saving of edits to the Landing Page Property Panel and also
+ *  disables the system error message for sync errors on Landing Pages. These errors 
+ *  would occur when two users edit the same landing page simultaneously.
  *
  *  @Author Brian Fisher
  *
@@ -125,11 +126,12 @@ APP.disableDemoPluginCheck = function() {
  *
  **************************************************************************************/
 
-APP.disableSyncErrorMessage = function() {
-    console.log("Marketo App > Disabling: Landing Page Sync Error Message");
+APP.disablePropertyPanelSaving = function() {
+    console.log("Marketo App > Disabling: Saving of Landing Page Property Panel & Sync Error Message");
 
     // Old way that hid other system errors
     //MktMessage.showSystemError = function() {};
+    /*
     Mkt3.controller.editor.LandingPagePropertyPanel.prototype.fireSyncProperties = function(record, changes) {
         var prop = record.get('properties');
         if (prop) {
@@ -141,6 +143,9 @@ APP.disableSyncErrorMessage = function() {
             this.application.fireEvent('message.lp.syncProperties', record, changes);
         }
     }
+    */
+    
+    Mkt3.controller.editor.LandingPagePropertyPanel.prototype.fireSyncProperties = function() {};
 }
 
 /**************************************************************************************
@@ -3704,8 +3709,6 @@ if (currentUrl.search(mktoAppDomain) != -1
                         customCompanyLandingPagePreview106aFragment = "LPP10672",
                         customCompanyLandingPage106bFragment = "LPE10768",
                         customCompanyLandingPagePreview106bFragment = "LPP10768";
-                    // Disabling System Error Message for sync conflicts
-                    APP.disableSyncErrorMessage();
                     
                     // Overlay Landing Page Designer w/ company logo and color
                     switch (currUrlFragment) {
@@ -3754,10 +3757,28 @@ if (currentUrl.search(mktoAppDomain) != -1
                                         currAssetZoneId = record.get('zoneId');
                                         console.log("Marketo App > currAssetZoneId = " + currAssetZoneId);
                                         if (currAssetZoneId == 1
-                                        || currAssetZoneId == japanWorkspaceId) {
+                                        || currAssetZoneId == japanWorkspaceId
+                                        || APP.getCookie("priv") == "false") {
                                             APP.disableSaving();
-                                        } else if (APP.getCookie("priv") == "false") {
-                                            APP.disableSaving();
+                                        }
+                                    }
+                                );
+                            }
+                        },
+                        lpParameters = {
+                            filters: [{
+                                property: 'id',
+                                value: Mkt3.DL.dl.compId
+                            }],
+                            callback: function(records) {
+                                records.forEach(
+                                    function(record) {
+                                        currAssetZoneId = record.get('zoneId');
+                                        console.log("Marketo App > currAssetZoneId = " + currAssetZoneId);
+                                        if (currAssetZoneId == 1
+                                        || currAssetZoneId == japanWorkspaceId
+                                        || APP.getCookie("priv") == "false") {
+                                            APP.disablePropertyPanelSaving();
                                         }
                                     }
                                 );
@@ -3792,6 +3813,10 @@ if (currentUrl.search(mktoAppDomain) != -1
                                     break;
                             }
                             break;
+                        case mktoLandingPageDesignerFragment:
+                            console.log("Callback for email editor");
+                            Ext4.getStore('LandingPage').load(lpParameters);
+                            break;
                         case mktoFormWizardFragment:
                             console.log("Callback for form editor");
                             Ext4.getStore('Form').load(loadParameters);
@@ -3803,6 +3828,10 @@ if (currentUrl.search(mktoAppDomain) != -1
                         case mktoSocialAppWizardFragment:
                             console.log("Callback for social editor");
                             Ext4.getStore('SocialApp').load(loadParameters);
+                            break;
+                        case mktoABtestWizardFragment:
+                            console.log("Callback for social editor");
+                            Ext4.getStore('TestGroup').load(loadParameters);
                             break;
                         default:
                             currAssetZoneId = -1;
