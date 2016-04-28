@@ -3157,9 +3157,10 @@ APP.getEmailIds = function(pod) {
  *  
  **************************************************************************************/
 
-if (currentUrl.search(mktoAppDomain) != -1
+if ((currentUrl.search(mktoAppDomain) != -1
 || currentUrl.search(mktoDesignerDomain) != -1
-|| currentUrl.search(mktoWizard) != -1) {
+|| currentUrl.search(mktoWizard) != -1)
+&& currentUrl.search("#CAL") == -1) {
     console.log("Marketo App > Location: Marketo URL");
 
     var isMktPageApp = window.setInterval(function() {
