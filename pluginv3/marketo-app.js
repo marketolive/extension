@@ -3324,7 +3324,6 @@ APP.overlayEmailDesigner = function() {
             logoSwapCompanyContainer = document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("logo-swap-company-container");
         
         if (logoBkg != null
-//		&& buttonBkg != null
 		&& logoSwapCompany != null) {
             console.log("Marketo App > Overlaying: iframe");
             window.clearInterval(isEmailIframeElement);
@@ -3738,9 +3737,9 @@ if (currentUrl.search(mktoAppDomain) != -1
                         customCompanyEmail106Fragment = "EME15464",
                         customCompanyEmail106aFragment = "EME14240",
                         customCompanyEmail106bFragment = "EME13924",
-                        customCompanyHealthcareFragment = "EME18656",
+                        customCompanyHealthcareFragment = "EME20327",
                         customCompanyFinservFragment = "EME19059",
-                        customCompanyHigherEdFragment = "EME17725",
+                        customCompanyHigherEdFragment = "EME20329",
                         loadParameters = {
                             filters: [{
                                 property: 'id',
