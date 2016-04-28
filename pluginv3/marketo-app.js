@@ -3711,7 +3711,29 @@ if (currentUrl.search(mktoAppDomain) != -1
                         customCompanyLandingPage106aFragment = "LPE10672",
                         customCompanyLandingPagePreview106aFragment = "LPP10672",
                         customCompanyLandingPage106bFragment = "LPE10768",
-                        customCompanyLandingPagePreview106bFragment = "LPP10768";
+                        customCompanyLandingPagePreview106bFragment = "LPP10768",
+                        lpParameters = {
+                            filters: [{
+                                property: 'id',
+                                value: Mkt3.DL.dl.compId
+                            }],
+                            callback: function(records) {
+                                records.forEach(
+                                    function(record) {
+                                        currAssetZoneId = record.get('zoneId');
+                                        console.log("Marketo App > currAssetZoneId = " + currAssetZoneId);
+                                        if (currAssetZoneId == 1
+                                        || currAssetZoneId == japanWorkspaceId
+                                        || APP.getCookie("priv") == "false") {
+                                            APP.disablePropertyPanelSaving();
+                                        }
+                                    }
+                                );
+                            }
+                        };
+                        
+                    console.log("Callback for Landing Page Editor");
+                    Ext4.getStore('LandingPage').load(lpParameters);
                     
                     // Overlay Landing Page Designer w/ company logo and color
                     switch (currUrlFragment) {
@@ -3767,25 +3789,6 @@ if (currentUrl.search(mktoAppDomain) != -1
                                     }
                                 );
                             }
-                        },
-                        lpParameters = {
-                            filters: [{
-                                property: 'id',
-                                value: Mkt3.DL.dl.compId
-                            }],
-                            callback: function(records) {
-                                records.forEach(
-                                    function(record) {
-                                        currAssetZoneId = record.get('zoneId');
-                                        console.log("Marketo App > currAssetZoneId = " + currAssetZoneId);
-                                        if (currAssetZoneId == 1
-                                        || currAssetZoneId == japanWorkspaceId
-                                        || APP.getCookie("priv") == "false") {
-                                            APP.disablePropertyPanelSaving();
-                                        }
-                                    }
-                                );
-                            }
                         };
 
                     switch (Mkt3.DL.dl.dlCompCode) {
@@ -3815,10 +3818,6 @@ if (currentUrl.search(mktoAppDomain) != -1
                                 default:
                                     break;
                             }
-                            break;
-                        case mktoLandingPageDesignerFragment:
-                            console.log("Callback for Landing Page Editor");
-                            Ext4.getStore('LandingPage').load(lpParameters);
                             break;
                         case mktoFormWizardFragment:
                             console.log("Callback for Form Editor");
