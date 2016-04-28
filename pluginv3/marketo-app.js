@@ -116,8 +116,9 @@ APP.disableDemoPluginCheck = function() {
 
 /**************************************************************************************
  *  
- *  This function disables the system error message for sync errors on Landing Pages.
- *  These errors would occur when two users edit the same landing page simultaneously.
+ *  This function disables saving of edits to the Landing Page Property Panel and also
+ *  disables the system error message for sync errors on Landing Pages. These errors 
+ *  would occur when two users edit the same landing page simultaneously.
  *
  *  @Author Brian Fisher
  *
@@ -125,11 +126,12 @@ APP.disableDemoPluginCheck = function() {
  *
  **************************************************************************************/
 
-APP.disableSyncErrorMessage = function() {
-    console.log("Marketo App > Disabling: Landing Page Sync Error Message");
+APP.disablePropertyPanelSaving = function() {
+    console.log("Marketo App > Disabling: Saving of Landing Page Property Panel & Sync Error Message");
 
     // Old way that hid other system errors
     //MktMessage.showSystemError = function() {};
+    /*
     Mkt3.controller.editor.LandingPagePropertyPanel.prototype.fireSyncProperties = function(record, changes) {
         var prop = record.get('properties');
         if (prop) {
@@ -141,6 +143,9 @@ APP.disableSyncErrorMessage = function() {
             this.application.fireEvent('message.lp.syncProperties', record, changes);
         }
     }
+    */
+    
+    Mkt3.controller.editor.LandingPagePropertyPanel.prototype.fireSyncProperties = function() {};
 }
 
 /**************************************************************************************
@@ -3255,7 +3260,7 @@ APP.enableSaving = function() {
  **************************************************************************************/
 
 APP.disableSaving = function() {
-    console.log("Marketo App > Disabling: Saving for Editors & Nurture Streams");
+    console.log("Marketo App > Disabling: Saving for Editors");
 
     Mkt3.data.Store.prototype.sync = function() {};
     Ext4.data.Model.prototype.destroy = function() {};
@@ -3354,13 +3359,16 @@ APP.overlayLandingPageDesigner = function() {
     console.log("Marketo App > Overlaying: Landing Page Designer");
 
     var logo = APP.getCookie("logo"),
-        color = APP.getCookie("color"),
-        company = logo.split("https://logo.clearbit.com/")[1].split(".")[0],
-        companyName = company.charAt(0).toUpperCase() + company.slice(1);    
+        color = APP.getCookie("color");
     
     if (logo == null) {
         logo = defaultTurnerLogoGreen;
     }
+    else {
+        var company = logo.split("https://logo.clearbit.com/")[1].split(".")[0],
+            companyName = company.charAt(0).toUpperCase() + company.slice(1);
+    }
+    
     if (color == null) {
         color = defaultColor;
     }
@@ -3703,9 +3711,29 @@ if (currentUrl.search(mktoAppDomain) != -1
                         customCompanyLandingPage106aFragment = "LPE10672",
                         customCompanyLandingPagePreview106aFragment = "LPP10672",
                         customCompanyLandingPage106bFragment = "LPE10768",
-                        customCompanyLandingPagePreview106bFragment = "LPP10768";
-                    // Disabling System Error Message for sync conflicts
-                    APP.disableSyncErrorMessage();
+                        customCompanyLandingPagePreview106bFragment = "LPP10768",
+                        lpParameters = {
+                            filters: [{
+                                property: 'id',
+                                value: Mkt3.DL.dl.compId
+                            }],
+                            callback: function(records) {
+                                records.forEach(
+                                    function(record) {
+                                        currAssetZoneId = record.get('zoneId');
+                                        console.log("Marketo App > currAssetZoneId = " + currAssetZoneId);
+                                        if (currAssetZoneId == 1
+                                        || currAssetZoneId == japanWorkspaceId
+                                        || APP.getCookie("priv") == "false") {
+                                            APP.disablePropertyPanelSaving();
+                                        }
+                                    }
+                                );
+                            }
+                        };
+                        
+                    console.log("Callback for Landing Page Editor");
+                    Ext4.getStore('LandingPage').load(lpParameters);
                     
                     // Overlay Landing Page Designer w/ company logo and color
                     switch (currUrlFragment) {
@@ -3754,9 +3782,8 @@ if (currentUrl.search(mktoAppDomain) != -1
                                         currAssetZoneId = record.get('zoneId');
                                         console.log("Marketo App > currAssetZoneId = " + currAssetZoneId);
                                         if (currAssetZoneId == 1
-                                        || currAssetZoneId == japanWorkspaceId) {
-                                            APP.disableSaving();
-                                        } else if (APP.getCookie("priv") == "false") {
+                                        || currAssetZoneId == japanWorkspaceId
+                                        || APP.getCookie("priv") == "false") {
                                             APP.disableSaving();
                                         }
                                     }
@@ -3766,7 +3793,7 @@ if (currentUrl.search(mktoAppDomain) != -1
 
                     switch (Mkt3.DL.dl.dlCompCode) {
                         case mktoEmailDesignerFragment:
-                            console.log("Callback for email editor");
+                            console.log("Callback for Email Editor");
                             Ext4.getStore('Email').load(loadParameters);
                             // Overlay Email Designer w/ Company Logo and Color
                             switch (currUrlFragment) {
@@ -3793,17 +3820,23 @@ if (currentUrl.search(mktoAppDomain) != -1
                             }
                             break;
                         case mktoFormWizardFragment:
-                            console.log("Callback for form editor");
+                            console.log("Callback for Form Editor");
                             Ext4.getStore('Form').load(loadParameters);
                             break;
                         case mktoMobilePushNotificationWizardFragment:
-                            console.log("Callback for push editor");
+                            console.log("Callback for Push Notification Editor");
                             Ext4.getStore('MobilePushNotification').load(loadParameters);
                             break;
                         case mktoSocialAppWizardFragment:
-                            console.log("Callback for social editor");
+                            console.log("Callback for Social App Editor");
                             Ext4.getStore('SocialApp').load(loadParameters);
                             break;
+                        /*
+                        case mktoABtestWizardFragment:
+                            console.log("Callback for A/B Test Editor");
+                            Ext4.getStore('EmailBlastTestGroup').load(loadParameters);
+                            break;
+                        */
                         default:
                             currAssetZoneId = -1;
                             break;
