@@ -3831,7 +3831,7 @@ if (currentUrl.search(mktoAppDomain) != -1
                             break;
                         case mktoABtestWizardFragment:
                             console.log("Callback for A/B Test Editor");
-                            Ext4.getStore('TestGroup').load(loadParameters);
+                            Ext4.getStore('EmailBlastTestGroup').load(loadParameters);
                             break;
                         default:
                             currAssetZoneId = -1;
