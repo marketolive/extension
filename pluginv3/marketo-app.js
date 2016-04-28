@@ -32,8 +32,8 @@ var currentUrl = window.location.href,
     mktoDesignerMatch = "https://*.marketodesigner.com/*",
     mktoEmailDesigner = mktoDesignerDomain + "/ds",
     mktoLandingPageDesigner = mktoDesignerDomain + "/lpeditor/",
-    defaultTurnerLogoGreen = "http://marketolive.com/m3-dev/assets/img/turner-tech-green.png",
-    defaultTurnerLogoWhite = "http://marketolive.com/m3-dev/assets/img/turner-tech-white.png",
+    defaultTurnerLogoGreen = "http://marketolive.com/m3/assets/img/turner-tech-green.png",
+    defaultTurnerLogoWhite = "http://marketolive.com/m3/assets/img/turner-tech-white.png",
     defaultColor = "rgb(42, 83, 112)",
     mktoWizard = mktoAppDomain + "/m#",
     rtpDemoDomain = "^http:\/\/sjrtp1.marketo.com\/demo\/$|^http:\/\/cloud4.insightera.com\/demo\/$",
@@ -54,6 +54,7 @@ var currentUrl = window.location.href,
     mktoFormWizardFragment = "FOE",
     mktoMobilePushNotificationWizardFragment = "MPNE",
     mktoSocialAppWizardFragment = "SOAE",
+    mktoABtestWizardFragment = "EBE",
     mktoMarketingWorkspaceId = 172,
     mktoJapaneseWorkspaceId = 173,
     userWorkspaceName = "My Workspace",
@@ -115,8 +116,9 @@ APP.disableDemoPluginCheck = function() {
 
 /**************************************************************************************
  *  
- *  This function disables the system error message for sync errors on Landing Pages.
- *  These errors would occur when two users edit the same landing page simultaneously.
+ *  This function disables saving of edits to the Landing Page Property Panel and also
+ *  disables the system error message for sync errors on Landing Pages. These errors 
+ *  would occur when two users edit the same landing page simultaneously.
  *
  *  @Author Brian Fisher
  *
@@ -124,11 +126,12 @@ APP.disableDemoPluginCheck = function() {
  *
  **************************************************************************************/
 
-APP.disableSyncErrorMessage = function() {
-    console.log("Marketo App > Disabling: Landing Page Sync Error Message");
+APP.disablePropertyPanelSaving = function() {
+    console.log("Marketo App > Disabling: Saving of Landing Page Property Panel & Sync Error Message");
 
     // Old way that hid other system errors
     //MktMessage.showSystemError = function() {};
+    /*
     Mkt3.controller.editor.LandingPagePropertyPanel.prototype.fireSyncProperties = function(record, changes) {
         var prop = record.get('properties');
         if (prop) {
@@ -140,6 +143,9 @@ APP.disableSyncErrorMessage = function() {
             this.application.fireEvent('message.lp.syncProperties', record, changes);
         }
     }
+    */
+    
+    Mkt3.controller.editor.LandingPagePropertyPanel.prototype.fireSyncProperties = function() {};
 }
 
 /**************************************************************************************
@@ -449,17 +455,17 @@ APP.overrideAnalyticsTiles = function() {
                             break;
 
                         case "Opportunity Influence Analyzer":
-                            currTileHTML = '<a href="' + host + '/#AR1559A1!">' + currTileHTML + '</a>';
+                            currTileHTML = '<a href="' + host + '/#AR1559A1">' + currTileHTML + '</a>';
                             MktCanvas.getActiveTab().el.dom.childNodes[0].childNodes[1].childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[ii].outerHTML = currTileHTML;
                             break;
 
                         case "Program Analyzer":
-                            currTileHTML = '<a href="' + host + '/#AR1544A1!">' + currTileHTML + '</a>';
+                            currTileHTML = '<a href="' + host + '/#AR1544A1">' + currTileHTML + '</a>';
                             MktCanvas.getActiveTab().el.dom.childNodes[0].childNodes[1].childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[ii].outerHTML = currTileHTML;
                             break;
 
                         case "Success Path Analyzer":
-                            currTileHTML = '<a href="' + host + '/#AR1682A1!">' + currTileHTML + '</a>';
+                            currTileHTML = '<a href="' + host + '/#AR1682A1">' + currTileHTML + '</a>';
                             MktCanvas.getActiveTab().el.dom.childNodes[0].childNodes[1].childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[ii].outerHTML = currTileHTML;
                             break;
 
@@ -525,8 +531,8 @@ APP.overrideAnalyticsTiles = function() {
 /**************************************************************************************
  *  
  *  This function overrides the save function of Smart Campaigns in order to disable   
- *  saving within the Default Workspace at all times and within the Marketing Worksapce 
- *  if edit privileges is false
+ *  saving within the Default Workspace at all times and within My Worksapce if the 
+ *  Smart Campaign is NOT within the user's root folder or if edit privileges is false
  *
  *  @Author Brian Fisher
  *
@@ -714,6 +720,50 @@ APP.overrideSmartCampaignCanvas = function() {
             MktCanvas.addHook(this.canvas, {
                 dp: this
             });
+        }
+    }
+}
+
+/**************************************************************************************
+ *  
+ *  This function overrides the updatePortletOrder function of Program > Assets tab in 
+ *  order to disable reordering of asset portlets within the Default Workspace at all 
+ *  times and within My Worksapce if the Program is NOT within the user's root folder
+ *
+ *  @Author Brian Fisher
+ *
+ *  @function
+ *
+ **************************************************************************************/
+
+APP.overrideUpdatePortletOrder = function() {
+    console.log("Marketo App > Overriding: Updating of Portlet Order");
+
+    Mkt.apps.localasset.LocalAssetPortal.prototype.updatePortletOrder = function (e) {
+        var canvas = MktCanvas.getActiveTab(),
+            disable = APP.evaluateMenu("button", null, canvas, null);
+        if (!disable) {
+            // Gets the current portlet order array
+            var newPortletOrder = [];
+            for (var i = 0; i < this.items.length; i++) {
+                var itemInfo = this.items.get(i).smartCampaignMetaData;
+                newPortletOrder.push(itemInfo.compTypeId + ":" + itemInfo.compId);
+            }
+            
+            // Save the current order on the server
+            var params = {
+                compId : this.programId,
+                portletOrdering : Ext.encode(newPortletOrder)
+            };
+            MktSession.ajaxRequest('marketingEvent/orderLocalAssetPortlets', {
+                serializeParms : params,
+                localAssetManager : this,
+                portletOrdering : newPortletOrder,
+                onMySuccess : this.updatePortletOrderSuccess
+            });
+        }
+        else {
+            console.log("Marketo App > Disabling: Updating of Portlet Order");
         }
     }
 }
@@ -1657,7 +1707,7 @@ APP.hidePageGrid = function() {
     console.log("Marketo App > Hiding: Page Grid via Override");
     
     MktGrids.CanvasGridPanel.prototype.loadPagedGrid = function() {
-        if (MktCanvas.activeTab.config.accessZoneId == mktoMarketingWorkspaceId) {
+        if (MktCanvas.getActiveTab().config.accessZoneId == mktoMarketingWorkspaceId) {
             switch (this.canvas) {
                 // Design Studio > Landing Pages
                 case "landingCanvasLP":
@@ -2612,6 +2662,175 @@ APP.disableMenus = function() {
         
 		return menu;
 	}
+    
+    // Disable Marketing Activities > Nurture Program > Stream & Content Actions menus
+    Ext4.Component.prototype.showAt = function (x, y, animate) {
+        var me = this;
+        if (!me.rendered
+        && (me.autoRender
+            || me.floating)) {
+            
+            me.doAutoRender();
+            me.hidden = true
+        }
+        if (me.floating) {
+            me.setPosition(x, y, animate)
+        }
+        else {
+            me.setPagePosition(x, y, animate)
+        }
+        me.show()
+        
+        if (MktCanvas
+        && MktCanvas.getActiveTab()) {
+            var ii,
+                disable = APP.evaluateMenu("button", null, MktCanvas.getActiveTab(), null);
+            for (ii = 0; ii < me.items.items.length; ii++) {
+                switch (me.items.items[ii].action) {
+                    
+                    // Marketing Activities > Nurture Program > Stream Actions
+                    // Edit Name
+                    case "edit":
+                        //me.items.items[ii].setDisabled(disable);
+                        break;
+                    // Clone
+                    case "clone":
+                        me.items.items[ii].setDisabled(disable);
+                        break;
+                    // Activate all content
+                    case "activateAllContent":
+                        //me.items.items[ii].setDisabled(disable);
+                        break;
+                    // Show archived content
+                    case "showArchivedContent":
+                        //me.items.items[ii].setDisabled(disable);
+                        break;
+                    // Hide archived content
+                    case "hideArchivedContent":
+                        //me.items.items[ii].setDisabled(disable);
+                        break;
+                    // Edit Transition Rules
+                    case "editTransitionRules":
+                        //me.items.items[ii].setDisabled(disable);
+                        break;
+                    // Delete
+                    case "delete":
+                        me.items.items[ii].setDisabled(disable);
+                        break;
+                    
+                    // Marketing Activities > Nurture Program > Content Actions
+                    // All //
+                    // Activate
+                    case "activate":
+                        //me.items.items[ii].setDisabled(disable);
+                        break;
+                    // Deactivate
+                    case "deactivate":
+                        //me.items.items[ii].setDisabled(disable);
+                        break;
+                    // Edit Availability
+                    case "schedule":
+                        //me.items.items[ii].setDisabled(disable);
+                        break;
+                    // Archive
+                    case "archive":
+                        me.items.items[ii].setDisabled(disable);
+                        break;
+                    // Unarchive
+                    case "unarchive":
+                        me.items.items[ii].setDisabled(disable);
+                        break;
+                    // Remove
+                    case "remove":
+                        //me.items.items[ii].setDisabled(disable);
+                        break;
+                    // Email //
+                    // Edit Draft
+                    case "emailEditDraft":
+                        //me.items.items[ii].setDisabled(disable);
+                        break;
+                    // Preview
+                    case "emailPreview":
+                        //me.items.items[ii].setDisabled(disable);
+                        break;
+                    // Approve
+                    case "emailApproveDraft":
+                        me.items.items[ii].setDisabled(disable);
+                        break;
+                    // Send Sample
+                    case "emailSendTest":
+                        //me.items.items[ii].setDisabled(disable);
+                        break;
+                    // Go to Email
+                    case "goToEmail":
+                        //me.items.items[ii].setDisabled(disable);
+                        break;
+                    // Email Draft //
+                    // Edit Draft
+                    case "emailEditDraft":
+                        //me.items.items[ii].setDisabled(disable);
+                        break;
+                    // Preview Draft
+                    case "emailPreviewDraft":
+                        //me.items.items[ii].setDisabled(disable);
+                        break;
+                    // Send Sample of Draft
+                    case "emailSendTestOfDraft":
+                        //me.items.items[ii].setDisabled(disable);
+                        break;
+                    // Approve Draft
+                    case "emailApproveDraft":
+                        me.items.items[ii].setDisabled(disable);
+                        break;
+                    // Program //
+                    // View Assets
+                    case "programViewAssets":
+                        //me.items.items[ii].setDisabled(disable);
+                        break;
+                    // View Setup
+                    case "programViewSetup":
+                        //me.items.items[ii].setDisabled(disable);
+                        break;
+                    // View My Tokens
+                    case "programViewTokens":
+                        //me.items.items[ii].setDisabled(disable);
+                        break;
+                    // View Members
+                    case "programViewMembers":
+                        //me.items.items[ii].setDisabled(disable);
+                        break;
+                    // Go to Program
+                    case "goToProgram":
+                        //me.items.items[ii].setDisabled(disable);
+                        break;
+                    // Push Notification //
+                    // Edit Draft
+                    case "mobilePushEditDraft":
+                        //me.items.items[ii].setDisabled(disable);
+                        break;
+                    // Preview
+                    case "mobilePushPreview":
+                        //me.items.items[ii].setDisabled(disable);
+                        break;
+                    // Approve
+                    case "mobilePushApprove":
+                        me.items.items[ii].setDisabled(disable);
+                        break;
+                    // Send Sample
+                    case "mobilePushSendTest":
+                        //me.items.items[ii].setDisabled(disable);
+                        break;
+                    // Go to Push Notification
+                    case "goToPushNotification":
+                        //me.items.items[ii].setDisabled(disable);
+                        break;
+                    
+                    default:
+                        break;
+                }
+            }
+        }
+    }
 }
 
 /**************************************************************************************
@@ -2771,7 +2990,7 @@ APP.limitNurturePrograms = function() {
             node = rootNode.cascade(function() {
                     var attr = this.attributes;
                     if (attr && attr.xtra) {
-                        if (attr.xtra.compType == compType && attr.xtra.accessZoneId == MktCanvas.activeTab.config.accessZoneId) {
+                        if (attr.xtra.compType == compType && attr.xtra.accessZoneId == MktCanvas.getActiveTab().config.accessZoneId) {
                             matches.push(this);
                         }
                     }
@@ -2844,6 +3063,114 @@ APP.injectAnalyzerNavBar = function() {
             }
         }
     }, 0);
+}
+
+/**************************************************************************************
+ *  
+ *  This function overrides the function for saving additions and deletions to Nurture 
+ *  Streams.
+ *
+ *  @Author Brian Fisher
+ *
+ *  @function
+ *
+ **************************************************************************************/
+
+APP.overrideSaving = function() {
+    console.log("Marketo App > Overriding: Saving for Nurture Streams");
+
+    Mkt3.data.Store.prototype.sync = function() {
+        var disable;
+        if (MktCanvas
+        && MktCanvas.getActiveTab()
+        && APP.getCookie("priv") != "false") {
+            disable = APP.evaluateMenu("button", null, MktCanvas.getActiveTab(), null);
+        }
+        else if (APP.getCookie("priv") == "false") {
+            disable = true;
+        }
+        
+        if (!disable) {
+            if (this.autoSyncSuspended) {
+                this.autoSync = true;
+                this.autoSyncSuspended = false;
+            }
+
+            if (this.getProxy() instanceof Mkt3.data.proxy.AjaxPost) {
+                Mkt3.Synchronizer.sync(this);
+            }
+            else {
+                this.callParent(arguments);
+            }
+        }
+        else {
+            console.log("Marketo App > Disabling: Saving for Nurture Streams (sync)");
+        }
+    }
+
+    Ext4.data.Model.prototype.destroy = function(options) {
+        var disable;
+        if (MktCanvas
+        && MktCanvas.getActiveTab()
+        && APP.getCookie("priv") != "false") {
+            disable = APP.evaluateMenu("button", null, MktCanvas.getActiveTab(), null);
+        }
+        else if (APP.getCookie("priv") == "false") {
+            disable = true;
+        }
+        
+        if (!disable) {
+            options = Ext.apply({
+                records: [this],
+                action: 'destroy'
+            }, options);
+
+            var me = this,
+                isNotPhantom = me.phantom !== true,
+                scope = options.scope || me,
+                stores = me.stores,
+                i = 0,
+                storeCount,
+                store,
+                args,
+                operation,
+                callback;
+
+            operation = new Ext.data.Operation(options);
+
+            callback = function(operation) {
+                args = [me, operation];
+                if (operation.wasSuccessful()) {
+                    for (storeCount = stores.length; i < storeCount; i++) {
+                        store = stores[i];
+                        store.remove(me, true);
+                        if (isNotPhantom) {
+                            store.fireEvent('write', store, operation);
+                        }
+                    }
+                    me.clearListeners();
+                    Ext.callback(options.success, scope, args);
+                }
+                else {
+                    Ext.callback(options.failure, scope, args);
+                }
+                Ext.callback(options.callback, scope, args);
+            };
+
+            if (isNotPhantom) {
+                me.getProxy().destroy(operation, callback, me);
+            }
+            else {
+                operation.complete = operation.success = true;
+                operation.resultSet = me.getProxy().reader.nullResultSet;
+                callback(operation);
+            }
+            return me;
+        }
+        else {
+            console.log("Marketo App > Disabling: Saving for Nurture Streams (destroy)");
+        }
+    }
 }
 
 /**************************************************************************************
@@ -2933,7 +3260,7 @@ APP.enableSaving = function() {
  **************************************************************************************/
 
 APP.disableSaving = function() {
-    console.log("Marketo App > Disabling: Saving for Editors & Nurture Streams");
+    console.log("Marketo App > Disabling: Saving for Editors");
 
     Mkt3.data.Store.prototype.sync = function() {};
     Ext4.data.Model.prototype.destroy = function() {};
@@ -2997,21 +3324,21 @@ APP.overlayEmailDesigner = function() {
 
     var isEmailIframeElement = window.setInterval(function() {
         var logoBkg = document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("logo-bkg"),
-            buttonBkg = document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("button-bkg"),
+//            buttonBkg = document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("button-bkg"),
             logoSwapCompany = document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("logo-swap-company"),
             logoSwapContainer = document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("logo-swap-container"),
             logoSwapCompanyContainer = document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("logo-swap-company-container");
         
         if (logoBkg != null
-		&& buttonBkg != null
+//		&& buttonBkg != null
 		&& logoSwapCompany != null) {
             console.log("Marketo App > Overlaying: iframe");
             window.clearInterval(isEmailIframeElement);
             
             logoSwapContainer.style.display = "none";
             logoSwapCompanyContainer.style.display = "block";
-            logoBkg.style.backgroundColor = color;
-            buttonBkg.style.backgroundColor = color;
+//            logoBkg.style.backgroundColor = color;
+//            buttonBkg.style.backgroundColor = color;
             logoSwapCompany.src = logo;
         }
     }, 0);
@@ -3032,13 +3359,16 @@ APP.overlayLandingPageDesigner = function() {
     console.log("Marketo App > Overlaying: Landing Page Designer");
 
     var logo = APP.getCookie("logo"),
-        color = APP.getCookie("color"),
-        company = logo.split("https://logo.clearbit.com/")[1].split(".")[0],
-        companyName = company.charAt(0).toUpperCase() + company.slice(1);    
+        color = APP.getCookie("color");
     
     if (logo == null) {
         logo = defaultTurnerLogoGreen;
     }
+    else {
+        var company = logo.split("https://logo.clearbit.com/")[1].split(".")[0],
+            companyName = company.charAt(0).toUpperCase() + company.slice(1);
+    }
+    
     if (color == null) {
         color = defaultColor;
     }
@@ -3201,7 +3531,7 @@ if ((currentUrl.search(mktoAppDomain) != -1
                     }
                 }
 
-                var prevWorkspaceId,
+                var //prevWorkspaceId,
                     japanWorkspaceId = 173,
                     oppInfluenceAnalyzerFragment = "AR1559A1!",
                     programAnalyzerFragment = "AR1544A1!",
@@ -3242,20 +3572,23 @@ if ((currentUrl.search(mktoAppDomain) != -1
 
                 // Only execute this block if the user is not on an editor page.
                 if (currUrlFragment.search("^" + mktoEmailDesignerFragment) == -1
-                && currUrlFragment.search("^" + mktoEmailPreviewFragment)
+                && currUrlFragment.search("^" + mktoEmailPreviewFragment) == -1
                 && currUrlFragment.search("^" + mktoLandingPageDesignerFragment) == -1
                 && currUrlFragment.search("^" + mktoLandingPagePreviewFragment) == -1
                 && currUrlFragment.search("^" + mktoFormWizardFragment) == -1 
                 && currUrlFragment.search("^" + mktoMobilePushNotificationWizardFragment) == -1 
-                && currUrlFragment.search("^" + mktoSocialAppWizardFragment) == -1) {
+                && currUrlFragment.search("^" + mktoSocialAppWizardFragment) == -1
+                && currUrlFragment.search("^" + mktoABtestWizardFragment) == -1) {
                     
                     APP.overrideTreeNodeExpand();
                     APP.overrideTreeNodeCollapse();
                     APP.disableDragAndDrop();
+                    APP.overrideSaving();
                     APP.disableMenus();
                     APP.hideToolbarItems();
                     APP.overrideSmartCampaignSaving();
-                    APP.overrideSmartCampaignCanvas();
+                    //APP.overrideSmartCampaignCanvas();
+                    APP.overrideUpdatePortletOrder();
                     APP.overrideNewProgramCreate();
                     APP.overrideAssetSaveEdit();
                     APP.overrideNewAssetCreate();
@@ -3266,21 +3599,20 @@ if ((currentUrl.search(mktoAppDomain) != -1
                     APP.disableConfirmationMessage();
                     
                     // Storing previous Workspace ID
+                    /*
                     if (currUrlFragment != mktoMyMarketoFragment) {
 						var isMktCanvas = window.setInterval(function() {
-							if (MktCanvas.activeTab !== null) {
-								console.log("Marketo App > Location: Marketo Canvas");
+							if (MktCanvas
+                            && MktCanvas.getActiveTab()
+                            && MktCanvas.getActiveTab().config) {
+								console.log("Marketo App > Location: Marketo Canvas Active Tab");
 								
                                 window.clearInterval(isMktCanvas);
-								prevWorkspaceId = MktCanvas.activeTab.config.accessZoneId;
-								if (prevWorkspaceId == 1
-                                || prevWorkspaceId == japanWorkspaceId) {
-									// Intelligent Nurturing
-									APP.disableSaving();
-								}
+								prevWorkspaceId = MktCanvas.getActiveTab().config.accessZoneId;
 							}
 						}, 0);
 					}
+                    */
 
                     // Marketing ROI, Funnel Analysis
                     if (currUrlFragment == oppInfluenceAnalyzerFragment
@@ -3375,20 +3707,35 @@ if ((currentUrl.search(mktoAppDomain) != -1
                 else if (currUrlFragment.search("^" + mktoLandingPageDesignerFragment) != -1) {
                     console.log("Marketo App > Location: Landing Page Designer");
 
-                    var currAssetZoneId,
-                        customCompanyLandingPage106Fragment = "LPE11826",
+                    var customCompanyLandingPage106Fragment = "LPE11826",
                         customCompanyLandingPagePreview106Fragment = "LPP11826",
-                        landingPageResponsive = "LPE11822";
                         customCompanyLandingPage106aFragment = "LPE10672",
                         customCompanyLandingPagePreview106aFragment = "LPP10672",
                         customCompanyLandingPage106bFragment = "LPE10768",
                         customCompanyLandingPagePreview106bFragment = "LPP10768",
-                        japanLPOne = "LPE11856",
-                        japanLPTwo = "LPE11548",
-                        japanLPThree = "LPE11546";
+                        lpParameters = {
+                            filters: [{
+                                property: 'id',
+                                value: Mkt3.DL.dl.compId
+                            }],
+                            callback: function(records) {
+                                records.forEach(
+                                    function(record) {
+                                        currAssetZoneId = record.get('zoneId');
+                                        console.log("Marketo App > currAssetZoneId = " + currAssetZoneId);
+                                        if (currAssetZoneId == 1
+                                        || currAssetZoneId == japanWorkspaceId
+                                        || APP.getCookie("priv") == "false") {
+                                            APP.disablePropertyPanelSaving();
+                                        }
+                                    }
+                                );
+                            }
+                        };
+                        
+                    console.log("Callback for Landing Page Editor");
+                    Ext4.getStore('LandingPage').load(lpParameters);
                     
-                    // Disabling System Error Message for sync conflicts
-                    APP.disableSyncErrorMessage();                    
                     // Overlay Landing Page Designer w/ company logo and color
                     switch (currUrlFragment) {
                         case customCompanyLandingPage106Fragment:
@@ -3409,12 +3756,6 @@ if ((currentUrl.search(mktoAppDomain) != -1
                         case customCompanyLandingPagePreview106bFragment:
                             APP.overlayLandingPageDesigner();
                             break;
-//                        case landingPageResponsive:
-//                        case japanLPOne:
-//                        case japanLPTwo:
-//                        case japanLPThree:
-//                            APP.disableSaving();
-//                            break;
                         default:
                             break;
                     }
@@ -3428,6 +3769,9 @@ if ((currentUrl.search(mktoAppDomain) != -1
                         customCompanyEmail106Fragment = "EME15464",
                         customCompanyEmail106aFragment = "EME14240",
                         customCompanyEmail106bFragment = "EME13924",
+                        customCompanyHealthcareFragment = "EME18656",
+                        customCompanyFinservFragment = "EME19059",
+                        customCompanyHigherEdFragment = "EME17725",
                         loadParameters = {
                             filters: [{
                                 property: 'id',
@@ -3439,9 +3783,8 @@ if ((currentUrl.search(mktoAppDomain) != -1
                                         currAssetZoneId = record.get('zoneId');
                                         console.log("Marketo App > currAssetZoneId = " + currAssetZoneId);
                                         if (currAssetZoneId == 1
-                                        || currAssetZoneId == japanWorkspaceId) {
-                                            APP.disableSaving();
-                                        } else if (APP.getCookie("priv") == "false") {
+                                        || currAssetZoneId == japanWorkspaceId
+                                        || APP.getCookie("priv") == "false") {
                                             APP.disableSaving();
                                         }
                                     }
@@ -3451,11 +3794,20 @@ if ((currentUrl.search(mktoAppDomain) != -1
 
                     switch (Mkt3.DL.dl.dlCompCode) {
                         case mktoEmailDesignerFragment:
-                            console.log("Callback for email editor");
+                            console.log("Callback for Email Editor");
                             Ext4.getStore('Email').load(loadParameters);
                             // Overlay Email Designer w/ Company Logo and Color
                             switch (currUrlFragment) {
                                 case customCompanyEmail106Fragment:
+                                    APP.overlayEmailDesigner();
+                                    break;
+                                case customCompanyHealthcareFragment:
+                                    APP.overlayEmailDesigner();
+                                    break;
+                                case customCompanyFinservFragment:
+                                    APP.overlayEmailDesigner();
+                                    break;
+                                case customCompanyHigherEdFragment:
                                     APP.overlayEmailDesigner();
                                     break;
                                 case customCompanyEmail106aFragment:
@@ -3469,17 +3821,23 @@ if ((currentUrl.search(mktoAppDomain) != -1
                             }
                             break;
                         case mktoFormWizardFragment:
-                            console.log("Callback for form editor");
+                            console.log("Callback for Form Editor");
                             Ext4.getStore('Form').load(loadParameters);
                             break;
                         case mktoMobilePushNotificationWizardFragment:
-                            console.log("Callback for push editor");
+                            console.log("Callback for Push Notification Editor");
                             Ext4.getStore('MobilePushNotification').load(loadParameters);
                             break;
                         case mktoSocialAppWizardFragment:
-                            console.log("Callback for social editor");
+                            console.log("Callback for Social App Editor");
                             Ext4.getStore('SocialApp').load(loadParameters);
                             break;
+                        /*
+                        case mktoABtestWizardFragment:
+                            console.log("Callback for A/B Test Editor");
+                            Ext4.getStore('EmailBlastTestGroup').load(loadParameters);
+                            break;
+                        */
                         default:
                             currAssetZoneId = -1;
                             break;
@@ -3511,34 +3869,29 @@ if ((currentUrl.search(mktoAppDomain) != -1
                     }
 
                     if (currUrlFragment.search("^" + mktoEmailDesignerFragment) == -1
-					&& currUrlFragment.search("^" + mktoLandingPageDesignerFragment) == -1
-					&& currUrlFragment.search("^" + mktoFormWizardFragment) == -1
-					&& currUrlFragment.search("^" + mktoMobilePushNotificationWizardFragment) == -1
-					&& currUrlFragment.search("^" + mktoSocialAppWizardFragment) == -1
+                    && currUrlFragment.search("^" + mktoEmailPreviewFragment) == -1
+                    && currUrlFragment.search("^" + mktoLandingPageDesignerFragment) == -1
+                    && currUrlFragment.search("^" + mktoLandingPagePreviewFragment) == -1
+                    && currUrlFragment.search("^" + mktoFormWizardFragment) == -1 
+                    && currUrlFragment.search("^" + mktoMobilePushNotificationWizardFragment) == -1 
+                    && currUrlFragment.search("^" + mktoSocialAppWizardFragment) == -1
+                    && currUrlFragment.search("^" + mktoABtestWizardFragment) == -1
 					&& currUrlFragment != mktoMyMarketoFragment) {
-
+                        /*
                         var isMktCanvasHash = window.setInterval(function() {
-							if (MktCanvas.activeTab !== null) {
-								console.log("Marketo App > Location: Marketo Canvas");
+							if (MktCanvas
+                            && MktCanvas.getActiveTab()
+                            && MktCanvas.getActiveTab().config) {
+								console.log("Marketo App > Location: Marketo Canvas Active Tab");
 								
 								window.clearInterval(isMktCanvasHash);
-								var currWorkspaceId = MktCanvas.activeTab.config.accessZoneId;
-								if (currWorkspaceId == prevWorkspaceId) {
-								}
-								else if (currWorkspaceId == 1 || currWorkspaceId == japanWorkspaceId) {
-									// Intelligent Nurturing
-									APP.disableSaving();
-									prevWorkspaceId = currWorkspaceId;
-								} 
-								else {
-									// Enable Smart Campaign & Nurture Stream Saving for their Workspace
-									if (APP.getCookie("priv") != "false") {
-										APP.enableSaving();
-									}
-									prevWorkspaceId = currWorkspaceId;
+								var currWorkspaceId = MktCanvas.getActiveTab().config.accessZoneId;
+								if (currWorkspaceId != prevWorkspaceId) {
+                                    prevWorkspaceId = currWorkspaceId
 								}
 							}
 						}, 0);
+                        */
 
                         // Marketing ROI, Funnel Analysis
                         if (currUrlFragment == oppInfluenceAnalyzerFragment
