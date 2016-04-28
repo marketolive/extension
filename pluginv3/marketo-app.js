@@ -3260,7 +3260,7 @@ APP.enableSaving = function() {
  **************************************************************************************/
 
 APP.disableSaving = function() {
-    console.log("Marketo App > Disabling: Saving for Editors & Nurture Streams");
+    console.log("Marketo App > Disabling: Saving for Editors");
 
     Mkt3.data.Store.prototype.sync = function() {};
     Ext4.data.Model.prototype.destroy = function() {};
@@ -3359,13 +3359,16 @@ APP.overlayLandingPageDesigner = function() {
     console.log("Marketo App > Overlaying: Landing Page Designer");
 
     var logo = APP.getCookie("logo"),
-        color = APP.getCookie("color"),
-        company = logo.split("https://logo.clearbit.com/")[1].split(".")[0],
-        companyName = company.charAt(0).toUpperCase() + company.slice(1);    
+        color = APP.getCookie("color");
     
     if (logo == null) {
         logo = defaultTurnerLogoGreen;
     }
+    else {
+        var company = logo.split("https://logo.clearbit.com/")[1].split(".")[0],
+            companyName = company.charAt(0).toUpperCase() + company.slice(1);
+    }
+    
     if (color == null) {
         color = defaultColor;
     }
@@ -3829,10 +3832,12 @@ if (currentUrl.search(mktoAppDomain) != -1
                             console.log("Callback for Social App Editor");
                             Ext4.getStore('SocialApp').load(loadParameters);
                             break;
+                        /*
                         case mktoABtestWizardFragment:
                             console.log("Callback for A/B Test Editor");
                             Ext4.getStore('EmailBlastTestGroup').load(loadParameters);
                             break;
+                        */
                         default:
                             currAssetZoneId = -1;
                             break;
