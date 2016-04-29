@@ -3382,7 +3382,7 @@ APP.overrideSaving = function() {
                     this.autoSyncSuspended = false;
                 }
 
-                if (this.getProxy() instanceof Mkt3.data.proxy.AjaxPost) {
+                if (this.getProxy()instanceof Mkt3.data.proxy.AjaxPost) {
                     Mkt3.Synchronizer.sync(this);
                 }
                 else {
@@ -3945,12 +3945,9 @@ if ((currentUrl.search(mktoAppDomain) != -1
                 && currCompFragment != mktoABtestWizardFragment
                 && currCompFragment != mktoEmailTestWizardFragment) {
                     
-                    if (currUrlFragment.search("^" + mktoCalendarFragment) == -1) {
-                        APP.overrideSaving();
-                    }
-                    
                     APP.overrideTreeNodeExpand();
                     APP.overrideTreeNodeCollapse();
+                    APP.overrideSaving();
                     APP.disableDragAndDrop();
                     APP.disableMenus();
                     APP.hideToolbarItems();
