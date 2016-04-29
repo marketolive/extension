@@ -64,6 +64,7 @@ var currentUrl = window.location.href,
     mktoSocialAppWizardFragment = "SOAE",
     mktoABtestWizardFragment = "EBE",
     mktoEmailTestWizardFragment = "CCE",
+    mktoCalendarFragment = "CAL",
     mktoDefaultWorkspaceId = 1,
     mktoMarketingWorkspaceId = 172,
     mktoJapaneseWorkspaceId = 173,
@@ -3356,7 +3357,7 @@ APP.injectAnalyzerNavBar = function() {
 
 APP.overrideSaving = function() {
     console.log("Marketo App > Overriding: Saving for Nurture Streams");
-debugger;
+    
     if (Mkt3
     && Mkt3.data
     && Mkt3.data.Store
@@ -3944,10 +3945,13 @@ if ((currentUrl.search(mktoAppDomain) != -1
                 && currCompFragment != mktoABtestWizardFragment
                 && currCompFragment != mktoEmailTestWizardFragment) {
                     
+                    if (currUrlFragment.search("^" + mktoCalendarFragment) == -1) {
+                        APP.overrideSaving();
+                    }
+                    
                     APP.overrideTreeNodeExpand();
                     APP.overrideTreeNodeCollapse();
                     APP.disableDragAndDrop();
-                    APP.overrideSaving();
                     APP.disableMenus();
                     APP.hideToolbarItems();
                     APP.overrideSmartCampaignSaving();
