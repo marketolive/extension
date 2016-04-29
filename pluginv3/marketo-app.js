@@ -2848,10 +2848,8 @@ APP.disableMenus = function() {
 APP.evaluateWizard = function() {
     console.log("Marketo App > Evaluating: Wizards");
 
-    if (Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor").getEditor()
-    && Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor").getEditor().record
-    && (Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor").getEditor().record.get("zoneId") == mktoDefaultWorkspaceId
-        || Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor").getEditor().record.get("zoneId") == mktoJapaneseWorkspaceId)) {
+    if (Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor").getEditor().record.get("zoneId") == mktoDefaultWorkspaceId
+    || Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor").getEditor().record.get("zoneId") == mktoJapaneseWorkspaceId) {
         
         APP.disableSaving();
     }
@@ -3857,7 +3855,7 @@ if ((currentUrl.search(mktoAppDomain) != -1
                             break;
                         case mktoABtestWizardFragment:
                             var isABtestWizard = window.setInterval(function() {
-                                if (typeof(Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor")) !== "undefined") {
+                                if (typeof(Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor").getEditor().record.get("zoneId")) !== "undefined") {
                                     console.log("Marketo App > Location: A/B Test Wizard");
                                     
                                     window.clearInterval(isABtestWizard);
