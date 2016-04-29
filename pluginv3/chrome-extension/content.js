@@ -183,8 +183,8 @@ window.onload = function() {
 			modeler106abFragment = "RCM5A1!",
 			successPathAnalyzerFragment = "AR1682A1!";
 		
-        loadScript(POD_SCRIPT_LOCATION);
         loadScript(APP_SCRIPT_LOCATION);
+        loadScript(POD_SCRIPT_LOCATION);
 		loadScript(DASHBOARD_SCRIPT_LOCATION);
 		
 		if (currentUrl.search(mktoAppDomain + "/#" + oppInfluenceAnalyzerFragment) != -1
