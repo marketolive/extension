@@ -55,6 +55,7 @@ var currentUrl = window.location.href,
     mktoMobilePushNotificationWizardFragment = "MPNE",
     mktoSocialAppWizardFragment = "SOAE",
     mktoABtestWizardFragment = "EBE",
+    mktoDefaultWorkspaceId = 1,
     mktoMarketingWorkspaceId = 172,
     mktoJapaneseWorkspaceId = 173,
     userWorkspaceName = "My Workspace",
@@ -2835,6 +2836,33 @@ APP.disableMenus = function() {
 
 /**************************************************************************************
  *  
+ *  This function evaluates the current Wizard (aka Editor) context to determine if 
+ *  saving should be disabled.
+ *
+ *  @Author Brian Fisher
+ *
+ *  @function
+ *
+ **************************************************************************************/
+
+APP.evaluateWizard = function() {
+    console.log("Marketo App > Evaluating: Wizards");
+    
+    if (Mkt3
+    && Mkt3.app
+    && Mkt3.app.controllers
+    && Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor")
+    && Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor").getEditor()
+    && Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor").getEditor().record
+    && (Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor").getEditor().record.get("zoneId") == mktoDefaultWorkspaceId
+        || Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor").getEditor().record.get("zoneId") == mktoJapaneseWorkspaceId)) {
+        
+        APP.disableSaving();
+    }
+}
+
+/**************************************************************************************
+ *  
  *  This function hides Toolbar items for all asset types in all areas.
  *
  *  @Author Brian Fisher
@@ -3831,12 +3859,11 @@ if ((currentUrl.search(mktoAppDomain) != -1
                             console.log("Callback for Social App Editor");
                             Ext4.getStore('SocialApp').load(loadParameters);
                             break;
-                        /*
                         case mktoABtestWizardFragment:
-                            console.log("Callback for A/B Test Editor");
-                            Ext4.getStore('EmailBlastTestGroup').load(loadParameters);
+                            APP.evaluateWizard();
+                            //console.log("Callback for A/B Test Editor");
+                            //Ext4.getStore('EmailBlastTestGroup').load(loadParameters);
                             break;
-                        */
                         default:
                             currAssetZoneId = -1;
                             break;
