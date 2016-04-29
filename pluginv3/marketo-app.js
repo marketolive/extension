@@ -3843,7 +3843,7 @@ if ((currentUrl.search(mktoAppDomain) != -1
             var accountString,
                 userId,
                 currUrlFragment,
-                currCompCode;
+                currCompFragment;
             
             if (MktPage.savedState
             && MktPage.savedState.custPrefix
