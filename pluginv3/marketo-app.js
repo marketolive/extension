@@ -2847,7 +2847,7 @@ APP.disableMenus = function() {
 
 APP.evaluateWizard = function() {
     console.log("Marketo App > Evaluating: Wizards");
-    
+    debugger;
     if (Mkt3
     && Mkt3.app
     && Mkt3.app.controllers
