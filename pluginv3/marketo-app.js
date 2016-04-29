@@ -3850,16 +3850,18 @@ if ((currentUrl.search(mktoAppDomain) != -1
             && MktPage.userid
             && Mkt3
             && Mkt3.DL
-            && Mkt3.DL.getDlToken()
-            && Mkt3.DL.dl
-            && Mkt3.DL.dl.dlCompCode) {
+            && Mkt3.DL.getDlToken()) {
             
                 window.clearInterval(isMktPageApp);
                     
-                accountString = MktPage.savedState.custPrefix,
-                userId = MktPage.userid.toLowerCase(),
-                currUrlFragment = Mkt3.DL.getDlToken(),
-                currCompFragment = Mkt3.DL.dl.dlCompCode;
+                accountString = MktPage.savedState.custPrefix;
+                userId = MktPage.userid.toLowerCase();
+                currUrlFragment = Mkt3.DL.getDlToken();
+                
+                if (Mkt3.DL.dl
+                && Mkt3.DL.dl.dlCompCode) {
+                    currCompFragment = Mkt3.DL.dl.dlCompCode;
+                }
                 
                 if (userId.search("\.demo@marketo.com$") != -1) {
                     userName = userId.split(".demo")[0];
@@ -4266,7 +4268,11 @@ if ((currentUrl.search(mktoAppDomain) != -1
                     currentUrl = window.location.href;
                     // Getting the URL fragment, the part after the #
                     currUrlFragment = Mkt3.DL.getDlToken();
-                    currCompFragment = Mkt3.DL.dl.dlCompCode;
+                    
+                    if (Mkt3.DL.dl
+                    && Mkt3.DL.dl.dlCompCode) {
+                        currCompFragment = Mkt3.DL.dl.dlCompCode;
+                    }
                     
                     // Email Deliverability
                     if (currUrlFragment == mktoMyMarketoFragment) {
