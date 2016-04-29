@@ -2836,27 +2836,6 @@ APP.disableMenus = function() {
 
 /**************************************************************************************
  *  
- *  This function evaluates the current Wizard (aka Editor) context to determine if 
- *  saving should be disabled.
- *
- *  @Author Brian Fisher
- *
- *  @function
- *
- **************************************************************************************/
-
-APP.evaluateWizard = function() {
-    console.log("Marketo App > Evaluating: Wizards");
-
-    if (Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor").getEditor().record.get("zoneId") == mktoDefaultWorkspaceId
-    || Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor").getEditor().record.get("zoneId") == mktoJapaneseWorkspaceId) {
-        
-        APP.disableSaving();
-    }
-}
-
-/**************************************************************************************
- *  
  *  This function hides Toolbar items for all asset types in all areas.
  *
  *  @Author Brian Fisher
@@ -3855,11 +3834,19 @@ if ((currentUrl.search(mktoAppDomain) != -1
                             break;
                         case mktoABtestWizardFragment:
                             var isABtestWizard = window.setInterval(function() {
-                                if (typeof(Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor").getEditor().record.get("zoneId")) !== "undefined") {
+                                if (Mkt3
+                                && Mkt3.app
+                                && Mkt3.app.controllers
+                                && Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor")
+                                && Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor").getEditor()
+                                && Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor").getEditor().record
+                                && (Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor").getEditor().record.get("zoneId") == mktoDefaultWorkspaceId
+                                    || Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor").getEditor().record.get("zoneId") == mktoJapaneseWorkspaceId)) {
+                                        
                                     console.log("Marketo App > Location: A/B Test Wizard");
                                     
                                     window.clearInterval(isABtestWizard);
-                                    APP.evaluateWizard();
+                                    APP.disableSaving();
                                 }
                             }, 0);
                             //console.log("Callback for A/B Test Editor");
