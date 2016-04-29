@@ -3355,7 +3355,7 @@ APP.injectAnalyzerNavBar = function() {
  *
  **************************************************************************************/
 
-APP.overrideSaving = function(currUrlFragment) {
+APP.overrideSaving = function() {
     console.log("Marketo App > Overriding: Saving for Nurture Streams");
     
     if (Mkt3
@@ -3367,7 +3367,7 @@ APP.overrideSaving = function(currUrlFragment) {
         Mkt3.data.Store.prototype.sync = function() {
             console.log("Marketo App > Executing: Override Saving for Nurture Streams (sync)");
             
-            if (currUrlFragment.search("^" + mktoCalendarFragment) != -1) {
+            if (window.location.href.search("\/#" + mktoCalendarFragment) != -1) {
                 Mkt3.data.Store.prototype.sync = prevDataStoreSync;
             }
             
