@@ -2848,8 +2848,7 @@ APP.disableMenus = function() {
 APP.evaluateWizard = function() {
     console.log("Marketo App > Evaluating: Wizards");
 
-    if (Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor")
-    && Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor").getEditor()
+    if (Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor").getEditor()
     && Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor").getEditor().record
     && (Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor").getEditor().record.get("zoneId") == mktoDefaultWorkspaceId
         || Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor").getEditor().record.get("zoneId") == mktoJapaneseWorkspaceId)) {
@@ -3858,7 +3857,7 @@ if ((currentUrl.search(mktoAppDomain) != -1
                             break;
                         case mktoABtestWizardFragment:
                             var isABtestWizard = window.setInterval(function() {
-                                if (typeof(Mkt3.app.controllers) !== "undefined") {
+                                if (typeof(Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor")) !== "undefined") {
                                     console.log("Marketo App > Location: A/B Test Wizard");
                                     
                                     window.clearInterval(isABtestWizard);
