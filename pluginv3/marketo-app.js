@@ -55,6 +55,7 @@ var currentUrl = window.location.href,
     mktoMobilePushNotificationWizardFragment = "MPNE",
     mktoSocialAppWizardFragment = "SOAE",
     mktoABtestWizardFragment = "EBE",
+    mktoDefaultWorkspaceId = 1,
     mktoMarketingWorkspaceId = 172,
     mktoJapaneseWorkspaceId = 173,
     userWorkspaceName = "My Workspace",
@@ -3330,7 +3331,6 @@ APP.overlayEmailDesigner = function() {
             logoSwapCompanyContainer = document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("logo-swap-company-container");
         
         if (logoBkg != null
-//		&& buttonBkg != null
 		&& logoSwapCompany != null) {
             console.log("Marketo App > Overlaying: iframe");
             window.clearInterval(isEmailIframeElement);
@@ -3490,7 +3490,7 @@ APP.getEmailIds = function(pod) {
 if ((currentUrl.search(mktoAppDomain) != -1
 || currentUrl.search(mktoDesignerDomain) != -1
 || currentUrl.search(mktoWizard) != -1)
-&& currentUrl.search("#CAL") == -1) {
+&& currentUrl.search("#CAL") == -1){
     console.log("Marketo App > Location: Marketo URL");
 
     var isMktPageApp = window.setInterval(function() {
@@ -3769,9 +3769,9 @@ if ((currentUrl.search(mktoAppDomain) != -1
                         customCompanyEmail106Fragment = "EME15464",
                         customCompanyEmail106aFragment = "EME14240",
                         customCompanyEmail106bFragment = "EME13924",
-                        customCompanyHealthcareFragment = "EME18656",
+                        customCompanyHealthcareFragment = "EME20327",
                         customCompanyFinservFragment = "EME19059",
-                        customCompanyHigherEdFragment = "EME17725",
+                        customCompanyHigherEdFragment = "EME20329",
                         loadParameters = {
                             filters: [{
                                 property: 'id',
@@ -3832,12 +3832,26 @@ if ((currentUrl.search(mktoAppDomain) != -1
                             console.log("Callback for Social App Editor");
                             Ext4.getStore('SocialApp').load(loadParameters);
                             break;
-                        /*
                         case mktoABtestWizardFragment:
-                            console.log("Callback for A/B Test Editor");
-                            Ext4.getStore('EmailBlastTestGroup').load(loadParameters);
+                            var isABtestWizard = window.setInterval(function() {
+                                if (Mkt3
+                                && Mkt3.app
+                                && Mkt3.app.controllers
+                                && Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor")
+                                && Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor").getEditor()
+                                && Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor").getEditor().record
+                                && (Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor").getEditor().record.get("zoneId") == mktoDefaultWorkspaceId
+                                    || Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor").getEditor().record.get("zoneId") == mktoJapaneseWorkspaceId)) {
+                                        
+                                    console.log("Marketo App > Location: A/B Test Wizard");
+                                    
+                                    window.clearInterval(isABtestWizard);
+                                    APP.disableSaving();
+                                }
+                            }, 0);
+                            //console.log("Callback for A/B Test Editor");
+                            //Ext4.getStore('EmailBlastTestGroup').load(loadParameters);
                             break;
-                        */
                         default:
                             currAssetZoneId = -1;
                             break;
