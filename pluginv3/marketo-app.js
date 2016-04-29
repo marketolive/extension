@@ -3355,7 +3355,7 @@ APP.injectAnalyzerNavBar = function() {
  *
  **************************************************************************************/
 
-APP.overrideSaving = function() {
+APP.overrideSaving = function(currUrlFragment) {
     console.log("Marketo App > Overriding: Saving for Nurture Streams");
     
     if (Mkt3
@@ -3363,34 +3363,42 @@ APP.overrideSaving = function() {
     && Mkt3.data.Store
     && Mkt3.data.Store.prototype
     && Mkt3.data.Store.prototype.sync) {
+        var prevDataStoreSync = Mkt3.data.Store.prototype.sync;
         Mkt3.data.Store.prototype.sync = function() {
             console.log("Marketo App > Executing: Override Saving for Nurture Streams (sync)");
             
-            var disable;
-            if (MktCanvas
-            && MktCanvas.getActiveTab()
-            && APP.getCookie("priv") != "false") {
-                disable = APP.evaluateMenu("button", null, MktCanvas.getActiveTab(), null);
-            }
-            else if (APP.getCookie("priv") == "false") {
-                disable = true;
+            if (currUrlFragment.search("^" + mktoCalendarFragment) != -1) {
+                Mkt3.data.Store.prototype.sync = prevDataStoreSync;
             }
             
-            if (!disable) {
-                if (this.autoSyncSuspended) {
-                    this.autoSync = true;
-                    this.autoSyncSuspended = false;
+            else {
+            
+                var disable;
+                if (MktCanvas
+                && MktCanvas.getActiveTab()
+                && APP.getCookie("priv") != "false") {
+                    disable = APP.evaluateMenu("button", null, MktCanvas.getActiveTab(), null);
                 }
+                else if (APP.getCookie("priv") == "false") {
+                    disable = true;
+                }
+                
+                if (!disable) {
+                    if (this.autoSyncSuspended) {
+                        this.autoSync = true;
+                        this.autoSyncSuspended = false;
+                    }
 
-                if (this.getProxy()instanceof Mkt3.data.proxy.AjaxPost) {
-                    Mkt3.Synchronizer.sync(this);
+                    if (this.getProxy()instanceof Mkt3.data.proxy.AjaxPost) {
+                        Mkt3.Synchronizer.sync(this);
+                    }
+                    else {
+                        this.callParent(arguments);
+                    }
                 }
                 else {
-                    this.callParent(arguments);
+                    console.log("Marketo App > Disabling: Saving for Nurture Streams (sync)");
                 }
-            }
-            else {
-                console.log("Marketo App > Disabling: Saving for Nurture Streams (sync)");
             }
         }
     }
@@ -3947,7 +3955,7 @@ if ((currentUrl.search(mktoAppDomain) != -1
                     
                     APP.overrideTreeNodeExpand();
                     APP.overrideTreeNodeCollapse();
-                    APP.overrideSaving();
+                    APP.overrideSaving(currUrlFragment);
                     APP.disableDragAndDrop();
                     APP.disableMenus();
                     APP.hideToolbarItems();
