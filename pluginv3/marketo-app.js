@@ -4164,7 +4164,8 @@ if ((currentUrl.search(mktoAppDomain) != -1
                         customCompanyEmail106aFragment = "EME14240",
                         customCompanyEmail106bFragment = "EME13924",
                         customCompanyHealthcareFragment = "EME20327",
-                        customCompanyFinservFragment = "EME20350",
+                        customCompanyFinservMFragment = "EME20350",
+                        customCompanyFinservPFragment ="EME20368",
                         customCompanyHigherEdFragment = "EME20329",
                         loadParameters = {
                             filters: [{
@@ -4204,7 +4205,10 @@ if ((currentUrl.search(mktoAppDomain) != -1
                                 case customCompanyHealthcareFragment:
                                     APP.overlayEmailDesigner();
                                     break;
-                                case customCompanyFinservFragment:
+                                case customCompanyFinservMFragment:
+                                    APP.overlayEmailDesigner();
+                                    break;
+                                case customCompanyFinservPFragment:
                                     APP.overlayEmailDesigner();
                                     break;
                                 case customCompanyHigherEdFragment:
