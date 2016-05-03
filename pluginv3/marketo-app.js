@@ -3809,19 +3809,19 @@ APP.getEmailIds = function(pod) {
     var emIds = [];
     switch (pod) {
         case "app-sjp":
-            // DIY Design
+            // Default DIY Design
             emIds.push(15464);
-            // Email Marketing: AB Test Configuration, AB Test Dashboard, Champion/Chalenger, Email Program Dashboard
+            // Default Email Marketing: AB Test Configuration, AB Test Dashboard, Champion/Chalenger, Email Program Dashboard
             emIds.push(18113, 18106, 18111, 18110);
-            // Replicate Success: Roadshow Example
+            // Default Replicate Success: Roadshow Example
             emIds.push(10010, 10179, 10180, 12845, 10181, 10182, 10183, 10184);
-            // Replicate Success: Webinar Example
+            // Default Replicate Success: Webinar Example
             emIds.push(4894, 3764, 3765, 3767, 3766, 3762);
-            // Intelligent Nurturing
+            // Default Intelligent Nurturing
             emIds.push(12818, 12820, 12819, 12816, 12811, 12815, 12812, 12813, 12814, 12821, 12817, 12823);
-            // Actionable Insight: BANT Nurture for Sales
+            // Default Actionable Insight: BANT Nurture for Sales
             emIds.push(12900, 12901, 12899, 12898);
-            // Actionable Insight: Sales Auto Reach Out
+            // Default Actionable Insight: Sales Auto Reach Out
             emIds.push(12902, 12903, 12904);
             // Japanese Default Content Unknown
             emIds.push(16474, 17254, 16403);
@@ -3835,6 +3835,12 @@ APP.getEmailIds = function(pod) {
             emIds.push(16125, 16129, 16126, 16124, 16132, 16131, 16130, 16128, 16127, 16133, 16137, 16136);
             // Japanese Default Email Blast Unknown
             emIds.push(18126);
+            // Financial Services DIY Design
+            emIds.push(20350, 20368)
+            // Healthcare Services DIY Design
+            emIds.push(20327)
+            // Higher Ed Services DIY Design
+            emIds.push(20329)
             break;
         case "app-ab07":
             // DIY Design
@@ -4030,6 +4036,7 @@ if ((currentUrl.search(mktoAppDomain) != -1
                     var lpIds = {},
                         formIds = [],
                         pushIds = [],
+                        socIds = [],
                         emIds = APP.getEmailIds(APP.getCookie("userPod"));
                     switch (accountString) {
                         case mktoAccountString106:
@@ -4057,14 +4064,55 @@ if ((currentUrl.search(mktoAppDomain) != -1
                             // Japanese Replicate Success Roadshow Example: 1, 2
                             lpIds["dpageid_12345"] = "dpageid_12345";
                             lpIds["dpageid_11556"] = "dpageid_11556";
-                            // Forms: DIY Design, Replicate Success Roadshow Example, Replicate Success Webinar Example
+                            // DIY Design: Financial Services Landing Page, Landing Page Responsive, Preference
+                            lpIds["dpageid_12711"] = "dpageid_12711";
+                            lpIds["dpageid_12715"] = "dpageid_12715";
+                            lpIds["dpageid_12907"] = "dpageid_12907";
+                            lpIds["dpageid_12709"] = "dpageid_12709";
+                            // DIY Design: Healthcare Landing Page, Landing Page Responsive, Preference
+                            lpIds["dpageid_12569"] = "dpageid_12569";
+                            lpIds["dpageid_12932"] = "dpageid_12932";
+                            lpIds["dpageid_12570"] = "dpageid_12570";
+                            lpIds["dpageid_12586"] = "dpageid_12586";
+                            // DIY Design: Higher Ed Landing Page, Landing Page Responsive, Preference
+                            lpIds["dpageid_12250"] = "dpageid_12250";
+                            lpIds["dpageid_12934"] = "dpageid_12934";
+                            lpIds["dpageid_12401"] = "dpageid_12401";
+                            lpIds["dpageid_12180"] = "dpageid_12180";
+                            lpIds["dpageid_12248"] = "dpageid_12248";
+
+                            // Forms: Default DIY Design, Replicate Success Roadshow Example, Replicate Success Webinar Example
                             formIds.push(3576, 1749, 1900);
                             // Forms: Japanese Default DIY Design, Japanese Event Roadshow Unknown, Japanese Replicate Success Webinar Example, Japanese Replicate Success Roadshow Example
                             formIds.push(3018, 3708, 3020, 3021);
-                            // Push Notifications: DIY Design, Mobile Engagement
+                            // Forms: Financial Services DIY Design
+                            formIds.push(3952, 3955, 3953);
+                            // Forms: Healthcare DIY Design
+                            formIds.push(3816, 3818, 3828);
+                            // Forms: Higher Ed DIY Design
+                            formIds.push(3313, 4125, 3559);
+                            
+                            // Push Notifications: Default DIY Design, Mobile Engagement
                             pushIds.push(29, 23);
-                            // Push Notifications: DIY Design, Mobile Engagement, Unknown
-                            formIds.push(99, 94, 103);
+                            // Push Notifications: Japanese DIY Design, Mobile Engagement, Unknown
+                            pushIds.push(99, 216, 103, 218);
+                            // Push Notifications: Financial Services DIY Design, Mobile Engagement
+                            pushIds.push(187);
+                            // Push Notifications: Healthcare DIY Design, Mobile Engagement
+                            pushIds.push(169);
+                            // Push Notifications: Higher Ed DIY Design, Mobile Engagement
+                            pushIds.push(131);
+                            
+                            // Social Apps: Default DIY Design
+                            socIds.push(586, 587, 491, 484, 448);
+                            // Social Apps: Japanese DIY Design
+                            socIds.push(853);
+                            // Social Apps: Financial Services DIY Design
+                            socIds.push(1091, 1090, 1093, 1092, 1094);
+                            // Social Apps: Healthcare DIY Design
+                            socIds.push(1021, 1023, 1025, 1022, 1020);
+                            // Social Apps: Higher Ed DIY Design
+                            socIds.push(860, 1024, 861, 859, 858);
                             break;
                         case mktoAccountString106a:
                             // Custom Landing Page
@@ -4100,6 +4148,8 @@ if ((currentUrl.search(mktoAppDomain) != -1
                             APP.discardFormPushDrafts("Form", formIds);
                             // DIY Design (Push Notifications)
                             APP.discardFormPushDrafts("MobilePushNotification", pushIds);
+                            // DIY Design (Social)
+                            APP.discardFormPushDrafts("SocialApp", socIds);
                             // Limiting Nurture Programs
                             APP.limitNurturePrograms();
                         }
