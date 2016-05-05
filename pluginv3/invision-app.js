@@ -34,7 +34,7 @@ INVISION.login = function (feature) {
             document.getElementById("password").value = "MME";
             document.getElementsByClassName("primary button")[0].click;
             break;
-        case default:
+        default:
             break;
     }
 }
