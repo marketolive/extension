@@ -32,7 +32,7 @@ INVISION.login = function (feature) {
         // MME In App Messaging
         case "MW5CE0YHS":
             document.getElementById("password").value = "MME";
-            document.getElementsByClassName("primary button")[0].click;
+            document.getElementsByClassName("primary button")[0].click();
             break;
         default:
             break;
