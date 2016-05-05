@@ -5,6 +5,7 @@ var URL_PATH = "m3",
     APP_SCRIPT_LOCATION = "https://marketolive.com/"+URL_PATH+"/pluginv3/marketo-app.min.js",
     POD_SCRIPT_LOCATION = "https://marketolive.com/"+URL_PATH+"/pluginv3/pods.min.js",
 	DELIVERABILITY_TOOLS_SCRIPT_LOCATION = "https://marketolive.com/"+URL_PATH+"/pluginv3/deliverability-tools.min.js",
+    INVISION_APP_SCRIPT_LOCATION = "https://marketolive.com/"+URL_PATH+"/pluginv3/invision-app.min.js",
     DASHBOARD_SCRIPT_LOCATION = "https://marketolive.com/"+URL_PATH+"/pluginv3/dashboards/remote-data.min.js",
     RTP_DEEPLINK_SCRIPT_LOCATION = "https://marketolive.com/"+URL_PATH+"/pluginv3/rtp-deeplink.min.js",
     ASSET_NAV_BAR_LOCATION = "https://marketolive.com/"+URL_PATH+"/v3/assets.html",
@@ -183,8 +184,8 @@ window.onload = function() {
 			modeler106abFragment = "RCM5A1!",
 			successPathAnalyzerFragment = "AR1682A1!";
 		
-        loadScript(POD_SCRIPT_LOCATION);
         loadScript(APP_SCRIPT_LOCATION);
+        loadScript(POD_SCRIPT_LOCATION);
 		loadScript(DASHBOARD_SCRIPT_LOCATION);
 		
 		if (currentUrl.search(mktoAppDomain + "/#" + oppInfluenceAnalyzerFragment) != -1
@@ -282,4 +283,10 @@ window.onload = function() {
 		
 		loadScript(DELIVERABILITY_TOOLS_SCRIPT_LOCATION);
 	}
+    
+    else if (currentUrl.search("^https:\/\/marketo\.invisionapp\.com\/share\/") != -1) {
+        console.log("Content > Location: InVision App");
+        
+        loadScript(INVISION_APP_SCRIPT_LOCATION);
+    }
 }
