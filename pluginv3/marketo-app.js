@@ -45,9 +45,15 @@ var currentUrl = window.location.href,
 	mktoMarketingActivitiesDefaultFragment = "MA15A1",
     mktoMarketingActivitiesMarketingFragment = "MA19802A1",
     mktoMarketingActivitiesJapaneseFragment = "MA19848A1",
+    mktoMarketingActivitiesFinservFragment = "MA20806A1",
+    mktoMarketingActivitiesHealthcareFragment = "MA20826A1",
+    mktoMarketingActivitiesHigherEdFragment = "MA20846A1",
 	mktoLeadDatabaseDefaultFragment = "ML0A1ZN2",
     mktoLeadDatabaseMarketingFragment = "ML0A1ZN19788",
     mktoLeadDatabaseJapaneseFragment = "ML0A1ZN19834",
+    mktoLeadDatabaseFinservFragment = "ML0A1ZN20792",
+    mktoLeadDatabaseHealthcareFragment = "ML0A1ZN20812",
+    mktoLeadDatabaseHigherEdFragment = "ML0A1ZN20832",
     mktoAnalyticsFragment = "AH0A1ZN17",
     mktoOppInfluenceAnalyzerFragment = "AR1559A1!",
     mktoProgramAnalyzerFragment = "AR1544A1!",
@@ -68,6 +74,9 @@ var currentUrl = window.location.href,
     mktoDefaultWorkspaceId = 1,
     mktoMarketingWorkspaceId = 172,
     mktoJapaneseWorkspaceId = 173,
+    mktoFinservWorkspaceId = 174,
+    mktoHealthcareWorkspaceId = 175,
+    mktoHigherEdWorkspaceId = 176,
     userWorkspaceName = "My Workspace",
     isMktoLiveInstance = false,
     userName,
@@ -1311,7 +1320,10 @@ APP.overrideAssetSaveEdit = function() {
                 var currWorkspaceId = MktCanvas.getActiveTab().config.accessZoneId;
                 
                 if (currWorkspaceId != mktoDefaultWorkspaceId
-                && currWorkspaceId != mktoJapaneseWorkspaceId) {
+                && currWorkspaceId != mktoJapaneseWorkspaceId
+                && currWorkspaceId != mktoFinservWorkspaceId
+                && currWorkspaceId != mktoHealthcareWorkspaceId
+                && currWorkspaceId != mktoHigherEdWorkspaceId) {
                     var isFolderEdit = false;
                 
                     if ((MktExplorer.getEl().dom.ownerDocument.title.search("Marketing Activities") != -1
@@ -1475,7 +1487,10 @@ APP.overrideAssetSaveEdit = function() {
                 }
                 
                 if (currWorkspaceId == mktoDefaultWorkspaceId
-                || currWorkspaceId == mktoJapaneseWorkspaceId) {
+                || currWorkspaceId == mktoJapaneseWorkspaceId
+                || currWorkspaceId == mktoFinservWorkspaceId
+                || currWorkspaceId == mktoHealthcareWorkspaceId
+                || currWorkspaceId == mktoHigherEdWorkspaceId) {
                     var toUpdateNodeText = false;
 
                     MktSession.clockCursor(true);
@@ -2018,10 +2033,16 @@ APP.evaluateMoveItem = function (nodeToMove, destNode) {
 */    
         if ((nodeToMove.attributes
             && (nodeToMove.attributes.accessZoneId == mktoDefaultWorkspaceId
-                || nodeToMove.attributes.accessZoneId == mktoJapaneseWorkspaceId))
+                || nodeToMove.attributes.accessZoneId == mktoJapaneseWorkspaceId
+                || nodeToMove.attributes.accessZoneId == mktoFinservWorkspaceId
+                || nodeToMove.attributes.accessZoneId == mktoHealthcareWorkspaceId
+                || nodeToMove.attributes.accessZoneId == mktoHigherEdWorkspaceId))
         || (destNode.attributes
             && (destNode.attributes.accessZoneId == mktoDefaultWorkspaceId
-                || destNode.attributes.accessZoneId == mktoJapaneseWorkspaceId))) {
+                || destNode.attributes.accessZoneId == mktoJapaneseWorkspaceId
+                || destNode.attributes.accessZoneId == mktoFinservWorkspaceId
+                || destNode.attributes.accessZoneId == mktoHealthcareWorkspaceId
+                || destNode.attributes.accessZoneId == mktoHigherEdWorkspaceId))) {
             
             return false;
         }
@@ -2172,6 +2193,9 @@ APP.evaluateMenu = function (triggeredFrom, menu, canvas, toolbar) {
                 && menu.currNode.attributes
                 && (menu.currNode.attributes.accessZoneId == mktoDefaultWorkspaceId
                     || menu.currNode.attributes.accessZoneId == mktoJapaneseWorkspaceId
+                    || menu.currNode.attributes.accessZoneId == mktoFinservWorkspaceId
+                    || menu.currNode.attributes.accessZoneId == mktoHealthcareWorkspaceId
+                    || menu.currNode.attributes.accessZoneId == mktoHigherEdWorkspaceId
                     || menu.currNode.attributes.accessZoneId == mktoMarketingWorkspaceId)) {
                 
                     toBeDisabled = true;
@@ -2198,6 +2222,9 @@ APP.evaluateMenu = function (triggeredFrom, menu, canvas, toolbar) {
                             && canvas.config
                             && (canvas.config.accessZoneId == mktoDefaultWorkspaceId
                                 || canvas.config.accessZoneId == mktoJapaneseWorkspaceId
+                                || canvas.config.accessZoneId == mktoFinservWorkspaceId
+                                || canvas.config.accessZoneId == mktoHealthcareWorkspaceId
+                                || canvas.config.accessZoneId == mktoHigherEdWorkspaceId
                                 || (canvas.config.accessZoneId == mktoMarketingWorkspaceId
                                     && ((canvas.config.expNodeId
                                             && MktExplorer.getNodeById(canvas.config.expNodeId))
@@ -2236,6 +2263,9 @@ APP.evaluateMenu = function (triggeredFrom, menu, canvas, toolbar) {
                     && canvas.config
                     && (canvas.config.accessZoneId == mktoDefaultWorkspaceId
                         || canvas.config.accessZoneId == mktoJapaneseWorkspaceId
+                        || canvas.config.accessZoneId == mktoFinservWorkspaceId
+                        || canvas.config.accessZoneId == mktoHealthcareWorkspaceId
+                        || canvas.config.accessZoneId == mktoHigherEdWorkspaceId
                         || (canvas.config.accessZoneId == mktoMarketingWorkspaceId
                             && ((canvas.config.expNodeId
                                     && MktExplorer.getNodeById(canvas.config.expNodeId))
@@ -2272,7 +2302,10 @@ APP.evaluateMenu = function (triggeredFrom, menu, canvas, toolbar) {
             case "socialAppToolbar":
                 if (toolbar.getSocialApp()
                     && (toolbar.getSocialApp().get('zoneId') == mktoDefaultWorkspaceId
-                        || toolbar.getSocialApp().get('zoneId') == mktoJapaneseWorkspaceId)
+                        || toolbar.getSocialApp().get('zoneId') == mktoJapaneseWorkspaceId
+                        || toolbar.getSocialApp().get('zoneId') == mktoFinservWorkspaceId
+                        || toolbar.getSocialApp().get('zoneId') == mktoHealthcareWorkspaceId
+                        || toolbar.getSocialApp().get('zoneId') == mktoHigherEdWorkspaceId)
                     || (toolbar.getSocialApp().get('zoneId') == mktoMarketingWorkspaceId
                         && toolbar.getSocialApp().getNodeJson()
                         && toolbar.getSocialApp().getNodeJson().id
@@ -2299,7 +2332,10 @@ APP.evaluateMenu = function (triggeredFrom, menu, canvas, toolbar) {
             case "mobilePushNotification":
                 if (toolbar.getMobilePushNotification()
                     && (toolbar.getMobilePushNotification().get('zoneId') == mktoDefaultWorkspaceId
-                        || toolbar.getMobilePushNotification().get('zoneId') == mktoJapaneseWorkspaceId)
+                        || toolbar.getMobilePushNotification().get('zoneId') == mktoJapaneseWorkspaceId
+                        || toolbar.getMobilePushNotification().get('zoneId') == mktoFinservWorkspaceId
+                        || toolbar.getMobilePushNotification().get('zoneId') == mktoHealthcareWorkspaceId
+                        || toolbar.getMobilePushNotification().get('zoneId') == mktoHigherEdWorkspaceId)
                     || (toolbar.getMobilePushNotification().get('zoneId') == mktoMarketingWorkspaceId
                         && toolbar.getMobilePushNotification().getNodeJson()
                         && toolbar.getMobilePushNotification().getNodeJson().id
@@ -3779,19 +3815,19 @@ APP.getEmailIds = function(pod) {
     var emIds = [];
     switch (pod) {
         case "app-sjp":
-            // DIY Design
+            // Default DIY Design
             emIds.push(15464);
-            // Email Marketing: AB Test Configuration, AB Test Dashboard, Champion/Chalenger, Email Program Dashboard
+            // Default Email Marketing: AB Test Configuration, AB Test Dashboard, Champion/Chalenger, Email Program Dashboard
             emIds.push(18113, 18106, 18111, 18110);
-            // Replicate Success: Roadshow Example
+            // Default Replicate Success: Roadshow Example
             emIds.push(10010, 10179, 10180, 12845, 10181, 10182, 10183, 10184);
-            // Replicate Success: Webinar Example
+            // Default Replicate Success: Webinar Example
             emIds.push(4894, 3764, 3765, 3767, 3766, 3762);
-            // Intelligent Nurturing
+            // Default Intelligent Nurturing
             emIds.push(12818, 12820, 12819, 12816, 12811, 12815, 12812, 12813, 12814, 12821, 12817, 12823);
-            // Actionable Insight: BANT Nurture for Sales
+            // Default Actionable Insight: BANT Nurture for Sales
             emIds.push(12900, 12901, 12899, 12898);
-            // Actionable Insight: Sales Auto Reach Out
+            // Default Actionable Insight: Sales Auto Reach Out
             emIds.push(12902, 12903, 12904);
             // Japanese Default Content Unknown
             emIds.push(16474, 17254, 16403);
@@ -3805,6 +3841,12 @@ APP.getEmailIds = function(pod) {
             emIds.push(16125, 16129, 16126, 16124, 16132, 16131, 16130, 16128, 16127, 16133, 16137, 16136);
             // Japanese Default Email Blast Unknown
             emIds.push(18126);
+            // Financial Services DIY Design
+            emIds.push(20350, 20368)
+            // Healthcare Services DIY Design
+            emIds.push(20327)
+            // Higher Ed Services DIY Design
+            emIds.push(20329)
             break;
         case "app-ab07":
             // DIY Design
@@ -3921,9 +3963,15 @@ if ((currentUrl.search(mktoAppDomain) != -1
 				else if (currUrlFragment == mktoMarketingActivitiesDefaultFragment
 				|| currUrlFragment == mktoMarketingActivitiesMarketingFragment
                 || currUrlFragment == mktoMarketingActivitiesJapaneseFragment
+                || currUrlFragment == mktoMarketingActivitiesFinservFragment
+                || currUrlFragment == mktoMarketingActivitiesHealthcareFragment
+                || currUrlFragment == mktoMarketingActivitiesHigherEdFragment
                 || currUrlFragment == mktoLeadDatabaseDefaultFragment
                 || currUrlFragment == mktoLeadDatabaseMarketingFragment
-                || currUrlFragment == mktoLeadDatabaseJapaneseFragment) {
+                || currUrlFragment == mktoLeadDatabaseJapaneseFragment
+                || currUrlFragment == mktoLeadDatabaseFinservFragment
+                || currUrlFragment == mktoLeadDatabaseHealthcareFragment
+                || currUrlFragment == mktoLeadDatabaseHigherEdFragment) {
 					APP.disableButtons();
 				}
                 
@@ -4000,6 +4048,7 @@ if ((currentUrl.search(mktoAppDomain) != -1
                     var lpIds = {},
                         formIds = [],
                         pushIds = [],
+                        socIds = [],
                         emIds = APP.getEmailIds(APP.getCookie("userPod"));
                     switch (accountString) {
                         case mktoAccountString106:
@@ -4027,14 +4076,55 @@ if ((currentUrl.search(mktoAppDomain) != -1
                             // Japanese Replicate Success Roadshow Example: 1, 2
                             lpIds["dpageid_12345"] = "dpageid_12345";
                             lpIds["dpageid_11556"] = "dpageid_11556";
-                            // Forms: DIY Design, Replicate Success Roadshow Example, Replicate Success Webinar Example
+                            // DIY Design: Financial Services Landing Page, Landing Page Responsive, Preference
+                            lpIds["dpageid_12711"] = "dpageid_12711";
+                            lpIds["dpageid_12715"] = "dpageid_12715";
+                            lpIds["dpageid_12907"] = "dpageid_12907";
+                            lpIds["dpageid_12709"] = "dpageid_12709";
+                            // DIY Design: Healthcare Landing Page, Landing Page Responsive, Preference
+                            lpIds["dpageid_12569"] = "dpageid_12569";
+                            lpIds["dpageid_12932"] = "dpageid_12932";
+                            lpIds["dpageid_12570"] = "dpageid_12570";
+                            lpIds["dpageid_12586"] = "dpageid_12586";
+                            // DIY Design: Higher Ed Landing Page, Landing Page Responsive, Preference
+                            lpIds["dpageid_12250"] = "dpageid_12250";
+                            lpIds["dpageid_12934"] = "dpageid_12934";
+                            lpIds["dpageid_12401"] = "dpageid_12401";
+                            lpIds["dpageid_12180"] = "dpageid_12180";
+                            lpIds["dpageid_12248"] = "dpageid_12248";
+
+                            // Forms: Default DIY Design, Replicate Success Roadshow Example, Replicate Success Webinar Example
                             formIds.push(3576, 1749, 1900);
                             // Forms: Japanese Default DIY Design, Japanese Event Roadshow Unknown, Japanese Replicate Success Webinar Example, Japanese Replicate Success Roadshow Example
                             formIds.push(3018, 3708, 3020, 3021);
-                            // Push Notifications: DIY Design, Mobile Engagement
+                            // Forms: Financial Services DIY Design
+                            formIds.push(3952, 3955, 3953);
+                            // Forms: Healthcare DIY Design
+                            formIds.push(3816, 3818, 3828);
+                            // Forms: Higher Ed DIY Design
+                            formIds.push(3313, 4125, 3559);
+                            
+                            // Push Notifications: Default DIY Design, Mobile Engagement
                             pushIds.push(29, 23);
-                            // Push Notifications: DIY Design, Mobile Engagement, Unknown
-                            formIds.push(99, 94, 103);
+                            // Push Notifications: Japanese DIY Design, Mobile Engagement, Unknown
+                            pushIds.push(99, 216, 103, 218);
+                            // Push Notifications: Financial Services DIY Design, Mobile Engagement
+                            pushIds.push(187);
+                            // Push Notifications: Healthcare DIY Design, Mobile Engagement
+                            pushIds.push(169);
+                            // Push Notifications: Higher Ed DIY Design, Mobile Engagement
+                            pushIds.push(131);
+                            
+                            // Social Apps: Default DIY Design
+                            socIds.push(586, 587, 491, 484, 448);
+                            // Social Apps: Japanese DIY Design
+                            socIds.push(853);
+                            // Social Apps: Financial Services DIY Design
+                            socIds.push(1091, 1090, 1093, 1092, 1094);
+                            // Social Apps: Healthcare DIY Design
+                            socIds.push(1021, 1023, 1025, 1022, 1020);
+                            // Social Apps: Higher Ed DIY Design
+                            socIds.push(860, 1024, 861, 859, 858);
                             break;
                         case mktoAccountString106a:
                             // Custom Landing Page
@@ -4070,6 +4160,8 @@ if ((currentUrl.search(mktoAppDomain) != -1
                             APP.discardFormPushDrafts("Form", formIds);
                             // DIY Design (Push Notifications)
                             APP.discardFormPushDrafts("MobilePushNotification", pushIds);
+                            // DIY Design (Social)
+                            APP.discardFormPushDrafts("SocialApp", socIds);
                             // Limiting Nurture Programs
                             APP.limitNurturePrograms();
                         }
@@ -4098,6 +4190,9 @@ if ((currentUrl.search(mktoAppDomain) != -1
                                             console.log("Marketo App > currAssetWorkspaceId = " + currAssetWorkspaceId);
                                             if (currAssetWorkspaceId == mktoDefaultWorkspaceId
                                             || currAssetWorkspaceId == mktoJapaneseWorkspaceId
+                                            || currAssetWorkspaceId == mktoFinservWorkspaceId
+                                            || currAssetWorkspaceId == mktoHealthcareWorkspaceId
+                                            || currAssetWorkspaceId == mktoHigherEdWorkspaceId
                                             || APP.getCookie("priv") == "false") {
                                                 APP.disablePropertyPanelSaving();
                                             }
@@ -4145,7 +4240,10 @@ if ((currentUrl.search(mktoAppDomain) != -1
                         && Mkt3.app.controllers.get("Mkt3.controller.editor.LandingPage")
                         && Mkt3.app.controllers.get("Mkt3.controller.editor.LandingPage").getLandingPage()
                         && (Mkt3.app.controllers.get("Mkt3.controller.editor.LandingPage").getLandingPage().get("zoneId") == mktoDefaultWorkspaceId
-                            || Mkt3.app.controllers.get("Mkt3.controller.editor.LandingPage").getLandingPage().get("zoneId") == mktoJapaneseWorkspaceId)) {
+                            || Mkt3.app.controllers.get("Mkt3.controller.editor.LandingPage").getLandingPage().get("zoneId") == mktoJapaneseWorkspaceId
+                            || Mkt3.app.controllers.get("Mkt3.controller.editor.LandingPage").getLandingPage().get("zoneId") == mktoFinservWorkspaceId
+                            || Mkt3.app.controllers.get("Mkt3.controller.editor.LandingPage").getLandingPage().get("zoneId") == mktoHealthcareWorkspaceId
+                            || Mkt3.app.controllers.get("Mkt3.controller.editor.LandingPage").getLandingPage().get("zoneId") == mktoHigherEdWorkspaceId)) {
                                 
                             console.log("Marketo App > Loaded: Landing Page Designer");
                                     
@@ -4164,7 +4262,8 @@ if ((currentUrl.search(mktoAppDomain) != -1
                         customCompanyEmail106aFragment = "EME14240",
                         customCompanyEmail106bFragment = "EME13924",
                         customCompanyHealthcareFragment = "EME20327",
-                        customCompanyFinservFragment = "EME19059",
+                        customCompanyFinservMFragment = "EME20350",
+                        customCompanyFinservPFragment ="EME20368",
                         customCompanyHigherEdFragment = "EME20329",
                         loadParameters = {
                             filters: [{
@@ -4179,6 +4278,9 @@ if ((currentUrl.search(mktoAppDomain) != -1
                                             console.log("Marketo App > currAssetWorkspaceId = " + currAssetWorkspaceId);
                                             if (currAssetWorkspaceId == mktoDefaultWorkspaceId
                                             || currAssetWorkspaceId == mktoJapaneseWorkspaceId
+                                            || currAssetWorkspaceId == mktoFinservWorkspaceId
+                                            || currAssetWorkspaceId == mktoHealthcareWorkspaceId
+                                            || currAssetWorkspaceId == mktoHigherEdWorkspaceId
                                             || APP.getCookie("priv") == "false") {
                                                 APP.disableSaving();
                                             }
@@ -4204,7 +4306,10 @@ if ((currentUrl.search(mktoAppDomain) != -1
                                 case customCompanyHealthcareFragment:
                                     APP.overlayEmailDesigner();
                                     break;
-                                case customCompanyFinservFragment:
+                                case customCompanyFinservMFragment:
+                                    APP.overlayEmailDesigner();
+                                    break;
+                                case customCompanyFinservPFragment:
                                     APP.overlayEmailDesigner();
                                     break;
                                 case customCompanyHigherEdFragment:
@@ -4253,7 +4358,10 @@ if ((currentUrl.search(mktoAppDomain) != -1
                                 && Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor").getEditor()
                                 && Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor").getEditor().record
                                 && (Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor").getEditor().record.get("zoneId") == mktoDefaultWorkspaceId
-                                    || Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor").getEditor().record.get("zoneId") == mktoJapaneseWorkspaceId)) {
+                                    || Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor").getEditor().record.get("zoneId") == mktoJapaneseWorkspaceId
+                                    || Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor").getEditor().record.get("zoneId") == mktoFinservWorkspaceId
+                                    || Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor").getEditor().record.get("zoneId") == mktoHealthcareWorkspaceId
+                                    || Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor").getEditor().record.get("zoneId") == mktoHigherEdWorkspaceId)) {
                                         
                                     console.log("Marketo App > Location: A/B Test Wizard");
                                     
@@ -4273,7 +4381,10 @@ if ((currentUrl.search(mktoAppDomain) != -1
                                 && Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor").getEditor()
                                 && Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor").getEditor().record
                                 && (Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor").getEditor().record.get("zoneId") == mktoDefaultWorkspaceId
-                                    || Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor").getEditor().record.get("zoneId") == mktoJapaneseWorkspaceId)) {
+                                    || Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor").getEditor().record.get("zoneId") == mktoJapaneseWorkspaceId
+                                    || Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor").getEditor().record.get("zoneId") == mktoFinservWorkspaceId
+                                    || Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor").getEditor().record.get("zoneId") == mktoHealthcareWorkspaceId
+                                    || Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor").getEditor().record.get("zoneId") == mktoHigherEdWorkspaceId)) {
                                         
                                     console.log("Marketo App > Location: Email Test Group Wizard");
                                     
@@ -4309,9 +4420,15 @@ if ((currentUrl.search(mktoAppDomain) != -1
 					else if (currUrlFragment == mktoMarketingActivitiesDefaultFragment
                     || currUrlFragment == mktoMarketingActivitiesMarketingFragment
                     || currUrlFragment == mktoMarketingActivitiesJapaneseFragment
+                    || currUrlFragment == mktoMarketingActivitiesFinservFragment
+                    || currUrlFragment == mktoMarketingActivitiesHealthcareFragment
+                    || currUrlFragment == mktoMarketingActivitiesHigherEdFragment
                     || currUrlFragment == mktoLeadDatabaseDefaultFragment
                     || currUrlFragment == mktoLeadDatabaseMarketingFragment
-                    || currUrlFragment == mktoLeadDatabaseJapaneseFragment) {
+                    || currUrlFragment == mktoLeadDatabaseJapaneseFragment
+                    || currUrlFragment == mktoLeadDatabaseFinservFragment
+                    || currUrlFragment == mktoLeadDatabaseHealthcareFragment
+                    || currUrlFragment == mktoLeadDatabaseHigherEdFragment) {
 						APP.disableButtons();
 					}
                     
