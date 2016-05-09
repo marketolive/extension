@@ -45,9 +45,15 @@ var currentUrl = window.location.href,
 	mktoMarketingActivitiesDefaultFragment = "MA15A1",
     mktoMarketingActivitiesMarketingFragment = "MA19802A1",
     mktoMarketingActivitiesJapaneseFragment = "MA19848A1",
+    mktoMarketingActivitiesFinservFragment = "MA20806A1",
+    mktoMarketingActivitiesHealthcareFragment = "MA20826A1",
+    mktoMarketingActivitiesHigherEdFragment = "MA20846A1",
 	mktoLeadDatabaseDefaultFragment = "ML0A1ZN2",
     mktoLeadDatabaseMarketingFragment = "ML0A1ZN19788",
     mktoLeadDatabaseJapaneseFragment = "ML0A1ZN19834",
+    mktoLeadDatabaseFinservFragment = "ML0A1ZN20792",
+    mktoLeadDatabaseHealthcareFragment = "ML0A1ZN20812",
+    mktoLeadDatabaseHigherEdFragment = "ML0A1ZN20832",
     mktoAnalyticsFragment = "AH0A1ZN17",
     mktoOppInfluenceAnalyzerFragment = "AR1559A1!",
     mktoProgramAnalyzerFragment = "AR1544A1!",
@@ -3957,9 +3963,15 @@ if ((currentUrl.search(mktoAppDomain) != -1
 				else if (currUrlFragment == mktoMarketingActivitiesDefaultFragment
 				|| currUrlFragment == mktoMarketingActivitiesMarketingFragment
                 || currUrlFragment == mktoMarketingActivitiesJapaneseFragment
+                || currUrlFragment == mktoMarketingActivitiesFinservFragment
+                || currUrlFragment == mktoMarketingActivitiesHealthcareFragment
+                || currUrlFragment == mktoMarketingActivitiesHigherEdFragment
                 || currUrlFragment == mktoLeadDatabaseDefaultFragment
                 || currUrlFragment == mktoLeadDatabaseMarketingFragment
-                || currUrlFragment == mktoLeadDatabaseJapaneseFragment) {
+                || currUrlFragment == mktoLeadDatabaseJapaneseFragment
+                || currUrlFragment == mktoLeadDatabaseFinservFragment
+                || currUrlFragment == mktoLeadDatabaseHealthcareFragment
+                || currUrlFragment == mktoLeadDatabaseHigherEdFragment) {
 					APP.disableButtons();
 				}
                 
@@ -4408,9 +4420,15 @@ if ((currentUrl.search(mktoAppDomain) != -1
 					else if (currUrlFragment == mktoMarketingActivitiesDefaultFragment
                     || currUrlFragment == mktoMarketingActivitiesMarketingFragment
                     || currUrlFragment == mktoMarketingActivitiesJapaneseFragment
+                    || currUrlFragment == mktoMarketingActivitiesFinservFragment
+                    || currUrlFragment == mktoMarketingActivitiesHealthcareFragment
+                    || currUrlFragment == mktoMarketingActivitiesHigherEdFragment
                     || currUrlFragment == mktoLeadDatabaseDefaultFragment
                     || currUrlFragment == mktoLeadDatabaseMarketingFragment
-                    || currUrlFragment == mktoLeadDatabaseJapaneseFragment) {
+                    || currUrlFragment == mktoLeadDatabaseJapaneseFragment
+                    || currUrlFragment == mktoLeadDatabaseFinservFragment
+                    || currUrlFragment == mktoLeadDatabaseHealthcareFragment
+                    || currUrlFragment == mktoLeadDatabaseHigherEdFragment) {
 						APP.disableButtons();
 					}
                     
