@@ -52,6 +52,8 @@ INVISION.login = function (feature) {
  
 var currentUrl = window.location.href;
 
-if (currentUrl.search("^https:\/\/marketo\.invisionapp\.com\/share\/") != -1) {
+if (document.getElementById("password")
+    && document.getElementsByClassName("primary button")[0]
+    && currentUrl.search("^https:\/\/marketo\.invisionapp\.com\/share\/") != -1) {
     INVISION.login(currentUrl.split("/share/")[1].split("#/")[0]);
 }
