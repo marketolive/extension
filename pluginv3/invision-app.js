@@ -29,7 +29,12 @@ INVISION.login = function (feature) {
     console.log("InVision App > Login: App");
     
     switch (feature) {
-        // MME In App Messaging
+        // MME In App Messaging & Dashboard
+        case "JR790G0CX":
+            document.getElementById("password").value = "MME";
+            document.getElementsByClassName("primary button")[0].click();
+            break;
+        // MME In App Messaging & Dashboard (Old)
         case "MW5CE0YHS":
             document.getElementById("password").value = "MME";
             document.getElementsByClassName("primary button")[0].click();
@@ -47,6 +52,8 @@ INVISION.login = function (feature) {
  
 var currentUrl = window.location.href;
 
-if (currentUrl.search("^https:\/\/marketo\.invisionapp\.com\/share\/") != -1) {
-    INVISION.login(currentUrl.split("/share/")[1]);
+if (document.getElementById("password")
+    && document.getElementsByClassName("primary button")[0]
+    && currentUrl.search("^https:\/\/marketo\.invisionapp\.com\/share\/") != -1) {
+    INVISION.login(currentUrl.split("/share/")[1].split("#/")[0]);
 }
