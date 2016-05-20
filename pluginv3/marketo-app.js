@@ -32,8 +32,8 @@ var currentUrl = window.location.href,
     mktoDesignerMatch = "https://*.marketodesigner.com/*",
     mktoEmailDesigner = mktoDesignerDomain + "/ds",
     mktoLandingPageDesigner = mktoDesignerDomain + "/lpeditor/",
-    defaultTurnerLogoGreen = "http://marketolive.com/m3/assets/img/turner-tech-green.png",
-    defaultTurnerLogoWhite = "http://marketolive.com/m3/assets/img/turner-tech-white.png",
+    defaultTurnerLogoGreen = "http://marketolive.com/m3-dev/assets/img/turner-tech-green.png",
+    defaultTurnerLogoWhite = "http://marketolive.com/m3-dev/assets/img/turner-tech-white.png",
     defaultColor = "rgb(42, 83, 112)",
     mktoWizard = mktoAppDomain + "/m#",
     mktoAccountString106 = "mktodemoaccount106",
@@ -2837,6 +2837,13 @@ APP.disableMenus = function() {
                     }
                 });
                 
+                if (mItems.get("shareProgramFolder")) {
+                    mItems.get("shareProgramFolder").setDisabled(true);
+                }
+                else if (mItems.get("share")) {
+                    mItems.get("share").setDisabled(true);
+                }
+                
                 if (this.ownerCt
                 && this.ownerCt.text.search("^View:") != -1) {
                     var ii;
@@ -4076,22 +4083,29 @@ if ((currentUrl.search(mktoAppDomain) != -1
                             // Japanese Replicate Success Roadshow Example: 1, 2
                             lpIds["dpageid_12345"] = "dpageid_12345";
                             lpIds["dpageid_11556"] = "dpageid_11556";
-                            // DIY Design: Financial Services Landing Page, Landing Page Responsive, Preference
-                            lpIds["dpageid_12711"] = "dpageid_12711";
-                            lpIds["dpageid_12715"] = "dpageid_12715";
-                            lpIds["dpageid_12907"] = "dpageid_12907";
+                            // Financial Services DIY Design: Mortgage Landing Page, Banking Landing Page, Preferences Page
+                            lpIds["dpageid_13187"] = "dpageid_13187";
+                            lpIds["dpageid_13185"] = "dpageid_13185";
                             lpIds["dpageid_12709"] = "dpageid_12709";
-                            // DIY Design: Healthcare Landing Page, Landing Page Responsive, Preference
+                            // Financial Services Event Management Home Buyinng Seminar: Recorded Webinar LP, Reg LP, Thank You LP
+                            lpIds["dpageid_12720"] = "dpageid_12720";
+                            lpIds["dpageid_12717"] = "dpageid_12717";
+                            lpIds["dpageid_12719"] = "dpageid_12719";
+                            // Healthcare DIY Design: Landing Page, Landing Page Offer, Landing Page Responsive, Preference Page
                             lpIds["dpageid_12569"] = "dpageid_12569";
                             lpIds["dpageid_12932"] = "dpageid_12932";
-                            lpIds["dpageid_12570"] = "dpageid_12570";
+                            lpIds["dpageid_13165"] = "dpageid_13165";
                             lpIds["dpageid_12586"] = "dpageid_12586";
-                            // DIY Design: Higher Ed Landing Page, Landing Page Responsive, Preference
+                            // Healthcare Event Management HC - Tour the Clinic: Recorded Webinar LP
+                            lpIds["dpageid_12517"] = "dpageid_12517";
+                            // Higher Education DIY Design: Landing Page, Landing Page - In State, Landing Page - Video, Landing Page Responsive, Preference Page
                             lpIds["dpageid_12250"] = "dpageid_12250";
                             lpIds["dpageid_12934"] = "dpageid_12934";
                             lpIds["dpageid_12401"] = "dpageid_12401";
-                            lpIds["dpageid_12180"] = "dpageid_12180";
+                            lpIds["dpageid_13167"] = "dpageid_13167";
                             lpIds["dpageid_12248"] = "dpageid_12248";
+                            // Higher Education Event Management HE - Event: Thanks and Next Event
+                            lpIds["dpageid_12177"] = "dpageid_12177";
 
                             // Forms: Default DIY Design, Replicate Success Roadshow Example, Replicate Success Webinar Example
                             formIds.push(3576, 1749, 1900);
