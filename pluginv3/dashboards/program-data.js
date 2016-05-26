@@ -1,10 +1,30 @@
+var b2bId = 1544,
+    b2cId = 4168,
+    b2bChannelX = "costs",
+    b2bChannelY = "pipelinedollarsgen",
+    b2bChannelZ = "none",
+    b2bChannelW = "none",
+    b2bProgramX = "costs",
+    b2bProgramY = "newnames",
+    b2bProgramZ = "none",
+    b2bProgramW = "none",
+    b2cChannelX = "costs",
+    b2cChannelY = "newnames",
+    b2cChannelZ = "none",
+    b2cChannelW = "none",
+    b2cProgramX = "costs",
+    b2cProgramY = "newnamesuccesses",
+    b2cProgramZ = "none",
+    b2cProgramW = "none";
+    
+
 function loadProgramData() {
 	var data = [];
 	
     // Program Analyzer data
-    data[0] = {};
-	data[0].summarydata = {};
-	data[0].summarydata = {
+    data[b2bId] = {};
+	data[b2bId].summarydata = {};
+	data[b2bId].summarydata = {
 		"programs" : [["Tradeshow", "", ""], ["Content", "", ""], ["Direct Mail", "", ""], ["Webinar", "", ""], ["Telemarketing", "", ""], ["Online Advertising", "", ""], ["Roadshow", "", ""], ["Social Media", "", ""], ["Blog", "", ""], ["List Purchase", "", ""]],
 		"newnamecurrentsaleslead" : ["N/A", "N/A", "N/A", "N/A", "N/A", 0, "N/A", 0, "N/A", "N/A"],
 		"multitouchrois" : [1.195849582172702, 0, 0.348, 1.5224102564102564, 0.20805555555555555, 1.4810079726651482, 0.35, 1.4218604651162792, 1.75435, 0.7666165413533834],
@@ -59,8 +79,8 @@ function loadProgramData() {
 		"newnamecurrentpercentsalesacceptedopportunity" : [null, null, null, null, null, null, null, 0, 0, 0.0008673026886383347],
 		"newnamecurrentsalesacceptedopportunity" : ["N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", 0, 0, 1]
 	};
-	data[0].detaildata = {};
-	data[0].detaildata = {
+	data[b2bId].detaildata = {};
+	data[b2bId].detaildata = {
 		"programs" : [["Webinar", "Lead Scoring Best Practices", "1009"], ["Online Advertising", "Emedia Sponsorship", "1015"], ["Tradeshow", "Paper Fest 12", "1031"], ["Content", "Revenue Cycle Analytics Whitepaper Download", "50007"], ["Online Advertising", "GOOG Adwords PPC", "1012"], ["Online Advertising", "B2B Marketer Revenue Rock Star Banner", "1013"], ["Content", "Get Sales Insight Whitepaper Download", "50005"], ["Tradeshow", "Printer World 12", "1031"], ["Content", "Marketing Lead Funnel Whitepaper Download", "50004"], ["Social Media", "Facebook Advertisement", "50001"], ["Social Media", "SlideShare", "1021"], ["Webinar", "MarketingProfs Secret Sauce", "1008"], ["Webinar", "MarketingProfs Business Marketer's Secrets", "1007"], ["Direct Mail", "Destination CRM", "1035"], ["Direct Mail", "Target Accounts", "1037"], ["Webinar", "Lead Generation Best Practices", "1010"], ["Webinar", "Revenue Masters Series", "1001"], ["Tradeshow", "Pulp and Paper Council", "1032"], ["Online Advertising", "Customer Think Sponsorship", "1014"], ["Webinar", "Focus.com B2B Buyer Webinar", "1006"], ["Social Media", "Twitter", "1023"], ["Webinar", "Content Marketing Best Practices", "1003"], ["Tradeshow", "Paper Virtual Show", "1024"], ["Tradeshow", "Global Forest & Paper Tradeshow", "1025"], ["Online Advertising", "Marketing Sherpa Sponsorship", "1017"], ["Webinar", "Program Attribution Analytics", "50010"], ["Social Media", "LinkedIn", "1020"], ["Telemarketing", "Prospecting", "1041"], ["Tradeshow", "Specialty Paper Conference", "1030"], ["Tradeshow", "Origami Expo", "1026"], ["Online Advertising", "Marketing Profs Sponsorship", "1018"], ["Content", "Lead to Opportunity Win Whitepaper Download", "50006"], ["Social Media", "Facebook", "1022"], ["Webinar", "Streamline Your Marketing and Sales Process", "50008"], ["Roadshow", "Rock Your Revenue", "50011"], ["Webinar", "ClickZ Revenue Masters", "1005"], ["List Purchase", "Demandbase", "1039"], ["Online Advertising", "Keyword - Lead Management", "50002"], ["Blog", "Revenue Marketers Blog", "1019"], ["Tradeshow", "International Paper Conference", "1028"], ["Tradeshow", "Paper Technology East", "1029"], ["Webinar", "Metrics that Matter Series (Topical)", "1002"], ["Online Advertising", "Sales 2.0 Blog Sponsorship", "1016"], ["Content", "Improve ROI Whitepaper Download", "50003"], ["Webinar", "How to Leverage Sales Insights to Close Deals Faster", "50009"], ["Direct Mail", "Marketing Forecasting", "1036"], ["List Purchase", "CMO World", "1040"], ["Webinar", "Online Event Best Practices", "1004"], ["Tradeshow", "American Paper Conference", "50012"], ["Webinar", "Nurturing Best Practices", "1011"], ["List Purchase", "Marketing Sherpa", "1038"]],
 		"newnamecurrentsaleslead" : ["N/A", "N/A", "N/A", "N/A", 0, 0, "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", 0, "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A"],
 		"multitouchrois" : [0.157, 1.6691, 2.825, 0, 1.764888888888889, 1.2244444444444444, 0, 1, 0, 0, 1.1666666666666667, 4.5, 0, 0.1583, 0.6, 5.6, 0.6585666666666666, 1.2, 0.7512, 0, 1.065, 0.692, 0.051, 0.05, 1.05, 0, 1.1910714285714286, 0.49933333333333335, 1.3, 0.0877, 0.4545, 0, 2.4233333333333333, 0, 0, 1.5, 0.35, 0, 1.75435, 1.7, 0.61, 0, 2.0588, 0, 0, 0.3593, 0.6296296296296297, 5.1537, 0, 5.578, 1.26],
@@ -117,9 +137,9 @@ function loadProgramData() {
 	};
     
     // Program Analyzer (B2C) data
-    data[4168] = {};
-    data[4168].summarydata = {};
-    data[4168].summarydata = {
+    data[b2cId] = {};
+    data[b2cId].summarydata = {};
+    data[b2cId].summarydata = {
 		"programs" : [["Social Media", "", ""], ["Email", "", ""], ["Mobile App", "", ""], ["PPC", "", ""], ["SEO", "", ""], ["Online Advertising", "", ""], ["SMS", "", ""], ["Loyalty", "", ""], ["Referral", "", ""], ["Web Personalization", "", ""]],
 		"newnamecurrentsaleslead" : ["N/A", "N/A", "N/A", "N/A", "N/A", 0, "N/A", 0, "N/A", "N/A"],
 		"multitouchrois" : [1.195849582172702, 0, 0.348, 1.5224102564102564, 0.20805555555555555, 1.4810079726651482, 0.35, 1.4218604651162792, 1.75435, 0.7666165413533834],
@@ -174,8 +194,8 @@ function loadProgramData() {
 		"newnamecurrentpercentsalesacceptedopportunity" : [null, null, null, null, null, null, null, 0, 0, 0.0008673026886383347],
 		"newnamecurrentsalesacceptedopportunity" : ["N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", 0, 0, 1]
 	};
-	data[4168].detaildata = {};
-	data[4168].detaildata = {
+	data[b2cId].detaildata = {};
+	data[b2cId].detaildata = {
 		"programs" : [["PPC", "Icecream Kingdom", "1009"], ["Online Advertising", "Facebook Ads: Engagement", "1015"], ["Social Media", "Facebook: Engagement", "1031"], ["Email", "Sign Up", "50007"], ["Online Advertising", "Facebook Display Ads: Targeting", "1012"], ["Online Advertising", "Google Display Ads: Targeting", "1013"], ["Email", "Try Another Flavor for Free", "50005"], ["Social Media", "Twitter: Engagement", "1031"], ["Email", "10% Discount on Next Visit", "50004"], ["Loyalty", "Frequent Purchase Offer", "50001"], ["Loyalty", "Class Upgraded", "1021"], ["PPC", "Ice-cream Kingdom", "1008"], ["PPC", "Ice Cream Kingdom", "1007"], ["Mobile App", "App Download Offer", "1035"], ["Mobile App", "Free 1,000 Tokens", "1037"], ["PPC", "Icecream Treat", "1010"], ["PPC", "Icecream Sweet", "1001"], ["Social Media", "Pinterest: Engagement", "1032"], ["Online Advertising", "Facebook Display Ads: Retargeting", "1014"], ["PPC", "Kingdom of Icecream", "1006"], ["Loyalty", "Discount Offer", "1023"], ["PPC", "ICK Treat", "1003"], ["Social Media", "Google+: Engagement", "1024"], ["Social Media", "Instagram: Engagement", "1025"], ["Online Advertising", "Google Display Ads: Retargeting", "1017"], ["PPC", "ICK Sweet", "50010"], ["Loyalty", "Birthday Offer", "1020"], ["SEO", "Icecream", "1041"], ["Social Media", "Twitter: Offers", "1030"], ["Social Media", "Facebook: Offers", "1026"], ["Online Advertising", "Facebook Ads: Offers", "1018"], ["Email", "Free Toppings with App Download", "50006"], ["Loyalty", "Engaged with Us Offer", "1022"], ["PPC", "Icecream Cones", "50008"], ["SMS", "Treat Yourself to ICK", "50011"], ["PPC", "Icecream Store", "1005"], ["Web Personalization", "Flavor Profile", "1039"], ["Online Advertising", "YouTube Ads: Engagement", "50002"], ["Referral", "Referr a Friend", "1019"], ["Social Media", "Pinterest: Offers", "1028"], ["Social Media", "Google+: Offers", "1029"], ["PPC", "Icecream Shop", "1002"], ["Online Advertising", "YouTube Ads: Offers", "1016"], ["Email", "Free Icecream on 10th Purchase", "50003"], ["PPC", "Icecream Shoppe", "50009"], ["Mobile App", "Social Post Offer", "1036"], ["Web Personalization", "Advocate Profile", "1040"], ["PPC", "Best Icecream", "1004"], ["Social Media", "YouTube: Engagement", "50012"], ["PPC", "Best Icecream Flavors", "1011"], ["Web Personalization", "App User Profile", "1038"]],
 		"newnamecurrentsaleslead" : ["N/A", "N/A", "N/A", "N/A", 0, 0, "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", 0, "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A"],
 		"multitouchrois" : [0.157, 1.6691, 2.825, 0, 1.764888888888889, 1.2244444444444444, 0, 1, 0, 0, 1.1666666666666667, 4.5, 0, 0.1583, 0.6, 5.6, 0.6585666666666666, 1.2, 0.7512, 0, 1.065, 0.692, 0.051, 0.05, 1.05, 0, 1.1910714285714286, 0.49933333333333335, 1.3, 0.0877, 0.4545, 0, 2.4233333333333333, 0, 0, 1.5, 0.35, 0, 1.75435, 1.7, 0.61, 0, 2.0588, 0, 0, 0.3593, 0.6296296296296297, 5.1537, 0, 5.578, 1.26],
@@ -251,7 +271,7 @@ function loadProgramData() {
 				if (data[this.compId]) {
 					x = data[this.compId];
 				} else {
-					x = data[0];
+					x = data[b2bId];
 				}
 	
 				x = Ext.decode(Ext.encode(x));
@@ -281,30 +301,57 @@ function loadProgramData() {
 				 this.analyzerData.programmetadata = null;
 				 */
 				if (this.view == "by_channel") {
-	
-					this.analyzerPanelSettings.channelviewData = {
-						metrics : [{
-							comboname : 'costs',
-							datarange : [6000, 179500]
-						}],
-						xCombo : 'costs',
-						yCombo : 'pipelinedollarsgen',
-						zCombo : 'none',
-						wCombo : 'none'
-					};
+					if (this.compId == b2bId) {
+                        this.analyzerPanelSettings.channelviewData = {
+                            metrics : [{
+                                comboname : b2bChannelX,
+                                datarange : [6000, 179500]
+                            }],
+                            xCombo : b2bChannelX,
+                            yCombo : b2bChannelY,
+                            zCombo : b2bChannelZ,
+                            wCombo : b2bChannelW
+                        };
+                    }
+                    else if (this.compId == b2cId) {
+                        this.analyzerPanelSettings.channelviewData = {
+                            metrics : [{
+                                comboname : b2cChannelX,
+                                datarange : [6000, 179500]
+                            }],
+                            xCombo : b2cChannelX,
+                            yCombo : b2cChannelY,
+                            zCombo : b2cChannelZ,
+                            wCombo : b2cChannelW
+                        };
+                    }
 				}
 	
-				if (this.view == "by_program") {
-					this.analyzerPanelSettings.programviewData = {
-						metrics : [{
-							comboname : 'costs',
-							datarange : [200, 20000]
-						}],
-						xCombo : 'costs',
-						yCombo : 'newnames',
-						zCombo : 'none',
-						wCombo : 'none'
-					};
+				else if (this.view == "by_program") {
+                    if (this.compId == b2bId) {
+                        this.analyzerPanelSettings.programviewData = {
+                            metrics : [{
+                                comboname : b2bProgramX,
+                                datarange : [200, 20000]
+                            }],
+                            xCombo : b2bProgramX,
+                            yCombo : b2bProgramY,
+                            zCombo : b2bProgramZ,
+                            wCombo : b2bProgramW
+                        };
+                    }
+                    else if (this.compId == b2cId) {
+                        this.analyzerPanelSettings.programviewData = {
+                            metrics : [{
+                                comboname : b2cProgramX,
+                                datarange : [200, 20000]
+                            }],
+                            xCombo : b2cProgramX,
+                            yCombo : b2cProgramY,
+                            zCombo : b2cProgramZ,
+                            wCombo : b2cProgramW
+                        };
+                    }
 				}
 				//this.demoRemoveData();
 				this.demoLoadData();
@@ -345,21 +392,44 @@ function loadProgramData() {
 			Mkt.apps.ProgramAnalyzer.saveView = function() {
 				//debugger;
 				if (this.view == "by_channel") {
-					this.channelViewSettings = {
-						xCombo : "costs", //this.xcombovalue,
-						yCombo : "pipelinedollarsgen", //this.ycombovalue,
-						zCombo : "none", //this.zcombovalue,
-						wCombo : "none", //this.wcombovalue,
-						metrics : this.channelRangeSettings
-					};
-				} else {
-					this.programViewSettings = {
-						xCombo : "costs", //this.xcombovalue,
-						yCombo : "newnames", //this.ycombovalue,
-						zCombo : "none", //this.zcombovalue,
-						wCombo : "none", //this.wcombovalue,
-						metrics : this.programRangeSettings
-					};
+                    if (this.compId == b2bId) {
+                        this.channelViewSettings = {
+                            xCombo : b2bChannelX, //this.xcombovalue,
+                            yCombo : b2bChannelY, //this.ycombovalue,
+                            zCombo : b2bChannelZ, //this.zcombovalue,
+                            wCombo : b2bChannelW, //this.wcombovalue,
+                            metrics : this.channelRangeSettings
+                        };
+                    }
+                    else if (this.compId == b2cId) {
+                        this.channelViewSettings = {
+                            xCombo : b2cChannelX, //this.xcombovalue,
+                            yCombo : b2cChannelY, //this.ycombovalue,
+                            zCombo : b2cChannelZ, //this.zcombovalue,
+                            wCombo : b2cChannelW, //this.wcombovalue,
+                            metrics : this.channelRangeSettings
+                        };
+                    }
+				}
+                else if (this.view == "by_program") {
+                    if (this.compId == b2bId) {
+                        this.programViewSettings = {
+                            xCombo : b2bProgramX, //this.xcombovalue,
+                            yCombo : b2bProgramY, //this.ycombovalue,
+                            zCombo : b2bProgramZ, //this.zcombovalue,
+                            wCombo : b2bProgramW, //this.wcombovalue,
+                            metrics : this.programRangeSettings
+                        };
+                    }
+                    else if (this.compId == b2cId) {
+                        this.programViewSettings = {
+                            xCombo : b2cProgramX, //this.xcombovalue,
+                            yCombo : b2cProgramY, //this.ycombovalue,
+                            zCombo : b2cProgramZ, //this.zcombovalue,
+                            wCombo : b2cProgramW, //this.wcombovalue,
+                            metrics : this.programRangeSettings
+                        };
+                    }
 				}
 			}
 		}
