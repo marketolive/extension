@@ -1,6 +1,5 @@
 var b2bId = 1544,
     b2cId = 4168,
-    
     b2bChannelX = "costs",
     b2bChannelY = "pipelinedollarsgen",
     b2bChannelZ = "none",
@@ -9,7 +8,6 @@ var b2bId = 1544,
     b2bProgramY = "newnames",
     b2bProgramZ = "none",
     b2bProgramW = "none",
-    
     b2cChannelX = "costs",
     b2cChannelY = "newnames",
     b2cChannelZ = "none",
