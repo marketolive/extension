@@ -265,14 +265,27 @@ function loadProgramData() {
 	 */
 
 	if (typeof (Mkt) !== 'undefined') {
+        var title;
+                
+        if (MktCanvas
+        && MktCanvas.getActiveTab()
+        && MktCanvas.getActiveTab().config
+        && MktCanvas.getActiveTab().config.title) {
+            title = MktCanvas.getActiveTab().config.title;
+        }
+        
 		if (typeof (Mkt.apps.ProgramAnalyzer) !== 'undefined') {
 			Mkt.apps.ProgramAnalyzer.demoLoadData = function() {
 	
 				if (data[this.compId]) {
 					x = data[this.compId];
-				} else {
-					x = data[b2bId];
 				}
+                else if (title.search("(B2C)") != -1)  {
+					x = data[b2cId];
+				}
+                else {
+                    x = data[b2bId];
+                }
 	
 				x = Ext.decode(Ext.encode(x));
 	
@@ -379,7 +392,7 @@ function loadProgramData() {
 						Mkt.charts.bubbleChart.renderChart();
 					}
 				}
-				this.channelExcludeList = ["Content", "Direct Mail", "Telemarketing", "Online Advertising", "Roadshow", "Blog", "List Purchase", "Webinar", "Social Media"];
+				//this.channelExcludeList = ["Content", "Direct Mail", "Telemarketing", "Online Advertising", "Roadshow", "Blog", "List Purchase", "Webinar", "Social Media"];
 				this.checkMenuItems();
 				//this.view = "by_program";
 				//this.byChannel = false;
