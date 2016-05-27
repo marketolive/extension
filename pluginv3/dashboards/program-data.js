@@ -555,15 +555,7 @@ function loadProgramData() {
                     }
 				}
                 
-                Mkt.charts.bubbleChart.setTitle(this.xtitle, "xaxis");
-                Mkt.charts.bubbleChart.setTitle(this.ytitle, "yaxis");
-                this.resetSettingsMenu();
-                this.resetSliderSize('xSlider');
-                this.resetSliderSize('ySlider');
-                this.resetSliderSize('zSlider');
-                this.resetPanel();
-                this.compactSettingsPanel();
-			}
+                this.reloadChart();
 		}
 	}	
 }
