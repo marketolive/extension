@@ -556,6 +556,7 @@ function loadProgramData() {
 				}
                 
                 this.reloadChart();
+			}
 		}
 	}	
 }
