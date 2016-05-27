@@ -340,12 +340,6 @@ function loadProgramData() {
                         zCombo : b2bChannelZ,
                         wCombo : b2bChannelW
                     };
-                    this.setAxisName(b2bChannelX, "xaxis");
-                    this.setAxisName(b2bChannelY, "yaxis");
-                    this.setComboValue(b2bChannelX, "xCombo");
-                    this.setComboValue(b2bChannelY, "yCombo");
-                    this.setComboValue(b2bChannelZ, "zCombo");
-                    this.setComboValue(b2bChannelW, "WCombo");
                     
                     this.analyzerPanelSettings.programviewData = {
                         metrics : [{
@@ -358,12 +352,23 @@ function loadProgramData() {
                         zCombo : b2bProgramZ,
                         wCombo : b2bProgramW
                     };
-                    this.setAxisName(b2bProgramX, "xaxis");
-                    this.setAxisName(b2bProgramY, "yaxis");
-                    this.setComboValue(b2bProgramX, "xCombo");
-                    this.setComboValue(b2bProgramY, "yCombo");
-                    this.setComboValue(b2bProgramZ, "zCombo");
-                    this.setComboValue(b2bProgramW, "WCombo");
+                    
+                    if (this.view == "by_channel") {
+                        this.setAxisName(b2bChannelX, "xaxis");
+                        this.setAxisName(b2bChannelY, "yaxis");
+                        this.setComboValue(b2bChannelX, "xCombo");
+                        this.setComboValue(b2bChannelY, "yCombo");
+                        this.setComboValue(b2bChannelZ, "zCombo");
+                        this.setComboValue(b2bChannelW, "wCombo");
+                    }
+                    else {
+                        this.setAxisName(b2bProgramX, "xaxis");
+                        this.setAxisName(b2bProgramY, "yaxis");
+                        this.setComboValue(b2bProgramX, "xCombo");
+                        this.setComboValue(b2bProgramY, "yCombo");
+                        this.setComboValue(b2bProgramZ, "zCombo");
+                        this.setComboValue(b2bProgramW, "wCombo");
+                    }
                 }
                 else if (this.compId == b2cId
                 || title.search("\\(B2C\\)$") != -1) {
@@ -378,12 +383,6 @@ function loadProgramData() {
                         zCombo : b2cChannelZ,
                         wCombo : b2cChannelW
                     };
-                    this.setAxisName(b2cChannelX, "xaxis");
-                    this.setAxisName(b2cChannelY, "yaxis");
-                    this.setComboValue(b2cChannelX, "xCombo");
-                    this.setComboValue(b2cChannelY, "yCombo");
-                    this.setComboValue(b2cChannelZ, "zCombo");
-                    this.setComboValue(b2cChannelW, "WCombo");
                     
                     this.analyzerPanelSettings.programviewData = {
                         metrics : [{
@@ -396,12 +395,23 @@ function loadProgramData() {
                         zCombo : b2cProgramZ,
                         wCombo : b2cProgramW
                     };
-                    this.setAxisName(b2cProgramX, "xaxis");
-                    this.setAxisName(b2cProgramY, "yaxis");
-                    this.setComboValue(b2cProgramX, "xCombo");
-                    this.setComboValue(b2cProgramY, "yCombo");
-                    this.setComboValue(b2cProgramZ, "zCombo");
-                    this.setComboValue(b2cProgramW, "WCombo");
+                    
+                    if (this.view == "by_channel") {
+                        this.setAxisName(b2cChannelX, "xaxis");
+                        this.setAxisName(b2cChannelY, "yaxis");
+                        this.setComboValue(b2cChannelX, "xCombo");
+                        this.setComboValue(b2cChannelY, "yCombo");
+                        this.setComboValue(b2cChannelZ, "zCombo");
+                        this.setComboValue(b2cChannelW, "wCombo");
+                    }
+                    else {
+                        this.setAxisName(b2cProgramX, "xaxis");
+                        this.setAxisName(b2cProgramY, "yaxis");
+                        this.setComboValue(b2cProgramX, "xCombo");
+                        this.setComboValue(b2cProgramY, "yCombo");
+                        this.setComboValue(b2cProgramZ, "zCombo");
+                        this.setComboValue(b2cProgramW, "wCombo");
+                    }
                 }
                 else {
                     this.analyzerPanelSettings.channelviewData = {
@@ -415,12 +425,6 @@ function loadProgramData() {
                         zCombo : b2bChannelZ,
                         wCombo : b2bChannelW
                     };
-                    this.setAxisName(b2bChannelX, "xaxis");
-                    this.setAxisName(b2bChannelY, "yaxis");
-                    this.setComboValue(b2bChannelX, "xCombo");
-                    this.setComboValue(b2bChannelY, "yCombo");
-                    this.setComboValue(b2bChannelZ, "zCombo");
-                    this.setComboValue(b2bChannelW, "WCombo");
                     
                     this.analyzerPanelSettings.programviewData = {
                         metrics : [{
@@ -433,12 +437,23 @@ function loadProgramData() {
                         zCombo : b2bProgramZ,
                         wCombo : b2bProgramW
                     };
-                    this.setAxisName(b2bProgramX, "xaxis");
-                    this.setAxisName(b2bProgramY, "yaxis");
-                    this.setComboValue(b2bProgramX, "xCombo");
-                    this.setComboValue(b2bProgramY, "yCombo");
-                    this.setComboValue(b2bProgramZ, "zCombo");
-                    this.setComboValue(b2bProgramW, "WCombo");
+                    
+                    if (this.view == "by_channel") {
+                        this.setAxisName(b2bChannelX, "xaxis");
+                        this.setAxisName(b2bChannelY, "yaxis");
+                        this.setComboValue(b2bChannelX, "xCombo");
+                        this.setComboValue(b2bChannelY, "yCombo");
+                        this.setComboValue(b2bChannelZ, "zCombo");
+                        this.setComboValue(b2bChannelW, "wCombo");
+                    }
+                    else {
+                        this.setAxisName(b2bProgramX, "xaxis");
+                        this.setAxisName(b2bProgramY, "yaxis");
+                        this.setComboValue(b2bProgramX, "xCombo");
+                        this.setComboValue(b2bProgramY, "yCombo");
+                        this.setComboValue(b2bProgramZ, "zCombo");
+                        this.setComboValue(b2bProgramW, "wCombo");
+                    }
                 }
                 this.demoLoadData();
                 
