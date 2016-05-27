@@ -280,6 +280,9 @@ function loadProgramData() {
 				if (data[this.compId]) {
 					x = data[this.compId];
 				}
+                else if (title.search("\\(B2B\\)$") != -1)  {
+					x = data[b2bId];
+				}
                 else if (title.search("\\(B2C\\)$") != -1)  {
 					x = data[b2cId];
 				}
@@ -483,7 +486,7 @@ function loadProgramData() {
 				}
                 else if (this.view == "by_program") {
                     if (this.compId == b2bId
-                    || title.search("\\(B2B\\)$") {
+                    || title.search("\\(B2B\\)$") != -1) {
                         this.programViewSettings = {
                             xCombo : b2bProgramX, //this.xcombovalue,
                             yCombo : b2bProgramY, //this.ycombovalue,
@@ -493,7 +496,7 @@ function loadProgramData() {
                         };
                     }
                     else if (this.compId == b2cId
-                    || title.search("\\(B2C\\)$") {
+                    || title.search("\\(B2C\\)$") != -1) {
                         this.programViewSettings = {
                             xCombo : b2cProgramX, //this.xcombovalue,
                             yCombo : b2cProgramY, //this.ycombovalue,
