@@ -265,22 +265,22 @@ function loadProgramData() {
 	 */
 
 	if (typeof (Mkt) !== 'undefined') {
-        var title;
-                
-        if (MktCanvas
-        && MktCanvas.getActiveTab()
-        && MktCanvas.getActiveTab().config
-        && MktCanvas.getActiveTab().config.title) {
-            title = MktCanvas.getActiveTab().config.title;
-        }
         
 		if (typeof (Mkt.apps.ProgramAnalyzer) !== 'undefined') {
 			Mkt.apps.ProgramAnalyzer.demoLoadData = function() {
+                var title;
+                        
+                if (MktCanvas
+                && MktCanvas.getActiveTab()
+                && MktCanvas.getActiveTab().config
+                && MktCanvas.getActiveTab().config.title) {
+                    title = MktCanvas.getActiveTab().config.title;
+                }
 	
 				if (data[this.compId]) {
 					x = data[this.compId];
 				}
-                else if (title.search("(B2C)") != -1)  {
+                else if (title.search("\\(B2C\\)$") != -1)  {
 					x = data[b2cId];
 				}
                 else {
@@ -301,6 +301,15 @@ function loadProgramData() {
 			};
 	
 			Mkt.apps.ProgramAnalyzer.setData = function() {
+                var title;
+                        
+                if (MktCanvas
+                && MktCanvas.getActiveTab()
+                && MktCanvas.getActiveTab().config
+                && MktCanvas.getActiveTab().config.title) {
+                    title = MktCanvas.getActiveTab().config.title;
+                }
+                
 				var result = MktPage.appVars.analyzerData.GET_PROGRAM_DATA;
 				this.analyzerData = this.parseData(result);
 				//--> Define default metrics <--//
@@ -313,8 +322,10 @@ function loadProgramData() {
 				 this.analyzerData.programmetadata.defaultWMetric = "none";
 				 this.analyzerData.programmetadata = null;
 				 */
-				if (this.view == "by_channel") {
-					if (this.compId == b2bId) {
+                
+                if (this.view == "by_channel") {
+					if (this.compId == b2bId
+                    || title.search("\\(B2B\\)$") != -1) {
                         this.analyzerPanelSettings.channelviewData = {
                             metrics : [{
                                 comboname : b2bChannelX,
@@ -326,7 +337,8 @@ function loadProgramData() {
                             wCombo : b2bChannelW
                         };
                     }
-                    else if (this.compId == b2cId) {
+                    else if (this.compId == b2cId
+                    || title.search("\\(B2C\\)$") != -1) {
                         this.analyzerPanelSettings.channelviewData = {
                             metrics : [{
                                 comboname : b2cChannelX,
@@ -338,10 +350,23 @@ function loadProgramData() {
                             wCombo : b2cChannelW
                         };
                     }
+                    else {
+                        this.analyzerPanelSettings.channelviewData = {
+                            metrics : [{
+                                comboname : b2bChannelX,
+                                datarange : [6000, 179500]
+                            }],
+                            xCombo : b2bChannelX,
+                            yCombo : b2bChannelY,
+                            zCombo : b2bChannelZ,
+                            wCombo : b2bChannelW
+                        };
+                    }
 				}
 	
 				else if (this.view == "by_program") {
-                    if (this.compId == b2bId) {
+                    if (this.compId == b2bId
+                    || title.search("\\(B2B\\)$") != -1) {
                         this.analyzerPanelSettings.programviewData = {
                             metrics : [{
                                 comboname : b2bProgramX,
@@ -353,7 +378,8 @@ function loadProgramData() {
                             wCombo : b2bProgramW
                         };
                     }
-                    else if (this.compId == b2cId) {
+                    else if (this.compId == b2cId
+                    || title.search("\\(B2C\\)$") != -1) {
                         this.analyzerPanelSettings.programviewData = {
                             metrics : [{
                                 comboname : b2cProgramX,
@@ -363,6 +389,18 @@ function loadProgramData() {
                             yCombo : b2cProgramY,
                             zCombo : b2cProgramZ,
                             wCombo : b2cProgramW
+                        };
+                    }
+                    else {
+                        this.analyzerPanelSettings.programviewData = {
+                            metrics : [{
+                                comboname : b2bProgramX,
+                                datarange : [200, 20000]
+                            }],
+                            xCombo : b2bProgramX,
+                            yCombo : b2bProgramY,
+                            zCombo : b2bProgramZ,
+                            wCombo : b2bProgramW
                         };
                     }
 				}
@@ -403,9 +441,18 @@ function loadProgramData() {
 			};
 	
 			Mkt.apps.ProgramAnalyzer.saveView = function() {
-				//debugger;
+				var title;
+                        
+                if (MktCanvas
+                && MktCanvas.getActiveTab()
+                && MktCanvas.getActiveTab().config
+                && MktCanvas.getActiveTab().config.title) {
+                    title = MktCanvas.getActiveTab().config.title;
+                }
+                
 				if (this.view == "by_channel") {
-                    if (this.compId == b2bId) {
+                    if (this.compId == b2bId
+                    || title.search("\\(B2B\\)$") != -1) {
                         this.channelViewSettings = {
                             xCombo : b2bChannelX, //this.xcombovalue,
                             yCombo : b2bChannelY, //this.ycombovalue,
@@ -414,7 +461,8 @@ function loadProgramData() {
                             metrics : this.channelRangeSettings
                         };
                     }
-                    else if (this.compId == b2cId) {
+                    else if (this.compId == b2cId
+                    || title.search("\\(B2C\\)$") != -1) {
                         this.channelViewSettings = {
                             xCombo : b2cChannelX, //this.xcombovalue,
                             yCombo : b2cChannelY, //this.ycombovalue,
@@ -423,9 +471,19 @@ function loadProgramData() {
                             metrics : this.channelRangeSettings
                         };
                     }
+                    else {
+                        this.channelViewSettings = {
+                            xCombo : b2bChannelX, //this.xcombovalue,
+                            yCombo : b2bChannelY, //this.ycombovalue,
+                            zCombo : b2bChannelZ, //this.zcombovalue,
+                            wCombo : b2bChannelW, //this.wcombovalue,
+                            metrics : this.channelRangeSettings
+                        };
+                    }
 				}
                 else if (this.view == "by_program") {
-                    if (this.compId == b2bId) {
+                    if (this.compId == b2bId
+                    || title.search("\\(B2B\\)$") {
                         this.programViewSettings = {
                             xCombo : b2bProgramX, //this.xcombovalue,
                             yCombo : b2bProgramY, //this.ycombovalue,
@@ -434,12 +492,22 @@ function loadProgramData() {
                             metrics : this.programRangeSettings
                         };
                     }
-                    else if (this.compId == b2cId) {
+                    else if (this.compId == b2cId
+                    || title.search("\\(B2C\\)$") {
                         this.programViewSettings = {
                             xCombo : b2cProgramX, //this.xcombovalue,
                             yCombo : b2cProgramY, //this.ycombovalue,
                             zCombo : b2cProgramZ, //this.zcombovalue,
                             wCombo : b2cProgramW, //this.wcombovalue,
+                            metrics : this.programRangeSettings
+                        };
+                    }
+                    else {
+                        this.programViewSettings = {
+                            xCombo : b2bProgramX, //this.xcombovalue,
+                            yCombo : b2bProgramY, //this.ycombovalue,
+                            zCombo : b2bProgramZ, //this.zcombovalue,
+                            wCombo : b2bProgramW, //this.wcombovalue,
                             metrics : this.programRangeSettings
                         };
                     }
