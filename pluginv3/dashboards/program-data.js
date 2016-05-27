@@ -393,7 +393,7 @@ function loadProgramData() {
 					}
 				}
 				//this.channelExcludeList = ["Content", "Direct Mail", "Telemarketing", "Online Advertising", "Roadshow", "Blog", "List Purchase", "Webinar", "Social Media"];
-				this.checkMenuItems();
+				//this.checkMenuItems();
 				//this.view = "by_program";
 				//this.byChannel = false;
 				//this.byProgram = true;
