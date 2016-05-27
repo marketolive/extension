@@ -342,6 +342,12 @@ function loadProgramData() {
                             zCombo : b2bChannelZ,
                             wCombo : b2bChannelW
                         };
+                        this.setAxisName(b2bChannelX, "xaxis");
+                        this.setAxisName(b2bChannelY, "yaxis");
+                        this.setComboValue(b2bChannelX, "xCombo");
+                        this.setComboValue(b2bChannelY, "yCombo");
+                        this.setComboValue(b2bChannelZ, "zCombo");
+                        this.setComboValue(b2bChannelW, "WCombo");
                     }
                     else if (this.compId == b2cId
                     || title.search("\\(B2C\\)$") != -1) {
@@ -355,6 +361,12 @@ function loadProgramData() {
                             zCombo : b2cChannelZ,
                             wCombo : b2cChannelW
                         };
+                        this.setAxisName(b2cChannelX, "xaxis");
+                        this.setAxisName(b2cChannelY, "yaxis");
+                        this.setComboValue(b2cChannelX, "xCombo");
+                        this.setComboValue(b2cChannelY, "yCombo");
+                        this.setComboValue(b2cChannelZ, "zCombo");
+                        this.setComboValue(b2cChannelW, "WCombo");
                     }
                     else {
                         this.analyzerPanelSettings.channelviewData = {
@@ -367,6 +379,12 @@ function loadProgramData() {
                             zCombo : b2bChannelZ,
                             wCombo : b2bChannelW
                         };
+                        this.setAxisName(b2bChannelX, "xaxis");
+                        this.setAxisName(b2bChannelY, "yaxis");
+                        this.setComboValue(b2bChannelX, "xCombo");
+                        this.setComboValue(b2bChannelY, "yCombo");
+                        this.setComboValue(b2bChannelZ, "zCombo");
+                        this.setComboValue(b2bChannelW, "WCombo");
                     }
 				}
 	
@@ -383,6 +401,12 @@ function loadProgramData() {
                             zCombo : b2bProgramZ,
                             wCombo : b2bProgramW
                         };
+                        this.setAxisName(b2bProgramX, "xaxis");
+                        this.setAxisName(b2bProgramY, "yaxis");
+                        this.setComboValue(b2bProgramX, "xCombo");
+                        this.setComboValue(b2bProgramY, "yCombo");
+                        this.setComboValue(b2bProgramZ, "zCombo");
+                        this.setComboValue(b2bProgramW, "WCombo");
                     }
                     else if (this.compId == b2cId
                     || title.search("\\(B2C\\)$") != -1) {
@@ -396,6 +420,12 @@ function loadProgramData() {
                             zCombo : b2cProgramZ,
                             wCombo : b2cProgramW
                         };
+                        this.setAxisName(b2cProgramX, "xaxis");
+                        this.setAxisName(b2cProgramY, "yaxis");
+                        this.setComboValue(b2cProgramX, "xCombo");
+                        this.setComboValue(b2cProgramY, "yCombo");
+                        this.setComboValue(b2cProgramZ, "zCombo");
+                        this.setComboValue(b2cProgramW, "WCombo");
                     }
                     else {
                         this.analyzerPanelSettings.programviewData = {
@@ -408,6 +438,12 @@ function loadProgramData() {
                             zCombo : b2bProgramZ,
                             wCombo : b2bProgramW
                         };
+                        this.setAxisName(b2bProgramX, "xaxis");
+                        this.setAxisName(b2bProgramY, "yaxis");
+                        this.setComboValue(b2bProgramX, "xCombo");
+                        this.setComboValue(b2bProgramY, "yCombo");
+                        this.setComboValue(b2bProgramZ, "zCombo");
+                        this.setComboValue(b2bProgramW, "WCombo");
                     }
 				}
 				this.demoLoadData();
@@ -466,12 +502,6 @@ function loadProgramData() {
                             wCombo : b2bChannelW, //this.wcombovalue,
                             metrics : this.channelRangeSettings
                         };
-                        this.setAxisName(b2bChannelX, "xaxis");
-                        this.setAxisName(b2bChannelY, "yaxis");
-                        this.setComboValue(b2bChannelX, "xCombo");
-                        this.setComboValue(b2bChannelY, "yCombo");
-                        this.setComboValue(b2bChannelZ, "zCombo");
-                        this.setComboValue(b2bChannelW, "WCombo");
                     }
                     else if (this.compId == b2cId
                     || title.search("\\(B2C\\)$") != -1) {
@@ -482,12 +512,6 @@ function loadProgramData() {
                             wCombo : b2cChannelW, //this.wcombovalue,
                             metrics : this.channelRangeSettings
                         };
-                        this.setAxisName(b2cChannelX, "xaxis");
-                        this.setAxisName(b2cChannelY, "yaxis");
-                        this.setComboValue(b2cChannelX, "xCombo");
-                        this.setComboValue(b2cChannelY, "yCombo");
-                        this.setComboValue(b2cChannelZ, "zCombo");
-                        this.setComboValue(b2cChannelW, "WCombo");
                     }
                     else {
                         this.channelViewSettings = {
@@ -497,12 +521,6 @@ function loadProgramData() {
                             wCombo : b2bChannelW, //this.wcombovalue,
                             metrics : this.channelRangeSettings
                         };
-                        this.setAxisName(b2bChannelX, "xaxis");
-                        this.setAxisName(b2bChannelY, "yaxis");
-                        this.setComboValue(b2bChannelX, "xCombo");
-                        this.setComboValue(b2bChannelY, "yCombo");
-                        this.setComboValue(b2bChannelZ, "zCombo");
-                        this.setComboValue(b2bChannelW, "WCombo");
                     }
 				}
                 else if (this.view == "by_program") {
@@ -515,12 +533,6 @@ function loadProgramData() {
                             wCombo : b2bProgramW, //this.wcombovalue,
                             metrics : this.programRangeSettings
                         };
-                        this.setAxisName(b2bProgramX, "xaxis");
-                        this.setAxisName(b2bProgramY, "yaxis");
-                        this.setComboValue(b2bProgramX, "xCombo");
-                        this.setComboValue(b2bProgramY, "yCombo");
-                        this.setComboValue(b2bProgramZ, "zCombo");
-                        this.setComboValue(b2bProgramW, "WCombo");
                     }
                     else if (this.compId == b2cId
                     || title.search("\\(B2C\\)$") != -1) {
@@ -531,12 +543,6 @@ function loadProgramData() {
                             wCombo : b2cProgramW, //this.wcombovalue,
                             metrics : this.programRangeSettings
                         };
-                        this.setAxisName(b2cProgramX, "xaxis");
-                        this.setAxisName(b2cProgramY, "yaxis");
-                        this.setComboValue(b2cProgramX, "xCombo");
-                        this.setComboValue(b2cProgramY, "yCombo");
-                        this.setComboValue(b2cProgramZ, "zCombo");
-                        this.setComboValue(b2cProgramW, "WCombo");
                     }
                     else {
                         this.programViewSettings = {
@@ -546,12 +552,6 @@ function loadProgramData() {
                             wCombo : b2bProgramW, //this.wcombovalue,
                             metrics : this.programRangeSettings
                         };
-                        this.setAxisName(b2bProgramX, "xaxis");
-                        this.setAxisName(b2bProgramY, "yaxis");
-                        this.setComboValue(b2bProgramX, "xCombo");
-                        this.setComboValue(b2bProgramY, "yCombo");
-                        this.setComboValue(b2bProgramZ, "zCombo");
-                        this.setComboValue(b2bProgramW, "WCombo");
                     }
 				}
                 
