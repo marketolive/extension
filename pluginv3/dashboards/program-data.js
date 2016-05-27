@@ -313,6 +313,9 @@ function loadProgramData() {
                     title = MktCanvas.getActiveTab().config.title;
                 }
                 
+                this.view = "by_channel";
+                this.analyzerPanelSettings.view = "by_channel";
+                
 				var result = MktPage.appVars.analyzerData.GET_PROGRAM_DATA;
 				this.analyzerData = this.parseData(result);
 				//--> Define default metrics <--//
@@ -407,13 +410,13 @@ function loadProgramData() {
                         };
                     }
 				}
-				//this.demoRemoveData();
 				this.demoLoadData();
 	
 				//--> No Changes Below This Line <--//
 				if (MktPage.appVars.analyzerData.status == "error") {
 					Ext4.Msg.error(MktPage.appVars.analyzerData.msg);
-				} else {
+				}
+                else {
 					this.rcaendpoint = MktPage.appVars.analyzerData.endpoint;
 					this.rcacustprefix = MktPage.appVars.analyzerData.custprefix;
 	
@@ -463,6 +466,12 @@ function loadProgramData() {
                             wCombo : b2bChannelW, //this.wcombovalue,
                             metrics : this.channelRangeSettings
                         };
+                        this.setAxisName(b2bChannelX, "xaxis");
+                        this.setAxisName(b2bChannelY, "yaxis");
+                        this.setComboValue(b2bChannelX, "xCombo");
+                        this.setComboValue(b2bChannelY, "yCombo");
+                        this.setComboValue(b2bChannelZ, "zCombo");
+                        this.setComboValue(b2bChannelW, "WCombo");
                     }
                     else if (this.compId == b2cId
                     || title.search("\\(B2C\\)$") != -1) {
@@ -473,6 +482,12 @@ function loadProgramData() {
                             wCombo : b2cChannelW, //this.wcombovalue,
                             metrics : this.channelRangeSettings
                         };
+                        this.setAxisName(b2cChannelX, "xaxis");
+                        this.setAxisName(b2cChannelY, "yaxis");
+                        this.setComboValue(b2cChannelX, "xCombo");
+                        this.setComboValue(b2cChannelY, "yCombo");
+                        this.setComboValue(b2cChannelZ, "zCombo");
+                        this.setComboValue(b2cChannelW, "WCombo");
                     }
                     else {
                         this.channelViewSettings = {
@@ -482,6 +497,12 @@ function loadProgramData() {
                             wCombo : b2bChannelW, //this.wcombovalue,
                             metrics : this.channelRangeSettings
                         };
+                        this.setAxisName(b2bChannelX, "xaxis");
+                        this.setAxisName(b2bChannelY, "yaxis");
+                        this.setComboValue(b2bChannelX, "xCombo");
+                        this.setComboValue(b2bChannelY, "yCombo");
+                        this.setComboValue(b2bChannelZ, "zCombo");
+                        this.setComboValue(b2bChannelW, "WCombo");
                     }
 				}
                 else if (this.view == "by_program") {
@@ -494,6 +515,12 @@ function loadProgramData() {
                             wCombo : b2bProgramW, //this.wcombovalue,
                             metrics : this.programRangeSettings
                         };
+                        this.setAxisName(b2bProgramX, "xaxis");
+                        this.setAxisName(b2bProgramY, "yaxis");
+                        this.setComboValue(b2bProgramX, "xCombo");
+                        this.setComboValue(b2bProgramY, "yCombo");
+                        this.setComboValue(b2bProgramZ, "zCombo");
+                        this.setComboValue(b2bProgramW, "WCombo");
                     }
                     else if (this.compId == b2cId
                     || title.search("\\(B2C\\)$") != -1) {
@@ -504,6 +531,12 @@ function loadProgramData() {
                             wCombo : b2cProgramW, //this.wcombovalue,
                             metrics : this.programRangeSettings
                         };
+                        this.setAxisName(b2cProgramX, "xaxis");
+                        this.setAxisName(b2cProgramY, "yaxis");
+                        this.setComboValue(b2cProgramX, "xCombo");
+                        this.setComboValue(b2cProgramY, "yCombo");
+                        this.setComboValue(b2cProgramZ, "zCombo");
+                        this.setComboValue(b2cProgramW, "WCombo");
                     }
                     else {
                         this.programViewSettings = {
@@ -513,8 +546,23 @@ function loadProgramData() {
                             wCombo : b2bProgramW, //this.wcombovalue,
                             metrics : this.programRangeSettings
                         };
+                        this.setAxisName(b2bProgramX, "xaxis");
+                        this.setAxisName(b2bProgramY, "yaxis");
+                        this.setComboValue(b2bProgramX, "xCombo");
+                        this.setComboValue(b2bProgramY, "yCombo");
+                        this.setComboValue(b2bProgramZ, "zCombo");
+                        this.setComboValue(b2bProgramW, "WCombo");
                     }
 				}
+                
+                Mkt.charts.bubbleChart.setTitle(this.xtitle, "xaxis");
+                Mkt.charts.bubbleChart.setTitle(this.ytitle, "yaxis");
+                this.resetSettingsMenu();
+                this.resetSliderSize('xSlider');
+                this.resetSliderSize('ySlider');
+                this.resetSliderSize('zSlider');
+                this.resetPanel();
+                this.compactSettingsPanel();
 			}
 		}
 	}	
