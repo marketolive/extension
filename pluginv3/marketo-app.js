@@ -3822,14 +3822,21 @@ APP.openAdBridgeModal = function() {
 APP.reloadProgramAnalyzer = function() {
     console.log("Marketo App > Reloading: Program Analyzer");
     
-    if (MktCanvas
-    && MktCanvas.getActiveTab()
-    && MktCanvas.getActiveTab().config
-    && MktCanvas.getActiveTab().config.guideId == "analyzer_ProgramAnalyzer") {
-        console.log("Marketo App > Executing: Reload Program Analyzer");
-        
-        MktCanvas.reloadActiveTab();
-    }
+    var isProgramAnalyzerTab = window.setInterval(function() {
+        if (MktCanvas
+        && MktCanvas.getActiveTab()
+        && MktCanvas.getActiveTab().body
+        && MktCanvas.getActiveTab().body.dom) {
+            window.clearInterval(isProgramAnalyzerTab);
+            
+            if (MktCanvas.getActiveTab().config
+            && MktCanvas.getActiveTab().config.guideId == "analyzer_ProgramAnalyzer") {
+                console.log("Marketo App > Executing: Reload Program Analyzer");
+                
+                MktCanvas.reloadActiveTab();
+            }
+        }
+    }, 0);
 }
 
 /**************************************************************************************
