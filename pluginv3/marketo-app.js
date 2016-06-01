@@ -3828,6 +3828,7 @@ APP.reloadProgramAnalyzer = function() {
         && MktCanvas.getActiveTab().body
         && MktCanvas.getActiveTab().body.dom) {
             window.clearInterval(isProgramAnalyzerTab);
+            console.log("DOM: " + MktCanvas.getActiveTab().body.dom);
             
             if (MktCanvas.getActiveTab().config
             && MktCanvas.getActiveTab().config.guideId == "analyzer_ProgramAnalyzer") {
