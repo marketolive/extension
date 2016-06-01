@@ -3827,7 +3827,8 @@ APP.reloadProgramAnalyzer = function() {
         && MktCanvas.getActiveTab()
         && MktCanvas.getActiveTab().body
         && MktCanvas.getActiveTab().body.dom
-        && MktCanvas.getActiveTab().body.dom.firstChild) {
+        && MktCanvas.getActiveTab().body.dom.firstChild
+        && MktCanvas.getActiveTab().body.dom.firstChild.id == "atxCanvasOverview") {
             window.clearInterval(isProgramAnalyzerTab);
             console.log("DOM: " + MktCanvas.getActiveTab().body.dom.firstChild.innerHTML);
             
