@@ -3826,9 +3826,10 @@ APP.reloadProgramAnalyzer = function() {
         if (MktCanvas
         && MktCanvas.getActiveTab()
         && MktCanvas.getActiveTab().body
-        && MktCanvas.getActiveTab().body.dom) {
+        && MktCanvas.getActiveTab().body.dom
+        && MktCanvas.getActiveTab().body.dom.firstChild) {
             window.clearInterval(isProgramAnalyzerTab);
-            console.log("DOM: " + MktCanvas.getActiveTab().body.dom);
+            console.log("DOM: " + MktCanvas.getActiveTab().body.dom.firstChild.innerHTML);
             
             if (MktCanvas.getActiveTab().config
             && MktCanvas.getActiveTab().config.guideId == "analyzer_ProgramAnalyzer") {
