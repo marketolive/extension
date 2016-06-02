@@ -4021,7 +4021,7 @@ if ((currentUrl.search(mktoAppDomain) != -1
                     APP.overrideAnalyticsTiles();
                 }
                 else if (currUrlFragment.search("^" + mktoAnalyticsFragment) != -1) {
-                    APP.reloadProgramAnalyzer();
+                    //APP.reloadProgramAnalyzer();
                 }
                 else if (currUrlFragment == mktoAdBridgeSmartListFragment) {
                     var isAdBridgeSmartList = window.setInterval(function() {
@@ -4486,7 +4486,7 @@ if ((currentUrl.search(mktoAppDomain) != -1
                         APP.overrideAnalyticsTiles();
                     }
                     else if (currUrlFragment.search("^" + mktoAnalyticsFragment) != -1) {
-                        APP.reloadProgramAnalyzer();
+                        //APP.reloadProgramAnalyzer();
                     }
 
                     if (currCompFragment != mktoEmailDesignerFragment
