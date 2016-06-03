@@ -293,14 +293,14 @@ function loadProgramData() {
 	    
 	    /*
 	    Mkt.apps.ProgramAnalyzer.demoRemoveData = function() {
-	    //--> Remove Program Labels <--//
-	    for (var i = this.analyzerData.summarydata.programs.length - 1; i > -1; i--) {
-	    this.analyzerData.summarydata.programs.splice(i, 1);
-	    }
+            //--> Remove Program Labels <--//
+            for (var i = this.analyzerData.summarydata.programs.length - 1; i > -1; i--) {
+                this.analyzerData.summarydata.programs.splice(i, 1);
+            }
 	    };
-	     */
+	    */
 	    
-	    Mkt.apps.ProgramAnalyzer.setData = function () {
+	    Mkt.apps.ProgramAnalyzer.setData = function() {
 	        var title;
 	        
 	        if (MktCanvas
@@ -395,8 +395,8 @@ function loadProgramData() {
 	        //this.checkMenuItems();
 	        this.logscale = false;
 	        this.switchView();
+            this.switchView();
 	        MktCanvas.unmask();
-	        //MktCanvas.reloadActiveTab();
 	    };
 	    
 	    Mkt.apps.ProgramAnalyzer.saveView = function() {
@@ -449,6 +449,9 @@ function loadProgramData() {
 	                };
 	            }
 	        }
+            //this.resetSettingsMenu();
+            //this.resetPanel();
+            //this.reloadChart();
 	    }
 	}
 }

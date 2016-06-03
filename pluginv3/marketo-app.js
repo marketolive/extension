@@ -3811,39 +3811,6 @@ APP.openAdBridgeModal = function() {
 
 /**************************************************************************************
  *  
- *  This function reloads the Program Analyzer active tab in order to refresh demo data
- *
- *  @Author Brian Fisher
- *
- *  @function
- *
- **************************************************************************************/
- 
-APP.reloadProgramAnalyzer = function() {
-    console.log("Marketo App > Reloading: Program Analyzer");
-    
-    var isProgramAnalyzerTab = window.setInterval(function() {
-        if (MktCanvas
-        && MktCanvas.getActiveTab()
-        && MktCanvas.getActiveTab().body
-        && MktCanvas.getActiveTab().body.dom
-        && MktCanvas.getActiveTab().body.dom.firstChild
-        && MktCanvas.getActiveTab().body.dom.firstChild.id == "atxCanvasOverview") {
-            window.clearInterval(isProgramAnalyzerTab);
-            console.log("DOM: " + MktCanvas.getActiveTab().body.dom.firstChild.innerHTML);
-            
-            if (MktCanvas.getActiveTab().config
-            && MktCanvas.getActiveTab().config.guideId == "analyzer_ProgramAnalyzer") {
-                console.log("Marketo App > Executing: Reload Program Analyzer");
-                
-                MktCanvas.reloadActiveTab();
-            }
-        }
-    }, 0);
-}
-
-/**************************************************************************************
- *  
  *  This function returns the email ids of all the email assets in a given instance. 
  *
  *  @Author Andrew Garcia
@@ -4019,9 +3986,6 @@ if ((currentUrl.search(mktoAppDomain) != -1
 				}
                 else if (currUrlFragment == mktoAnalyticsDefaultFragment) {
                     APP.overrideAnalyticsTiles();
-                }
-                else if (currUrlFragment.search("^" + mktoAnalyticsFragment) != -1) {
-                    //APP.reloadProgramAnalyzer();
                 }
                 else if (currUrlFragment == mktoAdBridgeSmartListFragment) {
                     var isAdBridgeSmartList = window.setInterval(function() {
@@ -4484,9 +4448,6 @@ if ((currentUrl.search(mktoAppDomain) != -1
 					}
                     else if (currUrlFragment == mktoAnalyticsDefaultFragment) {
                         APP.overrideAnalyticsTiles();
-                    }
-                    else if (currUrlFragment.search("^" + mktoAnalyticsFragment) != -1) {
-                        //APP.reloadProgramAnalyzer();
                     }
 
                     if (currCompFragment != mktoEmailDesignerFragment
