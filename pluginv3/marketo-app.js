@@ -54,7 +54,7 @@ var currentUrl = window.location.href,
     mktoLeadDatabaseFinservFragment = "ML0A1ZN20792",
     mktoLeadDatabaseHealthcareFragment = "ML0A1ZN20812",
     mktoLeadDatabaseHigherEdFragment = "ML0A1ZN20832",
-    mktoAnalyticsFragment = "AH0A1ZN17",
+    mktoAnalyticsDefaultFragment = "AH0A1ZN17",
     mktoOppInfluenceAnalyzerFragment = "AR1559A1!",
     mktoProgramAnalyzerFragment = "AR1544A1!",
     mktoModeler106Fragment = "RCM70A1!",
@@ -71,6 +71,7 @@ var currentUrl = window.location.href,
     mktoABtestWizardFragment = "EBE",
     mktoEmailTestWizardFragment = "CCE",
     mktoCalendarFragment = "CAL",
+    mktoAnalyticsFragment = "AR",
     mktoDefaultWorkspaceId = 1,
     mktoMarketingWorkspaceId = 172,
     mktoJapaneseWorkspaceId = 173,
@@ -1889,6 +1890,8 @@ APP.hideFoldersOnImport = function() {
                     && MktCanvas.getActiveTab()
                     && MktCanvas.getActiveTab().config
                     && MktCanvas.getActiveTab().config.accessZoneId == mktoMarketingWorkspaceId) {
+                        console.log("Marketo App > Executing: Hide Campaign Folders On Program Import via Override");
+                        
                         var ii;
 /*                        
                         var userId = MktPage.userid.toLowerCase(),
@@ -3981,11 +3984,9 @@ if ((currentUrl.search(mktoAppDomain) != -1
                 || currUrlFragment == mktoLeadDatabaseHigherEdFragment) {
 					APP.disableButtons();
 				}
-                
-                else if (currUrlFragment == mktoAnalyticsFragment) {
+                else if (currUrlFragment == mktoAnalyticsDefaultFragment) {
                     APP.overrideAnalyticsTiles();
                 }
-                
                 else if (currUrlFragment == mktoAdBridgeSmartListFragment) {
                     var isAdBridgeSmartList = window.setInterval(function() {
                         if (typeof(document.getElementsByClassName("x-btn-text mkiUserTarget")[0]) !== "undefined") {
@@ -4445,8 +4446,7 @@ if ((currentUrl.search(mktoAppDomain) != -1
                     || currUrlFragment == mktoLeadDatabaseHigherEdFragment) {
 						APP.disableButtons();
 					}
-                    
-                    else if (currUrlFragment == mktoAnalyticsFragment) {
+                    else if (currUrlFragment == mktoAnalyticsDefaultFragment) {
                         APP.overrideAnalyticsTiles();
                     }
 
