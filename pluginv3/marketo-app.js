@@ -39,6 +39,9 @@ var currentUrl = window.location.href,
     mktoAccountString106 = "mktodemoaccount106",
     mktoAccountString106a = "mktodemoaccount106a",
     mktoAccountString106b = "mktodemoaccount106b",
+    mktoAccountString106d = "mktodemoaccount106d",
+    mktoAccountStringsMatch = "^"+mktoAccountString106+"$|^"+mktoAccountString106a+"$|^"+mktoAccountString106b+"$|^"+mktoAccountString106d+"$",
+    mktoAccountStrings106and106dMatch = "^"+mktoAccountString106+"$|^"+mktoAccountString106d+"$",
     rtpDemoDomain = "^http:\/\/sjrtp1.marketo.com\/demo\/$|^http:\/\/cloud4.insightera.com\/demo\/$",
     emailDeliverabilityDomain = "^https:\/\/250ok.com/",
     mktoMyMarketoFragment = "MM0A1",
@@ -500,7 +503,7 @@ APP.overrideAnalyticsTiles = function() {
             
             if (MktPage
             && MktPage.savedState
-            && MktPage.savedState.custPrefix == mktoAccountString106
+            && MktPage.savedState.custPrefix.search(mktoAccountStrings106and106dMatch) != -1
             && MktCanvas
             && MktCanvas.getActiveTab()
             && MktCanvas.getActiveTab().config
@@ -3935,9 +3938,7 @@ if ((currentUrl.search(mktoAppDomain) != -1
             
             // This checks to see if the username is one that would be associated
             // with a MarketoLive subscription.
-            if (accountString == mktoAccountString106
-            || accountString == mktoAccountString106a
-            || accountString == mktoAccountString106b) {
+            if (accountString.search(mktoAccountStringsMatch) != -1) {
                 console.log("Marketo App > Location: MarketoLive Instance");
                 
                 window.mkto_live_plugin_state = true;
@@ -4160,6 +4161,88 @@ if ((currentUrl.search(mktoAppDomain) != -1
                             formIds.push(2472, 1749, 1900);
                             // DIY Design and Mobile Engagement Push Notifications 
                             pushIds.push(2, 1);
+                            break;
+                        case mktoAccountString106d:
+                            // DIY Design: Landing Page, Landing Page Responsive
+                            lpIds["dpageid_11826"] = "dpageid_11826";
+                            lpIds["dpageid_11822"] = "dpageid_11822";
+                            // Replicate Success Roadshow Example: Registration Page, Thank You for Registering
+                            lpIds["dpageid_8819"] = "dpageid_8819";
+                            lpIds["dpageid_8941"] = "dpageid_8941";
+                            // Replicate Success Webinar Example: Recorded Webinar LP, Registration Landing Page, Thank You LP
+                            lpIds["dpageid_4876"] = "dpageid_4876";
+                            lpIds["dpageid_4872"] = "dpageid_4872";
+                            lpIds["dpageid_4874"] = "dpageid_4874";
+                            // Japanese DIY Design: 1, 2, 3
+                            lpIds["dpageid_11856"] = "dpageid_11856";
+                            lpIds["dpageid_11548"] = "dpageid_11548";
+                            lpIds["dpageid_11546"] = "dpageid_11546";
+                            // Japanese Event Roadshow Unknown: 1, 2
+                            lpIds["dpageid_12420"] = "dpageid_12420";
+                            lpIds["dpageid_12418"] = "dpageid_12418";
+                            // Japanese Replicate Success Webinar Example: 1, 2, 3
+                            lpIds["dpageid_11552"] = "dpageid_11552";
+                            lpIds["dpageid_11550"] = "dpageid_11550";
+                            lpIds["dpageid_11553"] = "dpageid_11553";
+                            // Japanese Replicate Success Roadshow Example: 1, 2
+                            lpIds["dpageid_12345"] = "dpageid_12345";
+                            lpIds["dpageid_11556"] = "dpageid_11556";
+                            // Financial Services DIY Design: Mortgage Landing Page, Banking Landing Page, Preferences Page
+                            lpIds["dpageid_13187"] = "dpageid_13187";
+                            lpIds["dpageid_13185"] = "dpageid_13185";
+                            lpIds["dpageid_12709"] = "dpageid_12709";
+                            // Financial Services Event Management Home Buyinng Seminar: Recorded Webinar LP, Reg LP, Thank You LP
+                            lpIds["dpageid_12720"] = "dpageid_12720";
+                            lpIds["dpageid_12717"] = "dpageid_12717";
+                            lpIds["dpageid_12719"] = "dpageid_12719";
+                            // Healthcare DIY Design: Landing Page, Landing Page Offer, Landing Page Responsive, Preference Page
+                            lpIds["dpageid_12569"] = "dpageid_12569";
+                            lpIds["dpageid_12932"] = "dpageid_12932";
+                            lpIds["dpageid_13165"] = "dpageid_13165";
+                            lpIds["dpageid_12586"] = "dpageid_12586";
+                            // Healthcare Event Management HC - Tour the Clinic: Recorded Webinar LP
+                            lpIds["dpageid_12517"] = "dpageid_12517";
+                            // Higher Education DIY Design: Landing Page, Landing Page - In State, Landing Page - Video, Landing Page Responsive, Preference Page
+                            lpIds["dpageid_12250"] = "dpageid_12250";
+                            lpIds["dpageid_12934"] = "dpageid_12934";
+                            lpIds["dpageid_12401"] = "dpageid_12401";
+                            lpIds["dpageid_13167"] = "dpageid_13167";
+                            lpIds["dpageid_12248"] = "dpageid_12248";
+                            // Higher Education Event Management HE - Event: Thanks and Next Event
+                            lpIds["dpageid_12177"] = "dpageid_12177";
+
+                            // Forms: Default DIY Design, Replicate Success Roadshow Example, Replicate Success Webinar Example
+                            formIds.push(3576, 1749, 1900);
+                            // Forms: Japanese Default DIY Design, Japanese Event Roadshow Unknown, Japanese Replicate Success Webinar Example, Japanese Replicate Success Roadshow Example
+                            formIds.push(3018, 3708, 3020, 3021);
+                            // Forms: Financial Services DIY Design
+                            formIds.push(3952, 3955, 3953);
+                            // Forms: Healthcare DIY Design
+                            formIds.push(3816, 3818, 3828);
+                            // Forms: Higher Ed DIY Design
+                            formIds.push(3313, 4125, 3559);
+                            
+                            // Push Notifications: Default DIY Design, Mobile Engagement
+                            pushIds.push(29, 23);
+                            // Push Notifications: Japanese DIY Design, Mobile Engagement, Unknown
+                            pushIds.push(99, 216, 103, 218);
+                            // Push Notifications: Financial Services DIY Design, Mobile Engagement
+                            pushIds.push(187);
+                            // Push Notifications: Healthcare DIY Design, Mobile Engagement
+                            pushIds.push(169);
+                            // Push Notifications: Higher Ed DIY Design, Mobile Engagement
+                            pushIds.push(131);
+                            
+                            // Social Apps: Default DIY Design
+                            socIds.push(586, 587, 491, 484, 448);
+                            // Social Apps: Japanese DIY Design
+                            socIds.push(853);
+                            // Social Apps: Financial Services DIY Design
+                            socIds.push(1091, 1090, 1093, 1092, 1094);
+                            // Social Apps: Healthcare DIY Design
+                            socIds.push(1021, 1023, 1025, 1022, 1020);
+                            // Social Apps: Higher Ed DIY Design
+                            socIds.push(860, 1024, 861, 859, 858);
                             break;
                         default:
                             break;
