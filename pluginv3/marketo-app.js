@@ -3814,7 +3814,7 @@ APP.openAdBridgeModal = function() {
 
 /**************************************************************************************
  *  
- *  This function returns the email ids of all the email assets in a given instance. 
+ *  This function returns the email IDs of all the email assets in a given instance. 
  *
  *  @Author Andrew Garcia
  *
@@ -3822,12 +3822,12 @@ APP.openAdBridgeModal = function() {
  *
  **************************************************************************************/
 
-APP.getEmailIds = function(pod) {
-    console.log("Marketo App > Getting Email Ids for Pod: " + pod);
+APP.getEmailIds = function(accountString) {
+    console.log("Marketo App > Getting: Email IDs for account string: " + accountString);
     
     var emIds = [];
-    switch (pod) {
-        case "app-sjp":
+    switch (accountString) {
+        case mktoAccountString106:
             // Default DIY Design
             emIds.push(15464);
             // Default Email Marketing: AB Test Configuration, AB Test Dashboard, Champion/Chalenger, Email Program Dashboard
@@ -3861,7 +3861,7 @@ APP.getEmailIds = function(pod) {
             // Higher Ed Services DIY Design
             emIds.push(20329)
             break;
-        case "app-ab07":
+        case mktoAccountString106a:
             // DIY Design
             emIds.push(14240);
             // Intelligent Nurturing
@@ -3871,7 +3871,7 @@ APP.getEmailIds = function(pod) {
             // Replicate Success Webinar
             emIds.push(4894, 3764, 3765, 3767, 3766, 3762);
             break;
-        case "app-ab08":
+        case mktoAccountString106b:
             // DIY Design
             emIds.push(13924);
             // Intelligent Nurturing
@@ -3881,8 +3881,42 @@ APP.getEmailIds = function(pod) {
             // Replicate Success Webinar
             emIds.push(4894, 3764, 3765, 3767, 3766, 3762);
             break;
+        case mktoAccountString106d:
+            // Default DIY Design
+            emIds.push(15464);
+            // Default Email Marketing: AB Test Configuration, AB Test Dashboard, Champion/Chalenger, Email Program Dashboard
+            emIds.push(18113, 18106, 18111, 18110);
+            // Default Replicate Success: Roadshow Example
+            emIds.push(10010, 10179, 10180, 12845, 10181, 10182, 10183, 10184);
+            // Default Replicate Success: Webinar Example
+            emIds.push(4894, 3764, 3765, 3767, 3766, 3762);
+            // Default Intelligent Nurturing
+            emIds.push(12818, 12820, 12819, 12816, 12811, 12815, 12812, 12813, 12814, 12821, 12817, 12823);
+            // Default Actionable Insight: BANT Nurture for Sales
+            emIds.push(12900, 12901, 12899, 12898);
+            // Default Actionable Insight: Sales Auto Reach Out
+            emIds.push(12902, 12903, 12904);
+            // Japanese Default Content Unknown
+            emIds.push(16474, 17254, 16403);
+            // Japanese Event Roadshow Unknown
+            emIds.push(18117, 18118, 18122, 18119, 18116, 18123, 18120, 18121, 18124);
+            // Japanese Replicate Success Webinar
+            emIds.push(16118, 16119, 16120, 16122, 16121, 16117);
+            // Japanese Replicate Success Roadshow
+            emIds.push(16331, 16332, 16338, 16333, 16123, 16339, 16335, 16336, 17868);
+            // Japanese Intelligent Nurturing
+            emIds.push(16125, 16129, 16126, 16124, 16132, 16131, 16130, 16128, 16127, 16133, 16137, 16136);
+            // Japanese Default Email Blast Unknown
+            emIds.push(18126);
+            // Financial Services DIY Design
+            emIds.push(20350, 20368)
+            // Healthcare Services DIY Design
+            emIds.push(20327)
+            // Higher Ed Services DIY Design
+            emIds.push(20329)
+            break;
         default:
-            console.error("Marketp App > Invalid: User Pod in getEmailIds()");
+            console.error("Marketp App > Invalid: account string in getEmailIds(): " + accountString);
             break;
     }
     return emIds;
@@ -4058,7 +4092,7 @@ if ((currentUrl.search(mktoAppDomain) != -1
                         formIds = [],
                         pushIds = [],
                         socIds = [],
-                        emIds = APP.getEmailIds(APP.getCookie("userPod"));
+                        emIds = APP.getEmailIds(accountString);
                     switch (accountString) {
                         case mktoAccountString106:
                             // DIY Design: Landing Page, Landing Page Responsive
