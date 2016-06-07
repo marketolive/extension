@@ -3816,7 +3816,7 @@ APP.getEmailIds = function(pod) {
     switch (pod) {
         case "app-sjp":
             // Default DIY Design
-            emIds.push(15464);
+            emIds.push(15464, 20931);
             // Default Email Marketing: AB Test Configuration, AB Test Dashboard, Champion/Chalenger, Email Program Dashboard
             emIds.push(18113, 18106, 18111, 18110);
             // Default Replicate Success: Roadshow Example
@@ -4265,6 +4265,7 @@ if ((currentUrl.search(mktoAppDomain) != -1
                         customCompanyFinservMFragment = "EME20350",
                         customCompanyFinservPFragment ="EME20368",
                         customCompanyHigherEdFragment = "EME20329",
+                        customCompanyTechnologyFragment = "EME20931",
                         loadParameters = {
                             filters: [{
                                 property: 'id',
@@ -4313,6 +4314,9 @@ if ((currentUrl.search(mktoAppDomain) != -1
                                     APP.overlayEmailDesigner();
                                     break;
                                 case customCompanyHigherEdFragment:
+                                    APP.overlayEmailDesigner();
+                                    break;
+                                case customCompanyTechnologyFragment:
                                     APP.overlayEmailDesigner();
                                     break;
                                 case customCompanyEmail106aFragment:
