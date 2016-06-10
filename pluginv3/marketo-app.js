@@ -284,12 +284,12 @@ APP.disableConfirmationMessage = function() {
 
 /**************************************************************************************
  *  
- *  This function overrides the target link for the Deliverability Tools tile if it 
- *  exists, otherwise it creates the tile. By default, the tile uses SSO to login to 
- *  250ok. However, we only have one 250ok instance that contains usable demo data, so 
- *  the plugin directs people into that instance. This function directs users to the 
- *  250ok login page where the deliverability-tools.js script will automatically login 
- *  and hide the necessary buttons. This function should also run inside of SC sandbox 
+ *  This function overrides the target links for the Deliverability Tools and Email 
+ *  Insights tiles if they exist, otherwise it creates the tiles. We only have a single  
+ *  instance that contains usable demo data for both 250ok and Email Insights, so the 
+ *  plugin directs people into that instance. This function directs users to the 250ok 
+ *  login page where the deliverability-tools.js script will automatically login and 
+ *  hide the necessary buttons. This function should also run inside of SC sandbox 
  *  instances.
  *
  *  @Author Brian Fisher
@@ -298,8 +298,8 @@ APP.disableConfirmationMessage = function() {
  *
  **************************************************************************************/
 
-APP.overrideDeliverabilityToolsTile = function() {
-    console.log("Marketo App > Overriding: Deliverability Tools Tile");
+APP.overrideHomeTiles = function() {
+    console.log("Marketo App > Overriding: My Marketo Home Tiles");
     
     if (MktCanvas
     && MktCanvas.getEl()
@@ -318,44 +318,55 @@ APP.overrideDeliverabilityToolsTile = function() {
     && MktCanvas.getEl().dom.nextSibling.childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes
     && MktCanvas.getEl().dom.nextSibling.childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[0]
     && MktCanvas.getEl().dom.nextSibling.childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes) {
-        console.log("Marketo App > Executing: Override Deliverability Tools Tile");
+        console.log("Marketo App > Executing: Override My Marketo Home Tiles");
         
-        var tiles = MktCanvas.getEl().dom.nextSibling.childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes,
-            currTileSpanTags,
-            currTileAtags,
-            spareTile,
+        var container = MktCanvas.getEl().dom.nextSibling.childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[0],
+            containerComponent = MktCanvas.lookupComponent(container),
+            tilesTextContent = containerComponent.el.dom.textContent.replace(/([a-z])([A-Z])/g, "$1,$2").replace(/([A-Z])([A-Z][a-z])/g, "$1,$2").split(','),
+            hrefMatch = new RegExp(" href=\"[^\"]*\" ", "g"),
+            spareTile = MktCanvas.lookupComponent(container.childNodes[container.childNodes.length - 1]),
+            idMatch,
+            spareTileClone1,
+            spareTileClone2,
+            emailInsightsTile,
+            emailInsightsTileOuterHTML,
             deliverabilityToolsTile,
-            ii,
-            jj;
-            
-        for (ii = 0; ii < tiles.length; ii++) {
-            if (tiles[ii]
-            && tiles[ii].getAttribute("role") == "presentation") {
-                spareTile = tiles[ii];
-                break;
+            deliverabilityToolsTileOuterHTML,
+            ii;
+        
+        for (ii = 0; ii < tilesTextContent.length; ii++) {
+            if (tilesTextContent[ii] == "Email Insights") {
+                emailInsightsTile = MktCanvas.lookupComponent(container.childNodes[ii]);
             }
-            currTileSpanTags = tiles[ii].getElementsByTagName("span");
-            for (jj = 0; jj < currTileSpanTags.length; jj++) {
-                if (currTileSpanTags[jj]
-                && currTileSpanTags[jj].innerHTML == "Deliverability Tools") {
-                    deliverabilityToolsTile = tiles[ii];
-                    break;
-                }
-            }
-            currTileAtags = tiles[ii].getElementsByTagName("a");
-            for (jj = 0; jj < currTileAtags.length; jj++) {
-                if (currTileAtags[jj]
-                && currTileAtags[jj].href.search("/homepage/sso\\?sso=250ok$") != -1) {
-                    currTileAtags[jj].href = "https://250ok.com/login";
-                    break;
-                }
+            else if (tilesTextContent[ii] == "Deliverability Tools") {
+                deliverabilityToolsTile = MktCanvas.lookupComponent(container.childNodes[ii]);
             }
         }
         
-        if (deliverabilityToolsTile == null
-        && spareTile != null) {
-            tiles[tiles.length] = spareTile;
-            tiles[tiles.length].outerHTML = '<div class="x4-btn mkt3-homeTile x4-btn-default-small x4-icon-text-left x4-btn-icon-text-left x4-btn-default-small-icon-text-left" style="height: 150px;" id="homeTile-1036"><em id="homeTile-1036-btnWrap"><a id="homeTile-1036-btnEl" href="https://250ok.com/login" class="x4-btn-center" target="_blank" role="link" style="width: 150px; height: 150px;"><span id="homeTile-1036-btnInnerEl" class="x4-btn-inner" style="width: 150px; height: 150px; line-height: 150px;">Deliverability Tools</span><span id="homeTile-1036-btnIconEl" class="x4-btn-icon mki3-mail-sealed-svg"></span></a></em></div>';
+        if (emailInsightsTile) {
+            emailInsightsTile.el.dom.outerHTML = emailInsightsTile.el.dom.outerHTML.replace(hrefMatch, " href=\"http://www.marketolive.com/en/analytics/email-insights-summit-demo-1\" ");
+        }
+        else {
+            emailInsightsTileOuterHTML = '<div class="x4-btn mkt3-homeTile x4-btn-default-small x4-icon-text-left x4-btn-icon-text-left x4-btn-default-small-icon-text-left x-panel" style="height: 150px;" id="homeTile-1084"><em id="homeTile-1084-btnWrap"><a id="homeTile-1084-btnEl" href="http://www.marketolive.com/en/analytics/email-insights-summit-demo-1" class="x4-btn-center" target="_blank" role="link" style="width: 150px; height: 150px;"><span id="homeTile-1084-btnInnerEl" class="x4-btn-inner" style="width: 150px; height: 150px; line-height: 150px;">Email Insights</span><span id="homeTile-1084-btnIconEl" class="x4-btn-icon mki3-email-insights-svg"></span></a></em><div class="x-panel-bwrap" id="ext-gen164"><div class="x-panel-body x-panel-body-noheader" id="ext-gen165"></div></div></div>';
+            idMatch = new RegExp("homeTile-1084", "g");
+            
+            spareTileClone1 = spareTile.cloneConfig();
+            emailInsightsTileOuterHTML = emailInsightsTileOuterHTML.replace(idMatch, spareTileClone1.id);
+            spareTileClone1.el.dom.outerHTML = emailInsightsTileOuterHTML;
+            container.appendChild(spareTileClone1.el.dom);
+        }
+        
+        if (deliverabilityToolsTile) {
+            deliverabilityToolsTile.el.dom.outerHTML = deliverabilityToolsTile.el.dom.outerHTML.replace(hrefMatch, " href=\"https://250ok.com/login\" ");
+        }
+        else {
+            deliverabilityToolsTileOuterHTML = '<div class="x4-btn mkt3-homeTile x4-btn-default-small x4-icon-text-left x4-btn-icon-text-left x4-btn-default-small-icon-text-left" style="height: 150px;" id="homeTile-1036"><em id="homeTile-1036-btnWrap"><a id="homeTile-1036-btnEl" href="https://250ok.com/login" class="x4-btn-center" target="_blank" role="link" style="width: 150px; height: 150px;"><span id="homeTile-1036-btnInnerEl" class="x4-btn-inner" style="width: 150px; height: 150px; line-height: 150px;">Deliverability Tools</span><span id="homeTile-1036-btnIconEl" class="x4-btn-icon mki3-mail-sealed-svg"></span></a></em></div>';
+            idMatch = new RegExp("homeTile-1036", "g");
+            
+            spareTileClone2 = spareTile.cloneConfig();
+            deliverabilityToolsTileOuterHTML = deliverabilityToolsTileOuterHTML.replace(idMatch, spareTileClone2.id);
+            spareTileClone2.el.dom.outerHTML = deliverabilityToolsTileOuterHTML;
+            container.appendChild(spareTileClone2.el.dom);
         }
     }
 }
@@ -3829,7 +3840,7 @@ APP.getEmailIds = function(accountString) {
     switch (accountString) {
         case mktoAccountString106:
             // Default DIY Design
-            emIds.push(15464, 20931);
+            emIds.push(15464);
             // Default Email Marketing: AB Test Configuration, AB Test Dashboard, Champion/Chalenger, Email Program Dashboard
             emIds.push(18113, 18106, 18111, 18110);
             // Default Replicate Success: Roadshow Example
@@ -4003,7 +4014,7 @@ if ((currentUrl.search(mktoAppDomain) != -1
 
                 // Email Deliverability
                 if (currUrlFragment == mktoMyMarketoFragment) {
-                    APP.overrideDeliverabilityToolsTile();
+                    APP.overrideHomeTiles();
                 }
 				else if (currUrlFragment == mktoMarketingActivitiesDefaultFragment
 				|| currUrlFragment == mktoMarketingActivitiesMarketingFragment
@@ -4397,7 +4408,6 @@ if ((currentUrl.search(mktoAppDomain) != -1
                         customCompanyFinservMFragment = "EME20350",
                         customCompanyFinservPFragment ="EME20368",
                         customCompanyHigherEdFragment = "EME20329",
-                        customCompanyTechnologyFragment = "EME20931",
                         loadParameters = {
                             filters: [{
                                 property: 'id',
@@ -4446,9 +4456,6 @@ if ((currentUrl.search(mktoAppDomain) != -1
                                     APP.overlayEmailDesigner();
                                     break;
                                 case customCompanyHigherEdFragment:
-                                    APP.overlayEmailDesigner();
-                                    break;
-                                case customCompanyTechnologyFragment:
                                     APP.overlayEmailDesigner();
                                     break;
                                 case customCompanyEmail106aFragment:
@@ -4551,7 +4558,7 @@ if ((currentUrl.search(mktoAppDomain) != -1
                     
                     // Email Deliverability
                     if (currUrlFragment == mktoMyMarketoFragment) {
-                        APP.overrideDeliverabilityToolsTile();
+                        APP.overrideHomeTiles();
                     }
 					else if (currUrlFragment == mktoMarketingActivitiesDefaultFragment
                     || currUrlFragment == mktoMarketingActivitiesMarketingFragment
@@ -4613,14 +4620,14 @@ if ((currentUrl.search(mktoAppDomain) != -1
                 APP.overrideDeliverabilityToolsMenuItem();
                 
                 if (currUrlFragment == mktoMyMarketoFragment) {
-                    APP.overrideDeliverabilityToolsTile();
+                    APP.overrideHomeTiles();
                 }
                 window.onhashchange = function () {
                     // Getting the URL fragment, the part after the #
                     currUrlFragment = Mkt3.DL.getDlToken();
                 
                     if (currUrlFragment == mktoMyMarketoFragment) {
-                        APP.overrideDeliverabilityToolsTile();
+                        APP.overrideHomeTiles();
                     }
                 }
             }
