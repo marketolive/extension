@@ -30,20 +30,22 @@ var currentUrl = window.location.href,
     mktoAppLoginDomain = "^https:\/\/app\.marketo\.com",
     mktoDesignerDomain = "^https:\/\/[a-z0-9]+-[a-z0-9]+\.marketodesigner\.com",
     mktoDesignerMatch = "https://*.marketodesigner.com/*",
+    rtpDemoDomain = "^http:\/\/sjrtp1.marketo.com\/demo\/$|^http:\/\/cloud4.insightera.com\/demo\/$",
+    emailDeliverabilityDomain = "^https:\/\/250ok.com/",
+    mktoWizard = mktoAppDomain + "/m#",
     mktoEmailDesigner = mktoDesignerDomain + "/ds",
     mktoLandingPageDesigner = mktoDesignerDomain + "/lpeditor/",
     defaultTurnerLogoGreen = "http://marketolive.com/m3/assets/img/turner-tech-green.png",
     defaultTurnerLogoWhite = "http://marketolive.com/m3/assets/img/turner-tech-white.png",
     defaultColor = "rgb(42, 83, 112)",
-    mktoWizard = mktoAppDomain + "/m#",
     mktoAccountString106 = "mktodemoaccount106",
     mktoAccountString106a = "mktodemoaccount106a",
     mktoAccountString106b = "mktodemoaccount106b",
     mktoAccountString106d = "mktodemoaccount106d",
     mktoAccountStringsMatch = "^"+mktoAccountString106+"$|^"+mktoAccountString106a+"$|^"+mktoAccountString106b+"$|^"+mktoAccountString106d+"$",
     mktoAccountStrings106and106dMatch = "^"+mktoAccountString106+"$|^"+mktoAccountString106d+"$",
-    rtpDemoDomain = "^http:\/\/sjrtp1.marketo.com\/demo\/$|^http:\/\/cloud4.insightera.com\/demo\/$",
-    emailDeliverabilityDomain = "^https:\/\/250ok.com/",
+    mktoEmailInsightsLink = "http://www.marketolive.com/en/analytics/email-insights-summit-demo-1",
+    mktoEmailDeliverabilityToolsLink = "https://250ok.com/login",
     mktoMyMarketoFragment = "MM0A1",
 	mktoMarketingActivitiesDefaultFragment = "MA15A1",
     mktoMarketingActivitiesMarketingFragment = "MA19802A1",
@@ -324,10 +326,8 @@ APP.overrideHomeTiles = function() {
             containerComponent = MktCanvas.lookupComponent(container),
             tilesTextContent = containerComponent.el.dom.textContent.replace(/([a-z])([A-Z])/g, "$1,$2").replace(/([A-Z])([A-Z][a-z])/g, "$1,$2").split(','),
             hrefMatch = new RegExp(" href=\"[^\"]*\" ", "g"),
-            spareTile = MktCanvas.lookupComponent(container.childNodes[container.childNodes.length - 1]),
             idMatch,
-            spareTileClone1,
-            spareTileClone2,
+            spareTileClone,
             emailInsightsTile,
             emailInsightsTileOuterHTML,
             deliverabilityToolsTile,
@@ -344,29 +344,31 @@ APP.overrideHomeTiles = function() {
         }
         
         if (emailInsightsTile) {
-            emailInsightsTile.el.dom.outerHTML = emailInsightsTile.el.dom.outerHTML.replace(hrefMatch, " href=\"http://www.marketolive.com/en/analytics/email-insights-summit-demo-1\" ");
+            emailInsightsTile.el.dom.outerHTML = emailInsightsTile.el.dom.outerHTML.replace(hrefMatch, " href=\""+mktoEmailInsightsLink+"\" ");
         }
         else {
-            emailInsightsTileOuterHTML = '<div class="x4-btn mkt3-homeTile x4-btn-default-small x4-icon-text-left x4-btn-icon-text-left x4-btn-default-small-icon-text-left x-panel" style="height: 150px;" id="homeTile-1084"><em id="homeTile-1084-btnWrap"><a id="homeTile-1084-btnEl" href="http://www.marketolive.com/en/analytics/email-insights-summit-demo-1" class="x4-btn-center" target="_blank" role="link" style="width: 150px; height: 150px;"><span id="homeTile-1084-btnInnerEl" class="x4-btn-inner" style="width: 150px; height: 150px; line-height: 150px;">Email Insights</span><span id="homeTile-1084-btnIconEl" class="x4-btn-icon mki3-email-insights-svg"></span></a></em><div class="x-panel-bwrap" id="ext-gen164"><div class="x-panel-body x-panel-body-noheader" id="ext-gen165"></div></div></div>';
+            emailInsightsTileOuterHTML = '<div class="x4-btn mkt3-homeTile x4-btn-default-small x4-icon-text-left x4-btn-icon-text-left x4-btn-default-small-icon-text-left x-panel" style="height: 150px;" id="homeTile-1084"><em id="homeTile-1084-btnWrap"><a id="homeTile-1084-btnEl" href="'+mktoEmailInsightsLink+'" class="x4-btn-center" target="_blank" role="link" style="width: 150px; height: 150px;"><span id="homeTile-1084-btnInnerEl" class="x4-btn-inner" style="width: 150px; height: 150px; line-height: 150px;">Email Insights</span><span id="homeTile-1084-btnIconEl" class="x4-btn-icon mki3-email-insights-svg"></span></a></em><div class="x-panel-bwrap" id="ext-gen164"><div class="x-panel-body x-panel-body-noheader" id="ext-gen165"></div></div></div>';
             idMatch = new RegExp("homeTile-1084", "g");
             
-            spareTileClone1 = spareTile.cloneConfig();
-            emailInsightsTileOuterHTML = emailInsightsTileOuterHTML.replace(idMatch, spareTileClone1.id);
-            spareTileClone1.el.dom.outerHTML = emailInsightsTileOuterHTML;
-            container.appendChild(spareTileClone1.el.dom);
+            spareTileClone = MktCanvas.lookupComponent(container.childNodes[container.childNodes.length - 1]).cloneConfig();
+            emailInsightsTileOuterHTML = emailInsightsTileOuterHTML.replace(idMatch, spareTileClone.id);
+            spareTileClone.el.dom.outerHTML = emailInsightsTileOuterHTML;
+            container.appendChild(container.childNodes[container.childNodes.length - 2]);
+            container.appendChild(spareTileClone.el.dom);
         }
         
         if (deliverabilityToolsTile) {
-            deliverabilityToolsTile.el.dom.outerHTML = deliverabilityToolsTile.el.dom.outerHTML.replace(hrefMatch, " href=\"https://250ok.com/login\" ");
+            deliverabilityToolsTile.el.dom.outerHTML = deliverabilityToolsTile.el.dom.outerHTML.replace(hrefMatch, " href=\""+mktoEmailDeliverabilityToolsLink+"\" ");
         }
         else {
-            deliverabilityToolsTileOuterHTML = '<div class="x4-btn mkt3-homeTile x4-btn-default-small x4-icon-text-left x4-btn-icon-text-left x4-btn-default-small-icon-text-left" style="height: 150px;" id="homeTile-1036"><em id="homeTile-1036-btnWrap"><a id="homeTile-1036-btnEl" href="https://250ok.com/login" class="x4-btn-center" target="_blank" role="link" style="width: 150px; height: 150px;"><span id="homeTile-1036-btnInnerEl" class="x4-btn-inner" style="width: 150px; height: 150px; line-height: 150px;">Deliverability Tools</span><span id="homeTile-1036-btnIconEl" class="x4-btn-icon mki3-mail-sealed-svg"></span></a></em></div>';
+            deliverabilityToolsTileOuterHTML = '<div class="x4-btn mkt3-homeTile x4-btn-default-small x4-icon-text-left x4-btn-icon-text-left x4-btn-default-small-icon-text-left" style="height: 150px;" id="homeTile-1036"><em id="homeTile-1036-btnWrap"><a id="homeTile-1036-btnEl" href="'+mktoEmailDeliverabilityToolsLink+'" class="x4-btn-center" target="_blank" role="link" style="width: 150px; height: 150px;"><span id="homeTile-1036-btnInnerEl" class="x4-btn-inner" style="width: 150px; height: 150px; line-height: 150px;">Deliverability Tools</span><span id="homeTile-1036-btnIconEl" class="x4-btn-icon mki3-mail-sealed-svg"></span></a></em></div>';
             idMatch = new RegExp("homeTile-1036", "g");
             
-            spareTileClone2 = spareTile.cloneConfig();
-            deliverabilityToolsTileOuterHTML = deliverabilityToolsTileOuterHTML.replace(idMatch, spareTileClone2.id);
-            spareTileClone2.el.dom.outerHTML = deliverabilityToolsTileOuterHTML;
-            container.appendChild(spareTileClone2.el.dom);
+            spareTileClone = MktCanvas.lookupComponent(container.childNodes[container.childNodes.length - 1]).cloneConfig();
+            deliverabilityToolsTileOuterHTML = deliverabilityToolsTileOuterHTML.replace(idMatch, spareTileClone.id);
+            spareTileClone.el.dom.outerHTML = deliverabilityToolsTileOuterHTML;
+            container.appendChild(container.childNodes[container.childNodes.length - 2]);
+            container.appendChild(spareTileClone.el.dom);
         }
     }
 }
@@ -460,7 +462,7 @@ APP.overrideDeliverabilityToolsMenuItem = function() {
                         if (currSuperBallMenuItem.text == "Deliverability Tools") {
                             deliverabilityToolsMenuItemExists = true;
                             if (currSuperBallMenuItem.href.search("/homepage/sso\\?sso=250ok$") != -1) {
-                                currSuperBallMenuItem.href = "https://250ok.com/login";
+                                currSuperBallMenuItem.href = mktoEmailDeliverabilityToolsLink;
                                 currSuperBallMenuItem.update();
                             }
                             break;
@@ -475,7 +477,7 @@ APP.overrideDeliverabilityToolsMenuItem = function() {
                     && communityMenuItem != null) {
                         communityMenuItem.setText("Deliverability Tools");
                         communityMenuItem.setIconCls("mki3-mail-sealed-svg");
-                        communityMenuItem.href = "https://250ok.com/login";
+                        communityMenuItem.href = mktoEmailDeliverabilityToolsLink;
                         communityMenuItem.update();
                     }
                 }
