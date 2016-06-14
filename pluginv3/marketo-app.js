@@ -4619,21 +4619,23 @@ if ((currentUrl.search(mktoAppDomain) != -1
                 }
             }
             else {
-                APP.overrideDeliverabilityToolsMenuItem();
-                
-                if (currUrlFragment == mktoMyMarketoFragment) {
-                    APP.overrideHomeTiles();
-                }
-                window.onhashchange = function () {
-                    // Getting the URL fragment, the part after the #
-                    currUrlFragment = Mkt3.DL.getDlToken();
-                
+                if (accountString.search("mktodemoaccount") != -1) {
+                    APP.overrideDeliverabilityToolsMenuItem();
+
                     if (currUrlFragment == mktoMyMarketoFragment) {
                         APP.overrideHomeTiles();
                     }
+                    window.onhashchange = function () {
+                        // Getting the URL fragment, the part after the #
+                        currUrlFragment = Mkt3.DL.getDlToken();
+
+                        if (currUrlFragment == mktoMyMarketoFragment) {
+                            APP.overrideHomeTiles();
+                        }
+                    }
                 }
             }
-            APP.overrideDeliverabilityToolsMenuItem();
+//            APP.overrideDeliverabilityToolsMenuItem();
         }
     }, 0);
 }
