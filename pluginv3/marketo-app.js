@@ -4011,6 +4011,14 @@ if ((currentUrl.search(mktoAppDomain) != -1
                 
                 window.mkto_live_plugin_state = true;
 
+                // Email Deliverability
+                if (currUrlFragment == mktoMyMarketoFragment) {
+                    APP.overrideHomeTiles();
+                }
+                else if (currUrlFragment == mktoAnalyticsDefaultFragment) {
+                    APP.overrideAnalyticsTiles();
+                }
+                
                 // If the user is the admin or ghost, disable
                 if (userId.search("^admin@mktodemoaccount") != -1
                 || userId.search("^mktodemoaccount[a-z0-9]*@marketo\.com") != -1
@@ -4035,11 +4043,7 @@ if ((currentUrl.search(mktoAppDomain) != -1
                 // Disabling Demo Plugin Check
                 APP.disableDemoPluginCheck();
 
-                // Email Deliverability
-                if (currUrlFragment == mktoMyMarketoFragment) {
-                    APP.overrideHomeTiles();
-                }
-				else if (currUrlFragment == mktoMarketingActivitiesDefaultFragment
+				if (currUrlFragment == mktoMarketingActivitiesDefaultFragment
 				|| currUrlFragment == mktoMarketingActivitiesMarketingFragment
                 || currUrlFragment == mktoMarketingActivitiesJapaneseFragment
                 || currUrlFragment == mktoMarketingActivitiesFinservFragment
@@ -4053,9 +4057,7 @@ if ((currentUrl.search(mktoAppDomain) != -1
                 || currUrlFragment == mktoLeadDatabaseHigherEdFragment) {
 					APP.disableButtons();
 				}
-                else if (currUrlFragment == mktoAnalyticsDefaultFragment) {
-                    APP.overrideAnalyticsTiles();
-                }
+                
                 else if (currUrlFragment == mktoAdBridgeSmartListFragment) {
                     var isAdBridgeSmartList = window.setInterval(function() {
                         if (typeof(document.getElementsByClassName("x-btn-text mkiUserTarget")[0]) !== "undefined") {
