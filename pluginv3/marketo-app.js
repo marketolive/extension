@@ -375,13 +375,13 @@ APP.overrideHomeTiles = function() {
 
 /**************************************************************************************
  *  
- *  This function overrides the target link for the Deliverability Tools Superball menu  
- *  item if it exists, otherwise it creates the tile. By default, the tile uses SSO to 
- *  login to 250ok. However, we only have one 250ok instance that contains usable demo 
- *  data, so the plugin directs people into that instance. This function directs users 
- *  to the 250ok login page where the deliverability-tools.js script will automatically 
- *  login and hide the necessary buttons. This function should also run inside of SC 
- *  sandbox instances.
+ *  This function overrides the target links for the Email Insights and Deliverability   
+ *  Tools Superball menu items if they exist, otherwise it creates the menu items. By 
+ *  default, these menu items uses SSO to login, however, we only have one instance for 
+ *  each item that contains usable demo data, so the plugin directs people into that 
+ *  instance. This function directs users to the 250ok login page where the 
+ *  deliverability-tools.js script will automatically login and hide the necessary 
+ *  buttons. This function should also run inside of SC sandbox instances.
  *
  *  @Author Brian Fisher
  *
@@ -389,13 +389,13 @@ APP.overrideHomeTiles = function() {
  *
  **************************************************************************************/
 
-APP.overrideDeliverabilityToolsMenuItem = function() {
-    console.log("Marketo App > Overriding: Deliverability Tools Superball Menu Item");
+APP.overrideSuperballMenuItems = function() {
+    console.log("Marketo App > Overriding: Superball Menu Items");
     
     if (MktPage
     && MktPage.showSuperMenu) {
         MktPage.showSuperMenu = function() {
-            console.log("Marketo App > Executing: Override Deliverability Tools Superball Menu Item");
+            console.log("Marketo App > Executing: Override Superball Menu Items");
 
             var logoEl = Ext.get(Ext.DomQuery.selectNode('.mkt-app-logo')),
             menu = logoEl.menu,
@@ -449,36 +449,51 @@ APP.overrideDeliverabilityToolsMenuItem = function() {
                 if (menu
                 && menu.items
                 && menu.items.items) {
-                    console.log("Marketo App > Executing: Deliverability Tools Superball Menu Item");
+                    console.log("Marketo App > Working: Override Superball Menu Items");
                     
                     var ii,
-                        communityMenuItem,
                         currSuperBallMenuItem,
-                        deliverabilityToolsMenuItemExists = false;
+                        emailInsightsMenuItem,
+                        deliverabilityToolsMenuItem,
+                        clonedMenuItem;
                         
                     for (ii = 0; ii < menu.items.items.length; ii++) {
                         currSuperBallMenuItem = menu.items.items[ii];
                         
-                        if (currSuperBallMenuItem.text == "Deliverability Tools") {
-                            deliverabilityToolsMenuItemExists = true;
-                            if (currSuperBallMenuItem.href.search("/homepage/sso\\?sso=250ok$") != -1) {
-                                currSuperBallMenuItem.href = mktoEmailDeliverabilityToolsLink;
-                                currSuperBallMenuItem.update();
-                            }
-                            break;
+                        if (currSuperBallMenuItem.text == "Email Insights") {
+                            emailInsightsMenuItem = currSuperBallMenuItem;
                         }
-                        
-                        else if (currSuperBallMenuItem.text == "Community") {
-                            communityMenuItem = currSuperBallMenuItem;
+                        else if (currSuperBallMenuItem.text == "Deliverability Tools") {
+                            deliverabilityToolsMenuItem = currSuperBallMenuItem;
                         }
                     }
                     
-                    if (!deliverabilityToolsMenuItemExists
-                    && communityMenuItem != null) {
-                        communityMenuItem.setText("Deliverability Tools");
-                        communityMenuItem.setIconCls("mki3-mail-sealed-svg");
-                        communityMenuItem.href = mktoEmailDeliverabilityToolsLink;
-                        communityMenuItem.update();
+                    if (emailInsightsMenuItem) {
+                        emailInsightsMenuItem.href = mktoEmailInsightsLink;
+                        emailInsightsMenuItem.update();
+                    }
+                    else {
+                        clonedMenuItem = menu.items.items[0].cloneConfig();
+                        clonedMenuItem.setText("Email Insights");
+                        clonedMenuItem.setIconCls("mki3-email-insights-svg");
+                        clonedMenuItem.href = mktoEmailInsightsLink;
+                        clonedMenuItem.hrefTarget = "_blank";
+                        clonedMenuItem.update();
+                        menu.add(clonedMenuItem);
+                    }
+                    
+                    if (deliverabilityToolsMenuItem) {
+                        deliverabilityToolsMenuItem.href = mktoEmailDeliverabilityToolsLink;
+                        deliverabilityToolsMenuItem.update();
+                    }
+                    else {
+                        clonedMenuItem = menu.items.items[0].cloneConfig();
+                        clonedMenuItem.setText("Deliverability Tools");
+                        clonedMenuItem.setIconCls("mki3-mail-sealed-svg");
+                        clonedMenuItem.href = mktoEmailDeliverabilityToolsLink;
+                        clonedMenuItem.hrefTarget = "_blank";
+                        clonedMenuItem.update();
+                        menu.add(clonedMenuItem);
                     }
                 }
             }
@@ -540,15 +555,15 @@ APP.overrideAnalyticsTiles = function() {
                 console.log("Marketo App > Executing: Analytics Tiles");
                 
                 var ii,
-                    host = "https://app-sjp.marketo.com",
-                    tiles = MktCanvas.getActiveTab().el.dom.childNodes[0].childNodes[1].childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes
-                    numOfTiles = tiles.length;
+                    currTileHTML,
+                    tiles = MktCanvas.getActiveTab().el.dom.childNodes[0].childNodes[1].childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes,
+                    host = "https://app-sjp.marketo.com";
                 
-                for (ii = 0; ii < numOfTiles; ii++) {
+                for (ii = 0; ii < tiles.length; ii++) {
                     if (tiles[ii]
                     && tiles[ii].outerHTML
                     && tiles[ii].textContent) {
-                        var currTileHTML = tiles[ii].outerHTML;
+                        currTileHTML = tiles[ii].outerHTML;
                         switch (tiles[ii].textContent) {
                             case "Email Performance":
                                 currTileHTML = '<a href="' + host + '/#AR3866B2">' + currTileHTML + '</a>';
@@ -584,7 +599,13 @@ APP.overrideAnalyticsTiles = function() {
                                 //currTileHTML = '<a href="' + host + '/#">' + currTileHTML + '</a>';
                                 //MktCanvas.getActiveTab().el.dom.childNodes[0].childNodes[1].childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[ii].outerHTML = currTileHTML;
                                 break;
-
+                                
+                            case "Email Insights":
+                                var hrefMatch = new RegExp(' href=\"[^\"]*\" ', 'g');
+                                currTileHTML = currTileHTML.replace(hrefMatch, ' href=\"'+mktoEmailInsightsLink+'\" ');
+                                MktCanvas.getActiveTab().el.dom.childNodes[0].childNodes[1].childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[ii].outerHTML = currTileHTML;
+                                break;
+                            
                             case "Engagement Stream Performance":
                                 currTileHTML = '<a href="' + host + '/#AR3881B2">' + currTileHTML + '</a>';
                                 MktCanvas.getActiveTab().el.dom.childNodes[0].childNodes[1].childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[ii].outerHTML = currTileHTML;
@@ -4619,23 +4640,21 @@ if ((currentUrl.search(mktoAppDomain) != -1
                 }
             }
             else {
-                if (accountString.search("mktodemoaccount") != -1) {
-                    APP.overrideDeliverabilityToolsMenuItem();
-
+                APP.overrideSuperballMenuItems();
+                
+                if (currUrlFragment == mktoMyMarketoFragment) {
+                    APP.overrideHomeTiles();
+                }
+                window.onhashchange = function () {
+                    // Getting the URL fragment, the part after the #
+                    currUrlFragment = Mkt3.DL.getDlToken();
+                
                     if (currUrlFragment == mktoMyMarketoFragment) {
                         APP.overrideHomeTiles();
                     }
-                    window.onhashchange = function () {
-                        // Getting the URL fragment, the part after the #
-                        currUrlFragment = Mkt3.DL.getDlToken();
-
-                        if (currUrlFragment == mktoMyMarketoFragment) {
-                            APP.overrideHomeTiles();
-                        }
-                    }
                 }
             }
-//            APP.overrideDeliverabilityToolsMenuItem();
+            APP.overrideSuperballMenuItems();
         }
     }, 0);
 }
