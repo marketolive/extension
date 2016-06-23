@@ -154,7 +154,7 @@ window.onload = function() {
         }
         else {
             console.log("Popup > Getting: " + cookie.name + " Cookie for " + cookie.url + " = " + cookie.value);
-            companyName = cookie.value.split(clearbitDomain)[1].split(".")[0];
+            companyName = cookie.value.toLowerCase().split(clearbitDomain)[1];
             companyName = companyName.charAt(0).toUpperCase() + companyName.slice(1);
             company.value = companyName;
         }
@@ -169,7 +169,7 @@ window.onload = function() {
         }
         else {
             console.log("Popup > Getting: " + cookie.name + " Cookie for " + cookie.url + " = " + cookie.value);
-            companyName = cookie.value.split(clearbitDomain)[1].split(".")[0];
+            companyName = cookie.value.toLowerCase().split(clearbitDomain)[1];
             companyName = companyName.charAt(0).toUpperCase() + companyName.slice(1);
             company.value = companyName;
         }
@@ -250,6 +250,7 @@ window.onload = function() {
     }
 
     clear.onclick = function() {
+        company.value = "";
         companyLogoCookieMarketoLive = {
 			"url" : mktoLiveMatch,
 			"name" : companyLogoCookieName
