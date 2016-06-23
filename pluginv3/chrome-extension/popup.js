@@ -170,7 +170,6 @@ window.onload = function() {
         else {
             console.log("Popup > Getting: " + cookie.name + " Cookie for " + cookie.url + " = " + cookie.value);
             companyName = cookie.value.toLowerCase().split(clearbitDomain)[1];
-            companyName = companyName.charAt(0).toUpperCase() + companyName.slice(1);
             company.value = companyName;
         }
     });
@@ -271,6 +270,7 @@ window.onload = function() {
         background.removeCookie(companyLogoCookieDesigner);
         background.removeCookie(companyColorCookieMarketoLive);
         background.removeCookie(companyColorCookieDesigner);
+        settingsOpen = false;
         document.getElementById("settings-container").style.display = "none";
     }
 
