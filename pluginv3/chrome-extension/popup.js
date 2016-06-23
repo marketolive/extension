@@ -28,7 +28,7 @@ window.onload = function() {
     document.getElementById("event-check-in").src = chrome.extension.getURL("images/marketoball.png");
     document.getElementById("toggle").src = chrome.extension.getURL("images/toggle-on.png");
     document.getElementById("help-size").src = chrome.extension.getURL("images/help-white.png");
-    document.getElementById("training").src = chrome.extension.getURL("images/training-icon-purple-small.png");
+    //document.getElementById("training").src = chrome.extension.getURL("images/training-icon-purple-small.png");
     document.getElementById("report-a-bug").src = chrome.extension.getURL("images/report-a-bug-img-purp.png");
 
     var URL_PATH = "m3-dev",
@@ -216,14 +216,14 @@ window.onload = function() {
 //		}
 	}
     
-    openColorPicker = function(companyName) {
-        if (companyName) {
-            companyName = companyName.toLowerCase;
+    openColorPicker = function(companyNameSubmitted) {
+        if (companyNameSubmitted) {
+            companyNameSubmitted = companyNameSubmitted.toLowerCase;
             
-            if (companyName.search("\.[a-z0-9-]+$") == -1) {
-                companyName = companyName + ".com";
+            if (companyNameSubmitted.search("\.[a-z0-9-]+$") == -1) {
+                companyNameSubmitted = companyNameSubmitted + ".com";
             }
-            window.open("https://marketolive.com/"+URL_PATH+"/apps/color-picker.html?company="+companyName);
+            window.open("https://marketolive.com/"+URL_PATH+"/apps/color-picker.html?company="+companyNameSubmitted);
         }
     }
 
