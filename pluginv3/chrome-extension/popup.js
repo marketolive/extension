@@ -220,7 +220,7 @@ window.onload = function() {
         if (companyNameSubmitted) {
             companyNameSubmitted = companyNameSubmitted.toLowerCase();
             
-            if (companyNameSubmitted.search("\.[a-z0-9-]+$") == -1) {
+            if (companyNameSubmitted.search("\\.[a-z0-9-]+$") == -1) {
                 companyNameSubmitted = companyNameSubmitted + ".com";
             }
             window.open("https://marketolive.com/"+URL_PATH+"/apps/color-picker.html?company="+companyNameSubmitted);
