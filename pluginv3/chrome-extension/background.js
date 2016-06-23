@@ -219,9 +219,9 @@ function checkForValidUrl(tabId, changeInfo, tab) {
     
     if (currentUrl.search(mktoLiveInstances)
     || currentUrl.search(mktoLiveDomain)) {
-        getCookie(mktoPodCookieMarketo, function(id) {
-            if (id) {
-                userPod = id.split('.')[0].split(':')[1];
+        getCookie(mktoPodCookieMarketo, function(cookie) {
+            if (cookie) {
+                userPod = cookie.value.split('.')[0].split(':')[1];
                 if (userPod) {
                     userPodCookieName = "userPod";
                     if (userPod.search(mktoLiveUserPods) != -1) {
@@ -250,8 +250,11 @@ function checkForValidUrl(tabId, changeInfo, tab) {
                     }
                 }
                 else {
-                    console.log("Background > Checking: mkto_pod is null for the tab " + currentUrl);
+                    console.log("Background > Checking: userPod is null for the tab " + currentUrl);
                 }
+            }
+            else {
+                console.log("Background > Checking: mkto_pod is null for the tab " + currentUrl);
             }
         });
     }
