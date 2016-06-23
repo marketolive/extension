@@ -220,37 +220,38 @@ function checkForValidUrl(tabId, changeInfo, tab) {
     if (currentUrl.search(mktoLiveInstances)
     || currentUrl.search(mktoLiveDomain)) {
         getCookie(mktoPodCookieMarketo, function(id) {
-            userPod = id.split('.')[0].split(':')[1];
-            
-            if (userPod) {
-                userPodCookieName = "userPod";
-                if (userPod.search(mktoLiveUserPods) != -1) {
-                    userPodCookieMarketo = {
-                        "url" : mktoDomainMatch,
-                        "name" : userPodCookieName,
-                        "value" : userPod,
-                        "domain" : mktoUriDomain
-                    };
-                    userPodCookieDesigner = {
-                        "url" : mktoDesignerMatch,
-                        "name" : userPodCookieName,
-                        "value" : userPod,
-                        "domain" : mktoDesignerUriDomain
-                    };
-                    userPodCookieMarketoLive = {
-                        "url" : mktoLiveMatch,
-                        "name" : userPodCookieName,
-                        "value" : userPod,
-                        "domain" : mktoLiveUriDomain
-                    };
-                    
-                    setCookie(userPodCookieMarketo);
-                    setCookie(userPodCookieDesigner);
-                    setCookie(userPodCookieMarketoLive);
+            if (id) {
+                userPod = id.split('.')[0].split(':')[1];
+                if (userPod) {
+                    userPodCookieName = "userPod";
+                    if (userPod.search(mktoLiveUserPods) != -1) {
+                        userPodCookieMarketo = {
+                            "url" : mktoDomainMatch,
+                            "name" : userPodCookieName,
+                            "value" : userPod,
+                            "domain" : mktoUriDomain
+                        };
+                        userPodCookieDesigner = {
+                            "url" : mktoDesignerMatch,
+                            "name" : userPodCookieName,
+                            "value" : userPod,
+                            "domain" : mktoDesignerUriDomain
+                        };
+                        userPodCookieMarketoLive = {
+                            "url" : mktoLiveMatch,
+                            "name" : userPodCookieName,
+                            "value" : userPod,
+                            "domain" : mktoLiveUriDomain
+                        };
+                        
+                        setCookie(userPodCookieMarketo);
+                        setCookie(userPodCookieDesigner);
+                        setCookie(userPodCookieMarketoLive);
+                    }
                 }
-            }
-            else {
-                console.log("Background > Checking: mkto_pod is null for the tab " + currentUrl);
+                else {
+                    console.log("Background > Checking: mkto_pod is null for the tab " + currentUrl);
+                }
             }
         });
     }
