@@ -99,22 +99,24 @@ var currentUrl = window.location.href,
  *
  *  @function
  *
- *  @param {String} cookieField - Represents the key to search for inside document.cookie
+ *  @param {String} cookieName - Represents the key to search for inside document.cookie
  *
  **************************************************************************************/
 
-APP.getCookie = function(cookieField) {
-    console.log("Marketo App > Getting: Cookie "+cookieField);
-
-    var name = cookieField + "=",
+APP.getCookie = function(cookieName) {
+    console.log("Marketo App > Getting: Cookie " + cookieName);
+    
+    var name = cookieName + '=',
         cookies = document.cookie.split(';'),
-        currentCookie;
-    for (var ii = 0; ii < cookies.length; ++ii) {
-        var currentCookie = cookies[ii].trim();
-        if (currentCookie.indexOf(name) == 0) {
-            return currentCookie.substring(name.length, currentCookie.length);
+        currCookie;
+    
+    for (var ii = 0; ii < cookies.length; ii++) {
+        currCookie = cookies[ii].trim();
+        if (currCookie.indexOf(name) == 0) {
+            return currCookie.substring(name.length, currCookie.length);
         }
     }
+    console.log("Marketo App > Getting: Cookie " + cookieName + " not found");
     return null;
 }
 
@@ -687,7 +689,7 @@ APP.overrideSmartCampaignSaving = function() {
             this._updateDataPanelOrder(true);
             var canvas = MktCanvas.getActiveTab();
             if (!APP.evaluateMenu("button", null, canvas, null)
-            && APP.getCookie("priv") != "false") {
+            && APP.getCookie("toggleState") != "false") {
                 
                 if (this.saveQueue.blockingSaveInProgress) {
                     this.saveQueue.pendingChangesCount++;
@@ -3459,10 +3461,10 @@ APP.overrideSaving = function() {
                 var disable;
                 if (MktCanvas
                 && MktCanvas.getActiveTab()
-                && APP.getCookie("priv") != "false") {
+                && APP.getCookie("toggleState") != "false") {
                     disable = APP.evaluateMenu("button", null, MktCanvas.getActiveTab(), null);
                 }
-                else if (APP.getCookie("priv") == "false") {
+                else if (APP.getCookie("toggleState") == "false") {
                     disable = true;
                 }
                 
@@ -3497,10 +3499,10 @@ APP.overrideSaving = function() {
             var disable;
             if (MktCanvas
             && MktCanvas.getActiveTab()
-            && APP.getCookie("priv") != "false") {
+            && APP.getCookie("toggleState") != "false") {
                 disable = APP.evaluateMenu("button", null, MktCanvas.getActiveTab(), null);
             }
-            else if (APP.getCookie("priv") == "false") {
+            else if (APP.getCookie("toggleState") == "false") {
                 disable = true;
             }
             
@@ -3744,7 +3746,13 @@ APP.overlayEmailDesigner = function() {
     console.log("Marketo App > Overlaying: Email Designer");
 
     var logo = APP.getCookie("logo"),
-        color = APP.getCookie("color");
+        color = APP.getCookie("color"),
+        isEmailIframeElement,
+        logoBkg,
+        buttonBkg,
+        logoSwapCompany,
+        logoSwapContainer,
+        logoSwapCompanyContainer;
 
     if (logo == null) {
         logo = defaultTurnerLogoWhite;
@@ -3753,15 +3761,15 @@ APP.overlayEmailDesigner = function() {
         color = defaultColor;
     }
 
-    var isEmailIframeElement = window.setInterval(function() {
-        var logoBkg = document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("logo-bkg"),
-//            buttonBkg = document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("button-bkg"),
-            logoSwapCompany = document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("logo-swap-company"),
-            logoSwapContainer = document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("logo-swap-container"),
-            logoSwapCompanyContainer = document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("logo-swap-company-container");
+    isEmailIframeElement = window.setInterval(function() {
+        logoBkg = document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("logo-bkg"),
+//        buttonBkg = document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("button-bkg"),
+        logoSwapCompany = document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("logo-swap-company"),
+        logoSwapContainer = document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("logo-swap-container"),
+        logoSwapCompanyContainer = document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("logo-swap-company-container");
         
         if (logoBkg != null
-		&& logoSwapCompany != null) {
+        && logoSwapCompany != null) {
             console.log("Marketo App > Overlaying: iframe");
             window.clearInterval(isEmailIframeElement);
             
@@ -3789,32 +3797,40 @@ APP.overlayLandingPageDesigner = function() {
     console.log("Marketo App > Overlaying: Landing Page Designer");
 
     var logo = APP.getCookie("logo"),
-        color = APP.getCookie("color");
+        color = APP.getCookie("color"),
+        company,
+        companyName,
+        isLandingPageIframeElement,
+        lpLogo,
+        backgroundColor,
+        biggerBackground,
+        subTitle;
     
     if (logo == null) {
         logo = defaultTurnerLogoGreen;
+        companyName = "Turner Technologies";
     }
     else {
-        var company = logo.split("https://logo.clearbit.com/")[1].split(".")[0],
-            companyName = company.charAt(0).toUpperCase() + company.slice(1);
+        company = logo.split("https://logo.clearbit.com/")[1].split(".")[0];
+        companyName = company.charAt(0).toUpperCase() + company.slice(1);
     }
     
     if (color == null) {
         color = defaultColor;
     }
-
-    var isLandingPageIframeElement = window.setInterval(function() {
-        var lpLogo = document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("lp-logo"),
-            backgroundColor = document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("background-color"),
-            biggerBackground = document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("bigger-background"),
-            subTitle = document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("sub-title");
+    
+    isLandingPageIframeElement = window.setInterval(function() {
+        lpLogo = document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("lp-logo");
+        backgroundColor = document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("background-color");
+        biggerBackground = document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("bigger-background");
+        subTitle = document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("sub-title");
         if (lpLogo != null
-		&& backgroundColor != null
-		&& biggerBackground != null
-		&& subTitle != null) {
+        && backgroundColor != null
+        && biggerBackground != null
+        && subTitle != null) {
             console.log("Marketo App > Overlaying: iframe");
             window.clearInterval(isLandingPageIframeElement);
-
+            
             lpLogo.src = logo;
             backgroundColor.style.backgroundColor = color;
             biggerBackground.style.backgroundColor = color;
@@ -4022,7 +4038,7 @@ if ((currentUrl.search(mktoAppDomain) != -1
 
                     // This check ensures that an admin can login and test the 
                     // plugin as a normal user. 
-                    if (APP.getCookie("priv") != "false") {
+                    if (APP.getCookie("toggleState") != "false") {
                         return;
                     } 
                     else {
@@ -4359,7 +4375,7 @@ if ((currentUrl.search(mktoAppDomain) != -1
                                             || currAssetWorkspaceId == mktoFinservWorkspaceId
                                             || currAssetWorkspaceId == mktoHealthcareWorkspaceId
                                             || currAssetWorkspaceId == mktoHigherEdWorkspaceId
-                                            || APP.getCookie("priv") == "false") {
+                                            || APP.getCookie("toggleState") == "false") {
                                                 APP.disablePropertyPanelSaving();
                                             }
                                         }
@@ -4447,7 +4463,7 @@ if ((currentUrl.search(mktoAppDomain) != -1
                                             || currAssetWorkspaceId == mktoFinservWorkspaceId
                                             || currAssetWorkspaceId == mktoHealthcareWorkspaceId
                                             || currAssetWorkspaceId == mktoHigherEdWorkspaceId
-                                            || APP.getCookie("priv") == "false") {
+                                            || APP.getCookie("toggleState") == "false") {
                                                 APP.disableSaving();
                                             }
                                         }
