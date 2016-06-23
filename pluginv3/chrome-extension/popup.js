@@ -218,7 +218,7 @@ window.onload = function() {
     
     openColorPicker = function(companyNameSubmitted) {
         if (companyNameSubmitted) {
-            companyNameSubmitted = companyNameSubmitted.toLowerCase;
+            companyNameSubmitted = companyNameSubmitted.toLowerCase();
             
             if (companyNameSubmitted.search("\.[a-z0-9-]+$") == -1) {
                 companyNameSubmitted = companyNameSubmitted + ".com";
