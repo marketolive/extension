@@ -270,8 +270,10 @@ window.onload = function() {
         background.removeCookie(companyLogoCookieDesigner);
         background.removeCookie(companyColorCookieMarketoLive);
         background.removeCookie(companyColorCookieDesigner);
-        settingsOpen = false;
-        document.getElementById("settings-container").style.display = "none";
+        setTimeout(function() {
+            settingsOpen = false;
+            document.getElementById("settings-container").style.display = "none";
+        }, 1250);
     }
 
     submit.onclick = function(e) {
