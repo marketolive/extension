@@ -50,7 +50,7 @@ function getCookie(obj, callback) {
             }
         }
         else {
-            console.log("Background > Getting: " + obj.name + " Cookie for " + obj.url + " = undefined");
+            console.error("Background > Getting: " + obj.name + " Cookie for " + obj.url + " = undefined");
             if (callback) {
                 callback(null);
             }
@@ -255,11 +255,11 @@ function checkForValidUrl(tabId, changeInfo, tab) {
                     }
                 }
                 else {
-                    console.log("Background > Checking: " + userPodCookieName + " is null for the tab " + currentUrl);
+                    console.error("Background > Checking: " + userPodCookieName + " is null for the tab " + currentUrl);
                 }
             }
             else {
-                console.log("Background > Checking: mkto_pod is null for the tab " + currentUrl);
+                console.error("Background > Checking: mkto_pod is null for the tab " + currentUrl);
             }
         });
     }

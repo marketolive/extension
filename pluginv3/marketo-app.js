@@ -3970,7 +3970,7 @@ APP.getEmailIds = function(accountString) {
             emIds.push(20329)
             break;
         default:
-            console.error("Marketp App > Invalid: account string in getEmailIds(): " + accountString);
+            console.log("Marketp App > Invalid: account string in getEmailIds(): " + accountString);
             break;
     }
     return emIds;
