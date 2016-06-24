@@ -168,7 +168,7 @@ window.onload = function() {
             company.value = cookie.value.toLowerCase().split(clearbitDomain)[1];
         }
     });
-    
+/*    
     background.getCookie(companyColorCookieMarketoLive, function(cookie) {
         if (cookie == null
         || cookie.value == null) {
@@ -192,7 +192,7 @@ window.onload = function() {
             console.log("Popup > Getting: " + cookie.name + " Cookie for " + cookie.domain + " = " + cookie.value);
         }
     });
-    
+*/    
     // getElementsByClassName() returns an array, so the click
     // listener needs to be added to each one individually.
     for (var ii = 0; ii < tags.length; ii++) {
