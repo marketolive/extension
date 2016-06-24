@@ -81,7 +81,7 @@ displayProgressModal = function(parameters) {
         prevButton = parameters["prev"],
         homeButton = parameters["home"],
         progress = parameters["progress"],
-        xmlHttp = new XMLHttpRequest()
+        xmlHttp = new XMLHttpRequest(),
         modal;
     
     xmlHttp.open("GET", chrome.extension.getURL("lib/remote.html"));
