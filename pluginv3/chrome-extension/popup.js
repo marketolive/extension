@@ -31,7 +31,8 @@ window.onload = function() {
     //document.getElementById("training").src = chrome.extension.getURL("images/training-icon-purple-small.png");
     document.getElementById("report-a-bug").src = chrome.extension.getURL("images/report-a-bug-img-purp.png");
 
-    var URL_PATH = "m3-dev",
+    var background = chrome.extension.getBackgroundPage(),
+        URL_PATH = "m3-dev",
         mktoLiveMatch = "https://marketolive.com/*",
         mktoLiveUriDomain = ".marketolive.com",
         mktoDomainMatch = "https://www.marketo.com/*",
@@ -39,9 +40,9 @@ window.onload = function() {
         mktoDesignerMatch = "https://www.marketodesigner.com/*",
         mktoDesignerUriDomain = ".marketodesigner.com",
         clearbitDomain = "https://logo.clearbit.com/",
-        defaultCompanyLogoGreen = "http://marketolive.com/m3-dev/assets/img/turner-tech-green.png",
-        defaultCompanyLogoWhite = "http://marketolive.com/m3-dev/assets/img/turner-tech-white.png",
-        defaultCompanyColor = "rgb(42, 83, 112)",
+//        defaultCompanyLogoGreen = "http://marketolive.com/m3-dev/assets/img/turner-tech-green.png",
+//        defaultCompanyLogoWhite = "http://marketolive.com/m3-dev/assets/img/turner-tech-white.png",
+//        defaultCompanyColor = "rgb(42, 83, 112)",
         tags = document.getElementsByClassName("link"),
         company = document.getElementById("name-entered"),
         submit = document.getElementById("company-submit"),
@@ -50,7 +51,6 @@ window.onload = function() {
         settings = document.getElementById("settings"),
         help = document.getElementById("help"),
         close = document.getElementById("close"),
-        background = chrome.extension.getBackgroundPage(),
         settingsOpen = false,
         helpOpen = false,
         openColorPicker,
@@ -68,7 +68,6 @@ window.onload = function() {
             "value" : "",
             "domain" : mktoDesignerUriDomain
         },
-        companyName,
         companyLogoCookieName = "logo",
         companyLogoCookieMarketoLive = {
             "url" : mktoLiveMatch,
@@ -148,13 +147,12 @@ window.onload = function() {
         if (cookie == null
         || cookie.value == null) {
             console.log("Popup > Getting: " + companyLogoCookieMarketoLive.name + " Cookie for " + companyLogoCookieMarketoLive.url + " = null");
-            //companyLogoCookieMarketoLive.value = null;
-            //background.setCookie(companyLogoCookieMarketoLive);
+//            companyLogoCookieMarketoLive.value = null;
+//            background.setCookie(companyLogoCookieMarketoLive);
         }
         else {
             console.log("Popup > Getting: " + cookie.name + " Cookie for " + cookie.domain + " = " + cookie.value);
-            companyName = cookie.value.toLowerCase().split(clearbitDomain)[1];
-            company.value = companyName;
+            company.value = cookie.value.toLowerCase().split(clearbitDomain)[1];
         }
     });
     
@@ -162,13 +160,12 @@ window.onload = function() {
         if (cookie == null
         || cookie.value == null) {
             console.log("Popup > Getting: " + companyLogoCookieDesigner.name + " Cookie for " + companyLogoCookieDesigner.url + " = null");
-            //companyLogoCookieDesigner.value = null;
-            //background.setCookie(companyLogoCookieDesigner);
+//            companyLogoCookieDesigner.value = null;
+//            background.setCookie(companyLogoCookieDesigner);
         }
         else {
             console.log("Popup > Getting: " + cookie.name + " Cookie for " + cookie.domain + " = " + cookie.value);
-            companyName = cookie.value.toLowerCase().split(clearbitDomain)[1];
-            company.value = companyName;
+            company.value = cookie.value.toLowerCase().split(clearbitDomain)[1];
         }
     });
     
@@ -176,8 +173,8 @@ window.onload = function() {
         if (cookie == null
         || cookie.value == null) {
             console.log("Popup > Getting: " + companyColorCookieMarketoLive.name + " Cookie for " + companyColorCookieMarketoLive.url + " = null");
-            companyColorCookieMarketoLive.value = defaultCompanyColor;
-            background.setCookie(companyColorCookieMarketoLive);
+//            companyColorCookieMarketoLive.value = defaultCompanyColor;
+//            background.setCookie(companyColorCookieMarketoLive);
         }
         else {
             console.log("Popup > Getting: " + cookie.name + " Cookie for " + cookie.domain + " = " + cookie.value);
@@ -188,8 +185,8 @@ window.onload = function() {
         if (cookie == null
         || cookie.value == null) {
             console.log("Popup > Getting: " + companyColorCookieDesigner.name + " Cookie for " + companyColorCookieDesigner.url + " = null");
-            companyColorCookieDesigner.value = defaultCompanyColor;
-            background.setCookie(companyColorCookieDesigner);
+//            companyColorCookieDesigner.value = defaultCompanyColor;
+//            background.setCookie(companyColorCookieDesigner);
         }
         else {
             console.log("Popup > Getting: " + cookie.name + " Cookie for " + cookie.domain + " = " + cookie.value);
@@ -218,7 +215,12 @@ window.onload = function() {
             companyNameSubmitted = companyNameSubmitted.toLowerCase();
             
             if (companyNameSubmitted.search("\\.[a-z0-9-]+$") == -1) {
-                companyNameSubmitted = companyNameSubmitted + ".com";
+                if (companyNameSubmitted.search("\\.$") == -1) {
+                    companyNameSubmitted = companyNameSubmitted + ".com";
+                }
+                else {
+                    companyNameSubmitted = companyNameSubmitted + "com";
+                }
             }
             window.open("https://marketolive.com/"+URL_PATH+"/apps/color-picker.html?company="+companyNameSubmitted);
         }
@@ -268,8 +270,8 @@ window.onload = function() {
         background.removeCookie(companyLogoCookieDesigner);
         background.removeCookie(companyColorCookieMarketoLive);
         background.removeCookie(companyColorCookieDesigner);
-        //settingsOpen = false;
-        //document.getElementById("settings-container").style.display = "none";
+//        settingsOpen = false;
+//        document.getElementById("settings-container").style.display = "none";
     }
 
     submit.onclick = function(e) {
