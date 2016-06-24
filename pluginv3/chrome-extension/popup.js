@@ -149,13 +149,12 @@ window.onload = function() {
         || cookie.value == null) {
             console.log("Popup > Getting: " + companyLogoCookieMarketoLive.name + " Cookie for " + companyLogoCookieMarketoLive.domain + " = null");
             currToggleState = true;
-            companyLogoCookieMarketoLive.value = "";
+            companyLogoCookieMarketoLive.value = null;
             background.setCookie(companyLogoCookieMarketoLive);
         }
         else {
             console.log("Popup > Getting: " + cookie.name + " Cookie for " + cookie.url + " = " + cookie.value);
             companyName = cookie.value.toLowerCase().split(clearbitDomain)[1];
-            companyName = companyName.charAt(0).toUpperCase() + companyName.slice(1);
             company.value = companyName;
         }
     });
@@ -164,7 +163,7 @@ window.onload = function() {
         if (cookie == null
         || cookie.value == null) {
             console.log("Popup > Getting: " + companyLogoCookieDesigner.name + " Cookie for " + companyLogoCookieDesigner.domain + " = null");
-            companyLogoCookieDesigner.value = "";
+            companyLogoCookieDesigner.value = null;
             background.setCookie(companyLogoCookieDesigner);
         }
         else {
