@@ -3754,10 +3754,12 @@ APP.overlayEmailDesigner = function() {
         logoSwapContainer,
         logoSwapCompanyContainer;
 
-    if (logo == null) {
+    if (logo == null
+    || logo.value == null) {
         logo = defaultTurnerLogoWhite;
     }
-    if (color == null) {
+    if (color == null
+    || color.value == null) {
         color = defaultColor;
     }
 
@@ -3806,16 +3808,18 @@ APP.overlayLandingPageDesigner = function() {
         biggerBackground,
         subTitle;
     
-    if (logo == null) {
+    if (logo == null
+    || logo.value == null) {
         logo = defaultTurnerLogoGreen;
-        companyName = "Turner Technologies";
+        companyName = "Turner";
     }
     else {
         company = logo.split("https://logo.clearbit.com/")[1].split(".")[0];
         companyName = company.charAt(0).toUpperCase() + company.slice(1);
     }
     
-    if (color == null) {
+    if (color == null
+    || color.value == null) {
         color = defaultColor;
     }
     

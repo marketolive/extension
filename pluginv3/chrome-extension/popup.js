@@ -148,9 +148,8 @@ window.onload = function() {
         if (cookie == null
         || cookie.value == null) {
             console.log("Popup > Getting: " + companyLogoCookieMarketoLive.name + " Cookie for " + companyLogoCookieMarketoLive.url + " = null");
-            currToggleState = true;
-            companyLogoCookieMarketoLive.value = null;
-            background.setCookie(companyLogoCookieMarketoLive);
+            //companyLogoCookieMarketoLive.value = null;
+            //background.setCookie(companyLogoCookieMarketoLive);
         }
         else {
             console.log("Popup > Getting: " + cookie.name + " Cookie for " + cookie.domain + " = " + cookie.value);
@@ -163,8 +162,8 @@ window.onload = function() {
         if (cookie == null
         || cookie.value == null) {
             console.log("Popup > Getting: " + companyLogoCookieDesigner.name + " Cookie for " + companyLogoCookieDesigner.url + " = null");
-            companyLogoCookieDesigner.value = null;
-            background.setCookie(companyLogoCookieDesigner);
+            //companyLogoCookieDesigner.value = null;
+            //background.setCookie(companyLogoCookieDesigner);
         }
         else {
             console.log("Popup > Getting: " + cookie.name + " Cookie for " + cookie.domain + " = " + cookie.value);
