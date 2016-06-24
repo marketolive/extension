@@ -39,7 +39,12 @@ function getCookie(obj, callback) {
         "name" : obj.name
     }, function(cookie) {
         if (cookie) {
-            console.log("Background > Getting: " + cookie.name + " Cookie for " + cookie.domain + " = " + cookie.value);
+            if (cookie.value != null) {
+                console.log("Background > Getting: " + cookie.name + " Cookie for " + cookie.domain + " = " + cookie.value);
+            }
+            else {
+                console.log("Background > Getting: " + cookie.name + " Cookie for " + cookie.domain + " = null");
+            }
             if (callback) {
                 callback(cookie);
             }
@@ -77,7 +82,12 @@ function setCookie(obj) {
         domain : obj.domain
     };
     chrome.cookies.set(cookie, function() {
-        console.log("Background > Setting: " + cookie.name + " Cookie for " + cookie.domain);
+        if (cookie.value != null) {
+            console.log("Background > Setting: " + cookie.name + " Cookie for " + cookie.url + " = " + cookie.value);
+        }
+        else {
+            console.log("Background > Setting: " + cookie.name + " Cookie for " + cookie.url + " = null");
+        }
     });
 }
 
