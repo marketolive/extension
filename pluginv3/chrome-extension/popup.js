@@ -99,7 +99,7 @@ window.onload = function() {
     background.getCookie(toggleCookieMarketo, function(cookie) {
         if (cookie == null
         || cookie.value == null) {
-            console.log("Popup > Getting: " + toggleCookieMarketo.name + " Cookie for " + toggleCookieMarketo.domain + " = null");
+            console.log("Popup > Getting: " + toggleCookieMarketo.name + " Cookie for " + toggleCookieMarketo.url + " = null");
             currToggleState = true;
             toggleCookieMarketo.value = "true";
             document.getElementById("toggle-text").innerHTML = "Privileges Enabled";
@@ -107,13 +107,13 @@ window.onload = function() {
             background.setCookie(toggleCookieMarketo);
         }
         else if (cookie.value == "true") {
-            console.log("Popup > Getting: " + cookie.name + " Cookie for " + cookie.domain + " = " + cookie.value);
+            console.log("Popup > Getting: " + cookie.name + " Cookie for " + cookie.url + " = " + cookie.value);
             currToggleState = true;
             document.getElementById("toggle-text").innerHTML = "Privileges Enabled";
             document.getElementById("toggle").src = chrome.extension.getURL("images/toggle-on.png");
         }
         else {
-            console.log("Popup > Getting: " + cookie.name + " Cookie for " + cookie.domain + " = " + cookie.value);
+            console.log("Popup > Getting: " + cookie.name + " Cookie for " + cookie.url + " = " + cookie.value);
             currToggleState = false;
             document.getElementById("toggle-text").innerHTML = "Privileges Disabled";
             document.getElementById("toggle").src = chrome.extension.getURL("images/toggle-off.png");
@@ -123,7 +123,7 @@ window.onload = function() {
     background.getCookie(toggleCookieDesigner, function(cookie) {
         if (cookie == null
         || cookie.value == null) {
-            console.log("Popup > Getting: " + toggleCookieDesigner.name + " Cookie for " + toggleCookieDesigner.domain + " = null");
+            console.log("Popup > Getting: " + toggleCookieDesigner.name + " Cookie for " + toggleCookieDesigner.url + " = null");
             currToggleState = true;
             toggleCookieDesigner.value = "true";
             document.getElementById("toggle-text").innerHTML = "Privileges Enabled";
@@ -131,13 +131,13 @@ window.onload = function() {
             background.setCookie(toggleCookieDesigner);
         }
         else if (cookie.value == "true") {
-            console.log("Popup > Getting: " + cookie.name + " Cookie for " + cookie.domain + " = " + cookie.value);
+            console.log("Popup > Getting: " + cookie.name + " Cookie for " + cookie.url + " = " + cookie.value);
             currToggleState = true;
             document.getElementById("toggle-text").innerHTML = "Privileges Enabled";
             document.getElementById("toggle").src = chrome.extension.getURL("images/toggle-on.png");
         }
         else {
-            console.log("Popup > Getting: " + cookie.name + " Cookie for " + cookie.domain + " = " + cookie.value);
+            console.log("Popup > Getting: " + cookie.name + " Cookie for " + cookie.url + " = " + cookie.value);
             currToggleState = false;
             document.getElementById("toggle-text").innerHTML = "Privileges Disabled";
             document.getElementById("toggle").src = chrome.extension.getURL("images/toggle-off.png");
@@ -147,13 +147,13 @@ window.onload = function() {
     background.getCookie(companyLogoCookieMarketoLive, function(cookie) {
         if (cookie == null
         || cookie.value == null) {
-            console.log("Popup > Getting: " + companyLogoCookieMarketoLive.name + " Cookie for " + companyLogoCookieMarketoLive.domain + " = null");
+            console.log("Popup > Getting: " + companyLogoCookieMarketoLive.name + " Cookie for " + companyLogoCookieMarketoLive.url + " = null");
             currToggleState = true;
             companyLogoCookieMarketoLive.value = null;
             background.setCookie(companyLogoCookieMarketoLive);
         }
         else {
-            console.log("Popup > Getting: " + cookie.name + " Cookie for " + cookie.domain + " = " + cookie.value);
+            console.log("Popup > Getting: " + cookie.name + " Cookie for " + cookie.url + " = " + cookie.value);
             companyName = cookie.value.toLowerCase().split(clearbitDomain)[1];
             company.value = companyName;
         }
@@ -162,12 +162,12 @@ window.onload = function() {
     background.getCookie(companyLogoCookieDesigner, function(cookie) {
         if (cookie == null
         || cookie.value == null) {
-            console.log("Popup > Getting: " + companyLogoCookieDesigner.name + " Cookie for " + companyLogoCookieDesigner.domain + " = null");
+            console.log("Popup > Getting: " + companyLogoCookieDesigner.name + " Cookie for " + companyLogoCookieDesigner.url + " = null");
             companyLogoCookieDesigner.value = null;
             background.setCookie(companyLogoCookieDesigner);
         }
         else {
-            console.log("Popup > Getting: " + cookie.name + " Cookie for " + cookie.domain + " = " + cookie.value);
+            console.log("Popup > Getting: " + cookie.name + " Cookie for " + cookie.url + " = " + cookie.value);
             companyName = cookie.value.toLowerCase().split(clearbitDomain)[1];
             company.value = companyName;
         }
@@ -176,24 +176,24 @@ window.onload = function() {
     background.getCookie(companyColorCookieMarketoLive, function(cookie) {
         if (cookie == null
         || cookie.value == null) {
-            console.log("Popup > Getting: " + companyColorCookieMarketoLive.name + " Cookie for " + companyColorCookieMarketoLive.domain + " = null");
+            console.log("Popup > Getting: " + companyColorCookieMarketoLive.name + " Cookie for " + companyColorCookieMarketoLive.url + " = null");
             companyColorCookieMarketoLive.value = defaultCompanyColor;
             background.setCookie(companyColorCookieMarketoLive);
         }
         else {
-            console.log("Popup > Getting: " + cookie.name + " Cookie for " + cookie.domain + " = " + cookie.value);
+            console.log("Popup > Getting: " + cookie.name + " Cookie for " + cookie.url + " = " + cookie.value);
         }
     });
     
     background.getCookie(companyColorCookieDesigner, function(cookie) {
         if (cookie == null
         || cookie.value == null) {
-            console.log("Popup > Getting: " + companyColorCookieDesigner.name + " Cookie for " + companyColorCookieDesigner.domain + " = null");
+            console.log("Popup > Getting: " + companyColorCookieDesigner.name + " Cookie for " + companyColorCookieDesigner.url + " = null");
             companyColorCookieDesigner.value = defaultCompanyColor;
             background.setCookie(companyColorCookieDesigner);
         }
         else {
-            console.log("Popup > Getting: " + cookie.name + " Cookie for " + cookie.domain + " = " + cookie.value);
+            console.log("Popup > Getting: " + cookie.name + " Cookie for " + cookie.url + " = " + cookie.value);
         }
     });
     

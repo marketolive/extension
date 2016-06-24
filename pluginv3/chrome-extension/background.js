@@ -16,6 +16,7 @@ var mktoLiveInstances = "^https:\/\/app-(sjp|ab07|ab08)+\.marketo\.com",
     mktoAppDomainMatch = "https://app-*.marketo.com",
     mktoDesignerMatch = "https://www.marketodesigner.com/*",
     mktoDesignerUriDomain = ".marketodesigner.com";
+    
 
 /**************************************************************************************
  *
@@ -33,8 +34,6 @@ var mktoLiveInstances = "^https:\/\/app-(sjp|ab07|ab08)+\.marketo\.com",
  **************************************************************************************/
 	
 function getCookie(obj, callback) {
-    console.log("Background > Getting: Cookie");
-    
     chrome.cookies.get({
         "url" : obj.url,
         "name" : obj.name
@@ -70,9 +69,7 @@ function getCookie(obj, callback) {
  *
  **************************************************************************************/
 
-function setCookie(obj) {
-    console.log("Background > Setting: Cookie");
-    
+function setCookie(obj) {   
     var cookie = {
         url : obj.url,
         name : obj.name,
@@ -99,8 +96,6 @@ function setCookie(obj) {
  **************************************************************************************/
 
 function removeCookie(obj) {
-    console.log("Background > Setting: Cookie");
-    
     var cookie = {
         url : obj.url,
         name : obj.name
@@ -250,7 +245,7 @@ function checkForValidUrl(tabId, changeInfo, tab) {
                     }
                 }
                 else {
-                    console.log("Background > Checking: userPod is null for the tab " + currentUrl);
+                    console.log("Background > Checking: " + userPodCookieName + " is null for the tab " + currentUrl);
                 }
             }
             else {
