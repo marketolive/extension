@@ -4099,23 +4099,31 @@ if ((currentUrl.search(mktoAppDomain) != -1
                 && currCompFragment != mktoABtestWizardFragment
                 && currCompFragment != mktoEmailTestWizardFragment) {
                     
-                    APP.overrideTreeNodeExpand();
-                    APP.overrideTreeNodeCollapse();
-                    APP.overrideSaving(currUrlFragment);
-                    APP.disableDragAndDrop();
-                    APP.disableMenus();
-                    APP.hideToolbarItems();
-                    APP.overrideSmartCampaignSaving();
-//                    APP.overrideSmartCampaignCanvas();
-                    APP.overrideUpdatePortletOrder();
-                    APP.overrideNewProgramCreate();
-                    APP.overrideAssetSaveEdit();
-                    APP.overrideNewAssetCreate();
-                    APP.overrideNewFolders();
-                    APP.overrideRenamingFolders();
-//                    APP.hidePageGrid();
-                    APP.hideFoldersOnImport();
-                    APP.disableConfirmationMessage();
+                    if (accountString.search(mktoAccountStringsMatch) != -1 {
+                        APP.overrideTreeNodeExpand();
+                        APP.overrideTreeNodeCollapse();
+                        APP.overrideSaving();
+                        APP.disableDragAndDrop();
+                        APP.disableMenus();
+                        APP.hideToolbarItems();
+                        APP.overrideSmartCampaignSaving();
+//                        APP.overrideSmartCampaignCanvas();
+                        APP.overrideUpdatePortletOrder();
+                        APP.overrideNewProgramCreate();
+                        APP.overrideAssetSaveEdit();
+                        APP.overrideNewAssetCreate();
+                        APP.overrideNewFolders();
+                        APP.overrideRenamingFolders();
+//                        APP.hidePageGrid();
+                        APP.hideFoldersOnImport();
+                        APP.disableConfirmationMessage();
+                    }
+                    else {
+                        APP.overrideSaving();
+                        APP.overrideSmartCampaignSaving();
+                        APP.overrideUpdatePortletOrder();
+                        APP.disableConfirmationMessage();
+                    }
 /*
                     // Storing previous Workspace ID
                     if (currUrlFragment != mktoMyMarketoFragment) {
