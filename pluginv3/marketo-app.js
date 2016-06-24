@@ -4026,7 +4026,8 @@ if ((currentUrl.search(mktoAppDomain) != -1
             
             // This checks to see if the username is one that would be associated
             // with a MarketoLive subscription.
-            if (accountString.search(mktoAccountStringsMatch) != -1) {
+            if (accountString.search(mktoAccountStringsMatch) != -1
+            || APP.getCookie("toggleState") == "false") {
                 console.log("Marketo App > Location: MarketoLive Instance");
                 
                 window.mkto_live_plugin_state = true;
