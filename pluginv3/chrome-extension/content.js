@@ -12,20 +12,14 @@ var URL_PATH = "m3",
     RTP_NAV_BAR_LOCATION = "https://marketolive.com/"+URL_PATH+"/pluginv3/html/turner-rtp.html",
     currentUrl = window.location.href,
 	mktoAppDomain = "^https:\/\/app-[a-z0-9]+\.marketo\.com",
-	mktoAppMatch = "https://app-*.marketo.com",
-	mktoLiveDomain = "^https:\/\/marketolive.com",
-	mktoLiveMatch = "https://marketolive.com/*",
-    mktoColorPicker = "^https:\/\/marketolive\.com[a-zA-Z0-9-\/]*\/color-picker\.html",
-	mktoLoginDomain = "^https:\/\/login\.marketo\.com",
-	mktoAppLoginDomain = "^https:\/\/app\.marketo\.com",
 	mktoDesignerDomain = "^https:\/\/[a-z0-9]+-[a-z0-9]+\.marketodesigner\.com",
-	mktoDesignerMatch = "https://*.marketodesigner.com/*",
 	mktoEmailDesigner = mktoDesignerDomain + "/ds",
 	mktoLandingPageDesigner = mktoDesignerDomain + "/lpeditor/",
 	mktoWizard = mktoAppDomain + "/m#",
+    mktoLiveColorPickerDomain = "^https:\/\/marketolive\.com[a-zA-Z0-9-\/]*\/color-picker\.html",
 	rtpDemoDomain = "^http:\/\/sjrtp1.marketo.com\/demo\/$|^http:\/\/cloud4.insightera.com\/demo\/$",
 	emailDeliverabilityDomain = "^https:\/\/250ok.com/",
-	colorPickerPage = "\/color-picker\.html$",
+    invisionAppDomain = "^https:\/\/marketo\.invisionapp\.com\/share\/",
     customCompanyLandingPage106Fragment = "LPE11826",
     customCompanyLandingPagePreview106Fragment = "LPP11826",
     customCompanyLandingPage106aFragment = "LPE10672",
@@ -46,32 +40,36 @@ var URL_PATH = "m3",
 	setCookie,
     displayProgressModal;
 
-loadScript = function(name) {
-	console.log("Content > Loading: Script: "+name);
+loadScript = function(scriptSrc) {
+	console.log("Content > Loading: Script: " + scriptSrc);
 	
-    var script = document.createElement("script");
-    script.setAttribute("src", name);
-    document.getElementsByTagName("head")[0].appendChild(script);
+    var scriptElement = document.createElement("script");
+    scriptElement.setAttribute("src", scriptSrc);
+    document.getElementsByTagName("head")[0].appendChild(scriptElement);
 }
 
-setCookie = function(cname, cvalue, exdays, domain, secure) {
-	var d = new Date();
-	d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
-	var expires = "expires=" + d.toGMTString();
-	document.cookie = cname + "=" + cvalue + "; " + expires + "; " + "path=/;" + "domain=" + domain + ";secure="+ secure +";";
+setCookie = function(name, value, expiresInDays, domain, secure) {
+    console.log("Content > Setting: " + name + " Cookie for " + domain);
+    
+	var d = new Date(),
+        expires;
+	d.setTime(d.getTime() + (expiresInDays * 24 * 60 * 60 * 1000));
+	expires = "expires=" + d.toGMTString();
+	document.cookie = name + "=" + value + "; " + expires + "; " + "path=/;" + "domain=" + domain + ";secure="+ secure +";";
 }
 
-getCookie = function(cookieField) {
-	console.log("Content > Getting: Cookie");
-	
-    var name = cookieField + "=",
+getCookie = function(cookieName) {
+    console.log("Content > Getting: " + cookieName + " Cookie");
+
+    var name = cookieName + '=',
         cookies = document.cookie.split(';'),
-        currentCookie;
-    for (var ii = 0; ii < cookies.length; ++ii) {
-        var currentCookie = cookies[ii].trim();
-        if (currentCookie.indexOf(name) == 0) {
-            return currentCookie.substring(name.length, currentCookie.length);
-		}
+        currCookie;
+    
+    for (var ii = 0; ii < cookies.length; ii++) {
+        currCookie = cookies[ii].trim();
+        if (currCookie.indexOf(name) == 0) {
+            return currCookie.substring(name.length, currCookie.length);
+        }
     }
     return null;
 }
@@ -83,16 +81,17 @@ displayProgressModal = function(parameters) {
         prevButton = parameters["prev"],
         homeButton = parameters["home"],
         progress = parameters["progress"],
-        xmlHttp = new XMLHttpRequest();
+        xmlHttp = new XMLHttpRequest()
+        modal;
     
     xmlHttp.open("GET", chrome.extension.getURL("lib/remote.html"));
     xmlHttp.send();
     
-    xmlHttp.onreadystatechange = function () {
+    xmlHttp.onreadystatechange = function() {
         if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
-            console.log("Content > Modal Request Successful");
+            console.log("Content > Displaying: Progress Modal Window Request Successful");
             
-            var modal = document.createElement("div");
+            modal = document.createElement("div");
             modal.innerHTML = xmlHttp.responseText;
             document.getElementsByTagName("body")[0].appendChild(modal);
             document.getElementById("next-button").href = nextButton;
@@ -104,11 +103,11 @@ displayProgressModal = function(parameters) {
 }
 
 grayOutCompletedStories = function() {
-    console.log("Content > Graying Out Completed Stories");
+    console.log("Content > Displaying: Disabled Completed Stories");
     
     var completed = chrome.storage.sync.get("completed", function(result) {
         if (typeof(result["stories"]) !== "undefined") {
-            for (var ii=0; ii<result["stories"].length; ++ii) {
+            for (var ii = 0; ii < result["stories"].length; ii++) {
                 document.getElementById(result["stories"][ii]).addClass("completed");
             }
         }
@@ -150,29 +149,30 @@ Analyzer = function(pod) {
  *		
  **************************************************************************************/		
 		
-Analyzer.prototype.showAnalyzer = function() {		
-	console.log("Content > Displaying: Analyzer Navigation Bar");		
-			
-    var xmlHttp = new XMLHttpRequest();		
-    xmlHttp.open("GET", "https://marketolive.com/dev/pluginv3/html/analyzer.html", false);		
-    xmlHttp.send();		
-    var pageLoaded = function() {		
-        var newElement = document.createElement('div');		
-        newElement.innerHTML = xmlHttp.responseText;		
-        document.body.appendChild(newElement);		
-    }		
-    window.onload = pageLoaded();		
+Analyzer.prototype.showAnalyzer = function() {
+    console.log("Content > Displaying: Analyzer Navigation Bar");
+    
+    var xmlHttp = new XMLHttpRequest(),
+        pageLoaded,
+        newElement;
+    
+    xmlHttp.open("GET", "https://marketolive.com/dev/pluginv3/html/analyzer.html", false);
+    xmlHttp.send();
+    pageLoaded = function() {
+        newElement = document.createElement("div");
+        newElement.innerHTML = xmlHttp.responseText;
+        document.body.appendChild(newElement);
+    }
+    window.onload = pageLoaded();
 }
 
 var port = chrome.runtime.connect({
-	name: "mycontentscript"
+    name: "mycontentscript"
 });
-
-
 
 window.onload = function() {
     console.log("Content > Window: Loaded");
-
+    
     if (currentUrl.search(mktoAppDomain) != -1
 	&& currentUrl.search(mktoDesignerDomain) == -1
 	&& currentUrl.search(mktoWizard) == -1) {
@@ -198,7 +198,6 @@ window.onload = function() {
 			Analyzer.prototype.showAnalyzer();
 		}
     }
-	
     else if (currentUrl.search(mktoDesignerDomain) != -1
 	|| currentUrl.search(mktoWizard) != -1) {
         console.log("Content > Location: Designer/Wizard");
@@ -225,34 +224,34 @@ window.onload = function() {
             //Analyzer.prototype.showAssets();
         }
     }
-	
-    else if (currentUrl.search(mktoColorPicker) != -1) {
+    else if (currentUrl.search(mktoLiveColorPickerDomain) != -1) {
 		console.log("Content > Location: Color-Picker Page");
         
-        var correct = document.getElementById('correct'),
-            incorrect = document.getElementById('incorrect'),
-			submitCookies;
+        var correct = document.getElementById("correct"),
+            incorrect = document.getElementById("incorrect"),
+			sendBackgroundMsg,
+            companyLogo,
+            companyColor;
 		
-		submitCookies = function() {
-            var cookieColor = document.getElementById("cookie-color").innerHTML,
-                // The split gets rid of the image size in the URL parameter
-                cookieLogo = document.getElementById("cookie-logo").innerHTML.split("?")[0];
-
+		sendBackgroundMsg = function() {
+            // The split gets rid of the image size in the URL parameter
+            companyLogo = document.getElementById("cookie-logo").innerHTML.split("?")[0];
+            companyColor = document.getElementById("cookie-color").innerHTML;
+            
             chrome.runtime.sendMessage({
-                action: "setColorCookie",
-                color: cookieColor,
-                logo: cookieLogo
+                action : "setCompanyCookies",
+                logo : companyLogo,
+                color : companyColor
             }, function(response) {
-                console.log("Content > Received Response from Background Color Cookie Request: " + response);
+                console.log("Content > Receiving: Message Response from Background: " + response);
             });
             window.close();
         }
 
-        correct.onclick = submitCookies;
-		
-		document.onkeyup = function (e) {
+        correct.onclick = sendBackgroundMsg;
+		document.onkeyup = function(e) {
 			if (e.which == 13) {
-				submitCookies();
+				sendBackgroundMsg();
 			}
 		}
         
@@ -266,11 +265,14 @@ window.onload = function() {
     else if (currentUrl.search(rtpDemoDomain) != -1) {
 		console.log("Content > Location: RTP Demo");
 		
-        var xmlHttp = new XMLHttpRequest();
+        var xmlHttp = new XMLHttpRequest(),
+            pageLoaded,
+            newElement;
+        
         xmlHttp.open("GET", RTP_NAV_BAR_LOCATION, false);
         xmlHttp.send(null);
-        var pageLoaded = function() {
-            var newElement = document.createElement('div');
+        pageLoaded = function() {
+            newElement = document.createElement('div');
             newElement.innerHTML = xmlHttp.responseText;
             document.getElementById("demo-page").appendChild(newElement);
             loadScript(RTP_DEEPLINK_SCRIPT_LOCATION);
@@ -278,13 +280,13 @@ window.onload = function() {
         window.onload = pageLoaded();
     }
 	
-	else if (currentUrl.search("250ok\.com\/") != -1) {
+	else if (currentUrl.search(emailDeliverabilityDomain) != -1) {
 		console.log("Content > Location: Deliverability Tools");
 		
 		loadScript(DELIVERABILITY_TOOLS_SCRIPT_LOCATION);
 	}
     
-    else if (currentUrl.search("^https:\/\/marketo\.invisionapp\.com\/share\/") != -1) {
+    else if (currentUrl.search(invisionAppDomain) != -1) {
         console.log("Content > Location: InVision App");
         
         loadScript(INVISION_APP_SCRIPT_LOCATION);

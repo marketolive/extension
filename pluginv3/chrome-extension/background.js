@@ -6,45 +6,53 @@ console.log("Background > Running");
  *
  **************************************************************************************/
 
-var mktoAppDomain = "^https:\/\/app-[a-z0-9]+\.marketo\.com",
-	mktoLiveInstances = "^https:\/\/app-(sjp|ab07|ab08)+\.marketo\.com"
-	mktoAppMatch = "https://app-*.marketo.com",
+var mktoLiveInstances = "^https:\/\/app-(sjp|ab07|ab08)+\.marketo\.com",
+    mktoLiveUserPods = "app-sjp|app-ab07|app-ab08",
     mktoLiveDomain = "^https:\/\/marketolive.com",
 	mktoLiveMatch = "https://marketolive.com/*",
-    mktoLoginDomain = "^https:\/\/login\.marketo\.com",
-    mktoAppLoginDomain = "^https:\/\/app\.marketo\.com",
-    mktoDesignerDomain = "^https:\/\/[a-z0-9]+-[a-z0-9]+\.marketodesigner\.com",
-	mktoDesignerMatch = "https://*.marketodesigner.com/*",
-    mktoEmailDesigner = mktoDesignerDomain + "/ds",
-    mktoLandingPageDesigner = mktoDesignerDomain + "/lpeditor/",
-    mktoWizard = mktoAppDomain + "/m#",
-    rtpDemoDomain = "^http:\/\/sjrtp1.marketo.com\/demo\/$|^http:\/\/cloud4.insightera.com\/demo\/$",
-    emailDeliverabilityDomain = "^https:\/\/250ok.com/";
+    mktoLiveUriDomain = ".marketolive.com",
+    mktoDomainMatch = "https://www.marketo.com/*",
+    mktoUriDomain = ".marketo.com",
+    mktoAppDomainMatch = "https://app-*.marketo.com",
+    mktoDesignerMatch = "https://www.marketodesigner.com/*",
+    mktoDesignerUriDomain = ".marketodesigner.com";
+    
 
 /**************************************************************************************
  *
- *  This function gets the value of cookie of the requested domain.
+ *  This function retireves information about a single cookie.
  *
- *  @Author Arrash
+ *  @Author Brian Fisher
  *
  *  @function
  *
- *  @param {String} domain - The domain portion of the URL.
- *  @param {String} name - The name of the cookie.
+ *  @param [Object] obj - JSON object that contains the following key/value pairs:
+ *      {String} url - The URL with which the cookie to retrieve is associated.
+ *      {String} name - The name of the cookie to retrieve.
  *  @param {function} callback - The function to be called back after getting cookie.
  *
  **************************************************************************************/
 	
-function getCookies(domain, name, callback) {
-	console.log("Background > Getting: Cookies");
-	
+function getCookie(obj, callback) {
     chrome.cookies.get({
-        'url': domain,
-        'name': name
-    }, function (cookie) {
+        "url" : obj.url,
+        "name" : obj.name
+    }, function(cookie) {
         if (cookie) {
+            if (cookie.value != null) {
+                console.log("Background > Getting: " + cookie.name + " Cookie for " + cookie.domain + " = " + cookie.value);
+            }
+            else {
+                console.log("Background > Getting: " + cookie.name + " Cookie for " + cookie.domain + " = null");
+            }
             if (callback) {
-                callback(cookie.value);
+                callback(cookie);
+            }
+        }
+        else {
+            console.error("Background > Getting: " + obj.name + " Cookie for " + obj.url + " = undefined");
+            if (callback) {
+                callback(null);
             }
         }
     });
@@ -52,174 +60,135 @@ function getCookies(domain, name, callback) {
 
 /**************************************************************************************
  *
- *  This function stores the edit privileges value.
+ *  This function sets a cookie with the given cookie data.
  *
- *  @Author Arrash
+ *  @Author Brian Fisher
  *
  *  @function
  *
- *  @param {Object} data - The privileges object, either 'true' or 'false'.
+ *  @param [Object] obj - JSON object that contains the following key/value pairs:
+ *      {String} url - The request-URI to associate with the setting of the cookie.
+ *      {String} name - The name of the cookie.
+ *      {String} value - The value of the cookie.
+ *      {String} domain - The domain of the cookie.
  *
  **************************************************************************************/
 
-function savePriv(data) {
-	console.log("Background > Saving: Edit Privileges");
-	
-	var editPriv = data.editPrivileges,
-		cookiePrivMarketo = {
-			url : "https://login.marketo.com/*",
-			name : "priv",
-			value : editPriv,
-			domain : ".marketo.com"
-		},
-		cookiePrivDesigner = {
-			url : "https://www.marketodesigner.com/*",
-			name : "priv",
-			value : editPriv,
-			domain : ".marketodesigner.com"
-		};
-	chrome.cookies.set(cookiePrivMarketo, function() {
-        console.log("Background > Setting: Edit Privileges Cookie for Marketo");
+function setCookie(obj) {   
+    var cookie = {
+        url : obj.url,
+        name : obj.name,
+        value : obj.value,
+        domain : obj.domain
+    };
+    chrome.cookies.set(cookie, function() {
+        if (cookie.value != null) {
+            console.log("Background > Setting: " + cookie.name + " Cookie for " + cookie.url + " = " + cookie.value);
+        }
+        else {
+            console.log("Background > Setting: " + cookie.name + " Cookie for " + cookie.url + " = null");
+        }
     });
-	chrome.cookies.set(cookiePrivDesigner, function() {
-        console.log("Background > Setting: Edit Privileges Cookie for Designer");
+}
+
+/**************************************************************************************
+ *
+ *  This function deletes a cookie by name.
+ *
+ *  @Author Brian Fisher
+ *
+ *  @function
+ *
+ *  @param [Object] obj - JSON object that contains the following key/value pairs:
+ *      {String} url - The request-URI to associate with the setting of the cookie.
+ *      {String} name - The name of the cookie.
+ *
+ **************************************************************************************/
+
+function removeCookie(obj) {
+    var cookie = {
+        url : obj.url,
+        name : obj.name
+    };
+    chrome.cookies.remove(cookie, function() {
+        console.log("Background > Removing: " + cookie.name + " Cookie for " + cookie.url);
     });
-	chrome.storage.sync.set(data, function() {});
-	chrome.tabs.query({url : "*://*.marketo.com/*"}, function(tabs) {
-        for (var ii=0; ii<tabs.length; ++ii) {
+}
+
+/**************************************************************************************
+ *
+ *  This function reloads all Marketo tabs.
+ *
+ *  @Author Brian Fisher
+ *
+ *  @function
+ *
+ *
+ **************************************************************************************/
+
+function reloadMarketoTabs() {
+    chrome.tabs.query({url : "*://*.marketo.com/*"}, function(tabs) {
+        for (var ii = 0; ii < tabs.length; ii++) {
             chrome.tabs.reload(tabs[ii].id);
         }
-	});
-}
-
-/**************************************************************************************
- *
- *  This function stores the value of the company name submitted.
- *
- *  @Author Arrash
- *
- *  @function
- *
- *  @param {Object} data - The company object.
- *
- **************************************************************************************/
-
-function submitCompany(data) {
-//	console.log("Background > Submitting: Company Name");
-//	console.log("Background > Submitting: Company Name = " + data.company);
-//	
-//	var cookieCompany = {
-//		url : "https://www.marketodesigner.com/*",
-//		name : "company",
-//		value : data.company,
-//		domain : ".marketodesigner.com"
-//	},
-//    cookieCompanyMarketoLive = {
-//		url : "http://marketolive.com/*",
-//		name : "company",
-//		value : data.company,
-//		domain : ".marketolive.com"
-//	};
-//	chrome.cookies.set(cookieCompany, function() {
-//        console.log("Background > Setting Marketo Designer Company Cookie "+cookieCompany);
-//    });
-//	chrome.cookies.set(cookieCompanyMarketoLive, function() {
-//        console.log("Background > Setting MarketoLive Company Cookie "+cookieCompanyMarketoLive);
-//    });
-}
-
-function resetColor () {
-    console.log("Background > Resetting: Company Color");
-    
-    var cookieColor = {
-			url : "http://www.marketodesigner.com/*",
-			name : "color",
-		},
-        cookieColorMarketoLive = {
-			url : "http://marketolive.com/*",
-			name : "color",
-        };
-    chrome.cookies.remove(cookieColor, function() {
-        console.log("Background > Removing: Marketo Designer Company Color Cookie");
-    });
-	chrome.cookies.remove(cookieColorMarketoLive, function() {
-        console.log("Background > Removing: MarketoLive Company Color Cookie");
-    });
-}
-
-function resetLogo () {
-    console.log("Background > Resetting: Company Logo");
-    
-    var cookieLogo = {
-			url : "http://www.marketodesigner.com/*",
-			name : "logo",
-		},
-        cookieLogoMarketoLive = {
-			url : "http://marketolive.com/*",
-			name : "logo",
-        };
-    
-    chrome.cookies.remove(cookieLogo, function () {
-        console.log("Background > Removing: Marketo Designer Company Logo Cookie");
-    });
-    chrome.cookies.remove(cookieLogoMarketoLive, function () {
-        console.log("Background > Removing: MarketoLive Company Logo Cookie");
     });
 }
 
 /**************************************************************************************
  *
- *  This function creates a cookie on mktoDesignerDomain passing the company color and
- *  then stores the company color in local storage for the plugin.
+ *  This function creates an event listener in order to receive the company's logo and 
+ *  color from the MarketoLive Color-Picker page and then sets the cookie for both the 
+ *  mktoLiveDomain and mktoDesignerDomain.
  *
- *  @Author Arrash
+ *  @Author Brian Fisher
  *
  *  @function
  *
- *  @param
+ *  @param [Object] message - JSON object that contains the following key/value pairs:
+ *      {String} action - The name of the requested action.
+ *      {String} logo - The company's logo as an img URL.
+ *      {String} color - The company's color as an RGB value.
+ *  @param {MessageSender} sender - An object containing information about the script 
+ *      context that sent a message.
+ *  @param {function} sendResponse - Function to call when you have a response.
  *
  **************************************************************************************/
 
-chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-	if (request.action == "setColorCookie") {
-		console.log("Background > Color");
+chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
+    if (message.action == "setCompanyCookies") {
+        console.log("Background > Receiving: Company Logo & Color");
         
-		var cookieColor = {
-			url : "http://www.marketodesigner.com/*",
-			name : "color",
-			value : request.color,
-			domain : ".marketodesigner.com"
-		},
-        cookieColorMarketoLive = {
-			url : "http://marketolive.com/*",
-			name : "color",
-			value : request.color,
-			domain : ".marketolive.com"
-		},
-        cookieLogo = {
-            url : "http://www.marketodesigner.com/*",
-			name : "logo",
-			value : request.logo,
-			domain : ".marketodesigner.com"
-        },
-        cookieLogoMarketoLive = {
-            url : "http://marketolive.com/*",
-			name : "logo",
-			value : request.logo,
-			domain : ".marketolive.com"
-        };
-		chrome.cookies.set(cookieColor, function() {
-            console.log("Background > Setting: Colorscheme Cookie " + cookieColor["value"]);
-        });
-        chrome.cookies.set(cookieColorMarketoLive, function() {
-            console.log("Background > Setting: MarketoLive Colorscheme Cookie " + cookieColor["value"]);
-        });
-        chrome.cookies.set(cookieLogo, function() {
-            console.log("Background > Setting: Marketo Logo Cookie " + cookieLogo["value"]);
-        });
-        chrome.cookies.set(cookieLogoMarketoLive, function() {
-            console.log("Background > Setting: MarketoLive Logo Cookie " + cookieLogo["value"]);
-        });
+		var companyLogoCookieName = "logo",
+            companyColorCookieName = "color",
+            companyLogoCookieMarketoLive = {
+                "url" : mktoLiveMatch,
+                "name" : companyLogoCookieName,
+                "value" : message.logo,
+                "domain" : mktoLiveUriDomain
+            },
+            companyLogoCookieDesigner = {
+                "url" : mktoDesignerMatch,
+                "name" : companyLogoCookieName,
+                "value" : message.logo,
+                "domain" : mktoDesignerUriDomain
+            },
+            companyColorCookieMarketoLive = {
+                "url" : mktoLiveMatch,
+                "name" : companyColorCookieName,
+                "value" : message.color,
+                "domain" : mktoLiveUriDomain
+            },
+            companyColorCookieDesigner = {
+                "url" : mktoDesignerMatch,
+                "name" : companyColorCookieName,
+                "value" : message.color,
+                "domain" : mktoDesignerUriDomain
+            };
+        
+        setCookie(companyColorCookieMarketoLive);
+        setCookie(companyColorCookieDesigner);
+        setCookie(companyLogoCookieMarketoLive);
+        setCookie(companyLogoCookieDesigner);
     }
 });
 
@@ -238,51 +207,61 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
  **************************************************************************************/
 
 function checkForValidUrl(tabId, changeInfo, tab) {
-	console.log("Background > Checking: Valid URL");
-	
-    var currentUrl = tab.url;
+    console.log("Background > Checking: Valid URL");
+    
+    var currentUrl = tab.url,
+        mktoPodCookieMarketo = {
+            "url" : mktoAppDomainMatch,
+            "name" : "mkto_pod"
+        },
+        userPod,
+        userPodCookieName,
+        userPodCookieMarketo,
+        userPodCookieDesigner,
+        userPodCookieMarketoLive;
+    
     chrome.browserAction.enable(tabId);
-
-    if (currentUrl.search(mktoLiveInstances)
-	|| currentUrl.search(mktoLiveDomain)) {
-		getCookies(mktoAppMatch, 'mkto_pod', function (id) {
-			var cookie_pod_value = id,
-				user_pod_value = cookie_pod_value.split('.'),
-				user_pod = user_pod_value[0].split(':');
-            
-            console.log(user_pod);
-            if (user_pod[1].search("app-sjp") != -1
-            || user_pod[1].search("app-ab07") != -1
-            || user_pod[1].search("app-ab08") != -1) {
-                var cookiePod = {
-                    url : "http://www.marketo.com/*",
-                    name : "userPod",
-                    value : user_pod[1],
-                    domain : ".marketo.com"
-                },
-                cookiePodMarketoDesigner = {
-                    url : "http://www.marketodesigner.com/*",
-                    name : "userPod",
-                    value : user_pod[1],
-                    domain : ".marketodesigner.com"
-                },
-                cookiePodMarketoLive = {
-                    url : "https://marketolive.com/*",
-                    name : "userPod",
-                    value : user_pod[1],
-                    domain : ".marketolive.com"
-                } 
-                chrome.cookies.set(cookiePod, function() {
-                    console.log("Background > Setting: Marketo User Pod Cookie "+user_pod[1]);
-                });
-                chrome.cookies.set(cookiePodMarketoDesigner, function() {
-                    console.log("Background > Setting: Marketo Designer User Pod Cookie "+user_pod[1]);
-                });
-                chrome.cookies.set(cookiePodMarketoLive, function() {
-                    console.log("Background > Setting: MarketoLive User Pod Cookie "+user_pod[1]);
-                });
+    
+    if (currentUrl.search(mktoLiveInstances) != -1
+    || currentUrl.search(mktoLiveDomain) != -1) {
+        getCookie(mktoPodCookieMarketo, function(cookie) {
+            if (cookie) {
+                userPod = cookie.value.split('.')[0].split(':')[1];
+                if (userPod) {
+                    userPodCookieName = "userPod";
+                    if (userPod.search(mktoLiveUserPods) != -1) {
+                        userPodCookieMarketo = {
+                            "url" : mktoDomainMatch,
+                            "name" : userPodCookieName,
+                            "value" : userPod,
+                            "domain" : mktoUriDomain
+                        };
+                        userPodCookieDesigner = {
+                            "url" : mktoDesignerMatch,
+                            "name" : userPodCookieName,
+                            "value" : userPod,
+                            "domain" : mktoDesignerUriDomain
+                        };
+                        userPodCookieMarketoLive = {
+                            "url" : mktoLiveMatch,
+                            "name" : userPodCookieName,
+                            "value" : userPod,
+                            "domain" : mktoLiveUriDomain
+                        };
+                        
+                        setCookie(userPodCookieMarketo);
+                        setCookie(userPodCookieDesigner);
+                        setCookie(userPodCookieMarketoLive);
+                    }
+                }
+                else {
+                    console.error("Background > Checking: " + userPodCookieName + " is null for the tab " + currentUrl);
+                }
             }
-		});
+            else {
+                console.error("Background > Checking: mkto_pod is null for the tab " + currentUrl);
+            }
+        });
     }
 }
 
