@@ -222,8 +222,8 @@ function checkForValidUrl(tabId, changeInfo, tab) {
     
     chrome.browserAction.enable(tabId);
     
-    if (currentUrl.search(mktoLiveInstances)
-    || currentUrl.search(mktoLiveDomain)) {
+    if (currentUrl.search(mktoLiveInstances) != -1
+    || currentUrl.search(mktoLiveDomain) != -1) {
         getCookie(mktoPodCookieMarketo, function(cookie) {
             if (cookie) {
                 userPod = cookie.value.split('.')[0].split(':')[1];
