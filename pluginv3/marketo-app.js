@@ -4099,7 +4099,7 @@ if ((currentUrl.search(mktoAppDomain) != -1
                 && currCompFragment != mktoABtestWizardFragment
                 && currCompFragment != mktoEmailTestWizardFragment) {
                     
-                    if (accountString.search(mktoAccountStringsMatch) != -1 {
+                    if (accountString.search(mktoAccountStringsMatch) != -1) {
                         APP.overrideTreeNodeExpand();
                         APP.overrideTreeNodeCollapse();
                         APP.overrideSaving();
