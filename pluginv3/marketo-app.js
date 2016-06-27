@@ -2579,7 +2579,7 @@ APP.disableMenus = function() {
                         "createProgramFolder",//New Campaign Folder
                         "newSmartCampaign",//New Smart Campaign
                         "createNewMarketingProgram",//New Program
-                        "importProgram",//Import Program
+//                        "importProgram",//Import Program
                                     
                         // Marketing Activities > Default & Email Send Programs > Actions Button
                         "entryRescheduleEntries",//Reschedule Entries
@@ -4019,6 +4019,9 @@ if ((currentUrl.search(mktoAppDomain) != -1
                 if (userId.search("\.demo@marketo.com$") != -1) {
                     userName = userId.split(".demo")[0];
                 }
+                else if (userId.search("marketolive@") != -1) {
+                    userName = userId.split("@")[1].split(".")[0];
+                }
                 else {
                     userName = userId.split("@")[0];
                 }
@@ -4111,7 +4114,9 @@ if ((currentUrl.search(mktoAppDomain) != -1
                         APP.overrideUpdatePortletOrder();
                         APP.overrideNewProgramCreate();
                         APP.overrideAssetSaveEdit();
-                        APP.overrideNewAssetCreate();
+                        if (accountString.search(mktoAccountString106d) == -1) {
+                            APP.overrideNewAssetCreate();
+                        }
                         APP.overrideNewFolders();
                         APP.overrideRenamingFolders();
 //                        APP.hidePageGrid();
