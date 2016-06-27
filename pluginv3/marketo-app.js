@@ -4515,7 +4515,7 @@ if ((currentUrl.search(mktoAppDomain) != -1
                                 console.log("Callback for Email Editor");
                                 Ext4.getStore('Email').load(loadParameters);
                             }
-                            if (currURLFrament.search(customCompanyEmailFragments) != -1) {
+                            if (currUrlFrament.search(customCompanyEmailFragments) != -1) {
                                 APP.overlayEmailDesigner();
                             }
                             // Overlay Email Designer w/ Company Logo and Color
