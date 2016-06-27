@@ -4465,6 +4465,23 @@ if ((currentUrl.search(mktoAppDomain) != -1
                         customCompanyFinservMFragment = "EME20350",
                         customCompanyFinservPFragment ="EME20368",
                         customCompanyHigherEdFragment = "EME20329",
+                        customCompanyEmail106dFragment = "EME1546",
+                        customCompanyFinservM106dFragment = "EME20350",
+                        customCompanyFinservP106dFragment = "EME20368",
+                        customCompanyHealthcare106dFragment = "EME20327",
+                        customCompanyHigherEd106dFragment = "EME20329",
+                        customCompanyEmailFragments =   customCompanyEmail106Fragment + "|" +
+                                                        customCompanyEmail106aFragment + "|" +
+                                                        customCompanyEmail106bFragment + "|" +
+                                                        customCompanyHealthcareFragment + "|" +
+                                                        customCompanyFinservMFragment + "|" +
+                                                        customCompanyFinservPFragment + "|" +
+                                                        customCompanyHigherEdFragment + "|" +
+                                                        customCompanyEmail106dFragment + "|" +
+                                                        customCompanyFinservM106dFragment + "|" +
+                                                        customCompanyFinservP106dFragment + "|" +
+                                                        customCompanyHealthcare106dFragment + "|" +
+                                                        customCompanyHigherEd106dFragment;
                         loadParameters = {
                             filters: [{
                                 property: 'id',
@@ -4498,32 +4515,35 @@ if ((currentUrl.search(mktoAppDomain) != -1
                                 console.log("Callback for Email Editor");
                                 Ext4.getStore('Email').load(loadParameters);
                             }
-                            // Overlay Email Designer w/ Company Logo and Color
-                            switch (currUrlFragment) {
-                                case customCompanyEmail106Fragment:
-                                    APP.overlayEmailDesigner();
-                                    break;
-                                case customCompanyHealthcareFragment:
-                                    APP.overlayEmailDesigner();
-                                    break;
-                                case customCompanyFinservMFragment:
-                                    APP.overlayEmailDesigner();
-                                    break;
-                                case customCompanyFinservPFragment:
-                                    APP.overlayEmailDesigner();
-                                    break;
-                                case customCompanyHigherEdFragment:
-                                    APP.overlayEmailDesigner();
-                                    break;
-                                case customCompanyEmail106aFragment:
-                                    APP.overlayEmailDesigner();
-                                    break;
-                                case customCompanyEmail106bFragment:
-                                    APP.overlayEmailDesigner();
-                                    break;
-                                default:
-                                    break;
+                            if (currURLFrament.search(customCompanyEmailFragments) != -1) {
+                                APP.overlayEmailDesigner();
                             }
+                            // Overlay Email Designer w/ Company Logo and Color
+//                            switch (currUrlFragment) {
+//                                case customCompanyEmail106Fragment:
+//                                    APP.overlayEmailDesigner();
+//                                    break;
+//                                case customCompanyHealthcareFragment:
+//                                    APP.overlayEmailDesigner();
+//                                    break;
+//                                case customCompanyFinservMFragment:
+//                                    APP.overlayEmailDesigner();
+//                                    break;
+//                                case customCompanyFinservPFragment:
+//                                    APP.overlayEmailDesigner();
+//                                    break;
+//                                case customCompanyHigherEdFragment:
+//                                    APP.overlayEmailDesigner();
+//                                    break;
+//                                case customCompanyEmail106aFragment:
+//                                    APP.overlayEmailDesigner();
+//                                    break;
+//                                case customCompanyEmail106bFragment:
+//                                    APP.overlayEmailDesigner();
+//                                    break;
+//                                default:
+//                                    break;
+//                            }
                             break;
                         case mktoFormWizardFragment:
                             if (Ext4
