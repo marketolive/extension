@@ -4240,8 +4240,12 @@ APP.getEmailIds = function(accountString) {
     var emIds = [];
     switch (accountString) {
         case mktoAccountString106:
-            // Default DIY Design
+            // Default DIY Design: Email
             emIds.push(15464);
+            // Default DIY Design: Email (Modular)
+            emIds.push(21424);
+            // Default DIY Design: Email (Responsive)
+            emIds.push(20931);
             // Default Email Marketing: AB Test Configuration, AB Test Dashboard, Champion/Chalenger, Email Program Dashboard
             emIds.push(18113, 18106, 18111, 18110);
             // Default Replicate Success: Roadshow Example
