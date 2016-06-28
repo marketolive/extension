@@ -2301,7 +2301,7 @@ APP.evaluateMenu = function (triggeredFrom, menu, canvas, toolbar) {
             break;
             
             case "button":
-                if (canvas
+                if ((canvas
                     && canvas.config
                     && (canvas.config.accessZoneId == mktoDefaultWorkspaceId
                         || canvas.config.accessZoneId == mktoJapaneseWorkspaceId
@@ -2312,7 +2312,9 @@ APP.evaluateMenu = function (triggeredFrom, menu, canvas, toolbar) {
                             && ((canvas.config.expNodeId
                                     && MktExplorer.getNodeById(canvas.config.expNodeId))
                                 || (canvas.config.dlZoneFolderId
-                                    && MktExplorer.getNodeById(canvas.config.dlZoneFolderId)))))) {
+                                    && MktExplorer.getNodeById(canvas.config.dlZoneFolderId))))))
+                || (MktMainNav
+                    && MktMainNav.activeNav == "tnCustAdmin")) {
                     
                     toBeDisabled = true;
                                     
@@ -2859,7 +2861,56 @@ APP.disableMenus = function() {
                         "rcmApproveDraft",//Approve Model Draft
                         //"rcmDiscardDraft",//Discard Model Draft
                         "rcmAassignmentRules",//Assignment Rules
-                                ];
+                        
+                        // Admin > Tags > Tags > New Button
+                        //"newDescriptor",//New Tag Type
+                        //"newDescriptorValue",//New Tag Value
+                        //"newChannel",//New Channel
+                        
+                        // Admin > Tags > Tags > Actions Button & Right-click Tree
+                        "editDescriptor",//Edit
+                        "deleteDescriptor",//Delete
+                        "deleteDescriptorValue",//Delete
+                        "hideDescriptorValue",//Hide
+                        "unhideDescriptorValue",//Unhide
+                        
+                        // Admin > Tags > Calendar Entry Types > New Button
+                        "newEntry",//Entry Type
+                        
+                        // Admin > Tags > Calendar Entry Types > Actions Button
+                        "editEntry",//Edit
+                        "unhideEntry",//Unhide
+                        "hideEntry",//Hide
+                        
+                        // Admin > Field Management > Actions Button
+                        "hideFieldFmFields",//Hide field
+                        //"blockFieldUpdatesFmFields",//Block Field Updates
+                        "changeTypeFmFields",//Change Type
+                        //"exportFieldsFmFields",//Export Field Names
+                        
+                        // Admin > Landing Pages > Landing Pages > New Button
+                        "newAlias",//New Domain Alias
+                        "newRule",//New Redirect Rule
+                        
+                        // Admin > Landing Pages > Rules > Actions Button
+                        "editRule",//Edit Rule
+                        "deleteRule",//Delete Rule
+                        
+                        // Admin > LaunchPoint > New Button
+                        "newWebinarLogin",//New Service
+                        
+                        // Admin > LaunchPoint > Actions Button
+                        "editWebinarLogin",//Edit Service
+                        "cloneWebinarLogin",//Clone Login
+                        "deleteWebinarLogin",//Delete Service
+                        
+                        // Admin > Webhooks > Actions Button
+                        //"newWebhookLogin",//New Webhook
+                        "editWebhook",//Edit Webhook
+                        "cloneWebhook",//Clone Webhook
+                        "deleteWebhook",//Delete Webhook
+                        "customHeader",//Set Custom Header
+                    ];
                 if (this.triggeredFrom != "tree"
                 && this.triggeredFrom != "button") {
                     disable = APP.evaluateMenu("tree", this, canvas, null);
@@ -3207,7 +3258,7 @@ APP.hideToolbarItems = function() {
             && c.topToolbar.items) {
                 console.log("Marketo App > Executing: Disable Toolbar items for ALL in ALL");
                 
-                var mItems = this.items,
+                var item,
                     canvas = MktCanvas.getActiveTab(),
                     visible = !APP.evaluateMenu("button", null, canvas, null),
                     itemsToHide = [
@@ -3284,15 +3335,127 @@ APP.hideToolbarItems = function() {
                         // Analytics > Model
                         //"editDraft_rcmCanvasOverview",//Edit Draft
                         //"previewModel_rcmCanvasOverview",//Preview Model
+                        
+                        // Admin > Admin
+                        "Invite New User",//Invite New User
+                        
+                        // Admin > My Account
+                        "caadEditButton",//Edit Account Settings
+                        
+                        // Admin > Login Settings
+                        "caadEditSecurityButton",//Edit Security Settings
+                        //"caadEditurlButton",//Edit URL Expiration
+                        "caadEditRestrictedLoginButton",//Edit IP Restrictions
+                        //"caadEditSmartListReportSettingsButton",//Smart List Report Settings
+                        
+                        // Admin > Users & Roles > Users
+                        "Invite New User",//Invite New User
+                        "editLicenses",//Issue License
+                        "editUser",//Edit User
+                        "deleteUser",//Delete User
+                        "resetPassword",//Reset Password
+                        
+                        // Admin > Users & Roles > Roles
+                        //"newRole",//New Role
+                        "editRole",//Edit Role
+                        "deleteRole",//Delete Role
+                        
+                        // Admin > Workspaces & Partitions > Workspaces
+                        //"newZone",//New Workspace
+                        "editZone",//Edit Workspace
+                        "deleteZone",//Delete Workspace
+                        
+                        // Admin > Workspaces & Partitions > Partitions
+                        //"newPartition",//New Lead Partition
+                        "editPartition",//Edit Lead Partition
+                        "deletePartition",//Delete Lead Partition
+                        //"assignmentRules",//Assignment Rules
+                        
+                        // Admin > Location
+                        //"capdChangeButton",//Change Location Settings
+                        
+                        // Admin > Email > Email
+                        "Edit IP Settings",//Edit IP Settings
+                        "Edit Text Editor Settings",//Edit Text Editor Settings
+                        "Edit Email Editor Settings",//Edit Email Editor Settings
+                        
+                        // Admin > Email > SPF/DKIM
+                        "addDomain",//Add Domain
+                        "deleteDomain",//Delete Domain
+                        //"dkimDetails",//DKIM Details
+                        //"checkDNS",//Check DNS
+                        
+                        // Admin > Tags > Tags
+                        //"newButton",//New
+                        //"actionsButton",//Tag Actions
+                        
+                        // Admin > Tags > Calendar Entry Types
+                        //"newButton",//New
+                        //"actionsButton",//Entry Actions
+                        
+                        // Admin > Field Management
+                        //"fieldManagement_fmFields",//Field Actions
+                        //"New Custom Field",//New Custom Field
+                        //"exportFieldsFmFields",//Export Field Names
+                        
+                        // Admin > Salesforce Object Sync
+                        "refreshCadSfdcObjectSync",//Refresh Schema
+                        //"syncOjbectCadSfdcObjectSync",//Enable Sync
+                        "editVisibleFieldsCadSfdcObjectSync",//Edit Visible Fields
+                        
+                        // Admin > Salesforce
+                        "enableSync",//Enable/Disable Sync
+                        //"editCredentials",//Edit Credentials
+                        //"editSyncOptions",//Edit Sync Options
+                        
+                        // Admin > Sales Insight > Sales Insight
+                        "Edit API Configuration",//Edit API Configuration
+                        "Edit Settings",//Edit Settings
+                        
+                        // Admin > Sales Insight > Email Add-in
+                        "issueLicenseCadLisAdmin",//Issue License
+                        "revokeLicenseCadLisAdmin",//Revoke License
+                        "resendLicenseCadLisAdmin",//Resend Invitation
+                        //"addSeatsCadLisAdmin",//Purchase More Seats
+                        "configAddinCadLisAdmin",//Config Add-in
+                        
+                        // Admin > Landing Pages > Landing Pages
+                        //"editDomainSettings",//Edit Settings
+                        
+                        // Admin > Landing Pages > Rules
+                        //"Rules Actions",//Rules Actions
+                        "editRule",//Edit Rule
+                        "deleteRule",//Delete Rule
+                        
+                        // Admin > Web Services
+                        "editIpRestriction",//Edit IP Restrictions
+                        
+                        // Admin > LaunchPoint
+                        //"newLaunchpoint",//New
+                        //"launchpointActions",//Service Actions
+                        "editWebinarLogin",//"Edit Service"
+                        
+                        // Admin > Webhooks
+                        //"newWebhookLogin",//New Webhook
+                        //"Webhooks Actions",//Webhooks Actions
+                        
+                        // Admin > Revenue Cycle Analytics > Custom Field Sync
+                        "cadChangeButton",//Edit Sync Option
                     ];
                 
                 itemsToHide.forEach(function(itemToHide) {
-                    var item = c.topToolbar.items.get(itemToHide);
+                    item = c.topToolbar.items.get(itemToHide);
                     if (item) {
                         if (itemToHide == "gotoDeliverability_landingEMDetail") {
                             item.setVisible(false);
                         }
                         else {
+                            item.setVisible(visible);
+                        }
+                    }
+                    else {
+                        item = c.topToolbar.find("text", itemToHide)[0];
+                        if (item) {
                             item.setVisible(visible);
                         }
                     }
@@ -3314,6 +3477,201 @@ APP.hideToolbarItems = function() {
                     this.configureItem(c, position);
                 }
             }
+        }
+    }
+}
+
+/**************************************************************************************
+ *  
+ *  This function disables the Save, Apply, Change ... buttons in the Admin Section. 
+ *  It can be used to disable any generic Save window.
+ *
+ *  @Author Brian Fisher
+ *
+ *  @function
+ *
+ **************************************************************************************/
+
+APP.disableAdminSaveButtons = function() {
+    console.log("Marketo App > Disabling: Admin Section Save Buttons");
+
+    if (Ext
+    && Ext.Window
+    && Ext.Window.prototype
+    && Ext.Window.prototype.show) {
+        Ext.Window.prototype.show = function (animateTarget, cb, scope) {
+            // Disable ALL areas > ALL assets > ALL Save windows
+            console.log("Marketo App > Executing: Disable Admin Section Save Buttons");
+            
+            if (MktCanvas
+            && MktCanvas.getActiveTab()
+            && MktCanvas.getActiveTab().title) {
+                var activeTabTitle = MktCanvas.getActiveTab().title,
+                    toDisable,
+                    ii,
+                    currButton;
+                switch (activeTabTitle) {
+                    // Login Settings
+                    case "Login Settings":
+                        toDisable = true;
+                        break;
+                    // Users & Roles > Roles 
+                    case "Roles":
+                        toDisable = true;
+                        break;
+                    // Workspaces & Partitions > Workspaces
+                    case "Workspaces":
+                        toDisable = true;
+                        break;
+                    // Workspaces & Partitions > Partitions
+                    case "Lead Partitions":
+                        toDisable = true;
+                        break;
+                    // Location > Subscription Currency Settings
+                    case "Location":
+                        toDisable = true;
+                        break;
+                    // Smart Campaign
+                    case "Smart Campaign":
+                        toDisable = true;
+                        break;
+                    // Communication Limits
+                    case "Communication Limits":
+                        toDisable = true;
+                        break;
+                    // Tags > Tags
+                    case "Tags":
+                        toDisable = true;
+                        break;
+                    // Field Management > New Custom Field, Block Field Updates, Edit Import Aliases, Change Type
+                    case "Field Management":
+                        toDisable = true;
+                        break;
+                    // Salesforce Objects Sync
+                    case "Salesforce Objects Sync":
+                        toDisable = true;
+                        break;
+                    // Salesforce
+                    case "Salesforce":
+                        toDisable = true;
+                        break;
+                    // Sales Insight > Sales Insight
+                    case "Sales Insight":
+                        toDisable = true;
+                        break;
+                    // Sales Insight > Email Add-in
+                    case "Email Add-in":
+                        toDisable = true;
+                        break;
+                    // Landing Pages > Landing Pages
+                    case "Landing Pages":
+                        toDisable = true;
+                        break;
+                    // Landing Pages > Rules
+                    case "Rules":
+                        toDisable = true;
+                        break;
+                    // Munchkin
+                    case "Munchkin":
+                        toDisable = true;
+                        break;
+                    // LaunchPoint > Delete Service
+                    case "Installed Services":
+                        toDisable = true;
+                        break;
+                    // Webhooks
+                    case "Webhooks":
+                        toDisable = true;
+                        break;
+                    // Single Sign-On
+                    case "Single Sign-On":
+                        toDisable = true;
+                        break;
+                    // Revenue Cycle Analytics > Attribution
+                    case "Revenue Cycle Analytics":
+                        toDisable = true;
+                        break;
+                    // Treasure Chest
+                    case "Treasure Chest":
+                        toDisable = true;
+                        break;
+                    default:
+                        break;
+                }
+                if (toDisable) {
+                    for (ii = this.buttons.length-1; ii >= 0; ii--) {
+                        currButton = this.buttons[ii];
+                        switch (currButton.text) {
+                            case "Save":
+                                currButton.setDisabled(true);
+                                break;
+                            case "Create":
+                                currButton.setDisabled(true);
+                                break;
+                            case "Apply":
+                                currButton.setDisabled(true);
+                                break;
+                            case "Change":
+                                currButton.setDisabled(true);
+                                break;
+                            case "Disable Global Sync":
+                                currButton.setDisabled(true);
+                                break;
+                            case "Enable Sync":
+                                currButton.setDisabled(true);
+                                break;
+                            case "Disable Sync":
+                                currButton.setDisabled(true);
+                                break;
+                            case "Issue License":
+                                currButton.setDisabled(true);
+                                break;
+                            case "Revoke License":
+                                currButton.setDisabled(true);
+                                break;
+                            case "Resend Invitation":
+                                currButton.setDisabled(true);
+                                break;
+                            case "Delete":
+                                currButton.setDisabled(true);
+                                break;
+                            case "Clone":
+                                currButton.setDisabled(true);
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }
+            }
+            
+            if (!this.rendered) {
+                this.render(Ext.getBody());
+            }
+            if (this.hidden === false) {
+                this.toFront();
+                return this;
+            }
+            if (this.fireEvent('beforeshow', this) === false) {
+                return this;
+            }
+            if (cb) {
+                this.on('show', cb, scope, {
+                    single : true
+                });
+            }
+            this.hidden = false;
+            if (Ext.isDefined(animateTarget)) {
+                this.setAnimateTarget(animateTarget);
+            }
+            this.beforeShow();
+            if (this.animateTarget) {
+                this.animShow();
+            }
+            else {
+                this.afterShow();
+            }
+            return this;
         }
     }
 }
@@ -4106,6 +4464,7 @@ if ((currentUrl.search(mktoAppDomain) != -1
                         APP.disableDragAndDrop();
                         APP.disableMenus();
                         APP.hideToolbarItems();
+                        APP.disableAdminSaveButtons();
                         APP.overrideSmartCampaignSaving();
 //                        APP.overrideSmartCampaignCanvas();
                         APP.overrideUpdatePortletOrder();
