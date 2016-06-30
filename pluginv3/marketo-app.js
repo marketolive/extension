@@ -3262,201 +3262,501 @@ APP.hideToolbarItems = function() {
                     canvas = MktCanvas.getActiveTab(),
                     visible = !APP.evaluateMenu("button", null, canvas, null),
                     itemsToHide = [
-                    
-                        // Global > Programs, Analyzers, and Reports > Setup
-                        //"editItem",//Edit
-                        "deleteItem",//Delete
+                    /*{
+                    // Global > Programs, Analyzers, and Reports > Setup
+                        "id" : "editItem",//Edit
+                        "action" : "setVisible",
+                    },*/
+                    {
+                        "id" : "deleteItem",//Delete
+                        "action" : "setVisible",
+                    },
                         
-                        // Global > Analyzers & Reports > Subscriptions
-                        //"newSubscription_atxCanvasSubscriptions",//New Report Subscription
-                        //"deleteSubscription_atxCanvasSubscriptions",//Delete Subscription
+                    // Global > Analyzers & Reports > Subscriptions
+                    /*{
+                        "id" : "newSubscription_atxCanvasSubscriptions",//New Report Subscription
+                        "action" : "setDisabled",
+                    },*/
+                    {
+                        "id" : "deleteSubscription_atxCanvasSubscriptions",//Delete Subscription
+                        "action" : "setVisible",
+                    },
                         
-                        // Global > Form
-                        //"formEdit_landingFODetail",//Edit Form
+                    // Global > Form
+                    /*{
+                        "id" : "formEdit_landingFODetail",//Edit Form
+                        "action" : "setVisible",
+                    },*/
                         
-                        // Global > Landing Page
-                        //"pageEdit_landingLPDetail",//Edit Draft
-                        //"pagePreview_landingLPDetail",//Preview Page
+                    // Global > Landing Page
+                    /*{
+                        "id" : "pageEdit_landingLPDetail",//Edit Draft
+                        "action" : "setVisible",
+                    },*/
+                    /*{
+                        "id" : "pagePreview_landingLPDetail",//Preview Page
+                        "action" : "setVisible",
+                    },*/
                         
-                        // Global > Email
-                        //"emailEdit_landingEMDetail",//Edit Draft
-                        //"emailPreview_landingEMDetail",//Preview Email
-                        "gotoDeliverability_landingEMDetail",//Deliverability Tools
+                    // Global > Email
+					/*{
+                        "id" : "emailEdit_landingEMDetail",//Edit Draft
+                        "action" : "setVisible",
+					},*/
+					/*{
+                        "id" : "emailPreview_landingEMDetail",//Preview Email
+                        "action" : "setVisible",
+					},*/
+					{
+                        "id" : "gotoDeliverability_landingEMDetail",//Deliverability Tools
+                        "action" : "setVisible",
+					},
                         
-                        // Marketing Activities > Programs & Folders > My Tokens
-                        //"editCustomToken",//Edit Token
-                        "deleteCustomToken",//Delete Token
+                    // Marketing Activities > Programs & Folders > My Tokens
+					/*{
+                        "id" : "editCustomToken",//Edit Token
+                        "action" : "setVisible",
+					},*/
+					{
+                        "id" : "deleteCustomToken",//Delete Token
+                        "action" : "setVisible",
+					},
                         
-                        // Marketing Activities > Programs > Members
-                        "importMembers",//Import Members
+                    // Marketing Activities > Programs > Members
+					{
+                        "id" : "importMembers",//Import Members
+                        "action" : "setDisabled",
+					},
                         
-                        // Design Studio > Forms (System Folder)
-                        //"formEdit_landingCanvasFO",//Edit Form
+                    // Design Studio > Forms (System Folder)
+					/*{
+                        "id" : "formEdit_landingCanvasFO",//Edit Form
+                        "action" : "setVisible",
+					},*/
                         
-                        // Design Studio > Landing Pages (System Folder)
-                        //"pageEdit_landingCanvasLP",//Edit Draft
-                        //"pagePreview_landingCanvasLP",//Preview Page
+                    // Design Studio > Landing Pages (System Folder)
+					/*{
+                        "id" : "pageEdit_landingCanvasLP",//Edit Draft
+                        "action" : "setVisible",
+					},*/
+					/*{
+                        "id" : "pagePreview_landingCanvasLP",//Preview Page
+                        "action" : "setVisible",
+					},*/
                         
-                        // Design Studio > Landing Page Templates (System Folder)
-                        //"pageTemplateEditDraft_landingCanvasTM",//Edit Draft
-                        //"pageTemplatePreview_landingCanvasTM",//Preview Template
-                        "importTemplate_landingCanvasTM",//Import Template
+                    // Design Studio > Landing Page Templates (System Folder)
+					/*{
+                        "id" : "pageTemplateEditDraft_landingCanvasTM",//Edit Draft
+                        "action" : "setVisible",
+					},*/
+					/*{
+                        "id" : "pageTemplatePreview_landingCanvasTM",//Preview Template
+                        "action" : "setVisible",
+					},*/
+					{
+                        "id" : "importTemplate_landingCanvasTM",//Import Template
+                        "action" : "setDisabled",
+					},
                         
-                        // Design Studio > Landing Page Template
-                        //"pageTemplateEditDraft_landingTMDetail",//Edit Draft
-                        //"pageTemplatePreview_landingTMDetail",//Preview Template
-                        "importTemplate_landingTMDetail",//Import Template
+                    // Design Studio > Landing Page Template
+					/*{
+                        "id" : "pageTemplateEditDraft_landingTMDetail",//Edit Draft
+                        "action" : "setVisible",
+					},*/
+					/*{
+                        "id" : "pageTemplatePreview_landingTMDetail",//Preview Template
+                        "action" : "setVisible",
+					},*/
+					{
+                        "id" : "importTemplate_landingTMDetail",//Import Template
+                        "action" : "setDisabled",
+					},
                         
-                        // Design Studio > Emails (System Folder)
-                        //"emailEdit_landingCanvasEM",//Edit Draft
-                        //"emailPreview_landingCanvasEM",//Preview Email
-                        "gotoDeliverability_landingCanvasEM",//Deliverability Tools
+                    // Design Studio > Emails (System Folder)
+					/*{
+                        "id" : "emailEdit_landingCanvasEM",//Edit Draft
+                        "action" : "setVisible",
+					},*/
+					/*{
+                        "id" : "emailPreview_landingCanvasEM",//Preview Email
+                        "action" : "setVisible",
+					},*/
+					{
+                        "id" : "gotoDeliverability_landingCanvasEM",//Deliverability Tools
+                        "action" : "setVisible",
+					},
                         
-                        // Design Studio > Email Templates (System Folder)
-                        //"emailTemplateEdit_emailTemplates",//Edit Draft
-                        //"emailTemplatePreview_emailTemplates",//Preview Template
+                    // Design Studio > Email Templates (System Folder)
+					/*{
+                        "id" : "emailTemplateEdit_emailTemplates",//Edit Draft
+                        "action" : "setVisible",
+					},*/
+					/*{
+                        "id" : "emailTemplatePreview_emailTemplates",//Preview Template
+                        "action" : "setVisible",
+					},*/
                         
-                        // Design Studio > Email Template
-                        //"emailTemplateEdit_EMTemplateDetail",//Edit Draft
-                        //"emailTemplatePreview_EMTemplateDetail",//Preview Template
+                    // Design Studio > Email Template
+					/*{
+                        "id" : "emailTemplateEdit_EMTemplateDetail",//Edit Draft
+                        "action" : "setVisible",
+					},*/
+					/*{
+                        "id" : "emailTemplatePreview_EMTemplateDetail",//Preview Template
+                        "action" : "setVisible",
+					},*/
                         
-                        // Design Studio > Snippets (System Folder)
-                        //"snippetEdit_landingCanvasSnippet",//Edit Draft
-                        //"snippetPreview_landingCanvasSnippet",//Preview Snippet
+                    // Design Studio > Snippets (System Folder)
+					/*{
+                        "id" : "snippetEdit_landingCanvasSnippet",//Edit Draft
+                        "action" : "setVisible",
+					},*/
+					/*{
+                        "id" : "snippetPreview_landingCanvasSnippet",//Preview Snippet
+                        "action" : "setVisible",
+					},*/
                         
-                        // Design Studio > Snippet
-                        //"snippetEdit_snippetDetail",//Edit Draft
-                        //"snippetPreview_snippetDetail",//Preview Snippet
+                    // Design Studio > Snippet
+					/*{
+                        "id" : "snippetEdit_snippetDetail",//Edit Draft
+                        "action" : "setVisible",
+					},*/
+					/*{
+                        "id" : "snippetPreview_snippetDetail",//Preview Snippet
+                        "action" : "setVisible",
+					},*/
                         
-                        // Design Studio > Images and Files
-                        "imageUpload_landingCanvasIM",//Upload Image or File
-                        "imageReplace_landingCanvasIM",//Replace Image or File
+                    // Design Studio > Images and Files
+					{
+                        "id" : "imageUpload_landingCanvasIM",//Upload Image or File
+                        "action" : "setDisabled",
+					},
+					{
+                        "id" : "imageReplace_landingCanvasIM",//Replace Image or File
+                        "action" : "setVisible",
+					},
                         
-                        // Analytics > Model
-                        //"editDraft_rcmCanvasOverview",//Edit Draft
-                        //"previewModel_rcmCanvasOverview",//Preview Model
+                    // Analytics > Model
+					/*{
+                        "id" : "editDraft_rcmCanvasOverview",//Edit Draft
+                        "action" : "setVisible",
+					},*/
+					/*{
+                        "id" : "previewModel_rcmCanvasOverview",//Preview Model
+                        "action" : "setVisible",
+					},*/
                         
-                        // Admin > Admin
-                        "Invite New User",//Invite New User
+                    // Admin > Admin
+                    {
+                        "text" : "Change Password",//Change Password
+                        "action" : "setDisabled",
+					},
+					{
+                        "text" : "Invite New User",//Invite New User
+                        "action" : "setDisabled",
+					},
                         
-                        // Admin > My Account
-                        "caadEditButton",//Edit Account Settings
+                    // Admin > My Account
+                    {
+                        "text" : "Change Password",//Change Password
+                        "action" : "setDisabled",
+					},
+					{
+                        "id" : "caadEditButton",//Edit Account Settings
+                        "action" : "setDisabled",
+					},
                         
-                        // Admin > Login Settings
-                        "caadEditSecurityButton",//Edit Security Settings
-                        //"caadEditurlButton",//Edit URL Expiration
-                        "caadEditRestrictedLoginButton",//Edit IP Restrictions
-                        //"caadEditSmartListReportSettingsButton",//Smart List Report Settings
+                    // Admin > Login Settings
+					{
+                        "id" : "caadEditSecurityButton",//Edit Security Settings
+                        "action" : "setDisabled",
+					},
+					/*{
+                        "id" : "caadEditurlButton",//Edit URL Expiration
+                        "action" : "setDisabled",
+					},*/
+					{
+                        "id" : "caadEditRestrictedLoginButton",//Edit IP Restrictions
+                        "action" : "setDisabled",
+					},
+					/*{
+                        "id" : "caadEditSmartListReportSettingsButton",//Smart List Report Settings
+                        "action" : "setDisabled",
+					},*/
                         
-                        // Admin > Users & Roles > Users
-                        "Invite New User",//Invite New User
-                        "editLicenses",//Issue License
-                        "editUser",//Edit User
-                        "deleteUser",//Delete User
-                        "resetPassword",//Reset Password
+                    // Admin > Users & Roles > Users
+					{
+                        "text" : "Invite New User",//Invite New User
+                        "action" : "setDisabled",
+					},
+					{
+                        "id" : "editLicenses",//Issue License
+                        "action" : "setVisible",
+					},
+					{
+                        "id" : "editUser",//Edit User
+                        "action" : "setVisible",
+					},
+					{
+                        "id" : "deleteUser",//Delete User
+                        "action" : "setVisible",
+					},
+					{
+                        "id" : "resetPassword",//Reset Password
+                        "action" : "setVisible",
+					},
                         
-                        // Admin > Users & Roles > Roles
-                        //"newRole",//New Role
-                        "editRole",//Edit Role
-                        "deleteRole",//Delete Role
+                    // Admin > Users & Roles > Roles
+					/*{
+                        "id" : "newRole",//New Role
+                        "action" : "setDisabled",
+					},*/
+					{
+                        "id" : "editRole",//Edit Role
+                        "action" : "setVisible",
+					},
+					{
+                        "id" : "deleteRole",//Delete Role
+                        "action" : "setVisible",
+					},
                         
-                        // Admin > Workspaces & Partitions > Workspaces
-                        //"newZone",//New Workspace
-                        "editZone",//Edit Workspace
-                        "deleteZone",//Delete Workspace
+                    // Admin > Workspaces & Partitions > Workspaces
+					/*{
+                        "id" : "newZone",//New Workspace
+                        "action" : "setDisabled",
+					},*/
+					{
+                        "id" : "editZone",//Edit Workspace
+                        "action" : "setVisible",
+					},
+					{
+                        "id" : "deleteZone",//Delete Workspace
+                        "action" : "setVisible",
+					},
                         
-                        // Admin > Workspaces & Partitions > Partitions
-                        //"newPartition",//New Lead Partition
-                        "editPartition",//Edit Lead Partition
-                        "deletePartition",//Delete Lead Partition
-                        //"assignmentRules",//Assignment Rules
+                    // Admin > Workspaces & Partitions > Partitions
+					/*{
+                        "id" : "newPartition",//New Lead Partition
+                        "action" : "setDisabled",
+					},*/
+					{
+                        "id" : "editPartition",//Edit Lead Partition
+                        "action" : "setVisible",
+					},
+					{
+                        "id" : "deletePartition",//Delete Lead Partition
+                        "action" : "setVisible",
+					},
+					/*{
+                        "id" : "assignmentRules",//Assignment Rules
+                        "action" : "setDisabled",
+					},*/
                         
-                        // Admin > Location
-                        //"capdChangeButton",//Change Location Settings
+                    // Admin > Location
+					/*{
+                        "id" : "capdChangeButton",//Change Location Settings
+                        "action" : "setDisabled",
+					},*/
                         
-                        // Admin > Email > Email
-                        "Edit IP Settings",//Edit IP Settings
-                        "Edit Text Editor Settings",//Edit Text Editor Settings
-                        "Edit Email Editor Settings",//Edit Email Editor Settings
+                    // Admin > Email > Email
+					{
+                        "text" : "Edit IP Settings",//Edit IP Settings
+                        "action" : "setDisabled",
+					},
+					{
+                        "text" : "Edit Text Editor Settings",//Edit Text Editor Settings
+                        "action" : "setDisabled",
+					},
+					{
+                        "text" : "Edit Email Editor Settings",//Edit Email Editor Settings
+                        "action" : "setDisabled",
+					},
                         
-                        // Admin > Email > SPF/DKIM
-                        "addDomain",//Add Domain
-                        "deleteDomain",//Delete Domain
-                        //"dkimDetails",//DKIM Details
-                        //"checkDNS",//Check DNS
+                    // Admin > Email > SPF/DKIM
+					{
+                        "id" : "addDomain",//Add Domain
+                        "action" : "setDisabled",
+					},
+					{
+                        "id" : "deleteDomain",//Delete Domain
+                        "action" : "setVisible",
+					},
+					/*{
+                        "id" : "dkimDetails",//DKIM Details
+                        "action" : "setDisabled",
+					},*/
+					/*{
+                        "id" : "checkDNS",//Check DNS
+                        "action" : "setDisabled",
+					},*/
                         
-                        // Admin > Tags > Tags
-                        //"newButton",//New
-                        //"actionsButton",//Tag Actions
+                    // Admin > Tags > Tags
+					/*{
+                        "id" : "newButton",//New
+                        "action" : "setDisabled",
+					},*/
+					/*{
+                        "id" : "actionsButton",//Tag Actions
+                        "action" : "setVisible",
+					},*/
                         
-                        // Admin > Tags > Calendar Entry Types
-                        //"newButton",//New
-                        //"actionsButton",//Entry Actions
+                    // Admin > Tags > Calendar Entry Types
+					/*{
+                        "id" : "newButton",//New
+                        "action" : "setDisabled",
+					},*/
+					/*{
+                        "id" : "actionsButton",//Entry Actions
+                        "action" : "setVisible",
+					},*/
                         
-                        // Admin > Field Management
-                        //"fieldManagement_fmFields",//Field Actions
-                        //"New Custom Field",//New Custom Field
-                        //"exportFieldsFmFields",//Export Field Names
+                    // Admin > Field Management
+					/*{
+                        "id" : "fieldManagement_fmFields",//Field Actions
+                        "action" : "setDisabled",
+					},*/
+					/*{
+                        "text" : "New Custom Field",//New Custom Field
+                        "action" : "setDisabled",
+					},*/
+					/*{
+                        "id" : "exportFieldsFmFields",//Export Field Names
+                        "action" : "setDisabled",
+					},*/
                         
-                        // Admin > Salesforce Object Sync
-                        "refreshCadSfdcObjectSync",//Refresh Schema
-                        //"syncOjbectCadSfdcObjectSync",//Enable Sync
-                        "editVisibleFieldsCadSfdcObjectSync",//Edit Visible Fields
+                    // Admin > Salesforce Object Sync
+					{
+                        "id" : "refreshCadSfdcObjectSync",//Refresh Schema
+                        "action" : "setDisabled",
+					},
+					/*{
+                        "id" : "syncOjbectCadSfdcObjectSync",//Enable Sync
+                        "action" : "setVisible",
+					},*/
+					{
+                        "id" : "editVisibleFieldsCadSfdcObjectSync",//Edit Visible Fields
+                        "action" : "setVisible",
+					},
                         
-                        // Admin > Salesforce
-                        "enableSync",//Enable/Disable Sync
-                        //"editCredentials",//Edit Credentials
-                        //"editSyncOptions",//Edit Sync Options
+                    // Admin > Salesforce
+					{
+                        "id" : "enableSync",//Enable/Disable Sync
+                        "action" : "setVisible",
+					},
+					/*{
+                        "id" : "editCredentials",//Edit Credentials
+                        "action" : "setDisabled",
+					},*/
+					/*{
+                        "id" : "editSyncOptions",//Edit Sync Options
+                        "action" : "setDisabled",
+					},*/
                         
-                        // Admin > Sales Insight > Sales Insight
-                        "Edit API Configuration",//Edit API Configuration
-                        "Edit Settings",//Edit Settings
+                    // Admin > Sales Insight > Sales Insight
+					{
+                        "text" : "Edit API Configuration",//Edit API Configuration
+                        "action" : "setDisabled",
+					},
+					{
+                        "text" : "Edit Settings",//Edit Settings
+                        "action" : "setDisabled",
+					},
                         
-                        // Admin > Sales Insight > Email Add-in
-                        "issueLicenseCadLisAdmin",//Issue License
-                        "revokeLicenseCadLisAdmin",//Revoke License
-                        "resendLicenseCadLisAdmin",//Resend Invitation
-                        //"addSeatsCadLisAdmin",//Purchase More Seats
-                        "configAddinCadLisAdmin",//Config Add-in
+                    // Admin > Sales Insight > Email Add-in
+					{
+                        "id" : "issueLicenseCadLisAdmin",//Issue License
+                        "action" : "setDisabled",
+					},
+					{
+                        "id" : "revokeLicenseCadLisAdmin",//Revoke License
+                        "action" : "setVisible",
+					},
+					{
+                        "id" : "resendLicenseCadLisAdmin",//Resend Invitation
+                        "action" : "setVisible",
+					},
+					/*{
+                        "id" : "addSeatsCadLisAdmin",//Purchase More Seats
+                        "action" : "setDisabled",
+					},*/
+					{
+                        "id" : "configAddinCadLisAdmin",//Config Add-in
+                        "action" : "setVisible",
+					},
                         
-                        // Admin > Landing Pages > Landing Pages
-                        //"editDomainSettings",//Edit Settings
+                    // Admin > Landing Pages > Landing Pages
+					/*{
+                        "id" : "editDomainSettings",//Edit Settings
+                        "action" : "setVisible",
+					},*/
                         
-                        // Admin > Landing Pages > Rules
-                        //"Rules Actions",//Rules Actions
-                        "editRule",//Edit Rule
-                        "deleteRule",//Delete Rule
+                    // Admin > Landing Pages > Rules
+					/*{
+                        "text" : "Rules Actions",//Rules Actions
+                        "action" : "setVisible",
+					},*/
+					{
+                        "id" : "editRule",//Edit Rule
+                        "action" : "setVisible",
+					},
+					{
+                        "id" : "deleteRule",//Delete Rule
+                        "action" : "setVisible",
+					},
                         
-                        // Admin > Web Services
-                        "editIpRestriction",//Edit IP Restrictions
+                    // Admin > Web Services
+					{
+                        "id" : "editIpRestriction",//Edit IP Restrictions
+                        "action" : "setDisabled",
+					},
                         
-                        // Admin > LaunchPoint
-                        //"newLaunchpoint",//New
-                        //"launchpointActions",//Service Actions
-                        "editWebinarLogin",//"Edit Service"
+                    // Admin > LaunchPoint
+					/*{
+                        "id" : "newLaunchpoint",//New
+                        "action" : "setDisabled",
+					},*/
+					/*{
+                        "id" : "launchpointActions",//Service Actions
+                        "action" : "setVisible",
+					},*/
+					{
+                        "id" : "editWebinarLogin",//"Edit Service"
+                        "action" : "setVisible",
+					},
                         
-                        // Admin > Webhooks
-                        //"newWebhookLogin",//New Webhook
-                        //"Webhooks Actions",//Webhooks Actions
+                    // Admin > Webhooks
+					/*{
+                        "id" : "newWebhookLogin",//New Webhook
+                        "action" : "setDisabled",
+					},*/
+					/*{
+                        "text" : "Webhooks Actions",//Webhooks Actions
+                        "action" : "setVisible",
+					},*/
                         
-                        // Admin > Revenue Cycle Analytics > Custom Field Sync
-                        "cadChangeButton",//Edit Sync Option
-                    ];
+                    // Admin > Revenue Cycle Analytics > Custom Field Sync
+					{
+                        "id" : "cadChangeButton",//Edit Sync Option
+                        "action" : "setVisible",
+					},
+                ];
                 
                 itemsToHide.forEach(function(itemToHide) {
-                    item = c.topToolbar.items.get(itemToHide);
+                    if (itemToHide.id) {
+                        item = c.topToolbar.items.get(itemToHide.id);
+                    }
+                    else if (itemToHide.text) {
+                        item = c.topToolbar.find("text", itemToHide.text)[0];
+                    }
                     if (item) {
-                        if (itemToHide == "gotoDeliverability_landingEMDetail") {
+                        if (itemToHide.id == "gotoDeliverability_landingEMDetail") {
                             item.setVisible(false);
                         }
-                        else {
+                        else if (itemToHide.action == "setVisible") {
                             item.setVisible(visible);
                         }
-                    }
-                    else {
-                        item = c.topToolbar.find("text", itemToHide)[0];
-                        if (item) {
-                            item.setVisible(visible);
+                        else if (itemToHide.action == "setDisabled") {
+                            item.setDisabled(!visible);
                         }
                     }
                 });
