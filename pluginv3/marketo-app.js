@@ -5331,7 +5331,7 @@ if ((currentUrl.search(mktoAppDomain) != -1
                     }
                 }
             }
-            else {
+            else if (accountString.search("mktodemoaccount*") != -1) {
                 APP.overrideSuperballMenuItems();
                 
                 if (currUrlFragment == mktoMyMarketoFragment) {
@@ -5346,7 +5346,7 @@ if ((currentUrl.search(mktoAppDomain) != -1
                     }
                 }
             }
-            APP.overrideSuperballMenuItems();
+//            APP.overrideSuperballMenuItems();
         }
     }, 0);
 }
