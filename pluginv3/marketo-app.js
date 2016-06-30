@@ -3257,7 +3257,7 @@ APP.hideToolbarItems = function() {
             && c.topToolbar
             && c.topToolbar.items) {
                 console.log("Marketo App > Executing: Disable Toolbar items for ALL in ALL");
-                console.log(c.topToolbar.items);
+                
                 var item,
                     canvas = MktCanvas.getActiveTab(),
                     visible = !APP.evaluateMenu("button", null, canvas, null),
