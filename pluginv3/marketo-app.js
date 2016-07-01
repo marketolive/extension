@@ -4503,11 +4503,11 @@ APP.overlayEmail = function(action) {
                         currMktoText.innerHTML = dayOfWeek + ", " + month + " the " + dayOfMonth + " " + year;
                         isMktoSubTextReplaced = true;
                     }
-                }
-                
-                if (isMktoSubTextReplaced
-                && isMktoTextReplaced) {
-                    break;
+                    
+                    if (isMktoSubTextReplaced
+                    && isMktoTextReplaced) {
+                        break;
+                    }
                 }
             }
             
