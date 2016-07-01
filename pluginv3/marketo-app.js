@@ -5281,8 +5281,8 @@ if ((currentUrl.search(mktoAppDomain) != -1
                                     Ext4.getStore('Email').load(loadParameters);
                                 }
                                 APP.overlayEmail("edit");
-                                // Overlay Email Designer w/ Company Logo and Color                          
-    /*                            switch (currUrlFragment) {
+                                // Overlay Email Designer w/ Company Logo and Color
+/*                                switch (currUrlFragment) {
                                     case customCompanyEmail106Fragment:
                                         APP.overlayEmail("edit");
                                         break;
