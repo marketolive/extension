@@ -4408,7 +4408,6 @@ APP.overlayEmail = function(action) {
     var isEmailEditor2,
         clearOverlayVars,
         overlay,
-        ii,
         isMktoImgReplaced = isMktoTextReplaced = isMktoSubTextReplaced = isMktoButtonReplaced = isMktoEmail1Replaced = isDesktopPreviewReplaced = isPhonePreviewReplaced = false,
         dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
         monthNames = ["JAN", "FEB", "MAR", "APR", "MAY", "JUNE", "JULY", "AUG", "SEPT", "OCT", "NOV", "DEC"],
@@ -4478,10 +4477,11 @@ APP.overlayEmail = function(action) {
                     mktoButtons = emailBody.getElementsByClassName("secondary-font button");
             
                 if (!isMktoImgReplaced
-                && mktoImgs) {
+                && mktoImgs.length != 0) {
                     console.log(mktoImgs);
                     
-                    var currMktoImg,
+                    var ii,
+                        currMktoImg,
                         currMktoImgMktoName,
                         currMktoImgTag;
                     
@@ -4505,8 +4505,9 @@ APP.overlayEmail = function(action) {
                 
                 if (!isMktoSubTextReplaced
                 && !isMktoTextReplaced
-                && mktoTexts) {
-                    var currMktoText,
+                && mktoTexts.length != 0) {
+                    var ii,
+                        currMktoText,
                         currMktoTextMktoName;
                     
                     for (ii = 0; ii < mktoTexts.length; ii++) {
@@ -4538,8 +4539,9 @@ APP.overlayEmail = function(action) {
                 }
                     
                 if (!isMktoButtonReplaced
-                && mktoButtons) {
-                    var currMktoButton;
+                && mktoButtons.length != 0) {
+                    var ii,
+                        currMktoButton;
                     
                     for (ii = 0; ii < mktoButtons.length; ii++) {
                         currMktoButton = mktoButtons[ii];
