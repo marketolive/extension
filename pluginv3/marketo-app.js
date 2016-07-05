@@ -4435,7 +4435,9 @@ APP.overlayEmail = function(action) {
         logo = APP.getCookie("logo"),
         color = APP.getCookie("color"),
         company,
-        companyName;
+        companyName,
+        numOfIframes = 0,
+        numOfIframesReplaced = 0;
     
     switch (date.getDate()) {
         case 1:
@@ -4464,105 +4466,116 @@ APP.overlayEmail = function(action) {
     if (color == null) {
         color = defaultColor;
     }
-
-    isEmailEditor2 = window.setInterval(function() {
-        overlay = function(emailDocument) {
-            mktoImgs = emailDocument.getElementsByClassName("mktoImg");
-            mktoTexts = emailDocument.getElementsByClassName("mktoText");
-            mktoButtons = emailDocument.getElementsByClassName("secondary-font button");
-            logoSwapCompany = emailDocument.getElementById("logo-swap-company");
-            logoSwapContainer = emailDocument.getElementById("logo-swap-container");
-            logoSwapCompanyContainer = emailDocument.getElementById("logo-swap-company-container");
-            logoBkg = emailDocument.getElementById("logo-bkg");
-            buttonBkg = emailDocument.getElementById("button-bkg");
-            
-            if (mktoImgs
-            && !isMktoImgReplaced) {
-                for (ii = 0; ii < mktoImgs.length; ii++) {
-                    currMktoImg = mktoImgs[ii];
-                    
-                    if (currMktoImg.getAttribute("mktoname").search(logoMktoNameRegex) != -1) {
-                        console.log("Marketo App > Overlaying: Email 2.0 Company Logo");
-                        currMktoImg.getElementsByTagName("img")[0].setAttribute("src", logo);
-                        isMktoImgReplaced = true;
-                        break;
-                    }
+    
+    overlay = function(emailDocument) {
+        mktoImgs = emailDocument.getElementsByClassName("mktoImg");
+        mktoTexts = emailDocument.getElementsByClassName("mktoText");
+        mktoButtons = emailDocument.getElementsByClassName("secondary-font button");
+        logoSwapCompany = emailDocument.getElementById("logo-swap-company");
+        logoSwapContainer = emailDocument.getElementById("logo-swap-container");
+        logoSwapCompanyContainer = emailDocument.getElementById("logo-swap-company-container");
+        logoBkg = emailDocument.getElementById("logo-bkg");
+        buttonBkg = emailDocument.getElementById("button-bkg");
+        
+        if (mktoImgs
+        && !isMktoImgReplaced) {
+            for (ii = 0; ii < mktoImgs.length; ii++) {
+                currMktoImg = mktoImgs[ii];
+                
+                if (currMktoImg.getAttribute("mktoname").search(logoMktoNameRegex) != -1) {
+                    console.log("Marketo App > Overlaying: Email 2.0 Company Logo");
+                    currMktoImg.getElementsByTagName("img")[0].setAttribute("src", logo);
+                    isMktoImgReplaced = true;
+                    break;
                 }
-            }
-            
-            if (mktoTexts
-            && !isMktoSubTextReplaced
-            && !isMktoTextReplaced) {
-                for (ii = 0; ii < mktoTexts.length; ii++) {
-                    currMktoText = mktoTexts[ii];
-                    
-                    if (currMktoText.getAttribute("mktoname").search(mainTitleMktoNameRegex) != -1) {
-                        console.log("Marketo App > Overlaying: Email 2.0 Company Name");
-                        currMktoText.innerHTML = companyName + " Invites You<br><br>PREMIER BUSINESS EVENT<br>OF THE YEAR";
-                        isMktoTextReplaced = true;
-                    }
-                    else if (currMktoText.getAttribute("mktoname").search(subTitleMktoNameRegex) != -1) {
-                        console.log("Marketo App > Overlaying: Email 2.0 Today's Date");
-                        currMktoText.innerHTML = dayOfWeek + ", " + month + " the " + dayOfMonth + " " + year;
-                        isMktoSubTextReplaced = true;
-                    }
-                    
-                    if (isMktoSubTextReplaced
-                    && isMktoTextReplaced) {
-                        break;
-                    }
-                }
-            }
-            
-            if (mktoButtons
-            && !isMktoButtonReplaced) {
-                for (ii = 0; ii < mktoButtons.length; ii++) {
-                    currMktoButton = mktoButtons[ii];
-                    
-                    if (currMktoButton.innerHTML.search(buttonTextRegex) != -1) {
-                        console.log("Marketo App > Overlaying: Email 2.0  Company Color");
-                        currMktoButton.style.backgroundColor = color;
-                        isMktoButtonReplaced = true;
-                        break;
-                    }
-                }
-            }
-            
-            if (logoSwapCompanyContainer
-            && logoSwapContainer
-            && logoSwapCompany
-            && logoBkg) {
-                console.log("Marketo App > Overlaying: Email 1.0 Company Logo & Color");
-                logoBkg.style.backgroundColor = color;
-                logoSwapCompany.setAttribute("src", logo);
-                logoSwapContainer.style.display = "none";
-                logoSwapCompanyContainer.style.display = "block";
-                if (buttonBkg) {
-                    buttonBkg.style.backgroundColor = color;
-                }
-                isMktoEmail1Replaced = true;
-            }
-            
-            if ((isMktoButtonReplaced
-                && isMktoSubTextReplaced
-                && isMktoTextReplaced
-                && isMktoImgReplaced)
-            || isMktoEmail1Replaced) {
-                window.clearInterval(isEmailEditor2);
             }
         }
         
+        if (mktoTexts
+        && !isMktoSubTextReplaced
+        && !isMktoTextReplaced) {
+            for (ii = 0; ii < mktoTexts.length; ii++) {
+                currMktoText = mktoTexts[ii];
+                
+                if (currMktoText.getAttribute("mktoname").search(mainTitleMktoNameRegex) != -1) {
+                    console.log("Marketo App > Overlaying: Email 2.0 Company Name");
+                    currMktoText.innerHTML = companyName + " Invites You<br><br>PREMIER BUSINESS EVENT<br>OF THE YEAR";
+                    isMktoTextReplaced = true;
+                }
+                else if (currMktoText.getAttribute("mktoname").search(subTitleMktoNameRegex) != -1) {
+                    console.log("Marketo App > Overlaying: Email 2.0 Today's Date");
+                    currMktoText.innerHTML = dayOfWeek + ", " + month + " the " + dayOfMonth + " " + year;
+                    isMktoSubTextReplaced = true;
+                }
+                
+                if (isMktoSubTextReplaced
+                && isMktoTextReplaced) {
+                    break;
+                }
+            }
+        }
+            
+        if (mktoButtons
+        && !isMktoButtonReplaced) {
+            for (ii = 0; ii < mktoButtons.length; ii++) {
+                currMktoButton = mktoButtons[ii];
+                
+                if (currMktoButton.innerHTML.search(buttonTextRegex) != -1) {
+                    console.log("Marketo App > Overlaying: Email 2.0  Company Color");
+                    currMktoButton.style.backgroundColor = color;
+                    isMktoButtonReplaced = true;
+                    break;
+                }
+            }
+        }
+        
+        if (logoSwapCompanyContainer
+        && logoSwapContainer
+        && logoSwapCompany
+        && logoBkg) {
+            console.log("Marketo App > Overlaying: Email 1.0 Company Logo & Color");
+            logoBkg.style.backgroundColor = color;
+            logoSwapCompany.setAttribute("src", logo);
+            logoSwapContainer.style.display = "none";
+            logoSwapCompanyContainer.style.display = "block";
+            if (buttonBkg) {
+                buttonBkg.style.backgroundColor = color;
+            }
+            isMktoEmail1Replaced = true;
+        }
+        
+        if ((isMktoButtonReplaced
+            && isMktoSubTextReplaced
+            && isMktoTextReplaced
+            && isMktoImgReplaced)
+        || isMktoEmail1Replaced) {
+            return true;
+        }
+    }
+
+    isEmailEditor2 = window.setInterval(function() {
         if (action == "edit") {
-            overlay(document.getElementsByTagName("iframe")[0].contentWindow.document);
+            if (overlay(document.getElementsByTagName("iframe")[0].contentWindow.document) == true) {
+                window.clearInterval(isEmailEditor2);
+            }
         }
         else if (action == "preview") {
             emailDocuments = document.getElementsByTagName("iframe");
+            
             for (ii = 0; ii < emailDocuments.length; ii++) {
                 currEmailDocument = emailDocuments[ii];
                 
                 if (currEmailDocument.getAttribute("id").search("^iframeComponent-") != -1) {
-                    overlay(currEmailDocument);
+                    numOfIframes++;
+                    
+                    if (overlay(currEmailDocument) == true) {
+                        numOfIframesReplaced++;
+                    }
                 }
+            }
+            
+            if (numOfIframesReplaced == numOfIframes) {
+                window.clearInterval(isEmailEditor2);
             }
         }
     }, 0);
