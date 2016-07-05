@@ -4590,6 +4590,7 @@ APP.overlayEmail = function(action) {
         }
         else if (action == "preview") {
             console.log("Marketo App > Overlaying: Email Previewer");
+            console.log(document.getElementsByTagName("iframe"));
             
             if (!isDesktopPreviewReplaced
             && overlay(document.getElementsByTagName("iframe")[2].contentWindow.document)) {
