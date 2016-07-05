@@ -5426,90 +5426,90 @@ if ((currentUrl.search(mktoAppDomain) != -1
                     console.log("Marketo App > Window: Hash Changed");
 
                     currentUrl = window.location.href;
-                    console.log("Marketo App > Window: URL = " + currentUrl);
+//                    console.log("Marketo App > Window: URL = " + currentUrl);
                     // Getting the URL fragment, the part after the #
-                    if (Mkt3
-                    && Mkt3.DL
-                    && Mkt3.DL.getDlToken()) {
-                        var isNewUrlFragment = window.setInterval(function() {
+                    var isNewUrlFragment = window.setInterval(function() {
+                        if (Mkt3
+                        && Mkt3.DL
+                        && Mkt3.DL.getDlToken()
+                        && Mkt3.DL.dl
+                        && Mkt3.DL.dl.dlCompCode) {
                             if (currUrlFragment != Mkt3.DL.getDlToken()) {
+                                console.log("Marketo App > Loaded: New URL Fragment");
                                 window.clearInterval(isNewUrlFragment);
-                                currUrlFragment = Mkt3.DL.getDlToken();
-                                console.log("Marketo App > Window: URL Fragment = " + currUrlFragment);
                                 
-                                if (Mkt3.DL.dl
-                                && Mkt3.DL.dl.dlCompCode) {
-                                    currCompFragment = Mkt3.DL.dl.dlCompCode;
-                                    console.log("Marketo App > Window: Comp Fragment = " + currCompFragment);
+                                currUrlFragment = Mkt3.DL.getDlToken();
+                                currCompFragment = Mkt3.DL.dl.dlCompCode;
+                                console.log("Marketo App > Window: URL Fragment = " + currUrlFragment);
+                                console.log("Marketo App > Window: Comp Fragment = " + currCompFragment);
+                                
+                                // Email Deliverability
+                                if (currUrlFragment == mktoMyMarketoFragment) {
+                                    APP.overrideHomeTiles();
+                                }
+                                else if (currUrlFragment == mktoMarketingActivitiesDefaultFragment
+                                || currUrlFragment == mktoMarketingActivitiesMarketingFragment
+                                || currUrlFragment == mktoMarketingActivitiesJapaneseFragment
+                                || currUrlFragment == mktoMarketingActivitiesFinservFragment
+                                || currUrlFragment == mktoMarketingActivitiesHealthcareFragment
+                                || currUrlFragment == mktoMarketingActivitiesHigherEdFragment
+                                || currUrlFragment == mktoLeadDatabaseDefaultFragment
+                                || currUrlFragment == mktoLeadDatabaseMarketingFragment
+                                || currUrlFragment == mktoLeadDatabaseJapaneseFragment
+                                || currUrlFragment == mktoLeadDatabaseFinservFragment
+                                || currUrlFragment == mktoLeadDatabaseHealthcareFragment
+                                || currUrlFragment == mktoLeadDatabaseHigherEdFragment) {
+                                    APP.disableButtons();
+                                }
+                                else if (currUrlFragment == mktoAnalyticsDefaultFragment) {
+                                    APP.overrideAnalyticsTiles();
+                                }
+
+                                if (currCompFragment != mktoEmailDesignerFragment
+                                && currCompFragment != mktoEmailPreviewFragment
+                                && currCompFragment != mktoLandingPageDesignerFragment
+                                && currCompFragment != mktoLandingPagePreviewFragment
+                                && currCompFragment != mktoFormWizardFragment
+                                && currCompFragment != mktoMobilePushNotificationWizardFragment
+                                && currCompFragment != mktoSocialAppWizardFragment
+                                && currCompFragment != mktoABtestWizardFragment
+                                && currCompFragment != mktoEmailTestWizardFragment
+                                && currUrlFragment != mktoMyMarketoFragment) {
+            /*
+                                    var isMktCanvasHash = window.setInterval(function() {
+                                        if (MktCanvas
+                                        && MktCanvas.getActiveTab()
+                                        && MktCanvas.getActiveTab().config) {
+                                            console.log("Marketo App > Location: Marketo Canvas Active Tab");
+                                            
+                                            window.clearInterval(isMktCanvasHash);
+                                            var currWorkspaceId = MktCanvas.getActiveTab().config.accessZoneId;
+                                            if (currWorkspaceId != prevWorkspaceId) {
+                                                prevWorkspaceId = currWorkspaceId
+                                            }
+                                        }
+                                    }, 0);
+            */
+                                    // Marketing ROI, Funnel Analysis
+                                    if (currUrlFragment == mktoOppInfluenceAnalyzerFragment
+                                    || currUrlFragment == mktoProgramAnalyzerFragment
+                                    || currUrlFragment == mktoModeler106Fragment
+                                    || currUrlFragment == mktoModeler106abFragment
+                                    || currUrlFragment == mktoSuccessPathAnalyzerFragment) {
+                                        console.log("Marketo App > Location: Analytics");
+
+                                        APP.injectAnalyzerNavBar();
+                                    }
+                                }
+                                else if (currUrlFragment.search(mktoEmailPreviewFragmentRegex) != -1) {
+                                    console.log("Marketo App > Location: Email Previewer");
+                                    
+                                    // Overlay Email Previewer w/ Company Logo and Color
+                                    APP.overlayEmail("preview");
                                 }
                             }
-                        }, 0);
-                    }
-                    
-                    // Email Deliverability
-                    if (currUrlFragment == mktoMyMarketoFragment) {
-                        APP.overrideHomeTiles();
-                    }
-					else if (currUrlFragment == mktoMarketingActivitiesDefaultFragment
-                    || currUrlFragment == mktoMarketingActivitiesMarketingFragment
-                    || currUrlFragment == mktoMarketingActivitiesJapaneseFragment
-                    || currUrlFragment == mktoMarketingActivitiesFinservFragment
-                    || currUrlFragment == mktoMarketingActivitiesHealthcareFragment
-                    || currUrlFragment == mktoMarketingActivitiesHigherEdFragment
-                    || currUrlFragment == mktoLeadDatabaseDefaultFragment
-                    || currUrlFragment == mktoLeadDatabaseMarketingFragment
-                    || currUrlFragment == mktoLeadDatabaseJapaneseFragment
-                    || currUrlFragment == mktoLeadDatabaseFinservFragment
-                    || currUrlFragment == mktoLeadDatabaseHealthcareFragment
-                    || currUrlFragment == mktoLeadDatabaseHigherEdFragment) {
-						APP.disableButtons();
-					}
-                    else if (currUrlFragment == mktoAnalyticsDefaultFragment) {
-                        APP.overrideAnalyticsTiles();
-                    }
-
-                    if (currCompFragment != mktoEmailDesignerFragment
-                    && currCompFragment != mktoEmailPreviewFragment
-                    && currCompFragment != mktoLandingPageDesignerFragment
-                    && currCompFragment != mktoLandingPagePreviewFragment
-                    && currCompFragment != mktoFormWizardFragment
-                    && currCompFragment != mktoMobilePushNotificationWizardFragment
-                    && currCompFragment != mktoSocialAppWizardFragment
-                    && currCompFragment != mktoABtestWizardFragment
-                    && currCompFragment != mktoEmailTestWizardFragment
-					&& currUrlFragment != mktoMyMarketoFragment) {
-/*
-                        var isMktCanvasHash = window.setInterval(function() {
-							if (MktCanvas
-                            && MktCanvas.getActiveTab()
-                            && MktCanvas.getActiveTab().config) {
-								console.log("Marketo App > Location: Marketo Canvas Active Tab");
-								
-								window.clearInterval(isMktCanvasHash);
-								var currWorkspaceId = MktCanvas.getActiveTab().config.accessZoneId;
-								if (currWorkspaceId != prevWorkspaceId) {
-                                    prevWorkspaceId = currWorkspaceId
-								}
-							}
-						}, 0);
-*/
-                        // Marketing ROI, Funnel Analysis
-                        if (currUrlFragment == mktoOppInfluenceAnalyzerFragment
-						|| currUrlFragment == mktoProgramAnalyzerFragment
-						|| currUrlFragment == mktoModeler106Fragment
-						|| currUrlFragment == mktoModeler106abFragment
-						|| currUrlFragment == mktoSuccessPathAnalyzerFragment) {
-                            console.log("Marketo App > Location: Analytics");
-
-                            APP.injectAnalyzerNavBar();
                         }
-                    }
-                    else if (currUrlFragment.search(mktoEmailPreviewFragmentRegex) != -1) {
-                        console.log("Marketo App > Location: Email Previewer");
-                        
-                        // Overlay Email Previewer w/ Company Logo and Color
-                        APP.overlayEmail("preview");
-                    }
+                    }, 0);
                 }
             }
             else {
