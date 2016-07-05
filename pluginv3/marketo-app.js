@@ -5430,13 +5430,18 @@ if ((currentUrl.search(mktoAppDomain) != -1
                     if (Mkt3
                     && Mkt3.DL
                     && Mkt3.DL.getDlToken()) {
-                        currUrlFragment = Mkt3.DL.getDlToken();
-                        console.log("Marketo App > Window: URL Fragment = " + currUrlFragment);
-                        
-                        if (Mkt3.DL.dl
-                        && Mkt3.DL.dl.dlCompCode) {
-                            currCompFragment = Mkt3.DL.dl.dlCompCode;
-                        }
+                        var isNewUrlFragment = window.setInterval(function() {
+                            if (currUrlFragment != Mkt3.DL.getDlToken()) {
+                                window.clearInterval(isNewUrlFragment);
+                                currUrlFragment = Mkt3.DL.getDlToken();
+                                console.log("Marketo App > Window: URL Fragment = " + currUrlFragment);
+                                
+                                if (Mkt3.DL.dl
+                                && Mkt3.DL.dl.dlCompCode) {
+                                    currCompFragment = Mkt3.DL.dl.dlCompCode;
+                                }
+                            }
+                        }, 0);
                     }
                     
                     // Email Deliverability
