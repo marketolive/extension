@@ -4552,6 +4552,11 @@ APP.overlayEmail = function(action) {
                 && isMktoTextReplaced
                 && isMktoImgReplaced)
             || isMktoEmail1Replaced) {
+                isMktoImgReplaced = false;
+                isMktoTextReplaced = false;
+                isMktoSubTextReplaced = false;
+                isMktoButtonReplaced = false;
+                isMktoEmail1Replaced = false;
                 return true;
             }
         }
@@ -4572,8 +4577,8 @@ APP.overlayEmail = function(action) {
             console.log("Marketo App > Overlaying: Email Previewer");
             emailIframes = document.getElementsByTagName("iframe");
             
-            if (overlay(emailIframes[0].contentWindow.document)
-            && overlay(emailIframes[1].contentWindow.document)) {
+            if (overlay(emailIframes[2].contentWindow.document)
+            && overlay(emailIframes[3].contentWindow.document)) {
                 console.log("Marketo App > Overlaying: Email Interval is Cleared");
                 window.clearInterval(isEmailEditor2);
             }
@@ -5248,7 +5253,7 @@ if ((currentUrl.search(mktoAppDomain) != -1
                     }, 0);
                     
                     return;
-                } 
+                }
                 else {
                     console.log("Marketo App > Location: Designers/Wizards");
 
