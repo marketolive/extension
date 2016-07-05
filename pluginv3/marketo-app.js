@@ -5439,6 +5439,7 @@ if ((currentUrl.search(mktoAppDomain) != -1
                                 if (Mkt3.DL.dl
                                 && Mkt3.DL.dl.dlCompCode) {
                                     currCompFragment = Mkt3.DL.dl.dlCompCode;
+                                    console.log("Marketo App > Window: Comp Fragment = " + currCompFragment);
                                 }
                             }
                         }, 0);
