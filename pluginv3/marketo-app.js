@@ -4404,8 +4404,7 @@ APP.overlayEmail = function(action) {
 
     var isEmailEditor2,
         overlay,
-        emailDocuments,
-        currEmailDocument,
+        emailBody,
         mktoImgs,
         currMktoImg,
         mktoTexts,
@@ -4436,6 +4435,8 @@ APP.overlayEmail = function(action) {
         color = APP.getCookie("color"),
         company,
         companyName,
+        emailIframes,
+        currEmailIframe,
         numOfIframes = 0,
         numOfIframesReplaced = 0;
     
@@ -4468,9 +4469,10 @@ APP.overlayEmail = function(action) {
     }
     
     overlay = function(emailDocument) {
-        mktoImgs = emailDocument.getElementsByClassName("mktoImg");
-        mktoTexts = emailDocument.getElementsByClassName("mktoText");
-        mktoButtons = emailDocument.getElementsByClassName("secondary-font button");
+        emailBody = emailDocument.getElementsByTagName("body")[0];
+        mktoImgs = emailBody.getElementsByClassName("mktoImg");
+        mktoTexts = emailBody.getElementsByClassName("mktoText");
+        mktoButtons = emailBody.getElementsByClassName("secondary-font button");
         logoSwapCompany = emailDocument.getElementById("logo-swap-company");
         logoSwapContainer = emailDocument.getElementById("logo-swap-container");
         logoSwapCompanyContainer = emailDocument.getElementById("logo-swap-company-container");
@@ -4556,22 +4558,22 @@ APP.overlayEmail = function(action) {
     isEmailEditor2 = window.setInterval(function() {
         if (action == "edit") {
             console.log("Marketo App > Overlaying: Email Editor");
-            if (overlay(document.getElementsByTagName("iframe")[0].contentWindow.document.getElementsByTagName("body")[0]) == true) {
+            if (overlay(document.getElementsByTagName("iframe")[0].contentWindow.document) == true) {
                 console.log("Marketo App > Overlaying: Email Interval is Cleared");
                 window.clearInterval(isEmailEditor2);
             }
         }
         else if (action == "preview") {
             console.log("Marketo App > Overlaying: Email Previewer");
-            emailDocuments = document.getElementsByTagName("iframe");
+            emailIframes = document.getElementsByTagName("iframe");
             
-            for (ii = 0; ii < emailDocuments.length; ii++) {
-                currEmailDocument = emailDocuments[ii];
+            for (ii = 0; ii < emailIframes.length; ii++) {
+                currEmailIframe = emailIframes[ii];
                 
-                if (currEmailDocument.getAttribute("id").search("^iframeComponent-") != -1) {
+                if (currEmailIframe.getAttribute("id").search("^iframeComponent-") != -1) {
                     numOfIframes++;
                     
-                    if (overlay(currEmailDocument.contentWindow.document.getElementsByTagName("body")[0]) == true) {
+                    if (overlay(currEmailIframe.contentWindow.document) == true) {
                         numOfIframesReplaced++;
                     }
                 }
