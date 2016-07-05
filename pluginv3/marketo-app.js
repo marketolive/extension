@@ -67,6 +67,7 @@ var currentUrl = window.location.href,
     mktoSuccessPathAnalyzerFragment = "AR1682A1!",
     mktoAdBridgeSmartListFragment = "SL1119566B2LA1",
     mktoEmailDesignerFragment = "EME",
+    mktoEmailPreviewFragmentRegex = new RegExp("^EME[0-9]+&isPreview", "i"),
     mktoEmailPreviewFragment = "EMP",
     mktoLandingPageDesignerFragment = "LPE",
     mktoLandingPagePreviewFragment = "LPP",
@@ -5286,7 +5287,7 @@ if ((currentUrl.search(mktoAppDomain) != -1
 
                     switch (currCompFragment) {
                         case mktoEmailDesignerFragment:
-                            if (Mkt3.DL.getToken().search("&isPreview") == -1) {
+                            if (currUrlFragment.search(mktoEmailPreviewFragmentRegex) == -1) {
                                 console.log("Marketo App > Location: Email Editor");
                                 
                                 if (Ext4
@@ -5426,11 +5427,15 @@ if ((currentUrl.search(mktoAppDomain) != -1
 
                     currentUrl = window.location.href;
                     // Getting the URL fragment, the part after the #
-                    currUrlFragment = Mkt3.DL.getDlToken();
-                    
-                    if (Mkt3.DL.dl
-                    && Mkt3.DL.dl.dlCompCode) {
-                        currCompFragment = Mkt3.DL.dl.dlCompCode;
+                    if (Mkt3
+                    && Mkt3.DL
+                    && Mkt3.DL.getDlToken()) {
+                        currUrlFragment = Mkt3.DL.getDlToken();
+                        
+                        if (Mkt3.DL.dl
+                        && Mkt3.DL.dl.dlCompCode) {
+                            currCompFragment = Mkt3.DL.dl.dlCompCode;
+                        }
                     }
                     
                     // Email Deliverability
@@ -5492,7 +5497,7 @@ if ((currentUrl.search(mktoAppDomain) != -1
                         }
                     }
                     else if (currCompFragment == mktoEmailDesignerFragment
-                    && Mkt3.DL.getToken().search("&isPreview") != -1) {
+                    && currUrlFragment.search(mktoEmailPreviewFragmentRegex) != -1) {
                         console.log("Marketo App > Location: Email Previewer");
                         
                         // Overlay Email Previewer w/ Company Logo and Color
