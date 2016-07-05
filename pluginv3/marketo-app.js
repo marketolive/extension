@@ -4423,7 +4423,8 @@ APP.overlayEmail = function(action) {
         logo = APP.getCookie("logo"),
         color = APP.getCookie("color"),
         company,
-        companyName;
+        companyName,
+        count = 0;
     
     switch (date.getDate()) {
         case 1:
@@ -4459,6 +4460,7 @@ APP.overlayEmail = function(action) {
     }
     
     overlay = function(emailDocument) {
+        count++;
         if (emailDocument) {
             var emailBody = emailDocument.getElementsByTagName("body")[0],
                 logoSwapCompany = emailDocument.getElementById("logo-swap-company"),
@@ -4597,10 +4599,12 @@ APP.overlayEmail = function(action) {
         }
         else if (action == "preview") {
             console.log("Marketo App > Overlaying: Email Previewer");
-            
-            if (overlay(document.getElementsByTagName("iframe")[2].contentWindow.document)) {
-                //isDesktopPreviewReplaced = true;
-                window.clearInterval(isEmailEditor2);
+            if (document.getElementsByTagName("iframe")[2].contentWindow.document) {
+                if (count > 5000
+                || overlay(document.getElementsByTagName("iframe")[2].contentWindow.document)) {
+                    //isDesktopPreviewReplaced = true;
+                    window.clearInterval(isEmailEditor2);
+                }
             }
             
 /*            if (!isPhonePreviewReplaced
