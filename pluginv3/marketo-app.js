@@ -5426,6 +5426,7 @@ if ((currentUrl.search(mktoAppDomain) != -1
                     console.log("Marketo App > Window: Hash Changed");
 
                     currentUrl = window.location.href;
+                    console.log("Marketo App > Window: URL = " + currentUrl);
                     // Getting the URL fragment, the part after the #
                     if (Mkt3
                     && Mkt3.DL
