@@ -4460,8 +4460,6 @@ APP.overlayEmail = function(action) {
     
     overlay = function(emailDocument) {
         if (emailDocument) {
-            console.log(emailDocument);
-            
             var emailBody = emailDocument.getElementsByTagName("body")[0],
                 logoSwapCompany = emailDocument.getElementById("logo-swap-company"),
                 logoSwapContainer = emailDocument.getElementById("logo-swap-container"),
@@ -4600,9 +4598,9 @@ APP.overlayEmail = function(action) {
         else if (action == "preview") {
             console.log("Marketo App > Overlaying: Email Previewer");
             
-            if (!isDesktopPreviewReplaced
-            && overlay(document.getElementsByTagName("iframe")[2].contentWindow.document)) {
-                isDesktopPreviewReplaced = true;
+            if (overlay(document.getElementsByTagName("iframe")[2].contentWindow.document)) {
+                //isDesktopPreviewReplaced = true;
+                window.clearInterval(isEmailEditor2);
             }
             
 /*            if (!isPhonePreviewReplaced
@@ -4614,12 +4612,12 @@ APP.overlayEmail = function(action) {
             && isDesktopPreviewReplaced) {
                 console.log("Marketo App > Overlaying: Email Interval is Cleared");
                 window.clearInterval(isEmailEditor2);
-            }*/
+            }
             
             if (isDesktopPreviewReplaced) {
                 console.log("Marketo App > Overlaying: Email Interval is Cleared");
                 window.clearInterval(isEmailEditor2);
-            }
+            }*/
         }
     }, 0);
 }
