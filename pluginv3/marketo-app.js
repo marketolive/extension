@@ -4406,6 +4406,7 @@ APP.overlayEmail = function(action) {
     console.log("Marketo App > Overlaying: Email");
 
     var isEmailEditor2,
+        clearOverlayVars,
         overlay,
         emailBody,
         mktoImgs,
@@ -4466,6 +4467,11 @@ APP.overlayEmail = function(action) {
     
     if (color == null) {
         color = defaultColor;
+    }
+    
+    clearOverlayVars = function() {
+        isMktoImgReplaced = isMktoTextReplaced = isMktoSubTextReplaced = isMktoButtonReplaced = isMktoEmail1Replaced = false;
+        emailBody = mktoImgs = mktoTexts = mktoButtons = logoSwapCompany = logoSwapContainer = logoSwapCompanyContainer = logoBkg = buttonBkg = null;
     }
     
     overlay = function(emailDocument) {
@@ -4552,11 +4558,7 @@ APP.overlayEmail = function(action) {
                 && isMktoTextReplaced
                 && isMktoImgReplaced)
             || isMktoEmail1Replaced) {
-                isMktoImgReplaced = false;
-                isMktoTextReplaced = false;
-                isMktoSubTextReplaced = false;
-                isMktoButtonReplaced = false;
-                isMktoEmail1Replaced = false;
+                clearOverlayVars();
                 return true;
             }
         }
