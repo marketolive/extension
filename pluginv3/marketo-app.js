@@ -4521,7 +4521,7 @@ APP.overlayEmail = function(action) {
                 currMktoButton = mktoButtons[ii];
                 
                 if (currMktoButton.innerHTML.search(buttonTextRegex) != -1) {
-                    console.log("Marketo App > Overlaying: Email 2.0  Company Color");
+                    console.log("Marketo App > Overlaying: Email 2.0 Company Color");
                     currMktoButton.style.backgroundColor = color;
                     isMktoButtonReplaced = true;
                     break;
@@ -4555,11 +4555,14 @@ APP.overlayEmail = function(action) {
 
     isEmailEditor2 = window.setInterval(function() {
         if (action == "edit") {
-            if (overlay(document.getElementsByTagName("iframe")[0].contentWindow.document) == true) {
+            console.log("Marketo App > Overlaying: Email Editor");
+            if (overlay(document.getElementsByTagName("iframe")[0].contentWindow.document.getElementsByTagName("body")[0]) == true) {
+                console.log("Marketo App > Overlaying: Email Interval is Cleared");
                 window.clearInterval(isEmailEditor2);
             }
         }
         else if (action == "preview") {
+            console.log("Marketo App > Overlaying: Email Previewer");
             emailDocuments = document.getElementsByTagName("iframe");
             
             for (ii = 0; ii < emailDocuments.length; ii++) {
@@ -4568,13 +4571,14 @@ APP.overlayEmail = function(action) {
                 if (currEmailDocument.getAttribute("id").search("^iframeComponent-") != -1) {
                     numOfIframes++;
                     
-                    if (overlay(currEmailDocument) == true) {
+                    if (overlay(currEmailDocument.contentWindow.document.getElementsByTagName("body")[0]) == true) {
                         numOfIframesReplaced++;
                     }
                 }
             }
             
             if (numOfIframesReplaced == numOfIframes) {
+                console.log("Marketo App > Overlaying: Email Interval is Cleared");
                 window.clearInterval(isEmailEditor2);
             }
         }
