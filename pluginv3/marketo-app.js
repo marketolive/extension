@@ -4460,6 +4460,9 @@ APP.overlayEmail = function(action) {
     }
     
     overlay = function(emailDocument) {
+        var em = emailDocument;
+        console.log(emailDocument);
+        
         if (emailDocument != null) {
             var emailBody = emailDocument.getElementsByTagName("body")[0],
                 logoSwapCompany = emailDocument.getElementById("logo-swap-company"),
@@ -4468,6 +4471,7 @@ APP.overlayEmail = function(action) {
                 logoBkg = emailDocument.getElementById("logo-bkg"),
                 buttonBkg = emailDocument.getElementById("button-bkg");
             
+            console.log(emailBody);
             if (emailBody != null) {
                 var mktoImgs = emailBody.getElementsByClassName("mktoImg"),
                     mktoTexts = emailBody.getElementsByClassName("mktoText"),
@@ -4590,7 +4594,6 @@ APP.overlayEmail = function(action) {
         }
         else if (action == "preview") {
             console.log("Marketo App > Overlaying: Email Previewer");
-            console.log(document.getElementsByTagName("iframe"));
             
             if (!isDesktopPreviewReplaced
             && overlay(document.getElementsByTagName("iframe")[2].contentWindow.document)) {
