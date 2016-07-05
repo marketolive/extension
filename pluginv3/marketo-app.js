@@ -4409,7 +4409,7 @@ APP.overlayEmail = function(action) {
         clearOverlayVars,
         overlay,
         ii,
-        isMktoImgReplaced = isMktoTextReplaced = isMktoSubTextReplaced = isMktoButtonReplaced = isMktoEmail1Replaced = false,
+        isMktoImgReplaced = isMktoTextReplaced = isMktoSubTextReplaced = isMktoButtonReplaced = isMktoEmail1Replaced = isDesktopPreviewReplaced = isPhonePreviewReplaced = false,
         dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
         monthNames = ["JAN", "FEB", "MAR", "APR", "MAY", "JUNE", "JULY", "AUG", "SEPT", "OCT", "NOV", "DEC"],
         date = new Date(),
@@ -4455,7 +4455,7 @@ APP.overlayEmail = function(action) {
     }
     
     clearOverlayVars = function() {
-        isMktoImgReplaced = isMktoTextReplaced = isMktoSubTextReplaced = isMktoButtonReplaced = isMktoEmail1Replaced = false;
+        isMktoImgReplaced = isMktoTextReplaced = isMktoSubTextReplaced = isMktoButtonReplaced = isMktoEmail1Replaced = isDesktopPreviewReplaced = isPhonePreviewReplaced = false;
         emailBody = mktoImgs = mktoTexts = mktoButtons = logoSwapCompany = logoSwapContainer = logoSwapCompanyContainer = logoBkg = buttonBkg = null;
     }
     
@@ -4474,8 +4474,8 @@ APP.overlayEmail = function(action) {
                     mktoButtons = emailBody.getElementsByClassName("secondary-font button");
             }
             
-            if (mktoImgs
-            && !isMktoImgReplaced) {
+            if (!isMktoImgReplaced
+            && mktoImgs) {
                 var currMktoImg,
                     currMktoImgMktoName,
                     currMktoImgTag;
@@ -4498,9 +4498,9 @@ APP.overlayEmail = function(action) {
                 }
             }
             
-            if (mktoTexts
-            && !isMktoSubTextReplaced
-            && !isMktoTextReplaced) {
+            if (!isMktoSubTextReplaced
+            && !isMktoTextReplaced
+            && mktoTexts) {
                 var currMktoText,
                     currMktoTextMktoName;
                 
@@ -4532,8 +4532,8 @@ APP.overlayEmail = function(action) {
                 }
             }
                 
-            if (mktoButtons
-            && !isMktoButtonReplaced) {
+            if (!isMktoButtonReplaced
+            && mktoButtons) {
                 var currMktoButton;
                 
                 for (ii = 0; ii < mktoButtons.length; ii++) {
@@ -4576,9 +4576,8 @@ APP.overlayEmail = function(action) {
                 return true;
             }
         }
-        else {
-            return false;
-        }
+        
+        return false;
     }
 
     isEmailEditor2 = window.setInterval(function() {
@@ -4592,13 +4591,18 @@ APP.overlayEmail = function(action) {
         else if (action == "preview") {
             console.log("Marketo App > Overlaying: Email Previewer");
             
-/*            if (overlay(document.getElementsByTagName("iframe")[2].contentWindow.document)
-            && overlay(document.getElementsByTagName("iframe")[3].contentWindow.document)) {
-                console.log("Marketo App > Overlaying: Email Interval is Cleared");
-                window.clearInterval(isEmailEditor2);
-            }*/
+            if (!isDesktopPreviewReplaced
+            && overlay(document.getElementsByTagName("iframe")[2].contentWindow.document)) {
+                isDesktopPreviewReplaced = true;
+            }
             
-            if (overlay(document.getElementsByTagName("iframe")[0].contentWindow.document)) {
+            if (!isPhonePreviewReplaced
+            && overlay(document.getElementsByTagName("iframe")[3].contentWindow.document)) {
+                isPhonePreviewReplaced = true;
+            }
+            
+            if (isPhonePreviewReplaced
+            && isDesktopPreviewReplaced) {
                 console.log("Marketo App > Overlaying: Email Interval is Cleared");
                 window.clearInterval(isEmailEditor2);
             }
