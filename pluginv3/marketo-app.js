@@ -4592,8 +4592,13 @@ APP.overlayEmail = function(action) {
         else if (action == "preview") {
             console.log("Marketo App > Overlaying: Email Previewer");
             
-            if (overlay(document.getElementsByTagName("iframe")[2].contentWindow.document)
+/*            if (overlay(document.getElementsByTagName("iframe")[2].contentWindow.document)
             && overlay(document.getElementsByTagName("iframe")[3].contentWindow.document)) {
+                console.log("Marketo App > Overlaying: Email Interval is Cleared");
+                window.clearInterval(isEmailEditor2);
+            }*/
+            
+            if (overlay(document.getElementsByTagName("iframe")[0].contentWindow.document)) {
                 console.log("Marketo App > Overlaying: Email Interval is Cleared");
                 window.clearInterval(isEmailEditor2);
             }
