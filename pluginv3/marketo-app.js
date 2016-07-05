@@ -4462,14 +4462,17 @@ APP.overlayEmail = function(action) {
     overlay = function(emailDocument) {
         if (emailDocument != null) {
             var emailBody = emailDocument.getElementsByTagName("body")[0],
-                mktoImgs = emailBody.getElementsByClassName("mktoImg"),
-                mktoTexts = emailBody.getElementsByClassName("mktoText"),
-                mktoButtons = emailBody.getElementsByClassName("secondary-font button"),
                 logoSwapCompany = emailDocument.getElementById("logo-swap-company"),
                 logoSwapContainer = emailDocument.getElementById("logo-swap-container"),
                 logoSwapCompanyContainer = emailDocument.getElementById("logo-swap-company-container"),
                 logoBkg = emailDocument.getElementById("logo-bkg"),
                 buttonBkg = emailDocument.getElementById("button-bkg");
+            
+            if (emailBody != null) {
+                var mktoImgs = emailBody.getElementsByClassName("mktoImg"),
+                    mktoTexts = emailBody.getElementsByClassName("mktoText"),
+                    mktoButtons = emailBody.getElementsByClassName("secondary-font button");
+            }
             
             if (mktoImgs
             && !isMktoImgReplaced) {
