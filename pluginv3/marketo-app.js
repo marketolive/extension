@@ -86,6 +86,8 @@ var currentUrl = window.location.href,
     mktoHigherEdWorkspaceId = 176,
     userWorkspaceName = "My Workspace",
     isMktoLiveInstance = false,
+    currUrlFragment,
+    currCompFragment,
     userName,
     pod,
 
@@ -4793,9 +4795,7 @@ if ((currentUrl.search(mktoAppDomain) != -1
             console.log("Marketo App > Location: Marketo Page");
             
             var accountString,
-                userId,
-                currUrlFragment,
-                currCompFragment;
+                userId;
             
             if (MktPage.savedState
             && MktPage.savedState.custPrefix
@@ -5423,7 +5423,7 @@ if ((currentUrl.search(mktoAppDomain) != -1
                 }
 
                 window.onhashchange = function() {
-                    console.log("Window: Hash Changed");
+                    console.log("Marketo App > Window: Hash Changed");
 
                     currentUrl = window.location.href;
                     // Getting the URL fragment, the part after the #
@@ -5431,6 +5431,7 @@ if ((currentUrl.search(mktoAppDomain) != -1
                     && Mkt3.DL
                     && Mkt3.DL.getDlToken()) {
                         currUrlFragment = Mkt3.DL.getDlToken();
+                        console.log("Marketo App > Window: URL Fragment = " + currUrlFragment);
                         
                         if (Mkt3.DL.dl
                         && Mkt3.DL.dl.dlCompCode) {
@@ -5496,8 +5497,7 @@ if ((currentUrl.search(mktoAppDomain) != -1
                             APP.injectAnalyzerNavBar();
                         }
                     }
-                    else if (currCompFragment == mktoEmailDesignerFragment
-                    && currUrlFragment.search(mktoEmailPreviewFragmentRegex) != -1) {
+                    else if (currUrlFragment.search(mktoEmailPreviewFragmentRegex) != -1) {
                         console.log("Marketo App > Location: Email Previewer");
                         
                         // Overlay Email Previewer w/ Company Logo and Color
