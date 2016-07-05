@@ -4408,16 +4408,6 @@ APP.overlayEmail = function(action) {
     var isEmailEditor2,
         clearOverlayVars,
         overlay,
-        emailBody,
-        mktoImgs,
-        currMktoImg,
-        mktoTexts,
-        currMktoText,
-        mktoButtons,
-        currMktoButton,
-        logoSwapCompany,
-        logoSwapContainer,
-        logoSwapCompanyContainer,
         ii,
         isMktoImgReplaced = false,
         isMktoTextReplaced = false,
@@ -4476,26 +4466,36 @@ APP.overlayEmail = function(action) {
     
     overlay = function(emailDocument) {
         if (emailDocument != null) {
-            emailBody = emailDocument.getElementsByTagName("body")[0];
-            mktoImgs = emailBody.getElementsByClassName("mktoImg");
-            mktoTexts = emailBody.getElementsByClassName("mktoText");
-            mktoButtons = emailBody.getElementsByClassName("secondary-font button");
-            logoSwapCompany = emailDocument.getElementById("logo-swap-company");
-            logoSwapContainer = emailDocument.getElementById("logo-swap-container");
-            logoSwapCompanyContainer = emailDocument.getElementById("logo-swap-company-container");
-            logoBkg = emailDocument.getElementById("logo-bkg");
-            buttonBkg = emailDocument.getElementById("button-bkg");
+            var emailBody = emailDocument.getElementsByTagName("body")[0],
+                mktoImgs = emailBody.getElementsByClassName("mktoImg"),
+                mktoTexts = emailBody.getElementsByClassName("mktoText"),
+                mktoButtons = emailBody.getElementsByClassName("secondary-font button"),
+                logoSwapCompany = emailDocument.getElementById("logo-swap-company"),
+                logoSwapContainer = emailDocument.getElementById("logo-swap-container"),
+                logoSwapCompanyContainer = emailDocument.getElementById("logo-swap-company-container"),
+                logoBkg = emailDocument.getElementById("logo-bkg"),
+                buttonBkg = emailDocument.getElementById("button-bkg");
             
             if (mktoImgs
             && !isMktoImgReplaced) {
+                var currMktoImg,
+                    currMktoImgMktoName,
+                    currMktoImgTag;
+                
                 for (ii = 0; ii < mktoImgs.length; ii++) {
                     currMktoImg = mktoImgs[ii];
+                    currMktoImgMktoName = currMktoImg.getAttribute("mktoname");
                     
-                    if (currMktoImg.getAttribute("mktoname").search(logoMktoNameRegex) != -1) {
-                        console.log("Marketo App > Overlaying: Email 2.0 Company Logo");
-                        currMktoImg.getElementsByTagName("img")[0].setAttribute("src", logo);
-                        isMktoImgReplaced = true;
-                        break;
+                    if (currMktoImgMktoName
+                    && currMktoImgMktoName.search(logoMktoNameRegex) != -1) {
+                        currMktoImgTags = currMktoImg.getElementsByTagName("img")[0];
+                        if (currMktoImgTag
+                        && currMktoImgTag.src) {
+                            console.log("Marketo App > Overlaying: Email 2.0 Company Logo");
+                            currMktoImgTag.setAttribute("src", logo);
+                            isMktoImgReplaced = true;
+                            break;
+                        }
                     }
                 }
             }
@@ -4503,18 +4503,28 @@ APP.overlayEmail = function(action) {
             if (mktoTexts
             && !isMktoSubTextReplaced
             && !isMktoTextReplaced) {
+                var currMktoText,
+                    currMktoTextMktoName;
+                
                 for (ii = 0; ii < mktoTexts.length; ii++) {
                     currMktoText = mktoTexts[ii];
+                    currMktoTextMktoName = currMktoText.getAttribute("mktoname");
                     
-                    if (currMktoText.getAttribute("mktoname").search(mainTitleMktoNameRegex) != -1) {
-                        console.log("Marketo App > Overlaying: Email 2.0 Company Name");
-                        currMktoText.innerHTML = companyName + " Invites You<br><br>PREMIER BUSINESS EVENT<br>OF THE YEAR";
-                        isMktoTextReplaced = true;
+                    if (currMktoTextMktoName
+                    && currMktoTextMktoName.search(mainTitleMktoNameRegex) != -1) {
+                        if (currMktoText.innerHTML) {
+                            console.log("Marketo App > Overlaying: Email 2.0 Company Name");
+                            currMktoText.innerHTML = companyName + " Invites You<br><br>PREMIER BUSINESS EVENT<br>OF THE YEAR";
+                            isMktoTextReplaced = true;
+                        }
                     }
-                    else if (currMktoText.getAttribute("mktoname").search(subTitleMktoNameRegex) != -1) {
-                        console.log("Marketo App > Overlaying: Email 2.0 Today's Date");
-                        currMktoText.innerHTML = dayOfWeek + ", " + month + " the " + dayOfMonth + " " + year;
-                        isMktoSubTextReplaced = true;
+                    else if (currMktoTextMktoName
+                    && currMktoTextMktoName.search(subTitleMktoNameRegex) != -1) {
+                        if (currMktoText.innerHTML) {
+                            console.log("Marketo App > Overlaying: Email 2.0 Today's Date");
+                            currMktoText.innerHTML = dayOfWeek + ", " + month + " the " + dayOfMonth + " " + year;
+                            isMktoSubTextReplaced = true;
+                        }
                     }
                     
                     if (isMktoSubTextReplaced
@@ -4526,14 +4536,20 @@ APP.overlayEmail = function(action) {
                 
             if (mktoButtons
             && !isMktoButtonReplaced) {
+                var currMktoButton;
+                
                 for (ii = 0; ii < mktoButtons.length; ii++) {
                     currMktoButton = mktoButtons[ii];
                     
-                    if (currMktoButton.innerHTML.search(buttonTextRegex) != -1) {
-                        console.log("Marketo App > Overlaying: Email 2.0 Company Color");
-                        currMktoButton.style.backgroundColor = color;
-                        isMktoButtonReplaced = true;
-                        break;
+                    if (currMktoButton.innerHTML
+                    && currMktoButton.innerHTML.search(buttonTextRegex) != -1) {
+                        if (currMktoButton.style
+                        && currMktoButton.style.backgroundColor) {
+                            console.log("Marketo App > Overlaying: Email 2.0 Company Color");
+                            currMktoButton.style.backgroundColor = color;
+                            isMktoButtonReplaced = true;
+                            break;
+                        }
                     }
                 }
             }
