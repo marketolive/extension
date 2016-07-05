@@ -4409,11 +4409,7 @@ APP.overlayEmail = function(action) {
         clearOverlayVars,
         overlay,
         ii,
-        isMktoImgReplaced = false,
-        isMktoTextReplaced = false,
-        isMktoSubTextReplaced = false,
-        isMktoButtonReplaced = false,
-        isMktoEmail1Replaced = false,
+        isMktoImgReplaced = isMktoTextReplaced = isMktoSubTextReplaced = isMktoButtonReplaced = isMktoEmail1Replaced = false,
         dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
         monthNames = ["JAN", "FEB", "MAR", "APR", "MAY", "JUNE", "JULY", "AUG", "SEPT", "OCT", "NOV", "DEC"],
         date = new Date(),
@@ -4428,8 +4424,7 @@ APP.overlayEmail = function(action) {
         logo = APP.getCookie("logo"),
         color = APP.getCookie("color"),
         company,
-        companyName,
-        emailIframes;
+        companyName;
     
     switch (date.getDate()) {
         case 1:
@@ -4488,7 +4483,7 @@ APP.overlayEmail = function(action) {
                     
                     if (currMktoImgMktoName
                     && currMktoImgMktoName.search(logoMktoNameRegex) != -1) {
-                        currMktoImgTags = currMktoImg.getElementsByTagName("img")[0];
+                        currMktoImgTag = currMktoImg.getElementsByTagName("img")[0];
                         if (currMktoImgTag
                         && currMktoImgTag.src) {
                             console.log("Marketo App > Overlaying: Email 2.0 Company Logo");
@@ -4593,10 +4588,9 @@ APP.overlayEmail = function(action) {
         }
         else if (action == "preview") {
             console.log("Marketo App > Overlaying: Email Previewer");
-            emailIframes = document.getElementsByTagName("iframe");
             
-            if (overlay(emailIframes[2].contentWindow.document)
-            && overlay(emailIframes[3].contentWindow.document)) {
+            if (overlay(document.getElementsByTagName("iframe")[2].contentWindow.document)
+            && overlay(document.getElementsByTagName("iframe")[3].contentWindow.document)) {
                 console.log("Marketo App > Overlaying: Email Interval is Cleared");
                 window.clearInterval(isEmailEditor2);
             }
