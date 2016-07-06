@@ -4485,6 +4485,8 @@ APP.overlayEmail = function(action) {
                     for (ii = 0; ii < mktoImgs.length; ii++) {
                         currMktoImg = mktoImgs[ii];
                         currMktoImgMktoName = currMktoImg.getAttribute("mktoname");
+                        console.log(currMktoImg);
+                        console.log(currMktoImgMktoName);
                         
                         if (currMktoImgMktoName
                         && currMktoImgMktoName.search(logoMktoNameRegex) != -1) {
