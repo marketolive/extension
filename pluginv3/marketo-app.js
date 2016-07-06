@@ -4612,16 +4612,18 @@ APP.overlayEmail = function(action) {
         }
         else if (action == "preview") {
             console.log("Marketo App > Overlaying: Email Previewer");
-            if (document.getElementsByTagName("iframe")[2].contentWindow.document) {
-                if (loopCount > 5000
-                || overlay(document.getElementsByTagName("iframe")[2].contentWindow.document)) {
-                    //isDesktopPreviewReplaced = true;
-                    window.clearInterval(isEmailEditor2);
-                }
+            
+            if ((!isDesktopPreviewReplaced
+                && document.getElementsByTagName("iframe")[2].contentWindow.document
+                && overlay(document.getElementsByTagName("iframe")[2].contentWindow.document))
+            || loopCount > 5000) {
+                isDesktopPreviewReplaced = true;
             }
                 
-/*            if (!isPhonePreviewReplaced
-            && overlay(document.getElementsByTagName("iframe")[3].contentWindow.document)) {
+            if ((!isPhonePreviewReplaced
+                && document.getElementsByTagName("iframe")[3].contentWindow.document
+                && overlay(document.getElementsByTagName("iframe")[3].contentWindow.document))
+            || loopCount > 5000) {
                 isPhonePreviewReplaced = true;
             }
             
@@ -4630,11 +4632,6 @@ APP.overlayEmail = function(action) {
                 console.log("Marketo App > Overlaying: Email Interval is Cleared");
                 window.clearInterval(isEmailEditor2);
             }
-            
-            if (isDesktopPreviewReplaced) {
-                console.log("Marketo App > Overlaying: Email Interval is Cleared");
-                window.clearInterval(isEmailEditor2);
-            }*/
         }
     }, 0);
 }
@@ -5499,7 +5496,7 @@ if ((currentUrl.search(mktoAppDomain) != -1
                                 currUrlFragment = Mkt3.DL.getDlToken();
                                 currCompFragment = Mkt3.DL.dl.dlCompCode;
                                 console.log("Marketo App > Window: URL Fragment = " + currUrlFragment);
-                                console.log("Marketo App > Window: Comp Fragment = " + currCompFragment);
+//                                console.log("Marketo App > Window: Comp Fragment = " + currCompFragment);
                                 
                                 // Email Deliverability
                                 if (currUrlFragment == mktoMyMarketoFragment) {
