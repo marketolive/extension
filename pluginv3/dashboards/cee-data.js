@@ -1,8 +1,10 @@
 function loadCeeData() {
     //var exhaustionDate = Ext4.Date.format(new Date(new Date().getTime() - 43200000), MktLang.getPatternIso8601Long());
-    var exhaustionDate = "2015-10-21 09:14:47";
-    var data = {}
+    var exhaustionDate = "2015-10-21 09:14:47",
+        data = {};
     if (typeof(MktPage) !== "undefined") {
+        console.log("CEE Data > Loading: Dashboard Data");
+        
         data['0'] = {};
         data['0'].trendData = {};
         data['0'].trendData.data_columns = ["date", "content_1_1_es", "content_1_1_sent", "content_1_1_r", "content_1_2_es", "content_1_2_sent", "content_1_2_r", "content_1_3_es", "content_1_3_sent", "content_1_3_r", "content_1_4_es", "content_1_4_sent", "content_1_4_r", "content_1_5_es", "content_1_5_sent", "content_1_5_r", "content_1_6_es", "content_1_6_sent", "content_1_6_r", "content_1_7_es", "content_1_7_sent", "content_1_7_r", "content_1_8_es", "content_1_8_sent", "content_1_8_r", "content_1_9_es", "content_1_9_sent", "content_1_9_r", "content_1_10_es", "content_1_10_sent", "content_1_10_r", "content_1_11_es", "content_1_11_sent", "content_1_11_r", "content_1_12_es", "content_1_12_sent", "content_1_12_r", "track_1_es", "track_1_sent", "track_1_r", "program_es", "program_sent", "program_r"];
