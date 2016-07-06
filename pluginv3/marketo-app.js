@@ -4417,8 +4417,8 @@ APP.overlayEmail = function(action) {
         dayOfMonth,
         year = date.getFullYear(),
         logoMktoNameRegex = new RegExp("logo", "i"),
-        mainTitleMktoNameRegex = new RegExp("main title", "i"),
-        subTitleMktoNameRegex = new RegExp("subtitle", "i"),
+        mainTitleMktoNameRegex = new RegExp("main title|mainTitle|main-title", "i"),
+        subTitleMktoNameRegex = new RegExp("subtitle|sub-title", "i"),
         buttonTextRegex = new RegExp("signup|sign up|call to action|cta", "i"),
         logo = APP.getCookie("logo"),
         color = APP.getCookie("color"),
@@ -4484,7 +4484,13 @@ APP.overlayEmail = function(action) {
                     
                     for (ii = 0; ii < mktoImgs.length; ii++) {
                         currMktoImg = mktoImgs[ii];
-                        currMktoImgMktoName = currMktoImg.getAttribute("mktoname");
+                        
+                        if (currMktoImg.getAttribute("mktoname")) {
+                            currMktoImgMktoName = currMktoImg.getAttribute("mktoname");
+                        }
+                        else if (currMktoImg.getAttribute("id")) {
+                             currMktoImgMktoName = currMktoImg.getAttribute("id");
+                        }
                         console.log(currMktoImg);
                         console.log(currMktoImgMktoName);
                         
@@ -4513,7 +4519,13 @@ APP.overlayEmail = function(action) {
                     
                     for (ii = 0; ii < mktoTexts.length; ii++) {
                         currMktoText = mktoTexts[ii];
-                        currMktoTextMktoName = currMktoText.getAttribute("mktoname");
+                        
+                        if (currMktoText.getAttribute("mktoname")) {
+                            currMktoTextMktoName = currMktoText.getAttribute("mktoname");
+                        }
+                        else if (currMktoText.getAttribute("id")) {
+                            currMktoTextMktoName = currMktoText.getAttribute("id");
+                        }
                         
                         if (currMktoTextMktoName
                         && currMktoTextMktoName.search(mainTitleMktoNameRegex) != -1) {
