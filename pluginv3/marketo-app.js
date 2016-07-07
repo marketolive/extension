@@ -4611,7 +4611,7 @@ APP.overlayEmail = function(action) {
             && document.getElementsByTagName("iframe")[0].contentWindow.document
             && document.getElementsByTagName("iframe")[0].contentWindow.document.readyState == "complete") {
                 if (overlay(document.getElementsByTagName("iframe")[0].contentWindow.document)
-                || editorRepeatReadyCount >= 500) {
+                || editorRepeatReadyCount >= 5000) {
                     console.log("Marketo App > Overlayed: Email Editor = " + editorRepeatReadyCount);
                     console.log("Marketo App > Overlaying: Email Interval is Cleared");
                     window.clearInterval(isEmailEditor2);
