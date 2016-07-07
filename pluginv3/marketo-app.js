@@ -4405,8 +4405,7 @@ APP.disableSaving = function() {
 APP.overlayEmail = function(action) {
     console.log("Marketo App > Overlaying: Email");
 
-    var isEmailEditor2,
-        clearOverlayVars,
+    var clearOverlayVars,
         overlay,
         isMktoImgReplaced = isMktoTextReplaced = isMktoSubTextReplaced = isMktoButtonReplaced = isMktoEmail1Replaced = isDesktopPreviewReplaced = isPhonePreviewReplaced = false,
         dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
@@ -4423,8 +4422,7 @@ APP.overlayEmail = function(action) {
         logo = APP.getCookie("logo"),
         color = APP.getCookie("color"),
         company,
-        companyName,
-        loopCount = 0;
+        companyName;
     
     switch (date.getDate()) {
         case 1:
@@ -4460,7 +4458,6 @@ APP.overlayEmail = function(action) {
     }
     
     overlay = function(emailDocument) {
-        loopCount++;
         if (emailDocument) {
             var emailBody = emailDocument.getElementsByTagName("body")[0],
                 logoSwapCompany = emailDocument.getElementById("logo-swap-company"),
@@ -4491,8 +4488,6 @@ APP.overlayEmail = function(action) {
                         else if (currMktoImg.getAttribute("id")) {
                              currMktoImgMktoName = currMktoImg.getAttribute("id");
                         }
-                        console.log(currMktoImg);
-                        console.log(currMktoImgMktoName);
                         
                         if (currMktoImgMktoName
                         && currMktoImgMktoName.search(logoMktoNameRegex) != -1) {
@@ -4601,41 +4596,44 @@ APP.overlayEmail = function(action) {
         return false;
     }
 
-    isEmailEditor2 = window.setInterval(function() {
-        if (action == "edit") {
-            console.log("Marketo App > Overlaying: Email Editor");
-            if (overlay(document.getElementsByTagName("iframe")[0].contentWindow.document)
-            || loopCount > 6000) {
+    if (action == "edit") {
+        console.log("Marketo App > Overlaying: Email Editor");
+        
+        document.getElementsByTagName("iframe")[0].onload = function() {
+            if (overlay(document.getElementsByTagName("iframe")[0].contentWindow.document)) {
                 console.log("Marketo App > Overlaying: Email Interval is Cleared");
                 window.clearInterval(isEmailEditor2);
                 clearOverlayVars();
             }
         }
-        else if (action == "preview") {
-            console.log("Marketo App > Overlaying: Email Previewer");
-            
+    }
+    else if (action == "preview") {
+        console.log("Marketo App > Overlaying: Email Previewer");
+        
+        document.getElementsByTagName("iframe")[2].onload = function() {
             if (!isDesktopPreviewReplaced
             && document.getElementsByTagName("iframe")[2].contentWindow.document
             && overlay(document.getElementsByTagName("iframe")[2].contentWindow.document)) {
                 isDesktopPreviewReplaced = true;
             }
-                
+        }
+        
+        document.getElementsByTagName("iframe")[3].onload = function() {
             if (!isPhonePreviewReplaced
             && document.getElementsByTagName("iframe")[3].contentWindow.document
             && overlay(document.getElementsByTagName("iframe")[3].contentWindow.document)) {
                 console.log("Marketo App > Overlayed: Email Phone Preview");
                 isPhonePreviewReplaced = true;
             }
-            
-            if ((isPhonePreviewReplaced
-                && isDesktopPreviewReplaced)
-            || loopCount > 6000) {
-                console.log("Marketo App > Overlaying: Email Interval is Cleared");
-                window.clearInterval(isEmailEditor2);
-                clearOverlayVars();
-            }
         }
-    }, 0);
+        
+        if (isPhonePreviewReplaced
+        && isDesktopPreviewReplaced) {
+            console.log("Marketo App > Overlaying: Email Interval is Cleared");
+            window.clearInterval(isEmailEditor2);
+            clearOverlayVars();
+        }
+    }
 }
 
 /**************************************************************************************
