@@ -4408,7 +4408,7 @@ APP.overlayEmail = function(action) {
     var isEmailEditor2,
         clearOverlayVars,
         overlay,
-        isMktoImgReplaced = isMktoTextReplaced = isMktoSubTextReplaced = isMktoButtonReplaced = isMktoEmail1Replaced = isDesktopPreviewReplaced = isPhonePreviewReplaced = false,
+        isMktoImgReplaced = isMktoTextReplaced = isMktoSubTextReplaced = isMktoButtonReplaced = isMktoEmail1Replaced = editorPrevReady = isDesktopPreviewReplaced = isPhonePreviewReplaced = false,
         dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
         monthNames = ["JAN", "FEB", "MAR", "APR", "MAY", "JUNE", "JULY", "AUG", "SEPT", "OCT", "NOV", "DEC"],
         date = new Date(),
@@ -4425,7 +4425,7 @@ APP.overlayEmail = function(action) {
         company,
         companyName,
         loopCount = 0,
-        emailEditorCount = 0,
+        editorRepeatReadyCount = 0,
         emailDesktopPreviewCount = 0,
         emailPhonePreviewCount = 0;
     
@@ -4610,15 +4610,24 @@ APP.overlayEmail = function(action) {
             && document.getElementsByTagName("iframe")[0].contentWindow
             && document.getElementsByTagName("iframe")[0].contentWindow.document
             && document.getElementsByTagName("iframe")[0].contentWindow.document.readyState == "complete") {
-                emailEditorCount++;
-                
-                if (overlay(document.getElementsByTagName("iframe")[0].contentWindow.document)) {
-                    console.log("Marketo App > Overlayed: Email Editor = " + emailEditorCount);
+                if (overlay(document.getElementsByTagName("iframe")[0].contentWindow.document)
+                || editorRepeatReadyCount >= 500) {
+                    console.log("Marketo App > Overlayed: Email Editor = " + editorRepeatReadyCount);
                     console.log("Marketo App > Overlaying: Email Interval is Cleared");
                     window.clearInterval(isEmailEditor2);
                     clearOverlayVars();
-                    emailEditorCount = 0;
+                    editorRepeatReadyCount = 0;
                 }
+                else if (editorPrevReady) {
+                    editorRepeatReadyCount++;
+                }
+                else {
+                    editorRepeatReadyCount = 1;
+                }
+                editorPrevReady = true;
+            }
+            else {
+                editorPrevReady = false;
             }
         }
         else if (action == "preview") {
