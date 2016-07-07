@@ -4599,7 +4599,7 @@ APP.overlayEmail = function(action) {
     if (action == "edit") {
         console.log("Marketo App > Overlaying: Email Editor");
         
-        document.getElementsByTagName("iframe")[0].contentWindow.document.onload = function() {
+        document.getElementsByTagName("iframe")[0].contentWindow.onload = function() {
             if (overlay(document.getElementsByTagName("iframe")[0].contentWindow.document)) {
                 console.log("Marketo App > Overlaying: Email Interval is Cleared");
                 window.clearInterval(isEmailEditor2);
@@ -4610,7 +4610,7 @@ APP.overlayEmail = function(action) {
     else if (action == "preview") {
         console.log("Marketo App > Overlaying: Email Previewer");
         
-        document.getElementsByTagName("iframe")[2].contentWindow.document.onload = function() {
+        document.getElementsByTagName("iframe")[2].contentWindow.onload = function() {
             if (!isDesktopPreviewReplaced
             && document.getElementsByTagName("iframe")[2].contentWindow.document
             && overlay(document.getElementsByTagName("iframe")[2].contentWindow.document)) {
@@ -4618,7 +4618,7 @@ APP.overlayEmail = function(action) {
             }
         }
         
-        document.getElementsByTagName("iframe")[3].contentWindow.document.onload = function() {
+        document.getElementsByTagName("iframe")[3].contentWindow.onload = function() {
             if (!isPhonePreviewReplaced
             && document.getElementsByTagName("iframe")[3].contentWindow.document
             && overlay(document.getElementsByTagName("iframe")[3].contentWindow.document)) {
