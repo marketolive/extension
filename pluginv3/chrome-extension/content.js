@@ -39,14 +39,16 @@ var URL_PATH = "m3-dev",
 	getCookie,
 	setCookie,
     displayProgressModal,
-    overlayEmail;
+    overlayEmailNow,
+    overlayLandingPageDesignerNow;
 
 loadScript = function(scriptSrc) {
 	console.log("Content > Loading: Script: " + scriptSrc);
 	
     var scriptElement = document.createElement("script");
     scriptElement.onload = function() {
-        overlayEmail = APP.overlayEmail;
+        overlayEmailNow = overlayEmail;
+        overlayLandingPageDesignerNow = overlayLandingPageDesigner;
     }
     scriptElement.setAttribute("src", scriptSrc);
     document.getElementsByTagName("head")[0].appendChild(scriptElement);
@@ -205,18 +207,18 @@ addNewCompanyListener = function() {
             switch(message.assetType) {
                 case "email":
                     if (message.assetView == "edit") {
-                        overlayEmail("edit");
+                        overlayEmailNow("edit");
                     }
                     else if (message.assetView == "preview") {
-                        overlayEmail("preview");
+                        overlayEmailNow("preview");
                     }
                     break;
                 case "landingPage":
                     if (message.assetView == "edit") {
-                        overlayLandingPageDesigner();
+                        overlayLandingPageDesignerNow();
                     }
                     else if (message.assetView == "preview") {
-                        overlayLandingPageDesigner();
+                        overlayLandingPageDesignerNow();
                     }
                     break;
                 default:
