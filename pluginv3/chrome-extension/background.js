@@ -189,7 +189,7 @@ function reloadCompany() {
                 message.assetView = "preview";
             }
             chrome.tabs.sendMessage(tabs[ii].id, message, function(response) {
-                console.log("Background > Receiving: Message Response from Marketo App: " + response);
+                console.log("Background > Receiving: Message Response from Content: " + response);
             });
         }
     });

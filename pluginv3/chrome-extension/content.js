@@ -192,25 +192,27 @@ var port = chrome.runtime.connect({
  **************************************************************************************/
 
 addNewCompanyListener = function() {
+    console.log("Content > Adding: New Company Listener");
+    
     chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
         if (message.action == "newCompany") {
-            console.log("Marketo App > Capturing: New Company Logo");
+            console.log("Content > Capturing: New Company");
             
             switch(message.assetType) {
                 case "email":
                     if (message.assetView == "edit") {
-                        APP.overlayEmail("edit");
+                        overlayEmail("edit");
                     }
                     else if (message.assetView == "preview") {
-                        APP.overlayEmail("preview");
+                        overlayEmail("preview");
                     }
                     break;
                 case "landingPage":
                     if (message.assetView == "edit") {
-                        APP.overlayLandingPageDesigner();
+                        overlayLandingPageDesigner();
                     }
                     else if (message.assetView == "preview") {
-                        APP.overlayLandingPageDesigner();
+                        overlayLandingPageDesigner();
                     }
                     break;
                 default:
