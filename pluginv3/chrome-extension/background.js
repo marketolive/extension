@@ -15,8 +15,13 @@ var mktoLiveInstances = "^https:\/\/app-(sjp|ab07|ab08)+\.marketo\.com",
     mktoUriDomain = ".marketo.com",
     mktoAppDomainMatch = "https://app-*.marketo.com",
     mktoDesignerMatch = "https://www.marketodesigner.com/*",
-    mktoDesignerUriDomain = ".marketodesigner.com";
-    
+    mktoDesignerUriDomain = ".marketodesigner.com",
+    mktoDesignerMatchPattern = "https://*.marketodesigner.com/*",
+    mktoEmailDesignerFragment = "EME",
+    mktoEmailPreviewFragmentRegex = new RegExp("EME[0-9]+&isPreview", "i"),
+    mktoEmailPreviewFragment = "EMP",
+    mktoLandingPageDesignerFragment = "LPE",
+    mktoLandingPagePreviewFragment = "LPP";
 
 /**************************************************************************************
  *
@@ -136,6 +141,62 @@ function reloadMarketoTabs() {
 
 /**************************************************************************************
  *
+ *  This function reloads the company logo and color on all Marketo designer tabs in 
+ *  order to support email and landing page overlay without requiring to reload the tab.
+ *
+ *  @Author Brian Fisher
+ *
+ *  @function
+ *
+ *
+ **************************************************************************************/
+
+function reloadCompany() {
+    console.log("Background > Reloading: Company Logo & Color");
+    
+    var queryInfo = {
+            "currentWindow" : true,
+            "url" : mktoDesignerMatchPattern
+        },
+        message = {
+            "action" : "newCompany",
+            "assetType" : "",
+            "assetView" : ""
+        };
+
+    chrome.tabs.query(queryInfo, function(tabs) {
+        var ii,
+            currTab;
+        
+        for (ii = 0; ii < tabs.length; ii++) {
+            currTab = tabs[ii];
+            
+            if (currTab.url.search("#" + mktoEmailDesignerFragment + "[0-9]+$") != -1) {
+                message.assetType = "email";
+                message.assetView = "edit";
+            }
+            else if (currTab.url.search("#" + mktoEmailPreviewFragmentRegex) != -1
+            || currTab.url.search("#" + mktoEmailPreviewFragment + "[0-9]+$") != -1) {
+                message.assetType = "email";
+                message.assetView = "preview";
+            }
+            else if (currTab.url.search("#" + mktoLandingPageDesignerFragment + "[0-9]+$") != -1) {
+                message.assetType = "landingPage";
+                message.assetView = "edit";
+            }
+            else if (currTab.url.search("#" + mktoLandingPagePreviewFragment + "[0-9]+$") != -1) {
+                message.assetType = "landingPage";
+                message.assetView = "preview";
+            }
+            chrome.tabs.sendMessage(tabs[ii].id, message, function(response) {
+                console.log("Background > Receiving: Message Response from Marketo App: " + response);
+            });
+        }
+    });
+}
+
+/**************************************************************************************
+ *
  *  This function creates an event listener in order to receive the company's logo and 
  *  color from the MarketoLive Color-Picker page and then sets the cookie for both the 
  *  mktoLiveDomain and mktoDesignerDomain.
@@ -189,6 +250,7 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
         setCookie(companyColorCookieDesigner);
         setCookie(companyLogoCookieMarketoLive);
         setCookie(companyLogoCookieDesigner);
+        reloadCompany();
     }
 });
 
