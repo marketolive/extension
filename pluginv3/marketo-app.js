@@ -4619,8 +4619,10 @@ APP.overlayEmail = function(action) {
                     editorRepeatReadyCount++;
                 }
                 else {
+                    if (editorRepeatReadyCount > 0) {
+                        isEditorCountReset = true;
+                    }
                     editorRepeatReadyCount = 1;
-                    isEditorCountReset = true;
                 }
                 editorPrevReady = true;
             }
@@ -4647,8 +4649,10 @@ APP.overlayEmail = function(action) {
                     desktopRepeatReadyCount++;
                 }
                 else {
+                    if (desktopRepeatReadyCount > 0) {
+                        isDesktopCountReset = true;
+                    }
                     desktopRepeatReadyCount = 1;
-                    isDesktopCountReset = true;
                 }
                 desktopPrevReady = true;
             }
@@ -4672,8 +4676,10 @@ APP.overlayEmail = function(action) {
                     phoneRepeatReadyCount++;
                 }
                 else {
+                    if (phoneRepeatReadyCount > 0) {
+                        isPhoneCountReset = true;
+                    }
                     phoneRepeatReadyCount = 1;
-                    isPhoneCountReset = true;
                 }
                 phonePrevReady = true;
             }
