@@ -4895,54 +4895,6 @@ APP.getEmailIds = function(accountString) {
 
 /**************************************************************************************
  *
- *  This function creates an event listener in order to capture the setting of a new 
- *  value for the company logo cookie when a new company has been submitted via popup. 
- *  This enables the overlay for both emails and landing pages to change accordingly 
- *  without requiring a tab refresh.
- *
- *  @Author Brian Fisher
- *
- *  @function
- *
- *  @param [Object] message - JSON object that contains the following key/value pairs:
- *      {String} action - The name of the requested action.
- *      {String} assetType - The type of the asset for this request.
- *      {String} assetView - The mode in which this asset is being viewed (edit/preview).
- *  @param {MessageSender} sender - An object containing information about the script 
- *      context that sent a message.
- *  @param {function} sendResponse - Function to call when you have a response.
- *
- **************************************************************************************/
-
-chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
-    if (message.action == "newCompany") {
-        console.log("Marketo App > Capturing: New Company Logo");
-        
-		switch(message.assetType) {
-            case "email":
-                if (message.assetView == "edit") {
-                    APP.overlayEmail("edit");
-                }
-                else if (message.assetView == "preview") {
-                    APP.overlayEmail("preview");
-                }
-                break;
-            case "landingPage":
-                if (message.assetView == "edit") {
-                    APP.overlayLandingPageDesigner();
-                }
-                else if (message.assetView == "preview") {
-                    APP.overlayLandingPageDesigner();
-                }
-                break;
-            default:
-                break;
-        }
-    }
-});
-
-/**************************************************************************************
- *
  *  Main
  *  
  **************************************************************************************/
