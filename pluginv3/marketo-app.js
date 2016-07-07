@@ -4408,7 +4408,7 @@ APP.overlayEmail = function(action) {
     var isEmailEditor2,
         clearOverlayVars,
         overlay,
-        isMktoImgReplaced = isMktoTextReplaced = isMktoSubTextReplaced = isMktoButtonReplaced = isMktoEmail1Replaced = isDesktopPreviewReplaced = isPhonePreviewReplaced = false,
+        isMktoImgReplaced = isMktoTextReplaced = isMktoSubTextReplaced = isMktoButtonReplaced = isMktoEmail1Replaced = editorPrevReady = isEditorCountReset = desktopPrevReady = isDesktopCountReset = phonePrevReady = isPhoneCountReset = isDesktopPreviewReplaced = isPhonePreviewReplaced = false,
         dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
         monthNames = ["JAN", "FEB", "MAR", "APR", "MAY", "JUNE", "JULY", "AUG", "SEPT", "OCT", "NOV", "DEC"],
         date = new Date(),
@@ -4417,14 +4417,15 @@ APP.overlayEmail = function(action) {
         dayOfMonth,
         year = date.getFullYear(),
         logoMktoNameRegex = new RegExp("logo", "i"),
-        mainTitleMktoNameRegex = new RegExp("main title|mainTitle|main-title", "i"),
-        subTitleMktoNameRegex = new RegExp("subtitle|sub-title", "i"),
+        mainTitleMktoNameRegex = new RegExp("^main title$|^mainTitle$|^main-title$|^title$", "i"),
+        subTitleMktoNameRegex = new RegExp("^subtitle$|^sub-title$", "i"),
         buttonTextRegex = new RegExp("signup|sign up|call to action|cta", "i"),
         logo = APP.getCookie("logo"),
         color = APP.getCookie("color"),
         company,
         companyName,
-        loopCount = 0;
+        editorRepeatReadyCount = desktopRepeatReadyCount = phoneRepeatReadyCount = 0,
+        maxRepeatReady = 5000;
     
     switch (date.getDate()) {
         case 1:
@@ -4460,7 +4461,6 @@ APP.overlayEmail = function(action) {
     }
     
     overlay = function(emailDocument) {
-        loopCount++;
         if (emailDocument) {
             var emailBody = emailDocument.getElementsByTagName("body")[0],
                 logoSwapCompany = emailDocument.getElementById("logo-swap-company"),
@@ -4491,13 +4491,10 @@ APP.overlayEmail = function(action) {
                         else if (currMktoImg.getAttribute("id")) {
                              currMktoImgMktoName = currMktoImg.getAttribute("id");
                         }
-                        console.log(currMktoImg);
-                        console.log(currMktoImgMktoName);
                         
                         if (currMktoImgMktoName
                         && currMktoImgMktoName.search(logoMktoNameRegex) != -1) {
                             currMktoImgTag = currMktoImg.getElementsByTagName("img")[0];
-                            console.log(currMktoImgTag);
                             
                             if (currMktoImgTag
                             && currMktoImgTag.src) {
@@ -4582,6 +4579,7 @@ APP.overlayEmail = function(action) {
                 logoSwapCompany.setAttribute("src", logo);
                 logoSwapContainer.style.display = "none";
                 logoSwapCompanyContainer.style.display = "block";
+                
                 if (buttonBkg) {
                     buttonBkg.style.backgroundColor = color;
                 }
@@ -4604,32 +4602,93 @@ APP.overlayEmail = function(action) {
     isEmailEditor2 = window.setInterval(function() {
         if (action == "edit") {
             console.log("Marketo App > Overlaying: Email Editor");
-            if (overlay(document.getElementsByTagName("iframe")[0].contentWindow.document)
-            || loopCount > 6000) {
-                console.log("Marketo App > Overlaying: Email Interval is Cleared");
-                window.clearInterval(isEmailEditor2);
-                clearOverlayVars();
+            if (document.getElementsByTagName("iframe")[0]
+            && document.getElementsByTagName("iframe")[0].contentWindow
+            && document.getElementsByTagName("iframe")[0].contentWindow.document
+            && document.getElementsByTagName("iframe")[0].contentWindow.document.readyState == "complete") {
+                if (overlay(document.getElementsByTagName("iframe")[0].contentWindow.document)
+                || (isEditorCountReset
+                    && editorRepeatReadyCount >= maxRepeatReady)) {
+                    
+                    console.log("Marketo App > Overlayed: Email Editor = " + editorRepeatReadyCount);
+                    console.log("Marketo App > Overlaying: Email Interval is Cleared");
+                    window.clearInterval(isEmailEditor2);
+                    clearOverlayVars();
+                }
+                else if (editorPrevReady) {
+                    editorRepeatReadyCount++;
+                }
+                else {
+                    if (editorRepeatReadyCount > 0) {
+                        isEditorCountReset = true;
+                    }
+                    editorRepeatReadyCount = 1;
+                }
+                editorPrevReady = true;
+            }
+            else {
+                editorPrevReady = false;
             }
         }
         else if (action == "preview") {
             console.log("Marketo App > Overlaying: Email Previewer");
             
             if (!isDesktopPreviewReplaced
+            && document.getElementsByTagName("iframe")[2]
+            && document.getElementsByTagName("iframe")[2].contentWindow
             && document.getElementsByTagName("iframe")[2].contentWindow.document
-            && overlay(document.getElementsByTagName("iframe")[2].contentWindow.document)) {
-                isDesktopPreviewReplaced = true;
+            && document.getElementsByTagName("iframe")[2].contentWindow.document.readyState == "complete") {
+                if (overlay(document.getElementsByTagName("iframe")[2].contentWindow.document)
+                || (isDesktopCountReset
+                    && desktopRepeatReadyCount >= maxRepeatReady)) {
+                    
+                    console.log("Marketo App > Overlayed: Email Desktop Preview = " + desktopRepeatReadyCount);
+                    isDesktopPreviewReplaced = true;
+                }
+                else if (desktopPrevReady) {
+                    desktopRepeatReadyCount++;
+                }
+                else {
+                    if (desktopRepeatReadyCount > 0) {
+                        isDesktopCountReset = true;
+                    }
+                    desktopRepeatReadyCount = 1;
+                }
+                desktopPrevReady = true;
+            }
+            else {
+                desktopPrevReady = false;
             }
                 
             if (!isPhonePreviewReplaced
+            && document.getElementsByTagName("iframe")[3]
+            && document.getElementsByTagName("iframe")[3].contentWindow
             && document.getElementsByTagName("iframe")[3].contentWindow.document
-            && overlay(document.getElementsByTagName("iframe")[3].contentWindow.document)) {
-                console.log("Marketo App > Overlayed: Email Phone Preview");
-                isPhonePreviewReplaced = true;
+            && document.getElementsByTagName("iframe")[3].contentWindow.document.readyState == "complete") {
+                if (overlay(document.getElementsByTagName("iframe")[3].contentWindow.document)
+                || (isPhoneCountReset
+                    && phoneRepeatReadyCount >= maxRepeatReady)) {
+                    
+                    console.log("Marketo App > Overlayed: Email Phone Preview = " + phoneRepeatReadyCount);
+                    isPhonePreviewReplaced = true;
+                }
+                else if (desktopPrevReady) {
+                    phoneRepeatReadyCount++;
+                }
+                else {
+                    if (phoneRepeatReadyCount > 0) {
+                        isPhoneCountReset = true;
+                    }
+                    phoneRepeatReadyCount = 1;
+                }
+                phonePrevReady = true;
+            }
+            else {
+                phonePrevReady = false;
             }
             
-            if ((isPhonePreviewReplaced
-                && isDesktopPreviewReplaced)
-            || loopCount > 6000) {
+            if (isPhonePreviewReplaced
+            && isDesktopPreviewReplaced) {
                 console.log("Marketo App > Overlaying: Email Interval is Cleared");
                 window.clearInterval(isEmailEditor2);
                 clearOverlayVars();
