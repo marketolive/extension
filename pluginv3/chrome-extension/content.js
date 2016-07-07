@@ -38,12 +38,16 @@ var URL_PATH = "m3-dev",
 	loadScript,
 	getCookie,
 	setCookie,
-    displayProgressModal;
+    displayProgressModal,
+    overlayEmail;
 
 loadScript = function(scriptSrc) {
 	console.log("Content > Loading: Script: " + scriptSrc);
 	
     var scriptElement = document.createElement("script");
+    scriptElement.onload = function() {
+        overlayEmail = APP.overlayEmail;
+    }
     scriptElement.setAttribute("src", scriptSrc);
     document.getElementsByTagName("head")[0].appendChild(scriptElement);
 }
