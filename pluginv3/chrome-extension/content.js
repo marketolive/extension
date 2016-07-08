@@ -39,8 +39,10 @@ var URL_PATH = "m3-dev",
 	getCookie,
 	setCookie,
     displayProgressModal,
+    grayOutCompletedStories,
     overlayEmail,
-    overlayLandingPageDesigner;
+    overlayLandingPageDesigner,
+    addNewCompanyListener;
 
 loadScript = function(scriptSrc) {
 	console.log("Content > Loading: Script: " + scriptSrc);
@@ -423,6 +425,58 @@ overlayEmail = function(action) {
 
 /**************************************************************************************
  *
+ *  This function creates an event listener in order to capture the setting of a new 
+ *  value for the company logo cookie when a new company has been submitted via popup. 
+ *  This enables the overlay for both emails and landing pages to change accordingly 
+ *  without requiring a tab refresh.
+ *
+ *  @Author Brian Fisher
+ *
+ *  @function
+ *
+ *  @param [Object] message - JSON object that contains the following key/value pairs:
+ *      {String} action - The name of the requested action.
+ *      {String} assetType - The type of the asset for this request.
+ *      {String} assetView - The mode in which this asset is being viewed (edit/preview).
+ *  @param {MessageSender} sender - An object containing information about the script 
+ *      context that sent a message.
+ *  @param {function} sendResponse - Function to call when you have a response.
+ *
+ **************************************************************************************/
+
+addNewCompanyListener = function() {
+    console.log("Content > Adding: New Company Listener");
+    
+    chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
+        if (message.action == "newCompany") {
+            console.log("Content > Capturing: New Company");
+            
+            switch(message.assetType) {
+                case "email":
+                    if (message.assetView == "edit") {
+                        overlayEmail("edit");
+                    }
+                    else if (message.assetView == "preview") {
+                        overlayEmail("preview");
+                    }
+                    break;
+                case "landingPage":
+                    if (message.assetView == "edit") {
+                        overlayLandingPageDesigner();
+                    }
+                    else if (message.assetView == "preview") {
+                        overlayLandingPageDesigner();
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+    });
+}
+
+/**************************************************************************************
+ *
  *  main object that will pass the variables for which analyzer should be present using
  *  currPosition as the current position in the object array.
  *
@@ -476,58 +530,6 @@ Analyzer.prototype.showAnalyzer = function() {
 var port = chrome.runtime.connect({
     name: "mycontentscript"
 });
-
-/**************************************************************************************
- *
- *  This function creates an event listener in order to capture the setting of a new 
- *  value for the company logo cookie when a new company has been submitted via popup. 
- *  This enables the overlay for both emails and landing pages to change accordingly 
- *  without requiring a tab refresh.
- *
- *  @Author Brian Fisher
- *
- *  @function
- *
- *  @param [Object] message - JSON object that contains the following key/value pairs:
- *      {String} action - The name of the requested action.
- *      {String} assetType - The type of the asset for this request.
- *      {String} assetView - The mode in which this asset is being viewed (edit/preview).
- *  @param {MessageSender} sender - An object containing information about the script 
- *      context that sent a message.
- *  @param {function} sendResponse - Function to call when you have a response.
- *
- **************************************************************************************/
-
-addNewCompanyListener = function() {
-    console.log("Content > Adding: New Company Listener");
-    
-    chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
-        if (message.action == "newCompany") {
-            console.log("Content > Capturing: New Company");
-            
-            switch(message.assetType) {
-                case "email":
-                    if (message.assetView == "edit") {
-                        overlayEmail("edit");
-                    }
-                    else if (message.assetView == "preview") {
-                        overlayEmail("preview");
-                    }
-                    break;
-                case "landingPage":
-                    if (message.assetView == "edit") {
-                        overlayLandingPageDesigner();
-                    }
-                    else if (message.assetView == "preview") {
-                        overlayLandingPageDesigner();
-                    }
-                    break;
-                default:
-                    break;
-            }
-        }
-    });
-}
 
 window.onload = function() {
     console.log("Content > Window: Loaded");
