@@ -4721,8 +4721,7 @@ APP.overlayLandingPageDesigner = function() {
         biggerBackground,
         subTitle;
     
-    if (logo == null
-    || logo.value == null) {
+    if (logo == null) {
         logo = defaultTurnerLogoGreen;
         companyName = "Turner";
     }
@@ -4731,8 +4730,7 @@ APP.overlayLandingPageDesigner = function() {
         companyName = company.charAt(0).toUpperCase() + company.slice(1);
     }
     
-    if (color == null
-    || color.value == null) {
+    if (color == null) {
         color = defaultColor;
     }
     
