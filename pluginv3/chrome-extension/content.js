@@ -62,9 +62,22 @@ setCookie = function(name, value, expiresInDays, domain, secure) {
 	document.cookie = name + "=" + value + "; " + expires + "; " + "path=/;" + "domain=" + domain + ";secure="+ secure +";";
 }
 
-getCookie = function(cookieName) {
-    console.log("Content > Getting: " + cookieName + " Cookie");
+/**************************************************************************************
+ *  
+ *  This function gets the specified cookie for the current domain. It loops through
+ *  the string contained in document.cookie and looks for the given cookie.
+ *
+ *  @Author Andrew Garcia
+ *
+ *  @function
+ *
+ *  @param {String} cookieName - Represents the key to search for inside document.cookie
+ *
+ **************************************************************************************/
 
+getCookie = function(cookieName) {
+    console.log("Marketo App > Getting: Cookie " + cookieName);
+    
     var name = cookieName + '=',
         cookies = document.cookie.split(';'),
         currCookie;
@@ -75,6 +88,7 @@ getCookie = function(cookieName) {
             return currCookie.substring(name.length, currCookie.length);
         }
     }
+    console.log("Marketo App > Getting: Cookie " + cookieName + " not found");
     return null;
 }
 
@@ -146,8 +160,8 @@ overlayEmail = function(action) {
         mainTitleMktoNameRegex = new RegExp("^main title$|^mainTitle$|^main-title$|^title$", "i"),
         subTitleMktoNameRegex = new RegExp("^subtitle$|^sub-title$", "i"),
         buttonTextRegex = new RegExp("signup|sign up|call to action|cta", "i"),
-        logo = APP.getCookie("logo"),
-        color = APP.getCookie("color"),
+        logo = getCookie("logo"),
+        color = getCookie("color"),
         company,
         companyName,
         editorRepeatReadyCount = desktopRepeatReadyCount = phoneRepeatReadyCount = 0,
