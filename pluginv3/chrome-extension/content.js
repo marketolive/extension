@@ -41,7 +41,7 @@ var URL_PATH = "m3-dev",
     displayProgressModal,
     grayOutCompletedStories,
     overlayEmail,
-    overlayLandingPageDesigner,
+    overlayLandingPage,
     addNewCompanyListener;
 
 loadScript = function(scriptSrc) {
@@ -438,6 +438,65 @@ overlayEmail = function(action) {
 }
 
 /**************************************************************************************
+ *  
+ *  This function overlays the landing page designer with the submitted company logo 
+ *  and color.
+ *
+ *  @Author Arrash Yasavolian
+ *
+ *  @function
+ *
+ **************************************************************************************/
+
+overlayLandingPage = function() {
+    console.log("Marketo App > Overlaying: Landing Page Designer");
+
+    var logo = getCookie("logo"),
+        color = getCookie("color"),
+        company,
+        companyName,
+        isLandingPageIframeElement,
+        lpLogo,
+        backgroundColor,
+        biggerBackground,
+        subTitle;
+    
+    if (logo == null
+    || logo.value == null) {
+        logo = defaultTurnerLogoGreen;
+        companyName = "Turner";
+    }
+    else {
+        company = logo.split("https://logo.clearbit.com/")[1].split(".")[0];
+        companyName = company.charAt(0).toUpperCase() + company.slice(1);
+    }
+    
+    if (color == null
+    || color.value == null) {
+        color = defaultColor;
+    }
+    
+    isLandingPageIframeElement = window.setInterval(function() {
+        lpLogo = document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("lp-logo");
+        backgroundColor = document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("background-color");
+        biggerBackground = document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("bigger-background");
+        subTitle = document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("sub-title");
+        if (lpLogo != null
+        && backgroundColor != null
+        && biggerBackground != null
+        && subTitle != null) {
+            console.log("Marketo App > Overlaying: iframe");
+            window.clearInterval(isLandingPageIframeElement);
+            
+            lpLogo.src = logo;
+            backgroundColor.style.backgroundColor = color;
+            biggerBackground.style.backgroundColor = color;
+            subTitle.innerHTML = companyName + " invites you to join:";
+        }
+    }, 0);
+}
+
+/**************************************************************************************
  *
  *  This function creates an event listener in order to capture the setting of a new 
  *  value for the company logo cookie when a new company has been submitted via popup. 
@@ -476,10 +535,10 @@ addNewCompanyListener = function() {
                     break;
                 case "landingPage":
                     if (message.assetView == "edit") {
-                        overlayLandingPageDesigner();
+                        overlayLandingPage();
                     }
                     else if (message.assetView == "preview") {
-                        overlayLandingPageDesigner();
+                        overlayLandingPage();
                     }
                     break;
                 default:
