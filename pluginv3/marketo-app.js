@@ -5545,16 +5545,18 @@ if ((currentUrl.search(mktoAppDomain) != -1
                     var isNewUrlFragment = window.setInterval(function() {
                         if (Mkt3
                         && Mkt3.DL
-                        && Mkt3.DL.getDlToken()
-                        && Mkt3.DL.dl
-                        && Mkt3.DL.dl.dlCompCode) {
+                        && Mkt3.DL.getDlToken()) {
                             if (currUrlFragment != Mkt3.DL.getDlToken()) {
                                 window.clearInterval(isNewUrlFragment);
                                 
                                 currUrlFragment = Mkt3.DL.getDlToken();
-                                currCompFragment = Mkt3.DL.dl.dlCompCode;
                                 console.log("Marketo App > Loaded: New URL Fragment = " + currUrlFragment);
-//                                console.log("Marketo App > Window: Comp Fragment = " + currCompFragment);
+                                
+                                if (Mkt3.DL.dl
+                                && Mkt3.DL.dl.dlCompCode) {
+                                    currCompFragment = Mkt3.DL.dl.dlCompCode;
+//                                    console.log("Marketo App > Window: Comp Fragment = " + currCompFragment);
+                                }
                                 
                                 // Email Deliverability
                                 if (currUrlFragment == mktoMyMarketoFragment) {
