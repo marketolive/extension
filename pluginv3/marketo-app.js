@@ -38,6 +38,7 @@ var currentUrl = window.location.href,
     defaultTurnerLogoGreen = "http://marketolive.com/m3-dev/assets/img/turner-tech-green.png",
     defaultTurnerLogoWhite = "http://marketolive.com/m3-dev/assets/img/turner-tech-white.png",
     defaultColor = "rgb(42, 83, 112)",
+    mktoDemoAccountMatch = "^mktodemoaccount",
     mktoAccountString106 = "mktodemoaccount106",
     mktoAccountString106a = "mktodemoaccount106a",
     mktoAccountString106b = "mktodemoaccount106b",
@@ -4946,7 +4947,7 @@ if ((currentUrl.search(mktoAppDomain) != -1
                 window.mkto_live_plugin_state = true;
 
                 // If the user is the admin or ghost, disable
-                if (userId.search("^admin@mktodemoaccount") != -1
+                if (userId.search("^admin\.?[a-z]{0,2}@mktodemoaccount") != -1
                 || userId.search("^mktodemoaccount[a-z0-9]*@marketo\.com") != -1
                 || userId.search("^marketodemo.*@gmail\.com$") != -1) {
                     console.log("Marketo App > User: Admin");
@@ -5626,8 +5627,9 @@ if ((currentUrl.search(mktoAppDomain) != -1
                         }
                     }, 0);
                 }
+                APP.overrideSuperballMenuItems();
             }
-            else {
+            else if (accountString.search(mktoDemoAccountMatch) != -1) {
                 APP.overrideSuperballMenuItems();
                 
                 if (currUrlFragment == mktoMyMarketoFragment) {
@@ -5642,7 +5644,6 @@ if ((currentUrl.search(mktoAppDomain) != -1
                     }
                 }
             }
-            APP.overrideSuperballMenuItems();
         }
     }, 0);
 }
