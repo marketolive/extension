@@ -78,7 +78,7 @@ setCookie = function(name, value, expiresInDays, domain, secure) {
  **************************************************************************************/
 
 getCookie = function(cookieName) {
-    console.log("Marketo App > Getting: Cookie " + cookieName);
+    console.log("Content > Getting: Cookie " + cookieName);
     
     var name = cookieName + '=',
         cookies = document.cookie.split(';'),
@@ -90,7 +90,7 @@ getCookie = function(cookieName) {
             return currCookie.substring(name.length, currCookie.length);
         }
     }
-    console.log("Marketo App > Getting: Cookie " + cookieName + " not found");
+    console.log("Content > Getting: Cookie " + cookieName + " not found");
     return null;
 }
 
@@ -145,7 +145,7 @@ grayOutCompletedStories = function() {
  **************************************************************************************/
 
 overlayEmail = function(action) {
-    console.log("Marketo App > Overlaying: Email");
+    console.log("Content > Overlaying: Email");
 
     var isEmailEditor2,
         clearOverlayVars,
@@ -240,7 +240,7 @@ overlayEmail = function(action) {
                             
                             if (currMktoImgTag
                             && currMktoImgTag.src) {
-                                console.log("Marketo App > Overlaying: Email 2.0 Company Logo");
+                                console.log("Content > Overlaying: Email 2.0 Company Logo");
                                 currMktoImgTag.setAttribute("src", logo);
                                 isMktoImgReplaced = true;
                                 break;
@@ -269,7 +269,7 @@ overlayEmail = function(action) {
                         if (currMktoTextMktoName
                         && currMktoTextMktoName.search(mainTitleMktoNameRegex) != -1) {
                             if (currMktoText.innerHTML) {
-                                console.log("Marketo App > Overlaying: Email 2.0 Company Name");
+                                console.log("Content > Overlaying: Email 2.0 Company Name");
                                 currMktoText.innerHTML = companyName + " Invites You<br><br>PREMIER BUSINESS EVENT<br>OF THE YEAR";
                                 isMktoTextReplaced = true;
                             }
@@ -277,7 +277,7 @@ overlayEmail = function(action) {
                         else if (currMktoTextMktoName
                         && currMktoTextMktoName.search(subTitleMktoNameRegex) != -1) {
                             if (currMktoText.innerHTML) {
-                                console.log("Marketo App > Overlaying: Email 2.0 Today's Date");
+                                console.log("Content > Overlaying: Email 2.0 Today's Date");
                                 currMktoText.innerHTML = dayOfWeek + ", " + month + " the " + dayOfMonth + " " + year;
                                 isMktoSubTextReplaced = true;
                             }
@@ -302,7 +302,7 @@ overlayEmail = function(action) {
                         && currMktoButton.innerHTML.search(buttonTextRegex) != -1) {
                             if (currMktoButton.style
                             && currMktoButton.style.backgroundColor) {
-                                console.log("Marketo App > Overlaying: Email 2.0 Company Color");
+                                console.log("Content > Overlaying: Email 2.0 Company Color");
                                 currMktoButton.style.backgroundColor = color;
                                 isMktoButtonReplaced = true;
                                 break;
@@ -316,7 +316,7 @@ overlayEmail = function(action) {
             && logoSwapContainer
             && logoSwapCompany
             && logoBkg) {
-                console.log("Marketo App > Overlaying: Email 1.0 Company Logo & Color");
+                console.log("Content > Overlaying: Email 1.0 Company Logo & Color");
                 logoBkg.style.backgroundColor = color;
                 logoSwapCompany.setAttribute("src", logo);
                 logoSwapContainer.style.display = "none";
@@ -343,7 +343,7 @@ overlayEmail = function(action) {
 
     isEmailEditor2 = window.setInterval(function() {
         if (action == "edit") {
-            console.log("Marketo App > Overlaying: Email Editor");
+            console.log("Content > Overlaying: Email Editor");
             if (document.getElementsByTagName("iframe")[0]
             && document.getElementsByTagName("iframe")[0].contentWindow
             && document.getElementsByTagName("iframe")[0].contentWindow.document
@@ -352,8 +352,8 @@ overlayEmail = function(action) {
                 || (isEditorCountReset
                     && editorRepeatReadyCount >= maxRepeatReady)) {
                     
-                    console.log("Marketo App > Overlayed: Email Editor = " + editorRepeatReadyCount);
-                    console.log("Marketo App > Overlaying: Email Interval is Cleared");
+                    console.log("Content > Overlayed: Email Editor = " + editorRepeatReadyCount);
+                    console.log("Content > Overlaying: Email Interval is Cleared");
                     window.clearInterval(isEmailEditor2);
                     clearOverlayVars();
                 }
@@ -373,7 +373,7 @@ overlayEmail = function(action) {
             }
         }
         else if (action == "preview") {
-            console.log("Marketo App > Overlaying: Email Previewer");
+            console.log("Content > Overlaying: Email Previewer");
             
             if (!isDesktopPreviewReplaced
             && document.getElementsByTagName("iframe")[2]
@@ -384,7 +384,7 @@ overlayEmail = function(action) {
                 || (isDesktopCountReset
                     && desktopRepeatReadyCount >= maxRepeatReady)) {
                     
-                    console.log("Marketo App > Overlayed: Email Desktop Preview = " + desktopRepeatReadyCount);
+                    console.log("Content > Overlayed: Email Desktop Preview = " + desktopRepeatReadyCount);
                     isDesktopPreviewReplaced = true;
                 }
                 else if (desktopPrevReady) {
@@ -411,7 +411,7 @@ overlayEmail = function(action) {
                 || (isPhoneCountReset
                     && phoneRepeatReadyCount >= maxRepeatReady)) {
                     
-                    console.log("Marketo App > Overlayed: Email Phone Preview = " + phoneRepeatReadyCount);
+                    console.log("Content > Overlayed: Email Phone Preview = " + phoneRepeatReadyCount);
                     isPhonePreviewReplaced = true;
                 }
                 else if (desktopPrevReady) {
@@ -431,7 +431,7 @@ overlayEmail = function(action) {
             
             if (isPhonePreviewReplaced
             && isDesktopPreviewReplaced) {
-                console.log("Marketo App > Overlaying: Email Interval is Cleared");
+                console.log("Content > Overlaying: Email Interval is Cleared");
                 window.clearInterval(isEmailEditor2);
                 clearOverlayVars();
             }
