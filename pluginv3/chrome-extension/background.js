@@ -20,7 +20,7 @@ var mktoLiveInstances = "^https:\/\/app-(sjp|ab07|ab08)+\.marketo\.com",
     mktoEmailDesignerWebRequestMatch = "https://na-sjp.marketodesigner.com/images/templatePicker/richtext-object.svg",
     mktoEmailDesignerFragment = "EME",
     mktoEmailPreviewWebRequestMatch = "https://na-sjp.marketodesigner.com/email/emailGetContent?emailId=*",
-    mktoEmailPreviewFragmentRegex = new RegExp("EME[0-9]+&isPreview", "i"),
+    mktoEmailPreviewFragmentRegex = new RegExp("#EME[0-9]+&isPreview", "i"),
     mktoEmailPreviewFragment = "EMP",
     mktoLandingPageDesignerFragment = "LPE",
     mktoLandingPagePreviewFragment = "LPP";
@@ -175,7 +175,7 @@ function reloadCompany(tabId) {
                 message.assetType = "email";
                 message.assetView = "edit";
             }
-            else if (tab.url.search("#" + mktoEmailPreviewFragmentRegex) != -1
+            else if (tab.url.search(mktoEmailPreviewFragmentRegex) != -1
             || tab.url.search("#" + mktoEmailPreviewFragment + "[0-9]+$") != -1) {
                 message.assetType = "email";
                 message.assetView = "preview";
