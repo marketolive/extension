@@ -169,6 +169,8 @@ function reloadCompany(tabId) {
     
     if (tabId) {
         chrome.tabs.get(tabId, function(tab) {
+            console.log("Background > Getting Tab: " + tab.url);
+            
             if (tab.url.search("#" + mktoEmailDesignerFragment + "[0-9]+$") != -1) {
                 message.assetType = "email";
                 message.assetView = "edit";
