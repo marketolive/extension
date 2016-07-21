@@ -19,6 +19,7 @@ var mktoLiveInstances = "^https:\/\/app-(sjp|ab07|ab08)+\.marketo\.com",
     mktoDesignerMatchPattern = "https://*.marketodesigner.com/*",
     mktoEmailDesignerWebRequestMatch = "https://na-sjp.marketodesigner.com/images/templatePicker/richtext-object.svg",
     mktoEmailDesignerFragment = "EME",
+    mktoEmailPreviewWebRequestMatch = "https://na-sjp.marketodesigner.com/email/emailGetContent?emailId=*",
     mktoEmailPreviewFragmentRegex = new RegExp("EME[0-9]+&isPreview", "i"),
     mktoEmailPreviewFragment = "EMP",
     mktoLandingPageDesignerFragment = "LPE",
@@ -233,9 +234,10 @@ function reloadCompany(tabId) {
 
 /**************************************************************************************
  *
- *  This function registers an event listener for a Marketo email designer web request 
- *  which indicates that the designer is completely loaded in order to call the 
- *  reloadCompany function to overlay the email with the company logo and color.
+ *  This function registers an event listener for Marketo email designer and previewer 
+ *  web requests which indicates that either the designer is completely loaded or the 
+ *  previewer iframes are ready in order to call the reloadCompany function to overlay 
+ *  the email with the company logo and color.
  *
  *  @Author Brian Fisher
  *
@@ -246,10 +248,10 @@ function reloadCompany(tabId) {
  **************************************************************************************/
 
 chrome.webRequest.onCompleted.addListener(function(details) {
-    console.log("Background > webRequest Completed: " + mktoEmailDesignerWebRequestMatch);
+    console.log("Background > webRequest Completed: " + details.url);
     
     reloadCompany(details.tabId);
-}, {urls : [mktoEmailDesignerWebRequestMatch]});
+}, {urls : [mktoEmailDesignerWebRequestMatch, mktoEmailPreviewWebRequestMatch]});
 
 /**************************************************************************************
  *
