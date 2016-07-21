@@ -18,12 +18,15 @@ var mktoLiveInstances = "^https:\/\/app-(sjp|ab07|ab08)+\.marketo\.com",
     mktoDesignerUriDomain = ".marketodesigner.com",
     mktoDesignerMatchPattern = "https://*.marketodesigner.com/*",
     mktoEmailDesignerWebRequestMatch = "https://na-sjp.marketodesigner.com/images/templatePicker/richtext-object.svg",
+    mktoEmailDesignerWebRequestRegex = "^https:\/\/na-sjp\.marketodesigner\.com\/images\/templatePicker\/richtext-object\.svg$",
     mktoEmailDesignerFragment = "EME",
     mktoEmailPreviewWebRequestMatch = "https://na-sjp.marketodesigner.com/email/emailGetContent?emailId=*",
+    mktoEmailPreviewWebRequestRegex = "^https:\/\/na-sjp\.marketodesigner\.com\/email\/emailGetContent\\?emailId=[0-9]+$",
     mktoEmailPreviewFragmentRegex = new RegExp("#EME[0-9]+&isPreview", "i"),
     mktoEmailPreviewFragment = "EMP",
     mktoLandingPageDesignerFragment = "LPE",
-    mktoLandingPagePreviewFragment = "LPP";
+    mktoLandingPagePreviewFragment = "LPP",
+    count = 0;
 
 /**************************************************************************************
  *
@@ -157,7 +160,8 @@ function reloadMarketoTabs() {
 function reloadCompany(tabId) {
     console.log("Background > Reloading: Company Logo & Color");
     
-    var queryInfo = {
+    var setAssetData,
+        queryInfo = {
             "currentWindow" : true,
             "url" : mktoDesignerMatchPattern
         },
@@ -166,69 +170,47 @@ function reloadCompany(tabId) {
             "assetType" : "",
             "assetView" : ""
         };
+        
+    function setAssetData(tab) {
+        if (tab.url.search("#" + mktoEmailDesignerFragment + "[0-9]+$") != -1) {
+            message.assetType = "email";
+            message.assetView = "edit";
+        }
+        else if (tab.url.search("#" + mktoEmailPreviewFragmentRegex) != -1
+        || tab.url.search("#" + mktoEmailPreviewFragment + "[0-9]+$") != -1) {
+            count = 0;
+            message.assetType = "email";
+            message.assetView = "preview";
+        }
+        else if (tab.url.search("#" + mktoLandingPageDesignerFragment + "[0-9]+$") != -1) {
+            message.assetType = "landingPage";
+            message.assetView = "edit";
+        }
+        else if (tab.url.search("#" + mktoLandingPagePreviewFragment + "[0-9]+$") != -1) {
+            message.assetType = "landingPage";
+            message.assetView = "preview";
+        }
+        
+        if (message.assetType
+        && message.assetView) {
+            chrome.tabs.sendMessage(tab.id, message, function(response) {
+                console.log("Background > Receiving: Message Response from Content for tab: " + tab.url + " " + response);
+            });
+            message.assetType = message.assetView = "";
+        }
+    }
     
     if (tabId) {
         chrome.tabs.get(tabId, function(tab) {
-            console.log("Background > Getting Tab: " + tab.url);
-            
-            if (tab.url.search("#" + mktoEmailDesignerFragment + "[0-9]+$") != -1) {
-                message.assetType = "email";
-                message.assetView = "edit";
-            }
-            else if (tab.url.search(mktoEmailPreviewFragmentRegex) != -1
-            || tab.url.search("#" + mktoEmailPreviewFragment + "[0-9]+$") != -1) {
-                message.assetType = "email";
-                message.assetView = "preview";
-            }
-            else if (tab.url.search("#" + mktoLandingPageDesignerFragment + "[0-9]+$") != -1) {
-                message.assetType = "landingPage";
-                message.assetView = "edit";
-            }
-            else if (tab.url.search("#" + mktoLandingPagePreviewFragment + "[0-9]+$") != -1) {
-                message.assetType = "landingPage";
-                message.assetView = "preview";
-            }
-            
-            if (message.assetType
-            && message.assetView) {
-                chrome.tabs.sendMessage(tabId, message, function(response) {
-                    console.log("Background > Receiving: Message Response from Content for tab: " + tab.url + " " + response);
-                });
-            }
+            setAssetData(tab);
         });
     }
     else {
         chrome.tabs.query(queryInfo, function(tabs) {
-            var ii,
-                currTab;
+            var ii;
             
             for (ii = 0; ii < tabs.length; ii++) {
-                currTab = tabs[ii];
-                
-                if (currTab.url.search("#" + mktoEmailDesignerFragment + "[0-9]+$") != -1) {
-                    message.assetType = "email";
-                    message.assetView = "edit";
-                }
-                else if (currTab.url.search("#" + mktoEmailPreviewFragmentRegex) != -1
-                || currTab.url.search("#" + mktoEmailPreviewFragment + "[0-9]+$") != -1) {
-                    message.assetType = "email";
-                    message.assetView = "preview";
-                }
-                else if (currTab.url.search("#" + mktoLandingPageDesignerFragment + "[0-9]+$") != -1) {
-                    message.assetType = "landingPage";
-                    message.assetView = "edit";
-                }
-                else if (currTab.url.search("#" + mktoLandingPagePreviewFragment + "[0-9]+$") != -1) {
-                    message.assetType = "landingPage";
-                    message.assetView = "preview";
-                }
-                
-                if (message.assetType
-                && message.assetView) {
-                    chrome.tabs.sendMessage(tabs[ii].id, message, function(response) {
-                        console.log("Background > Receiving: Message Response from Content for tab: " + currTab.url + " " + response);
-                    });
-                }
+                setAssetData(tabs[ii]);
             }
         });
     }
@@ -252,7 +234,18 @@ function reloadCompany(tabId) {
 chrome.webRequest.onCompleted.addListener(function(details) {
     console.log("Background > webRequest Completed: " + details.url);
     
-    reloadCompany(details.tabId);
+    if (details.url.search(mktoEmailDesignerWebRequestRegex) != -1) {
+        console.log("Background > webRequest Completed: Email Designer");
+        reloadCompany(details.tabId);
+    }
+    else if (details.url.search(mktoEmailPreviewWebRequestRegex) != -1) {
+        count++;
+        
+        if (count == 2) {
+            console.log("Background > webRequest Completed: Email Previewer");
+            reloadCompany(details.tabId);
+        }
+    }
 }, {urls : [mktoEmailDesignerWebRequestMatch, mktoEmailPreviewWebRequestMatch]});
 
 /**************************************************************************************
