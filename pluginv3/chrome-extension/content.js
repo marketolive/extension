@@ -40,6 +40,8 @@ var URL_PATH = "m3-dev",
 	setCookie,
     displayProgressModal,
     grayOutCompletedStories,
+    defaultTurnerLogoWhite = "http://marketolive.com/"+URL_PATH+"/assets/img/turner-tech-white.png",
+    defaultColor = "rgb(42, 83, 112)",
     overlayEmail,
     overlayLandingPage,
     addNewCompanyListener;

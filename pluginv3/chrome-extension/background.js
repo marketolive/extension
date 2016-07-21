@@ -189,7 +189,7 @@ function reloadCompany(tabId) {
             if (message.assetType
             && message.assetView) {
                 chrome.tabs.sendMessage(tabId, message, function(response) {
-                    console.log("Background > Receiving: Message Response from Content: " + response);
+                    console.log("Background > Receiving: Message Response from Content for tab: " + tab.url + " " + response);
                 });
             }
         });
@@ -223,7 +223,7 @@ function reloadCompany(tabId) {
                 if (message.assetType
                 && message.assetView) {
                     chrome.tabs.sendMessage(tabs[ii].id, message, function(response) {
-                        console.log("Background > Receiving: Message Response from Content: " + response);
+                        console.log("Background > Receiving: Message Response from Content for tab: " + currTab.url + " " + response);
                     });
                 }
             }
@@ -246,6 +246,8 @@ function reloadCompany(tabId) {
  **************************************************************************************/
 
 chrome.webRequest.onCompleted.addListener(function(details) {
+    console.log("Background > webRequest Completed: " + mktoEmailDesignerWebRequestMatch);
+    
     reloadCompany(details.tabId);
 }, {urls : [mktoEmailDesignerWebRequestMatch]});
 
