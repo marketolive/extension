@@ -17,6 +17,7 @@ var mktoLiveInstances = "^https:\/\/app-(sjp|ab07|ab08)+\.marketo\.com",
     mktoDesignerMatch = "https://www.marketodesigner.com/*",
     mktoDesignerUriDomain = ".marketodesigner.com",
     mktoDesignerMatchPattern = "https://*.marketodesigner.com/*",
+    mktoEmailDesignerWebRequestMatch = "https://na-sjp.marketodesigner.com/images/templatePicker/richtext-object.svg",
     mktoEmailDesignerFragment = "EME",
     mktoEmailPreviewFragmentRegex = new RegExp("EME[0-9]+&isPreview", "i"),
     mktoEmailPreviewFragment = "EMP",
@@ -148,10 +149,11 @@ function reloadMarketoTabs() {
  *
  *  @function
  *
+ *  @param {String} tabId - The ID of the tab which initiated this request (Optional).
  *
  **************************************************************************************/
 
-function reloadCompany() {
+function reloadCompany(tabId) {
     console.log("Background > Reloading: Company Logo & Color");
     
     var queryInfo = {
@@ -163,43 +165,95 @@ function reloadCompany() {
             "assetType" : "",
             "assetView" : ""
         };
-
-    chrome.tabs.query(queryInfo, function(tabs) {
-        var ii,
-            currTab;
-        
-        for (ii = 0; ii < tabs.length; ii++) {
-            currTab = tabs[ii];
+    
+    if (tabId) {
+        chrome.tabs.get(tabId, function(tab) {
+            if (tab.url.search("#" + mktoEmailDesignerFragment + "[0-9]+$") != -1) {
+                message.assetType = "email";
+                message.assetView = "edit";
+            }
+            else if (tab.url.search("#" + mktoEmailPreviewFragmentRegex) != -1
+            || tab.url.search("#" + mktoEmailPreviewFragment + "[0-9]+$") != -1) {
+                message.assetType = "email";
+                message.assetView = "preview";
+            }
+            else if (tab.url.search("#" + mktoLandingPageDesignerFragment + "[0-9]+$") != -1) {
+                message.assetType = "landingPage";
+                message.assetView = "edit";
+            }
+            else if (tab.url.search("#" + mktoLandingPagePreviewFragment + "[0-9]+$") != -1) {
+                message.assetType = "landingPage";
+                message.assetView = "preview";
+            }
             
-            if (currTab.url.search("#" + mktoEmailDesignerFragment + "[0-9]+$") != -1) {
-                message.assetType = "email";
-                message.assetView = "edit";
+            if (message.assetType
+            && message.assetView) {
+                chrome.tabs.sendMessage(tabId, message, function(response) {
+                    console.log("Background > Receiving: Message Response from Content: " + response);
+                });
             }
-            else if (currTab.url.search("#" + mktoEmailPreviewFragmentRegex) != -1
-            || currTab.url.search("#" + mktoEmailPreviewFragment + "[0-9]+$") != -1) {
-                message.assetType = "email";
-                message.assetView = "preview";
+        });
+    }
+    else {
+        chrome.tabs.query(queryInfo, function(tabs) {
+            var ii,
+                currTab;
+            
+            for (ii = 0; ii < tabs.length; ii++) {
+                currTab = tabs[ii];
+                
+                if (currTab.url.search("#" + mktoEmailDesignerFragment + "[0-9]+$") != -1) {
+                    message.assetType = "email";
+                    message.assetView = "edit";
+                }
+                else if (currTab.url.search("#" + mktoEmailPreviewFragmentRegex) != -1
+                || currTab.url.search("#" + mktoEmailPreviewFragment + "[0-9]+$") != -1) {
+                    message.assetType = "email";
+                    message.assetView = "preview";
+                }
+                else if (currTab.url.search("#" + mktoLandingPageDesignerFragment + "[0-9]+$") != -1) {
+                    message.assetType = "landingPage";
+                    message.assetView = "edit";
+                }
+                else if (currTab.url.search("#" + mktoLandingPagePreviewFragment + "[0-9]+$") != -1) {
+                    message.assetType = "landingPage";
+                    message.assetView = "preview";
+                }
+                
+                if (message.assetType
+                && message.assetView) {
+                    chrome.tabs.sendMessage(tabs[ii].id, message, function(response) {
+                        console.log("Background > Receiving: Message Response from Content: " + response);
+                    });
+                }
             }
-            else if (currTab.url.search("#" + mktoLandingPageDesignerFragment + "[0-9]+$") != -1) {
-                message.assetType = "landingPage";
-                message.assetView = "edit";
-            }
-            else if (currTab.url.search("#" + mktoLandingPagePreviewFragment + "[0-9]+$") != -1) {
-                message.assetType = "landingPage";
-                message.assetView = "preview";
-            }
-            chrome.tabs.sendMessage(tabs[ii].id, message, function(response) {
-                console.log("Background > Receiving: Message Response from Content: " + response);
-            });
-        }
-    });
+        });
+    }
 }
 
 /**************************************************************************************
  *
- *  This function creates an event listener in order to receive the company's logo and 
- *  color from the MarketoLive Color-Picker page and then sets the cookie for both the 
- *  mktoLiveDomain and mktoDesignerDomain.
+ *  This function registers an event listener for a Marketo email designer web request 
+ *  which indicates that the designer is completely loaded in order to call the 
+ *  reloadCompany function to overlay the email with the company logo and color.
+ *
+ *  @Author Brian Fisher
+ *
+ *  @function
+ *
+ *  @param {function} - Callback function for the response.
+ *
+ **************************************************************************************/
+
+chrome.webRequest.onCompleted.addListener(function(details) {
+    reloadCompany(details.tabId);
+}, {urls : [mktoEmailDesignerWebRequestMatch]});
+
+/**************************************************************************************
+ *
+ *  This function registers an event listener in order to receive the company's logo 
+ *  and color from the MarketoLive Color-Picker page and then sets the cookie for both 
+ *  the mktoLiveDomain and mktoDesignerDomain.
  *
  *  @Author Brian Fisher
  *

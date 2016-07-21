@@ -5412,7 +5412,7 @@ if ((currentUrl.search(mktoAppDomain) != -1
                                     Ext4.getStore('Email').load(loadParameters);
                                 }
                                 // Overlay Email Editor w/ Company Logo and Color
-                                APP.overlayEmail("edit");
+//                                APP.overlayEmail("edit");
                                 
 /*                                switch (currUrlFragment) {
                                     case customCompanyEmail106Fragment:
@@ -5443,7 +5443,7 @@ if ((currentUrl.search(mktoAppDomain) != -1
                             else {
                                 console.log("Marketo App > Location: Email Previewer");
                                 // Overlay Email Previewer w/ Company Logo and Color
-                                APP.overlayEmail("preview");
+//                                APP.overlayEmail("preview");
                             }
                             break;
                         
@@ -5621,7 +5621,7 @@ if ((currentUrl.search(mktoAppDomain) != -1
                                     console.log("Marketo App > Location: Email Previewer");
                                     
                                     // Overlay Email Previewer w/ Company Logo and Color
-                                    APP.overlayEmail("preview");
+//                                    APP.overlayEmail("preview");
                                 }
                             }
                         }
