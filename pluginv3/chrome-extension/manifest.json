@@ -9,7 +9,7 @@
       "default_title": "MarketoLive"
    },
    "content_scripts": [ {
-      "all_frames": true,
+      "all_frames": false,
       "js": [ "content.js" ],
        "run_at": "document_start",
       "matches": [ "*://*.marketodesigner.com/*",  "*://marketolive.com/*", "*://*.marketo.com/*", "*://go.app.io/*", "https://250ok.com/*", "http://cloud4.insightera.com/demo/", "*://cloud4.insightera.com/*", "https://marketo.invisionapp.com/*" ]

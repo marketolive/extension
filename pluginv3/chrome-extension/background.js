@@ -173,10 +173,11 @@ function reloadCompany(tabId) {
         
     setAssetData = function(tab) {
         if (tab.url.search("#" + mktoEmailDesignerFragment + "[0-9]+$") != -1) {
+            count = 0;
             message.assetType = "email";
             message.assetView = "edit";
         }
-        else if (tab.url.search("#" + mktoEmailPreviewFragmentRegex) != -1
+        else if (tab.url.search(mktoEmailPreviewFragmentRegex) != -1
         || tab.url.search("#" + mktoEmailPreviewFragment + "[0-9]+$") != -1) {
             count = 0;
             message.assetType = "email";

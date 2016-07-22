@@ -146,7 +146,7 @@ grayOutCompletedStories = function() {
 
 overlayEmail = function(action) {
     console.log("Content > Overlaying: Email");
-
+    
     var isEmailEditor2,
         clearOverlayVars,
         overlay,
@@ -356,6 +356,7 @@ overlayEmail = function(action) {
                     console.log("Content > Overlaying: Email Interval is Cleared");
                     window.clearInterval(isEmailEditor2);
                     clearOverlayVars();
+                    return true;
                 }
                 else if (editorPrevReady) {
                     editorRepeatReadyCount++;
@@ -434,6 +435,7 @@ overlayEmail = function(action) {
                 console.log("Content > Overlaying: Email Interval is Cleared");
                 window.clearInterval(isEmailEditor2);
                 clearOverlayVars();
+                return true;
             }
         }
     }, 0);
