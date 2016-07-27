@@ -24,7 +24,11 @@ var mktoLiveInstances = "^https:\/\/app-(sjp|ab07|ab08)+\.marketo\.com",
     mktoEmailPreviewWebRequestRegex = "^https:\/\/na-sjp\.marketodesigner\.com\/email\/emailGetContent\\?emailId=[0-9]+$",
     mktoEmailPreviewFragmentRegex = new RegExp("#EME[0-9]+&isPreview", "i"),
     mktoEmailPreviewFragment = "EMP",
+    mktoLandingPageDesignerWebRequestMatch = "https://b2c-msm.marketo.com/tracker/track.gif?*",
+    mktoLandingPageDesignerWebRequestRegex = "^https:\/\/b2c-msm\.marketo\.com\/tracker\/track\.gif\\?.*",
     mktoLandingPageDesignerFragment = "LPE",
+    mktoLandingPagePreviewWebRequestMatch = "https://na-sjp.marketodesigner.com/lpeditor/preview?pageId=*",
+    mktoLandingPagePreviewWebRequestRegex = "^https:\/\/na-sjp\.marketodesigner\.com\/lpeditor\/preview\\?pageId=[0-9]+$",
     mktoLandingPagePreviewFragment = "LPP",
     count = 0;
 
@@ -153,11 +157,14 @@ function reloadMarketoTabs() {
  *
  *  @function
  *
- *  @param {String} tabId - The ID of the tab which initiated this request (Optional).
+ *  @param [Object] webRequest - JSON object that contains the following key/value pairs:
+ *      {String} tabId - The ID of the tab which completed the webRequest.
+ *      {String} assetType - The type of the asset for this request.
+ *      {String} assetView - The mode in which this asset is being viewed (edit/preview).
  *
  **************************************************************************************/
 
-function reloadCompany(tabId) {
+function reloadCompany(webRequest) {
     console.log("Background > Reloading: Company Logo & Color");
     
     var setAssetData,
@@ -201,9 +208,17 @@ function reloadCompany(tabId) {
         }
     }
     
-    if (tabId) {
-        chrome.tabs.get(tabId, function(tab) {
-            setAssetData(tab);
+    if (webRequest) {
+        chrome.tabs.get(webRequest.tabId, function(tab) {
+            if (webRequest.assetType
+            && webRequest.assetView) {
+                message.assetType = webRequest.assetType;
+                message.assetView = webRequest.assetView;
+                
+                chrome.tabs.sendMessage(tab.id, message, function(response) {
+                    console.log("Background > Receiving: Message Response from Content for tab: " + tab.url + " " + response);
+                });
+            }
         });
     }
     else {
@@ -235,19 +250,42 @@ function reloadCompany(tabId) {
 chrome.webRequest.onCompleted.addListener(function(details) {
     console.log("Background > webRequest Completed: " + details.url);
     
+    var webRequest = {
+            "tabId" : details.tabId,
+            "assetType" : "",
+            "assetView" : ""
+        };
+    
     if (details.url.search(mktoEmailDesignerWebRequestRegex) != -1) {
         console.log("Background > webRequest Completed: Email Designer");
-        reloadCompany(details.tabId);
+        webRequest.assetType = "email";
+        webRequest.assetView = "edit";
+        reloadCompany(webRequest);
     }
     else if (details.url.search(mktoEmailPreviewWebRequestRegex) != -1) {
         count++;
         
         if (count == 2) {
             console.log("Background > webRequest Completed: Email Previewer");
-            reloadCompany(details.tabId);
+            webRequest.assetType = "email";
+            webRequest.assetView = "preview";
+            reloadCompany(webRequest);
         }
     }
-}, {urls : [mktoEmailDesignerWebRequestMatch, mktoEmailPreviewWebRequestMatch]});
+    else if (details.url.search(mktoLandingPageDesignerWebRequestRegex) != -1) {
+        console.log("Background > webRequest Completed: Landing Page Designer");
+        webRequest.assetType = "landingPage";
+        webRequest.assetView = "edit";
+        reloadCompany(webRequest);
+    }
+    else if (details.url.search(mktoLandingPagePreviewWebRequestRegex) != -1) {
+        console.log("Background > webRequest Completed: Landing Page Previewer");
+        webRequest.assetType = "landingPage";
+        webRequest.assetView = "preview";
+        reloadCompany(webRequest);
+    }
+    
+}, {urls : [mktoEmailDesignerWebRequestMatch, mktoEmailPreviewWebRequestMatch, mktoLandingPageDesignerWebRequestMatch, mktoLandingPagePreviewWebRequestMatch]});
 
 /**************************************************************************************
  *

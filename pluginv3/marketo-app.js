@@ -5320,7 +5320,7 @@ if ((currentUrl.search(mktoAppDomain) != -1
                     }
 */                  
                     // Overlay Landing Page Designer w/ company logo and color
-                    switch (currUrlFragment) {
+/*                    switch (currUrlFragment) {
                         case customCompanyLandingPage106Fragment:
                             APP.overlayLandingPageDesigner();
                             break;
@@ -5342,7 +5342,7 @@ if ((currentUrl.search(mktoAppDomain) != -1
                         default:
                             break;
                     }
-                    
+*/                    
                     var isLandingPageDesigner = window.setInterval(function() {
                         if (Mkt3
                         && Mkt3.app
