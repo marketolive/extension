@@ -41,6 +41,7 @@ var URL_PATH = "m3-dev",
     displayProgressModal,
     grayOutCompletedStories,
     defaultTurnerLogoWhite = "http://marketolive.com/"+URL_PATH+"/assets/img/turner-tech-white.png",
+    defaultTurnerLogoGreen = "http://marketolive.com/"+URL_PATH+"/assets/img/turner-tech-green.png",
     defaultColor = "rgb(42, 83, 112)",
     overlayEmail,
     overlayLandingPage,
@@ -473,8 +474,8 @@ overlayLandingPage = function(action) {
         mktoRichMainTextDivClassNameRegex = new RegExp("main title|mainTitle|main-title|title", "i"),
         mktoRichSubTextDivClassNameRegex = new RegExp("subtitle|sub-title", "i"),
         buttonTextRegex = new RegExp("signup|sign up|call to action|cta|submit", "i"),
-        logo = APP.getCookie("logo"),
-        color = APP.getCookie("color"),
+        logo = getCookie("logo"),
+        color = getCookie("color"),
         mktoMainText = companyName + " Invites You<br><br>PREMIER BUSINESS EVENT<br>OF THE YEAR",
         mktoSubText,
         linearGradient = "linear-gradient(to bottom, " + color + ", rgb(242, 242, 242))",
@@ -500,7 +501,7 @@ overlayLandingPage = function(action) {
     mktoSubText = dayOfWeek + ", " + month + " the " + dayOfMonth + " " + year;
     
     if (logo == null) {
-        logo = defaultTurnerLogoWhite;
+        logo = defaultTurnerLogoGreen;
         companyName = "Turner";
     }
     else {
