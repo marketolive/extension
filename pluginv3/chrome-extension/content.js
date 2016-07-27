@@ -931,10 +931,10 @@ addNewCompanyListener = function() {
                     break;
                 case "landingPage":
                     if (message.assetView == "edit") {
-                        overlayLandingPage();
+                        overlayLandingPage("edit");
                     }
                     else if (message.assetView == "preview") {
-                        overlayLandingPage();
+                        overlayLandingPage("preview");
                     }
                     break;
                 default:
