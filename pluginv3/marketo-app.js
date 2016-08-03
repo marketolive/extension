@@ -4022,7 +4022,7 @@ APP.limitNurturePrograms = function() {
                     },
                     undefined, [compType]);
 
-            if (matches.length >= 3) {
+            if (matches.length >= 5) {
                 limit_exceeded = true;
             }
 
