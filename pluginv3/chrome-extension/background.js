@@ -25,11 +25,11 @@ var mktoLiveInstances = "^https:\/\/app-(sjp|ab07|ab08)+\.marketo\.com",
     mktoEmailPreviewFragmentRegex = new RegExp("#EME[0-9]+&isPreview", "i"),
     mktoEmailPreviewFragment = "EMP",
     mktoLandingPageDesignerWebRequestMatch = "https://b2c-msm.marketo.com/tracker/track.gif?*",
-    mktoLandingPageDesignerWebRequestRegex = "^https:\/\/b2c-msm\.marketo\.com\/tracker\/track\.gif\\?.*",
+    mktoLandingPageDesignerWebRequestRegex = "^https:\/\/b2c-msm\.marketo\.com\/tracker\/track\.gif\\?.+",
     mktoLandingPageDesignerFragment = "LPE",
     mktoLandingPagePreviewWebRequestMatch = "https://na-sjp.marketodesigner.com/lpeditor/preview?pageId=*",
-    mktoLandingPagePreviewWebRequestRegex = "^https:\/\/na-sjp\.marketodesigner\.com\/lpeditor\/preview\\?pageId=[0-9]+$",
-    mktoLandingPagePreviewFragment = "LPP",
+    mktoLandingPagePreviewWebRequestRegex = "^https:\/\/na-sjp\.marketodesigner\.com\/lpeditor\/preview\\?pageId=.+",
+    mktoLandingPagePreviewFragment = "LPPD",
     count = 0;
 
 /**************************************************************************************
@@ -165,7 +165,7 @@ function reloadMarketoTabs() {
  **************************************************************************************/
 
 function reloadCompany(webRequest) {
-    console.log("Background > Reloading: Company Logo & Color");
+    console.log("Background > Loading: Company Logo & Color");
     
     var setAssetData,
         queryInfo = {
@@ -173,28 +173,30 @@ function reloadCompany(webRequest) {
             "url" : mktoDesignerMatchPattern
         },
         message = {
-            "action" : "newCompany",
+            "action" : "",
             "assetType" : "",
             "assetView" : ""
         };
         
     setAssetData = function(tab) {
         if (tab.url.search("#" + mktoEmailDesignerFragment + "[0-9]+$") != -1) {
-            count = 0;
+            console.log("Background > Loading: Company Logo & Color for Email Designer");
             message.assetType = "email";
             message.assetView = "edit";
         }
         else if (tab.url.search(mktoEmailPreviewFragmentRegex) != -1
         || tab.url.search("#" + mktoEmailPreviewFragment + "[0-9]+$") != -1) {
-            count = 0;
+            console.log("Background > Loading: Company Logo & Color for Email Previewer");
             message.assetType = "email";
             message.assetView = "preview";
         }
         else if (tab.url.search("#" + mktoLandingPageDesignerFragment + "[0-9]+$") != -1) {
+            console.log("Background > Loading: Company Logo & Color for Landing Page Designer");
             message.assetType = "landingPage";
             message.assetView = "edit";
         }
         else if (tab.url.search("#" + mktoLandingPagePreviewFragment + "[0-9]+$") != -1) {
+            console.log("Background > Loading: Company Logo & Color for Landing Page Previewer");
             message.assetType = "landingPage";
             message.assetView = "preview";
         }
@@ -209,19 +211,16 @@ function reloadCompany(webRequest) {
     }
     
     if (webRequest) {
+        count = 0;
+        message.action = "initialCompany";
+        
         chrome.tabs.get(webRequest.tabId, function(tab) {
-            if (webRequest.assetType
-            && webRequest.assetView) {
-                message.assetType = webRequest.assetType;
-                message.assetView = webRequest.assetView;
-                
-                chrome.tabs.sendMessage(tab.id, message, function(response) {
-                    console.log("Background > Receiving: Message Response from Content for tab: " + tab.url + " " + response);
-                });
-            }
+            setAssetData(tab);
         });
     }
     else {
+        message.action = "newCompany";
+        
         chrome.tabs.query(queryInfo, function(tabs) {
             var ii;
             
@@ -251,37 +250,26 @@ chrome.webRequest.onCompleted.addListener(function(details) {
     console.log("Background > webRequest Completed: " + details.url);
     
     var webRequest = {
-            "tabId" : details.tabId,
-            "assetType" : "",
-            "assetView" : ""
+            "tabId" : details.tabId
         };
     
-    if (details.url.search(mktoEmailDesignerWebRequestRegex) != -1) {
-        console.log("Background > webRequest Completed: Email Designer");
-        webRequest.assetType = "email";
-        webRequest.assetView = "edit";
-        reloadCompany(webRequest);
-    }
-    else if (details.url.search(mktoEmailPreviewWebRequestRegex) != -1) {
+    if (details.url.search(mktoEmailPreviewWebRequestRegex) != -1) {
         count++;
         
         if (count == 2) {
             console.log("Background > webRequest Completed: Email Previewer");
-            webRequest.assetType = "email";
-            webRequest.assetView = "preview";
             reloadCompany(webRequest);
         }
     }
-    else if (details.url.search(mktoLandingPageDesignerWebRequestRegex) != -1) {
-        console.log("Background > webRequest Completed: Landing Page Designer");
-        webRequest.assetType = "landingPage";
-        webRequest.assetView = "edit";
-        reloadCompany(webRequest);
-    }
     else if (details.url.search(mktoLandingPagePreviewWebRequestRegex) != -1) {
-        console.log("Background > webRequest Completed: Landing Page Previewer");
-        webRequest.assetType = "landingPage";
-        webRequest.assetView = "preview";
+        count++;
+        
+        if (count == 4) {
+            console.log("Background > webRequest Completed: Landing Page Previewer");
+            reloadCompany(webRequest);
+        }
+    }
+    else {
         reloadCompany(webRequest);
     }
     
