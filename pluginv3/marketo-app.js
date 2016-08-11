@@ -71,7 +71,7 @@ var currentUrl = window.location.href,
     mktoEmailPreviewFragmentRegex = new RegExp("^EME[0-9]+&isPreview", "i"),
     mktoEmailPreviewFragment = "EMP",
     mktoLandingPageDesignerFragment = "LPE",
-    mktoLandingPagePreviewFragment = "LPP",
+    mktoLandingPagePreviewFragment = "LPPD",
     mktoFormWizardFragment = "FOE",
     mktoMobilePushNotificationWizardFragment = "MPNE",
     mktoSocialAppWizardFragment = "SOAE",
@@ -4022,7 +4022,7 @@ APP.limitNurturePrograms = function() {
                     },
                     undefined, [compType]);
 
-            if (matches.length >= 5) {
+            if (matches.length >= 3) {
                 limit_exceeded = true;
             }
 
@@ -4391,368 +4391,6 @@ APP.disableSaving = function() {
             this.renumberWidgets();
         }
     }
-}
-
-/**************************************************************************************
- *  
- *  This function overlays an email with the user submitted company logo and color.
- *
- *  @Author Brian Fisher
- *
- *  @function
- *
- **************************************************************************************/
-
-APP.overlayEmail = function(action) {
-    console.log("Marketo App > Overlaying: Email");
-
-    var isEmailEditor2,
-        clearOverlayVars,
-        overlay,
-        isMktoImgReplaced = isMktoTextReplaced = isMktoSubTextReplaced = isMktoButtonReplaced = isMktoEmail1Replaced = editorPrevReady = isEditorCountReset = desktopPrevReady = isDesktopCountReset = phonePrevReady = isPhoneCountReset = isDesktopPreviewReplaced = isPhonePreviewReplaced = false,
-        dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
-        monthNames = ["JAN", "FEB", "MAR", "APR", "MAY", "JUNE", "JULY", "AUG", "SEPT", "OCT", "NOV", "DEC"],
-        date = new Date(),
-        dayOfWeek = dayNames[date.getDay()],
-        month = monthNames[date.getMonth()],
-        dayOfMonth,
-        year = date.getFullYear(),
-        logoMktoNameRegex = new RegExp("logo", "i"),
-        mainTitleMktoNameRegex = new RegExp("^main title$|^mainTitle$|^main-title$|^title$", "i"),
-        subTitleMktoNameRegex = new RegExp("^subtitle$|^sub-title$", "i"),
-        buttonTextRegex = new RegExp("signup|sign up|call to action|cta", "i"),
-        logo = APP.getCookie("logo"),
-        color = APP.getCookie("color"),
-        company,
-        companyName,
-        editorRepeatReadyCount = desktopRepeatReadyCount = phoneRepeatReadyCount = 0,
-        maxRepeatReady = 5000;
-    
-    switch (date.getDate()) {
-        case 1:
-            dayOfMonth = "1st";
-            break;
-        case 2:
-            dayOfMonth = "2nd";
-            break;
-        case 3:
-            dayOfMonth = "3rd";
-            break;
-        default:
-            dayOfMonth = date.getDate() + "th";
-            break;
-    }
-    
-    if (logo == null) {
-        logo = defaultTurnerLogoWhite;
-        companyName = "Turner";
-    }
-    else {
-        company = logo.split("https://logo.clearbit.com/")[1].split(".")[0];
-        companyName = company.charAt(0).toUpperCase() + company.slice(1);
-    }
-    
-    if (color == null) {
-        color = defaultColor;
-    }
-    
-    clearOverlayVars = function() {
-        isMktoImgReplaced = isMktoTextReplaced = isMktoSubTextReplaced = isMktoButtonReplaced = isMktoEmail1Replaced = false;
-        emailBody = mktoImgs = mktoTexts = mktoButtons = logoSwapCompany = logoSwapContainer = logoSwapCompanyContainer = logoBkg = buttonBkg = null;
-    }
-    
-    overlay = function(emailDocument) {
-        if (emailDocument) {
-            var emailBody = emailDocument.getElementsByTagName("body")[0],
-                logoSwapCompany = emailDocument.getElementById("logo-swap-company"),
-                logoSwapContainer = emailDocument.getElementById("logo-swap-container"),
-                logoSwapCompanyContainer = emailDocument.getElementById("logo-swap-company-container"),
-                logoBkg = emailDocument.getElementById("logo-bkg"),
-                buttonBkg = emailDocument.getElementById("button-bkg");
-            
-            if (emailBody
-            && emailBody.innerHTML) {
-                var mktoImgs = emailBody.getElementsByClassName("mktoImg"),
-                    mktoTexts = emailBody.getElementsByClassName("mktoText"),
-                    mktoButtons = emailBody.getElementsByClassName("secondary-font button");
-            
-                if (!isMktoImgReplaced
-                && mktoImgs.length != 0) {
-                    var ii,
-                        currMktoImg,
-                        currMktoImgMktoName,
-                        currMktoImgTag;
-                    
-                    for (ii = 0; ii < mktoImgs.length; ii++) {
-                        currMktoImg = mktoImgs[ii];
-                        
-                        if (currMktoImg.getAttribute("mktoname")) {
-                            currMktoImgMktoName = currMktoImg.getAttribute("mktoname");
-                        }
-                        else if (currMktoImg.getAttribute("id")) {
-                             currMktoImgMktoName = currMktoImg.getAttribute("id");
-                        }
-                        
-                        if (currMktoImgMktoName
-                        && currMktoImgMktoName.search(logoMktoNameRegex) != -1) {
-                            currMktoImgTag = currMktoImg.getElementsByTagName("img")[0];
-                            
-                            if (currMktoImgTag
-                            && currMktoImgTag.src) {
-                                console.log("Marketo App > Overlaying: Email 2.0 Company Logo");
-                                currMktoImgTag.setAttribute("src", logo);
-                                isMktoImgReplaced = true;
-                                break;
-                            }
-                        }
-                    }
-                }
-                
-                if (!isMktoSubTextReplaced
-                && !isMktoTextReplaced
-                && mktoTexts.length != 0) {
-                    var ii,
-                        currMktoText,
-                        currMktoTextMktoName;
-                    
-                    for (ii = 0; ii < mktoTexts.length; ii++) {
-                        currMktoText = mktoTexts[ii];
-                        
-                        if (currMktoText.getAttribute("mktoname")) {
-                            currMktoTextMktoName = currMktoText.getAttribute("mktoname");
-                        }
-                        else if (currMktoText.getAttribute("id")) {
-                            currMktoTextMktoName = currMktoText.getAttribute("id");
-                        }
-                        
-                        if (currMktoTextMktoName
-                        && currMktoTextMktoName.search(mainTitleMktoNameRegex) != -1) {
-                            if (currMktoText.innerHTML) {
-                                console.log("Marketo App > Overlaying: Email 2.0 Company Name");
-                                currMktoText.innerHTML = companyName + " Invites You<br><br>PREMIER BUSINESS EVENT<br>OF THE YEAR";
-                                isMktoTextReplaced = true;
-                            }
-                        }
-                        else if (currMktoTextMktoName
-                        && currMktoTextMktoName.search(subTitleMktoNameRegex) != -1) {
-                            if (currMktoText.innerHTML) {
-                                console.log("Marketo App > Overlaying: Email 2.0 Today's Date");
-                                currMktoText.innerHTML = dayOfWeek + ", " + month + " the " + dayOfMonth + " " + year;
-                                isMktoSubTextReplaced = true;
-                            }
-                        }
-                        
-                        if (isMktoSubTextReplaced
-                        && isMktoTextReplaced) {
-                            break;
-                        }
-                    }
-                }
-                    
-                if (!isMktoButtonReplaced
-                && mktoButtons.length != 0) {
-                    var ii,
-                        currMktoButton;
-                    
-                    for (ii = 0; ii < mktoButtons.length; ii++) {
-                        currMktoButton = mktoButtons[ii];
-                        
-                        if (currMktoButton.innerHTML
-                        && currMktoButton.innerHTML.search(buttonTextRegex) != -1) {
-                            if (currMktoButton.style
-                            && currMktoButton.style.backgroundColor) {
-                                console.log("Marketo App > Overlaying: Email 2.0 Company Color");
-                                currMktoButton.style.backgroundColor = color;
-                                isMktoButtonReplaced = true;
-                                break;
-                            }
-                        }
-                    }
-                }
-            }
-            
-            if (logoSwapCompanyContainer
-            && logoSwapContainer
-            && logoSwapCompany
-            && logoBkg) {
-                console.log("Marketo App > Overlaying: Email 1.0 Company Logo & Color");
-                logoBkg.style.backgroundColor = color;
-                logoSwapCompany.setAttribute("src", logo);
-                logoSwapContainer.style.display = "none";
-                logoSwapCompanyContainer.style.display = "block";
-                
-                if (buttonBkg) {
-                    buttonBkg.style.backgroundColor = color;
-                }
-                isMktoEmail1Replaced = true;
-            }
-            
-            if ((isMktoButtonReplaced
-                && isMktoSubTextReplaced
-                && isMktoTextReplaced
-                && isMktoImgReplaced)
-            || isMktoEmail1Replaced) {
-                clearOverlayVars();
-                return true;
-            }
-        }
-        
-        return false;
-    }
-
-    isEmailEditor2 = window.setInterval(function() {
-        if (action == "edit") {
-            console.log("Marketo App > Overlaying: Email Editor");
-            if (document.getElementsByTagName("iframe")[0]
-            && document.getElementsByTagName("iframe")[0].contentWindow
-            && document.getElementsByTagName("iframe")[0].contentWindow.document
-            && document.getElementsByTagName("iframe")[0].contentWindow.document.readyState == "complete") {
-                if (overlay(document.getElementsByTagName("iframe")[0].contentWindow.document)
-                || (isEditorCountReset
-                    && editorRepeatReadyCount >= maxRepeatReady)) {
-                    
-                    console.log("Marketo App > Overlayed: Email Editor = " + editorRepeatReadyCount);
-                    console.log("Marketo App > Overlaying: Email Interval is Cleared");
-                    window.clearInterval(isEmailEditor2);
-                    clearOverlayVars();
-                }
-                else if (editorPrevReady) {
-                    editorRepeatReadyCount++;
-                }
-                else {
-                    if (editorRepeatReadyCount > 0) {
-                        isEditorCountReset = true;
-                    }
-                    editorRepeatReadyCount = 1;
-                }
-                editorPrevReady = true;
-            }
-            else {
-                editorPrevReady = false;
-            }
-        }
-        else if (action == "preview") {
-            console.log("Marketo App > Overlaying: Email Previewer");
-            
-            if (!isDesktopPreviewReplaced
-            && document.getElementsByTagName("iframe")[2]
-            && document.getElementsByTagName("iframe")[2].contentWindow
-            && document.getElementsByTagName("iframe")[2].contentWindow.document
-            && document.getElementsByTagName("iframe")[2].contentWindow.document.readyState == "complete") {
-                if (overlay(document.getElementsByTagName("iframe")[2].contentWindow.document)
-                || (isDesktopCountReset
-                    && desktopRepeatReadyCount >= maxRepeatReady)) {
-                    
-                    console.log("Marketo App > Overlayed: Email Desktop Preview = " + desktopRepeatReadyCount);
-                    isDesktopPreviewReplaced = true;
-                }
-                else if (desktopPrevReady) {
-                    desktopRepeatReadyCount++;
-                }
-                else {
-                    if (desktopRepeatReadyCount > 0) {
-                        isDesktopCountReset = true;
-                    }
-                    desktopRepeatReadyCount = 1;
-                }
-                desktopPrevReady = true;
-            }
-            else {
-                desktopPrevReady = false;
-            }
-                
-            if (!isPhonePreviewReplaced
-            && document.getElementsByTagName("iframe")[3]
-            && document.getElementsByTagName("iframe")[3].contentWindow
-            && document.getElementsByTagName("iframe")[3].contentWindow.document
-            && document.getElementsByTagName("iframe")[3].contentWindow.document.readyState == "complete") {
-                if (overlay(document.getElementsByTagName("iframe")[3].contentWindow.document)
-                || (isPhoneCountReset
-                    && phoneRepeatReadyCount >= maxRepeatReady)) {
-                    
-                    console.log("Marketo App > Overlayed: Email Phone Preview = " + phoneRepeatReadyCount);
-                    isPhonePreviewReplaced = true;
-                }
-                else if (desktopPrevReady) {
-                    phoneRepeatReadyCount++;
-                }
-                else {
-                    if (phoneRepeatReadyCount > 0) {
-                        isPhoneCountReset = true;
-                    }
-                    phoneRepeatReadyCount = 1;
-                }
-                phonePrevReady = true;
-            }
-            else {
-                phonePrevReady = false;
-            }
-            
-            if (isPhonePreviewReplaced
-            && isDesktopPreviewReplaced) {
-                console.log("Marketo App > Overlaying: Email Interval is Cleared");
-                window.clearInterval(isEmailEditor2);
-                clearOverlayVars();
-            }
-        }
-    }, 0);
-}
-
-/**************************************************************************************
- *  
- *  This function overlays the landing page designer with the submitted company logo 
- *  and color.
- *
- *  @Author Arrash Yasavolian
- *
- *  @function
- *
- **************************************************************************************/
-
-APP.overlayLandingPageDesigner = function() {
-    console.log("Marketo App > Overlaying: Landing Page Designer");
-
-    var logo = APP.getCookie("logo"),
-        color = APP.getCookie("color"),
-        company,
-        companyName,
-        isLandingPageIframeElement,
-        lpLogo,
-        backgroundColor,
-        biggerBackground,
-        subTitle;
-    
-    if (logo == null) {
-        logo = defaultTurnerLogoGreen;
-        companyName = "Turner";
-    }
-    else {
-        company = logo.split("https://logo.clearbit.com/")[1].split(".")[0];
-        companyName = company.charAt(0).toUpperCase() + company.slice(1);
-    }
-    
-    if (color == null) {
-        color = defaultColor;
-    }
-    
-    isLandingPageIframeElement = window.setInterval(function() {
-        lpLogo = document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("lp-logo");
-        backgroundColor = document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("background-color");
-        biggerBackground = document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("bigger-background");
-        subTitle = document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById("sub-title");
-        if (lpLogo != null
-        && backgroundColor != null
-        && biggerBackground != null
-        && subTitle != null) {
-            console.log("Marketo App > Overlaying: iframe");
-            window.clearInterval(isLandingPageIframeElement);
-            
-            lpLogo.src = logo;
-            backgroundColor.style.backgroundColor = color;
-            biggerBackground.style.backgroundColor = color;
-            subTitle.innerHTML = companyName + " invites you to join:";
-        }
-    }, 0);
 }
 
 /**************************************************************************************
@@ -5319,30 +4957,6 @@ if ((currentUrl.search(mktoAppDomain) != -1
                         Ext4.getStore('LandingPage').load(lpParameters);
                     }
 */                  
-                    // Overlay Landing Page Designer w/ company logo and color
-                    switch (currUrlFragment) {
-                        case customCompanyLandingPage106Fragment:
-                            APP.overlayLandingPageDesigner();
-                            break;
-                        case customCompanyLandingPagePreview106Fragment:
-                            APP.overlayLandingPageDesigner();
-                            break;
-                        case customCompanyLandingPage106aFragment:
-                            APP.overlayLandingPageDesigner();
-                            break;
-                        case customCompanyLandingPagePreview106aFragment:
-                            APP.overlayLandingPageDesigner();
-                            break;
-                        case customCompanyLandingPage106bFragment:
-                            APP.overlayLandingPageDesigner();
-                            break;
-                        case customCompanyLandingPagePreview106bFragment:
-                            APP.overlayLandingPageDesigner();
-                            break;
-                        default:
-                            break;
-                    }
-                    
                     var isLandingPageDesigner = window.setInterval(function() {
                         if (Mkt3
                         && Mkt3.app
@@ -5411,39 +5025,9 @@ if ((currentUrl.search(mktoAppDomain) != -1
                                     console.log("Callback for Email Editor");
                                     Ext4.getStore('Email').load(loadParameters);
                                 }
-                                // Overlay Email Editor w/ Company Logo and Color
-                                APP.overlayEmail("edit");
-                                
-/*                                switch (currUrlFragment) {
-                                    case customCompanyEmail106Fragment:
-                                        APP.overlayEmail("edit");
-                                        break;
-                                    case customCompanyHealthcareFragment:
-                                        APP.overlayEmail("edit");
-                                        break;
-                                    case customCompanyFinservMFragment:
-                                        APP.overlayEmail("edit");
-                                        break;
-                                    case customCompanyFinservPFragment:
-                                        APP.overlayEmail("edit");
-                                        break;
-                                    case customCompanyHigherEdFragment:
-                                        APP.overlayEmail("edit");
-                                        break;
-                                    case customCompanyEmail106aFragment:
-                                        APP.overlayEmail("edit");
-                                        break;
-                                    case customCompanyEmail106bFragment:
-                                        APP.overlayEmail("edit");
-                                        break;
-                                    default:
-                                        break;
-                                }*/
                             }
                             else {
                                 console.log("Marketo App > Location: Email Previewer");
-                                // Overlay Email Previewer w/ Company Logo and Color
-                                APP.overlayEmail("preview");
                             }
                             break;
                         
@@ -5619,9 +5203,6 @@ if ((currentUrl.search(mktoAppDomain) != -1
                                 }
                                 else if (currUrlFragment.search(mktoEmailPreviewFragmentRegex) != -1) {
                                     console.log("Marketo App > Location: Email Previewer");
-                                    
-                                    // Overlay Email Previewer w/ Company Logo and Color
-                                    APP.overlayEmail("preview");
                                 }
                             }
                         }

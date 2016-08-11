@@ -15,8 +15,22 @@ var mktoLiveInstances = "^https:\/\/app-(sjp|ab07|ab08)+\.marketo\.com",
     mktoUriDomain = ".marketo.com",
     mktoAppDomainMatch = "https://app-*.marketo.com",
     mktoDesignerMatch = "https://www.marketodesigner.com/*",
-    mktoDesignerUriDomain = ".marketodesigner.com";
-    
+    mktoDesignerUriDomain = ".marketodesigner.com",
+    mktoDesignerMatchPattern = "https://*.marketodesigner.com/*",
+    mktoEmailDesignerWebRequestMatch = "https://na-sjp.marketodesigner.com/images/templatePicker/richtext-object.svg",
+    mktoEmailDesignerWebRequestRegex = "^https:\/\/na-sjp\.marketodesigner\.com\/images\/templatePicker\/richtext-object\.svg$",
+    mktoEmailDesignerFragment = "EME",
+    mktoEmailPreviewWebRequestMatch = "https://na-sjp.marketodesigner.com/email/emailGetContent?emailId=*",
+    mktoEmailPreviewWebRequestRegex = "^https:\/\/na-sjp\.marketodesigner\.com\/email\/emailGetContent\\?emailId=.+",
+    mktoEmailPreviewFragmentRegex = new RegExp("#EME[0-9]+&isPreview", "i"),
+    mktoEmailPreviewFragment = "EMP",
+    mktoLandingPageDesignerWebRequestMatch = "https://b2c-msm.marketo.com/tracker/track.gif?*",
+    mktoLandingPageDesignerWebRequestRegex = "^https:\/\/b2c-msm\.marketo\.com\/tracker\/track\.gif\\?.+",
+    mktoLandingPageDesignerFragment = "LPE",
+    mktoLandingPagePreviewWebRequestMatch = "https://na-sjp.marketodesigner.com/lpeditor/preview?pageId=*",
+    mktoLandingPagePreviewWebRequestRegex = "^https:\/\/na-sjp\.marketodesigner\.com\/lpeditor\/preview\\?pageId=.+",
+    mktoLandingPagePreviewFragment = "LPPD",
+    count = 0;
 
 /**************************************************************************************
  *
@@ -136,9 +150,148 @@ function reloadMarketoTabs() {
 
 /**************************************************************************************
  *
- *  This function creates an event listener in order to receive the company's logo and 
- *  color from the MarketoLive Color-Picker page and then sets the cookie for both the 
- *  mktoLiveDomain and mktoDesignerDomain.
+ *  This function reloads the company logo and color on all Marketo designer tabs in 
+ *  order to support email and landing page overlay without requiring to reload the tab.
+ *
+ *  @Author Brian Fisher
+ *
+ *  @function
+ *
+ *  @param [Object] webRequest - JSON object that contains the following key/value pairs:
+ *      {String} tabId - The ID of the tab which completed the webRequest.
+ *      {String} assetType - The type of the asset for this request.
+ *      {String} assetView - The mode in which this asset is being viewed (edit/preview).
+ *
+ **************************************************************************************/
+
+function reloadCompany(webRequest) {
+    console.log("Background > Loading: Company Logo & Color");
+    
+    var companyLogoCookieDesigner = {
+            "url" : mktoDesignerMatch,
+            "name" : "logo"
+        },
+        setAssetData,
+        queryInfo = {
+            "currentWindow" : true,
+            "url" : mktoDesignerMatchPattern
+        },
+        message = {
+            "action" : "",
+            "assetType" : "",
+            "assetView" : ""
+        };
+    
+    getCookie(companyLogoCookieDesigner, function(cookie) {
+        if (cookie
+        && cookie.value) {
+            setAssetData = function(tab) {
+                if (tab.url.search("#" + mktoEmailDesignerFragment + "[0-9]+$") != -1) {
+                    console.log("Background > Loading: Company Logo & Color for Email Designer");
+                    message.assetType = "email";
+                    message.assetView = "edit";
+                }
+                else if (tab.url.search(mktoEmailPreviewFragmentRegex) != -1
+                || tab.url.search("#" + mktoEmailPreviewFragment + "[0-9]+$") != -1) {
+                    console.log("Background > Loading: Company Logo & Color for Email Previewer");
+                    message.assetType = "email";
+                    message.assetView = "preview";
+                }
+                else if (tab.url.search("#" + mktoLandingPageDesignerFragment + "[0-9]+$") != -1) {
+                    console.log("Background > Loading: Company Logo & Color for Landing Page Designer");
+                    message.assetType = "landingPage";
+                    message.assetView = "edit";
+                }
+                else if (tab.url.search("#" + mktoLandingPagePreviewFragment + "[0-9]+$") != -1) {
+                    console.log("Background > Loading: Company Logo & Color for Landing Page Previewer");
+                    message.assetType = "landingPage";
+                    message.assetView = "preview";
+                }
+                
+                if (message.assetType
+                && message.assetView) {
+                    chrome.tabs.sendMessage(tab.id, message, function(response) {
+                        console.log("Background > Receiving: Message Response from Content for tab: " + tab.url + " " + response);
+                    });
+                    message.assetType = message.assetView = "";
+                }
+            }
+            
+            if (webRequest) {
+                count = 0;
+                message.action = "initialCompany";
+                
+                chrome.tabs.get(webRequest.tabId, function(tab) {
+                    setAssetData(tab);
+                });
+            }
+            else {
+                message.action = "newCompany";
+                
+                chrome.tabs.query(queryInfo, function(tabs) {
+                    var ii;
+                    
+                    for (ii = 0; ii < tabs.length; ii++) {
+                        setAssetData(tabs[ii]);
+                    }
+                });
+            }
+        }
+        else {
+            console.log("Background > NOT Loading: Company Logo & Color as logo is undefined");
+        }
+    });
+}
+
+/**************************************************************************************
+ *
+ *  This function registers an event listener for Marketo email designer and previewer 
+ *  web requests which indicates that either the designer is completely loaded or the 
+ *  previewer iframes are ready in order to call the reloadCompany function to overlay 
+ *  the email with the company logo and color.
+ *
+ *  @Author Brian Fisher
+ *
+ *  @function
+ *
+ *  @param {function} - Callback function for the response.
+ *
+ **************************************************************************************/
+
+chrome.webRequest.onCompleted.addListener(function(details) {
+    console.log("Background > webRequest Completed: " + details.url);
+    
+    var webRequest = {
+            "tabId" : details.tabId
+        };
+    
+    if (details.url.search(mktoEmailPreviewWebRequestRegex) != -1) {
+        count++;
+        
+        if (count == 2) {
+            console.log("Background > webRequest Completed: Email Previewer");
+            reloadCompany(webRequest);
+        }
+    }
+    else if (details.url.search(mktoLandingPagePreviewWebRequestRegex) != -1) {
+        count++;
+        
+        if (count == 4) {
+            console.log("Background > webRequest Completed: Landing Page Previewer");
+            reloadCompany(webRequest);
+        }
+    }
+    else {
+        reloadCompany(webRequest);
+    }
+    
+}, {urls : [mktoEmailDesignerWebRequestMatch, mktoEmailPreviewWebRequestMatch, mktoLandingPageDesignerWebRequestMatch, mktoLandingPagePreviewWebRequestMatch]});
+
+/**************************************************************************************
+ *
+ *  This function registers an event listener in order to receive the company's logo 
+ *  and color from the MarketoLive Color-Picker page and then sets the cookie for both 
+ *  the mktoLiveDomain and mktoDesignerDomain.
  *
  *  @Author Brian Fisher
  *
@@ -160,6 +313,7 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
         
 		var companyLogoCookieName = "logo",
             companyColorCookieName = "color",
+            toggleCompanyCookieName = "toggleCompanyState",
             companyLogoCookieMarketoLive = {
                 "url" : mktoLiveMatch,
                 "name" : companyLogoCookieName,
@@ -189,6 +343,7 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
         setCookie(companyColorCookieDesigner);
         setCookie(companyLogoCookieMarketoLive);
         setCookie(companyLogoCookieDesigner);
+        reloadCompany();
     }
 });
 
