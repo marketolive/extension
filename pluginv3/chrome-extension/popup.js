@@ -19,7 +19,6 @@ window.onload = function() {
     // the alternative to using <img src="whatever">
     document.getElementById("logo-size").src = chrome.extension.getURL("images/marketo-live-image-purp.png");
     document.getElementById("gear-size").src = chrome.extension.getURL("images/popupsettings.png");
-    document.getElementById("toggle").src = chrome.extension.getURL("images/toggle-on.png");
     document.getElementById("rtp").src = chrome.extension.getURL("images/rtp-image.png");
     document.getElementById("ecommerce").src = chrome.extension.getURL("images/shopping-cart-purple.png");
     document.getElementById("mobile-moments").src = chrome.extension.getURL("images/marketo_moments.png");
@@ -40,9 +39,6 @@ window.onload = function() {
         mktoDesignerMatch = "https://www.marketodesigner.com/*",
         mktoDesignerUriDomain = ".marketodesigner.com",
         clearbitDomain = "https://logo.clearbit.com/",
-//        defaultCompanyLogoGreen = "http://marketolive.com/m3-dev/assets/img/turner-tech-green.png",
-//        defaultCompanyLogoWhite = "http://marketolive.com/m3-dev/assets/img/turner-tech-white.png",
-//        defaultCompanyColor = "rgb(42, 83, 112)",
         tags = document.getElementsByClassName("link"),
         company = document.getElementById("name-entered"),
         submit = document.getElementById("company-submit"),
@@ -56,6 +52,8 @@ window.onload = function() {
         openColorPicker,
         currToggleState,
         toggleCookieName = "toggleState",
+        companyLogoCookieName = "logo",
+        companyColorCookieName = "color",
         toggleCookieMarketo = {
             "url" : mktoDomainMatch,
             "name" : toggleCookieName,
@@ -68,7 +66,6 @@ window.onload = function() {
             "value" : "",
             "domain" : mktoDesignerUriDomain
         },
-        companyLogoCookieName = "logo",
         companyLogoCookieMarketoLive = {
             "url" : mktoLiveMatch,
             "name" : companyLogoCookieName,
@@ -81,7 +78,6 @@ window.onload = function() {
             "value" : "",
             "domain" : mktoDesignerUriDomain
         },
-        companyColorCookieName = "color",
         companyColorCookieMarketoLive = {
             "url" : mktoLiveMatch,
             "name" : companyColorCookieName,
@@ -147,8 +143,6 @@ window.onload = function() {
         if (cookie == null
         || cookie.value == null) {
             console.log("Popup > Getting: " + companyLogoCookieMarketoLive.name + " Cookie for " + companyLogoCookieMarketoLive.url + " = null");
-//            companyLogoCookieMarketoLive.value = null;
-//            background.setCookie(companyLogoCookieMarketoLive);
         }
         else {
             console.log("Popup > Getting: " + cookie.name + " Cookie for " + cookie.domain + " = " + cookie.value);
@@ -160,39 +154,13 @@ window.onload = function() {
         if (cookie == null
         || cookie.value == null) {
             console.log("Popup > Getting: " + companyLogoCookieDesigner.name + " Cookie for " + companyLogoCookieDesigner.url + " = null");
-//            companyLogoCookieDesigner.value = null;
-//            background.setCookie(companyLogoCookieDesigner);
         }
         else {
             console.log("Popup > Getting: " + cookie.name + " Cookie for " + cookie.domain + " = " + cookie.value);
             company.value = cookie.value.toLowerCase().split(clearbitDomain)[1];
         }
     });
-/*    
-    background.getCookie(companyColorCookieMarketoLive, function(cookie) {
-        if (cookie == null
-        || cookie.value == null) {
-            console.log("Popup > Getting: " + companyColorCookieMarketoLive.name + " Cookie for " + companyColorCookieMarketoLive.url + " = null");
-//            companyColorCookieMarketoLive.value = defaultCompanyColor;
-//            background.setCookie(companyColorCookieMarketoLive);
-        }
-        else {
-            console.log("Popup > Getting: " + cookie.name + " Cookie for " + cookie.domain + " = " + cookie.value);
-        }
-    });
-    
-    background.getCookie(companyColorCookieDesigner, function(cookie) {
-        if (cookie == null
-        || cookie.value == null) {
-            console.log("Popup > Getting: " + companyColorCookieDesigner.name + " Cookie for " + companyColorCookieDesigner.url + " = null");
-//            companyColorCookieDesigner.value = defaultCompanyColor;
-//            background.setCookie(companyColorCookieDesigner);
-        }
-        else {
-            console.log("Popup > Getting: " + cookie.name + " Cookie for " + cookie.domain + " = " + cookie.value);
-        }
-    });
-*/    
+
     // getElementsByClassName() returns an array, so the click
     // listener needs to be added to each one individually.
     for (var ii = 0; ii < tags.length; ii++) {

@@ -40,8 +40,6 @@ var URL_PATH = "m3-dev",
 	setCookie,
     displayProgressModal,
     grayOutCompletedStories,
-    defaultTurnerLogoWhite = "http://marketolive.com/"+URL_PATH+"/assets/img/turner-tech-white.png",
-    defaultTurnerLogoGreen = "http://marketolive.com/"+URL_PATH+"/assets/img/turner-tech-green.png",
     defaultColor = "rgb(42, 83, 112)",
     overlayEmail,
     overlayLandingPage,
@@ -138,7 +136,7 @@ grayOutCompletedStories = function() {
 
 /**************************************************************************************
  *  
- *  This function overlays an email with the user submitted company logo and color.
+ *  This function returns the current date in a human-readable format.
  *
  *  @Author Brian Fisher
  *
@@ -146,31 +144,17 @@ grayOutCompletedStories = function() {
  *
  **************************************************************************************/
 
-overlayEmail = function(action) {
-    console.log("Content > Overlaying: Email");
+getHumanDate = function() {
+    console.log("Content > Getting: Today's Date");
     
-    var isEmailEditor2,
-        clearOverlayVars,
-        overlay,
-        isMktoImgReplaced = isMktoTextReplaced = isMktoSubTextReplaced = isMktoButtonReplaced = isMktoEmail1Replaced = editorPrevReady = isEditorCountReset = desktopPrevReady = isDesktopCountReset = phonePrevReady = isPhoneCountReset = isDesktopPreviewReplaced = isPhonePreviewReplaced = false,
-        dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+    var dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
         monthNames = ["JAN", "FEB", "MAR", "APR", "MAY", "JUNE", "JULY", "AUG", "SEPT", "OCT", "NOV", "DEC"],
         date = new Date(),
         dayOfWeek = dayNames[date.getDay()],
         month = monthNames[date.getMonth()],
         dayOfMonth,
-        year = date.getFullYear(),
-        logoMktoNameRegex = new RegExp("logo", "i"),
-        mainTitleMktoNameRegex = new RegExp("^main title$|^mainTitle$|^main-title$|^title$", "i"),
-        subTitleMktoNameRegex = new RegExp("^subtitle$|^sub-title$", "i"),
-        buttonTextRegex = new RegExp("signup|sign up|call to action|cta", "i"),
-        logo = getCookie("logo"),
-        color = getCookie("color"),
-        company,
-        companyName,
-        editorRepeatReadyCount = desktopRepeatReadyCount = phoneRepeatReadyCount = 0,
-        maxRepeatReady = 5000;
-    
+        year = date.getFullYear();
+        
     switch (date.getDate()) {
         case 1:
             dayOfMonth = "1st";
@@ -186,9 +170,42 @@ overlayEmail = function(action) {
             break;
     }
     
+    return dayOfWeek + ", " + month + " the " + dayOfMonth + " " + year;
+}
+
+/**************************************************************************************
+ *  
+ *  This function overlays an email with the user submitted company logo and color.
+ *
+ *  @Author Brian Fisher
+ *
+ *  @function
+ *
+ *  @param {String} action - The mode in which this asset is being viewed (edit/preview).
+ *
+ **************************************************************************************/
+
+overlayEmail = function(action) {
+    console.log("Content > Overlaying: Email");
+    
+    var isEmailEditor2,
+        clearOverlayVars,
+        overlay,
+        isMktoImgReplaced = isMktoTextReplaced = isMktoSubTextReplaced = isMktoButtonReplaced = isMktoEmail1Replaced = editorPrevReady = desktopPrevReady = phonePrevReady = isDesktopPreviewReplaced = isPhonePreviewReplaced = false,
+        logoMktoNameRegex = new RegExp("logo", "i"),
+        mainTitleMktoNameRegex = new RegExp("^main title$|^mainTitle$|^main-title$|^title$", "i"),
+        subTitleMktoNameRegex = new RegExp("^subtitle$|^sub-title$", "i"),
+        buttonTextRegex = new RegExp("signup|sign up|call to action|cta", "i"),
+        logo = getCookie("logo"),
+        color = getCookie("color"),
+        company,
+        companyName,
+        editorRepeatReadyCount = desktopRepeatReadyCount = phoneRepeatReadyCount = 0,
+        maxRepeatReady = 500,
+        maxPreviewRepeatReady = 3000;
+    
     if (logo == null) {
-        logo = defaultTurnerLogoWhite;
-        companyName = "Turner";
+        return false;
     }
     else {
         company = logo.split("https://logo.clearbit.com/")[1].split(".")[0];
@@ -251,8 +268,8 @@ overlayEmail = function(action) {
                     }
                 }
                 
-                if (!isMktoSubTextReplaced
-                && !isMktoTextReplaced
+                if ((!isMktoSubTextReplaced
+                    || !isMktoTextReplaced)
                 && mktoTexts.length != 0) {
                     var ii,
                         currMktoText,
@@ -280,7 +297,7 @@ overlayEmail = function(action) {
                         && currMktoTextMktoName.search(subTitleMktoNameRegex) != -1) {
                             if (currMktoText.innerHTML) {
                                 console.log("Content > Overlaying: Email 2.0 Today's Date");
-                                currMktoText.innerHTML = dayOfWeek + ", " + month + " the " + dayOfMonth + " " + year;
+                                currMktoText.innerHTML = getHumanDate();
                                 isMktoSubTextReplaced = true;
                             }
                         }
@@ -336,6 +353,7 @@ overlayEmail = function(action) {
                 && isMktoImgReplaced)
             || isMktoEmail1Replaced) {
                 clearOverlayVars();
+                count = 0;
                 return true;
             }
         }
@@ -351,8 +369,7 @@ overlayEmail = function(action) {
             && document.getElementsByTagName("iframe")[0].contentWindow.document
             && document.getElementsByTagName("iframe")[0].contentWindow.document.readyState == "complete") {
                 if (overlay(document.getElementsByTagName("iframe")[0].contentWindow.document)
-                || (isEditorCountReset
-                    && editorRepeatReadyCount >= maxRepeatReady)) {
+                || editorRepeatReadyCount >= maxRepeatReady) {
                     
                     console.log("Content > Overlayed: Email Designer = " + editorRepeatReadyCount);
                     console.log("Content > Overlaying: Email Interval is Cleared");
@@ -364,9 +381,6 @@ overlayEmail = function(action) {
                     editorRepeatReadyCount++;
                 }
                 else {
-                    if (editorRepeatReadyCount > 0) {
-                        isEditorCountReset = true;
-                    }
                     editorRepeatReadyCount = 1;
                 }
                 editorPrevReady = true;
@@ -384,19 +398,16 @@ overlayEmail = function(action) {
             && document.getElementsByTagName("iframe")[2].contentWindow.document
             && document.getElementsByTagName("iframe")[2].contentWindow.document.readyState == "complete") {
                 if (overlay(document.getElementsByTagName("iframe")[2].contentWindow.document)
-                || (isDesktopCountReset
-                    && desktopRepeatReadyCount >= maxRepeatReady)) {
+                || desktopRepeatReadyCount >= maxPreviewRepeatReady) {
                     
                     console.log("Content > Overlayed: Email Desktop Preview = " + desktopRepeatReadyCount);
                     isDesktopPreviewReplaced = true;
+                    clearOverlayVars();
                 }
                 else if (desktopPrevReady) {
                     desktopRepeatReadyCount++;
                 }
                 else {
-                    if (desktopRepeatReadyCount > 0) {
-                        isDesktopCountReset = true;
-                    }
                     desktopRepeatReadyCount = 1;
                 }
                 desktopPrevReady = true;
@@ -411,19 +422,16 @@ overlayEmail = function(action) {
             && document.getElementsByTagName("iframe")[3].contentWindow.document
             && document.getElementsByTagName("iframe")[3].contentWindow.document.readyState == "complete") {
                 if (overlay(document.getElementsByTagName("iframe")[3].contentWindow.document)
-                || (isPhoneCountReset
-                    && phoneRepeatReadyCount >= maxRepeatReady)) {
+                || phoneRepeatReadyCount >= maxPreviewRepeatReady) {
                     
                     console.log("Content > Overlayed: Email Phone Preview = " + phoneRepeatReadyCount);
                     isPhonePreviewReplaced = true;
+                    clearOverlayVars();
                 }
-                else if (desktopPrevReady) {
+                else if (phonePrevReady) {
                     phoneRepeatReadyCount++;
                 }
                 else {
-                    if (phoneRepeatReadyCount > 0) {
-                        isPhoneCountReset = true;
-                    }
                     phoneRepeatReadyCount = 1;
                 }
                 phonePrevReady = true;
@@ -437,6 +445,7 @@ overlayEmail = function(action) {
                 console.log("Content > Overlaying: Email Interval is Cleared");
                 window.clearInterval(isEmailEditor2);
                 clearOverlayVars();
+                count = 0;
                 return true;
             }
         }
@@ -451,6 +460,8 @@ overlayEmail = function(action) {
  *
  *  @function
  *
+ *  @param {String} action - The mode in which this asset is being viewed (edit/preview).
+ *
  **************************************************************************************/
 
 overlayLandingPage = function(action) {
@@ -460,13 +471,6 @@ overlayLandingPage = function(action) {
         clearOverlayVars,
         overlay,
         isMktoFreeForm = isMktoImgReplaced = isMktoTextReplaced = isMktoSubTextReplaced = isMktoButtonReplaced = isMktoBackgroundColorReplaced = isMktoOrigReplaced = desktopPrevReady = phonePrevReady = sideBySideDesktopPrevReady = sideBySidePhonePrevReady = isDesktopReplaced = isPhoneReplaced = isSideBySideDesktopReplaced = isSideBySidePhoneReplaced = false,
-        dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
-        monthNames = ["JAN", "FEB", "MAR", "APR", "MAY", "JUNE", "JULY", "AUG", "SEPT", "OCT", "NOV", "DEC"],
-        date = new Date(),
-        dayOfWeek = dayNames[date.getDay()],
-        month = monthNames[date.getMonth()],
-        dayOfMonth,
-        year = date.getFullYear(),
         mktoBodyId = "bodyId",
         mktoFreeFormClassName = "mktoMobileShow",
         logoRegex = new RegExp("primaryImage|primary_image|primary-image|logo|image_1|image-1|image1", "i"),
@@ -486,31 +490,15 @@ overlayLandingPage = function(action) {
         maxRepeatReady = 500,
         maxOtherRepeatReady = 2000;
     
-    switch (date.getDate()) {
-        case 1:
-            dayOfMonth = "1st";
-            break;
-        case 2:
-            dayOfMonth = "2nd";
-            break;
-        case 3:
-            dayOfMonth = "3rd";
-            break;
-        default:
-            dayOfMonth = date.getDate() + "th";
-            break;
-    }
-    mktoSubText = dayOfWeek + ", " + month + " the " + dayOfMonth + " " + year;
-    
     if (logo == null) {
-        logo = defaultTurnerLogoGreen;
-        companyName = "Turner";
+        return false;
     }
     else {
         company = logo.split("https://logo.clearbit.com/")[1].split(".")[0];
         companyName = company.charAt(0).toUpperCase() + company.slice(1);
     }
     mktoMainText = companyName + " Invites You To Our Event";
+    mktoSubText = getHumanDate();
     
     if (color == null) {
         color = defaultColor;
@@ -614,23 +602,38 @@ overlayLandingPage = function(action) {
                         && currMktoText.innerHTML
                         && currMktoText.childElementCount != null
                         && currMktoText.id.search(mktoSubTextDivIdRegex) != -1) {
-                            if (currMktoText.childElementCount == 0) {
+                            if (!currMktoText.childElementCount) {
                                 console.log("Content > Overlaying: Guided Landing Page Today's Date");
-                                currMktoText.innerHTML = mktoSubText;
+                                if (currMktoText.innerHTML) {
+                                    currMktoText.innerHTML = mktoSubText;
+                                }
+                                else {
+                                    currMktoText.parentNode.innerHTML = mktoSubText;
+                                }
                                 isMktoSubTextReplaced = true;
                             }
                             else if (currMktoText.childNodes
                             && currMktoText.childNodes[0]) {
-                                if (currMktoText.childNodes[0].childElementCount == 0) {
+                                if (!currMktoText.childNodes[0].childElementCount) {
                                     console.log("Content > Overlaying: Guided Landing Page Today's Date");
-                                    currMktoText.childNodes[0].innerHTML = mktoSubText;
+                                    if (currMktoText.childNodes[0].innerHTML) {
+                                        currMktoText.childNodes[0].innerHTML = mktoSubText;
+                                    }
+                                    else {
+                                        currMktoText.innerHTML = mktoSubText;
+                                    }
                                     isMktoSubTextReplaced = true;
                                 }
                                 else if (currMktoText.childNodes[0].childNodes
                                 && currMktoText.childNodes[0].childNodes[0]
-                                && currMktoText.childNodes[0].childNodes[0].childElementCount == 0) {
+                                && !currMktoText.childNodes[0].childNodes[0].childElementCount) {
                                     console.log("Content > Overlaying: Guided Landing Page Today's Date");
-                                    currMktoText.childNodes[0].childNodes[0].innerHTML = mktoSubText;
+                                    if (currMktoText.childNodes[0].childNodes[0].innerHTML) {
+                                        currMktoText.childNodes[0].childNodes[0].innerHTML = mktoSubText;
+                                    }
+                                    else {
+                                        currMktoText.childNodes[0].innerHTML = mktoSubText;
+                                    }
                                     isMktoSubTextReplaced = true;
                                 }
                             }
@@ -660,46 +663,76 @@ overlayLandingPage = function(action) {
                             if (!isMktoTextReplaced
                             && currMktoRichText.parentNode.className.search(mktoRichMainTextDivClassNameRegex) != -1) {
                                 console.log("Content > Overlaying: Freeform Landing Page Main Text");
-                                if (currMktoRichText.childElementCount == 0) {
+                                if (!currMktoRichText.childElementCount) {
                                     console.log("Content > Overlaying: Freeform Landing Page Company Name");
-                                    currMktoRichText.innerHTML = mktoMainText;
+                                    if (currMktoRichText.innerHTML) {
+                                        currMktoRichText.innerHTML = mktoMainText;
+                                    }
+                                    else {
+                                        currMktoRichText.parentNode.innerHTML = mktoMainText;
+                                    }
                                     isMktoTextReplaced = true;
                                 }
                                 else if (currMktoRichText.childNodes
                                 && currMktoRichText.childNodes[0]) {
-                                    if (currMktoRichText.childNodes[0].childElementCount == 0) {
+                                    if (!currMktoRichText.childNodes[0].childElementCount) {
                                         console.log("Content > Overlaying: Freeform Landing Page Company Name");
-                                        currMktoRichText.childNodes[0].innerHTML = mktoMainText;
+                                        if (currMktoRichText.childNodes[0].innerHTML) {
+                                            currMktoRichText.childNodes[0].innerHTML = mktoMainText;
+                                        }
+                                        else {
+                                            currMktoRichText.innerHTML = mktoMainText;
+                                        }
                                         isMktoTextReplaced = true;
                                     }
                                     else if (currMktoRichText.childNodes[0].childNodes
                                     && currMktoRichText.childNodes[0].childNodes[0]
-                                    && currMktoRichText.childNodes[0].childNodes[0].childElementCount == 0) {
+                                    && !currMktoRichText.childNodes[0].childNodes[0].childElementCount) {
                                         console.log("Content > Overlaying: Freeform Landing Page Company Name");
-                                        currMktoRichText.childNodes[0].childNodes[0].innerHTML = mktoMainText;
+                                        if (currMktoRichText.childNodes[0].childNodes[0].innerHTML) {
+                                            currMktoRichText.childNodes[0].childNodes[0].innerHTML = mktoMainText;
+                                        }
+                                        else {
+                                            currMktoRichText.childNodes[0].innerHTML = mktoMainText;
+                                        }
                                         isMktoTextReplaced = true;
                                     }
                                 }
                             }
                             if (!isMktoSubTextReplaced
                             && currMktoRichText.parentNode.className.search(mktoRichSubTextDivClassNameRegex) != -1) {
-                                if (currMktoRichText.childElementCount == 0) {
+                                if (!currMktoRichText.childElementCount) {
                                     console.log("Content > Overlaying: Freeform Landing Page Today's Date");
-                                    currMktoRichText.innerHTML = mktoSubText;
+                                    if (currMktoRichText.innerHTML) {
+                                        currMktoRichText.innerHTML = mktoSubText;
+                                    }
+                                    else {
+                                        currMktoRichText.parentNode.innerHTML = mktoSubText;
+                                    }
                                     isMktoSubTextReplaced = true;
                                 }
                                 else if (currMktoRichText.childNodes
                                 && currMktoRichText.childNodes[0]) {
-                                    if (currMktoRichText.childNodes[0].childElementCount == 0) {
+                                    if (!currMktoRichText.childNodes[0].childElementCount) {
                                         console.log("Content > Overlaying: Freeform Landing Page Today's Date");
-                                        currMktoRichText.childNodes[0].innerHTML = mktoSubText;
+                                        if (currMktoRichText.childNodes[0].innerHTML) {
+                                            currMktoRichText.childNodes[0].innerHTML = mktoSubText;
+                                        }
+                                        else {
+                                            currMktoRichText.innerHTML = mktoSubText;
+                                        }
                                         isMktoSubTextReplaced = true;
                                     }
                                     else if (currMktoRichText.childNodes[0].childNodes
                                     && currMktoRichText.childNodes[0].childNodes[0]
-                                    && currMktoRichText.childNodes[0].childNodes[0].childElementCount == 0) {
+                                    && !currMktoRichText.childNodes[0].childNodes[0].childElementCount) {
                                         console.log("Content > Overlaying: Freeform Landing Page Today's Date");
-                                        currMktoRichText.childNodes[0].childNodes[0].innerHTML = mktoSubText;
+                                        if (currMktoRichText.childNodes[0].childNodes[0].innerHTML) {
+                                            currMktoRichText.childNodes[0].childNodes[0].innerHTML = mktoSubText;
+                                        }
+                                        else {
+                                            currMktoRichText.childNodes[0].innerHTML = mktoSubText;
+                                        }
                                         isMktoSubTextReplaced = true;
                                     }
                                 }
@@ -826,6 +859,8 @@ overlayLandingPage = function(action) {
                 console.log("Content > Overlaying: Landing Page Interval is Cleared");
                 window.clearInterval(isLandingPageEditor);
                 clearOverlayVars();
+                count = 0;
+                return true;
             }
         }
         else if (action == "preview") {
@@ -934,6 +969,8 @@ overlayLandingPage = function(action) {
                 console.log("Content > Overlaying: Landing Page Interval is Cleared");
                 window.clearInterval(isLandingPageEditor);
                 clearOverlayVars();
+                count = 0;
+                return true;
             }
         }
     }, 0);
