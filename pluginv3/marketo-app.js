@@ -2849,7 +2849,7 @@ APP.disableMenus = function() {
                         //"removeFromFavorites",//Remove from Favorites
                                     
                         // Analytics > Model > Actions Button & Right-click Tree
-                        //"rcmEdit",//Edit Draft
+                        "rcmEdit",//Edit Draft
                         //"rcmPreview",//Preview Model
                         "rcmApproveStages",//Approve Stages
                         "rcmUnapproveStages",//Unapprove Stages
@@ -2860,7 +2860,7 @@ APP.disableMenus = function() {
                         //"rcmExport",//Export Model
                         //"addToFavorites",//Add to Favorites
                         //"removeFromFavorites",//Remove from Favorites
-                        //"rcmEditDraft",//Edit Draft
+                        "rcmEditDraft",//Edit Draft
                         //"rcmPreviewDraft",//Preview Draft
                         "rcmApproveDraft",//Approve Model Draft
                         //"rcmDiscardDraft",//Discard Model Draft
@@ -3441,10 +3441,10 @@ APP.hideToolbarItems = function() {
 					},
                         
                     // Analytics > Model
-					/*{
+					{
                         "id" : "editDraft_rcmCanvasOverview",//Edit Draft
                         "action" : "setVisible",
-					},*/
+					},
 					/*{
                         "id" : "previewModel_rcmCanvasOverview",//Preview Model
                         "action" : "setVisible",
