@@ -238,6 +238,7 @@ window.onload = function() {
         background.removeCookie(companyLogoCookieDesigner);
         background.removeCookie(companyColorCookieMarketoLive);
         background.removeCookie(companyColorCookieDesigner);
+        setTimeout(function() {window.close();}, 1100);
 //        settingsOpen = false;
 //        document.getElementById("settings-container").style.display = "none";
     }
