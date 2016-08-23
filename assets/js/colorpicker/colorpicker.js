@@ -53,10 +53,14 @@ else {
 }
 
 img.onload = function() {
+    var logoElement = document.getElementById("cookie-logo");
+    
     canvas.drawImage(img, 0, 0);
     colorSet = colorThief.getPalette(img, 2)[1];
+    console.log("Color Picker > The Company Secondary Color is: " + colorSet);
     document.getElementById("cookie-color").innerHTML = 'rgb(' + colorSet[0] + ',' + colorSet[1] + ',' + colorSet[2] + ')';
-    console.log("Color Picker > The Secondary Color is: " + colorSet);
-    document.getElementById("cookie-logo").innerHTML = img.src;
-    console.log("Color Picker > The Logo is: " + img.src);
+    console.log("Color Picker > The Company Logo is: " + img.src);
+    logoElement.innerHTML = img.src;
+    logoElement.naturalHeight = img.naturalHeight;
+    logoElement.naturalWidth = img.naturalWidth;
 }

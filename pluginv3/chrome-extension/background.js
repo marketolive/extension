@@ -312,6 +312,7 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
         console.log("Background > Receiving: Company Logo & Color");
         
 		var companyLogoCookieName = "logo",
+            companyLogoDimensionsName = "logoDimensions",
             companyColorCookieName = "color",
             toggleCompanyCookieName = "toggleCompanyState",
             companyLogoCookieMarketoLive = {
@@ -324,6 +325,18 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
                 "url" : mktoDesignerMatch,
                 "name" : companyLogoCookieName,
                 "value" : message.logo,
+                "domain" : mktoDesignerUriDomain
+            },
+            companyLogoDimensionsCookieMarketoLive = {
+                "url" : mktoLiveMatch,
+                "name" : companyLogoDimensionsName,
+                "value" : message.dimensions,
+                "domain" : mktoLiveUriDomain
+            },
+            companyLogoDimensionsCookieDesigner = {
+                "url" : mktoDesignerMatch,
+                "name" : companyLogoDimensionsName,
+                "value" : message.dimensions,
                 "domain" : mktoDesignerUriDomain
             },
             companyColorCookieMarketoLive = {
@@ -341,6 +354,8 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
         
         setCookie(companyColorCookieMarketoLive);
         setCookie(companyColorCookieDesigner);
+        setCookie(companyLogoDimensionsCookieMarketoLive);
+        setCookie(companyLogoDimensionsCookieDesigner);
         setCookie(companyLogoCookieMarketoLive);
         setCookie(companyLogoCookieDesigner);
         reloadCompany();
