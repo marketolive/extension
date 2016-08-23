@@ -198,7 +198,7 @@ overlayEmail = function(action) {
         buttonTextRegex = new RegExp("signup|sign up|call to action|cta", "i"),
         logo = getCookie("logo"),
         color = getCookie("color"),
-        maxLogoSize = "55",
+        logoMaxHeight = "55",
         company,
         companyName,
         editorRepeatReadyCount = desktopRepeatReadyCount = phoneRepeatReadyCount = 0,
@@ -262,7 +262,26 @@ overlayEmail = function(action) {
                             && currMktoImgTag.src) {
                                 console.log("Content > Overlaying: Email 2.0 Company Logo");
                                 currMktoImgTag.setAttribute("src", logo);
-                                currMktoImgTag.height = currMktoImgTag.width = maxLogoSize;
+                                currMktoImgTag.onload = function() {
+                                    var logoHeightsRatio,
+                                        logoWidth;
+                                    
+                                    if (currMktoImgTag.naturalHeight
+                                    && currMktoImgTag.naturalHeight > logoMaxHeight) {
+                                        logoHeightsRatio = currMktoImgTag.naturalHeight / logoMaxHeight,
+                                        logoWidth = currMktoImgTag.naturalWidth / logoHeightsRatio;
+                                        currMktoImgTag.width = logoWidth;
+                                        currMktoImgTag.height = logoMaxHeight;
+                                    }
+                                    else if (currMktoImgTag.naturalHeight) {
+                                        currMktoImgTag.width = currMktoImgTag.naturalWidth;
+                                        currMktoImgTag.height = currMktoImgTag.naturalHeight;
+                                    }
+                                    else {
+                                        currMktoImgTag.width = currMktoImgTag.height = logoMaxHeight;
+                                    }
+                                    console.log("Content > Overlaying: Email 2.0 Company Logo Dimensions = " + currMktoImgTag.width + " x " + currMktoImgTag.height);
+                                }
                                 isMktoImgReplaced = true;
                                 break;
                             }
@@ -340,18 +359,41 @@ overlayEmail = function(action) {
                 console.log("Content > Overlaying: Email 1.0 Company Logo & Color");
                 logoBkg.style.backgroundColor = color;
                 logoSwapCompany.setAttribute("src", logo);
-                logoSwapCompany.height = logoSwapCompany.width = maxLogoSize;
+                logoSwapCompany.onload = function() {
+                    var logoHeightsRatio,
+                        logoWidth,
+                        logoNewWidth,
+                        logoNewHeight,
+                        logoStyle;
+                        
+                    if (logoSwapCompany.naturalHeight
+                    && logoSwapCompany.naturalHeight > logoMaxHeight) {
+                        logoHeightsRatio = logoSwapCompany.naturalHeight / logoMaxHeight;
+                        logoWidth = logoSwapCompany.naturalWidth / logoHeightsRatio;
+                        logoSwapCompany.width = logoNewWidth = logoWidth;
+                        logoSwapCompany.height = logoNewHeight = logoMaxHeight;
+                    }
+                    else if (logoSwapCompany.naturalHeight) {
+                        logoSwapCompany.width = logoNewWidth = logoSwapCompany.naturalWidth;
+                        logoSwapCompany.height = logoNewHeight = logoSwapCompany.naturalHeight;
+                    }
+                    else {
+                        logoSwapCompany.width = logoSwapCompany.height = logoNewWidth = logoNewHeight = logoMaxHeight;
+                    }
+                    
+                    if (emailDocument.getElementsByTagName("head")
+                    && emailDocument.getElementsByTagName("head")[0]) {
+                        logoStyle = document.createElement("style");
+                        logoStyle.innerHTML = "#" + logoSwapCompany.id + " {width : " + logoNewWidth + "px !important; height : " + logoNewHeight + "px !important;}";
+                        emailDocument.getElementsByTagName("head")[0].appendChild(logoStyle);
+                    }
+                    console.log("Content > Overlaying: Email 1.0 Company Logo Dimensions = " + logoNewWidth + " x " + logoNewHeight);
+                }
                 logoSwapContainer.style.display = "none";
                 logoSwapCompanyContainer.style.display = "block";
                 
                 if (buttonBkg) {
                     buttonBkg.style.backgroundColor = color;
-                }
-                if (emailDocument.getElementsByTagName("head")
-                && emailDocument.getElementsByTagName("head")[0]) {
-                    var logoStyle = document.createElement("style");
-                    logoStyle.innerHTML = "#" + logoSwapCompany.id + "{height : " + maxLogoSize + "px !important; width : " + maxLogoSize + "px !important;}";
-                    emailDocument.getElementsByTagName("head")[0].appendChild(logoStyle);
                 }
                 isMktoEmail1Replaced = true;
             }
@@ -490,11 +532,13 @@ overlayLandingPage = function(action) {
         buttonTextRegex = new RegExp("signup|sign up|call to action|cta|submit", "i"),
         logo = getCookie("logo"),
         color = getCookie("color"),
+        logoFreeFormMaxHeight = "100",
+        logoOrigMaxHeight = "55",
+        company,
+        companyName,
         mktoMainText,
         mktoSubText,
         linearGradient,
-        company,
-        companyName,
         desktopRepeatReadyCount = phoneRepeatReadyCount = sideBySideDesktopRepeatReadyCount = sideBySidePhoneRepeatReadyCount = 0,
         maxRepeatReady = 500,
         maxOtherRepeatReady = 2000;
@@ -581,11 +625,35 @@ overlayLandingPage = function(action) {
                         && currMktoImg.parentNode.parentNode.className.search(logoRegex) != -1) {
                             console.log("Content > Overlaying: Freeform Landing Page Company Logo");
                             currMktoImg.setAttribute("src", logo);
-                            if (iframeDocument.getElementsByTagName("head")
-                            && iframeDocument.getElementsByTagName("head")[0]) {
-                                var logoStyle = document.createElement("style");
-                                logoStyle.innerHTML = currMktoImg.parentNode.parentNode.tagName + "#" + currMktoImg.parentNode.parentNode.id + " {height : 100px !important; width : 100px !important;}";
-                                iframeDocument.getElementsByTagName("head")[0].appendChild(logoStyle);
+                            currMktoImg.onload = function() {
+                                var logoHeightsRatio,
+                                    logoWidth,
+                                    logoNewWidth,
+                                    logoNewHeight,
+                                    logoStyle;
+                                
+                                if (currMktoImg.naturalHeight
+                                && currMktoImg.naturalHeight > logoFreeFormMaxHeight) {
+                                    logoHeightsRatio = currMktoImg.naturalHeight / logoFreeFormMaxHeight,
+                                    logoWidth = currMktoImg.naturalWidth / logoHeightsRatio;
+                                    currMktoImg.width = logoNewWidth = logoWidth;
+                                    currMktoImg.height = logoNewHeight = logoFreeFormMaxHeight;
+                                }
+                                else if (currMktoImg.naturalHeight) {
+                                    currMktoImg.width = logoNewWidth = currMktoImg.naturalWidth;
+                                    currMktoImg.height = logoNewHeight = currMktoImg.naturalHeight;
+                                }
+                                else {
+                                    currMktoImg.width = currMktoImg.height = logoNewWidth = logoNewHeight = logoFreeFormMaxHeight;
+                                }
+                                
+                                if (iframeDocument.getElementsByTagName("head")
+                                && iframeDocument.getElementsByTagName("head")[0]) {
+                                    logoStyle = document.createElement("style");
+                                    logoStyle.innerHTML = currMktoImg.parentNode.parentNode.tagName + "#" + currMktoImg.parentNode.parentNode.id + " img.lpimg {width : " + logoNewWidth + "px !important; height : " + logoNewHeight + "px !important;}";
+                                    iframeDocument.getElementsByTagName("head")[0].appendChild(logoStyle);
+                                }
+                                console.log("Content > Overlaying: Freeform Landing Page Company Logo Dimensions = " + logoNewWidth + " x " + logoNewHeight);
                             }
                             isMktoImgReplaced = true;
                             break;
@@ -793,7 +861,36 @@ overlayLandingPage = function(action) {
             && subTitle) {
                 console.log("Content > Overlaying: Original Landing Page Company Logo & Color");
                 logoImg.src = logo;
-                logoImg.style.height = logoImg.style.width = "55px";
+                logoImg.onload = function() {
+                    var logoHeightsRatio,
+                        logoWidth,
+                        logoNewWidth,
+                        logoNewHeight,
+                        logoStyle;
+                        
+                    if (logoImg.naturalHeight
+                    && logoImg.naturalHeight > logoOrigMaxHeight) {
+                        logoHeightsRatio = logoImg.naturalHeight / logoOrigMaxHeight,
+                        logoWidth = logoImg.naturalWidth / logoHeightsRatio;
+                        logoImg.width = logoImg.style.width = logoNewWidth = logoWidth;
+                        logoImg.height = logoImg.style.height = logoNewHeight = logoOrigMaxHeight;
+                    }
+                    else if (logoImg.naturalHeight) {
+                        logoImg.width = logoImg.style.width = logoNewWidth = logoImg.naturalWidth;
+                        logoImg.height = logoImg.style.height = logoNewHeight = logoImg.naturalHeight;
+                    }
+                    else {
+                        logoImg.width = logoImg.height = logoImg.style.width = logoImg.style.height = logoNewWidth = logoNewHeight = logoOrigMaxHeight;
+                    }
+                    
+                    if (iframeDocument.getElementsByTagName("head")
+                    && iframeDocument.getElementsByTagName("head")[0]) {
+                        logoStyle = document.createElement("style");
+                        logoStyle.innerHTML = "#" + logoImg.id + " {width : " + logoNewWidth + "px !important; height : " + logoNewHeight + "px !important;}";
+                        iframeDocument.getElementsByTagName("head")[0].appendChild(logoStyle);
+                    }
+                    console.log("Content > Overlaying: Original Landing Page Company Logo Dimensions = " + logoNewWidth + " x " + logoNewHeight);
+                }
                 textBackground.style.backgroundColor = color;
                 bannerBackground.style.backgroundColor = color;
                 mainTitle.innerHTML = mktoMainText;
@@ -1211,8 +1308,7 @@ window.onload = function() {
             companyColor;
 		
 		sendBackgroundMsg = function() {
-            // The split gets rid of the image size in the URL parameter
-            companyLogo = document.getElementById("cookie-logo").innerHTML.split("?")[0];
+            companyLogo = document.getElementById("cookie-logo").innerHTML;
             companyColor = document.getElementById("cookie-color").innerHTML;
             
             chrome.runtime.sendMessage({
