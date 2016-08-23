@@ -61,6 +61,4 @@ img.onload = function() {
     document.getElementById("cookie-color").innerHTML = 'rgb(' + colorSet[0] + ',' + colorSet[1] + ',' + colorSet[2] + ')';
     console.log("Color Picker > The Company Logo is: " + img.src);
     logoElement.innerHTML = img.src;
-    logoElement.naturalHeight = img.naturalHeight;
-    logoElement.naturalWidth = img.naturalWidth;
 }

@@ -265,18 +265,24 @@ overlayEmail = function(action) {
                             && currMktoImgTag.src) {
                                 console.log("Content > Overlaying: Email 2.0 Company Logo");
                                 currMktoImgTag.setAttribute("src", logo);
-                                if (logoNaturalHeight > logoMaxHeight) {
-                                    var logoHeightsRatio = logoNaturalHeight / logoMaxHeight,
-                                        logoWidth = logoNaturalWidth / logoHeightsRatio;
-                                    currMktoImgTag.height = logoMaxHeight;
-                                    currMktoImgTag.width = logoWidth;
+                                currMktoImgTag.onload = function() {
+                                    if (currMktoImgTag.naturalHeight
+                                    && currMktoImgTag.naturalHeight > logoMaxHeight) {
+                                        var logoHeightsRatio = currMktoImgTag.naturalHeight / logoMaxHeight,
+                                            logoWidth = currMktoImgTag.naturalWidth / logoHeightsRatio;
+                                        currMktoImgTag.height = logoMaxHeight;
+                                        currMktoImgTag.width = logoWidth;
+                                    }
+                                    else if (currMktoImgTag.naturalHeight) {
+                                        currMktoImgTag.width = currMktoImgTag.naturalWidth;
+                                        currMktoImgTag.height = currMktoImgTag.naturalHeight;
+                                    }
+                                    else {
+                                        currMktoImgTag.width = currMktoImgTag.height = logoMaxHeight;
+                                    }
+                                    isMktoImgReplaced = true;
+                                    break;
                                 }
-                                else {
-                                    currMktoImgTag.width = logoNaturalWidth;
-                                    currMktoImgTag.height = logoNaturalHeight;
-                                }
-                                isMktoImgReplaced = true;
-                                break;
                             }
                         }
                     }
@@ -1252,21 +1258,16 @@ window.onload = function() {
         var correct = document.getElementById("correct"),
             incorrect = document.getElementById("incorrect"),
 			sendBackgroundMsg,
-            companyLogoElement,
             companyLogo,
-            companyLogoNaturalDimensions,
             companyColor;
 		
 		sendBackgroundMsg = function() {
-            companyLogoElement = document.getElementById("cookie-logo");
-            companyLogo = companyLogoElement.innerHTML;
-            companyLogoNaturalDimensions = companyLogoElement.naturalWidth + "x" + companyLogoElement.naturalHeight;
+            companyLogo = document.getElementById("cookie-logo").innerHTML;
             companyColor = document.getElementById("cookie-color").innerHTML;
             
             chrome.runtime.sendMessage({
                 action : "setCompanyCookies",
                 logo : companyLogo,
-                dimensions : companyLogoNaturalDimensions,
                 color : companyColor
             }, function(response) {
                 console.log("Content > Receiving: Message Response from Background: " + response);
