@@ -198,7 +198,7 @@ overlayEmail = function(action) {
         buttonTextRegex = new RegExp("signup|sign up|call to action|cta", "i"),
         logo = getCookie("logo"),
         color = getCookie("color"),
-        maxLogoSize = "55",
+        logoMaxHeight = "55",
         company,
         companyName,
         editorRepeatReadyCount = desktopRepeatReadyCount = phoneRepeatReadyCount = 0,
@@ -262,7 +262,16 @@ overlayEmail = function(action) {
                             && currMktoImgTag.src) {
                                 console.log("Content > Overlaying: Email 2.0 Company Logo");
                                 currMktoImgTag.setAttribute("src", logo);
-                                currMktoImgTag.height = currMktoImgTag.width = maxLogoSize;
+                                if (currMktoImgTag.naturalHeight > logoMaxHeight) {
+                                    var logoHeightsRatio = currMktoImgTag.naturalHeight / logoMaxHeight,
+                                        logoWidth = currMktoImgTag.naturalHeight / logoHeightsRatio;
+                                    currMktoImgTag.height = logoMaxHeight;
+                                    currMktoImgTag.width = logoWidth;
+                                }
+                                else {
+                                    currMktoImgTag.height = currMktoImgTag.naturalHeight;
+                                    currMktoImgTag.width = currMktoImgTag.naturalHeight;
+                                }
                                 isMktoImgReplaced = true;
                                 break;
                             }
@@ -340,7 +349,16 @@ overlayEmail = function(action) {
                 console.log("Content > Overlaying: Email 1.0 Company Logo & Color");
                 logoBkg.style.backgroundColor = color;
                 logoSwapCompany.setAttribute("src", logo);
-                logoSwapCompany.height = logoSwapCompany.width = maxLogoSize;
+                if (logoSwapCompany.naturalHeight > logoMaxHeight) {
+                    var logoHeightsRatio = logoSwapCompany.naturalHeight / logoMaxHeight,
+                        logoWidth = logoSwapCompany.naturalHeight / logoHeightsRatio;
+                    logoSwapCompany.height = logoMaxHeight;
+                    logoSwapCompany.width = logoWidth;
+                }
+                else {
+                    logoSwapCompany.height = logoSwapCompany.naturalHeight;
+                    logoSwapCompany.width = logoSwapCompany.naturalHeight;
+                }
                 logoSwapContainer.style.display = "none";
                 logoSwapCompanyContainer.style.display = "block";
                 
@@ -350,7 +368,7 @@ overlayEmail = function(action) {
                 if (emailDocument.getElementsByTagName("head")
                 && emailDocument.getElementsByTagName("head")[0]) {
                     var logoStyle = document.createElement("style");
-                    logoStyle.innerHTML = "#" + logoSwapCompany.id + "{height : " + maxLogoSize + "px !important; width : " + maxLogoSize + "px !important;}";
+                    logoStyle.innerHTML = "#" + logoSwapCompany.id + "{height : " + logoSwapCompany.height + "px !important; width : " + logoSwapCompany.width + "px !important;}";
                     emailDocument.getElementsByTagName("head")[0].appendChild(logoStyle);
                 }
                 isMktoEmail1Replaced = true;
@@ -490,11 +508,13 @@ overlayLandingPage = function(action) {
         buttonTextRegex = new RegExp("signup|sign up|call to action|cta|submit", "i"),
         logo = getCookie("logo"),
         color = getCookie("color"),
+        logoFreeFormMaxHeight = "100",
+        logoOrigMaxHeight = "55",
+        company,
+        companyName,
         mktoMainText,
         mktoSubText,
         linearGradient,
-        company,
-        companyName,
         desktopRepeatReadyCount = phoneRepeatReadyCount = sideBySideDesktopRepeatReadyCount = sideBySidePhoneRepeatReadyCount = 0,
         maxRepeatReady = 500,
         maxOtherRepeatReady = 2000;
@@ -581,10 +601,20 @@ overlayLandingPage = function(action) {
                         && currMktoImg.parentNode.parentNode.className.search(logoRegex) != -1) {
                             console.log("Content > Overlaying: Freeform Landing Page Company Logo");
                             currMktoImg.setAttribute("src", logo);
+                            if (currMktoImg.naturalHeight > logoFreeFormMaxHeight) {
+                                var logoHeightsRatio = currMktoImg.naturalHeight / logoFreeFormMaxHeight,
+                                    logoWidth = currMktoImg.naturalHeight / logoHeightsRatio;
+                                currMktoImg.height = logoFreeFormMaxHeight;
+                                currMktoImg.width = logoWidth;
+                            }
+                            else {
+                                currMktoImg.height = currMktoImg.naturalHeight;
+                                currMktoImg.width = currMktoImg.naturalHeight;
+                            }
                             if (iframeDocument.getElementsByTagName("head")
                             && iframeDocument.getElementsByTagName("head")[0]) {
                                 var logoStyle = document.createElement("style");
-                                logoStyle.innerHTML = currMktoImg.parentNode.parentNode.tagName + "#" + currMktoImg.parentNode.parentNode.id + " {height : 100px !important; width : 100px !important;}";
+                                logoStyle.innerHTML = currMktoImg.parentNode.parentNode.tagName + "#" + currMktoImg.parentNode.parentNode.id + " {height : " + currMktoImg.height + "px !important; width : " + currMktoImg.width + "px !important;}";
                                 iframeDocument.getElementsByTagName("head")[0].appendChild(logoStyle);
                             }
                             isMktoImgReplaced = true;
@@ -793,7 +823,16 @@ overlayLandingPage = function(action) {
             && subTitle) {
                 console.log("Content > Overlaying: Original Landing Page Company Logo & Color");
                 logoImg.src = logo;
-                logoImg.style.height = logoImg.style.width = "55px";
+                if (logoImg.naturalHeight > logoOrigMaxHeight) {
+                    var logoHeightsRatio = logoImg.naturalHeight / logoOrigMaxHeight,
+                        logoWidth = logoImg.naturalHeight / logoHeightsRatio;
+                    logoImg.style.height = logoOrigMaxHeight + "px";
+                    logoImg.style.width = logoWidth + "px";
+                }
+                else {
+                    logoImg.style.height = logoImg.naturalHeight + "px";
+                    logoImg.style.width = logoImg.naturalHeight + "px";
+                }
                 textBackground.style.backgroundColor = color;
                 bannerBackground.style.backgroundColor = color;
                 mainTitle.innerHTML = mktoMainText;
@@ -1212,7 +1251,7 @@ window.onload = function() {
 		
 		sendBackgroundMsg = function() {
             // The split gets rid of the image size in the URL parameter
-            companyLogo = document.getElementById("cookie-logo").innerHTML.split("?")[0];
+            companyLogo = document.getElementById("cookie-logo").innerHTML;
             companyColor = document.getElementById("cookie-color").innerHTML;
             
             chrome.runtime.sendMessage({
@@ -1225,7 +1264,7 @@ window.onload = function() {
             window.close();
         }
 
-        correct.onclick = sendBackgroundMsg;
+        correct.onclick = sendBackgroundMsg();
 		document.onkeyup = function(e) {
 			if (e.which == 13) {
 				sendBackgroundMsg();
