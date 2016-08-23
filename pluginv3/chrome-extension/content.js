@@ -1274,7 +1274,7 @@ window.onload = function() {
             window.close();
         }
 
-        correct.onclick = sendBackgroundMsg;
+        correct.onclick = sendBackgroundMsg();
 		document.onkeyup = function(e) {
 			if (e.which == 13) {
 				sendBackgroundMsg();

@@ -146,7 +146,7 @@ window.onload = function() {
         }
         else {
             console.log("Popup > Getting: " + cookie.name + " Cookie for " + cookie.domain + " = " + cookie.value);
-            company.value = cookie.value.toLowerCase().split(clearbitDomain)[1];
+            company.value = cookie.value.toLowerCase().split(clearbitDomain)[1].split("?")[0];
         }
     });
     
@@ -157,7 +157,7 @@ window.onload = function() {
         }
         else {
             console.log("Popup > Getting: " + cookie.name + " Cookie for " + cookie.domain + " = " + cookie.value);
-            company.value = cookie.value.toLowerCase().split(clearbitDomain)[1];
+            company.value = cookie.value.toLowerCase().split(clearbitDomain)[1].split("?")[0];
         }
     });
 
