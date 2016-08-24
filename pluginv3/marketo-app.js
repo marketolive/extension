@@ -2407,6 +2407,36 @@ APP.evaluateMenu = function (triggeredFrom, menu, canvas, toolbar) {
                 return toBeDisabled;
             break;
             
+            case "inAppMessage":
+                if (toolbar.getInAppMessage()
+                    && (toolbar.getInAppMessage().get('zoneId') == mktoDefaultWorkspaceId
+                        || toolbar.getInAppMessage().get('zoneId') == mktoJapaneseWorkspaceId
+                        || toolbar.getInAppMessage().get('zoneId') == mktoFinservWorkspaceId
+                        || toolbar.getInAppMessage().get('zoneId') == mktoHealthcareWorkspaceId
+                        || toolbar.getInAppMessage().get('zoneId') == mktoHigherEdWorkspaceId)
+                    || (toolbar.getInAppMessage().get('zoneId') == mktoMarketingWorkspaceId
+                        && toolbar.getInAppMessage().getNodeJson()
+                        && toolbar.getInAppMessage().getNodeJson().id
+                        && MktExplorer.getNodeById(toolbar.getInAppMessage().getNodeJson().id))) {
+                    toBeDisabled = true;
+                    
+                    if (toolbar.getInAppMessage().get('zoneId') == mktoMarketingWorkspaceId) {
+                        var ii,
+                            currNode = MktExplorer.getNodeById(toolbar.getInAppMessage().getNodeJson().id),
+                            depth = currNode.getDepth();
+                        
+                        for (ii = 0; ii < depth; ii++) {
+                            if (currNode.attributes.text == userName) {
+                                toBeDisabled = false;
+                                break;
+                            }
+                            currNode = currNode.parentNode;
+                        }
+                    }
+                }
+                return toBeDisabled;
+            break;
+            
             default:
                 return true;
             break;
@@ -2433,9 +2463,9 @@ APP.disableMenus = function() {
     && Ext.menu.Menu
     && Ext.menu.Menu.prototype
     && Ext.menu.Menu.prototype.showAt) {
-        // Disable ALL areas > ALL assets > ALL menus except Social App & Push Notification Actions Buttons
+        // Disable ALL areas > ALL assets > ALL Actions and Right-click menus except Social App & Push Notification Actions Buttons
         Ext.menu.Menu.prototype.showAt = function (xy, parentMenu) {
-            console.log ("Marketo App > Executing: Disable Actions and Right-click menus for ALL in ALL");
+            console.log("Marketo App > Executing: Disable Actions and Right-click menus for ALL in ALL");
             
             if (this.fireEvent('beforeshow', this) !== false) {
                 var disable,
@@ -2692,6 +2722,18 @@ APP.disableMenus = function() {
                         //"pushNotificationDraftSendSample",//Send Sample of Draft
                         "pushNotificationDraftApprove",//Approve Draft
                         //"pushNotificationDraftDiscard",//Discard Draft
+                        
+                        // Marketing Activities > In App Message > Right-click Tree
+                        //"inAppMessageEdit",//Edit Draft
+                        //"inAppMessagePreview",//Preview
+                        "inAppMessageUnapprove",//Unapprove
+                        "inAppMessageApprove",//Approve
+                        "inAppMessageClone",//Clone
+                        "inAppMessageDelete",//Delete
+                        //"inAppMessageDraftEdit",//Edit Draft
+                        //"inAppMessageDraftPreview",//Preview Draft
+                        "inAppMessageDraftApprove",//Approve Draft
+                        //"inAppMessageDraftDiscard",//Discard Draft
                                     
                         // Marketing Activities > ALL Programs > Change Status Button
                         "Not in ProgramStatusMarketingEvent",//Not in Program
@@ -2994,24 +3036,28 @@ APP.disableMenus = function() {
     && Mkt3.controller.socialApp.SocialApp
     && Mkt3.controller.socialApp.SocialApp.prototype
     && Mkt3.controller.socialApp.SocialApp.prototype.loadToolbar) {
-        // Disable Marketing Activities > Social App > Actions menu
+        // Disable Marketing Activities > Social App > Toolbar buttons & Actions menu
         var prevSocialAppToolbar = Mkt3.controller.socialApp.SocialApp.prototype.loadToolbar;
         Mkt3.controller.socialApp.SocialApp.prototype.loadToolbar = function(menu, attr) {
-            console.log ("Marketo App > Executing: Disable Actions menu for Social Apps in Marketing Activities");
+            console.log("Marketo App > Executing: Disable Toolbar buttons & Actions menu for Social Apps in Marketing Activities");
             prevSocialAppToolbar.apply(this, arguments);
 
             var disable = APP.evaluateMenu("socialAppToolbar", null, null, this),
                 mItems = Ext4.ComponentQuery.query(
-                    /*"socialAppToolbar contextMenu [action=edit]," +*/ //Edit
-                    /*"socialAppToolbar contextMenu [action=preview]," +*/ //Preview
+                    //"socialAppToolbar [action=edit]," + //Edit Draft
+                    //"socialAppToolbar [action=preview]," + //Preview
+                    //"socialAppToolbar [action=pickWinners]," + //Pick Winners
+                    
+                    //"socialAppToolbar contextMenu [action=edit]," + //Edit Draft
+                    //"socialAppToolbar contextMenu [action=preview]," + //Preview
                     "socialAppToolbar contextMenu [action=approve]," + //Approve
                     "socialAppToolbar contextMenu [action=clone]," + //Clone
                     "socialAppToolbar contextMenu [action=delete]," + //Delete
-                    /*"socialAppToolbar contextMenu [action=getWidgetEmbedCode]," +*/ //Embed Code
-                    /*"socialAppToolbar contextMenu [action=editDraft]," +*/ //Edit Draft
-                    /*"socialAppToolbar contextMenu [action=previewDraft]," +*/ //Preview Draft
+                    //"socialAppToolbar contextMenu [action=getWidgetEmbedCode]," + //Embed Code
+                    //"socialAppToolbar contextMenu [action=editDraft]," + //Edit Draft
+                    //"socialAppToolbar contextMenu [action=previewDraft]," + //Preview Draft
                     "socialAppToolbar contextMenu [action=approveDraft]," /*+*/ //Approve Draft
-                    /*"socialAppToolbar contextMenu [action=discardDraft],"*/ //Discard Draft
+                    //"socialAppToolbar contextMenu [action=discardDraft]," //Discard Draft
                 );
             
             mItems.forEach(function(item) {
@@ -3030,24 +3076,29 @@ APP.disableMenus = function() {
     && Mkt3.controller.mobilePushNotification.MobilePushNotification
     && Mkt3.controller.mobilePushNotification.MobilePushNotification.prototype
     && Mkt3.controller.mobilePushNotification.MobilePushNotification.prototype.loadToolbar) {
-        // Disable Marketing Activities > Push Notification > Actions menu
+        // Disable Marketing Activities > Push Notification > Toolbar buttons & Actions menu
         var prevMobilePushNotificationToolbar = Mkt3.controller.mobilePushNotification.MobilePushNotification.prototype.loadToolbar;
         Mkt3.controller.mobilePushNotification.MobilePushNotification.prototype.loadToolbar = function(menu, attr) {
-            console.log ("Marketo App > Executing: Disable Actions menu for Push Notifications in Marketing Activities");
+            console.log("Marketo App > Executing: Disable Toolbar buttons & Actions menu for Push Notifications in Marketing Activities");
             prevMobilePushNotificationToolbar.apply(this, arguments);
 
             var disable = APP.evaluateMenu("mobilePushNotification", null, null, this),
                 mItems = Ext4.ComponentQuery.query(
-                    /*"mobilePushNotification contextMenu [action=edit]," +*/ //Edit
-                    /*"mobilePushNotification contextMenu [action=sendSample]," +*/ //Send Sample
-                    "mobilePushNotification contextMenu [action=approve]," + //Approve
+                    //"mobilePushNotification mobilePushNotificationToolbar [action=edit]," + //Edit Draft
+                    //"mobilePushNotification mobilePushNotificationToolbar [action=preview]," + //Preview
+                    
+                    //"mobilePushNotification contextMenu [action=edit]," + //Edit Draft
+                    //"mobilePushNotification contextMenu [action=preview]," + //Preview
+                    //"mobilePushNotification contextMenu [action=sendSample]," + //Send Sample
                     "mobilePushNotification contextMenu [action=unapprove]," + //Unapprove
+                    "mobilePushNotification contextMenu [action=approve]," + //Approve
                     "mobilePushNotification contextMenu [action=clone]," + //Clone
                     "mobilePushNotification contextMenu [action=delete]," + //Delete
-                    /*"mobilePushNotification contextMenu [action=editDraft]," +*/ //Edit Draft
-                    /*"mobilePushNotification contextMenu [action=sendDraftSample]," +*/ //Send Sample of Draft
+                    //"mobilePushNotification contextMenu [action=editDraft]," + //Edit Draft
+                    //"mobilePushNotification contextMenu [action=previewDraft]," + //Preview Draft
+                    //"mobilePushNotification contextMenu [action=sendDraftSample]," + //Send Sample of Draft
                     "mobilePushNotification contextMenu [action=approveDraft]," /*+*/ //Approve Draft
-                    /*"mobilePushNotification contextMenu [action=discardDraft],"*/ //Discard Draft
+                    //"mobilePushNotification contextMenu [action=discardDraft]," //Discard Draft
                 );
             
             mItems.forEach(function(item) {
@@ -3060,13 +3111,82 @@ APP.disableMenus = function() {
         }
     }
     
+    if (Mkt3
+    && Mkt3.controller
+    && Mkt3.controller.inAppMessage
+    && Mkt3.controller.inAppMessage.InAppMessage
+    && Mkt3.controller.inAppMessage.InAppMessage.prototype
+    && Mkt3.controller.inAppMessage.InAppMessage.prototype.loadToolbar) {
+        // Disable Marketing Activities > In App Messages > Toolbar buttons & Actions menu
+        var prevInAppMessageToolbar = Mkt3.controller.inAppMessage.InAppMessage.prototype.loadToolbar;
+        Mkt3.controller.inAppMessage.InAppMessage.prototype.loadToolbar = function() {
+            console.log("Marketo App > Executing: Disable Toolbar buttons & Actions menu for In App Messages in Marketing Activities");
+            prevInAppMessageToolbar.apply(this, arguments);
+            
+            var toolbar = this.getToolbar(),
+                inAppMessage = this.getInAppMessage(),
+                actionsMenu = toolbar.down('.contextMenu'),
+                toolbarComponents = toolbar.query('component') || [],
+                i = 0,
+                il = toolbarComponents.length,
+                toolbarComponent,
+                text;
+            
+            // set record
+            actionsMenu.record = inAppMessage;
+            
+            // update text and icons
+            for (; i < il; i++) {
+                toolbarComponent = toolbarComponents[i];
+                
+                // update icons
+                if (Ext4.isDefined(toolbarComponent.iconCls)
+                && Ext4.isFunction(toolbarComponent.setIconCls)) {
+                    toolbarComponent.setIconCls(toolbarComponent.iconCls);
+                }
+                
+                // update text
+                if ((Ext4.isDefined(toolbarComponent.text)
+                    || Ext4.isFunction(toolbarComponent.getText))
+                && Ext4.isFunction(toolbarComponent.setText)) {
+                    text = Ext4.isFunction(toolbarComponent.getText) ? toolbarComponent.getText() : toolbarComponent.text;
+                    toolbarComponent.setText(text);
+                }
+            }
+    
+            var disable = APP.evaluateMenu("inAppMessage", null, null, this),
+                mItems = Ext4.ComponentQuery.query(
+                    //"inAppMessage inAppMessageToolbar [action=edit]," + //Edit Draft
+                    //"inAppMessage inAppMessageToolbar [action=preview]," + //Preview
+                    
+                    //"inAppMessage contextMenu [action=edit]," + //Edit Draft
+                    //"inAppMessage contextMenu [action=preview]," + //Preview
+                    "inAppMessage contextMenu [action=unapprove]," + //Unapprove
+                    "inAppMessage contextMenu [action=approve]," + //Approve
+                    "inAppMessage contextMenu [action=clone]," + //Clone
+                    "inAppMessage contextMenu [action=delete]," + //Delete
+                    //"inAppMessage contextMenu [action=editDraft]," + //Edit Draft
+                    //"inAppMessage contextMenu [action=previewDraft]," + //Preview Draft
+                    //"inAppMessage contextMenu [action=sendDraftSample]," + //Send Sample of Draft
+                    "inAppMessage contextMenu [action=approveDraft]," /*+*/ //Approve Draft
+                    //"inAppMessage contextMenu [action=discardDraft]," + //Discard Draft
+                );
+            
+            mItems.forEach(function(item) {
+                if (item) {
+                    item.setDisabled(disable);
+                }
+            });
+        }
+    }
+    
     if (Ext4
     && Ext4.Component
     && Ext4.Component.prototype
     && Ext4.Component.prototype.showAt) {
         // Disable Marketing Activities > Nurture Program > Stream & Content Actions menus
         Ext4.Component.prototype.showAt = function (x, y, animate) {
-            console.log ("Marketo App > Executing: Disable Content & Actions menu for a Nurture Program Stream in Marketing Activities");
+            console.log("Marketo App > Executing: Disable Content & Actions menu for a Nurture Program Stream in Marketing Activities");
             
             var me = this;
             if (!me.rendered
