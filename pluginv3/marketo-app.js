@@ -3157,6 +3157,9 @@ APP.disableMenus = function() {
     
             var disable = APP.evaluateMenu("inAppMessage", null, null, this),
                 mItems = Ext4.ComponentQuery.query(
+                    //"inAppMessageEditor menu [action=preview]," + //Preview
+                    "inAppMessageEditor menu [action=approveAndClose]," + //Approve & Close
+                    
                     //"inAppMessage inAppMessageToolbar [action=edit]," + //Edit Draft
                     //"inAppMessage inAppMessageToolbar [action=preview]," + //Preview
                     
@@ -3180,6 +3183,8 @@ APP.disableMenus = function() {
             });
         }
     }
+    
+    
     
     if (Ext4
     && Ext4.Component
