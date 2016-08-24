@@ -4801,7 +4801,6 @@ if ((currentUrl.search(mktoAppDomain) != -1
                     else {
                         APP.overrideSaving();
                         APP.overrideSmartCampaignSaving();
-                        APP.disableMenus();
                         APP.overrideUpdatePortletOrder();
                         APP.disableConfirmationMessage();
                     }
@@ -5108,6 +5107,7 @@ if ((currentUrl.search(mktoAppDomain) != -1
                 }
                 else {
                     console.log("Marketo App > Location: Designers/Wizards");
+                    APP.disableMenus();
 
                     // DIY Design (Emails, Forms, Push Notifications, Social Apps)
                     var customCompanyEmail106Fragment = "EME15464",
