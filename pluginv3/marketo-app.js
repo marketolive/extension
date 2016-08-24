@@ -74,6 +74,7 @@ var currentUrl = window.location.href,
     mktoLandingPagePreviewFragment = "LPPD",
     mktoFormWizardFragment = "FOE",
     mktoMobilePushNotificationWizardFragment = "MPNE",
+    mktoInAppMessageWizardFragment = "IAME",
     mktoSocialAppWizardFragment = "SOAE",
     mktoABtestWizardFragment = "EBE",
     mktoEmailTestWizardFragment = "CCE",
@@ -2463,7 +2464,7 @@ APP.disableMenus = function() {
     && Ext.menu.Menu
     && Ext.menu.Menu.prototype
     && Ext.menu.Menu.prototype.showAt) {
-        // Disable ALL areas > ALL assets > ALL Actions and Right-click menus except Social App & Push Notification Actions Buttons
+        // Disable ALL areas > ALL assets > ALL Actions and Right-click menus except Social App, Push Notification, and In App Message Actions Buttons
         Ext.menu.Menu.prototype.showAt = function (xy, parentMenu) {
             console.log("Marketo App > Executing: Disable Actions and Right-click menus for ALL in ALL");
             
@@ -4767,6 +4768,7 @@ if ((currentUrl.search(mktoAppDomain) != -1
                 && currCompFragment != mktoLandingPagePreviewFragment
                 && currCompFragment != mktoFormWizardFragment
                 && currCompFragment != mktoMobilePushNotificationWizardFragment
+                && currCompFragment != mktoInAppMessageWizardFragment
                 && currCompFragment != mktoSocialAppWizardFragment
                 && currCompFragment != mktoABtestWizardFragment
                 && currCompFragment != mktoEmailTestWizardFragment) {
@@ -5173,6 +5175,17 @@ if ((currentUrl.search(mktoAppDomain) != -1
                             }
                             break;
                         
+                        case mktoInAppMessageWizardFragment:
+                            console.log("Marketo App > Location: In App Message Wizard");
+                            
+                            if (Ext4
+                            && Ext4.getStore('InAppMessage')
+                            && Ext4.getStore('InAppMessage').load) {
+                                console.log("Callback for In App Message Editor");
+                                Ext4.getStore('InAppMessage').load(loadParameters);
+                            }
+                            break;
+                        
                         case mktoSocialAppWizardFragment:
                             console.log("Marketo App > Location: Social App Wizard");
                             
@@ -5291,6 +5304,7 @@ if ((currentUrl.search(mktoAppDomain) != -1
                                 && currCompFragment != mktoLandingPagePreviewFragment
                                 && currCompFragment != mktoFormWizardFragment
                                 && currCompFragment != mktoMobilePushNotificationWizardFragment
+                                && currCompFragment != mktoInAppMessageWizardFragment
                                 && currCompFragment != mktoSocialAppWizardFragment
                                 && currCompFragment != mktoABtestWizardFragment
                                 && currCompFragment != mktoEmailTestWizardFragment
