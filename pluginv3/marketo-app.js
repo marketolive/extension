@@ -5107,7 +5107,6 @@ if ((currentUrl.search(mktoAppDomain) != -1
                 }
                 else {
                     console.log("Marketo App > Location: Designers/Wizards");
-                    APP.disableMenus();
 
                     // DIY Design (Emails, Forms, Push Notifications, Social Apps)
                     var customCompanyEmail106Fragment = "EME15464",
@@ -5135,6 +5134,22 @@ if ((currentUrl.search(mktoAppDomain) != -1
                                             || currAssetWorkspaceId == mktoHigherEdWorkspaceId
                                             || APP.getCookie("toggleState") == "false") {
                                                 APP.disableSaving();
+                                                if (Ext4
+                                                && Ext4.ComponentQuery
+                                                && Ext4.ComponentQuery.query) {
+                                                    var mItems = Ext4.ComponentQuery.query(
+                                                        //"inAppMessageEditor menu [action=preview]," + //Preview
+                                                        "inAppMessageEditor menu [action=approveAndClose]," /*+*/ //Approve & Close
+                                                    );
+                                                    
+                                                    if (mItems) {
+                                                        mItems.forEach(function(item) {
+                                                            if (item) {
+                                                                item.setDisabled(true);
+                                                            }
+                                                        });
+                                                    }
+                                                }
                                             }
                                         }
                                     }
