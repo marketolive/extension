@@ -4801,6 +4801,7 @@ if ((currentUrl.search(mktoAppDomain) != -1
                     else {
                         APP.overrideSaving();
                         APP.overrideSmartCampaignSaving();
+                        APP.disableMenus();
                         APP.overrideUpdatePortletOrder();
                         APP.disableConfirmationMessage();
                     }
