@@ -5083,7 +5083,7 @@ if ((currentUrl.search(mktoAppDomain) != -1
                                                         //"lpEditor menu [action=editPageMeta]," + //Edit Page Meta Tags
                                                         //"lpEditor menu [action=editFormSettings]," + //Edit Form Settings
                                                         "lpEditor menu [action=uploadImage]," + //Upload Image or File
-                                                        "lpEditor menu [action=grabImages]," + //Grab Images from Web
+                                                        "lpEditor menu [action=grabImages]," /*+*/ //Grab Images from Web
                                                         //"lpEditor menu [action=toggleGuides]," + //Show Guides
                                                     );
                                                     
@@ -5095,6 +5095,7 @@ if ((currentUrl.search(mktoAppDomain) != -1
                                                             }
                                                         });
                                                     }
+                                                }
                                             }
                                         }
                                     }
