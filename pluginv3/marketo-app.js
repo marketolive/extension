@@ -5069,7 +5069,33 @@ if ((currentUrl.search(mktoAppDomain) != -1
                                             || currAssetWorkspaceId == mktoHealthcareWorkspaceId
                                             || currAssetWorkspaceId == mktoHigherEdWorkspaceId
                                             || APP.getCookie("toggleState") == "false") {
-                                                APP.disablePropertyPanelSaving();
+                                                //APP.disablePropertyPanelSaving();
+                                                if (Ext4
+                                                && Ext4.ComponentQuery
+                                                && Ext4.ComponentQuery.query) {
+                                                    var mItems = Ext4.ComponentQuery.query(
+                                                    // Landing Page Editor
+                                                        // Toolbar menu
+                                                        //"lpEditor toolbar [action=preview]," + //Preview Draft
+                                                        // Actions menu
+                                                        "lpEditor menu [action=approveAndClose]," + //Approve and Close
+                                                        "lpEditor menu [action=disableMobileVersion]," + //Turn Off Mobile Version
+                                                        //"lpEditor menu [action=editPageMeta]," + //Edit Page Meta Tags
+                                                        //"lpEditor menu [action=editFormSettings]," + //Edit Form Settings
+                                                        "lpEditor menu [action=uploadImage]," + //Upload Image or File
+                                                        "lpEditor menu [action=grabImages]," //+ //Grab Images from Web
+                                                        //"lpEditor menu [action=toggleGuides]," + //Show Guides
+                                                    );
+                                                    
+                                                    if (mItems) {
+                                                        console.log("Marketo App > Disabling Landing Page Editor Toolbar Actions menus");
+                                                        mItems.forEach(function(item) {
+                                                            if (item) {
+                                                                item.setDisabled(true);
+                                                            }
+                                                        });
+                                                    }
+                                                }
                                             }
                                         }
                                     }
@@ -5100,6 +5126,32 @@ if ((currentUrl.search(mktoAppDomain) != -1
                             
                             window.clearInterval(isLandingPageDesigner);
                             APP.disablePropertyPanelSaving();
+                            if (Ext4
+                            && Ext4.ComponentQuery
+                            && Ext4.ComponentQuery.query) {
+                                var mItems = Ext4.ComponentQuery.query(
+                                // Landing Page Editor
+                                    // Toolbar menu
+                                    //"lpEditor toolbar [action=preview]," + //Preview Draft
+                                    // Actions menu
+                                    "lpEditor menu [action=approveAndClose]," + //Approve and Close
+                                    "lpEditor menu [action=disableMobileVersion]," + //Turn Off Mobile Version
+                                    //"lpEditor menu [action=editPageMeta]," + //Edit Page Meta Tags
+                                    //"lpEditor menu [action=editFormSettings]," + //Edit Form Settings
+                                    "lpEditor menu [action=uploadImage]," + //Upload Image or File
+                                    "lpEditor menu [action=grabImages]," //+ //Grab Images from Web
+                                    //"lpEditor menu [action=toggleGuides]," + //Show Guides
+                                 );
+                                                    
+                                if (mItems) {
+                                    console.log("Marketo App > Disabling Landing Page Editor Toolbar Actions menus");
+                                    mItems.forEach(function(item) {
+                                        if (item) {
+                                                item.setDisabled(true);
+                                        }
+                                    });
+                                }
+                            }
                         }
                     }, 0);
                     
@@ -5138,6 +5190,23 @@ if ((currentUrl.search(mktoAppDomain) != -1
                                                 && Ext4.ComponentQuery
                                                 && Ext4.ComponentQuery.query) {
                                                     var mItems = Ext4.ComponentQuery.query(
+                                                    // Email 2.0 Editor
+                                                        // Toolbar menu
+                                                        //"email2EditorToolbar [action=editSettings]," + //Email Settings
+                                                        //"email2EditorToolbar [action=editCode]," + //Edit Code
+                                                        //"email2EditorToolbar [action=preview]," + //Preview
+                                                        // Actions menu
+                                                        "emailEditor2 menu [action=approveEmail]," + //Approve and Close
+                                                        "emailEditor2 menu [action=sendTestEmail]," + //Send Sample
+                                                        //"emailEditor2 menu [action=editSettings]," + //Email Settings
+                                                        //"emailEditor2 menu [action=editCode]," + //Edit Code
+                                                        //"emailEditor2 menu [action=downloadHtml]," + //Download HTML
+                                                        "emailEditor2 menu [action=uploadImage]," + //Upload Image or File
+                                                        "emailEditor2 menu [action=grabImages]," + //Grab Images from Web
+                                                        "emailEditor2 menu [action=saveAsTemplate]," + //Save as Template
+                                                    
+                                                    // In App Message Editor
+                                                        // Actions menu
                                                         //"inAppMessageEditor menu [action=preview]," + //Preview
                                                         "inAppMessageEditor menu [action=approveAndClose]," /*+*/ //Approve & Close
                                                     );
