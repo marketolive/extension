@@ -5088,7 +5088,7 @@ if ((currentUrl.search(mktoAppDomain) != -1
                                                     );
                                                     
                                                     if (mItems) {
-                                                        console.log("Marketo App > Disabling Editor Toolbar Actions menus");
+                                                        console.log("Marketo App > Disabling Landing Page Editor Toolbar Actions menus");
                                                         mItems.forEach(function(item) {
                                                             if (item) {
                                                                 item.setDisabled(true);
