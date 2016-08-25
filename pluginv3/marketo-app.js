@@ -5051,7 +5051,7 @@ if ((currentUrl.search(mktoAppDomain) != -1
                         customCompanyLandingPagePreview106aFragment = "LPP10672",
                         customCompanyLandingPage106bFragment = "LPE10768",
                         customCompanyLandingPagePreview106bFragment = "LPP10768";
-                      
+/*                      
                         lpParameters = {
                             filters: [{
                                 property: 'id',
@@ -5083,7 +5083,7 @@ if ((currentUrl.search(mktoAppDomain) != -1
                                                         //"lpEditor menu [action=editPageMeta]," + //Edit Page Meta Tags
                                                         //"lpEditor menu [action=editFormSettings]," + //Edit Form Settings
                                                         "lpEditor menu [action=uploadImage]," + //Upload Image or File
-                                                        "lpEditor menu [action=grabImages]," /*+*/ //Grab Images from Web
+                                                        "lpEditor menu [action=grabImages]," //+ //Grab Images from Web
                                                         //"lpEditor menu [action=toggleGuides]," + //Show Guides
                                                     );
                                                     
@@ -5109,7 +5109,7 @@ if ((currentUrl.search(mktoAppDomain) != -1
                         console.log("Callback for Landing Page Editor");
                         Ext4.getStore('LandingPage').load(lpParameters);
                     }
-                  
+*/                  
                     var isLandingPageDesigner = window.setInterval(function() {
                         if (Mkt3
                         && Mkt3.app
@@ -5126,6 +5126,32 @@ if ((currentUrl.search(mktoAppDomain) != -1
                             
                             window.clearInterval(isLandingPageDesigner);
                             APP.disablePropertyPanelSaving();
+                            if (Ext4
+                            && Ext4.ComponentQuery
+                            && Ext4.ComponentQuery.query) {
+                                var mItems = Ext4.ComponentQuery.query(
+                                // Landing Page Editor
+                                    // Toolbar menu
+                                    //"lpEditor toolbar [action=preview]," + //Preview Draft
+                                    // Actions menu
+                                    "lpEditor menu [action=approveAndClose]," + //Approve and Close
+                                    "lpEditor menu [action=disableMobileVersion]," + //Turn Off Mobile Version
+                                    //"lpEditor menu [action=editPageMeta]," + //Edit Page Meta Tags
+                                    //"lpEditor menu [action=editFormSettings]," + //Edit Form Settings
+                                    "lpEditor menu [action=uploadImage]," + //Upload Image or File
+                                    "lpEditor menu [action=grabImages]," //+ //Grab Images from Web
+                                    //"lpEditor menu [action=toggleGuides]," + //Show Guides
+                                 );
+                                                    
+                                if (mItems) {
+                                    console.log("Marketo App > Disabling Landing Page Editor Toolbar Actions menus");
+                                    mItems.forEach(function(item) {
+                                        if (item) {
+                                                item.setDisabled(true);
+                                        }
+                                    });
+                                }
+                            }
                         }
                     }, 0);
                     
@@ -5164,18 +5190,6 @@ if ((currentUrl.search(mktoAppDomain) != -1
                                                 && Ext4.ComponentQuery
                                                 && Ext4.ComponentQuery.query) {
                                                     var mItems = Ext4.ComponentQuery.query(
-                                                    // Landing Page Editor
-                                                        // Toolbar menu
-                                                        //"lpEditor toolbar [action=preview]," + //Preview Draft
-                                                        // Actions menu
-                                                        "lpEditor menu [action=approveAndClose]," + //Approve and Close
-                                                        "lpEditor menu [action=disableMobileVersion]," + //Turn Off Mobile Version
-                                                        //"lpEditor menu [action=editPageMeta]," + //Edit Page Meta Tags
-                                                        //"lpEditor menu [action=editFormSettings]," + //Edit Form Settings
-                                                        "lpEditor menu [action=uploadImage]," + //Upload Image or File
-                                                        "lpEditor menu [action=grabImages]," + //Grab Images from Web
-                                                        //"lpEditor menu [action=toggleGuides]," + //Show Guides
-                                                        
                                                     // Email 2.0 Editor
                                                         // Toolbar menu
                                                         //"email2EditorToolbar [action=editSettings]," + //Email Settings
