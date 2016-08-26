@@ -61,6 +61,7 @@ var currentUrl = window.location.href,
     mktoLeadDatabaseHealthcareFragment = "ML0A1ZN20812",
     mktoLeadDatabaseHigherEdFragment = "ML0A1ZN20832",
     mktoAnalyticsDefaultFragment = "AH0A1ZN17",
+    mktoAccountBasedMarketingFragment = "ABM0A1",
     mktoOppInfluenceAnalyzerFragment = "AR1559A1!",
     mktoProgramAnalyzerFragment = "AR1544A1!",
     mktoModeler106Fragment = "RCM70A1!",
@@ -3033,6 +3034,69 @@ APP.disableMenus = function() {
     
     if (Mkt3
     && Mkt3.controller
+    && Mkt3.controller.abm
+    && Mkt3.controller.abm.namedAccount
+    && Mkt3.controller.abm.namedAccount.Dashboard
+    && Mkt3.controller.abm.namedAccount.Dashboard.prototype
+    && Mkt3.controller.abm.namedAccount.Dashboard.prototype.loadToolBar) {
+        Mkt3.controller.abm.namedAccount.Dashboard.prototype.loadToolBar = function() {
+            console.log("Marketo App > Executing: Disable Toolbar buttons & Actions menu for Named Accounts in Account Based Marketing");
+            debugger;
+            var canvas = this.getCanvas(),
+                toolbar = canvas.down('abmNamedAccountToolbar');
+            
+            toolbar.down('#newMenu').hide();
+            toolbar.down('#peopleLink').hide();
+            toolbar.down('#deleteNamedAccount').hide();
+        }
+    }
+/*    
+    if (Ext4
+    && Ext4.menu
+    && Ext4.menu.Menu
+    && Ext4.menu.Menu.prototype
+    && Ext4.menu.Menu.prototype.show) {
+        // Disable Account Based Marketing > Named Accounts > New & Actions menus
+        Ext4.menu.Menu.prototype.show = function() {
+            var mItems = this.items,
+                itemsToDisable = [
+                    // Account Based Marketing > Named Accounts > New Button
+                    //"newNamedAccount",//Create Named Account
+                    //"discoverMarketoCompanies",//Discover Marketo Companies
+                    //"discoverCrmAccounts",//Discover CRM Accounts
+
+                    // Account Based Marketing > Named Accounts > Actions Button
+                    //"addToAccountList",//Add to Account List
+                    "deleteNamedAccount",//Delete Named Account
+                ];
+                
+            itemsToDisable.forEach(function(itemToDisable) {
+                var item = mItems.get(itemToDisable);
+                if (item) {
+                    item.setDisabled(true);
+                }
+            });
+                
+            var me = this,
+                parentEl,
+                viewHeight,
+                maxWas = me.maxHeight;
+            if (!me.rendered) {
+                me.doAutoRender()
+            }
+            if (me.floating) {
+                parentEl = Ext.fly(me.el.getScopeParent());
+                viewHeight = parentEl.getViewSize().height;
+                me.maxHeight = Math.min(maxWas || viewHeight, viewHeight);
+            }
+            me.callParent(arguments);
+            me.maxHeight = maxWas;
+            return me;
+        }
+    }
+*/    
+    if (Mkt3
+    && Mkt3.controller
     && Mkt3.controller.socialApp
     && Mkt3.controller.socialApp.SocialApp
     && Mkt3.controller.socialApp.SocialApp.prototype
@@ -3057,7 +3121,7 @@ APP.disableMenus = function() {
                     //"socialAppToolbar contextMenu [action=getWidgetEmbedCode]," + //Embed Code
                     //"socialAppToolbar contextMenu [action=editDraft]," + //Edit Draft
                     //"socialAppToolbar contextMenu [action=previewDraft]," + //Preview Draft
-                    "socialAppToolbar contextMenu [action=approveDraft]," /*+*/ //Approve Draft
+                    "socialAppToolbar contextMenu [action=approveDraft]," //+ //Approve Draft
                     //"socialAppToolbar contextMenu [action=discardDraft]," //Discard Draft
                 );
             
@@ -3098,7 +3162,7 @@ APP.disableMenus = function() {
                     //"mobilePushNotification contextMenu [action=editDraft]," + //Edit Draft
                     //"mobilePushNotification contextMenu [action=previewDraft]," + //Preview Draft
                     //"mobilePushNotification contextMenu [action=sendDraftSample]," + //Send Sample of Draft
-                    "mobilePushNotification contextMenu [action=approveDraft]," /*+*/ //Approve Draft
+                    "mobilePushNotification contextMenu [action=approveDraft]," //+ //Approve Draft
                     //"mobilePushNotification contextMenu [action=discardDraft]," //Discard Draft
                 );
             
@@ -3157,9 +3221,6 @@ APP.disableMenus = function() {
     
             var disable = APP.evaluateMenu("inAppMessage", null, null, this),
                 mItems = Ext4.ComponentQuery.query(
-                    //"inAppMessageEditor menu [action=preview]," + //Preview
-                    "inAppMessageEditor menu [action=approveAndClose]," + //Approve & Close
-                    
                     //"inAppMessage inAppMessageToolbar [action=edit]," + //Edit Draft
                     //"inAppMessage inAppMessageToolbar [action=preview]," + //Preview
                     
@@ -3172,7 +3233,7 @@ APP.disableMenus = function() {
                     //"inAppMessage contextMenu [action=editDraft]," + //Edit Draft
                     //"inAppMessage contextMenu [action=previewDraft]," + //Preview Draft
                     //"inAppMessage contextMenu [action=sendDraftSample]," + //Send Sample of Draft
-                    "inAppMessage contextMenu [action=approveDraft]," /*+*/ //Approve Draft
+                    "inAppMessage contextMenu [action=approveDraft]," //+ //Approve Draft
                     //"inAppMessage contextMenu [action=discardDraft]," + //Discard Draft
                 );
             
@@ -5388,7 +5449,7 @@ if ((currentUrl.search(mktoAppDomain) != -1
                                 else if (currUrlFragment == mktoAnalyticsDefaultFragment) {
                                     APP.overrideAnalyticsTiles();
                                 }
-
+                                
                                 if (currCompFragment != mktoEmailDesignerFragment
                                 && currCompFragment != mktoEmailPreviewFragment
                                 && currCompFragment != mktoLandingPageDesignerFragment
