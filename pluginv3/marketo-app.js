@@ -3033,33 +3033,67 @@ APP.disableMenus = function() {
         }
     }
     
-    if (Mkt3
-    && Mkt3.controller
-    && Mkt3.controller.abm
-    && Mkt3.controller.abm.namedAccount
-    && Mkt3.controller.abm.namedAccount.Dashboard
-    && Mkt3.controller.abm.namedAccount.Dashboard.prototype
-    && Mkt3.controller.abm.namedAccount.Dashboard.prototype.loadToolBar) {
-        Mkt3.controller.abm.namedAccount.Dashboard.prototype.loadToolBar = function() {
-            console.log("Marketo App > Executing: Disable Toolbar buttons & Actions menu for Named Accounts in Account Based Marketing");
-            debugger;
-            var canvas = this.getCanvas(),
-                toolbar = canvas.down('abmNamedAccountToolbar');
+    if (Ext4
+    && Ext4.Component
+    && Ext4.Component.prototype
+    && Ext4.Component.prototype.show) {
+        Ext4.Component.prototype.show = function(animateTarget, cb, scope) {
+            console.log("Marketo App > Executing: Disable Create, Add, Save buttons in Form Windows");
+            if (this.getXType() == "createNamedAccountForm"
+            || this.getXType() == "addToAccountListForm") {
+                
+                var mItems = this.query(
+                    "[action=submit]," //+ //Create, Add
+                );
+                
+                mItems.forEach(function(item) {
+                    if (item) {
+                        item.setDisabled(true);
+                    }
+                });
+            }
             
-            toolbar.down('#newMenu').hide();
-            toolbar.down('#peopleLink').hide();
-            toolbar.down('#deleteNamedAccount').hide();
+            var me = this,
+                rendered = me.rendered;
+            if (rendered
+            && me.isVisible()) {
+                if (me.toFrontOnShow
+                && me.floating) {
+                    me.toFront();
+                }
+            }
+            else {
+                if (me.fireEvent("beforeshow", me) !== false) {
+                    me.hidden = false;
+                    if (!rendered
+                    && (me.autoRender
+                        || me.floating)) {
+                        
+                        me.doAutoRender();
+                        rendered = me.rendered;
+                    }
+                    if (rendered) {
+                        me.beforeShow();
+                        me.onShow.apply(me, arguments);
+                        me.afterShow.apply(me, arguments);
+                    }
+                }
+                else {
+                    me.onShowVeto();
+                }
+            }
+            return me;
         }
     }
-/*    
+    
     if (Ext4
-    && Ext4.menu
-    && Ext4.menu.Menu
-    && Ext4.menu.Menu.prototype
-    && Ext4.menu.Menu.prototype.show) {
-        // Disable Account Based Marketing > Named Accounts > New & Actions menus
-        Ext4.menu.Menu.prototype.show = function() {
-            var mItems = this.items,
+    && Ext4.button
+    && Ext4.button.Button
+    && Ext4.button.Button.prototype
+    && Ext4.button.Button.prototype.showMenu) {
+        Ext4.button.Button.prototype.showMenu = function(fromEvent) {
+            console.log("Marketo App > Executing: Disable Toolbar buttons & Actions menu for Named Accounts in Account Based Marketing");
+            var mItems = this.menu.items,
                 itemsToDisable = [
                     // Account Based Marketing > Named Accounts > New Button
                     //"newNamedAccount",//Create Named Account
@@ -3069,33 +3103,75 @@ APP.disableMenus = function() {
                     // Account Based Marketing > Named Accounts > Actions Button
                     //"addToAccountList",//Add to Account List
                     "deleteNamedAccount",//Delete Named Account
+                    
+                    // Account Based Marketing > Account Lists > New Button
+                    "newAccountList",//Create New Account List
+                    
+                    // Account Based Marketing > Account Lists > Actions Button
+                    "renameAccountList",//Rename Account List
+                    "deleteAccountList",//Delete Account List
                 ];
                 
-            itemsToDisable.forEach(function(itemToDisable) {
-                var item = mItems.get(itemToDisable);
-                if (item) {
-                    item.setDisabled(true);
-                }
-            });
-                
+            if (mItems) {
+                itemsToDisable.forEach(function(itemToDisable) {
+                    var item = mItems.get(itemToDisable);
+                    if (item) {
+                        item.setDisabled(true);
+                    }
+                });
+            }
+            
             var me = this,
-                parentEl,
-                viewHeight,
-                maxWas = me.maxHeight;
-            if (!me.rendered) {
-                me.doAutoRender()
+                menu = me.menu;
+            if (me.rendered) {
+                if (me.tooltip
+                && Ext.quickTipsActive
+                && me.getTipAttr() != "title") {
+                    Ext.tip.QuickTipManager.getQuickTip().cancelShow(me.btnEl);
+                }
+                if (menu.isVisible()) {
+                    menu.hide();
+                }
+                if (!fromEvent
+                || me.showEmptyMenu
+                || menu.items.getCount() > 0) {
+                    menu.showBy(me.el, me.menuAlign, ((!Ext.isStrict && Ext.isIE) || Ext.isIE6) ? [-2, -2] : undefined);
+                }
             }
-            if (me.floating) {
-                parentEl = Ext.fly(me.el.getScopeParent());
-                viewHeight = parentEl.getViewSize().height;
-                me.maxHeight = Math.min(maxWas || viewHeight, viewHeight);
-            }
-            me.callParent(arguments);
-            me.maxHeight = maxWas;
             return me;
         }
     }
-*/    
+    
+    if (Mkt3
+    && Mkt3.controller
+    && Mkt3.controller.abm
+    && Mkt3.controller.abm.namedAccount
+    && Mkt3.controller.abm.namedAccount.Dashboard
+    && Mkt3.controller.abm.namedAccount.Dashboard.prototype
+    && Mkt3.controller.abm.namedAccount.Dashboard.prototype.loadToolBar) {
+        Mkt3.controller.abm.namedAccount.Dashboard.prototype.loadToolBar = function() {
+            console.log("Marketo App > Executing: Disable Toolbar buttons for a Named Account in Account Based Marketing");
+            
+            mItems = Ext4.ComponentQuery.query(
+                // Named Account Toolbar Buttons
+                "abmNamedAccountToolbar [action=linkPeople]," //+ //Add People to Named Account
+            );
+            
+            mItems.forEach(function(item) {
+                if (item) {
+                    item.setDisabled(disable);
+                }
+            });
+            
+            var canvas = this.getCanvas(),
+                toolbar = canvas.down('abmNamedAccountToolbar');
+            
+            toolbar.down('#newMenu').hide();
+            toolbar.down('#peopleLink').hide();
+            toolbar.down('#deleteNamedAccount').hide();
+        }
+    }
+    
     if (Mkt3
     && Mkt3.controller
     && Mkt3.controller.socialApp
