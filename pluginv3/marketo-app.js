@@ -43,6 +43,7 @@ var currentUrl = window.location.href,
     mktoAccountString106a = "mktodemoaccount106a",
     mktoAccountString106b = "mktodemoaccount106b",
     mktoAccountString106d = "mktodemoaccount106d",
+    mktoAccountStringAbm = "abmapiint",
     mktoAccountStringsMatch = "^"+mktoAccountString106+"$|^"+mktoAccountString106a+"$|^"+mktoAccountString106b+"$|^"+mktoAccountString106d+"$",
     mktoAccountStrings106and106dMatch = "^"+mktoAccountString106+"$|^"+mktoAccountString106d+"$",
     mktoEmailInsightsLink = "http://www.marketolive.com/en/analytics/email-insights-summit-demo-1",
@@ -5510,6 +5511,9 @@ if ((currentUrl.search(mktoAppDomain) != -1
                         APP.overrideHomeTiles();
                     }
                 }
+            }
+            else if (accountString.search(mktoAccountStringAbm) != -1) {
+                APP.disableMenus();
             }
         }
     }, 0);
