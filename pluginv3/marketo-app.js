@@ -3046,11 +3046,13 @@ APP.disableMenus = function() {
                     "[action=submit]," //+ //Create, Add
                 );
                 
-                mItems.forEach(function(item) {
-                    if (item) {
-                        item.setDisabled(true);
-                    }
-                });
+                if (mItems) {
+                    mItems.forEach(function(item) {
+                        if (item) {
+                            item.setDisabled(true);
+                        }
+                    });
+                }
             }
             
             var me = this,
@@ -3083,6 +3085,53 @@ APP.disableMenus = function() {
                 }
             }
             return me;
+        }
+    }
+    
+    if (Mkt3
+    && Mkt3.controller
+    && Mkt3.controller.editor
+    && Mkt3.controller.editor.wizard
+    && Mkt3.controller.editor.wizard.Editor
+    && Mkt3.controller.editor.wizard.Editor.prototype
+    && Mkt3.controller.editor.wizard.Editor.prototype.loadStep) {
+        Mkt3.controller.editor.wizard.Editor.prototype.loadStep = function(step) {
+            console.log("Marketo App > Executing: Disable Create button in Wizard Editors");
+            var editor = this.getEditor(),
+                tree = this.getTree(),
+                previousStep = tree.getCurrentStep(),
+                previousStepId = previousStep ? previousStep.getId() : null,
+                stepId = step.getId(),
+                titleItem = this.getNavBar().getComponent('title'),
+                steps = editor.items.items,
+                i = 0,
+                il = steps.length;
+            
+            Ext4.suspendLayouts();
+            
+            // update navigation title
+            titleItem.setText(step.get('titleText') || step.get('text'));
+            
+            // update content
+            for (; i < il; i++) {
+                steps[i].setVisible(Ext4.Array.contains(Ext4.Array.from(steps[i].stepIds), stepId));
+            }
+            
+            // update custom token
+            Mkt3.DlManager.setCustomToken(step.getId());
+            
+            tree.expandPath(step.parentNode.getPath());
+            tree.getView().getSelectionModel().select(step);
+            
+            this.updateFlowButtons();
+            
+            editor.fireEvent('stepchange', stepId, previousStepId);
+            
+            Ext4.resumeLayouts(true);
+            
+            if (editor.down("[action=create]").isVisible()) {
+                editor.down("[action=create]").setDisabled(true);
+            }
         }
     }
     
@@ -3157,11 +3206,13 @@ APP.disableMenus = function() {
                 "abmNamedAccountToolbar [action=linkPeople]," //+ //Add People to Named Account
             );
             
-            mItems.forEach(function(item) {
-                if (item) {
-                    item.setDisabled(disable);
-                }
-            });
+            if (mItems) {
+                mItems.forEach(function(item) {
+                    if (item) {
+                        item.setDisabled(disable);
+                    }
+                });
+            }
             
             var canvas = this.getCanvas(),
                 toolbar = canvas.down('abmNamedAccountToolbar');
@@ -3202,11 +3253,13 @@ APP.disableMenus = function() {
                     //"socialAppToolbar contextMenu [action=discardDraft]," //Discard Draft
                 );
             
-            mItems.forEach(function(item) {
-                if (item) {
-                    item.setDisabled(disable);
-                }
-            });
+            if (mItems) {
+                mItems.forEach(function(item) {
+                    if (item) {
+                        item.setDisabled(disable);
+                    }
+                });
+            }
             
             return menu;
         }
@@ -3243,11 +3296,13 @@ APP.disableMenus = function() {
                     //"mobilePushNotification contextMenu [action=discardDraft]," //Discard Draft
                 );
             
-            mItems.forEach(function(item) {
-                if (item) {
-                    item.setDisabled(disable);
-                }
-            });
+            if (mItems) {
+                mItems.forEach(function(item) {
+                    if (item) {
+                        item.setDisabled(disable);
+                    }
+                });
+            }
             
             return menu;
         }
@@ -3314,11 +3369,13 @@ APP.disableMenus = function() {
                     //"inAppMessage contextMenu [action=discardDraft]," + //Discard Draft
                 );
             
-            mItems.forEach(function(item) {
-                if (item) {
-                    item.setDisabled(disable);
-                }
-            });
+            if (mItems) {
+                mItems.forEach(function(item) {
+                    if (item) {
+                        item.setDisabled(disable);
+                    }
+                });
+            }
         }
     }
     
