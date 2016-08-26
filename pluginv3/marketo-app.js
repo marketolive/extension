@@ -3209,7 +3209,7 @@ APP.disableMenus = function() {
             if (mItems) {
                 mItems.forEach(function(item) {
                     if (item) {
-                        item.setDisabled(disable);
+                        item.setDisabled(true);
                     }
                 });
             }
