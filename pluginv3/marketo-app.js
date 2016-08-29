@@ -3523,6 +3523,20 @@ APP.disableMenus = function() {
                             //me.items.items[ii].setDisabled(disable);
                             break;
                         
+                        // Admin > Tags > Calendar Entry Types
+                        // Edit
+                        case "edit":
+                            //me.items.items[ii].setDisabled(disable);
+                            break;
+                        // Hide
+                        case "hide":
+                            me.items.items[ii].setDisabled(disable);
+                            break;
+                        // Unhide
+                        case "unhide":
+                            me.items.items[ii].setDisabled(disable);
+                            break;
+                        
                         default:
                             break;
                     }
