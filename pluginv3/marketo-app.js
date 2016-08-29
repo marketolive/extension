@@ -2318,7 +2318,7 @@ APP.evaluateMenu = function (triggeredFrom, menu, canvas, toolbar) {
             break;
             
             case "button":
-                if ((canvas
+                if (canvas
                     && canvas.config
                     && (canvas.config.accessZoneId == mktoDefaultWorkspaceId
                         || canvas.config.accessZoneId == mktoJapaneseWorkspaceId
@@ -2329,9 +2329,7 @@ APP.evaluateMenu = function (triggeredFrom, menu, canvas, toolbar) {
                             && ((canvas.config.expNodeId
                                     && MktExplorer.getNodeById(canvas.config.expNodeId))
                                 || (canvas.config.dlZoneFolderId
-                                    && MktExplorer.getNodeById(canvas.config.dlZoneFolderId))))))
-                || (MktMainNav
-                    && MktMainNav.activeNav == "tnCustAdmin")) {
+                                    && MktExplorer.getNodeById(canvas.config.dlZoneFolderId)))))) {
                     
                     toBeDisabled = true;
                                     
@@ -2356,6 +2354,11 @@ APP.evaluateMenu = function (triggeredFrom, menu, canvas, toolbar) {
                             currNode = currNode.parentNode;
                         }
                     }
+                }
+                else if (!canvas
+                && MktMainNav
+                && MktMainNav.activeNav == "tnCustAdmin") {
+                    toBeDisabled = true;
                 }
                 return toBeDisabled;
             break;
@@ -3106,20 +3109,30 @@ APP.disableMenus = function() {
             var mItems = this.menu.items,
                 itemsToDisable = [
                     // Account Based Marketing > Named Accounts > New Button
-                    //"newNamedAccount",//Create Named Account
-                    //"discoverMarketoCompanies",//Discover Marketo Companies
-                    //"discoverCrmAccounts",//Discover CRM Accounts
+                    //"newNamedAccount", //Create Named Account
+                    //"discoverMarketoCompanies", //Discover Marketo Companies
+                    //"discoverCrmAccounts", //Discover CRM Accounts
 
                     // Account Based Marketing > Named Accounts > Actions Button
-                    //"addToAccountList",//Add to Account List
-                    "deleteNamedAccount",//Delete Named Account
+                    //"addToAccountList", //Add to Account List
+                    "deleteNamedAccount", //Delete Named Account
                     
                     // Account Based Marketing > Account Lists > New Button
-                    "newAccountList",//Create New Account List
+                    "newAccountList", //Create New Account List
                     
                     // Account Based Marketing > Account Lists > Actions Button
-                    "renameAccountList",//Rename Account List
-                    "deleteAccountList",//Delete Account List
+                    "renameAccountList", //Rename Account List
+                    "deleteAccountList", //Delete Account List
+                    
+                    // Admin > Marketo Custom Objects > Marketo Custom Objects > Actions Button
+                    //"mktoCustomObjectEditBtn", //Edit Object
+                    "mktoCustomObjectPublishBtn", //Approve Object
+                    //"mktoCustomObjectDiscardDraftBtn", //Discard Draft
+                    "mktoCustomObjectDeleteBtn", //Delete Object
+                    
+                    // Admin > Marketo Custom Objects > Fields > Actions Button
+                    //"mktoCustomObjectFieldEditBtn", //Edit Field
+                    "mktoCustomObjectFieldDeleteBtn", // Delete Field
                 ];
                 
             if (mItems) {
@@ -3542,6 +3555,34 @@ APP.disableMenus = function() {
                     }
                 }
             }
+            else {
+                var ii,
+                    disable = APP.evaluateMenu("button", null, null, null);
+                for (ii = 0; ii < me.items.items.length; ii++) {
+                    switch (me.items.items[ii].action) {
+                        // Admin > Marketo Custom Objects > Marketo Custom Objects
+                        // Edit Object
+                        case "edit":
+                            //me.items.items[ii].setDisabled(disable);
+                            break;
+                        // Approve Object
+                        case "publish":
+                            me.items.items[ii].setDisabled(disable);
+                            break;
+                        // Discard Draft
+                        case "discardDraft":
+                            //me.items.items[ii].setDisabled(disable);
+                            break;
+                        // Delete Object
+                        case "delete":
+                            me.items.items[ii].setDisabled(disable);
+                            break;
+                            
+                        default:
+                            break;
+                    }
+                }
+            }
         }
     }
     else {
@@ -3805,10 +3846,10 @@ APP.hideToolbarItems = function() {
                         "text" : "Invite New User",//Invite New User
                         "action" : "setDisabled",
 					},*/
-					/*{
+					{
                         "id" : "editLicenses",//Issue License
                         "action" : "setVisible",
-					},*/
+					},
 					/*{
                         "id" : "editUser",//Edit User
                         "action" : "setVisible",
@@ -3897,10 +3938,10 @@ APP.hideToolbarItems = function() {
                         "id" : "deleteDomain",//Delete Domain
                         "action" : "setVisible",
 					},
-					/*{
+					{
                         "id" : "dkimDetails",//DKIM Details
                         "action" : "setDisabled",
-					},*/
+					},
 					/*{
                         "id" : "checkDNS",//Check DNS
                         "action" : "setDisabled",
@@ -4121,6 +4162,7 @@ APP.disableFormSaveButtons = function() {
             if (this.getXType() == "createNamedAccountForm" //ABM > New Named Account
             || this.getXType() == "addToAccountListForm" //ABM > Add To Account List
             || this.getXType() == "adminUserInviteWizard" //Admin > User & Roles > Users > Invite New User
+            || this.getXType() == "adminEditLicensesForm" //Admin > User & Roles > Users > Issue License
             || this.getXType() == "adminSubscriptionInformationForm" //Admin > My Account > Subcription Information
             || this.getXType() == "adminAccountSettingsForm" //Admin > My Account > Account Settings
             || this.getXType() == "localePicker" //Admin > My Account/Location > Location Settings
@@ -4128,15 +4170,23 @@ APP.disableFormSaveButtons = function() {
             || this.getXType() == "adminTinyMceSettingForm" //Admin > *Email > Email > Edit Text Editor Settings
             || this.getXType() == "emailEditorSettingsForm" //Admin > Email > Email > Edit Email Editor Settings
             || this.getXType() == "emailAddMultipleDomainForm" //Admin > Email > Email > Add/Edit Branding Domains
+            || this.getXType() == "adminAddDomainForm" //Admin > Email > SPF/DKIM > Add Domain
             || this.getXType() == "adminScoreSettingsForm" //Admin > ABM > Account Score Settings
             || this.getXType() == "adminCrmFieldSettingsForm" //Admin > ABM > CRM Mapping
             || this.getXType() == "adminFieldHtmlEncodeForm" //Admin > Field Management > Field Management > HTML Encode Settings
             || this.getXType() == "mktocustomactivityActivityTypeForm" //Admin > Marketo Custom Activities > Marketo Custom Activities > New Custom Activity
+            || this.getXType() == "mktocustomobjectObjectForm" //Admin > Marketo Custom Objects > Marketo Custom Objects > New/Edit Custom Object
+            || this.getXType() == "mktocustomobjectFieldForm" //Admin > Marketo Custom Objects > Fields > New/Edit Field
             || this.getXType() == "adminSpecifyPluginContactForm" //Admin > Sales Insight > Email Add-in > Specify Plugin Contact
             || this.getXType() == "wildcardRedirectForm" //Admin > Landing Pages > New Wildcard Redirect
             || this.getXType() == "mktowsEditIpRestrictionForm" //Admin > Web Services > IP Restrictions
             || this.getXType() == "launchpointServiceIntegrationSettingsForm" //Admin > LaunchPoint > Installed Services > Edit Service
+            || this.getXType() == "vespaAppForm" //Admin > Mobile Apps & Devices > Mobile Apps > New/Edit Mobile App
+            || this.getXType() == "vespaSendForm" //Admin > Mobile Apps & Devices > Mobile Apps > Send To Developer
+            || this.getXType() == "vespaConfigurePushAccessForm" //Admin > Mobile Apps & Devices > Mobile Apps > Configure Push Access
+            || this.getXType() == "vespaNewDeviceForm" //Admin > Mobile Apps & Devices > Test Devices > New Test Device
             || this.getXType() == "adminTagsAddCalendarEntryTypeForm" //Admin > Tags > Calendar Entry Types > New Entry Type
+            || this.getXType() == "featureSwitchForm" //Admin > Feature Manager > Edit Feature
             ) {
                 
                 var mItems = this.query(
@@ -4221,6 +4271,10 @@ APP.disableAdminSaveButtons = function() {
                 switch (activeTabTitle) {
                     // Login Settings
                     case "Login Settings":
+                        toDisable = true;
+                        break;
+                    // Users & Roles > Users 
+                    case "Users":
                         toDisable = true;
                         break;
                     // Users & Roles > Roles 
