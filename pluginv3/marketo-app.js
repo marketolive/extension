@@ -2917,48 +2917,48 @@ APP.disableMenus = function() {
                         //"newChannel",//New Channel
                         
                         // Admin > Tags > Tags > Actions Button & Right-click Tree
-                        "editDescriptor",//Edit
+                        //"editDescriptor",//Edit
                         "deleteDescriptor",//Delete
                         "deleteDescriptorValue",//Delete
                         "hideDescriptorValue",//Hide
                         "unhideDescriptorValue",//Unhide
                         
                         // Admin > Tags > Calendar Entry Types > New Button
-                        "newEntry",//Entry Type
+                        //"newEntry",//Entry Type
                         
                         // Admin > Tags > Calendar Entry Types > Actions Button
-                        "editEntry",//Edit
+                        //"editEntry",//Edit
                         "unhideEntry",//Unhide
                         "hideEntry",//Hide
                         
                         // Admin > Field Management > Actions Button
-                        "hideFieldFmFields",//Hide field
+                        //"hideFieldFmFields",//Hide field
                         //"blockFieldUpdatesFmFields",//Block Field Updates
-                        "changeTypeFmFields",//Change Type
+                        //"changeTypeFmFields",//Change Type
                         //"exportFieldsFmFields",//Export Field Names
                         
                         // Admin > Landing Pages > Landing Pages > New Button
-                        "newAlias",//New Domain Alias
-                        "newRule",//New Redirect Rule
+                        //"newAlias",//New Domain Alias
+                        //"newRule",//New Redirect Rule
                         
                         // Admin > Landing Pages > Rules > Actions Button
-                        "editRule",//Edit Rule
+                        //"editRule",//Edit Rule
                         "deleteRule",//Delete Rule
                         
                         // Admin > LaunchPoint > New Button
-                        "newWebinarLogin",//New Service
+                        //"newWebinarLogin",//New Service
                         
                         // Admin > LaunchPoint > Actions Button
-                        "editWebinarLogin",//Edit Service
+                        //"editWebinarLogin",//Edit Service
                         "cloneWebinarLogin",//Clone Login
                         "deleteWebinarLogin",//Delete Service
                         
                         // Admin > Webhooks > Actions Button
                         //"newWebhookLogin",//New Webhook
-                        "editWebhook",//Edit Webhook
+                        //"editWebhook",//Edit Webhook
                         "cloneWebhook",//Clone Webhook
                         "deleteWebhook",//Delete Webhook
-                        "customHeader",//Set Custom Header
+                        //"customHeader",//Set Custom Header
                     ];
                 if (this.triggeredFrom != "tree"
                 && this.triggeredFrom != "button") {
@@ -3034,64 +3034,6 @@ APP.disableMenus = function() {
     }
     else {
         console.log("Marketo App > Skipped: Disable Actions and Right-click menus for ALL in ALL");
-    }
-    
-    if (Ext4
-    && Ext4.Component
-    && Ext4.Component.prototype
-    && Ext4.Component.prototype.show) {
-        Ext4.Component.prototype.show = function(animateTarget, cb, scope) {
-            console.log("Marketo App > Executing: Disable Create, Add, Save buttons in Form Windows");
-            if (this.getXType() == "createNamedAccountForm"
-            || this.getXType() == "addToAccountListForm") {
-                
-                var mItems = this.query(
-                    "[action=submit]," //+ //Create, Add
-                );
-                
-                if (mItems) {
-                    mItems.forEach(function(item) {
-                        if (item) {
-                            item.setDisabled(true);
-                        }
-                    });
-                }
-            }
-            
-            var me = this,
-                rendered = me.rendered;
-            if (rendered
-            && me.isVisible()) {
-                if (me.toFrontOnShow
-                && me.floating) {
-                    me.toFront();
-                }
-            }
-            else {
-                if (me.fireEvent("beforeshow", me) !== false) {
-                    me.hidden = false;
-                    if (!rendered
-                    && (me.autoRender
-                        || me.floating)) {
-                        
-                        me.doAutoRender();
-                        rendered = me.rendered;
-                    }
-                    if (rendered) {
-                        me.beforeShow();
-                        me.onShow.apply(me, arguments);
-                        me.afterShow.apply(me, arguments);
-                    }
-                }
-                else {
-                    me.onShowVeto();
-                }
-            }
-            return me;
-        }
-    }
-    else {
-        console.log("Marketo App > Skipped: Disable Create, Add, Save buttons in Form Windows");
     }
     
     if (Mkt3
@@ -3801,52 +3743,52 @@ APP.hideToolbarItems = function() {
                         "text" : "Change Password",//Change Password
                         "action" : "setDisabled",
 					},*/
-					{
+					/*{
                         "text" : "Invite New User",//Invite New User
                         "action" : "setDisabled",
-					},
+					},*/
                         
                     // Admin > My Account
                     /*{
                         "text" : "Change Password",//Change Password
                         "action" : "setDisabled",
 					},*/
-					{
+					/*{
                         "id" : "caadEditButton",//Edit Account Settings
                         "action" : "setDisabled",
-					},
+					},*/
                         
                     // Admin > Login Settings
-					{
+					/*{
                         "id" : "caadEditSecurityButton",//Edit Security Settings
                         "action" : "setDisabled",
-					},
+					},*/
 					/*{
                         "id" : "caadEditurlButton",//Edit URL Expiration
                         "action" : "setDisabled",
 					},*/
-					{
+					/*{
                         "id" : "caadEditRestrictedLoginButton",//Edit IP Restrictions
                         "action" : "setDisabled",
-					},
+					},*/
 					/*{
                         "id" : "caadEditSmartListReportSettingsButton",//Smart List Report Settings
                         "action" : "setDisabled",
 					},*/
                         
                     // Admin > Users & Roles > Users
-					{
+					/*{
                         "text" : "Invite New User",//Invite New User
                         "action" : "setDisabled",
-					},
-					{
+					},*/
+					/*{
                         "id" : "editLicenses",//Issue License
                         "action" : "setVisible",
-					},
-					{
+					},*/
+					/*{
                         "id" : "editUser",//Edit User
                         "action" : "setVisible",
-					},
+					},*/
 					{
                         "id" : "deleteUser",//Delete User
                         "action" : "setVisible",
@@ -3861,10 +3803,10 @@ APP.hideToolbarItems = function() {
                         "id" : "newRole",//New Role
                         "action" : "setDisabled",
 					},*/
-					{
+					/*{
                         "id" : "editRole",//Edit Role
                         "action" : "setVisible",
-					},
+					},*/
 					{
                         "id" : "deleteRole",//Delete Role
                         "action" : "setVisible",
@@ -3875,10 +3817,10 @@ APP.hideToolbarItems = function() {
                         "id" : "newZone",//New Workspace
                         "action" : "setDisabled",
 					},*/
-					{
+					/*{
                         "id" : "editZone",//Edit Workspace
                         "action" : "setVisible",
-					},
+					},*/
 					{
                         "id" : "deleteZone",//Delete Workspace
                         "action" : "setVisible",
@@ -3889,10 +3831,10 @@ APP.hideToolbarItems = function() {
                         "id" : "newPartition",//New Lead Partition
                         "action" : "setDisabled",
 					},*/
-					{
+					/*{
                         "id" : "editPartition",//Edit Lead Partition
                         "action" : "setVisible",
-					},
+					},*/
 					{
                         "id" : "deletePartition",//Delete Lead Partition
                         "action" : "setVisible",
@@ -3909,24 +3851,24 @@ APP.hideToolbarItems = function() {
 					},*/
                         
                     // Admin > Email > Email
-					{
+					/*{
                         "text" : "Edit IP Settings",//Edit IP Settings
                         "action" : "setDisabled",
-					},
-					{
+					},*/
+					/*{
                         "text" : "Edit Text Editor Settings",//Edit Text Editor Settings
                         "action" : "setDisabled",
-					},
-					{
+					},*/
+					/*{
                         "text" : "Edit Email Editor Settings",//Edit Email Editor Settings
                         "action" : "setDisabled",
-					},
+					},*/
                         
                     // Admin > Email > SPF/DKIM
-					{
+					/*{
                         "id" : "addDomain",//Add Domain
                         "action" : "setDisabled",
-					},
+					},*/
 					{
                         "id" : "deleteDomain",//Delete Domain
                         "action" : "setVisible",
@@ -3983,10 +3925,10 @@ APP.hideToolbarItems = function() {
                         "id" : "syncOjbectCadSfdcObjectSync",//Enable Sync
                         "action" : "setVisible",
 					},*/
-					{
+					/*{
                         "id" : "editVisibleFieldsCadSfdcObjectSync",//Edit Visible Fields
                         "action" : "setVisible",
-					},
+					},*/
                         
                     // Admin > Salesforce
 					{
@@ -4003,20 +3945,20 @@ APP.hideToolbarItems = function() {
 					},*/
                         
                     // Admin > Sales Insight > Sales Insight
-					{
+					/*{
                         "text" : "Edit API Configuration",//Edit API Configuration
                         "action" : "setDisabled",
-					},
-					{
+					},*/
+					/*{
                         "text" : "Edit Settings",//Edit Settings
                         "action" : "setDisabled",
-					},
+					},*/
                         
                     // Admin > Sales Insight > Email Add-in
-					{
+					/*{
                         "id" : "issueLicenseCadLisAdmin",//Issue License
                         "action" : "setDisabled",
-					},
+					},*/
 					{
                         "id" : "revokeLicenseCadLisAdmin",//Revoke License
                         "action" : "setVisible",
@@ -4045,20 +3987,20 @@ APP.hideToolbarItems = function() {
                         "text" : "Rules Actions",//Rules Actions
                         "action" : "setVisible",
 					},*/
-					{
+					/*{
                         "id" : "editRule",//Edit Rule
                         "action" : "setVisible",
-					},
+					},*/
 					{
                         "id" : "deleteRule",//Delete Rule
                         "action" : "setVisible",
 					},
                         
                     // Admin > Web Services
-					{
+					/*{
                         "id" : "editIpRestriction",//Edit IP Restrictions
                         "action" : "setDisabled",
-					},
+					},*/
                         
                     // Admin > LaunchPoint
 					/*{
@@ -4069,10 +4011,10 @@ APP.hideToolbarItems = function() {
                         "id" : "launchpointActions",//Service Actions
                         "action" : "setVisible",
 					},*/
-					{
+					/*{
                         "id" : "editWebinarLogin",//"Edit Service"
                         "action" : "setVisible",
-					},
+					},*/
                         
                     // Admin > Webhooks
 					/*{
@@ -4133,6 +4075,93 @@ APP.hideToolbarItems = function() {
 
 /**************************************************************************************
  *  
+ *  This function disables the Save, Create, Add ... buttons in Form windows. 
+ *  It can be used to disable any generic Form save window.
+ *
+ *  @Author Brian Fisher
+ *
+ *  @function
+ *
+ **************************************************************************************/
+
+APP.disableFormSaveButtons = function() {
+    console.log("Marketo App > Disabling: Form Window Save Buttons");
+
+    if (Ext4
+    && Ext4.Component
+    && Ext4.Component.prototype
+    && Ext4.Component.prototype.show) {
+        Ext4.Component.prototype.show = function(animateTarget, cb, scope) {
+            console.log("Marketo App > Executing: Disable Form Window Save Buttons");
+            
+            if (this.getXType() == "createNamedAccountForm" //ABM > New Named Account
+            || this.getXType() == "addToAccountListForm" //ABM > Add To Account List
+            || this.getXType() == "adminUserInviteWizard" //Admin > User & Roles > Users > Invite New User
+            || this.getXType() == "adminSubscriptionInformationForm" //Admin > My Account > Subcription Information
+            || this.getXType() == "adminAccountSettingsForm" //Admin > My Account > Account Settings
+            || this.getXType() == "localePicker" //Admin > My Account & Location > Location Settings
+            || this.getXType() == "adminTinyMceSettingForm" //Admin > *Email > Email > Edit Text Editor Settings
+            || this.getXType() == "emailEditorSettingsForm" //Admin > Email > Email > Edit Email Editor Settings
+            || this.getXType() == "emailAddMultipleDomainForm" //Admin > Email > Email > Add/Edit Branding Domains
+            || this.getXType() == "adminScoreSettingsForm" //Admin > ABM > Account Score Settings
+            || this.getXType() == "adminCrmFieldSettingsForm" //Admin > ABM > CRM Mapping
+            || this.getXType() == "adminFieldHtmlEncodeForm" //Admin > Field Management > Field Management > HTML Encode Settings
+            || this.getXType() == "mktocustomactivityActivityTypeForm" //Admin > Marketo Custom Activities > Marketo Custom Activities > New Custom Activity
+            || this.getXType() == "adminViewEnterpriseKeyForm" //Admin > Sales Insight > Email Add-in > View Enterprise Key
+            || this.getXType() == "adminSpecifyPluginContactForm" //Admin > Sales Insight > Email Add-in > Specify Plugin Contact
+            || this.getXType() == "mktowsEditIpRestrictionForm" //Admin > Web Services > IP Restrictions
+            || this.getXType() == "launchpointServiceIntegrationSettingsForm" //Admin > LaunchPoint > Installed Services > Edit Service
+            ) {
+                
+                var mItems = this.query(
+                    "[action=submit]," //+ //Create, Add, Save
+                );
+                
+                if (mItems) {
+                    mItems.forEach(function(item) {
+                        if (item) {
+                            item.setDisabled(true);
+                        }
+                    });
+                }
+            }
+            
+            var me = this,
+                rendered = me.rendered;
+            if (rendered
+            && me.isVisible()) {
+                if (me.toFrontOnShow
+                && me.floating) {
+                    me.toFront();
+                }
+            }
+            else {
+                if (me.fireEvent("beforeshow", me) !== false) {
+                    me.hidden = false;
+                    if (!rendered
+                    && (me.autoRender
+                        || me.floating)) {
+                        
+                        me.doAutoRender();
+                        rendered = me.rendered;
+                    }
+                    if (rendered) {
+                        me.beforeShow();
+                        me.onShow.apply(me, arguments);
+                        me.afterShow.apply(me, arguments);
+                    }
+                }
+                else {
+                    me.onShowVeto();
+                }
+            }
+            return me;
+        }
+    }
+}
+
+/**************************************************************************************
+ *  
  *  This function disables the Save, Apply, Change ... buttons in the Admin Section. 
  *  It can be used to disable any generic Save window.
  *
@@ -4155,7 +4184,10 @@ APP.disableAdminSaveButtons = function() {
             
             if (MktCanvas
             && MktCanvas.getActiveTab()
-            && MktCanvas.getActiveTab().title) {
+            && MktCanvas.getActiveTab().title
+            && this
+            && this.buttons
+            && this.buttons.length) {
                 var activeTabTitle = MktCanvas.getActiveTab().title,
                     toDisable,
                     ii,
@@ -4175,6 +4207,9 @@ APP.disableAdminSaveButtons = function() {
                         break;
                     // Workspaces & Partitions > Partitions
                     case "Lead Partitions":
+                        toDisable = true;
+                        break;
+                    case "Person Partitions":
                         toDisable = true;
                         break;
                     // Location > Subscription Currency Settings
@@ -4248,48 +4283,14 @@ APP.disableAdminSaveButtons = function() {
                     default:
                         break;
                 }
+                
                 if (toDisable) {
-                    for (ii = this.buttons.length-1; ii >= 0; ii--) {
+                    for (ii = this.buttons.length - 1; ii >= 0; ii--) {
                         currButton = this.buttons[ii];
-                        switch (currButton.text) {
-                            case "Save":
-                                currButton.setDisabled(true);
-                                break;
-                            case "Create":
-                                currButton.setDisabled(true);
-                                break;
-                            case "Apply":
-                                currButton.setDisabled(true);
-                                break;
-                            case "Change":
-                                currButton.setDisabled(true);
-                                break;
-                            case "Disable Global Sync":
-                                currButton.setDisabled(true);
-                                break;
-                            case "Enable Sync":
-                                currButton.setDisabled(true);
-                                break;
-                            case "Disable Sync":
-                                currButton.setDisabled(true);
-                                break;
-                            case "Issue License":
-                                currButton.setDisabled(true);
-                                break;
-                            case "Revoke License":
-                                currButton.setDisabled(true);
-                                break;
-                            case "Resend Invitation":
-                                currButton.setDisabled(true);
-                                break;
-                            case "Delete":
-                                currButton.setDisabled(true);
-                                break;
-                            case "Clone":
-                                currButton.setDisabled(true);
-                                break;
-                            default:
-                                break;
+                        if (currButton.cls == "mktButtonPositive"
+                        || currButton.iconCls == "mkiOk") {
+                            currButton.setDisabled(true);
+                            break;
                         }
                     }
                 }
@@ -5005,6 +5006,7 @@ if ((currentUrl.search(mktoAppDomain) != -1
                         APP.disableDragAndDrop();
                         APP.disableMenus();
                         APP.hideToolbarItems();
+                        APP.disableFormSaveButtons();
                         APP.disableAdminSaveButtons();
                         APP.overrideSmartCampaignSaving();
 //                        APP.overrideSmartCampaignCanvas();
@@ -5672,6 +5674,7 @@ if ((currentUrl.search(mktoAppDomain) != -1
             }
             else if (accountString.search(mktoAccountStringAbm) != -1) {
                 APP.disableMenus();
+                APP.disableFormSaveButtons();
                 APP.disableAdminSaveButtons();
             }
         }
