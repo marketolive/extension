@@ -2304,6 +2304,16 @@ APP.evaluateMenu = function (triggeredFrom, menu, canvas, toolbar) {
                         }
                     }
                 }
+                else if ((!menu
+                            || !menu.currNode
+                            || !menu.currNode.attributes
+                            || !menu.currNode.attributes.accessZoneId)
+                        && (canvas
+                            && canvas.config
+                            && !canvas.config.accessZoneId)) {
+                    
+                    toBeDisabled = true;
+                }
                 return toBeDisabled;
             break;
             
@@ -2932,7 +2942,7 @@ APP.disableMenus = function() {
                         "hideEntry",//Hide
                         
                         // Admin > Field Management > Actions Button
-                        //"hideFieldFmFields",//Hide field
+                        "hideFieldFmFields",//Hide field
                         //"blockFieldUpdatesFmFields",//Block Field Updates
                         //"changeTypeFmFields",//Change Type
                         //"exportFieldsFmFields",//Export Field Names
@@ -4099,7 +4109,8 @@ APP.disableFormSaveButtons = function() {
             || this.getXType() == "adminUserInviteWizard" //Admin > User & Roles > Users > Invite New User
             || this.getXType() == "adminSubscriptionInformationForm" //Admin > My Account > Subcription Information
             || this.getXType() == "adminAccountSettingsForm" //Admin > My Account > Account Settings
-            || this.getXType() == "localePicker" //Admin > My Account & Location > Location Settings
+            || this.getXType() == "localePicker" //Admin > My Account/Location > Location Settings
+            || this.getXType() == "deleteZoneForm" //Admin > Workspaces & Partitions > Workspaces > Delete Workspace
             || this.getXType() == "adminTinyMceSettingForm" //Admin > *Email > Email > Edit Text Editor Settings
             || this.getXType() == "emailEditorSettingsForm" //Admin > Email > Email > Edit Email Editor Settings
             || this.getXType() == "emailAddMultipleDomainForm" //Admin > Email > Email > Add/Edit Branding Domains
@@ -4107,10 +4118,11 @@ APP.disableFormSaveButtons = function() {
             || this.getXType() == "adminCrmFieldSettingsForm" //Admin > ABM > CRM Mapping
             || this.getXType() == "adminFieldHtmlEncodeForm" //Admin > Field Management > Field Management > HTML Encode Settings
             || this.getXType() == "mktocustomactivityActivityTypeForm" //Admin > Marketo Custom Activities > Marketo Custom Activities > New Custom Activity
-            || this.getXType() == "adminViewEnterpriseKeyForm" //Admin > Sales Insight > Email Add-in > View Enterprise Key
             || this.getXType() == "adminSpecifyPluginContactForm" //Admin > Sales Insight > Email Add-in > Specify Plugin Contact
+            || this.getXType() == "wildcardRedirectForm" //Admin > Landing Pages > New Wildcard Redirect
             || this.getXType() == "mktowsEditIpRestrictionForm" //Admin > Web Services > IP Restrictions
             || this.getXType() == "launchpointServiceIntegrationSettingsForm" //Admin > LaunchPoint > Installed Services > Edit Service
+            || this.getXType() == "adminTagsAddCalendarEntryTypeForm" //Admin > Tags > Calendar Entry Types > New Entry Type
             ) {
                 
                 var mItems = this.query(
