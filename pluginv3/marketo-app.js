@@ -3032,6 +3032,9 @@ APP.disableMenus = function() {
             }
         }
     }
+    else {
+        console.log("Marketo App > Skipped: Disable Actions and Right-click menus for ALL in ALL");
+    }
     
     if (Ext4
     && Ext4.Component
@@ -3087,6 +3090,9 @@ APP.disableMenus = function() {
             return me;
         }
     }
+    else {
+        console.log("Marketo App > Skipped: Disable Create, Add, Save buttons in Form Windows");
+    }
     
     if (Mkt3
     && Mkt3.controller
@@ -3133,6 +3139,9 @@ APP.disableMenus = function() {
                 editor.down("[action=create]").setDisabled(true);
             }
         }
+    }
+    else {
+        console.log("Marketo App > Skipped: Disable Create button in Wizard Editors");
     }
     
     if (Ext4
@@ -3190,6 +3199,9 @@ APP.disableMenus = function() {
             return me;
         }
     }
+    else {
+        console.log("Marketo App > Skipped: Disable Toolbar buttons & Actions menu for Named Accounts in Account Based Marketing");
+    }
     
     if (Mkt3
     && Mkt3.controller
@@ -3221,6 +3233,9 @@ APP.disableMenus = function() {
             toolbar.down('#peopleLink').hide();
             toolbar.down('#deleteNamedAccount').hide();
         }
+    }
+    else {
+        console.log("Marketo App > Skipped: Disable Toolbar buttons for a Named Account in Account Based Marketing");
     }
     
     if (Mkt3
@@ -3264,6 +3279,9 @@ APP.disableMenus = function() {
             return menu;
         }
     }
+    else {
+        console.log("Marketo App > Skipped: Disable Toolbar buttons & Actions menu for Social Apps in Marketing Activities");
+    }
     
     if (Mkt3
     && Mkt3.controller
@@ -3306,6 +3324,9 @@ APP.disableMenus = function() {
             
             return menu;
         }
+    }
+    else {
+        console.log("Marketo App > Skipped: Disable Toolbar buttons & Actions menu for Push Notifications in Marketing Activities");
     }
     
     if (Mkt3
@@ -3378,8 +3399,9 @@ APP.disableMenus = function() {
             }
         }
     }
-    
-    
+    else {
+        console.log("Marketo App > Skipped: Disable Toolbar buttons & Actions menu for In App Messages in Marketing Activities");
+    }
     
     if (Ext4
     && Ext4.Component
@@ -3555,6 +3577,9 @@ APP.disableMenus = function() {
                 }
             }
         }
+    }
+    else {
+        console.log("Marketo App > Skipped: Disable Content & Actions menu for a Nurture Program Stream in Marketing Activities");
     }
 }
 
@@ -5647,6 +5672,7 @@ if ((currentUrl.search(mktoAppDomain) != -1
             }
             else if (accountString.search(mktoAccountStringAbm) != -1) {
                 APP.disableMenus();
+                APP.disableAdminSaveButtons();
             }
         }
     }, 0);
