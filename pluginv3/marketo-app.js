@@ -82,6 +82,8 @@ var currentUrl = window.location.href,
     mktoEmailTestWizardFragment = "CCE",
     mktoCalendarFragment = "CAL",
     mktoAnalyticsFragment = "AR",
+    mktoAdminEmailEmailFragment = "EA0A1",
+    mktoAdminWebServicesFragment = "MW0A1",
     mktoDefaultWorkspaceId = 1,
     mktoMarketingWorkspaceId = 172,
     mktoJapaneseWorkspaceId = 173,
@@ -2224,16 +2226,7 @@ APP.evaluateMenu = function (triggeredFrom, menu, canvas, toolbar) {
     
     if (userName) {
         var toBeDisabled = false;
-/*    
-        var userId = MktPage.userid.toLowerCase(),
-            userName;
-        if (userId.search("\.demo@marketo.com$") != -1) {
-            userName = userId.split(".demo")[0];
-        }
-        else {
-            userName = userId.split("@")[0];
-        }
-*/    
+        
         switch (triggeredFrom) {
             
             case "tree":
@@ -2355,7 +2348,9 @@ APP.evaluateMenu = function (triggeredFrom, menu, canvas, toolbar) {
                         }
                     }
                 }
-                else if (!canvas
+                else if ((!canvas
+                    || !canvas.config
+                    || !canvas.config.accessZoneId)
                 && MktMainNav
                 && MktMainNav.activeNav == "tnCustAdmin") {
                     toBeDisabled = true;
@@ -3133,6 +3128,16 @@ APP.disableMenus = function() {
                     // Admin > Marketo Custom Objects > Fields > Actions Button
                     //"mktoCustomObjectFieldEditBtn", //Edit Field
                     "mktoCustomObjectFieldDeleteBtn", // Delete Field
+                    
+                    // Admin > Marketo Custom Activities > Marketo Custom Activities > Actions Button
+                    //"mktoCustomActivityEditBtn",//Edit Activity
+                    "mktoCustomActivityPublishBtn",//Approve Activity
+                    //"mktoCustomActivityDiscardDraftBtn",//Discard Draft
+                    "mktoCustomActivityDeleteBtn",//Delete Activity
+                    
+                    // Admin > Marketo Custom Activities > Fields > Actions Button
+                    //"mktoCustomActivityFieldEditBtn",//Edit Field
+                    "mktoCustomActivityFieldDeleteBtn",//Delete Field
                 ];
                 
             if (mItems) {
@@ -3536,7 +3541,7 @@ APP.disableMenus = function() {
                             //me.items.items[ii].setDisabled(disable);
                             break;
                         
-                        // Admin > Tags > Calendar Entry Types
+                        // Admin > Tags > Calendar Entry Types > Right-click Menu
                         // Edit
                         case "edit":
                             //me.items.items[ii].setDisabled(disable);
@@ -3560,12 +3565,12 @@ APP.disableMenus = function() {
                     disable = APP.evaluateMenu("button", null, null, null);
                 for (ii = 0; ii < me.items.items.length; ii++) {
                     switch (me.items.items[ii].action) {
-                        // Admin > Marketo Custom Objects > Marketo Custom Objects
-                        // Edit Object
+                        // Admin > Marketo Custom Activities/Objects & Mobile Apps > Activities/Objects & Mobile Apps Tree > Right-click Menu
+                        // Edit Activity/Object/App
                         case "edit":
                             //me.items.items[ii].setDisabled(disable);
                             break;
-                        // Approve Object
+                        // Approve Activity/Object
                         case "publish":
                             me.items.items[ii].setDisabled(disable);
                             break;
@@ -3573,11 +3578,20 @@ APP.disableMenus = function() {
                         case "discardDraft":
                             //me.items.items[ii].setDisabled(disable);
                             break;
-                        // Delete Object
+                        // Delete Activity/Object/App
                         case "delete":
                             me.items.items[ii].setDisabled(disable);
                             break;
-                            
+                        
+                        // Send To Developer
+                        case "send":
+                            me.items.items[ii].setDisabled(disable);
+                            break;
+                        // Verify Push Configuration
+                        case "verify":
+                            me.items.items[ii].setDisabled(disable);
+                            break;
+                        
                         default:
                             break;
                     }
@@ -3610,6 +3624,22 @@ APP.hideToolbarItems = function() {
     && Ext.layout.ContainerLayout.prototype.renderItem) {
         // Disable ALL areas > ALL assets > ALL Toolbar items except for Smart Campaigns, Smart Lists, Lists, Social Apps, and Push Notifications
         Ext.layout.ContainerLayout.prototype.renderItem = function (c, position, target) {
+            if (c) {
+                if (!c.rendered) {
+                    c.render(target, position);
+                    this.configureItem(c, position);
+                }
+                else if (!this.isValidParent(c, target)) {
+                    if (Ext.isNumber(position)) {
+                        position = target.dom.childNodes[position];
+                    }
+                    
+                    target.dom.insertBefore(c.getPositionEl().dom, position || null);
+                    c.container = target;
+                    this.configureItem(c, position);
+                }
+            }
+
             if (c
             && c.topToolbar
             && c.topToolbar.items) {
@@ -3617,7 +3647,7 @@ APP.hideToolbarItems = function() {
                 
                 var item,
                     canvas = MktCanvas.getActiveTab(),
-                    visible = !APP.evaluateMenu("button", null, canvas, null),
+                    disable = APP.evaluateMenu("button", null, canvas, null),
                     itemsToHide = [
                     /*{
                     // Global > Programs, Analyzers, and Reports > Setup
@@ -4048,10 +4078,10 @@ APP.hideToolbarItems = function() {
 					},*/
                         
                     // Admin > Landing Pages > Rules
-					/*{
+					{
                         "text" : "Rules Actions",//Rules Actions
                         "action" : "setVisible",
-					},*/
+					},
 					/*{
                         "id" : "editRule",//Edit Rule
                         "action" : "setVisible",
@@ -4072,12 +4102,12 @@ APP.hideToolbarItems = function() {
                         "id" : "newLaunchpoint",//New
                         "action" : "setDisabled",
 					},*/
-					/*{
+					{
                         "id" : "launchpointActions",//Service Actions
                         "action" : "setVisible",
-					},*/
+					},
 					/*{
-                        "id" : "editWebinarLogin",//"Edit Service"
+                        "id" : "editWebinarLogin",//Edit Service
                         "action" : "setVisible",
 					},*/
                         
@@ -4110,10 +4140,519 @@ APP.hideToolbarItems = function() {
                             item.setVisible(false);
                         }
                         else if (itemToHide.action == "setVisible") {
-                            item.setVisible(visible);
+                            item.setVisible(!disable);
                         }
                         else if (itemToHide.action == "setDisabled") {
-                            item.setDisabled(!visible);
+                            item.setDisabled(disable);
+                        }
+                    }
+                });
+            }
+        }
+            if (c
+            && c.topToolbar
+            && c.topToolbar.items) {
+                console.log("Marketo App > Executing: Disable Toolbar items for ALL in ALL");
+                
+                var item,
+                    canvas = MktCanvas.getActiveTab(),
+                    disable = APP.evaluateMenu("button", null, canvas, null),
+                    itemsToHide = [
+                    /*{
+                    // Global > Programs, Analyzers, and Reports > Setup
+                        "id" : "editItem",//Edit
+                        "action" : "setVisible",
+                    },*/
+                    {
+                        "id" : "deleteItem",//Delete
+                        "action" : "setVisible",
+                    },
+                        
+                    // Global > Analyzers & Reports > Subscriptions
+                    /*{
+                        "id" : "newSubscription_atxCanvasSubscriptions",//New Report Subscription
+                        "action" : "setDisabled",
+                    },*/
+                    {
+                        "id" : "deleteSubscription_atxCanvasSubscriptions",//Delete Subscription
+                        "action" : "setVisible",
+                    },
+                        
+                    // Global > Form
+                    /*{
+                        "id" : "formEdit_landingFODetail",//Edit Form
+                        "action" : "setVisible",
+                    },*/
+                        
+                    // Global > Landing Page
+                    /*{
+                        "id" : "pageEdit_landingLPDetail",//Edit Draft
+                        "action" : "setVisible",
+                    },*/
+                    /*{
+                        "id" : "pagePreview_landingLPDetail",//Preview Page
+                        "action" : "setVisible",
+                    },*/
+                        
+                    // Global > Email
+					/*{
+                        "id" : "emailEdit_landingEMDetail",//Edit Draft
+                        "action" : "setVisible",
+					},*/
+					/*{
+                        "id" : "emailPreview_landingEMDetail",//Preview Email
+                        "action" : "setVisible",
+					},*/
+					{
+                        "id" : "gotoDeliverability_landingEMDetail",//Deliverability Tools
+                        "action" : "setVisible",
+					},
+                        
+                    // Marketing Activities > Programs & Folders > My Tokens
+					/*{
+                        "id" : "editCustomToken",//Edit Token
+                        "action" : "setVisible",
+					},*/
+					{
+                        "id" : "deleteCustomToken",//Delete Token
+                        "action" : "setVisible",
+					},
+                        
+                    // Marketing Activities > Programs > Members
+					{
+                        "id" : "importMembers",//Import Members
+                        "action" : "setDisabled",
+					},
+                        
+                    // Design Studio > Forms (System Folder)
+					/*{
+                        "id" : "formEdit_landingCanvasFO",//Edit Form
+                        "action" : "setVisible",
+					},*/
+                        
+                    // Design Studio > Landing Pages (System Folder)
+					/*{
+                        "id" : "pageEdit_landingCanvasLP",//Edit Draft
+                        "action" : "setVisible",
+					},*/
+					/*{
+                        "id" : "pagePreview_landingCanvasLP",//Preview Page
+                        "action" : "setVisible",
+					},*/
+                        
+                    // Design Studio > Landing Page Templates (System Folder)
+					/*{
+                        "id" : "pageTemplateEditDraft_landingCanvasTM",//Edit Draft
+                        "action" : "setVisible",
+					},*/
+					/*{
+                        "id" : "pageTemplatePreview_landingCanvasTM",//Preview Template
+                        "action" : "setVisible",
+					},*/
+					{
+                        "id" : "importTemplate_landingCanvasTM",//Import Template
+                        "action" : "setDisabled",
+					},
+                        
+                    // Design Studio > Landing Page Template
+					/*{
+                        "id" : "pageTemplateEditDraft_landingTMDetail",//Edit Draft
+                        "action" : "setVisible",
+					},*/
+					/*{
+                        "id" : "pageTemplatePreview_landingTMDetail",//Preview Template
+                        "action" : "setVisible",
+					},*/
+					{
+                        "id" : "importTemplate_landingTMDetail",//Import Template
+                        "action" : "setDisabled",
+					},
+                        
+                    // Design Studio > Emails (System Folder)
+					/*{
+                        "id" : "emailEdit_landingCanvasEM",//Edit Draft
+                        "action" : "setVisible",
+					},*/
+					/*{
+                        "id" : "emailPreview_landingCanvasEM",//Preview Email
+                        "action" : "setVisible",
+					},*/
+					{
+                        "id" : "gotoDeliverability_landingCanvasEM",//Deliverability Tools
+                        "action" : "setVisible",
+					},
+                        
+                    // Design Studio > Email Templates (System Folder)
+					/*{
+                        "id" : "emailTemplateEdit_emailTemplates",//Edit Draft
+                        "action" : "setVisible",
+					},*/
+					/*{
+                        "id" : "emailTemplatePreview_emailTemplates",//Preview Template
+                        "action" : "setVisible",
+					},*/
+                        
+                    // Design Studio > Email Template
+					/*{
+                        "id" : "emailTemplateEdit_EMTemplateDetail",//Edit Draft
+                        "action" : "setVisible",
+					},*/
+					/*{
+                        "id" : "emailTemplatePreview_EMTemplateDetail",//Preview Template
+                        "action" : "setVisible",
+					},*/
+                        
+                    // Design Studio > Snippets (System Folder)
+					/*{
+                        "id" : "snippetEdit_landingCanvasSnippet",//Edit Draft
+                        "action" : "setVisible",
+					},*/
+					/*{
+                        "id" : "snippetPreview_landingCanvasSnippet",//Preview Snippet
+                        "action" : "setVisible",
+					},*/
+                        
+                    // Design Studio > Snippet
+					/*{
+                        "id" : "snippetEdit_snippetDetail",//Edit Draft
+                        "action" : "setVisible",
+					},*/
+					/*{
+                        "id" : "snippetPreview_snippetDetail",//Preview Snippet
+                        "action" : "setVisible",
+					},*/
+                        
+                    // Design Studio > Images and Files
+					{
+                        "id" : "imageUpload_landingCanvasIM",//Upload Image or File
+                        "action" : "setDisabled",
+					},
+					{
+                        "id" : "imageReplace_landingCanvasIM",//Replace Image or File
+                        "action" : "setVisible",
+					},
+                        
+                    // Analytics > Model
+					{
+                        "id" : "editDraft_rcmCanvasOverview",//Edit Draft
+                        "action" : "setVisible",
+					},
+					/*{
+                        "id" : "previewModel_rcmCanvasOverview",//Preview Model
+                        "action" : "setVisible",
+					},*/
+                        
+                    // Admin > Admin
+                    /*{
+                        "text" : "Change Password",//Change Password
+                        "action" : "setDisabled",
+					},*/
+					/*{
+                        "text" : "Invite New User",//Invite New User
+                        "action" : "setDisabled",
+					},*/
+                        
+                    // Admin > My Account
+                    /*{
+                        "text" : "Change Password",//Change Password
+                        "action" : "setDisabled",
+					},*/
+					/*{
+                        "id" : "caadEditButton",//Edit Account Settings
+                        "action" : "setDisabled",
+					},*/
+                        
+                    // Admin > Login Settings
+					/*{
+                        "id" : "caadEditSecurityButton",//Edit Security Settings
+                        "action" : "setDisabled",
+					},*/
+					/*{
+                        "id" : "caadEditurlButton",//Edit URL Expiration
+                        "action" : "setDisabled",
+					},*/
+					/*{
+                        "id" : "caadEditRestrictedLoginButton",//Edit IP Restrictions
+                        "action" : "setDisabled",
+					},*/
+					/*{
+                        "id" : "caadEditSmartListReportSettingsButton",//Smart List Report Settings
+                        "action" : "setDisabled",
+					},*/
+                        
+                    // Admin > Users & Roles > Users
+					/*{
+                        "text" : "Invite New User",//Invite New User
+                        "action" : "setDisabled",
+					},*/
+					{
+                        "id" : "editLicenses",//Issue License
+                        "action" : "setVisible",
+					},
+					/*{
+                        "id" : "editUser",//Edit User
+                        "action" : "setVisible",
+					},*/
+					{
+                        "id" : "deleteUser",//Delete User
+                        "action" : "setVisible",
+					},
+					{
+                        "id" : "resetPassword",//Reset Password
+                        "action" : "setVisible",
+					},
+                        
+                    // Admin > Users & Roles > Roles
+					/*{
+                        "id" : "newRole",//New Role
+                        "action" : "setDisabled",
+					},*/
+					/*{
+                        "id" : "editRole",//Edit Role
+                        "action" : "setVisible",
+					},*/
+					{
+                        "id" : "deleteRole",//Delete Role
+                        "action" : "setVisible",
+					},
+                        
+                    // Admin > Workspaces & Partitions > Workspaces
+					/*{
+                        "id" : "newZone",//New Workspace
+                        "action" : "setDisabled",
+					},*/
+					/*{
+                        "id" : "editZone",//Edit Workspace
+                        "action" : "setVisible",
+					},*/
+					{
+                        "id" : "deleteZone",//Delete Workspace
+                        "action" : "setVisible",
+					},
+                        
+                    // Admin > Workspaces & Partitions > Partitions
+					/*{
+                        "id" : "newPartition",//New Lead Partition
+                        "action" : "setDisabled",
+					},*/
+					/*{
+                        "id" : "editPartition",//Edit Lead Partition
+                        "action" : "setVisible",
+					},*/
+					{
+                        "id" : "deletePartition",//Delete Lead Partition
+                        "action" : "setVisible",
+					},
+					/*{
+                        "id" : "assignmentRules",//Assignment Rules
+                        "action" : "setDisabled",
+					},*/
+                        
+                    // Admin > Location
+					/*{
+                        "id" : "capdChangeButton",//Change Location Settings
+                        "action" : "setDisabled",
+					},*/
+                        
+                    // Admin > Email > Email
+					/*{
+                        "text" : "Edit IP Settings",//Edit IP Settings
+                        "action" : "setDisabled",
+					},*/
+					/*{
+                        "text" : "Edit Text Editor Settings",//Edit Text Editor Settings
+                        "action" : "setDisabled",
+					},*/
+					/*{
+                        "text" : "Edit Email Editor Settings",//Edit Email Editor Settings
+                        "action" : "setDisabled",
+					},*/
+                        
+                    // Admin > Email > SPF/DKIM
+					/*{
+                        "id" : "addDomain",//Add Domain
+                        "action" : "setDisabled",
+					},*/
+					{
+                        "id" : "deleteDomain",//Delete Domain
+                        "action" : "setVisible",
+					},
+					{
+                        "id" : "dkimDetails",//DKIM Details
+                        "action" : "setDisabled",
+					},
+					/*{
+                        "id" : "checkDNS",//Check DNS
+                        "action" : "setDisabled",
+					},*/
+                        
+                    // Admin > Tags > Tags
+					/*{
+                        "id" : "newButton",//New
+                        "action" : "setDisabled",
+					},*/
+					/*{
+                        "id" : "actionsButton",//Tag Actions
+                        "action" : "setVisible",
+					},*/
+                        
+                    // Admin > Tags > Calendar Entry Types
+					/*{
+                        "id" : "newButton",//New
+                        "action" : "setDisabled",
+					},*/
+					/*{
+                        "id" : "actionsButton",//Entry Actions
+                        "action" : "setVisible",
+					},*/
+                        
+                    // Admin > Field Management
+					/*{
+                        "id" : "fieldManagement_fmFields",//Field Actions
+                        "action" : "setDisabled",
+					},*/
+					/*{
+                        "text" : "New Custom Field",//New Custom Field
+                        "action" : "setDisabled",
+					},*/
+					/*{
+                        "id" : "exportFieldsFmFields",//Export Field Names
+                        "action" : "setDisabled",
+					},*/
+                        
+                    // Admin > Salesforce Object Sync
+					{
+                        "id" : "refreshCadSfdcObjectSync",//Refresh Schema
+                        "action" : "setDisabled",
+					},
+					/*{
+                        "id" : "syncOjbectCadSfdcObjectSync",//Enable Sync
+                        "action" : "setVisible",
+					},*/
+					/*{
+                        "id" : "editVisibleFieldsCadSfdcObjectSync",//Edit Visible Fields
+                        "action" : "setVisible",
+					},*/
+                        
+                    // Admin > Salesforce
+					{
+                        "id" : "enableSync",//Enable/Disable Sync
+                        "action" : "setVisible",
+					},
+					/*{
+                        "id" : "editCredentials",//Edit Credentials
+                        "action" : "setDisabled",
+					},*/
+					/*{
+                        "id" : "editSyncOptions",//Edit Sync Options
+                        "action" : "setDisabled",
+					},*/
+                        
+                    // Admin > Sales Insight > Sales Insight
+					/*{
+                        "text" : "Edit API Configuration",//Edit API Configuration
+                        "action" : "setDisabled",
+					},*/
+					/*{
+                        "text" : "Edit Settings",//Edit Settings
+                        "action" : "setDisabled",
+					},*/
+                        
+                    // Admin > Sales Insight > Email Add-in
+					/*{
+                        "id" : "issueLicenseCadLisAdmin",//Issue License
+                        "action" : "setDisabled",
+					},*/
+					{
+                        "id" : "revokeLicenseCadLisAdmin",//Revoke License
+                        "action" : "setVisible",
+					},
+					{
+                        "id" : "resendLicenseCadLisAdmin",//Resend Invitation
+                        "action" : "setVisible",
+					},
+					/*{
+                        "id" : "addSeatsCadLisAdmin",//Purchase More Seats
+                        "action" : "setDisabled",
+					},*/
+					{
+                        "id" : "configAddinCadLisAdmin",//Config Add-in
+                        "action" : "setVisible",
+					},
+                        
+                    // Admin > Landing Pages > Landing Pages
+					/*{
+                        "id" : "editDomainSettings",//Edit Settings
+                        "action" : "setVisible",
+					},*/
+                        
+                    // Admin > Landing Pages > Rules
+					{
+                        "text" : "Rules Actions",//Rules Actions
+                        "action" : "setVisible",
+					},
+					/*{
+                        "id" : "editRule",//Edit Rule
+                        "action" : "setVisible",
+					},*/
+					{
+                        "id" : "deleteRule",//Delete Rule
+                        "action" : "setVisible",
+					},
+                        
+                    // Admin > Web Services
+					/*{
+                        "id" : "editIpRestriction",//Edit IP Restrictions
+                        "action" : "setDisabled",
+					},*/
+                        
+                    // Admin > LaunchPoint
+					/*{
+                        "id" : "newLaunchpoint",//New
+                        "action" : "setDisabled",
+					},*/
+					{
+                        "id" : "launchpointActions",//Service Actions
+                        "action" : "setVisible",
+					},
+					/*{
+                        "id" : "editWebinarLogin",//Edit Service
+                        "action" : "setVisible",
+					},*/
+                        
+                    // Admin > Webhooks
+					/*{
+                        "id" : "newWebhookLogin",//New Webhook
+                        "action" : "setDisabled",
+					},*/
+					/*{
+                        "text" : "Webhooks Actions",//Webhooks Actions
+                        "action" : "setVisible",
+					},*/
+                        
+                    // Admin > Revenue Cycle Analytics > Custom Field Sync
+					{
+                        "id" : "cadChangeButton",//Edit Sync Option
+                        "action" : "setVisible",
+					},
+                ];
+                
+                itemsToHide.forEach(function(itemToHide) {
+                    if (itemToHide.id) {
+                        item = c.topToolbar.items.get(itemToHide.id);
+                    }
+                    else if (itemToHide.text) {
+                        item = c.topToolbar.find("text", itemToHide.text)[0];
+                    }
+                    if (item) {
+                        if (itemToHide.id == "gotoDeliverability_landingEMDetail") {
+                            item.setVisible(false);
+                        }
+                        else if (itemToHide.action == "setVisible") {
+                            item.setVisible(!disable);
+                        }
+                        else if (itemToHide.action == "setDisabled") {
+                            item.setDisabled(disable);
                         }
                     }
                 });
@@ -4175,6 +4714,8 @@ APP.disableFormSaveButtons = function() {
             || this.getXType() == "adminCrmFieldSettingsForm" //Admin > ABM > CRM Mapping
             || this.getXType() == "adminFieldHtmlEncodeForm" //Admin > Field Management > Field Management > HTML Encode Settings
             || this.getXType() == "mktocustomactivityActivityTypeForm" //Admin > Marketo Custom Activities > Marketo Custom Activities > New Custom Activity
+            || this.getXType() == "mktocustomactivityActivityTypeEditForm" //Admin > Marketo Custom Activities > Marketo Custom Activities > Edit Activity
+            || this.getXType() == "mktocustomactivityActivityTypeFormStepThree" //Admin > Marketo Custom Activities > Fields > New/Edit Field
             || this.getXType() == "mktocustomobjectObjectForm" //Admin > Marketo Custom Objects > Marketo Custom Objects > New/Edit Custom Object
             || this.getXType() == "mktocustomobjectFieldForm" //Admin > Marketo Custom Objects > Fields > New/Edit Field
             || this.getXType() == "adminSpecifyPluginContactForm" //Admin > Sales Insight > Email Add-in > Specify Plugin Contact
