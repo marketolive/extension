@@ -5066,7 +5066,9 @@ if ((currentUrl.search(mktoAppDomain) != -1
                 || currUrlFragment == mktoLeadDatabaseJapaneseFragment
                 || currUrlFragment == mktoLeadDatabaseFinservFragment
                 || currUrlFragment == mktoLeadDatabaseHealthcareFragment
-                || currUrlFragment == mktoLeadDatabaseHigherEdFragment) {
+                || currUrlFragment == mktoLeadDatabaseHigherEdFragment
+                || currUrlFragment == mktoAdminEmailEmailFragment
+                || currUrlFragment == mktoAdminWebServicesFragment) {
 					APP.disableButtons();
 				}
                 else if (currUrlFragment == mktoAnalyticsDefaultFragment) {
@@ -5700,7 +5702,9 @@ if ((currentUrl.search(mktoAppDomain) != -1
                                 || currUrlFragment == mktoLeadDatabaseJapaneseFragment
                                 || currUrlFragment == mktoLeadDatabaseFinservFragment
                                 || currUrlFragment == mktoLeadDatabaseHealthcareFragment
-                                || currUrlFragment == mktoLeadDatabaseHigherEdFragment) {
+                                || currUrlFragment == mktoLeadDatabaseHigherEdFragment
+                                || currUrlFragment == mktoAdminEmailEmailFragment
+                                || currUrlFragment == mktoAdminWebServicesFragment) {
                                     APP.disableButtons();
                                 }
                                 else if (currUrlFragment == mktoAnalyticsDefaultFragment) {
