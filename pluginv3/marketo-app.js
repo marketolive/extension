@@ -3149,6 +3149,28 @@ APP.disableMenus = function() {
                 });
             }
             
+            mItems = Ext4.ComponentQuery.query(
+                // Admin > Mobile Apps & Devices > Mobile Apps > Actions Button
+                //"menu [action=create]," + //New Mobile App
+                //"menu [action=edit]," + //Edit Mobile App
+                "menu [action=delete]," + //Delete Mobile App
+                //"menu [action=send]," + //Send To Developer
+                //"menu [action=verify]," + //Verify Push Configuration
+                
+                // Admin > Mobile Apps & Devices > Test Devices > Actions Button
+                //"menu [action=createTestDevice]," + //New Test Device
+                "menu [action=editTestDevice]," + //Edit Test Device
+                "menu [action=deleteTestDevice]," //+ //Delete Test Device
+            );
+            
+            if (mItems) {
+                mItems.forEach(function(item) {
+                    if (item) {
+                        item.setDisabled(true);
+                    }
+                });
+            }
+            
             var me = this,
                 menu = me.menu;
             if (me.rendered) {
@@ -3183,7 +3205,7 @@ APP.disableMenus = function() {
         Mkt3.controller.abm.namedAccount.Dashboard.prototype.loadToolBar = function() {
             console.log("Marketo App > Executing: Disable Toolbar buttons for a Named Account in Account Based Marketing");
             
-            mItems = Ext4.ComponentQuery.query(
+            var mItems = Ext4.ComponentQuery.query(
                 // Named Account Toolbar Buttons
                 "abmNamedAccountToolbar [action=linkPeople]," //+ //Add People to Named Account
             );
