@@ -5043,6 +5043,7 @@ if ((currentUrl.search(mktoAppDomain) != -1
                     
                     if (accountString == mktoAccountStringQe) {
                         APP.disableMenus();
+                        APP.hideToolbarItems();
                         APP.disableFormSaveButtons();
                         APP.disableAdminSaveButtons();
                     }
