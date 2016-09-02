@@ -20,7 +20,6 @@ window.mkto_live_plugin_state = true;
  *
  **************************************************************************************/
 
-// These are all expressed in regex notation. 
 var currentUrl = window.location.href,
     currentProtocol = window.location.protocol,
     currentHost = window.location.host,
@@ -35,15 +34,12 @@ var currentUrl = window.location.href,
     mktoWizard = mktoAppDomain + "/m#",
     mktoEmailDesigner = mktoDesignerDomain + "/ds",
     mktoLandingPageDesigner = mktoDesignerDomain + "/lpeditor/",
-    defaultTurnerLogoGreen = "http://marketolive.com/m3-dev/assets/img/turner-tech-green.png",
-    defaultTurnerLogoWhite = "http://marketolive.com/m3-dev/assets/img/turner-tech-white.png",
-    defaultColor = "rgb(42, 83, 112)",
     mktoDemoAccountMatch = "^mktodemoaccount",
     mktoAccountString106 = "mktodemoaccount106",
     mktoAccountString106a = "mktodemoaccount106a",
     mktoAccountString106b = "mktodemoaccount106b",
     mktoAccountString106d = "mktodemoaccount106d",
-    mktoAccountStringAbm = "abmapiint",
+    mktoAccountStringQe = "globalsales",
     mktoAccountStringsMatch = "^"+mktoAccountString106+"$|^"+mktoAccountString106a+"$|^"+mktoAccountString106b+"$|^"+mktoAccountString106d+"$",
     mktoAccountStrings106and106dMatch = "^"+mktoAccountString106+"$|^"+mktoAccountString106d+"$",
     mktoEmailInsightsLink = "http://www.marketolive.com/en/analytics/email-insights-summit-demo-1",
@@ -1026,13 +1022,13 @@ APP.discardEmailDrafts = function(emIds) {
  **************************************************************************************/
 
 APP.discardFormPushDrafts = function(assetType, assetIds) {
-    console.log("Marketo App > Discarding: "+assetType+" Drafts");
+    console.log("Marketo App > Discarding: " + assetType + " Drafts");
     
     if (Ext4
     && Ext4.getStore
     && Ext4.create
     && Mkt3) {
-        console.log("Marketo App > Executing: Discard "+assetType+" Drafts");
+        console.log("Marketo App > Executing: Discard " + assetType + " Drafts");
         
         var assetStore = Ext4.getStore(assetType);
         
@@ -1042,7 +1038,7 @@ APP.discardFormPushDrafts = function(assetType, assetIds) {
         }
         if (typeof(Mkt3) !== 'undefined') {
             if (!assetStore) {
-                    assetStore = Ext4.create('Mkt3.store.'+assetType, {
+                    assetStore = Ext4.create('Mkt3.store.' + assetType, {
                         storeId : assetType
                     });
             }
@@ -1097,16 +1093,7 @@ APP.overrideTreeNodeExpand = function() {
             || (this.parentNode.parentNode != null
                 && this.parentNode.parentNode.text == userWorkspaceName
                 && this.attributes.system == true)) {
-/*                
-                var userId = MktPage.userid.toLowerCase(),
-                    userName;
-                if (userId.search("\.demo@marketo.com$") != -1) {
-                    userName = userId.split(".demo")[0];
-                }
-                else {
-                    userName = userId.split("@")[0];
-                }
-*/
+                
                 for (ii = 0; ii < this.childNodes.length; ii++) {
                     if (this.childNodes[ii].attributes.system == false) {
                         if (this.childNodes[ii].text.toLowerCase() !== userName) {
@@ -1172,16 +1159,7 @@ APP.overrideTreeNodeCollapse = function() {
             || (this.parentNode.parentNode != null
                 && this.parentNode.parentNode.text == userWorkspaceName
                 && this.attributes.system == true)) {
-/*                
-                var userId = MktPage.userid.toLowerCase(),
-                    userName;
-                if (userId.search("\.demo@marketo.com$") != -1) {
-                    userName = userId.split(".demo")[0];
-                }
-                else {
-                    userName = userId.split("@")[0];
-                }
-*/                
+                
                 for (ii = 0; ii < this.childNodes.length; ii++) {
                     if (this.childNodes[ii].attributes.system == false) {
                         if (this.childNodes[ii].text.toLowerCase() !== userName) {
@@ -1234,16 +1212,7 @@ APP.overrideNewProgramCreate = function() {
             if (this.title == "New Program"
             || this.title == "New Segmentation") {
                 var ii;
-/*                
-                var userId = MktPage.userid.toLowerCase(),
-                    userName;
-                if (userId.search("\.demo@marketo.com$") != -1) {
-                    userName = userId.split(".demo")[0];
-                }
-                else {
-                    userName = userId.split("@")[0];
-                }
-*/              
+                
                 if (this.title == "New Program") {
                     if (this.getInputItems()) {
                         if (this.getInputItems()[1]
@@ -1380,16 +1349,7 @@ APP.overrideAssetSaveEdit = function() {
                             || this.titleId == "cdhTEName"
                             || this.titleId == "pname"))
                     || MktExplorer.getEl().dom.ownerDocument.title.search("Marketing Activities") == -1) {
-/*                        
-                        var userId = MktPage.userid.toLowerCase(),
-                            userName;
-                        if (userId.search("\.demo@marketo.com$") != -1) {
-                            userName = userId.split(".demo")[0];
-                        }
-                        else {
-                            userName = userId.split("@")[0];
-                        }
-*/                        
+                        
                         if (MktCanvas.getActiveTab().config.accessZoneId == mktoMarketingWorkspaceId
                         && this.titleId == "pname") {
                             if (this.titleValue == userName) {
@@ -1643,16 +1603,7 @@ APP.overrideNewAssetCreate = function() {
                 && this.getField("name") != null
                 && this.getField("name").getValue() != null) {
                     var assetName = this.getField("name").getValue();
-/*                    
-                    var userId = MktPage.userid.toLowerCase(),
-                        userName;
-                    if (userId.search("\.demo@marketo.com$") != -1) {
-                        userName = userId.split(".demo")[0];
-                    }
-                    else {
-                        userName = userId.split("@")[0];
-                    }
-*/                    
+                    
                     if (assetName.toLowerCase().search(userName + "$") == -1) {
                         this.getField("name").setValue(assetName + " - " + userName);
                     }
@@ -1704,16 +1655,7 @@ APP.overrideNewFolders = function() {
             
             MktSession.clockCursor(true);
             var parms = {};
-/*            
-            var userId = MktPage.userid.toLowerCase(),
-                userName;
-            if (userId.search("\.demo@marketo.com$") != -1) {
-                userName = userId.split(".demo")[0];
-            }
-            else {
-                userName = userId.split("@")[0];
-            }
-*/            
+            
             if ((this.currNode.parentNode.attributes.compType.search("Folder$") != -1
                 && text.toLowerCase().search(userName + "$") == -1)
             || text == userName) {
@@ -1746,16 +1688,7 @@ APP.overrideNewFolders = function() {
             
             MktSession.clockCursor(true);
             var parms = {};
-/*            
-            var userId = MktPage.userid.toLowerCase(),
-                userName;
-            if (userId.search("\.demo@marketo.com$") != -1) {
-                userName = userId.split(".demo")[0];
-            }
-            else {
-                userName = userId.split("@")[0];
-            }
-*/            
+            
             if (text.toLowerCase().search(userName + "$") == -1
             || text == userName) {
                 text = text + " - " + userName;
@@ -1802,16 +1735,7 @@ APP.overrideRenamingFolders = function() {
             MktSession.clockCursor(true);
             var folder = MktExplorer.getNodeById(folderId),
                 parms = {};
-/*            
-            var userId = MktPage.userid.toLowerCase(),
-                userName;
-            if (userId.search("\.demo@marketo.com$") != -1) {
-                userName = userId.split(".demo")[0];
-            }
-            else {
-                userName = userId.split("@")[0];
-            }
-*/            
+            
             if (startValue == userName
             && this.currNode.parentNode.attributes.system == true
             && this.currNode.attributes.accessZoneId == mktoMarketingWorkspaceId) {
@@ -1854,16 +1778,7 @@ APP.overrideRenamingFolders = function() {
             
             MktSession.clockCursor(true);
             var parms = {};
-/*            
-            var userId = MktPage.userid.toLowerCase(),
-                userName;
-            if (userId.search("\.demo@marketo.com$") != -1) {
-                userName = userId.split(".demo")[0];
-            }
-            else {
-                userName = userId.split("@")[0];
-            }
-*/            
+            
             if (startValue == userName
             && this.currNode.parentNode.attributes.system == true
             && this.currNode.attributes.accessZoneId == mktoMarketingWorkspaceId) {
@@ -1941,16 +1856,7 @@ APP.hideFoldersOnImport = function() {
                         console.log("Marketo App > Executing: Hide Campaign Folders On Program Import via Override");
                         
                         var ii;
-/*                        
-                        var userId = MktPage.userid.toLowerCase(),
-                            userName;
-                        if (userId.search("\.demo@marketo.com$") != -1) {
-                            userName = userId.split(".demo")[0];
-                        }
-                        else {
-                            userName = userId.split("@")[0];
-                        }
-*/                        
+                        
                         for (ii = 0; ii < this.view.all.elements.length; ii++) {
                             if (this.view.all.elements[ii].textContent.toLowerCase() != userName) {
                                 this.view.all.elements[ii].hidden = true;
@@ -2072,16 +1978,7 @@ APP.evaluateMoveItem = function (nodeToMove, destNode) {
         var ii,
             currNode,
             depth;
-/*    
-        var userId = MktPage.userid.toLowerCase(),
-            userName;
-        if (userId.search("\.demo@marketo.com$") != -1) {
-            userName = userId.split(".demo")[0];
-        }
-        else {
-            userName = userId.split("@")[0];
-        }
-*/    
+        
         if ((nodeToMove.attributes
             && (nodeToMove.attributes.accessZoneId == mktoDefaultWorkspaceId
                 || nodeToMove.attributes.accessZoneId == mktoJapaneseWorkspaceId
@@ -4532,8 +4429,7 @@ APP.injectAnalyzerNavBar = function() {
                 if (currentUrl == pod.valueSet[y].url) {
                     console.log("Marketo App > Updating: CSS for Analyzer Navigation Bar");
 
-                    // This code block swaps the colors of the analyzer labels depending
-                    // on which one the user is currently viewing.
+                    // This code block swaps the colors of the analyzer labels depending on which one the user is currently viewing.
                     $j = jQuery.noConflict();
                     var currPosition = '#' + pod.valueSet[y].position;
                     $j(currPosition).parent().css('display', 'block');
@@ -5041,9 +4937,9 @@ if ((currentUrl.search(mktoAppDomain) != -1
                 }
             }
             
-            // This checks to see if the username is one that would be associated
-            // with a MarketoLive subscription.
+            // This checks to see if the account string is one that would be associated with a MarketoLive subscription.
             if (accountString.search(mktoAccountStringsMatch) != -1
+            || accountString == mktoAccountStringQe
             || APP.getCookie("toggleState") == "false") {
                 console.log("Marketo App > Location: MarketoLive Instance");
                 
@@ -5058,8 +4954,7 @@ if ((currentUrl.search(mktoAppDomain) != -1
                     // Disabling Demo Plugin Check
                     APP.disableDemoPluginCheck();
 
-                    // This check ensures that an admin can login and test the 
-                    // plugin as a normal user. 
+                    // This check ensures that an admin can login and test the plugin as a normal user.
                     if (APP.getCookie("toggleState") != "false") {
                         return;
                     } 
@@ -5073,7 +4968,6 @@ if ((currentUrl.search(mktoAppDomain) != -1
                 // Disabling Demo Plugin Check
                 APP.disableDemoPluginCheck();
 
-                // Email Deliverability
                 if (currUrlFragment == mktoMyMarketoFragment) {
                     APP.overrideHomeTiles();
                 }
@@ -5145,6 +5039,12 @@ if ((currentUrl.search(mktoAppDomain) != -1
                         APP.overrideSmartCampaignSaving();
                         APP.overrideUpdatePortletOrder();
                         APP.disableConfirmationMessage();
+                    }
+                    
+                    if (accountString == mktoAccountStringQe) {
+                        APP.disableMenus();
+                        APP.disableFormSaveButtons();
+                        APP.disableAdminSaveButtons();
                     }
 /*
                     // Storing previous Workspace ID
@@ -5385,14 +5285,8 @@ if ((currentUrl.search(mktoAppDomain) != -1
                     }, 0);
                 } 
                 else if (currCompFragment == mktoLandingPageDesignerFragment) {
-                    console.log("Marketo App > Location: Landing Page Editor");
-
-                    var customCompanyLandingPage106Fragment = "LPE11826",
-                        customCompanyLandingPagePreview106Fragment = "LPP11826",
-                        customCompanyLandingPage106aFragment = "LPE10672",
-                        customCompanyLandingPagePreview106aFragment = "LPP10672",
-                        customCompanyLandingPage106bFragment = "LPE10768",
-                        customCompanyLandingPagePreview106bFragment = "LPP10768";
+                    console.log("Marketo App > Location: Landing Page Designer");
+                    
 /*                      
                         lpParameters = {
                             filters: [{
@@ -5448,7 +5342,7 @@ if ((currentUrl.search(mktoAppDomain) != -1
                     if (Ext4
                     && Ext4.getStore('LandingPage')
                     && Ext4.getStore('LandingPage').load) {
-                        console.log("Callback for Landing Page Editor");
+                        console.log("Marketo App > Callback: Landing Page Editor");
                         Ext4.getStore('LandingPage').load(lpParameters);
                     }
 */                  
@@ -5501,16 +5395,8 @@ if ((currentUrl.search(mktoAppDomain) != -1
                 }
                 else {
                     console.log("Marketo App > Location: Designers/Wizards");
-
-                    // DIY Design (Emails, Forms, Push Notifications, Social Apps)
-                    var customCompanyEmail106Fragment = "EME15464",
-                        customCompanyEmail106aFragment = "EME14240",
-                        customCompanyEmail106bFragment = "EME13924",
-                        customCompanyHealthcareFragment = "EME20327",
-                        customCompanyFinservMFragment = "EME20350",
-                        customCompanyFinservPFragment ="EME20368",
-                        customCompanyHigherEdFragment = "EME20329",
-                        loadParameters = {
+                    
+                    var loadParameters = {
                             filters: [{
                                 property: 'id',
                                 value: Mkt3.DL.dl.compId
@@ -5572,12 +5458,12 @@ if ((currentUrl.search(mktoAppDomain) != -1
                     switch (currCompFragment) {
                         case mktoEmailDesignerFragment:
                             if (currUrlFragment.search(mktoEmailPreviewFragmentRegex) == -1) {
-                                console.log("Marketo App > Location: Email Editor");
+                                console.log("Marketo App > Location: Email Designer");
                                 
                                 if (Ext4
                                 && Ext4.getStore('Email')
                                 && Ext4.getStore('Email').load) {
-                                    console.log("Callback for Email Editor");
+                                    console.log("Marketo App > Callback: Email Editor");
                                     Ext4.getStore('Email').load(loadParameters);
                                 }
                             }
@@ -5592,7 +5478,7 @@ if ((currentUrl.search(mktoAppDomain) != -1
                             if (Ext4
                             && Ext4.getStore('Form')
                             && Ext4.getStore('Form').load) {
-                                console.log("Callback for Form Editor");
+                                console.log("Marketo App > Callback: Form Editor");
                                 Ext4.getStore('Form').load(loadParameters);
                             }
                             break;
@@ -5603,7 +5489,7 @@ if ((currentUrl.search(mktoAppDomain) != -1
                             if (Ext4
                             && Ext4.getStore('MobilePushNotification')
                             && Ext4.getStore('MobilePushNotification').load) {
-                                console.log("Callback for Push Notification Editor");
+                                console.log("Marketo App > Callback: Push Notification Editor");
                                 Ext4.getStore('MobilePushNotification').load(loadParameters);
                             }
                             break;
@@ -5614,7 +5500,7 @@ if ((currentUrl.search(mktoAppDomain) != -1
                             if (Ext4
                             && Ext4.getStore('InAppMessage')
                             && Ext4.getStore('InAppMessage').load) {
-                                console.log("Callback for In App Message Editor");
+                                console.log("Marketo App > Callback: In App Message Editor");
                                 Ext4.getStore('InAppMessage').load(loadParameters);
                             }
                             break;
@@ -5625,7 +5511,7 @@ if ((currentUrl.search(mktoAppDomain) != -1
                             if (Ext4
                             && Ext4.getStore('SocialApp')
                             && Ext4.getStore('SocialApp').load) {
-                                console.log("Callback for Social App Editor");
+                                console.log("Marketo App > Callback: Social App Editor");
                                 Ext4.getStore('SocialApp').load(loadParameters);
                             }
                             break;
@@ -5709,7 +5595,6 @@ if ((currentUrl.search(mktoAppDomain) != -1
 //                                    console.log("Marketo App > Window: Comp Fragment = " + currCompFragment);
                                 }
                                 
-                                // Email Deliverability
                                 if (currUrlFragment == mktoMyMarketoFragment) {
                                     APP.overrideHomeTiles();
                                 }
@@ -5793,11 +5678,6 @@ if ((currentUrl.search(mktoAppDomain) != -1
                         APP.overrideHomeTiles();
                     }
                 }
-            }
-            else if (accountString.search(mktoAccountStringAbm) != -1) {
-                APP.disableMenus();
-                APP.disableFormSaveButtons();
-                APP.disableAdminSaveButtons();
             }
         }
     }, 0);
