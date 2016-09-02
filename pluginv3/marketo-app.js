@@ -20,7 +20,6 @@ window.mkto_live_plugin_state = true;
  *
  **************************************************************************************/
 
-// These are all expressed in regex notation. 
 var currentUrl = window.location.href,
     currentProtocol = window.location.protocol,
     currentHost = window.location.host,
@@ -35,14 +34,12 @@ var currentUrl = window.location.href,
     mktoWizard = mktoAppDomain + "/m#",
     mktoEmailDesigner = mktoDesignerDomain + "/ds",
     mktoLandingPageDesigner = mktoDesignerDomain + "/lpeditor/",
-    defaultTurnerLogoGreen = "http://marketolive.com/m3/assets/img/turner-tech-green.png",
-    defaultTurnerLogoWhite = "http://marketolive.com/m3/assets/img/turner-tech-white.png",
-    defaultColor = "rgb(42, 83, 112)",
     mktoDemoAccountMatch = "^mktodemoaccount",
     mktoAccountString106 = "mktodemoaccount106",
     mktoAccountString106a = "mktodemoaccount106a",
     mktoAccountString106b = "mktodemoaccount106b",
     mktoAccountString106d = "mktodemoaccount106d",
+    mktoAccountStringQe = "globalsales",
     mktoAccountStringsMatch = "^"+mktoAccountString106+"$|^"+mktoAccountString106a+"$|^"+mktoAccountString106b+"$|^"+mktoAccountString106d+"$",
     mktoAccountStrings106and106dMatch = "^"+mktoAccountString106+"$|^"+mktoAccountString106d+"$",
     mktoEmailInsightsLink = "http://www.marketolive.com/en/analytics/email-insights-summit-demo-1",
@@ -61,6 +58,7 @@ var currentUrl = window.location.href,
     mktoLeadDatabaseHealthcareFragment = "ML0A1ZN20812",
     mktoLeadDatabaseHigherEdFragment = "ML0A1ZN20832",
     mktoAnalyticsDefaultFragment = "AH0A1ZN17",
+    mktoAccountBasedMarketingFragment = "ABM0A1",
     mktoOppInfluenceAnalyzerFragment = "AR1559A1!",
     mktoProgramAnalyzerFragment = "AR1544A1!",
     mktoModeler106Fragment = "RCM70A1!",
@@ -80,6 +78,8 @@ var currentUrl = window.location.href,
     mktoEmailTestWizardFragment = "CCE",
     mktoCalendarFragment = "CAL",
     mktoAnalyticsFragment = "AR",
+    mktoAdminEmailEmailFragment = "EA0A1",
+    mktoAdminWebServicesFragment = "MW0A1",
     mktoDefaultWorkspaceId = 1,
     mktoMarketingWorkspaceId = 172,
     mktoJapaneseWorkspaceId = 173,
@@ -1022,13 +1022,13 @@ APP.discardEmailDrafts = function(emIds) {
  **************************************************************************************/
 
 APP.discardFormPushDrafts = function(assetType, assetIds) {
-    console.log("Marketo App > Discarding: "+assetType+" Drafts");
+    console.log("Marketo App > Discarding: " + assetType + " Drafts");
     
     if (Ext4
     && Ext4.getStore
     && Ext4.create
     && Mkt3) {
-        console.log("Marketo App > Executing: Discard "+assetType+" Drafts");
+        console.log("Marketo App > Executing: Discard " + assetType + " Drafts");
         
         var assetStore = Ext4.getStore(assetType);
         
@@ -1038,7 +1038,7 @@ APP.discardFormPushDrafts = function(assetType, assetIds) {
         }
         if (typeof(Mkt3) !== 'undefined') {
             if (!assetStore) {
-                    assetStore = Ext4.create('Mkt3.store.'+assetType, {
+                    assetStore = Ext4.create('Mkt3.store.' + assetType, {
                         storeId : assetType
                     });
             }
@@ -1093,16 +1093,7 @@ APP.overrideTreeNodeExpand = function() {
             || (this.parentNode.parentNode != null
                 && this.parentNode.parentNode.text == userWorkspaceName
                 && this.attributes.system == true)) {
-/*                
-                var userId = MktPage.userid.toLowerCase(),
-                    userName;
-                if (userId.search("\.demo@marketo.com$") != -1) {
-                    userName = userId.split(".demo")[0];
-                }
-                else {
-                    userName = userId.split("@")[0];
-                }
-*/
+                
                 for (ii = 0; ii < this.childNodes.length; ii++) {
                     if (this.childNodes[ii].attributes.system == false) {
                         if (this.childNodes[ii].text.toLowerCase() !== userName) {
@@ -1168,16 +1159,7 @@ APP.overrideTreeNodeCollapse = function() {
             || (this.parentNode.parentNode != null
                 && this.parentNode.parentNode.text == userWorkspaceName
                 && this.attributes.system == true)) {
-/*                
-                var userId = MktPage.userid.toLowerCase(),
-                    userName;
-                if (userId.search("\.demo@marketo.com$") != -1) {
-                    userName = userId.split(".demo")[0];
-                }
-                else {
-                    userName = userId.split("@")[0];
-                }
-*/                
+                
                 for (ii = 0; ii < this.childNodes.length; ii++) {
                     if (this.childNodes[ii].attributes.system == false) {
                         if (this.childNodes[ii].text.toLowerCase() !== userName) {
@@ -1230,16 +1212,7 @@ APP.overrideNewProgramCreate = function() {
             if (this.title == "New Program"
             || this.title == "New Segmentation") {
                 var ii;
-/*                
-                var userId = MktPage.userid.toLowerCase(),
-                    userName;
-                if (userId.search("\.demo@marketo.com$") != -1) {
-                    userName = userId.split(".demo")[0];
-                }
-                else {
-                    userName = userId.split("@")[0];
-                }
-*/              
+                
                 if (this.title == "New Program") {
                     if (this.getInputItems()) {
                         if (this.getInputItems()[1]
@@ -1376,16 +1349,7 @@ APP.overrideAssetSaveEdit = function() {
                             || this.titleId == "cdhTEName"
                             || this.titleId == "pname"))
                     || MktExplorer.getEl().dom.ownerDocument.title.search("Marketing Activities") == -1) {
-/*                        
-                        var userId = MktPage.userid.toLowerCase(),
-                            userName;
-                        if (userId.search("\.demo@marketo.com$") != -1) {
-                            userName = userId.split(".demo")[0];
-                        }
-                        else {
-                            userName = userId.split("@")[0];
-                        }
-*/                        
+                        
                         if (MktCanvas.getActiveTab().config.accessZoneId == mktoMarketingWorkspaceId
                         && this.titleId == "pname") {
                             if (this.titleValue == userName) {
@@ -1639,16 +1603,7 @@ APP.overrideNewAssetCreate = function() {
                 && this.getField("name") != null
                 && this.getField("name").getValue() != null) {
                     var assetName = this.getField("name").getValue();
-/*                    
-                    var userId = MktPage.userid.toLowerCase(),
-                        userName;
-                    if (userId.search("\.demo@marketo.com$") != -1) {
-                        userName = userId.split(".demo")[0];
-                    }
-                    else {
-                        userName = userId.split("@")[0];
-                    }
-*/                    
+                    
                     if (assetName.toLowerCase().search(userName + "$") == -1) {
                         this.getField("name").setValue(assetName + " - " + userName);
                     }
@@ -1700,16 +1655,7 @@ APP.overrideNewFolders = function() {
             
             MktSession.clockCursor(true);
             var parms = {};
-/*            
-            var userId = MktPage.userid.toLowerCase(),
-                userName;
-            if (userId.search("\.demo@marketo.com$") != -1) {
-                userName = userId.split(".demo")[0];
-            }
-            else {
-                userName = userId.split("@")[0];
-            }
-*/            
+            
             if ((this.currNode.parentNode.attributes.compType.search("Folder$") != -1
                 && text.toLowerCase().search(userName + "$") == -1)
             || text == userName) {
@@ -1742,16 +1688,7 @@ APP.overrideNewFolders = function() {
             
             MktSession.clockCursor(true);
             var parms = {};
-/*            
-            var userId = MktPage.userid.toLowerCase(),
-                userName;
-            if (userId.search("\.demo@marketo.com$") != -1) {
-                userName = userId.split(".demo")[0];
-            }
-            else {
-                userName = userId.split("@")[0];
-            }
-*/            
+            
             if (text.toLowerCase().search(userName + "$") == -1
             || text == userName) {
                 text = text + " - " + userName;
@@ -1798,16 +1735,7 @@ APP.overrideRenamingFolders = function() {
             MktSession.clockCursor(true);
             var folder = MktExplorer.getNodeById(folderId),
                 parms = {};
-/*            
-            var userId = MktPage.userid.toLowerCase(),
-                userName;
-            if (userId.search("\.demo@marketo.com$") != -1) {
-                userName = userId.split(".demo")[0];
-            }
-            else {
-                userName = userId.split("@")[0];
-            }
-*/            
+            
             if (startValue == userName
             && this.currNode.parentNode.attributes.system == true
             && this.currNode.attributes.accessZoneId == mktoMarketingWorkspaceId) {
@@ -1850,16 +1778,7 @@ APP.overrideRenamingFolders = function() {
             
             MktSession.clockCursor(true);
             var parms = {};
-/*            
-            var userId = MktPage.userid.toLowerCase(),
-                userName;
-            if (userId.search("\.demo@marketo.com$") != -1) {
-                userName = userId.split(".demo")[0];
-            }
-            else {
-                userName = userId.split("@")[0];
-            }
-*/            
+            
             if (startValue == userName
             && this.currNode.parentNode.attributes.system == true
             && this.currNode.attributes.accessZoneId == mktoMarketingWorkspaceId) {
@@ -1937,16 +1856,7 @@ APP.hideFoldersOnImport = function() {
                         console.log("Marketo App > Executing: Hide Campaign Folders On Program Import via Override");
                         
                         var ii;
-/*                        
-                        var userId = MktPage.userid.toLowerCase(),
-                            userName;
-                        if (userId.search("\.demo@marketo.com$") != -1) {
-                            userName = userId.split(".demo")[0];
-                        }
-                        else {
-                            userName = userId.split("@")[0];
-                        }
-*/                        
+                        
                         for (ii = 0; ii < this.view.all.elements.length; ii++) {
                             if (this.view.all.elements[ii].textContent.toLowerCase() != userName) {
                                 this.view.all.elements[ii].hidden = true;
@@ -2068,16 +1978,7 @@ APP.evaluateMoveItem = function (nodeToMove, destNode) {
         var ii,
             currNode,
             depth;
-/*    
-        var userId = MktPage.userid.toLowerCase(),
-            userName;
-        if (userId.search("\.demo@marketo.com$") != -1) {
-            userName = userId.split(".demo")[0];
-        }
-        else {
-            userName = userId.split("@")[0];
-        }
-*/    
+        
         if ((nodeToMove.attributes
             && (nodeToMove.attributes.accessZoneId == mktoDefaultWorkspaceId
                 || nodeToMove.attributes.accessZoneId == mktoJapaneseWorkspaceId
@@ -2222,16 +2123,7 @@ APP.evaluateMenu = function (triggeredFrom, menu, canvas, toolbar) {
     
     if (userName) {
         var toBeDisabled = false;
-/*    
-        var userId = MktPage.userid.toLowerCase(),
-            userName;
-        if (userId.search("\.demo@marketo.com$") != -1) {
-            userName = userId.split(".demo")[0];
-        }
-        else {
-            userName = userId.split("@")[0];
-        }
-*/    
+        
         switch (triggeredFrom) {
             
             case "tree":
@@ -2302,11 +2194,21 @@ APP.evaluateMenu = function (triggeredFrom, menu, canvas, toolbar) {
                         }
                     }
                 }
+                else if ((!menu
+                            || !menu.currNode
+                            || !menu.currNode.attributes
+                            || !menu.currNode.attributes.accessZoneId)
+                        && (canvas
+                            && canvas.config
+                            && !canvas.config.accessZoneId)) {
+                    
+                    toBeDisabled = true;
+                }
                 return toBeDisabled;
             break;
             
             case "button":
-                if ((canvas
+                if (canvas
                     && canvas.config
                     && (canvas.config.accessZoneId == mktoDefaultWorkspaceId
                         || canvas.config.accessZoneId == mktoJapaneseWorkspaceId
@@ -2317,9 +2219,7 @@ APP.evaluateMenu = function (triggeredFrom, menu, canvas, toolbar) {
                             && ((canvas.config.expNodeId
                                     && MktExplorer.getNodeById(canvas.config.expNodeId))
                                 || (canvas.config.dlZoneFolderId
-                                    && MktExplorer.getNodeById(canvas.config.dlZoneFolderId))))))
-                || (MktMainNav
-                    && MktMainNav.activeNav == "tnCustAdmin")) {
+                                    && MktExplorer.getNodeById(canvas.config.dlZoneFolderId)))))) {
                     
                     toBeDisabled = true;
                                     
@@ -2344,6 +2244,13 @@ APP.evaluateMenu = function (triggeredFrom, menu, canvas, toolbar) {
                             currNode = currNode.parentNode;
                         }
                     }
+                }
+                else if ((!canvas
+                    || !canvas.config
+                    || !canvas.config.accessZoneId)
+                && MktMainNav
+                && MktMainNav.activeNav == "tnCustAdmin") {
+                    toBeDisabled = true;
                 }
                 return toBeDisabled;
             break;
@@ -2915,48 +2822,48 @@ APP.disableMenus = function() {
                         //"newChannel",//New Channel
                         
                         // Admin > Tags > Tags > Actions Button & Right-click Tree
-                        "editDescriptor",//Edit
+                        //"editDescriptor",//Edit
                         "deleteDescriptor",//Delete
                         "deleteDescriptorValue",//Delete
                         "hideDescriptorValue",//Hide
                         "unhideDescriptorValue",//Unhide
                         
                         // Admin > Tags > Calendar Entry Types > New Button
-                        "newEntry",//Entry Type
+                        //"newEntry",//Entry Type
                         
                         // Admin > Tags > Calendar Entry Types > Actions Button
-                        "editEntry",//Edit
+                        //"editEntry",//Edit
                         "unhideEntry",//Unhide
                         "hideEntry",//Hide
                         
                         // Admin > Field Management > Actions Button
                         "hideFieldFmFields",//Hide field
                         //"blockFieldUpdatesFmFields",//Block Field Updates
-                        "changeTypeFmFields",//Change Type
+                        //"changeTypeFmFields",//Change Type
                         //"exportFieldsFmFields",//Export Field Names
                         
                         // Admin > Landing Pages > Landing Pages > New Button
-                        "newAlias",//New Domain Alias
-                        "newRule",//New Redirect Rule
+                        //"newAlias",//New Domain Alias
+                        //"newRule",//New Redirect Rule
                         
                         // Admin > Landing Pages > Rules > Actions Button
-                        "editRule",//Edit Rule
+                        //"editRule",//Edit Rule
                         "deleteRule",//Delete Rule
                         
                         // Admin > LaunchPoint > New Button
-                        "newWebinarLogin",//New Service
+                        //"newWebinarLogin",//New Service
                         
                         // Admin > LaunchPoint > Actions Button
-                        "editWebinarLogin",//Edit Service
+                        //"editWebinarLogin",//Edit Service
                         "cloneWebinarLogin",//Clone Login
                         "deleteWebinarLogin",//Delete Service
                         
                         // Admin > Webhooks > Actions Button
                         //"newWebhookLogin",//New Webhook
-                        "editWebhook",//Edit Webhook
+                        //"editWebhook",//Edit Webhook
                         "cloneWebhook",//Clone Webhook
                         "deleteWebhook",//Delete Webhook
-                        "customHeader",//Set Custom Header
+                        //"customHeader",//Set Custom Header
                     ];
                 if (this.triggeredFrom != "tree"
                 && this.triggeredFrom != "button") {
@@ -3030,6 +2937,235 @@ APP.disableMenus = function() {
             }
         }
     }
+    else {
+        console.log("Marketo App > Skipped: Disable Actions and Right-click menus for ALL in ALL");
+    }
+    
+    if (Mkt3
+    && Mkt3.controller
+    && Mkt3.controller.editor
+    && Mkt3.controller.editor.wizard
+    && Mkt3.controller.editor.wizard.Editor
+    && Mkt3.controller.editor.wizard.Editor.prototype
+    && Mkt3.controller.editor.wizard.Editor.prototype.loadStep) {
+        Mkt3.controller.editor.wizard.Editor.prototype.loadStep = function(step) {
+            console.log("Marketo App > Executing: Disable Create button in Wizard Editors");
+            var editor = this.getEditor(),
+                tree = this.getTree(),
+                previousStep = tree.getCurrentStep(),
+                previousStepId = previousStep ? previousStep.getId() : null,
+                stepId = step.getId(),
+                titleItem = this.getNavBar().getComponent('title'),
+                steps = editor.items.items,
+                i = 0,
+                il = steps.length;
+            
+            Ext4.suspendLayouts();
+            
+            // update navigation title
+            titleItem.setText(step.get('titleText') || step.get('text'));
+            
+            // update content
+            for (; i < il; i++) {
+                steps[i].setVisible(Ext4.Array.contains(Ext4.Array.from(steps[i].stepIds), stepId));
+            }
+            
+            // update custom token
+            Mkt3.DlManager.setCustomToken(step.getId());
+            
+            tree.expandPath(step.parentNode.getPath());
+            tree.getView().getSelectionModel().select(step);
+            
+            this.updateFlowButtons();
+            
+            editor.fireEvent('stepchange', stepId, previousStepId);
+            
+            Ext4.resumeLayouts(true);
+            
+            if (editor.down("[action=create]").isVisible()) {
+                editor.down("[action=create]").setDisabled(true);
+            }
+        }
+    }
+    else {
+        console.log("Marketo App > Skipped: Disable Create button in Wizard Editors");
+    }
+    
+    if (Ext4
+    && Ext4.button
+    && Ext4.button.Button
+    && Ext4.button.Button.prototype
+    && Ext4.button.Button.prototype.showMenu) {
+        Ext4.button.Button.prototype.showMenu = function(fromEvent) {
+            console.log("Marketo App > Executing: Disable Toolbar Buttons & Actions Menu in ABM & Admin Sections");
+            var mItems = this.menu.items,
+                itemsToDisable = [
+                    // Account Based Marketing > Named Accounts > New Button
+                    //"newNamedAccount", //Create Named Account
+                    //"discoverMarketoCompanies", //Discover Marketo Companies
+                    //"discoverCrmAccounts", //Discover CRM Accounts
+
+                    // Account Based Marketing > Named Accounts > Actions Button
+                    //"addToAccountList", //Add to Account List
+                    "deleteNamedAccount", //Delete Named Account
+                    
+                    // Admin > Marketo Custom Objects > Marketo Custom Objects > Actions Button
+                    //"mktoCustomObjectEditBtn", //Edit Object
+                    "mktoCustomObjectPublishBtn", //Approve Object
+                    //"mktoCustomObjectDiscardDraftBtn", //Discard Draft
+                    "mktoCustomObjectDeleteBtn", //Delete Object
+                    
+                    // Admin > Marketo Custom Objects > Fields > Actions Button
+                    //"mktoCustomObjectFieldEditBtn", //Edit Field
+                    "mktoCustomObjectFieldDeleteBtn", // Delete Field
+                    
+                    // Admin > Marketo Custom Activities > Marketo Custom Activities > Actions Button
+                    //"mktoCustomActivityEditBtn",//Edit Activity
+                    "mktoCustomActivityPublishBtn",//Approve Activity
+                    //"mktoCustomActivityDiscardDraftBtn",//Discard Draft
+                    "mktoCustomActivityDeleteBtn",//Delete Activity
+                    
+                    // Admin > Marketo Custom Activities > Fields > Actions Button
+                    //"mktoCustomActivityFieldEditBtn",//Edit Field
+                    "mktoCustomActivityFieldDeleteBtn",//Delete Field
+                ];
+                
+            if (mItems) {
+                itemsToDisable.forEach(function(itemToDisable) {
+                    var item = mItems.get(itemToDisable);
+                    if (item) {
+                        item.setDisabled(true);
+                    }
+                });
+            }
+            
+            mItems = Ext4.ComponentQuery.query(
+                // Account Based Marketing > Account Lists > New Button
+                //"contextMenu [action=newAccountList]," + //Create New Account List
+                
+                // Account Based Marketing > Account Lists > Actions Button
+                //"contextMenu [action=renameAccountList]," + //Rename Account List
+                "contextMenu [action=deleteAccountList]," + //Delete Account List
+                
+                // Admin > Mobile Apps & Devices > Mobile Apps > Actions Button
+                //"menu [action=create]," + //New Mobile App
+                //"menu [action=edit]," + //Edit Mobile App
+                "menu [action=delete]," + //Delete Mobile App
+                //"menu [action=send]," + //Send To Developer
+                //"menu [action=verify]," + //Verify Push Configuration
+                
+                // Admin > Mobile Apps & Devices > Test Devices > Actions Button
+                //"menu [action=createTestDevice]," + //New Test Device
+                "menu [action=editTestDevice]," + //Edit Test Device
+                "menu [action=deleteTestDevice]," //+ //Delete Test Device
+            );
+            
+            if (mItems) {
+                mItems.forEach(function(item) {
+                    if (item) {
+                        item.setDisabled(true);
+                    }
+                });
+            }
+            
+            var me = this,
+                menu = me.menu;
+            if (me.rendered) {
+                if (me.tooltip
+                && Ext.quickTipsActive
+                && me.getTipAttr() != "title") {
+                    Ext.tip.QuickTipManager.getQuickTip().cancelShow(me.btnEl);
+                }
+                if (menu.isVisible()) {
+                    menu.hide();
+                }
+                if (!fromEvent
+                || me.showEmptyMenu
+                || menu.items.getCount() > 0) {
+                    menu.showBy(me.el, me.menuAlign, ((!Ext.isStrict && Ext.isIE) || Ext.isIE6) ? [-2, -2] : undefined);
+                }
+            }
+            return me;
+        }
+    }
+    else {
+        console.log("Marketo App > Skipped: Disable Toolbar Buttons & Actions Menu in ABM & Admin Sections");
+    }
+    
+    if (Mkt3
+    && Mkt3.controller
+    && Mkt3.controller.abm
+    && Mkt3.controller.abm.namedAccount
+    && Mkt3.controller.abm.namedAccount.Dashboard
+    && Mkt3.controller.abm.namedAccount.Dashboard.prototype
+    && Mkt3.controller.abm.namedAccount.Dashboard.prototype.loadToolBar) {
+        Mkt3.controller.abm.namedAccount.Dashboard.prototype.loadToolBar = function() {
+            console.log("Marketo App > Executing: Disable Toolbar Buttons for ABM > Named Accounts");
+            
+            var mItems = Ext4.ComponentQuery.query(
+                // Named Account Toolbar Buttons
+                "abmNamedAccountToolbar [action=linkPeople]," //+ //Add People to Named Account
+            );
+            
+            if (mItems) {
+                mItems.forEach(function(item) {
+                    if (item) {
+                        item.setDisabled(true);
+                    }
+                });
+            }
+            
+            var canvas = this.getCanvas(),
+                toolbar = canvas.down('abmNamedAccountToolbar');
+            
+            toolbar.down('#newMenu').hide();
+            toolbar.down('#peopleLink').hide();
+            toolbar.down('#deleteNamedAccount').hide();
+        }
+    }
+    else {
+        console.log("Marketo App > Skipped: Disable Toolbar Buttons for ABM > Named Accounts");
+    }
+    
+    if (Mkt3
+    && Mkt3.controller
+    && Mkt3.controller.abm
+    && Mkt3.controller.abm.accountList
+    && Mkt3.controller.abm.accountList.Dashboard
+    && Mkt3.controller.abm.accountList.Dashboard.prototype
+    && Mkt3.controller.abm.accountList.Dashboard.prototype.loadNamedAccountsGrid) {
+        Mkt3.controller.abm.accountList.Dashboard.prototype.loadNamedAccountsGrid = function(grid) {
+            console.log("Marketo App > Executing: Disable Toolbar Buttons for ABM > Account Lists > Named Accounts");
+            
+            var dashboard = this.getDashboard(),
+                accountListId = dashboard.compId,
+                isAccountListIdEmpty = Ext4.isEmpty(accountListId);
+            
+            if (!isAccountListIdEmpty) {
+                grid.store.load({
+                    params: {
+                        accountListId: accountListId
+                    }
+                });
+            }
+            
+            var mItems = dashboard.query(
+                // Account Based Marketing > Account Lists > Named Account > Toolbar Buttons
+                "abmAccountListToolbar [action=removeNamedAccount]," //+ //Remove Named Accounts
+            );
+                    
+            if (mItems) {
+                mItems.forEach(function(item) {
+                    if (item) {
+                        item.destroy();
+                    }
+                });
+            }
+        }
+    }
+    else {
+        console.log("Marketo App > Skipped: Disable Toolbar Buttons for ABM > Account Lists > Named Accounts");
+    }
     
     if (Mkt3
     && Mkt3.controller
@@ -3040,7 +3176,7 @@ APP.disableMenus = function() {
         // Disable Marketing Activities > Social App > Toolbar buttons & Actions menu
         var prevSocialAppToolbar = Mkt3.controller.socialApp.SocialApp.prototype.loadToolbar;
         Mkt3.controller.socialApp.SocialApp.prototype.loadToolbar = function(menu, attr) {
-            console.log("Marketo App > Executing: Disable Toolbar buttons & Actions menu for Social Apps in Marketing Activities");
+            console.log("Marketo App > Executing: Disable Toolbar Buttons & Actions Menu for Marketing Activities > Social Apps");
             prevSocialAppToolbar.apply(this, arguments);
 
             var disable = APP.evaluateMenu("socialAppToolbar", null, null, this),
@@ -3057,18 +3193,23 @@ APP.disableMenus = function() {
                     //"socialAppToolbar contextMenu [action=getWidgetEmbedCode]," + //Embed Code
                     //"socialAppToolbar contextMenu [action=editDraft]," + //Edit Draft
                     //"socialAppToolbar contextMenu [action=previewDraft]," + //Preview Draft
-                    "socialAppToolbar contextMenu [action=approveDraft]," /*+*/ //Approve Draft
+                    "socialAppToolbar contextMenu [action=approveDraft]," //+ //Approve Draft
                     //"socialAppToolbar contextMenu [action=discardDraft]," //Discard Draft
                 );
             
-            mItems.forEach(function(item) {
-                if (item) {
-                    item.setDisabled(disable);
-                }
-            });
+            if (mItems) {
+                mItems.forEach(function(item) {
+                    if (item) {
+                        item.setDisabled(disable);
+                    }
+                });
+            }
             
             return menu;
         }
+    }
+    else {
+        console.log("Marketo App > Skipped: Disable Toolbar Buttons & Actions Menu for Marketing Activities > Social Apps");
     }
     
     if (Mkt3
@@ -3080,7 +3221,7 @@ APP.disableMenus = function() {
         // Disable Marketing Activities > Push Notification > Toolbar buttons & Actions menu
         var prevMobilePushNotificationToolbar = Mkt3.controller.mobilePushNotification.MobilePushNotification.prototype.loadToolbar;
         Mkt3.controller.mobilePushNotification.MobilePushNotification.prototype.loadToolbar = function(menu, attr) {
-            console.log("Marketo App > Executing: Disable Toolbar buttons & Actions menu for Push Notifications in Marketing Activities");
+            console.log("Marketo App > Executing: Disable Toolbar Buttons & Actions Menu for Marketing Activities > Push Notifications");
             prevMobilePushNotificationToolbar.apply(this, arguments);
 
             var disable = APP.evaluateMenu("mobilePushNotification", null, null, this),
@@ -3098,18 +3239,23 @@ APP.disableMenus = function() {
                     //"mobilePushNotification contextMenu [action=editDraft]," + //Edit Draft
                     //"mobilePushNotification contextMenu [action=previewDraft]," + //Preview Draft
                     //"mobilePushNotification contextMenu [action=sendDraftSample]," + //Send Sample of Draft
-                    "mobilePushNotification contextMenu [action=approveDraft]," /*+*/ //Approve Draft
+                    "mobilePushNotification contextMenu [action=approveDraft]," //+ //Approve Draft
                     //"mobilePushNotification contextMenu [action=discardDraft]," //Discard Draft
                 );
             
-            mItems.forEach(function(item) {
-                if (item) {
-                    item.setDisabled(disable);
-                }
-            });
+            if (mItems) {
+                mItems.forEach(function(item) {
+                    if (item) {
+                        item.setDisabled(disable);
+                    }
+                });
+            }
             
             return menu;
         }
+    }
+    else {
+        console.log("Marketo App > Skipped: Disable Toolbar Buttons & Actions Menu for Marketing Activities > Push Notifications");
     }
     
     if (Mkt3
@@ -3121,7 +3267,7 @@ APP.disableMenus = function() {
         // Disable Marketing Activities > In App Messages > Toolbar buttons & Actions menu
         var prevInAppMessageToolbar = Mkt3.controller.inAppMessage.InAppMessage.prototype.loadToolbar;
         Mkt3.controller.inAppMessage.InAppMessage.prototype.loadToolbar = function() {
-            console.log("Marketo App > Executing: Disable Toolbar buttons & Actions menu for In App Messages in Marketing Activities");
+            console.log("Marketo App > Executing: Disable Toolbar Buttons & Actions Menu for Marketing Activities > In App Messages");
             prevInAppMessageToolbar.apply(this, arguments);
             
             var toolbar = this.getToolbar(),
@@ -3157,9 +3303,6 @@ APP.disableMenus = function() {
     
             var disable = APP.evaluateMenu("inAppMessage", null, null, this),
                 mItems = Ext4.ComponentQuery.query(
-                    //"inAppMessageEditor menu [action=preview]," + //Preview
-                    "inAppMessageEditor menu [action=approveAndClose]," + //Approve & Close
-                    
                     //"inAppMessage inAppMessageToolbar [action=edit]," + //Edit Draft
                     //"inAppMessage inAppMessageToolbar [action=preview]," + //Preview
                     
@@ -3172,19 +3315,22 @@ APP.disableMenus = function() {
                     //"inAppMessage contextMenu [action=editDraft]," + //Edit Draft
                     //"inAppMessage contextMenu [action=previewDraft]," + //Preview Draft
                     //"inAppMessage contextMenu [action=sendDraftSample]," + //Send Sample of Draft
-                    "inAppMessage contextMenu [action=approveDraft]," /*+*/ //Approve Draft
+                    "inAppMessage contextMenu [action=approveDraft]," //+ //Approve Draft
                     //"inAppMessage contextMenu [action=discardDraft]," + //Discard Draft
                 );
             
-            mItems.forEach(function(item) {
-                if (item) {
-                    item.setDisabled(disable);
-                }
-            });
+            if (mItems) {
+                mItems.forEach(function(item) {
+                    if (item) {
+                        item.setDisabled(disable);
+                    }
+                });
+            }
         }
     }
-    
-    
+    else {
+        console.log("Marketo App > Skipped: Disable Toolbar Buttons & Actions Menu for Marketing Activities > In App Messages");
+    }
     
     if (Ext4
     && Ext4.Component
@@ -3192,7 +3338,7 @@ APP.disableMenus = function() {
     && Ext4.Component.prototype.showAt) {
         // Disable Marketing Activities > Nurture Program > Stream & Content Actions menus
         Ext4.Component.prototype.showAt = function (x, y, animate) {
-            console.log("Marketo App > Executing: Disable Content & Actions menu for a Nurture Program Stream in Marketing Activities");
+            console.log("Marketo App > Executing: Disable Content & Actions Menus for Marketing Activities > Nurture Program Stream");
             
             var me = this;
             if (!me.rendered
@@ -3354,12 +3500,66 @@ APP.disableMenus = function() {
                             //me.items.items[ii].setDisabled(disable);
                             break;
                         
+                        // Admin > Tags > Calendar Entry Types > Right-click Menu
+                        // Edit
+                        case "edit":
+                            //me.items.items[ii].setDisabled(disable);
+                            break;
+                        // Hide
+                        case "hide":
+                            me.items.items[ii].setDisabled(disable);
+                            break;
+                        // Unhide
+                        case "unhide":
+                            me.items.items[ii].setDisabled(disable);
+                            break;
+                        
+                        default:
+                            break;
+                    }
+                }
+            }
+            else {
+                var ii,
+                    disable = APP.evaluateMenu("button", null, null, null);
+                for (ii = 0; ii < me.items.items.length; ii++) {
+                    switch (me.items.items[ii].action) {
+                        // Admin > Marketo Custom Activities/Objects & Mobile Apps > Activities/Objects & Mobile Apps Tree > Right-click Menu
+                        // Edit Activity/Object/App
+                        case "edit":
+                            //me.items.items[ii].setDisabled(disable);
+                            break;
+                        // Approve Activity/Object
+                        case "publish":
+                            me.items.items[ii].setDisabled(disable);
+                            break;
+                        // Discard Draft
+                        case "discardDraft":
+                            //me.items.items[ii].setDisabled(disable);
+                            break;
+                        // Delete Activity/Object/App
+                        case "delete":
+                            me.items.items[ii].setDisabled(disable);
+                            break;
+                        
+                        // Send To Developer
+                        case "send":
+                            me.items.items[ii].setDisabled(disable);
+                            break;
+                        // Verify Push Configuration
+                        case "verify":
+                            me.items.items[ii].setDisabled(disable);
+                            break;
+                        
                         default:
                             break;
                     }
                 }
             }
         }
+    }
+    else {
+        console.log("Marketo App > Skipped: Disable Content & Actions Menus for Marketing Activities > Nurture Program Stream");
     }
 }
 
@@ -3383,6 +3583,22 @@ APP.hideToolbarItems = function() {
     && Ext.layout.ContainerLayout.prototype.renderItem) {
         // Disable ALL areas > ALL assets > ALL Toolbar items except for Smart Campaigns, Smart Lists, Lists, Social Apps, and Push Notifications
         Ext.layout.ContainerLayout.prototype.renderItem = function (c, position, target) {
+            if (c) {
+                if (!c.rendered) {
+                    c.render(target, position);
+                    this.configureItem(c, position);
+                }
+                else if (!this.isValidParent(c, target)) {
+                    if (Ext.isNumber(position)) {
+                        position = target.dom.childNodes[position];
+                    }
+                    
+                    target.dom.insertBefore(c.getPositionEl().dom, position || null);
+                    c.container = target;
+                    this.configureItem(c, position);
+                }
+            }
+
             if (c
             && c.topToolbar
             && c.topToolbar.items) {
@@ -3390,7 +3606,7 @@ APP.hideToolbarItems = function() {
                 
                 var item,
                     canvas = MktCanvas.getActiveTab(),
-                    visible = !APP.evaluateMenu("button", null, canvas, null),
+                    disable = APP.evaluateMenu("button", null, canvas, null),
                     itemsToHide = [
                     /*{
                     // Global > Programs, Analyzers, and Reports > Setup
@@ -3581,52 +3797,52 @@ APP.hideToolbarItems = function() {
                         "text" : "Change Password",//Change Password
                         "action" : "setDisabled",
 					},*/
-					{
+					/*{
                         "text" : "Invite New User",//Invite New User
                         "action" : "setDisabled",
-					},
+					},*/
                         
                     // Admin > My Account
                     /*{
                         "text" : "Change Password",//Change Password
                         "action" : "setDisabled",
 					},*/
-					{
+					/*{
                         "id" : "caadEditButton",//Edit Account Settings
                         "action" : "setDisabled",
-					},
+					},*/
                         
                     // Admin > Login Settings
-					{
+					/*{
                         "id" : "caadEditSecurityButton",//Edit Security Settings
                         "action" : "setDisabled",
-					},
+					},*/
 					/*{
                         "id" : "caadEditurlButton",//Edit URL Expiration
                         "action" : "setDisabled",
 					},*/
-					{
+					/*{
                         "id" : "caadEditRestrictedLoginButton",//Edit IP Restrictions
                         "action" : "setDisabled",
-					},
+					},*/
 					/*{
                         "id" : "caadEditSmartListReportSettingsButton",//Smart List Report Settings
                         "action" : "setDisabled",
 					},*/
                         
                     // Admin > Users & Roles > Users
-					{
+					/*{
                         "text" : "Invite New User",//Invite New User
                         "action" : "setDisabled",
-					},
+					},*/
 					{
                         "id" : "editLicenses",//Issue License
                         "action" : "setVisible",
 					},
-					{
+					/*{
                         "id" : "editUser",//Edit User
                         "action" : "setVisible",
-					},
+					},*/
 					{
                         "id" : "deleteUser",//Delete User
                         "action" : "setVisible",
@@ -3641,10 +3857,10 @@ APP.hideToolbarItems = function() {
                         "id" : "newRole",//New Role
                         "action" : "setDisabled",
 					},*/
-					{
+					/*{
                         "id" : "editRole",//Edit Role
                         "action" : "setVisible",
-					},
+					},*/
 					{
                         "id" : "deleteRole",//Delete Role
                         "action" : "setVisible",
@@ -3655,10 +3871,10 @@ APP.hideToolbarItems = function() {
                         "id" : "newZone",//New Workspace
                         "action" : "setDisabled",
 					},*/
-					{
+					/*{
                         "id" : "editZone",//Edit Workspace
                         "action" : "setVisible",
-					},
+					},*/
 					{
                         "id" : "deleteZone",//Delete Workspace
                         "action" : "setVisible",
@@ -3669,10 +3885,10 @@ APP.hideToolbarItems = function() {
                         "id" : "newPartition",//New Lead Partition
                         "action" : "setDisabled",
 					},*/
-					{
+					/*{
                         "id" : "editPartition",//Edit Lead Partition
                         "action" : "setVisible",
-					},
+					},*/
 					{
                         "id" : "deletePartition",//Delete Lead Partition
                         "action" : "setVisible",
@@ -3689,32 +3905,32 @@ APP.hideToolbarItems = function() {
 					},*/
                         
                     // Admin > Email > Email
-					{
+					/*{
                         "text" : "Edit IP Settings",//Edit IP Settings
                         "action" : "setDisabled",
-					},
-					{
+					},*/
+					/*{
                         "text" : "Edit Text Editor Settings",//Edit Text Editor Settings
                         "action" : "setDisabled",
-					},
-					{
+					},*/
+					/*{
                         "text" : "Edit Email Editor Settings",//Edit Email Editor Settings
                         "action" : "setDisabled",
-					},
+					},*/
                         
                     // Admin > Email > SPF/DKIM
-					{
+					/*{
                         "id" : "addDomain",//Add Domain
                         "action" : "setDisabled",
-					},
+					},*/
 					{
                         "id" : "deleteDomain",//Delete Domain
                         "action" : "setVisible",
 					},
-					/*{
+					{
                         "id" : "dkimDetails",//DKIM Details
                         "action" : "setDisabled",
-					},*/
+					},
 					/*{
                         "id" : "checkDNS",//Check DNS
                         "action" : "setDisabled",
@@ -3763,10 +3979,10 @@ APP.hideToolbarItems = function() {
                         "id" : "syncOjbectCadSfdcObjectSync",//Enable Sync
                         "action" : "setVisible",
 					},*/
-					{
+					/*{
                         "id" : "editVisibleFieldsCadSfdcObjectSync",//Edit Visible Fields
                         "action" : "setVisible",
-					},
+					},*/
                         
                     // Admin > Salesforce
 					{
@@ -3783,20 +3999,20 @@ APP.hideToolbarItems = function() {
 					},*/
                         
                     // Admin > Sales Insight > Sales Insight
-					{
+					/*{
                         "text" : "Edit API Configuration",//Edit API Configuration
                         "action" : "setDisabled",
-					},
-					{
+					},*/
+					/*{
                         "text" : "Edit Settings",//Edit Settings
                         "action" : "setDisabled",
-					},
+					},*/
                         
                     // Admin > Sales Insight > Email Add-in
-					{
+					/*{
                         "id" : "issueLicenseCadLisAdmin",//Issue License
                         "action" : "setDisabled",
-					},
+					},*/
 					{
                         "id" : "revokeLicenseCadLisAdmin",//Revoke License
                         "action" : "setVisible",
@@ -3821,38 +4037,38 @@ APP.hideToolbarItems = function() {
 					},*/
                         
                     // Admin > Landing Pages > Rules
-					/*{
+					{
                         "text" : "Rules Actions",//Rules Actions
                         "action" : "setVisible",
-					},*/
-					{
+					},
+					/*{
                         "id" : "editRule",//Edit Rule
                         "action" : "setVisible",
-					},
+					},*/
 					{
                         "id" : "deleteRule",//Delete Rule
                         "action" : "setVisible",
 					},
                         
                     // Admin > Web Services
-					{
+					/*{
                         "id" : "editIpRestriction",//Edit IP Restrictions
                         "action" : "setDisabled",
-					},
+					},*/
                         
                     // Admin > LaunchPoint
 					/*{
                         "id" : "newLaunchpoint",//New
                         "action" : "setDisabled",
 					},*/
-					/*{
+					{
                         "id" : "launchpointActions",//Service Actions
                         "action" : "setVisible",
-					},*/
-					{
-                        "id" : "editWebinarLogin",//"Edit Service"
-                        "action" : "setVisible",
 					},
+					/*{
+                        "id" : "editWebinarLogin",//Edit Service
+                        "action" : "setVisible",
+					},*/
                         
                     // Admin > Webhooks
 					/*{
@@ -3883,30 +4099,115 @@ APP.hideToolbarItems = function() {
                             item.setVisible(false);
                         }
                         else if (itemToHide.action == "setVisible") {
-                            item.setVisible(visible);
+                            item.setVisible(!disable);
                         }
                         else if (itemToHide.action == "setDisabled") {
-                            item.setDisabled(!visible);
+                            item.setDisabled(disable);
                         }
                     }
                 });
             }
+        }
+    }
+}
+
+/**************************************************************************************
+ *  
+ *  This function disables the Save, Create, Add ... buttons in Form windows. 
+ *  It can be used to disable any generic Form save window.
+ *
+ *  @Author Brian Fisher
+ *
+ *  @function
+ *
+ **************************************************************************************/
+
+APP.disableFormSaveButtons = function() {
+    console.log("Marketo App > Disabling: Form Window Save Buttons");
+
+    if (Ext4
+    && Ext4.Component
+    && Ext4.Component.prototype
+    && Ext4.Component.prototype.show) {
+        Ext4.Component.prototype.show = function(animateTarget, cb, scope) {
+            console.log("Marketo App > Executing: Disable Form Window Save Buttons");
             
-            if (c) {
-                if (!c.rendered) {
-                    c.render(target, position);
-                    this.configureItem(c, position);
-                }
-                else if (!this.isValidParent(c, target)) {
-                    if (Ext.isNumber(position)) {
-                        position = target.dom.childNodes[position];
-                    }
-                    
-                    target.dom.insertBefore(c.getPositionEl().dom, position || null);
-                    c.container = target;
-                    this.configureItem(c, position);
+            if (this.getXType() == "createNamedAccountForm" //ABM > Named Accounts > New Named Account
+            || this.getXType() == "addToAccountListForm" //ABM > Named Accounts > Add To Account List
+            || this.getXType() == "createAccountListForm" //ABM > Account Lists > Create New/Rename Account List
+            || this.getXType() == "adminUserInviteWizard" //Admin > User & Roles > Users > Invite New User
+            || this.getXType() == "adminEditLicensesForm" //Admin > User & Roles > Users > Issue License
+            || this.getXType() == "adminSubscriptionInformationForm" //Admin > My Account > Subcription Information
+            || this.getXType() == "adminAccountSettingsForm" //Admin > My Account > Account Settings
+            || this.getXType() == "localePicker" //Admin > My Account/Location > Location Settings
+            || this.getXType() == "deleteZoneForm" //Admin > Workspaces & Partitions > Workspaces > Delete Workspace
+            || this.getXType() == "adminTinyMceSettingForm" //Admin > *Email > Email > Edit Text Editor Settings
+            || this.getXType() == "emailEditorSettingsForm" //Admin > Email > Email > Edit Email Editor Settings
+            || this.getXType() == "emailAddMultipleDomainForm" //Admin > Email > Email > Add/Edit Branding Domains
+            || this.getXType() == "adminAddDomainForm" //Admin > Email > SPF/DKIM > Add Domain
+            || this.getXType() == "adminScoreSettingsForm" //Admin > ABM > Account Score Settings
+            || this.getXType() == "adminCrmFieldSettingsForm" //Admin > ABM > CRM Mapping
+            || this.getXType() == "adminFieldHtmlEncodeForm" //Admin > Field Management > Field Management > HTML Encode Settings
+            || this.getXType() == "mktocustomactivityActivityTypeForm" //Admin > Marketo Custom Activities > Marketo Custom Activities > New Custom Activity
+            || this.getXType() == "mktocustomactivityActivityTypeEditForm" //Admin > Marketo Custom Activities > Marketo Custom Activities > Edit Activity
+            || this.getXType() == "mktocustomactivityActivityTypeFormStepThree" //Admin > Marketo Custom Activities > Fields > New/Edit Field
+            || this.getXType() == "mktocustomobjectObjectForm" //Admin > Marketo Custom Objects > Marketo Custom Objects > New/Edit Custom Object
+            || this.getXType() == "mktocustomobjectFieldForm" //Admin > Marketo Custom Objects > Fields > New/Edit Field
+            || this.getXType() == "adminSpecifyPluginContactForm" //Admin > Sales Insight > Email Add-in > Specify Plugin Contact
+            || this.getXType() == "wildcardRedirectForm" //Admin > Landing Pages > New Wildcard Redirect
+            || this.getXType() == "mktowsEditIpRestrictionForm" //Admin > Web Services > IP Restrictions
+            || this.getXType() == "launchpointServiceIntegrationSettingsForm" //Admin > LaunchPoint > Installed Services > Edit Service
+            || this.getXType() == "vespaAppForm" //Admin > Mobile Apps & Devices > Mobile Apps > New/Edit Mobile App
+            || this.getXType() == "vespaSendForm" //Admin > Mobile Apps & Devices > Mobile Apps > Send To Developer
+            || this.getXType() == "vespaConfigurePushAccessForm" //Admin > Mobile Apps & Devices > Mobile Apps > Configure Push Access
+            || this.getXType() == "vespaNewDeviceForm" //Admin > Mobile Apps & Devices > Test Devices > New Test Device
+            || this.getXType() == "adminTagsAddCalendarEntryTypeForm" //Admin > Tags > Calendar Entry Types > New Entry Type
+            || this.getXType() == "featureSwitchForm" //Admin > Feature Manager > Edit Feature
+            ) {
+                
+                var mItems = this.query(
+                    "[action=submit]," //+ //Create, Add, Save
+                );
+                
+                if (mItems) {
+                    mItems.forEach(function(item) {
+                        if (item) {
+                            item.setDisabled(true);
+                        }
+                    });
                 }
             }
+            
+            var me = this,
+                rendered = me.rendered;
+            if (rendered
+            && me.isVisible()) {
+                if (me.toFrontOnShow
+                && me.floating) {
+                    me.toFront();
+                }
+            }
+            else {
+                if (me.fireEvent("beforeshow", me) !== false) {
+                    me.hidden = false;
+                    if (!rendered
+                    && (me.autoRender
+                        || me.floating)) {
+                        
+                        me.doAutoRender();
+                        rendered = me.rendered;
+                    }
+                    if (rendered) {
+                        me.beforeShow();
+                        me.onShow.apply(me, arguments);
+                        me.afterShow.apply(me, arguments);
+                    }
+                }
+                else {
+                    me.onShowVeto();
+                }
+            }
+            return me;
         }
     }
 }
@@ -3935,7 +4236,10 @@ APP.disableAdminSaveButtons = function() {
             
             if (MktCanvas
             && MktCanvas.getActiveTab()
-            && MktCanvas.getActiveTab().title) {
+            && MktCanvas.getActiveTab().title
+            && this
+            && this.buttons
+            && this.buttons.length) {
                 var activeTabTitle = MktCanvas.getActiveTab().title,
                     toDisable,
                     ii,
@@ -3943,6 +4247,10 @@ APP.disableAdminSaveButtons = function() {
                 switch (activeTabTitle) {
                     // Login Settings
                     case "Login Settings":
+                        toDisable = true;
+                        break;
+                    // Users & Roles > Users 
+                    case "Users":
                         toDisable = true;
                         break;
                     // Users & Roles > Roles 
@@ -3955,6 +4263,9 @@ APP.disableAdminSaveButtons = function() {
                         break;
                     // Workspaces & Partitions > Partitions
                     case "Lead Partitions":
+                        toDisable = true;
+                        break;
+                    case "Person Partitions":
                         toDisable = true;
                         break;
                     // Location > Subscription Currency Settings
@@ -4028,48 +4339,14 @@ APP.disableAdminSaveButtons = function() {
                     default:
                         break;
                 }
+                
                 if (toDisable) {
-                    for (ii = this.buttons.length-1; ii >= 0; ii--) {
+                    for (ii = this.buttons.length - 1; ii >= 0; ii--) {
                         currButton = this.buttons[ii];
-                        switch (currButton.text) {
-                            case "Save":
-                                currButton.setDisabled(true);
-                                break;
-                            case "Create":
-                                currButton.setDisabled(true);
-                                break;
-                            case "Apply":
-                                currButton.setDisabled(true);
-                                break;
-                            case "Change":
-                                currButton.setDisabled(true);
-                                break;
-                            case "Disable Global Sync":
-                                currButton.setDisabled(true);
-                                break;
-                            case "Enable Sync":
-                                currButton.setDisabled(true);
-                                break;
-                            case "Disable Sync":
-                                currButton.setDisabled(true);
-                                break;
-                            case "Issue License":
-                                currButton.setDisabled(true);
-                                break;
-                            case "Revoke License":
-                                currButton.setDisabled(true);
-                                break;
-                            case "Resend Invitation":
-                                currButton.setDisabled(true);
-                                break;
-                            case "Delete":
-                                currButton.setDisabled(true);
-                                break;
-                            case "Clone":
-                                currButton.setDisabled(true);
-                                break;
-                            default:
-                                break;
+                        if (currButton.cls == "mktButtonPositive"
+                        || currButton.iconCls == "mkiOk") {
+                            currButton.setDisabled(true);
+                            break;
                         }
                     }
                 }
@@ -4193,8 +4470,7 @@ APP.injectAnalyzerNavBar = function() {
                 if (currentUrl == pod.valueSet[y].url) {
                     console.log("Marketo App > Updating: CSS for Analyzer Navigation Bar");
 
-                    // This code block swaps the colors of the analyzer labels depending
-                    // on which one the user is currently viewing.
+                    // This code block swaps the colors of the analyzer labels depending on which one the user is currently viewing.
                     $j = jQuery.noConflict();
                     var currPosition = '#' + pod.valueSet[y].position;
                     $j(currPosition).parent().css('display', 'block');
@@ -4702,9 +4978,9 @@ if ((currentUrl.search(mktoAppDomain) != -1
                 }
             }
             
-            // This checks to see if the username is one that would be associated
-            // with a MarketoLive subscription.
+            // This checks to see if the account string is one that would be associated with a MarketoLive subscription.
             if (accountString.search(mktoAccountStringsMatch) != -1
+            || accountString == mktoAccountStringQe
             || APP.getCookie("toggleState") == "false") {
                 console.log("Marketo App > Location: MarketoLive Instance");
                 
@@ -4719,8 +4995,7 @@ if ((currentUrl.search(mktoAppDomain) != -1
                     // Disabling Demo Plugin Check
                     APP.disableDemoPluginCheck();
 
-                    // This check ensures that an admin can login and test the 
-                    // plugin as a normal user. 
+                    // This check ensures that an admin can login and test the plugin as a normal user.
                     if (APP.getCookie("toggleState") != "false") {
                         return;
                     } 
@@ -4734,7 +5009,6 @@ if ((currentUrl.search(mktoAppDomain) != -1
                 // Disabling Demo Plugin Check
                 APP.disableDemoPluginCheck();
 
-                // Email Deliverability
                 if (currUrlFragment == mktoMyMarketoFragment) {
                     APP.overrideHomeTiles();
                 }
@@ -4749,7 +5023,9 @@ if ((currentUrl.search(mktoAppDomain) != -1
                 || currUrlFragment == mktoLeadDatabaseJapaneseFragment
                 || currUrlFragment == mktoLeadDatabaseFinservFragment
                 || currUrlFragment == mktoLeadDatabaseHealthcareFragment
-                || currUrlFragment == mktoLeadDatabaseHigherEdFragment) {
+                || currUrlFragment == mktoLeadDatabaseHigherEdFragment
+                || currUrlFragment == mktoAdminEmailEmailFragment
+                || currUrlFragment == mktoAdminWebServicesFragment) {
 					APP.disableButtons();
 				}
                 else if (currUrlFragment == mktoAnalyticsDefaultFragment) {
@@ -4785,6 +5061,7 @@ if ((currentUrl.search(mktoAppDomain) != -1
                         APP.disableDragAndDrop();
                         APP.disableMenus();
                         APP.hideToolbarItems();
+                        APP.disableFormSaveButtons();
                         APP.disableAdminSaveButtons();
                         APP.overrideSmartCampaignSaving();
 //                        APP.overrideSmartCampaignCanvas();
@@ -4803,6 +5080,13 @@ if ((currentUrl.search(mktoAppDomain) != -1
                         APP.overrideSmartCampaignSaving();
                         APP.overrideUpdatePortletOrder();
                         APP.disableConfirmationMessage();
+                    }
+                    
+                    if (accountString == mktoAccountStringQe) {
+                        APP.disableMenus();
+                        APP.hideToolbarItems();
+                        APP.disableFormSaveButtons();
+                        APP.disableAdminSaveButtons();
                     }
 /*
                     // Storing previous Workspace ID
@@ -5043,14 +5327,8 @@ if ((currentUrl.search(mktoAppDomain) != -1
                     }, 0);
                 } 
                 else if (currCompFragment == mktoLandingPageDesignerFragment) {
-                    console.log("Marketo App > Location: Landing Page Editor");
-
-                    var customCompanyLandingPage106Fragment = "LPE11826",
-                        customCompanyLandingPagePreview106Fragment = "LPP11826",
-                        customCompanyLandingPage106aFragment = "LPE10672",
-                        customCompanyLandingPagePreview106aFragment = "LPP10672",
-                        customCompanyLandingPage106bFragment = "LPE10768",
-                        customCompanyLandingPagePreview106bFragment = "LPP10768";
+                    console.log("Marketo App > Location: Landing Page Designer");
+                    
 /*                      
                         lpParameters = {
                             filters: [{
@@ -5106,7 +5384,7 @@ if ((currentUrl.search(mktoAppDomain) != -1
                     if (Ext4
                     && Ext4.getStore('LandingPage')
                     && Ext4.getStore('LandingPage').load) {
-                        console.log("Callback for Landing Page Editor");
+                        console.log("Marketo App > Callback: Landing Page Editor");
                         Ext4.getStore('LandingPage').load(lpParameters);
                     }
 */                  
@@ -5159,16 +5437,8 @@ if ((currentUrl.search(mktoAppDomain) != -1
                 }
                 else {
                     console.log("Marketo App > Location: Designers/Wizards");
-
-                    // DIY Design (Emails, Forms, Push Notifications, Social Apps)
-                    var customCompanyEmail106Fragment = "EME15464",
-                        customCompanyEmail106aFragment = "EME14240",
-                        customCompanyEmail106bFragment = "EME13924",
-                        customCompanyHealthcareFragment = "EME20327",
-                        customCompanyFinservMFragment = "EME20350",
-                        customCompanyFinservPFragment ="EME20368",
-                        customCompanyHigherEdFragment = "EME20329",
-                        loadParameters = {
+                    
+                    var loadParameters = {
                             filters: [{
                                 property: 'id',
                                 value: Mkt3.DL.dl.compId
@@ -5230,12 +5500,12 @@ if ((currentUrl.search(mktoAppDomain) != -1
                     switch (currCompFragment) {
                         case mktoEmailDesignerFragment:
                             if (currUrlFragment.search(mktoEmailPreviewFragmentRegex) == -1) {
-                                console.log("Marketo App > Location: Email Editor");
+                                console.log("Marketo App > Location: Email Designer");
                                 
                                 if (Ext4
                                 && Ext4.getStore('Email')
                                 && Ext4.getStore('Email').load) {
-                                    console.log("Callback for Email Editor");
+                                    console.log("Marketo App > Callback: Email Editor");
                                     Ext4.getStore('Email').load(loadParameters);
                                 }
                             }
@@ -5250,7 +5520,7 @@ if ((currentUrl.search(mktoAppDomain) != -1
                             if (Ext4
                             && Ext4.getStore('Form')
                             && Ext4.getStore('Form').load) {
-                                console.log("Callback for Form Editor");
+                                console.log("Marketo App > Callback: Form Editor");
                                 Ext4.getStore('Form').load(loadParameters);
                             }
                             break;
@@ -5261,7 +5531,7 @@ if ((currentUrl.search(mktoAppDomain) != -1
                             if (Ext4
                             && Ext4.getStore('MobilePushNotification')
                             && Ext4.getStore('MobilePushNotification').load) {
-                                console.log("Callback for Push Notification Editor");
+                                console.log("Marketo App > Callback: Push Notification Editor");
                                 Ext4.getStore('MobilePushNotification').load(loadParameters);
                             }
                             break;
@@ -5272,7 +5542,7 @@ if ((currentUrl.search(mktoAppDomain) != -1
                             if (Ext4
                             && Ext4.getStore('InAppMessage')
                             && Ext4.getStore('InAppMessage').load) {
-                                console.log("Callback for In App Message Editor");
+                                console.log("Marketo App > Callback: In App Message Editor");
                                 Ext4.getStore('InAppMessage').load(loadParameters);
                             }
                             break;
@@ -5283,7 +5553,7 @@ if ((currentUrl.search(mktoAppDomain) != -1
                             if (Ext4
                             && Ext4.getStore('SocialApp')
                             && Ext4.getStore('SocialApp').load) {
-                                console.log("Callback for Social App Editor");
+                                console.log("Marketo App > Callback: Social App Editor");
                                 Ext4.getStore('SocialApp').load(loadParameters);
                             }
                             break;
@@ -5367,7 +5637,6 @@ if ((currentUrl.search(mktoAppDomain) != -1
 //                                    console.log("Marketo App > Window: Comp Fragment = " + currCompFragment);
                                 }
                                 
-                                // Email Deliverability
                                 if (currUrlFragment == mktoMyMarketoFragment) {
                                     APP.overrideHomeTiles();
                                 }
@@ -5382,13 +5651,15 @@ if ((currentUrl.search(mktoAppDomain) != -1
                                 || currUrlFragment == mktoLeadDatabaseJapaneseFragment
                                 || currUrlFragment == mktoLeadDatabaseFinservFragment
                                 || currUrlFragment == mktoLeadDatabaseHealthcareFragment
-                                || currUrlFragment == mktoLeadDatabaseHigherEdFragment) {
+                                || currUrlFragment == mktoLeadDatabaseHigherEdFragment
+                                || currUrlFragment == mktoAdminEmailEmailFragment
+                                || currUrlFragment == mktoAdminWebServicesFragment) {
                                     APP.disableButtons();
                                 }
                                 else if (currUrlFragment == mktoAnalyticsDefaultFragment) {
                                     APP.overrideAnalyticsTiles();
                                 }
-
+                                
                                 if (currCompFragment != mktoEmailDesignerFragment
                                 && currCompFragment != mktoEmailPreviewFragment
                                 && currCompFragment != mktoLandingPageDesignerFragment
