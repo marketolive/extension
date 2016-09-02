@@ -4975,6 +4975,9 @@ if ((currentUrl.search(mktoAppDomain) != -1
                 }
                 else {
                     userName = userId.split("@")[0];
+                    if (userName == "marketolive") {
+                        userName = userId.split("@")[1].split(".")[0];
+                    }
                 }
             }
             
