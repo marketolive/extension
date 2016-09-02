@@ -2997,7 +2997,7 @@ APP.disableMenus = function() {
     && Ext4.button.Button.prototype
     && Ext4.button.Button.prototype.showMenu) {
         Ext4.button.Button.prototype.showMenu = function(fromEvent) {
-            console.log("Marketo App > Executing: Disable Toolbar buttons & Actions menu for Named Accounts in Account Based Marketing");
+            console.log("Marketo App > Executing: Disable Toolbar Buttons & Actions Menu in ABM & Admin Sections");
             var mItems = this.menu.items,
                 itemsToDisable = [
                     // Account Based Marketing > Named Accounts > New Button
@@ -3008,13 +3008,6 @@ APP.disableMenus = function() {
                     // Account Based Marketing > Named Accounts > Actions Button
                     //"addToAccountList", //Add to Account List
                     "deleteNamedAccount", //Delete Named Account
-                    
-                    // Account Based Marketing > Account Lists > New Button
-                    "newAccountList", //Create New Account List
-                    
-                    // Account Based Marketing > Account Lists > Actions Button
-                    "renameAccountList", //Rename Account List
-                    "deleteAccountList", //Delete Account List
                     
                     // Admin > Marketo Custom Objects > Marketo Custom Objects > Actions Button
                     //"mktoCustomObjectEditBtn", //Edit Object
@@ -3047,6 +3040,13 @@ APP.disableMenus = function() {
             }
             
             mItems = Ext4.ComponentQuery.query(
+                // Account Based Marketing > Account Lists > New Button
+                //"contextMenu [action=newAccountList]," + //Create New Account List
+                
+                // Account Based Marketing > Account Lists > Actions Button
+                //"contextMenu [action=renameAccountList]," + //Rename Account List
+                "contextMenu [action=deleteAccountList]," + //Delete Account List
+                
                 // Admin > Mobile Apps & Devices > Mobile Apps > Actions Button
                 //"menu [action=create]," + //New Mobile App
                 //"menu [action=edit]," + //Edit Mobile App
@@ -3089,7 +3089,7 @@ APP.disableMenus = function() {
         }
     }
     else {
-        console.log("Marketo App > Skipped: Disable Toolbar buttons & Actions menu for Named Accounts in Account Based Marketing");
+        console.log("Marketo App > Skipped: Disable Toolbar Buttons & Actions Menu in ABM & Admin Sections");
     }
     
     if (Mkt3
@@ -3100,7 +3100,7 @@ APP.disableMenus = function() {
     && Mkt3.controller.abm.namedAccount.Dashboard.prototype
     && Mkt3.controller.abm.namedAccount.Dashboard.prototype.loadToolBar) {
         Mkt3.controller.abm.namedAccount.Dashboard.prototype.loadToolBar = function() {
-            console.log("Marketo App > Executing: Disable Toolbar buttons for a Named Account in Account Based Marketing");
+            console.log("Marketo App > Executing: Disable Toolbar Buttons for ABM > Named Accounts");
             
             var mItems = Ext4.ComponentQuery.query(
                 // Named Account Toolbar Buttons
@@ -3124,7 +3124,47 @@ APP.disableMenus = function() {
         }
     }
     else {
-        console.log("Marketo App > Skipped: Disable Toolbar buttons for a Named Account in Account Based Marketing");
+        console.log("Marketo App > Skipped: Disable Toolbar Buttons for ABM > Named Accounts");
+    }
+    
+    if (Mkt3
+    && Mkt3.controller
+    && Mkt3.controller.abm
+    && Mkt3.controller.abm.accountList
+    && Mkt3.controller.abm.accountList.Dashboard
+    && Mkt3.controller.abm.accountList.Dashboard.prototype
+    && Mkt3.controller.abm.accountList.Dashboard.prototype.loadNamedAccountsGrid) {
+        Mkt3.controller.abm.accountList.Dashboard.prototype.loadNamedAccountsGrid = function(grid) {
+            console.log("Marketo App > Executing: Disable Toolbar Buttons for ABM > Account Lists > Named Accounts");
+            
+            var dashboard = this.getDashboard(),
+                accountListId = dashboard.compId,
+                isAccountListIdEmpty = Ext4.isEmpty(accountListId);
+            
+            if (!isAccountListIdEmpty) {
+                grid.store.load({
+                    params: {
+                        accountListId: accountListId
+                    }
+                });
+            }
+            
+            var mItems = dashboard.query(
+                // Account Based Marketing > Account Lists > Named Account > Toolbar Buttons
+                "abmAccountListToolbar [action=removeNamedAccount]," //+ //Remove Named Accounts
+            );
+                    
+            if (mItems) {
+                mItems.forEach(function(item) {
+                    if (item) {
+                        item.destroy();
+                    }
+                });
+            }
+        }
+    }
+    else {
+        console.log("Marketo App > Skipped: Disable Toolbar Buttons for ABM > Account Lists > Named Accounts");
     }
     
     if (Mkt3
@@ -3136,7 +3176,7 @@ APP.disableMenus = function() {
         // Disable Marketing Activities > Social App > Toolbar buttons & Actions menu
         var prevSocialAppToolbar = Mkt3.controller.socialApp.SocialApp.prototype.loadToolbar;
         Mkt3.controller.socialApp.SocialApp.prototype.loadToolbar = function(menu, attr) {
-            console.log("Marketo App > Executing: Disable Toolbar buttons & Actions menu for Social Apps in Marketing Activities");
+            console.log("Marketo App > Executing: Disable Toolbar Buttons & Actions Menu for Marketing Activities > Social Apps");
             prevSocialAppToolbar.apply(this, arguments);
 
             var disable = APP.evaluateMenu("socialAppToolbar", null, null, this),
@@ -3169,7 +3209,7 @@ APP.disableMenus = function() {
         }
     }
     else {
-        console.log("Marketo App > Skipped: Disable Toolbar buttons & Actions menu for Social Apps in Marketing Activities");
+        console.log("Marketo App > Skipped: Disable Toolbar Buttons & Actions Menu for Marketing Activities > Social Apps");
     }
     
     if (Mkt3
@@ -3181,7 +3221,7 @@ APP.disableMenus = function() {
         // Disable Marketing Activities > Push Notification > Toolbar buttons & Actions menu
         var prevMobilePushNotificationToolbar = Mkt3.controller.mobilePushNotification.MobilePushNotification.prototype.loadToolbar;
         Mkt3.controller.mobilePushNotification.MobilePushNotification.prototype.loadToolbar = function(menu, attr) {
-            console.log("Marketo App > Executing: Disable Toolbar buttons & Actions menu for Push Notifications in Marketing Activities");
+            console.log("Marketo App > Executing: Disable Toolbar Buttons & Actions Menu for Marketing Activities > Push Notifications");
             prevMobilePushNotificationToolbar.apply(this, arguments);
 
             var disable = APP.evaluateMenu("mobilePushNotification", null, null, this),
@@ -3215,7 +3255,7 @@ APP.disableMenus = function() {
         }
     }
     else {
-        console.log("Marketo App > Skipped: Disable Toolbar buttons & Actions menu for Push Notifications in Marketing Activities");
+        console.log("Marketo App > Skipped: Disable Toolbar Buttons & Actions Menu for Marketing Activities > Push Notifications");
     }
     
     if (Mkt3
@@ -3227,7 +3267,7 @@ APP.disableMenus = function() {
         // Disable Marketing Activities > In App Messages > Toolbar buttons & Actions menu
         var prevInAppMessageToolbar = Mkt3.controller.inAppMessage.InAppMessage.prototype.loadToolbar;
         Mkt3.controller.inAppMessage.InAppMessage.prototype.loadToolbar = function() {
-            console.log("Marketo App > Executing: Disable Toolbar buttons & Actions menu for In App Messages in Marketing Activities");
+            console.log("Marketo App > Executing: Disable Toolbar Buttons & Actions Menu for Marketing Activities > In App Messages");
             prevInAppMessageToolbar.apply(this, arguments);
             
             var toolbar = this.getToolbar(),
@@ -3289,7 +3329,7 @@ APP.disableMenus = function() {
         }
     }
     else {
-        console.log("Marketo App > Skipped: Disable Toolbar buttons & Actions menu for In App Messages in Marketing Activities");
+        console.log("Marketo App > Skipped: Disable Toolbar Buttons & Actions Menu for Marketing Activities > In App Messages");
     }
     
     if (Ext4
@@ -3298,7 +3338,7 @@ APP.disableMenus = function() {
     && Ext4.Component.prototype.showAt) {
         // Disable Marketing Activities > Nurture Program > Stream & Content Actions menus
         Ext4.Component.prototype.showAt = function (x, y, animate) {
-            console.log("Marketo App > Executing: Disable Content & Actions menu for a Nurture Program Stream in Marketing Activities");
+            console.log("Marketo App > Executing: Disable Content & Actions Menus for Marketing Activities > Nurture Program Stream");
             
             var me = this;
             if (!me.rendered
@@ -3519,7 +3559,7 @@ APP.disableMenus = function() {
         }
     }
     else {
-        console.log("Marketo App > Skipped: Disable Content & Actions menu for a Nurture Program Stream in Marketing Activities");
+        console.log("Marketo App > Skipped: Disable Content & Actions Menus for Marketing Activities > Nurture Program Stream");
     }
 }
 
@@ -4092,8 +4132,9 @@ APP.disableFormSaveButtons = function() {
         Ext4.Component.prototype.show = function(animateTarget, cb, scope) {
             console.log("Marketo App > Executing: Disable Form Window Save Buttons");
             
-            if (this.getXType() == "createNamedAccountForm" //ABM > New Named Account
-            || this.getXType() == "addToAccountListForm" //ABM > Add To Account List
+            if (this.getXType() == "createNamedAccountForm" //ABM > Named Accounts > New Named Account
+            || this.getXType() == "addToAccountListForm" //ABM > Named Accounts > Add To Account List
+            || this.getXType() == "createAccountListForm" //ABM > Account Lists > Create New/Rename Account List
             || this.getXType() == "adminUserInviteWizard" //Admin > User & Roles > Users > Invite New User
             || this.getXType() == "adminEditLicensesForm" //Admin > User & Roles > Users > Issue License
             || this.getXType() == "adminSubscriptionInformationForm" //Admin > My Account > Subcription Information
