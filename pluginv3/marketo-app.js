@@ -4139,7 +4139,7 @@ APP.disableFormSaveButtons = function() {
             || this.getXType() == "adminEditLicensesForm" //Admin > User & Roles > Users > Issue License
             || this.getXType() == "adminSubscriptionInformationForm" //Admin > My Account > Subcription Information
 //            || this.getXType() == "adminAccountSettingsForm" //Admin > My Account > Account Settings
-            || this.getXType() == "localePicker" //Admin > My Account/Location > Location Settings
+//            || this.getXType() == "localePicker" //Admin > My Account/Location > Location Settings
             || this.getXType() == "deleteZoneForm" //Admin > Workspaces & Partitions > Workspaces > Delete Workspace
             || this.getXType() == "adminTinyMceSettingForm" //Admin > *Email > Email > Edit Text Editor Settings
             || this.getXType() == "emailEditorSettingsForm" //Admin > Email > Email > Edit Email Editor Settings
