@@ -2,7 +2,8 @@ console.log("Content > Running");
 
 var URL_PATH = "m3-dev",
     LIVE_SCRIPT_LOCATION = "https://marketolive.com/"+URL_PATH+"/pluginv3/marketo-live.min.js",
-    APP_SCRIPT_LOCATION = "https://marketolive.com/"+URL_PATH+"/pluginv3/marketo-app.min.js",
+    MARKETO_LIVE_APP_SCRIPT_LOCATION = "https://marketolive.com/"+URL_PATH+"/pluginv3/marketo-live-app.min.js",
+    MARKETO_DEMO_APP_SCRIPT_LOCATION = "https://marketolive.com/"+URL_PATH+"/pluginv3/marketo-demo-app.min.js",
     POD_SCRIPT_LOCATION = "https://marketolive.com/"+URL_PATH+"/pluginv3/pods.min.js",
 	DELIVERABILITY_TOOLS_SCRIPT_LOCATION = "https://marketolive.com/"+URL_PATH+"/pluginv3/deliverability-tools.min.js",
     INVISION_APP_SCRIPT_LOCATION = "https://marketolive.com/"+URL_PATH+"/pluginv3/invision-app.min.js",
@@ -12,40 +13,50 @@ var URL_PATH = "m3-dev",
     RTP_NAV_BAR_LOCATION = "https://marketolive.com/"+URL_PATH+"/pluginv3/html/turner-rtp.html",
     currentUrl = window.location.href,
 	mktoAppDomain = "^https:\/\/app-[a-z0-9]+\.marketo\.com",
+    mktoLoginDomain = "^https:\/\/login\.marketo\.com|^https:\/\/app\.marketo\.com",
 	mktoDesignerDomain = "^https:\/\/[a-z0-9]+-[a-z0-9]+\.marketodesigner\.com",
-	mktoEmailDesigner = mktoDesignerDomain + "/ds",
-	mktoLandingPageDesigner = mktoDesignerDomain + "/lpeditor/",
 	mktoWizard = mktoAppDomain + "/m#",
     mktoLiveColorPickerDomain = "^https:\/\/marketolive\.com[a-zA-Z0-9-\/]*\/color-picker\.html",
 	rtpDemoDomain = "^http:\/\/sjrtp1.marketo.com\/demo\/$|^http:\/\/cloud4.insightera.com\/demo\/$",
 	emailDeliverabilityDomain = "^https:\/\/250ok.com/",
     invisionAppDomain = "^https:\/\/marketo\.invisionapp\.com\/share\/",
-    customCompanyLandingPage106Fragment = "LPE11826",
-    customCompanyLandingPagePreview106Fragment = "LPP11826",
-    customCompanyLandingPage106aFragment = "LPE10672",
-    customCompanyLandingPagePreview106aFragment = "LPP10672",
-    customCompanyLandingPage106bFragment = "LPE10768",
-    customCompanyLandingPagePreview106bFragment = "LPP10768",
-    customCompanyEmail106Fragment = "EME15464",
-    customCompanyEmail106aFragment = "EME14240",
-    customCompanyEmail106bFragment = "EME13924",
-    form106Fragment = "FOE3576",
-    form106aFragment = "FOE2532",
-    form106bFragment = "FOE2472",
-    push106Fragment = "MPNE29",
-    push106aFragment = "MPNE29",
-    push106bFragment = "MPNE2",
+    disableDemoPluginCheck,
 	loadScript,
 	getCookie,
 	setCookie,
     displayProgressModal,
     grayOutCompletedStories,
-    defaultColor = "rgb(42, 83, 112)",
     overlayEmail,
     overlayLandingPage,
     addNewCompanyListener,
     count;
 
+/**************************************************************************************
+ *  
+ *  This function disables the demo plugin check that the Marketo subscription uses
+ *  to enforce having the plugin installed. The user experience with the Marketo
+ *  feature as implemented today isn't ideal, so this function disables it altogether.
+ *  Obviously, only having the plugin could disable the check, so it's guaranteed that
+ *  the user has the plugin (unless they're very Javascript savvy and paste this in the
+ *  console).
+ *
+ *  @Author Brian Fisher
+ *
+ *  @function
+ *
+ **************************************************************************************/
+
+disableDemoPluginCheck = function() {
+    console.log("Content> Disabling: Demo Plugin Check");
+
+    window.mkto_live_plugin_state = true;
+    
+    if (MktPage
+    && MktPage.validateDemoPlugin) {
+        MktPage.validateDemoPlugin = function() {};
+    }
+}
+    
 loadScript = function(scriptSrc) {
 	console.log("Content > Loading: Script: " + scriptSrc);
 	
@@ -198,6 +209,7 @@ overlayEmail = function(action) {
         buttonTextRegex = new RegExp("signup|sign up|call to action|cta", "i"),
         logo = getCookie("logo"),
         color = getCookie("color"),
+        defaultColor = "rgb(42, 83, 112)",
         logoMaxHeight = "55",
         company,
         companyName,
@@ -532,6 +544,7 @@ overlayLandingPage = function(action) {
         buttonTextRegex = new RegExp("signup|sign up|call to action|cta|submit", "i"),
         logo = getCookie("logo"),
         color = getCookie("color"),
+        defaultColor = "rgb(42, 83, 112)",
         logoFreeFormMaxHeight = "100",
         logoOrigMaxHeight = "55",
         company,
@@ -1246,57 +1259,88 @@ var port = chrome.runtime.connect({
 window.onload = function() {
     console.log("Content > Window: Loaded");
     
-    if (currentUrl.search(mktoAppDomain) != -1
-	&& currentUrl.search(mktoDesignerDomain) == -1
-	&& currentUrl.search(mktoWizard) == -1) {
-		console.log("Content > Location: Marketo App");
-		
-		var oppInfluenceAnalyzerFragment = "AR1559A1!",
-			programAnalyzerFragment = "AR1544A1!",
-			modeler106Fragment = "RCM70A1!",
-			modeler106abFragment = "RCM5A1!",
-			successPathAnalyzerFragment = "AR1682A1!";
-		
-        loadScript(APP_SCRIPT_LOCATION);
-        loadScript(POD_SCRIPT_LOCATION);
-		loadScript(DASHBOARD_SCRIPT_LOCATION);
-		
-		if (currentUrl.search(mktoAppDomain + "/#" + oppInfluenceAnalyzerFragment) != -1
-		|| currentUrl.search(mktoAppDomain + "/#" + programAnalyzerFragment) != -1
-		|| currentUrl.search(mktoAppDomain + "/#" + modeler106Fragment) != -1
-		|| currentUrl.search(mktoAppDomain + "/#" + modeler106abFragment) != -1
-		|| currentUrl.search(mktoAppDomain + "/#" + successPathAnalyzerFragment) != -1) {
-			console.log("Content > Location: Analyzers");
-		
-			Analyzer.prototype.showAnalyzer();
-		}
-    }
-    else if (currentUrl.search(mktoDesignerDomain) != -1
-	|| currentUrl.search(mktoWizard) != -1) {
-        console.log("Content > Location: Designer/Wizard");
+    if ((currentUrl.search(mktoAppDomain) != -1
+        || currentUrl.search(mktoDesignerDomain) != -1
+        || currentUrl.search(mktoWizard) != -1)
+    && currentUrl.search(mktoLoginDomain) == -1) {
+		console.log("Content > Location: Marketo URL");
         
-        loadScript(APP_SCRIPT_LOCATION);
-        addNewCompanyListener();
-        
-        if (currentUrl.search(customCompanyLandingPage106Fragment) != -1
-        || currentUrl.search(customCompanyLandingPage106aFragment) != -1
-        || currentUrl.search(customCompanyLandingPage106bFragment) != -1
-        || currentUrl.search(customCompanyLandingPagePreview106Fragment) != -1
-        || currentUrl.search(customCompanyLandingPagePreview106aFragment) != -1
-        || currentUrl.search(customCompanyLandingPagePreview106bFragment) != -1
-        || currentUrl.search(customCompanyEmail106Fragment) != -1
-        || currentUrl.search(customCompanyEmail106aFragment) != -1
-        || currentUrl.search(customCompanyEmail106bFragment) != -1
-        || currentUrl.search(form106Fragment) != -1
-        || currentUrl.search(form106aFragment) != -1
-        || currentUrl.search(form106bFragment) != -1
-        || currentUrl.search(push106Fragment) != -1
-        || currentUrl.search(push106aFragment) != -1
-        || currentUrl.search(push106bFragment) != -1) {
-            console.log("Content > Location: Asset with Nav Bar");
-            
-            //Analyzer.prototype.showAssets();
-        }
+        var isMarketoPage = window.setInterval(function() {
+            if (typeof(MktPage) !== "undefined") {
+                console.log("Marketo App > Location: Marketo Page");
+                
+                if (MktPage.savedState
+                && MktPage.savedState.custPrefix) {
+                    window.clearInterval(isMarketoPage);
+                    
+                    var accountString = MktPage.savedState.custPrefix,
+                        mktoDemoAccountMatch = "^mktodemoaccount",
+                        mktoAccountStringQe = "globalsales",
+                        mktoAccountStringsMatch = "^mktodemoaccount106$|^mktodemoaccount106d$|^" + mktoAccountStringQe + "$",
+                        oppInfluenceAnalyzerFragment = "AR1559A1!",
+                        programAnalyzerFragment = "AR1544A1!",
+                        modelerFragment = "RCM70A1!",
+                        successPathAnalyzerFragment = "AR1682A1!",
+                        analyzerFragmentsMatch = mktoAppDomain + "/#(" + oppInfluenceAnalyzerFragment + "|" + programAnalyzerFragment + "|" + modelerFragment + "|" + successPathAnalyzerFragment + ")";
+                    
+                    if (accountString.search(mktoAccountStringsMatch) != -1
+                    || getCookie("toggleState") == "false") {
+                        console.log("Marketo App > Location: MarketoLive Instance");
+                        
+                        disableDemoPluginCheck();
+                        loadScript(MARKETO_LIVE_APP_SCRIPT_LOCATION);
+                        
+                        if (currentUrl.search(analyzerFragmentsMatch) != -1) {
+                            console.log("Content > Location: Analyzers");
+                            
+                            Analyzer.prototype.showAnalyzer();
+                        }
+                        
+                        if (currentUrl.search(mktoWizard) == -1
+                        && currentUrl.search(mktoDesignerDomain) == -1) {
+                            loadScript(POD_SCRIPT_LOCATION);
+                            loadScript(DASHBOARD_SCRIPT_LOCATION);
+                        }
+                        else {
+                            console.log("Content > Location: Designer/Wizard");
+                            
+                            if (currentUrl.search(mktoDesignerDomain) != -1) {
+                                console.log("Content > Location: Designer");
+                                
+                                addNewCompanyListener();
+                            }
+                            
+/*                            var customCompanyLandingPage106Fragment = "LPE11826",
+                                customCompanyLandingPagePreview106Fragment = "LPP11826",
+                                customCompanyLandingPage106aFragment = "LPE10672",
+                                customCompanyLandingPagePreview106aFragment = "LPP10672",
+                                customCompanyLandingPage106bFragment = "LPE10768",
+                                customCompanyLandingPagePreview106bFragment = "LPP10768",
+                                customCompanyEmail106Fragment = "EME15464",
+                                customCompanyEmail106aFragment = "EME14240",
+                                customCompanyEmail106bFragment = "EME13924",
+                                form106Fragment = "FOE3576",
+                                form106aFragment = "FOE2532",
+                                form106bFragment = "FOE2472",
+                                push106Fragment = "MPNE29",
+                                push106aFragment = "MPNE29",
+                                push106bFragment = "MPNE2",
+                                navAssetsMatch = "(" + customCompanyLandingPage106Fragment + "|" + customCompanyLandingPagePreview106Fragment + "|" + customCompanyLandingPage106aFragment + "|" + customCompanyLandingPagePreview106aFragment + "|" + customCompanyLandingPage106bFragment + "|" + customCompanyLandingPagePreview106bFragment + "|" + customCompanyEmail106Fragment + "|" + customCompanyEmail106aFragment + "|" + customCompanyEmail106bFragment + "|" + form106Fragment + "|" + form106aFragment + "|" + form106bFragment + "|" + push106Fragment + "|" + push106aFragment + "|" + push106bFragment + ")";
+                            
+                            if (currentUrl.search(navAssetsMatch) != -1) {
+                                console.log("Content > Location: Asset with Nav Bar");
+                                
+                                Analyzer.prototype.showAssets();
+                            }
+*/                            
+                        }
+                    }
+                    else if (accountString.search(mktoDemoAccountMatch) != -1) {
+                        loadScript(MARKETO_DEMO_APP_SCRIPT_LOCATION);
+                    }
+                }
+            }
+        }, 0);
     }
     else if (currentUrl.search(mktoLiveColorPickerDomain) != -1) {
 		console.log("Content > Location: Color-Picker Page");
@@ -1334,7 +1378,6 @@ window.onload = function() {
             document.getElementById('second-incorrect').style.display = "block";
         }
     }
-
     else if (currentUrl.search(rtpDemoDomain) != -1) {
 		console.log("Content > Location: RTP Demo");
 		
@@ -1352,13 +1395,11 @@ window.onload = function() {
         }
         window.onload = pageLoaded();
     }
-	
 	else if (currentUrl.search(emailDeliverabilityDomain) != -1) {
 		console.log("Content > Location: Deliverability Tools");
 		
 		loadScript(DELIVERABILITY_TOOLS_SCRIPT_LOCATION);
 	}
-    
     else if (currentUrl.search(invisionAppDomain) != -1) {
         console.log("Content > Location: InVision App");
         

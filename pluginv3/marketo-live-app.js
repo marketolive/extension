@@ -24,49 +24,56 @@ var currentUrl = window.location.href,
     currentProtocol = window.location.protocol,
     currentHost = window.location.host,
     mktoAppDomain = "^https:\/\/app-[a-z0-9]+\.marketo\.com",
-    mktoAppMatch = "https://app-*.marketo.com",
-    mktoLoginDomain = "^https:\/\/login\.marketo\.com",
-    mktoAppLoginDomain = "^https:\/\/app\.marketo\.com",
     mktoDesignerDomain = "^https:\/\/[a-z0-9]+-[a-z0-9]+\.marketodesigner\.com",
-    mktoDesignerMatch = "https://*.marketodesigner.com/*",
-    rtpDemoDomain = "^http:\/\/sjrtp1.marketo.com\/demo\/$|^http:\/\/cloud4.insightera.com\/demo\/$",
-    emailDeliverabilityDomain = "^https:\/\/250ok.com/",
     mktoWizard = mktoAppDomain + "/m#",
     mktoEmailDesigner = mktoDesignerDomain + "/ds",
     mktoLandingPageDesigner = mktoDesignerDomain + "/lpeditor/",
-    mktoDemoAccountMatch = "^mktodemoaccount",
-    mktoAccountString106 = "mktodemoaccount106",
-    mktoAccountString106a = "mktodemoaccount106a",
-    mktoAccountString106b = "mktodemoaccount106b",
-    mktoAccountString106d = "mktodemoaccount106d",
-    mktoAccountStringQe = "globalsales",
-    mktoAccountStringsMatch = "^"+mktoAccountString106+"$|^"+mktoAccountString106a+"$|^"+mktoAccountString106b+"$|^"+mktoAccountString106d+"$",
-    mktoAccountStrings106and106dMatch = "^"+mktoAccountString106+"$|^"+mktoAccountString106d+"$",
     mktoEmailInsightsLink = "http://www.marketolive.com/en/analytics/email-insights-summit-demo-1",
     mktoEmailDeliverabilityToolsLink = "https://250ok.com/login",
+    mktoDemoAccountMatch = "^mktodemoaccount",
     mktoMyMarketoFragment = "MM0A1",
-	mktoMarketingActivitiesDefaultFragment = "MA15A1",
-    mktoMarketingActivitiesMarketingFragment = "MA19802A1",
+    mktoCalendarFragment = "CAL",
+    mktoAnalyticsFragment = "AR",
+    mktoAnalyticsDefaultFragment = "AH0A1ZN17",
+    mktoAccountBasedMarketingFragment = "ABM0A1",
+    mktoAdBridgeSmartListFragment = "SL1119566B2LA1",
+    mktoUserWorkspaceId = 172,
+    userWorkspaceName = "My Workspace",
+    currUrlFragment,
+    currCompFragment,
+    userName,
+    pod,
+    
+    mktoAccountStringQe = "globalsales",
+    mktoAccountString106 = "mktodemoaccount106",
+    mktoAccountString106d = "mktodemoaccount106d",
+    mktoAccountStringsMatch = "^" + mktoAccountString106 + "$|^" + mktoAccountString106d + "$",
+    
+    mktoMarketingActivitiesDefaultFragment = "MA15A1",
+    mktoMarketingActivitiesUserFragment = "MA19802A1",
     mktoMarketingActivitiesJapaneseFragment = "MA19848A1",
     mktoMarketingActivitiesFinservFragment = "MA20806A1",
     mktoMarketingActivitiesHealthcareFragment = "MA20826A1",
     mktoMarketingActivitiesHigherEdFragment = "MA20846A1",
-	mktoLeadDatabaseDefaultFragment = "ML0A1ZN2",
-    mktoLeadDatabaseMarketingFragment = "ML0A1ZN19788",
+    mktoLeadDatabaseDefaultFragment = "ML0A1ZN2",
+    mktoLeadDatabaseUserFragment = "ML0A1ZN19788",
     mktoLeadDatabaseJapaneseFragment = "ML0A1ZN19834",
     mktoLeadDatabaseFinservFragment = "ML0A1ZN20792",
     mktoLeadDatabaseHealthcareFragment = "ML0A1ZN20812",
     mktoLeadDatabaseHigherEdFragment = "ML0A1ZN20832",
-    mktoAnalyticsDefaultFragment = "AH0A1ZN17",
-    mktoAccountBasedMarketingFragment = "ABM0A1",
+    mktoAdminEmailEmailFragment = "EA0A1",
+    mktoAdminWebServicesFragment = "MW0A1",
+    mktoDisableButtonsFragmentMatch = "^" + mktoMarketingActivitiesDefaultFragment + "$|^" + mktoMarketingActivitiesUserFragment + "$|^" + mktoMarketingActivitiesJapaneseFragment + "$|^" + mktoMarketingActivitiesFinservFragment + "$|^" + mktoMarketingActivitiesHealthcareFragment + "$|^" + mktoMarketingActivitiesHigherEdFragment + "$|^" + mktoLeadDatabaseDefaultFragment + "$|^" + mktoLeadDatabaseUserFragment + "$|^" + mktoLeadDatabaseJapaneseFragment + "$|^" + mktoLeadDatabaseFinservFragment + "$|^" + mktoLeadDatabaseHealthcareFragment + "$|^" + mktoLeadDatabaseHigherEdFragment + "$|^" + mktoAdminEmailEmailFragment + "$|^" + mktoAdminWebServicesFragment + "$",
+    
     mktoOppInfluenceAnalyzerFragment = "AR1559A1!",
     mktoProgramAnalyzerFragment = "AR1544A1!",
-    mktoModeler106Fragment = "RCM70A1!",
-    mktoModeler106abFragment = "RCM5A1!",
+    mktoModelerFragment = "RCM70A1!",
     mktoSuccessPathAnalyzerFragment = "AR1682A1!",
-    mktoAdBridgeSmartListFragment = "SL1119566B2LA1",
+    mktoAnalyzersFragmentMatch = "^" + mktoOppInfluenceAnalyzerFragment + "$|^" + mktoProgramAnalyzerFragment + "$|^" + mktoModelerFragment + "$|^" + mktoSuccessPathAnalyzerFragment + "$",
+    
     mktoEmailDesignerFragment = "EME",
     mktoEmailPreviewFragmentRegex = new RegExp("^EME[0-9]+&isPreview", "i"),
+    mktoEmailPreviewFragment2 = "EME[0-9]+&isPreview",
     mktoEmailPreviewFragment = "EMP",
     mktoLandingPageDesignerFragment = "LPE",
     mktoLandingPagePreviewFragment = "LPPD",
@@ -76,23 +83,15 @@ var currentUrl = window.location.href,
     mktoSocialAppWizardFragment = "SOAE",
     mktoABtestWizardFragment = "EBE",
     mktoEmailTestWizardFragment = "CCE",
-    mktoCalendarFragment = "CAL",
-    mktoAnalyticsFragment = "AR",
-    mktoAdminEmailEmailFragment = "EA0A1",
-    mktoAdminWebServicesFragment = "MW0A1",
+    mktoDesignersFragmentMatch = "^" + mktoEmailDesignerFragment + "$|^" + mktoEmailPreviewFragment2 + "|^" + mktoEmailPreviewFragment + "$|^" + mktoLandingPageDesignerFragment + "$|^" + mktoLandingPagePreviewFragment + "$|^" + mktoFormWizardFragment + "$|^" + mktoMobilePushNotificationWizardFragment + "$|^" + mktoInAppMessageWizardFragment + "$|^" + mktoSocialAppWizardFragment + "$|^" + mktoABtestWizardFragment + "$|^" + mktoEmailTestWizardFragment + "$",
+    
     mktoDefaultWorkspaceId = 1,
-    mktoMarketingWorkspaceId = 172,
     mktoJapaneseWorkspaceId = 173,
     mktoFinservWorkspaceId = 174,
     mktoHealthcareWorkspaceId = 175,
     mktoHigherEdWorkspaceId = 176,
-    userWorkspaceName = "My Workspace",
-    isMktoLiveInstance = false,
-    currUrlFragment,
-    currCompFragment,
-    userName,
-    pod,
-
+    mktoGoldenWorkspacesMatch = "^" + mktoDefaultWorkspaceId + "$|^" + mktoJapaneseWorkspaceId + "$|^" + mktoFinservWorkspaceId + "$|^" + mktoHealthcareWorkspaceId + "$|^" + mktoHigherEdWorkspaceId + "$",
+    
     APP = APP || {};
 
 /**************************************************************************************
@@ -143,17 +142,12 @@ APP.getCookie = function(cookieName) {
 APP.disableDemoPluginCheck = function() {
     console.log("Marketo App > Disabling: Demo Plugin Check");
 
-    if (window
-    && window.mkto_live_plugin_state) {
-        window.mkto_live_plugin_state = true;
-    }
+    window.mkto_live_plugin_state = true;
     
     if (MktPage
     && MktPage.validateDemoPlugin) {
         MktPage.validateDemoPlugin = function() {};
     }
-    
-    isMktoLiveInstance = true;
 }
 
 /**************************************************************************************
@@ -538,7 +532,7 @@ APP.overrideAnalyticsTiles = function() {
             
             if (MktPage
             && MktPage.savedState
-            && MktPage.savedState.custPrefix.search(mktoAccountStrings106and106dMatch) != -1
+            && MktPage.savedState.custPrefix.search(mktoAccountStringsMatch) != -1
             && MktCanvas
             && MktCanvas.getActiveTab()
             && MktCanvas.getActiveTab().config
@@ -1337,11 +1331,7 @@ APP.overrideAssetSaveEdit = function() {
                 console.log("Marketo App > Executing: Asset Save Edit");
                 var currWorkspaceId = MktCanvas.getActiveTab().config.accessZoneId;
                 
-                if (currWorkspaceId != mktoDefaultWorkspaceId
-                && currWorkspaceId != mktoJapaneseWorkspaceId
-                && currWorkspaceId != mktoFinservWorkspaceId
-                && currWorkspaceId != mktoHealthcareWorkspaceId
-                && currWorkspaceId != mktoHigherEdWorkspaceId) {
+                if (currWorkspaceId.toString().search(mktoGoldenWorkspacesMatch) == -1) {
                     var isFolderEdit = false;
                 
                     if ((MktExplorer.getEl().dom.ownerDocument.title.search("Marketing Activities") != -1
@@ -1350,7 +1340,7 @@ APP.overrideAssetSaveEdit = function() {
                             || this.titleId == "pname"))
                     || MktExplorer.getEl().dom.ownerDocument.title.search("Marketing Activities") == -1) {
                         
-                        if (MktCanvas.getActiveTab().config.accessZoneId == mktoMarketingWorkspaceId
+                        if (MktCanvas.getActiveTab().config.accessZoneId == mktoUserWorkspaceId
                         && this.titleId == "pname") {
                             if (this.titleValue == userName) {
                                 isFolderEdit = true;
@@ -1495,11 +1485,7 @@ APP.overrideAssetSaveEdit = function() {
                     }
                 }
                 
-                if (currWorkspaceId == mktoDefaultWorkspaceId
-                || currWorkspaceId == mktoJapaneseWorkspaceId
-                || currWorkspaceId == mktoFinservWorkspaceId
-                || currWorkspaceId == mktoHealthcareWorkspaceId
-                || currWorkspaceId == mktoHigherEdWorkspaceId) {
+                if (currWorkspaceId.toString().search(mktoGoldenWorkspacesMatch) != -1) {
                     var toUpdateNodeText = false;
 
                     MktSession.clockCursor(true);
@@ -1738,7 +1724,7 @@ APP.overrideRenamingFolders = function() {
             
             if (startValue == userName
             && this.currNode.parentNode.attributes.system == true
-            && this.currNode.attributes.accessZoneId == mktoMarketingWorkspaceId) {
+            && this.currNode.attributes.accessZoneId == mktoUserWorkspaceId) {
                 if (folder) {
                     folder.setText(startValue);
                 }
@@ -1781,7 +1767,7 @@ APP.overrideRenamingFolders = function() {
             
             if (startValue == userName
             && this.currNode.parentNode.attributes.system == true
-            && this.currNode.attributes.accessZoneId == mktoMarketingWorkspaceId) {
+            && this.currNode.attributes.accessZoneId == mktoUserWorkspaceId) {
                 MktFolder.currNode.setText(startValue);
                 MktSession.unclockCursor();
             }
@@ -1852,7 +1838,7 @@ APP.hideFoldersOnImport = function() {
                     && MktCanvas
                     && MktCanvas.getActiveTab()
                     && MktCanvas.getActiveTab().config
-                    && MktCanvas.getActiveTab().config.accessZoneId == mktoMarketingWorkspaceId) {
+                    && MktCanvas.getActiveTab().config.accessZoneId == mktoUserWorkspaceId) {
                         console.log("Marketo App > Executing: Hide Campaign Folders On Program Import via Override");
                         
                         var ii;
@@ -1897,7 +1883,7 @@ APP.hidePageGrid = function() {
             if (MktCanvas
             && MktCanvas.getActiveTab()
             && MktCanvas.getActiveTab().config
-            && MktCanvas.getActiveTab().config.accessZoneId == mktoMarketingWorkspaceId) {
+            && MktCanvas.getActiveTab().config.accessZoneId == mktoUserWorkspaceId) {
                 switch (this.canvas) {
                     // Design Studio > Landing Pages
                     case "landingCanvasLP":
@@ -1980,22 +1966,14 @@ APP.evaluateMoveItem = function (nodeToMove, destNode) {
             depth;
         
         if ((nodeToMove.attributes
-            && (nodeToMove.attributes.accessZoneId == mktoDefaultWorkspaceId
-                || nodeToMove.attributes.accessZoneId == mktoJapaneseWorkspaceId
-                || nodeToMove.attributes.accessZoneId == mktoFinservWorkspaceId
-                || nodeToMove.attributes.accessZoneId == mktoHealthcareWorkspaceId
-                || nodeToMove.attributes.accessZoneId == mktoHigherEdWorkspaceId))
+            && (nodeToMove.attributes.accessZoneId.toString().search(mktoGoldenWorkspacesMatch) != -1))
         || (destNode.attributes
-            && (destNode.attributes.accessZoneId == mktoDefaultWorkspaceId
-                || destNode.attributes.accessZoneId == mktoJapaneseWorkspaceId
-                || destNode.attributes.accessZoneId == mktoFinservWorkspaceId
-                || destNode.attributes.accessZoneId == mktoHealthcareWorkspaceId
-                || destNode.attributes.accessZoneId == mktoHigherEdWorkspaceId))) {
+            && (destNode.attributes.accessZoneId.toString().search(mktoGoldenWorkspacesMatch) != -1))) {
             
             return false;
         }
-        else if (nodeToMove.attributes.accessZoneId == mktoMarketingWorkspaceId
-        && destNode.attributes.accessZoneId == mktoMarketingWorkspaceId) {
+        else if (nodeToMove.attributes.accessZoneId == mktoUserWorkspaceId
+        && destNode.attributes.accessZoneId == mktoUserWorkspaceId) {
         
             currNode = nodeToMove;
             depth = currNode.getDepth();
@@ -2015,7 +1993,7 @@ APP.evaluateMoveItem = function (nodeToMove, destNode) {
             }
             return false;
         }
-        else if (nodeToMove.attributes.accessZoneId == mktoMarketingWorkspaceId) {
+        else if (nodeToMove.attributes.accessZoneId == mktoUserWorkspaceId) {
             
             currNode = nodeToMove;
             depth = currNode.getDepth();
@@ -2027,7 +2005,7 @@ APP.evaluateMoveItem = function (nodeToMove, destNode) {
             }
             return false;
         }
-        else if (destNode.attributes.accessZoneId == mktoMarketingWorkspaceId) {
+        else if (destNode.attributes.accessZoneId == mktoUserWorkspaceId) {
             
             currNode = destNode;
             depth = currNode.getDepth();
@@ -2130,16 +2108,12 @@ APP.evaluateMenu = function (triggeredFrom, menu, canvas, toolbar) {
                 if (menu
                 && menu.currNode
                 && menu.currNode.attributes
-                && (menu.currNode.attributes.accessZoneId == mktoDefaultWorkspaceId
-                    || menu.currNode.attributes.accessZoneId == mktoJapaneseWorkspaceId
-                    || menu.currNode.attributes.accessZoneId == mktoFinservWorkspaceId
-                    || menu.currNode.attributes.accessZoneId == mktoHealthcareWorkspaceId
-                    || menu.currNode.attributes.accessZoneId == mktoHigherEdWorkspaceId
-                    || menu.currNode.attributes.accessZoneId == mktoMarketingWorkspaceId)) {
+                && (menu.currNode.attributes.accessZoneId.toString().search(mktoGoldenWorkspacesMatch) != -1
+                    || menu.currNode.attributes.accessZoneId == mktoUserWorkspaceId)) {
                 
                     toBeDisabled = true;
                     
-                    if (menu.currNode.attributes.accessZoneId == mktoMarketingWorkspaceId) {
+                    if (menu.currNode.attributes.accessZoneId == mktoUserWorkspaceId) {
                         var ii,
                             currNode = menu.currNode,
                             depth = currNode.getDepth();
@@ -2159,12 +2133,8 @@ APP.evaluateMenu = function (triggeredFrom, menu, canvas, toolbar) {
                             || !menu.currNode.attributes.accessZoneId)
                         && (canvas
                             && canvas.config
-                            && (canvas.config.accessZoneId == mktoDefaultWorkspaceId
-                                || canvas.config.accessZoneId == mktoJapaneseWorkspaceId
-                                || canvas.config.accessZoneId == mktoFinservWorkspaceId
-                                || canvas.config.accessZoneId == mktoHealthcareWorkspaceId
-                                || canvas.config.accessZoneId == mktoHigherEdWorkspaceId
-                                || (canvas.config.accessZoneId == mktoMarketingWorkspaceId
+                            && (canvas.config.accessZoneId.toString().search(mktoGoldenWorkspacesMatch) != -1
+                                || (canvas.config.accessZoneId == mktoUserWorkspaceId
                                     && ((canvas.config.expNodeId
                                             && MktExplorer.getNodeById(canvas.config.expNodeId))
                                         || (canvas.config.dlZoneFolderId
@@ -2172,7 +2142,7 @@ APP.evaluateMenu = function (triggeredFrom, menu, canvas, toolbar) {
                     
                     toBeDisabled = true;
                                     
-                    if (canvas.config.accessZoneId == mktoMarketingWorkspaceId) {
+                    if (canvas.config.accessZoneId == mktoUserWorkspaceId) {
                         var ii,
                             currNode,
                             depth;
@@ -2210,12 +2180,8 @@ APP.evaluateMenu = function (triggeredFrom, menu, canvas, toolbar) {
             case "button":
                 if (canvas
                     && canvas.config
-                    && (canvas.config.accessZoneId == mktoDefaultWorkspaceId
-                        || canvas.config.accessZoneId == mktoJapaneseWorkspaceId
-                        || canvas.config.accessZoneId == mktoFinservWorkspaceId
-                        || canvas.config.accessZoneId == mktoHealthcareWorkspaceId
-                        || canvas.config.accessZoneId == mktoHigherEdWorkspaceId
-                        || (canvas.config.accessZoneId == mktoMarketingWorkspaceId
+                    && (canvas.config.accessZoneId.toString().search(mktoGoldenWorkspacesMatch) != -1
+                        || (canvas.config.accessZoneId == mktoUserWorkspaceId
                             && ((canvas.config.expNodeId
                                     && MktExplorer.getNodeById(canvas.config.expNodeId))
                                 || (canvas.config.dlZoneFolderId
@@ -2223,7 +2189,7 @@ APP.evaluateMenu = function (triggeredFrom, menu, canvas, toolbar) {
                     
                     toBeDisabled = true;
                                     
-                    if (canvas.config.accessZoneId == mktoMarketingWorkspaceId) {
+                    if (canvas.config.accessZoneId == mktoUserWorkspaceId) {
                         var ii,
                             currNode,
                             depth;
@@ -2257,18 +2223,14 @@ APP.evaluateMenu = function (triggeredFrom, menu, canvas, toolbar) {
             
             case "socialAppToolbar":
                 if (toolbar.getSocialApp()
-                    && (toolbar.getSocialApp().get('zoneId') == mktoDefaultWorkspaceId
-                        || toolbar.getSocialApp().get('zoneId') == mktoJapaneseWorkspaceId
-                        || toolbar.getSocialApp().get('zoneId') == mktoFinservWorkspaceId
-                        || toolbar.getSocialApp().get('zoneId') == mktoHealthcareWorkspaceId
-                        || toolbar.getSocialApp().get('zoneId') == mktoHigherEdWorkspaceId)
-                    || (toolbar.getSocialApp().get('zoneId') == mktoMarketingWorkspaceId
+                    && (toolbar.getSocialApp().get('zoneId').toString().search(mktoGoldenWorkspacesMatch) != -1)
+                    || (toolbar.getSocialApp().get('zoneId') == mktoUserWorkspaceId
                         && toolbar.getSocialApp().getNodeJson()
                         && toolbar.getSocialApp().getNodeJson().id
                         && MktExplorer.getNodeById(toolbar.getSocialApp().getNodeJson().id))) {
                     toBeDisabled = true;
                     
-                    if (toolbar.getSocialApp().get('zoneId') == mktoMarketingWorkspaceId) {
+                    if (toolbar.getSocialApp().get('zoneId') == mktoUserWorkspaceId) {
                         var ii,
                             currNode = MktExplorer.getNodeById(toolbar.getSocialApp().getNodeJson().id),
                             depth = currNode.getDepth();
@@ -2287,18 +2249,14 @@ APP.evaluateMenu = function (triggeredFrom, menu, canvas, toolbar) {
             
             case "mobilePushNotification":
                 if (toolbar.getMobilePushNotification()
-                    && (toolbar.getMobilePushNotification().get('zoneId') == mktoDefaultWorkspaceId
-                        || toolbar.getMobilePushNotification().get('zoneId') == mktoJapaneseWorkspaceId
-                        || toolbar.getMobilePushNotification().get('zoneId') == mktoFinservWorkspaceId
-                        || toolbar.getMobilePushNotification().get('zoneId') == mktoHealthcareWorkspaceId
-                        || toolbar.getMobilePushNotification().get('zoneId') == mktoHigherEdWorkspaceId)
-                    || (toolbar.getMobilePushNotification().get('zoneId') == mktoMarketingWorkspaceId
+                    && (toolbar.getMobilePushNotification().get('zoneId').toString().search(mktoGoldenWorkspacesMatch) != -1)
+                    || (toolbar.getMobilePushNotification().get('zoneId') == mktoUserWorkspaceId
                         && toolbar.getMobilePushNotification().getNodeJson()
                         && toolbar.getMobilePushNotification().getNodeJson().id
                         && MktExplorer.getNodeById(toolbar.getMobilePushNotification().getNodeJson().id))) {
                     toBeDisabled = true;
                     
-                    if (toolbar.getMobilePushNotification().get('zoneId') == mktoMarketingWorkspaceId) {
+                    if (toolbar.getMobilePushNotification().get('zoneId') == mktoUserWorkspaceId) {
                         var ii,
                             currNode = MktExplorer.getNodeById(toolbar.getMobilePushNotification().getNodeJson().id),
                             depth = currNode.getDepth();
@@ -2317,18 +2275,14 @@ APP.evaluateMenu = function (triggeredFrom, menu, canvas, toolbar) {
             
             case "inAppMessage":
                 if (toolbar.getInAppMessage()
-                    && (toolbar.getInAppMessage().get('zoneId') == mktoDefaultWorkspaceId
-                        || toolbar.getInAppMessage().get('zoneId') == mktoJapaneseWorkspaceId
-                        || toolbar.getInAppMessage().get('zoneId') == mktoFinservWorkspaceId
-                        || toolbar.getInAppMessage().get('zoneId') == mktoHealthcareWorkspaceId
-                        || toolbar.getInAppMessage().get('zoneId') == mktoHigherEdWorkspaceId)
-                    || (toolbar.getInAppMessage().get('zoneId') == mktoMarketingWorkspaceId
+                    && (toolbar.getInAppMessage().get('zoneId').toString().search(mktoGoldenWorkspacesMatch) != -1)
+                    || (toolbar.getInAppMessage().get('zoneId') == mktoUserWorkspaceId
                         && toolbar.getInAppMessage().getNodeJson()
                         && toolbar.getInAppMessage().getNodeJson().id
                         && MktExplorer.getNodeById(toolbar.getInAppMessage().getNodeJson().id))) {
                     toBeDisabled = true;
                     
-                    if (toolbar.getInAppMessage().get('zoneId') == mktoMarketingWorkspaceId) {
+                    if (toolbar.getInAppMessage().get('zoneId') == mktoUserWorkspaceId) {
                         var ii,
                             currNode = MktExplorer.getNodeById(toolbar.getInAppMessage().getNodeJson().id),
                             depth = currNode.getDepth();
@@ -4853,7 +4807,7 @@ APP.getEmailIds = function(accountString) {
             // Default Actionable Insight: Sales Auto Reach Out
             emIds.push(12902, 12903, 12904);
             // Japanese Default Content Unknown
-            emIds.push(16474, 17254, 16403);
+            emIds.push(16474);
             // Japanese Event Roadshow Unknown
             emIds.push(18117, 18118, 18122, 18119, 18116, 18123, 18120, 18121, 18124);
             // Japanese Replicate Success Webinar
@@ -4870,26 +4824,6 @@ APP.getEmailIds = function(accountString) {
             emIds.push(20327)
             // Higher Ed Services DIY Design
             emIds.push(20329)
-            break;
-        case mktoAccountString106a:
-            // DIY Design
-            emIds.push(14240);
-            // Intelligent Nurturing
-            emIds.push(10171, 10173, 10172, 10169, 9957, 9974, 9968, 10174, 9972, 9973, 10170, 9962);
-            // Replicate Success Roadshow
-            emIds.push(10010, 10179, 10180, 10181, 10182, 10183, 10184);
-            // Replicate Success Webinar
-            emIds.push(4894, 3764, 3765, 3767, 3766, 3762);
-            break;
-        case mktoAccountString106b:
-            // DIY Design
-            emIds.push(13924);
-            // Intelligent Nurturing
-            emIds.push(12818, 12820, 12819, 12816, 12811, 12815, 12812, 12821, 12813, 12814, 12817, 12823);
-            // Replicate Success Roadshow
-            emIds.push(10010, 10179, 10180, 12845, 10181, 10182, 10183, 10184);
-            // Replicate Success Webinar
-            emIds.push(4894, 3764, 3765, 3767, 3766, 3762);
             break;
         case mktoAccountString106d:
             // Default DIY Design
@@ -4938,13 +4872,6 @@ APP.getEmailIds = function(accountString) {
  *  
  **************************************************************************************/
 
-if ((currentUrl.search(mktoAppDomain) != -1
-|| currentUrl.search(mktoDesignerDomain) != -1
-|| currentUrl.search(mktoWizard) != -1)
-//&& currentUrl.search("#CAL") == -1
-) {
-    console.log("Marketo App > Location: Marketo URL");
-
     var isMktPageApp = window.setInterval(function() {
         if (typeof(MktPage) !== "undefined") {
             console.log("Marketo App > Location: Marketo Page");
@@ -4987,8 +4914,6 @@ if ((currentUrl.search(mktoAppDomain) != -1
             || APP.getCookie("toggleState") == "false") {
                 console.log("Marketo App > Location: MarketoLive Instance");
                 
-                window.mkto_live_plugin_state = true;
-
                 // If the user is the admin or ghost, disable
                 if (userId.search("^admin\.?[a-z]{0,2}@mktodemoaccount") != -1
                 || userId.search("^mktodemoaccount[a-z0-9]*@marketo\.com") != -1
@@ -5006,8 +4931,6 @@ if ((currentUrl.search(mktoAppDomain) != -1
                         console.log("Marketo App > User: Admin is now a normal user");
                     }
                 }
-
-//                var prevWorkspaceId;
                 
                 // Disabling Demo Plugin Check
                 APP.disableDemoPluginCheck();
@@ -5015,20 +4938,7 @@ if ((currentUrl.search(mktoAppDomain) != -1
                 if (currUrlFragment == mktoMyMarketoFragment) {
                     APP.overrideHomeTiles();
                 }
-				else if (currUrlFragment == mktoMarketingActivitiesDefaultFragment
-				|| currUrlFragment == mktoMarketingActivitiesMarketingFragment
-                || currUrlFragment == mktoMarketingActivitiesJapaneseFragment
-                || currUrlFragment == mktoMarketingActivitiesFinservFragment
-                || currUrlFragment == mktoMarketingActivitiesHealthcareFragment
-                || currUrlFragment == mktoMarketingActivitiesHigherEdFragment
-                || currUrlFragment == mktoLeadDatabaseDefaultFragment
-                || currUrlFragment == mktoLeadDatabaseMarketingFragment
-                || currUrlFragment == mktoLeadDatabaseJapaneseFragment
-                || currUrlFragment == mktoLeadDatabaseFinservFragment
-                || currUrlFragment == mktoLeadDatabaseHealthcareFragment
-                || currUrlFragment == mktoLeadDatabaseHigherEdFragment
-                || currUrlFragment == mktoAdminEmailEmailFragment
-                || currUrlFragment == mktoAdminWebServicesFragment) {
+				else if (currUrlFragment.search(mktoDisableButtonsFragmentMatch) != -1) {
 					APP.disableButtons();
 				}
                 else if (currUrlFragment == mktoAnalyticsDefaultFragment) {
@@ -5046,16 +4956,7 @@ if ((currentUrl.search(mktoAppDomain) != -1
                 }
 
                 // Only execute this block if the user is not on an editor page.
-                if (currCompFragment != mktoEmailDesignerFragment
-                && currCompFragment != mktoEmailPreviewFragment
-                && currCompFragment != mktoLandingPageDesignerFragment
-                && currCompFragment != mktoLandingPagePreviewFragment
-                && currCompFragment != mktoFormWizardFragment
-                && currCompFragment != mktoMobilePushNotificationWizardFragment
-                && currCompFragment != mktoInAppMessageWizardFragment
-                && currCompFragment != mktoSocialAppWizardFragment
-                && currCompFragment != mktoABtestWizardFragment
-                && currCompFragment != mktoEmailTestWizardFragment) {
+                if (currCompFragment.search(mktoDesignersFragmentMatch) == -1) {
                     
                     if (accountString.search(mktoAccountStringsMatch) != -1) {
                         APP.overrideTreeNodeExpand();
@@ -5091,27 +4992,8 @@ if ((currentUrl.search(mktoAppDomain) != -1
                         APP.disableFormSaveButtons();
                         APP.disableAdminSaveButtons();
                     }
-/*
-                    // Storing previous Workspace ID
-                    if (currUrlFragment != mktoMyMarketoFragment) {
-						var isMktCanvas = window.setInterval(function() {
-							if (MktCanvas
-                            && MktCanvas.getActiveTab()
-                            && MktCanvas.getActiveTab().config) {
-								console.log("Marketo App > Location: Marketo Canvas Active Tab");
-								
-                                window.clearInterval(isMktCanvas);
-								prevWorkspaceId = MktCanvas.getActiveTab().config.accessZoneId;
-							}
-						}, 0);
-					}
-*/
-                    // Marketing ROI, Funnel Analysis
-                    if (currUrlFragment == mktoOppInfluenceAnalyzerFragment
-					|| currUrlFragment == mktoProgramAnalyzerFragment
-					|| currUrlFragment == mktoModeler106Fragment
-					|| currUrlFragment == mktoModeler106abFragment
-					|| currUrlFragment == mktoSuccessPathAnalyzerFragment) {
+                    
+                    if (currUrlFragment.search(mktoAnalyzersFragmentMatch) != -1) {
                         console.log("Marketo App > Location: Analytics");
 
                         APP.injectAnalyzerNavBar();
@@ -5205,26 +5087,6 @@ if ((currentUrl.search(mktoAppDomain) != -1
                             socIds.push(1021, 1023, 1025, 1022, 1020);
                             // Social Apps: Higher Ed DIY Design
                             socIds.push(860, 1024, 861, 859, 858);
-                            break;
-                        case mktoAccountString106a:
-                            // Custom Landing Page
-                            lpIds["dpageid_10672"] = "dpageid_10672";
-                            // Responsive Landing Page
-                            lpIds["dpageid_10454"] = "dpageid_10454";
-                            // DIY Design and Replicate Success Forms
-                            formIds.push(2532, 1749, 1900);
-                            // DIY Design and Mobile Engagement Push Notifications 
-                            pushIds.push(29, 26);
-                            break;
-                        case mktoAccountString106b:
-                            // Landing Page
-                            lpIds["dpageid_10760"] = "dpageid_10768";
-                            // Responsive Landing Page
-                            lpIds["dpageid_10762"] = "dpageid_10762";
-                            // DIY Design and Replicate Success Forms
-                            formIds.push(2472, 1749, 1900);
-                            // DIY Design and Mobile Engagement Push Notifications 
-                            pushIds.push(2, 1);
                             break;
                         case mktoAccountString106d:
                             // DIY Design: Landing Page, Landing Page Responsive
@@ -5344,11 +5206,7 @@ if ((currentUrl.search(mktoAppDomain) != -1
                                         if (record.get('zoneId')) {
                                             var currAssetWorkspaceId = record.get('zoneId');
                                             console.log("Marketo App > currAssetWorkspaceId = " + currAssetWorkspaceId);
-                                            if (currAssetWorkspaceId == mktoDefaultWorkspaceId
-                                            || currAssetWorkspaceId == mktoJapaneseWorkspaceId
-                                            || currAssetWorkspaceId == mktoFinservWorkspaceId
-                                            || currAssetWorkspaceId == mktoHealthcareWorkspaceId
-                                            || currAssetWorkspaceId == mktoHigherEdWorkspaceId
+                                            if (currAssetWorkspaceId.toString().search(mktoGoldenWorkspacesMatch) != -1
                                             || APP.getCookie("toggleState") == "false") {
                                                 //APP.disablePropertyPanelSaving();
                                                 if (Ext4
@@ -5397,11 +5255,7 @@ if ((currentUrl.search(mktoAppDomain) != -1
                         && Mkt3.app.controllers
                         && Mkt3.app.controllers.get("Mkt3.controller.editor.LandingPage")
                         && Mkt3.app.controllers.get("Mkt3.controller.editor.LandingPage").getLandingPage()
-                        && (Mkt3.app.controllers.get("Mkt3.controller.editor.LandingPage").getLandingPage().get("zoneId") == mktoDefaultWorkspaceId
-                            || Mkt3.app.controllers.get("Mkt3.controller.editor.LandingPage").getLandingPage().get("zoneId") == mktoJapaneseWorkspaceId
-                            || Mkt3.app.controllers.get("Mkt3.controller.editor.LandingPage").getLandingPage().get("zoneId") == mktoFinservWorkspaceId
-                            || Mkt3.app.controllers.get("Mkt3.controller.editor.LandingPage").getLandingPage().get("zoneId") == mktoHealthcareWorkspaceId
-                            || Mkt3.app.controllers.get("Mkt3.controller.editor.LandingPage").getLandingPage().get("zoneId") == mktoHigherEdWorkspaceId)) {
+                        && (Mkt3.app.controllers.get("Mkt3.controller.editor.LandingPage").getLandingPage().get("zoneId").toString().search(mktoGoldenWorkspacesMatch) != -1)) {
                                 
                             console.log("Marketo App > Loaded: Landing Page Editor");
                             
@@ -5452,11 +5306,7 @@ if ((currentUrl.search(mktoAppDomain) != -1
                                         if (record.get('zoneId')) {
                                             var currAssetWorkspaceId = record.get('zoneId');
                                             console.log("Marketo App > currAssetWorkspaceId = " + currAssetWorkspaceId);
-                                            if (currAssetWorkspaceId == mktoDefaultWorkspaceId
-                                            || currAssetWorkspaceId == mktoJapaneseWorkspaceId
-                                            || currAssetWorkspaceId == mktoFinservWorkspaceId
-                                            || currAssetWorkspaceId == mktoHealthcareWorkspaceId
-                                            || currAssetWorkspaceId == mktoHigherEdWorkspaceId
+                                            if (currAssetWorkspaceId.toString().search(mktoGoldenWorkspacesMatch) != -1
                                             || APP.getCookie("toggleState") == "false") {
                                                 APP.disableSaving();
                                                 if (Ext4
@@ -5571,11 +5421,7 @@ if ((currentUrl.search(mktoAppDomain) != -1
                                 && Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor")
                                 && Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor").getEditor()
                                 && Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor").getEditor().record
-                                && (Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor").getEditor().record.get("zoneId") == mktoDefaultWorkspaceId
-                                    || Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor").getEditor().record.get("zoneId") == mktoJapaneseWorkspaceId
-                                    || Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor").getEditor().record.get("zoneId") == mktoFinservWorkspaceId
-                                    || Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor").getEditor().record.get("zoneId") == mktoHealthcareWorkspaceId
-                                    || Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor").getEditor().record.get("zoneId") == mktoHigherEdWorkspaceId)) {
+                                && (Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor").getEditor().record.get("zoneId").toString().search(mktoGoldenWorkspacesMatch) != -1)) {
                                         
                                     console.log("Marketo App > Loaded: A/B Test Wizard");
                                     
@@ -5597,11 +5443,7 @@ if ((currentUrl.search(mktoAppDomain) != -1
                                 && Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor")
                                 && Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor").getEditor()
                                 && Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor").getEditor().record
-                                && (Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor").getEditor().record.get("zoneId") == mktoDefaultWorkspaceId
-                                    || Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor").getEditor().record.get("zoneId") == mktoJapaneseWorkspaceId
-                                    || Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor").getEditor().record.get("zoneId") == mktoFinservWorkspaceId
-                                    || Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor").getEditor().record.get("zoneId") == mktoHealthcareWorkspaceId
-                                    || Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor").getEditor().record.get("zoneId") == mktoHigherEdWorkspaceId)) {
+                                && (Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor").getEditor().record.get("zoneId").toString().search(mktoGoldenWorkspacesMatch) != -1)) {
                                         
                                     console.log("Marketo App > Loaded: Email Test Group Wizard");
                                     
@@ -5643,65 +5485,16 @@ if ((currentUrl.search(mktoAppDomain) != -1
                                 if (currUrlFragment == mktoMyMarketoFragment) {
                                     APP.overrideHomeTiles();
                                 }
-                                else if (currUrlFragment == mktoMarketingActivitiesDefaultFragment
-                                || currUrlFragment == mktoMarketingActivitiesMarketingFragment
-                                || currUrlFragment == mktoMarketingActivitiesJapaneseFragment
-                                || currUrlFragment == mktoMarketingActivitiesFinservFragment
-                                || currUrlFragment == mktoMarketingActivitiesHealthcareFragment
-                                || currUrlFragment == mktoMarketingActivitiesHigherEdFragment
-                                || currUrlFragment == mktoLeadDatabaseDefaultFragment
-                                || currUrlFragment == mktoLeadDatabaseMarketingFragment
-                                || currUrlFragment == mktoLeadDatabaseJapaneseFragment
-                                || currUrlFragment == mktoLeadDatabaseFinservFragment
-                                || currUrlFragment == mktoLeadDatabaseHealthcareFragment
-                                || currUrlFragment == mktoLeadDatabaseHigherEdFragment
-                                || currUrlFragment == mktoAdminEmailEmailFragment
-                                || currUrlFragment == mktoAdminWebServicesFragment) {
+                                else if (currUrlFragment.search(mktoDisableButtonsFragmentMatch) != -1) {
                                     APP.disableButtons();
                                 }
                                 else if (currUrlFragment == mktoAnalyticsDefaultFragment) {
                                     APP.overrideAnalyticsTiles();
                                 }
-                                
-                                if (currCompFragment != mktoEmailDesignerFragment
-                                && currCompFragment != mktoEmailPreviewFragment
-                                && currCompFragment != mktoLandingPageDesignerFragment
-                                && currCompFragment != mktoLandingPagePreviewFragment
-                                && currCompFragment != mktoFormWizardFragment
-                                && currCompFragment != mktoMobilePushNotificationWizardFragment
-                                && currCompFragment != mktoInAppMessageWizardFragment
-                                && currCompFragment != mktoSocialAppWizardFragment
-                                && currCompFragment != mktoABtestWizardFragment
-                                && currCompFragment != mktoEmailTestWizardFragment
-                                && currUrlFragment != mktoMyMarketoFragment) {
-            /*
-                                    var isMktCanvasHash = window.setInterval(function() {
-                                        if (MktCanvas
-                                        && MktCanvas.getActiveTab()
-                                        && MktCanvas.getActiveTab().config) {
-                                            console.log("Marketo App > Location: Marketo Canvas Active Tab");
-                                            
-                                            window.clearInterval(isMktCanvasHash);
-                                            var currWorkspaceId = MktCanvas.getActiveTab().config.accessZoneId;
-                                            if (currWorkspaceId != prevWorkspaceId) {
-                                                prevWorkspaceId = currWorkspaceId
-                                            }
-                                        }
-                                    }, 0);
-            */
-                                    // Marketing ROI, Funnel Analysis
-                                    if (currUrlFragment == mktoOppInfluenceAnalyzerFragment
-                                    || currUrlFragment == mktoProgramAnalyzerFragment
-                                    || currUrlFragment == mktoModeler106Fragment
-                                    || currUrlFragment == mktoModeler106abFragment
-                                    || currUrlFragment == mktoSuccessPathAnalyzerFragment) {
-                                        console.log("Marketo App > Location: Analytics");
-
-                                        APP.injectAnalyzerNavBar();
-                                    }
-                                }
-                                else if (currUrlFragment.search(mktoEmailPreviewFragmentRegex) != -1) {
-                                    console.log("Marketo App > Location: Email Previewer");
+                                else if (currUrlFragment.search(mktoAnalyzersFragmentMatch) != -1) {
+                                    console.log("Marketo App > Location: Analytics");
+                                    
+                                    APP.injectAnalyzerNavBar();
                                 }
                             }
                         }
@@ -5709,7 +5502,7 @@ if ((currentUrl.search(mktoAppDomain) != -1
                 }
                 APP.overrideSuperballMenuItems();
             }
-            else if (accountString.search(mktoDemoAccountMatch) != -1) {
+/*            else if (accountString.search(mktoDemoAccountMatch) != -1) {
                 APP.overrideSuperballMenuItems();
                 
                 if (currUrlFragment == mktoMyMarketoFragment) {
@@ -5723,7 +5516,6 @@ if ((currentUrl.search(mktoAppDomain) != -1
                         APP.overrideHomeTiles();
                     }
                 }
-            }
+            }*/
         }
     }, 0);
-}
