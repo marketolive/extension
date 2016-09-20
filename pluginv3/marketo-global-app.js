@@ -1,6 +1,8 @@
 var URL_PATH = "m3-dev",
     MARKETO_LIVE_APP_SCRIPT_LOCATION = "https://marketolive.com/"+URL_PATH+"/pluginv3/marketo-live-app.min.js",
     MARKETO_DEMO_APP_SCRIPT_LOCATION = "https://marketolive.com/"+URL_PATH+"/pluginv3/marketo-demo-app.min.js",
+    POD_SCRIPT_LOCATION = "https://marketolive.com/"+URL_PATH+"/pluginv3/pods.min.js",
+    DASHBOARD_SCRIPT_LOCATION = "https://marketolive.com/"+URL_PATH+"/pluginv3/dashboards/remote-data.min.js",
     HEAP_ANALYTICS_SCRIPT_LOCATION = "https://marketolive.com/"+URL_PATH+"/pluginv3/heap-analytics.min.js",
     disableDemoPluginCheck,
     loadScript,
@@ -100,18 +102,69 @@ isMktoPageGlobal = window.setInterval(function() {
         var accountString = MktPage.savedState.custPrefix,
             mktoDemoAccountMatch = "^mktodemoaccount",
             mktoAccountStringQe = "globalsales",
-            mktoAccountStringsMatch = "^mktodemoaccount106$|^mktodemoaccount106d$|^" + mktoAccountStringQe + "$";
+            mktoAccountStringsMatch = "^mktodemoaccount106$|^mktodemoaccount106d$|^" + mktoAccountStringQe + "$",
+            currentUrl = window.location.href;
             
-        if (accountString.search(mktoAccountStringsMatch) != -1
-        || getCookie("toggleState") == "false") {
+        if (accountString.search(mktoAccountStringsMatch) != -1) {
             console.log("Marketo Global App > Location: MarketoLive Instance");
             
             disableDemoPluginCheck();
             loadScript(MARKETO_LIVE_APP_SCRIPT_LOCATION);
             loadScript(HEAP_ANALYTICS_SCRIPT_LOCATION);
+            
+            var mktoDesignerDomain = "^https:\/\/[a-z0-9]+-[a-z0-9]+\.marketodesigner\.com",
+                mktoWizardDomain = mktoAppDomain + "/m#";
+            
+            if (currentUrl.search(mktoWizardDomain) == -1
+            && currentUrl.search(mktoDesignerDomain) == -1) {
+                loadScript(POD_SCRIPT_LOCATION);
+                loadScript(DASHBOARD_SCRIPT_LOCATION);
+                
+                var oppInfluenceAnalyzerFragment = "AR1559A1!",
+                    programAnalyzerFragment = "AR1544A1!",
+                    modelerFragment = "RCM70A1!",
+                    successPathAnalyzerFragment = "AR1682A1!",
+                    analyzerFragmentsMatch = mktoAppDomain + "/#(" + oppInfluenceAnalyzerFragment + "|" + programAnalyzerFragment + "|" + modelerFragment + "|" + successPathAnalyzerFragment + ")";
+                
+                if (currentUrl.search(analyzerFragmentsMatch) != -1) {
+                    console.log("Content > Location: Analyzers");
+                    
+                    Analyzer.prototype.showAnalyzer();
+                }
+            }
+            else {
+                console.log("Content > Location: Designer/Wizard");
+                
+                if (currentUrl.search(mktoDesignerDomain) != -1) {
+                    console.log("Content > Location: Designer");
+                    
+                    addNewCompanyListener();
+                }
+/*                
+                var customCompanyLandingPageFragment = "LPE11826",
+                    customCompanyLandingPagePreviewFragment = "LPP11826",
+                    customCompanyEmailFragment = "EME15464",
+                    formFragment = "FOE3576",
+                    pushFragment = "MPNE29",
+                    navAssetsMatch = "(" + customCompanyLandingPageFragment + "|" + customCompanyLandingPagePreviewFragment + "|" + customCompanyEmailFragment + "|" + formFragment + "|" + pushFragment + ")";
+                    
+                if (currentUrl.search(navAssetsMatch) != -1) {
+                    console.log("Content > Location: Asset with Nav Bar");
+                    
+                    Analyzer.prototype.showAssets();
+                }*/   
+            }
         }
         else if (accountString.search(mktoDemoAccountMatch) != -1) {
+            console.log("Marketo Global App > Location: Marketo Demo Instance");
+            
             loadScript(MARKETO_DEMO_APP_SCRIPT_LOCATION);
+            loadScript(DASHBOARD_SCRIPT_LOCATION);
+        }
+        else if (getCookie("toggleState") == "false") {
+            console.log("Marketo Global App > toggleState = false");
+            
+            loadScript(MARKETO_LIVE_APP_SCRIPT_LOCATION);
         }
     }
 }, 0);

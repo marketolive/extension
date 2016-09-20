@@ -5503,20 +5503,5 @@ APP.getEmailIds = function(accountString) {
                 }
                 APP.overrideSuperballMenuItems();
             }
-/*            else if (accountString.search(mktoDemoAccountMatch) != -1) {
-                APP.overrideSuperballMenuItems();
-                
-                if (currUrlFragment == mktoMyMarketoFragment) {
-                    APP.overrideHomeTiles();
-                }
-                window.onhashchange = function () {
-                    // Getting the URL fragment, the part after the #
-                    currUrlFragment = Mkt3.DL.getDlToken();
-                
-                    if (currUrlFragment == mktoMyMarketoFragment) {
-                        APP.overrideHomeTiles();
-                    }
-                }
-            }*/
         }
     }, 0);

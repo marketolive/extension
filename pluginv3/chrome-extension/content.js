@@ -3,10 +3,8 @@ console.log("Content > Running");
 var URL_PATH = "m3-dev",
     MARKETO_GLOBAL_APP_LOCATION = "https://marketolive.com/"+URL_PATH+"/pluginv3/marketo-global-app.min.js",
     LIVE_SCRIPT_LOCATION = "https://marketolive.com/"+URL_PATH+"/pluginv3/marketo-live.min.js",
-    POD_SCRIPT_LOCATION = "https://marketolive.com/"+URL_PATH+"/pluginv3/pods.min.js",
 	DELIVERABILITY_TOOLS_SCRIPT_LOCATION = "https://marketolive.com/"+URL_PATH+"/pluginv3/deliverability-tools.min.js",
     INVISION_APP_SCRIPT_LOCATION = "https://marketolive.com/"+URL_PATH+"/pluginv3/invision-app.min.js",
-    DASHBOARD_SCRIPT_LOCATION = "https://marketolive.com/"+URL_PATH+"/pluginv3/dashboards/remote-data.min.js",
     RTP_DEEPLINK_SCRIPT_LOCATION = "https://marketolive.com/"+URL_PATH+"/pluginv3/rtp-deeplink.min.js",
     ASSET_NAV_BAR_LOCATION = "https://marketolive.com/"+URL_PATH+"/v3/assets.html",
     RTP_NAV_BAR_LOCATION = "https://marketolive.com/"+URL_PATH+"/pluginv3/html/turner-rtp.html",
@@ -15,7 +13,7 @@ var URL_PATH = "m3-dev",
     mktoLoginDomain = "^https:\/\/login\.marketo\.com|^https:\/\/app\.marketo\.com",
     mktoLoginPathName = "/homepage/login",
 	mktoDesignerDomain = "^https:\/\/[a-z0-9]+-[a-z0-9]+\.marketodesigner\.com",
-	mktoWizard = mktoAppDomain + "/m#",
+	mktoWizardDomain = mktoAppDomain + "/m#",
     mktoLiveColorPickerDomain = "^https:\/\/marketolive\.com[a-zA-Z0-9-\/]*\/color-picker\.html",
 	rtpDemoDomain = "^http:\/\/sjrtp1.marketo.com\/demo\/$|^http:\/\/cloud4.insightera.com\/demo\/$",
 	emailDeliverabilityDomain = "^https:\/\/250ok.com/",
@@ -1247,54 +1245,13 @@ window.onload = function() {
     
     if ((currentUrl.search(mktoAppDomain) != -1
         || currentUrl.search(mktoDesignerDomain) != -1
-        || currentUrl.search(mktoWizard) != -1)
-    && currentUrl.search(mktoLoginDomain) == -1
-    && window.location.pathname != mktoLoginPathName) {
+        || currentUrl.search(mktoWizardDomain) != -1)
+    && window.location.pathname != mktoLoginPathName
+    && currentUrl.search(mktoLoginDomain) == -1) {
 		console.log("Content > Location: Marketo URL");
         
         window.mkto_live_plugin_state = true;
         loadScript(MARKETO_GLOBAL_APP_LOCATION);
-        
-        if (currentUrl.search(mktoWizard) == -1
-        && currentUrl.search(mktoDesignerDomain) == -1) {
-            loadScript(POD_SCRIPT_LOCATION);
-            loadScript(DASHBOARD_SCRIPT_LOCATION);
-            
-            var oppInfluenceAnalyzerFragment = "AR1559A1!",
-                programAnalyzerFragment = "AR1544A1!",
-                modelerFragment = "RCM70A1!",
-                successPathAnalyzerFragment = "AR1682A1!",
-                analyzerFragmentsMatch = mktoAppDomain + "/#(" + oppInfluenceAnalyzerFragment + "|" + programAnalyzerFragment + "|" + modelerFragment + "|" + successPathAnalyzerFragment + ")";
-            
-            if (currentUrl.search(analyzerFragmentsMatch) != -1) {
-                console.log("Content > Location: Analyzers");
-                
-                Analyzer.prototype.showAnalyzer();
-            }
-        }
-        else {
-            console.log("Content > Location: Designer/Wizard");
-            
-            if (currentUrl.search(mktoDesignerDomain) != -1) {
-                console.log("Content > Location: Designer");
-                
-                addNewCompanyListener();
-            }
-            
-/*            var customCompanyLandingPageFragment = "LPE11826",
-                customCompanyLandingPagePreviewFragment = "LPP11826",
-                customCompanyEmailFragment = "EME15464",
-                formFragment = "FOE3576",
-                pushFragment = "MPNE29",
-                navAssetsMatch = "(" + customCompanyLandingPageFragment + "|" + customCompanyLandingPagePreviewFragment + "|" + customCompanyEmailFragment + "|" + formFragment + "|" + pushFragment + ")";
-                
-            if (currentUrl.search(navAssetsMatch) != -1) {
-                console.log("Content > Location: Asset with Nav Bar");
-                
-                Analyzer.prototype.showAssets();
-            }
-*/            
-        }
     }
     else if (currentUrl.search(mktoLiveColorPickerDomain) != -1) {
 		console.log("Content > Location: Color-Picker Page");
