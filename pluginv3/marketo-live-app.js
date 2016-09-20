@@ -5105,9 +5105,8 @@ APP.getEmailIds = function(accountString) {
                             lpIds["dpageid_4876"] = "dpageid_4876";
                             lpIds["dpageid_4872"] = "dpageid_4872";
                             lpIds["dpageid_4874"] = "dpageid_4874";
-                            // Japanese DIY Design: 1, 2, 3
+                            // Japanese DIY Design: 1, 2
                             lpIds["dpageid_11856"] = "dpageid_11856";
-                            lpIds["dpageid_11548"] = "dpageid_11548";
                             lpIds["dpageid_11546"] = "dpageid_11546";
                             // Japanese Event Roadshow Unknown: 1, 2
                             lpIds["dpageid_12420"] = "dpageid_12420";
@@ -5498,7 +5497,8 @@ APP.getEmailIds = function(accountString) {
                                 heap.track(currTitle, {
                                     app : heapApp,
                                     asset : heapAsset,
-                                    area : heapArea
+                                    area : heapArea,
+                                    url : currentUrl
                                 });
                                 
                                 if (Mkt3.DL.dl
@@ -5558,7 +5558,8 @@ APP.getEmailIds = function(accountString) {
                         heap.track(currTitle, {
                             app : heapApp,
                             asset : heapAsset,
-                            area : heapArea
+                            area : heapArea,
+                            url : currentUrl
                         });
                     }
                 }, 0);
