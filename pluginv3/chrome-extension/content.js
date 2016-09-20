@@ -13,6 +13,7 @@ var URL_PATH = "m3-dev",
     currentUrl = window.location.href,
 	mktoAppDomain = "^https:\/\/app-[a-z0-9]+\.marketo\.com",
     mktoLoginDomain = "^https:\/\/login\.marketo\.com|^https:\/\/app\.marketo\.com",
+    mktoLoginPathName = "/homepage/login",
 	mktoDesignerDomain = "^https:\/\/[a-z0-9]+-[a-z0-9]+\.marketodesigner\.com",
 	mktoWizard = mktoAppDomain + "/m#",
     mktoLiveColorPickerDomain = "^https:\/\/marketolive\.com[a-zA-Z0-9-\/]*\/color-picker\.html",
@@ -1247,7 +1248,8 @@ window.onload = function() {
     if ((currentUrl.search(mktoAppDomain) != -1
         || currentUrl.search(mktoDesignerDomain) != -1
         || currentUrl.search(mktoWizard) != -1)
-    && currentUrl.search(mktoLoginDomain) == -1) {
+    && currentUrl.search(mktoLoginDomain) == -1
+    && window.location.pathname != mktoLoginPathName) {
 		console.log("Content > Location: Marketo URL");
         
         window.mkto_live_plugin_state = true;
