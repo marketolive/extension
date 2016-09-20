@@ -21,7 +21,7 @@ var URL_PATH = "m3-dev",
  **************************************************************************************/
 
 disableDemoPluginCheck = function() {
-    console.log("Content> Disabling: Demo Plugin Check");
+    console.log("Marketo Global App > Disabling: Demo Plugin Check");
 
     window.mkto_live_plugin_state = true;
     
@@ -44,7 +44,7 @@ disableDemoPluginCheck = function() {
  **************************************************************************************/
 
 loadScript = function(scriptSrc) {
-	console.log("Content > Loading: Script: " + scriptSrc);
+	console.log("Marketo Global App > Loading: Script: " + scriptSrc);
 	
     var scriptElement = document.createElement("script");
     scriptElement.async = true;
@@ -66,7 +66,7 @@ loadScript = function(scriptSrc) {
  **************************************************************************************/
 
 getCookie = function(cookieName) {
-    console.log("Content > Getting: Cookie " + cookieName);
+    console.log("Marketo Global App > Getting: Cookie " + cookieName);
     
     var name = cookieName + '=',
         cookies = document.cookie.split(';'),
@@ -78,7 +78,7 @@ getCookie = function(cookieName) {
             return currCookie.substring(name.length, currCookie.length);
         }
     }
-    console.log("Content > Getting: Cookie " + cookieName + " not found");
+    console.log("Marketo Global App > Getting: Cookie " + cookieName + " not found");
     return null;
 }
 
@@ -89,11 +89,11 @@ getCookie = function(cookieName) {
  **************************************************************************************/
 
 isMktoPageGlobal = window.setInterval(function() {
-    console.log("Content > Location: Waiting for Marketo Page");
+    console.log("Marketo Global App > Location: Waiting for Marketo Page");
     if (typeof(MktPage) !== "undefined"
     && MktPage.savedState
     && MktPage.savedState.custPrefix) {
-        console.log("Content > Location: Marketo Page");
+        console.log("Marketo Global App > Location: Marketo Page");
         
         window.clearInterval(isMktoPageGlobal);
         
@@ -104,7 +104,7 @@ isMktoPageGlobal = window.setInterval(function() {
             
         if (accountString.search(mktoAccountStringsMatch) != -1
         || getCookie("toggleState") == "false") {
-            console.log("Content > Location: MarketoLive Instance");
+            console.log("Marketo Global App > Location: MarketoLive Instance");
             
             disableDemoPluginCheck();
             loadScript(MARKETO_LIVE_APP_SCRIPT_LOCATION);

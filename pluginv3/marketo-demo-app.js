@@ -20,12 +20,12 @@ var mktoMyMarketoFragment = "MM0A1",
  **************************************************************************************/
 
 APP.overrideSuperballMenuItems = function() {
-    console.log("Marketo App > Overriding: Superball Menu Items");
+    console.log("Marketo Demo App > Overriding: Superball Menu Items");
     
     if (MktPage
     && MktPage.showSuperMenu) {
         MktPage.showSuperMenu = function() {
-            console.log("Marketo App > Executing: Override Superball Menu Items");
+            console.log("Marketo Demo App > Executing: Override Superball Menu Items");
 
             var logoEl = Ext.get(Ext.DomQuery.selectNode('.mkt-app-logo')),
             menu = logoEl.menu,
@@ -79,7 +79,7 @@ APP.overrideSuperballMenuItems = function() {
                 if (menu
                 && menu.items
                 && menu.items.items) {
-                    console.log("Marketo App > Working: Override Superball Menu Items");
+                    console.log("Marketo Demo App > Working: Override Superball Menu Items");
                     
                     var ii,
                         currSuperBallMenuItem,
@@ -156,7 +156,7 @@ APP.overrideSuperballMenuItems = function() {
  **************************************************************************************/
 
 APP.overrideHomeTiles = function() {
-    console.log("Marketo App > Overriding: My Marketo Home Tiles");
+    console.log("Marketo Demo App > Overriding: My Marketo Home Tiles");
     
     if (MktCanvas
     && MktCanvas.getEl()
@@ -175,7 +175,7 @@ APP.overrideHomeTiles = function() {
     && MktCanvas.getEl().dom.nextSibling.childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes
     && MktCanvas.getEl().dom.nextSibling.childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[0]
     && MktCanvas.getEl().dom.nextSibling.childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes) {
-        console.log("Marketo App > Executing: Override My Marketo Home Tiles");
+        console.log("Marketo Demo App > Executing: Override My Marketo Home Tiles");
         
         var container = MktCanvas.getEl().dom.nextSibling.childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[0],
             containerComponent = MktCanvas.lookupComponent(container),
