@@ -1,7 +1,9 @@
 var mktoMyMarketoFragment = "MM0A1",
     mktoEmailInsightsLink = "http://www.marketolive.com/en/analytics/email-insights-summit-demo-1",
     mktoEmailDeliverabilityToolsLink = "https://250ok.com/login",
-    currUrlFragment;
+    currUrlFragment,
+    
+    APP = APP || {};
 
 /**************************************************************************************
  *  
