@@ -4949,10 +4949,21 @@ APP.getEmailIds = function(accountString) {
                 APP.disableDemoPluginCheck();
                 
                 // Heap Analytics Event Tracking
+                var heapApp = currTitle.split("|")[0].trimRight(),
+                    heapAsset,
+                    heapArea;
+                if (currTitle.search("•") != -1) {
+                    heapAsset = currTitle.split("|")[1].trimLeft().split("•")[0].trimRight();
+                    heapArea = currTitle.split("|")[1].trimLeft().split("•")[1].trimLeft();
+                }
+                else {
+                    heapAsset = "Home";
+                    heapArea = currTitle.split("|")[1].trimLeft();
+                }
                 heap.track(currTitle, {
-                    app : currTitle.split("|")[0].trimRight(),
-                    asset : currTitle.split("|")[1].trimLeft().split("•")[0].trimRight(),
-                    area : currTitle.split("|")[1].trimLeft().split("•")[1].trimLeft()
+                    app : heapApp,
+                    asset : heapAsset,
+                    area : heapArea
                 });
 
                 if (currUrlFragment == mktoMyMarketoFragment) {
@@ -5499,10 +5510,21 @@ APP.getEmailIds = function(accountString) {
                                 console.log("Marketo App > Loaded: New URL Fragment = " + currUrlFragment);
                                 
                                 // Heap Analytics Event Tracking
+                                var heapApp = currTitle.split("|")[0].trimRight(),
+                                    heapAsset,
+                                    heapArea;
+                                if (currTitle.search("•") != -1) {
+                                    heapAsset = currTitle.split("|")[1].trimLeft().split("•")[0].trimRight();
+                                    heapArea = currTitle.split("|")[1].trimLeft().split("•")[1].trimLeft();
+                                }
+                                else {
+                                    heapAsset = "Home";
+                                    heapArea = currTitle.split("|")[1].trimLeft();
+                                }
                                 heap.track(currTitle, {
-                                    app : currTitle.split("|")[0].trimRight(),
-                                    asset : currTitle.split("|")[1].trimLeft().split("•")[0].trimRight(),
-                                    area : currTitle.split("|")[1].trimLeft().split("•")[1].trimLeft()
+                                    app : heapApp,
+                                    asset : heapAsset,
+                                    area : heapArea
                                 });
                                 
                                 if (Mkt3.DL.dl
