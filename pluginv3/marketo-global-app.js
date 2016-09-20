@@ -109,8 +109,8 @@ isMktoPageGlobal = window.setInterval(function() {
             console.log("Marketo Global App > Location: MarketoLive Instance");
             
             disableDemoPluginCheck();
-            loadScript(MARKETO_LIVE_APP_SCRIPT_LOCATION);
             loadScript(HEAP_ANALYTICS_SCRIPT_LOCATION);
+            loadScript(MARKETO_LIVE_APP_SCRIPT_LOCATION);
             
             var mktoAppDomain = "^https:\/\/app-[a-z0-9]+\.marketo\.com",
                 mktoDesignerDomain = "^https:\/\/[a-z0-9]+-[a-z0-9]+\.marketodesigner\.com",

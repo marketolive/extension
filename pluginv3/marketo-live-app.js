@@ -4877,7 +4877,8 @@ APP.getEmailIds = function(accountString) {
             console.log("Marketo App > Location: Marketo Page");
             
             var accountString,
-                userId;
+                userId,
+                currTitle = document.title.replace(" - " + document.location.protocol + "//" + document.location.host + "/", "");
             
             if (MktPage.savedState
             && MktPage.savedState.custPrefix
@@ -4892,9 +4893,21 @@ APP.getEmailIds = function(accountString) {
                 userId = MktPage.userid.toLowerCase();
                 currUrlFragment = Mkt3.DL.getDlToken();
                 
+                // Heap Analytics Identify User
+                heap.identify(MktPage.userid);
+                if (MktPage.userName) {
+                    heap.addUserProperties({
+                        Name : MktPage.userName
+                    });
+                }
+                
                 if (Mkt3.DL.dl
                 && Mkt3.DL.dl.dlCompCode) {
                     currCompFragment = Mkt3.DL.dl.dlCompCode;
+                }
+                
+                if (MktPage.friendlyName) {
+                    currTitle.replace("Marketo", MktPage.friendlyName);
                 }
                 
                 if (userId.search("\.demo@marketo.com$") != -1) {
@@ -4934,6 +4947,13 @@ APP.getEmailIds = function(accountString) {
                 
                 // Disabling Demo Plugin Check
                 APP.disableDemoPluginCheck();
+                
+                // Heap Analytics Event Tracking
+                heap.track(currTitle, {
+                    app : currTitle.split("|")[0].trimRight(),
+                    asset : currTitle.split("|")[1].trimLeft().split("•")[0].trimRight(),
+                    area : currTitle.split("|")[1].trimLeft().split("•")[1].trimLeft()
+                });
 
                 if (currUrlFragment == mktoMyMarketoFragment) {
                     APP.overrideHomeTiles();
@@ -5475,7 +5495,15 @@ APP.getEmailIds = function(accountString) {
                                 window.clearInterval(isNewUrlFragment);
                                 
                                 currUrlFragment = Mkt3.DL.getDlToken();
+                                currTitle = document.title.replace(" - " + document.location.protocol + "//" + document.location.host + "/", "");
                                 console.log("Marketo App > Loaded: New URL Fragment = " + currUrlFragment);
+                                
+                                // Heap Analytics Event Tracking
+                                heap.track(currTitle, {
+                                    app : currTitle.split("|")[0].trimRight(),
+                                    asset : currTitle.split("|")[1].trimLeft().split("•")[0].trimRight(),
+                                    area : currTitle.split("|")[1].trimLeft().split("•")[1].trimLeft()
+                                });
                                 
                                 if (Mkt3.DL.dl
                                 && Mkt3.DL.dl.dlCompCode) {
