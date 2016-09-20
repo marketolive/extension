@@ -1,6 +1,7 @@
 var URL_PATH = "m3-dev",
     MARKETO_LIVE_APP_SCRIPT_LOCATION = "https://marketolive.com/"+URL_PATH+"/pluginv3/marketo-live-app.min.js",
     MARKETO_DEMO_APP_SCRIPT_LOCATION = "https://marketolive.com/"+URL_PATH+"/pluginv3/marketo-demo-app.min.js",
+    HEAP_ANALYTICS_SCRIPT_LOCATION = "https://marketolive.com/"+URL_PATH+"/pluginv3/heap-analytics.min.js",
     disableDemoPluginCheck,
     loadScript,
     isMktoPageGlobal;
@@ -89,7 +90,6 @@ getCookie = function(cookieName) {
  **************************************************************************************/
 
 isMktoPageGlobal = window.setInterval(function() {
-    console.log("Marketo Global App > Location: Waiting for Marketo Page");
     if (typeof(MktPage) !== "undefined"
     && MktPage.savedState
     && MktPage.savedState.custPrefix) {
@@ -108,6 +108,7 @@ isMktoPageGlobal = window.setInterval(function() {
             
             disableDemoPluginCheck();
             loadScript(MARKETO_LIVE_APP_SCRIPT_LOCATION);
+            loadScript(HEAP_ANALYTICS_SCRIPT_LOCATION);
         }
         else if (accountString.search(mktoDemoAccountMatch) != -1) {
             loadScript(MARKETO_DEMO_APP_SCRIPT_LOCATION);
