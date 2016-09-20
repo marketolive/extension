@@ -112,7 +112,8 @@ isMktoPageGlobal = window.setInterval(function() {
             loadScript(MARKETO_LIVE_APP_SCRIPT_LOCATION);
             loadScript(HEAP_ANALYTICS_SCRIPT_LOCATION);
             
-            var mktoDesignerDomain = "^https:\/\/[a-z0-9]+-[a-z0-9]+\.marketodesigner\.com",
+            var mktoAppDomain = "^https:\/\/app-[a-z0-9]+\.marketo\.com",
+                mktoDesignerDomain = "^https:\/\/[a-z0-9]+-[a-z0-9]+\.marketodesigner\.com",
                 mktoWizardDomain = mktoAppDomain + "/m#";
             
             if (currentUrl.search(mktoWizardDomain) == -1
