@@ -5023,10 +5023,8 @@ APP.getEmailIds = function(accountString) {
                             lpIds["dpageid_4876"] = "dpageid_4876";
                             lpIds["dpageid_4872"] = "dpageid_4872";
                             lpIds["dpageid_4874"] = "dpageid_4874";
-                            // Japanese DIY Design: 1, 2, 3
+                            // Japanese DIY Design: 1
                             lpIds["dpageid_11856"] = "dpageid_11856";
-                            lpIds["dpageid_11548"] = "dpageid_11548";
-                            lpIds["dpageid_11546"] = "dpageid_11546";
                             // Japanese Event Roadshow Unknown: 1, 2
                             lpIds["dpageid_12420"] = "dpageid_12420";
                             lpIds["dpageid_12418"] = "dpageid_12418";
