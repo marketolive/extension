@@ -4878,7 +4878,7 @@ APP.getEmailIds = function(accountString) {
             
             var accountString,
                 userId,
-                currTitle = document.title.replace(" - " + document.location.protocol + "//" + document.location.host + "/", "");
+                currTitle;
             
             if (MktPage.savedState
             && MktPage.savedState.custPrefix
@@ -4896,10 +4896,6 @@ APP.getEmailIds = function(accountString) {
                 if (Mkt3.DL.dl
                 && Mkt3.DL.dl.dlCompCode) {
                     currCompFragment = Mkt3.DL.dl.dlCompCode;
-                }
-                
-                if (MktPage.friendlyName) {
-                    currTitle.replace("Marketo", MktPage.friendlyName);
                 }
                 
                 if (userId.search("\.demo@marketo.com$") != -1) {
@@ -5476,10 +5472,14 @@ APP.getEmailIds = function(accountString) {
                                 window.clearInterval(isNewUrlFragment);
                                 
                                 currUrlFragment = Mkt3.DL.getDlToken();
-                                currTitle = document.title.replace(" - " + document.location.protocol + "//" + document.location.host + "/", "");
                                 console.log("Marketo App > Loaded: New URL Fragment = " + currUrlFragment);
                                 
                                 // Heap Analytics Event Tracking
+                                currTitle = document.title.replace(" - " + document.location.protocol + "//" + document.location.host + "/", "");
+                                if (MktPage
+                                && MktPage.friendlyName) {
+                                    currTitle.replace("Marketo", MktPage.friendlyName);
+                                }
                                 var heapApp = currTitle.split("|")[0].trimRight(),
                                     heapAsset,
                                     heapArea;
@@ -5541,6 +5541,11 @@ APP.getEmailIds = function(accountString) {
                         }
                         
                         // Heap Analytics Event Tracking
+                        currTitle = document.title.replace(" - " + document.location.protocol + "//" + document.location.host + "/", "");
+                        if (MktPage
+                        && MktPage.friendlyName) {
+                            currTitle.replace("Marketo", MktPage.friendlyName);
+                        }
                         var heapApp = currTitle.split("|")[0].trimRight(),
                             heapAsset,
                             heapArea;
