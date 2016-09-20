@@ -4956,7 +4956,8 @@ APP.getEmailIds = function(accountString) {
                 }
 
                 // Only execute this block if the user is not on an editor page.
-                if (currCompFragment.search(mktoDesignersFragmentMatch) == -1) {
+                if (!currCompFragment
+                || currCompFragment.search(mktoDesignersFragmentMatch) == -1) {
                     
                     if (accountString.search(mktoAccountStringsMatch) != -1) {
                         APP.overrideTreeNodeExpand();
