@@ -234,7 +234,6 @@ APP.overrideHomeTiles = function() {
  *  
  **************************************************************************************/
 
-window.mkto_live_plugin_state = true;
 APP.overrideSuperballMenuItems();
 
 if (Mkt3
