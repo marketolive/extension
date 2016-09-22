@@ -69,6 +69,7 @@ var webPages = {
             url : "http://www.marketolive.com/en/info/why-us",
             dependentOn : [],
             visitationRate : 0.33,
+            conversionRate : 1.0,
         },
         9 : {
             name : "integrations",
@@ -76,6 +77,7 @@ var webPages = {
             url : "http://www.marketolive.com/en/info/integrations",
             dependentOn : [],
             visitationRate : 0.50,
+            conversionRate : 1.0,
         },
         10 : {
             name : "contactUs",
@@ -83,6 +85,7 @@ var webPages = {
             url : "http://www.marketolive.com/en/info/contact-us",
             dependentOn : [],
             visitationRate : 0.05,
+            conversionRate : 1.0,
         },
         11 : {
             name : "community",
@@ -90,6 +93,7 @@ var webPages = {
             url : "http://www.marketolive.com/en/info/community",
             dependentOn : ["signup", "rewardsSignup"],
             visitationRate : 0.03,
+            conversionRate : 1.0,
         },
         12 : {
             name : "liveEvent",
@@ -97,6 +101,7 @@ var webPages = {
             url : "http://www.marketolive.com/en/info/live-event",
             dependentOn : ["signup", "liveEventRegistration"],
             visitationRate : 0.50,
+            conversionRate : 1.0,
         },
         13 : {
             name : "webinar",
@@ -104,6 +109,7 @@ var webPages = {
             url : "http://www.marketolive.com/en/info/webinar",
             dependentOn : ["signup", "webinarRegistration"],
             visitationRate : 0.50,
+            conversionRate : 1.0,
         },
         14 : {
             name : "products",
@@ -111,6 +117,7 @@ var webPages = {
             url : "http://www.marketolive.com/en/info/products",
             dependentOn : [],
             visitationRate : 0.75,
+            conversionRate : 1.0,
         },
         15 : {
             name : "pricing",
@@ -118,6 +125,7 @@ var webPages = {
             url : "http://www.marketolive.com/en/info/pricing",
             dependentOn : [],
             visitationRate : 0.80,
+            conversionRate : 1.0,
         },
     },
     jobTitles = [
@@ -225,18 +233,14 @@ var webPages = {
         "Webinar",
         "Website",
     ],
-    checkBoxes = [
-        "yes",
-        "no",
-    ],
     webPageX,
-    jobTitleX,
+    webPageXvisitationRate,
     companyX,
-    companyXname,
-    companyXindustry,
-    leadSourceX,
-    checkBoxX;
-    
+    cookieMarketoLive,
+    jobTitleCookieName,
+    companyNameCookieName,
+    industryCookieName,
+    leadSourceCookieName;
 
 /**************************************************************************************
  *
@@ -247,19 +251,170 @@ var webPages = {
 console.log("Background > Selecting: Web Page to Visit & Lead Attributes for Form Fill");
 
 webPageX = webPages[Math.floor((Math.random() * Object.keys(webPages).length))];
-jobTitleX = jobTitles[Math.floor((Math.random() * jobTitles.length))];
+webPageXvisitationRate = webPageX.visitationRate * Object.keys(webPages).length;
 companyX = companies[Math.floor((Math.random() * companies.length))];
-companyXname = companyX[0];
-companyXindustry = companyX[1];
-leadSourceX = leadSources[Math.floor((Math.random() * leadSources.length))];
-checkBoxX = checkBoxes[Math.floor((Math.random() * checkBoxes.length))];
 
-getCookie({url : mktoLiveMatch, name : "visitedPages"}, function(cookie) {
-    if (cookie
-    && cookie.value) {
-        console.log("Background > visitedPages Cookie for " + cookie.domain + " = " + cookie.value);
+cookieMarketoLive = {
+    url : mktoLiveDomainMatch,
+    domain : mktoLiveUriDomain,
+    expiresInDays : 365,
+};
+cookieLandingPage = {
+    url : "http://na-sjdemo1.marketo.com/*",
+    domain : "na-sjdemo1.marketo.com",
+    expiresInDays : 365,
+};
+
+jobTitleCookieName = "jobTitle";
+companyNameCookieName = "companyName";
+industryCookieName = "industry";
+leadSourceCookieName = "leadSource";
+
+if (webPageXvisitationRate > 1.0
+|| (Math.random()) <= webPageXvisitationRate) {
+    var visitedPagesCookieName = "visitedPages",
+        visitedPagesCookieMarketoLive = {
+            url : cookieMarketoLive.url,
+            domain : cookieMarketoLive.domain,
+            name : visitedPagesCookieName,
+            expiresInDays : cookieMarketoLive.expiresInDays,
+        };
+    
+    getCookie(visitedPagesCookieMarketoLive, function(cookie) {
+        if (cookie
+        && cookie.value) {
+            var proceed = false;
+            for (var ii = 0; ii < webPageX.dependentOn.length; ii++) {
+                if (cookie.value.search("(, )\?" + webPageX.dependentOn[ii] + "(,)\?") != -1) {
+                    proceed = true;
+                }
+                else {
+                    proceed = false;
+                    break;
+                }
+            }
+            
+            if (proceed) {
+                console.log("Background > Visiting: " + webPageX.url);
+                
+                response = webRequest("GET", webPageX.url, false);
+                visitedPagesCookieMarketoLive.value = cookie.value + ", " + webPageX.name;
+                setCookie(visitedPagesCookieMarketoLive);
+            }
+            else {
+                console.log("Background > NOT Visiting: " + webPageX.url + " due to dependencies not being met");
+            }
+        }
+        else {
+            console.log("Background > Visiting Initial Page: " + webPageX.url);
+            
+            response = webRequest("GET", webPageX.url, false);
+            visitedPagesCookieMarketoLive.value = webPageX.name;
+            setCookie(visitedPagesCookieMarketoLive);
+        }
+    });
+}
+
+getCookie(jobTitleCookieName, function(cookie) {
+    if (!cookie
+    || !cookie.value) {
+        console.log("Background > Initializing: " + jobTitleCookieName + " Cookie");
+
+        var jobTitleX = jobTitles[Math.floor((Math.random() * jobTitles.length))],
+            jobTitleCookieMarketoLive = {
+                url : cookieMarketoLive.url,
+                domain : cookieMarketoLive.domain,
+                name : jobTitleCookieName,
+                value : jobTitleX,
+                expiresInDays : cookieMarketoLive.expiresInDays,
+            },
+            jobTitleCookieLandingPage = {
+                url : cookieLandingPage.url,
+                domain : cookieLandingPage.domain,
+                name : jobTitleCookieName,
+                value : jobTitleX,
+                expiresInDays : cookieLandingPage.expiresInDays,
+            };
+        
+        setCookie(jobTitleCookieMarketoLive);
+        setCookie(jobTitleCookieLandingPage);
     }
-    else {
-        console.log("Background > visitedPages Cookie for " + cookie.domain + " is undefined");
+}
+
+getCookie(companyNameCookieName, function(cookie) {
+    if (!cookie
+    || !cookie.value) {
+        console.log("Background > Initializing: " + companyNameCookieName + " Cookie");
+
+        var companyName = companyX[0],
+            companyNameCookieMarketoLive = {
+                url : cookieMarketoLive.url,
+                domain : cookieMarketoLive.domain,
+                name : companyNameCookieName,
+                value : companyName,
+                expiresInDays : cookieMarketoLive.expiresInDays,
+            },
+            companyNameCookieLandingPage = {
+                url : cookieLandingPage.url,
+                domain : cookieLandingPage.domain,
+                name : companyNameCookieName,
+                value : companyName,
+                expiresInDays : cookieLandingPage.expiresInDays,
+            };
+        
+        setCookie(companyNameCookieMarketoLive);
+        setCookie(companyNameCookieLandingPage);
     }
-});
+}
+
+getCookie(industryCookieName, function(cookie) {
+    if (!cookie
+    || !cookie.value) {
+        console.log("Background > Initializing: " + industryCookieName + " Cookie");
+
+        var industry = companyX[1],
+            industryCookieMarketoLive = {
+                url : cookieMarketoLive.url,
+                domain : cookieMarketoLive.domain,
+                name : industryCookieName,
+                value : industry,
+                expiresInDays : cookieMarketoLive.expiresInDays,
+            },
+            industryCookieLandingPage = {
+                url : cookieLandingPage.url,
+                domain : cookieLandingPage.domain,
+                name : industryCookieName,
+                value : industry,
+                expiresInDays : cookieLandingPage.expiresInDays,
+            };
+        
+        setCookie(industryCookieMarketoLive);
+        setCookie(industryCookieLandingPage);
+    }
+}
+
+getCookie(leadSourceCookieName, function(cookie) {
+    if (!cookie
+    || !cookie.value) {
+        console.log("Background > Initializing: " + leadSourceCookieName + " Cookie");
+
+        var leadSourceX = leadSources[Math.floor((Math.random() * leadSources.length))],
+            leadSourceCookieMarketoLive = {
+                url : cookieMarketoLive.url,
+                domain : cookieMarketoLive.domain,
+                name : leadSourceCookieName,
+                value : leadSourceX,
+                expiresInDays : cookieMarketoLive.expiresInDays,
+            },
+            leadSourceCookieLandingPage = {
+                url : cookieLandingPage.url,
+                domain : cookieLandingPage.domain,
+                name : leadSourceCookieName,
+                value : leadSourceX,
+                expiresInDays : cookieLandingPage.expiresInDays,
+            };
+        
+        setCookie(leadSourceCookieMarketoLive);
+        setCookie(leadSourceCookieLandingPage);
+    }
+}

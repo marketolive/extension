@@ -3,6 +3,7 @@ console.log("Content > Running");
 var URL_PATH = "m3-dev",
     MARKETO_GLOBAL_APP_LOCATION = "https://marketolive.com/"+URL_PATH+"/pluginv3/marketo-global-app.min.js",
     LIVE_SCRIPT_LOCATION = "https://marketolive.com/"+URL_PATH+"/pluginv3/marketo-live.min.js",
+    ONE_LOGIN_SCRIPT_LOCATION = "https://marketolive.com/"+URL_PATH+"/pluginv3/one-login.min.js",
 	DELIVERABILITY_TOOLS_SCRIPT_LOCATION = "https://marketolive.com/"+URL_PATH+"/pluginv3/deliverability-tools.min.js",
     INVISION_APP_SCRIPT_LOCATION = "https://marketolive.com/"+URL_PATH+"/pluginv3/invision-app.min.js",
     RTP_DEEPLINK_SCRIPT_LOCATION = "https://marketolive.com/"+URL_PATH+"/pluginv3/rtp-deeplink.min.js",
@@ -15,8 +16,9 @@ var URL_PATH = "m3-dev",
 	mktoDesignerDomain = "^https:\/\/[a-z0-9]+-[a-z0-9]+\.marketodesigner\.com",
 	mktoWizardDomain = mktoAppDomain + "/m#",
     mktoLiveColorPickerDomain = "^https:\/\/marketolive\.com[a-zA-Z0-9-\/]*\/color-picker\.html",
+    oneLoginDomain = "^https:\/\/marketo\.onelogin\.com\/",
 	rtpDemoDomain = "^http:\/\/sjrtp1.marketo.com\/demo\/$|^http:\/\/cloud4.insightera.com\/demo\/$",
-	emailDeliverabilityDomain = "^https:\/\/250ok.com/",
+	emailDeliverabilityDomain = "^https:\/\/250ok.com\/",
     invisionAppDomain = "^https:\/\/marketo\.invisionapp\.com\/share\/",
 	loadScript,
 	getCookie,
@@ -26,7 +28,9 @@ var URL_PATH = "m3-dev",
     overlayEmail,
     overlayLandingPage,
     addNewCompanyListener,
-    count;
+    count,
+    getOneLoginUser,
+    addOneLoginListener;
 
 /**************************************************************************************
  *  
@@ -48,6 +52,22 @@ loadScript = function(scriptSrc) {
     scriptElement.src = scriptSrc;
     document.getElementsByTagName("head")[0].appendChild(scriptElement);
 }
+
+/**************************************************************************************
+ *  
+ *  This function sets the specified cookie for the current domain.
+ *
+ *  @Author Andrew Garcia
+ *
+ *  @function
+ *
+ *  @param {String} name - The name of the cookie.
+ *  @param {String} value - The value of the cookie.
+ *  @param {int} expiresInDays - The expiration date of the cookie in days.
+ *  @param {String} domain - The domain of the cookie.
+ *  @param {boolean} secure - Whether the cookie should be marked as Secure.
+ *
+ **************************************************************************************/
 
 setCookie = function(name, value, expiresInDays, domain, secure) {
     console.log("Content > Setting: " + name + " Cookie for " + domain);
@@ -1185,6 +1205,78 @@ addNewCompanyListener = function() {
 }
 
 /**************************************************************************************
+ *  
+ *  This function retrieves the username, first name, last name, and email address of 
+ *  the current OneLogin user.
+ *
+ *  @Author Brian Fisher
+ *
+ *  @function
+ *
+ **************************************************************************************/
+
+getOneLoginUser = function() {
+    var isOneLoginUser = window.setInterval(function() {
+        if (typeof(Application) !== "undefined"
+        && Application.user) {
+            console.log("OneLogin > Getting: User");
+            
+            window.clearInterval(isOneLoginUser);
+            
+            var oneLoginUser = {
+                username : Application.user.username,
+                firstName : Application.user.firstname,
+                lastName : Application.user.lastname,
+                email : Application.user.email
+            };
+            return oneLoginUser;
+        }
+    }, 0);
+}
+
+/**************************************************************************************
+ *
+ *  This function creates an event listener in order to capture username, firstname, 
+ *  and lastname whenever a user submits a login to OneLogin in order to leverage this 
+ *  information for Heap Ana;ytics tracking and Marketo form fills and web visits.
+ *
+ *  @Author Brian Fisher
+ *
+ *  @function
+ *
+ *  @param [Object] message - JSON object that contains the following key/value pairs:
+ *      {String} action - The name of the requested action.
+ *      {String} assetType - The type of the asset for this request.
+ *      {String} assetView - The mode in which this asset is being viewed (edit/preview).
+ *  @param {MessageSender} sender - An object containing information about the script 
+ *      context that sent a message.
+ *  @param {function} sendResponse - Function to call when you have a response.
+ *
+ **************************************************************************************/
+
+addOneLoginListener = function() {
+    console.log("Content > Adding: One Login Listener");
+    
+    var sendBackgroundMsg = function(message) {
+        chrome.runtime.sendMessage(message, function(response) {
+            console.log("Content > Receiving: Message Response from Background: " + response);
+        });
+    }
+    
+    chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
+        switch(message.action) {
+            case "oneLoginUser":
+                var msg = getOneLoginUser();
+                msg.action = "setOneLoginUser";
+                sendBackgroundMsg(msg);
+                break;
+            default:
+                break;
+        }
+    }
+}
+
+/**************************************************************************************
  *
  *  main object that will pass the variables for which analyzer should be present using
  *  currPosition as the current position in the object array.
@@ -1252,6 +1344,12 @@ window.onload = function() {
         
         window.mkto_live_plugin_state = true;
         loadScript(MARKETO_GLOBAL_APP_LOCATION);
+        
+        if (currentUrl.search(mktoDesignerDomain) != -1) {
+            console.log("Content > Location: Marketo Designer");
+            
+            addNewCompanyListener();
+        }
     }
     else if (currentUrl.search(mktoLiveColorPickerDomain) != -1) {
 		console.log("Content > Location: Color-Picker Page");
@@ -1288,6 +1386,12 @@ window.onload = function() {
             document.getElementById('second').style.display = "block";
             document.getElementById('second-incorrect').style.display = "block";
         }
+    }
+    else if (currentUrl.search(oneLoginDomain) != -1 ) {
+        console.log("Content > Location: OneLogin");
+        
+        addOneLoginListener();
+        loadScript(ONE_LOGIN_SCRIPT_LOCATION);
     }
     else if (currentUrl.search(rtpDemoDomain) != -1) {
 		console.log("Content > Location: RTP Demo");

@@ -6,15 +6,15 @@ console.log("Background > Running");
  *
  **************************************************************************************/
 
-var mktoLiveInstances = "^https:\/\/app-(sjp|ab07|ab08)+\.marketo\.com",
-    mktoLiveUserPods = "app-sjp|app-ab07|app-ab08",
+var mktoLiveInstances = "^https:\/\/app-sjp\.marketo\.com",
+    mktoLiveUserPods = "app-sjp",
     mktoLiveDomain = "^https:\/\/marketolive.com",
-	mktoLiveMatch = "https://marketolive.com/*",
+	mktoLiveDomainMatch = "https://marketolive.com/*",
     mktoLiveUriDomain = ".marketolive.com",
-    mktoDomainMatch = "https://www.marketo.com/*",
-    mktoUriDomain = ".marketo.com",
+    mktoAppDomainMatch = "https://www.marketo.com/*",
+    mktoAppUriDomain = ".marketo.com",
     mktoAppDomainMatch = "https://app-*.marketo.com",
-    mktoDesignerMatch = "https://www.marketodesigner.com/*",
+    mktoDesignerDomainMatch = "https://www.marketodesigner.com/*",
     mktoDesignerUriDomain = ".marketodesigner.com",
     mktoDesignerMatchPattern = "https://*.marketodesigner.com/*",
     mktoEmailDesignerWebRequestMatch = "https://na-sjp.marketodesigner.com/images/templatePicker/richtext-object.svg",
@@ -30,7 +30,56 @@ var mktoLiveInstances = "^https:\/\/app-(sjp|ab07|ab08)+\.marketo\.com",
     mktoLandingPagePreviewWebRequestMatch = "https://na-sjp.marketodesigner.com/lpeditor/preview?pageId=*",
     mktoLandingPagePreviewWebRequestRegex = "^https:\/\/na-sjp\.marketodesigner\.com\/lpeditor\/preview\\?pageId=.+",
     mktoLandingPagePreviewFragment = "LPPD",
+    oneLoginWebRequestMatch = "https://marketo.onelogin.com/client/apps",
+    oneLoginWebRequestRegex = "^https:\/\/marketo\.onelogin\.com\/client\/apps$",
     count = 0;
+
+/**************************************************************************************
+ *  
+ *  This function loads the given script source.
+ *
+ *  @Author Brian Fisher
+ *
+ *  @function
+ *
+ *  @param {String} scriptSrc - The URL of the desired script.
+ *
+ **************************************************************************************/
+
+function loadScript(scriptSrc) {
+	console.log("Background > Loading: Script: " + scriptSrc);
+	
+    var scriptElement = document.createElement("script");
+    scriptElement.async = true;
+    scriptElement.src = scriptSrc;
+    document.getElementsByTagName("head")[0].appendChild(scriptElement);
+}
+
+/**************************************************************************************
+ *
+ *  This function issues an HTTP request.
+ *
+ *  @Author Brian Fisher
+ *
+ *  @function
+ *
+ *  @param {String} method - The HTTP request method (e.g. GET, POST, PATCH).
+ *  @param {String} url - The HTTP request URL.
+ *  @param {Boolean} async - The HTTP async flag [OPTIONAL].
+ *  @param {String} username - The URL's username [OPTIONAL].
+ *  @param {String} password - The URL's password [OPTIONAL].
+ *
+ **************************************************************************************/
+
+function webRequest(method, url, async, username, password) {
+    var xhr = new XMLHttpRequest();
+    
+    xhr.open(method, url, async, username, password);
+    //xhr.responseType = "document";
+    xhr.send();
+    
+    return xhr.responseText;
+}
 
 /**************************************************************************************
  *
@@ -93,8 +142,13 @@ function setCookie(obj) {
         url : obj.url,
         name : obj.name,
         value : obj.value,
-        domain : obj.domain
+        domain : obj.domain,
     };
+    
+    if (obj.expiresInDays)
+        var d = new Date();
+        cookie.expirationDate = d.setTime(d.getTime() + (obj.expiresInDays * 24 * 60 * 60));
+    }
     chrome.cookies.set(cookie, function() {
         if (cookie.value != null) {
             console.log("Background > Setting: " + cookie.name + " Cookie for " + cookie.url + " = " + cookie.value);
@@ -168,7 +222,7 @@ function reloadCompany(webRequest) {
     console.log("Background > Loading: Company Logo & Color");
     
     var companyLogoCookieDesigner = {
-            "url" : mktoDesignerMatch,
+            "url" : mktoDesignerDomainMatch,
             "name" : "logo"
         },
         setAssetData,
@@ -281,11 +335,17 @@ chrome.webRequest.onCompleted.addListener(function(details) {
             reloadCompany(webRequest);
         }
     }
+    else if (details.url.search(oneLoginWebRequestRegex) != -1) {
+        var message = {action : "oneLoginUser"};
+        chrome.tabs.sendMessage(details.tabId, message, function(response) {
+            console.log("Background > Receiving: Message Response from Content for tab: " + details.tabId + " " + response);
+        });
+    }
     else {
         reloadCompany(webRequest);
     }
     
-}, {urls : [mktoEmailDesignerWebRequestMatch, mktoEmailPreviewWebRequestMatch, mktoLandingPageDesignerWebRequestMatch, mktoLandingPagePreviewWebRequestMatch]});
+}, {urls : [mktoEmailDesignerWebRequestMatch, mktoEmailPreviewWebRequestMatch, mktoLandingPageDesignerWebRequestMatch, mktoLandingPagePreviewWebRequestMatch, oneLoginWebRequestMatch]});
 
 /**************************************************************************************
  *
@@ -308,42 +368,113 @@ chrome.webRequest.onCompleted.addListener(function(details) {
  **************************************************************************************/
 
 chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
-    if (message.action == "setCompanyCookies") {
-        console.log("Background > Receiving: Company Logo & Color");
+    switch (message.action) {
+        case "setCompanyCookies":
+            console.log("Background > Receiving: Company Logo & Color");
+            
+            var companyLogoCookieName = "logo",
+                companyColorCookieName = "color",
+                toggleCompanyCookieName = "toggleCompanyState",
+                companyLogoCookieMarketoLive = {
+                    "url" : mktoLiveDomainMatch,
+                    "name" : companyLogoCookieName,
+                    "value" : message.logo,
+                    "domain" : mktoLiveUriDomain
+                },
+                companyLogoCookieDesigner = {
+                    "url" : mktoDesignerDomainMatch,
+                    "name" : companyLogoCookieName,
+                    "value" : message.logo,
+                    "domain" : mktoDesignerUriDomain
+                },
+                companyColorCookieMarketoLive = {
+                    "url" : mktoLiveDomainMatch,
+                    "name" : companyColorCookieName,
+                    "value" : message.color,
+                    "domain" : mktoLiveUriDomain
+                },
+                companyColorCookieDesigner = {
+                    "url" : mktoDesignerDomainMatch,
+                    "name" : companyColorCookieName,
+                    "value" : message.color,
+                    "domain" : mktoDesignerUriDomain
+                };
+            
+            setCookie(companyColorCookieMarketoLive);
+            setCookie(companyColorCookieDesigner);
+            setCookie(companyLogoCookieMarketoLive);
+            setCookie(companyLogoCookieDesigner);
+            reloadCompany();
+            break;
         
-		var companyLogoCookieName = "logo",
-            companyColorCookieName = "color",
-            toggleCompanyCookieName = "toggleCompanyState",
-            companyLogoCookieMarketoLive = {
-                "url" : mktoLiveMatch,
-                "name" : companyLogoCookieName,
-                "value" : message.logo,
-                "domain" : mktoLiveUriDomain
-            },
-            companyLogoCookieDesigner = {
-                "url" : mktoDesignerMatch,
-                "name" : companyLogoCookieName,
-                "value" : message.logo,
-                "domain" : mktoDesignerUriDomain
-            },
-            companyColorCookieMarketoLive = {
-                "url" : mktoLiveMatch,
-                "name" : companyColorCookieName,
-                "value" : message.color,
-                "domain" : mktoLiveUriDomain
-            },
-            companyColorCookieDesigner = {
-                "url" : mktoDesignerMatch,
-                "name" : companyColorCookieName,
-                "value" : message.color,
-                "domain" : mktoDesignerUriDomain
-            };
+        case "setOneLoginUser":
+            console.log("Background > Receiving: OneLogin User");
+            
+            var usernameCookieName = "onelogin_username",
+                firstNameCookieName = "onelogin_first_name",
+                lastNameCookieName = "onelogin_last_name",
+                emailCookieName = "onelogin_email",
+                usernameCookieMarketoLive = {
+                    "url" : mktoLiveDomainMatch,
+                    "name" : usernameCookieName,
+                    "value" : message.username,
+                    "domain" : mktoLiveUriDomain
+                },
+                usernameCookieMarketoApp = {
+                    "url" : mktoAppDomainMatch,
+                    "name" : usernameCookieName,
+                    "value" : message.username,
+                    "domain" : mktoAppUriDomain
+                },
+                firstNameCookieMarketoLive = {
+                    "url" : mktoLiveDomainMatch,
+                    "name" : firstNameCookieName,
+                    "value" : message.firstName,
+                    "domain" : mktoLiveUriDomain
+                },
+                firstNameCookieMarketoApp = {
+                    "url" : mktoAppDomainMatch,
+                    "name" : firstNameCookieName,
+                    "value" : message.firstName,
+                    "domain" : mktoAppUriDomain
+                },
+                lastNameCookieMarketoLive = {
+                    "url" : mktoLiveDomainMatch,
+                    "name" : lastNameCookieName,
+                    "value" : message.lastName,
+                    "domain" : mktoLiveUriDomain
+                },
+                lastNameCookieMarketoApp = {
+                    "url" : mktoAppDomainMatch,
+                    "name" : lastNameCookieName,
+                    "value" : message.lastName,
+                    "domain" : mktoAppUriDomain
+                },
+                emailCookieMarketoLive = {
+                    "url" : mktoLiveDomainMatch,
+                    "name" : emailCookieName,
+                    "value" : message.email,
+                    "domain" : mktoLiveUriDomain
+                },
+                emailCookieMarketoApp = {
+                    "url" : mktoAppDomainMatch,
+                    "name" : emailCookieName,
+                    "value" : message.email,
+                    "domain" : mktoAppUriDomain
+                };
+            
+            setCookie(usernameCookieMarketoLive);
+            setCookie(usernameCookieMarketoApp);
+            setCookie(firstNameCookieMarketoLive);
+            setCookie(firstNameCookieMarketoApp);
+            setCookie(lastNameCookieMarketoLive);
+            setCookie(lastNameCookieMarketoApp);
+            setCookie(emailCookieMarketoLive);
+            setCookie(emailCookieMarketoApp);
+            break;
         
-        setCookie(companyColorCookieMarketoLive);
-        setCookie(companyColorCookieDesigner);
-        setCookie(companyLogoCookieMarketoLive);
-        setCookie(companyLogoCookieDesigner);
-        reloadCompany();
+        default:
+            break;
     }
 });
 
@@ -386,19 +517,19 @@ function checkForValidUrl(tabId, changeInfo, tab) {
                     userPodCookieName = "userPod";
                     if (userPod.search(mktoLiveUserPods) != -1) {
                         userPodCookieMarketo = {
-                            "url" : mktoDomainMatch,
+                            "url" : mktoAppDomainMatch,
                             "name" : userPodCookieName,
                             "value" : userPod,
-                            "domain" : mktoUriDomain
+                            "domain" : mktoAppUriDomain
                         };
                         userPodCookieDesigner = {
-                            "url" : mktoDesignerMatch,
+                            "url" : mktoDesignerDomainMatch,
                             "name" : userPodCookieName,
                             "value" : userPod,
                             "domain" : mktoDesignerUriDomain
                         };
                         userPodCookieMarketoLive = {
-                            "url" : mktoLiveMatch,
+                            "url" : mktoLiveDomainMatch,
                             "name" : userPodCookieName,
                             "value" : userPod,
                             "domain" : mktoLiveUriDomain
