@@ -148,7 +148,7 @@ function setCookie(obj) {
         domain : obj.domain,
     };
     
-    if (obj.expiresInDays)
+    if (obj.expiresInDays) {
         var d = new Date();
         cookie.expirationDate = d.setTime(d.getTime() + (obj.expiresInDays * 24 * 60 * 60));
     }
