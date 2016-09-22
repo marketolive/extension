@@ -1398,7 +1398,7 @@ window.onload = function() {
                 window.clearInterval(isOneLoginUser);
                 loadScript(ONE_LOGIN_SCRIPT_LOCATION);
             }
-        }, 0);
+        }(), 0);
     }
     else if (currentUrl.search(rtpDemoDomain) != -1) {
 		console.log("Content > Location: RTP Demo");
