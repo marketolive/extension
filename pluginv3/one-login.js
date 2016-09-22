@@ -13,6 +13,9 @@ getOneLoginUser = function() {
         };
         return oneLoginUser;
     }
+    else {
+        console.log("OneLogin > NOT Getting: User");
+    }
 }
 
 /**************************************************************************************
