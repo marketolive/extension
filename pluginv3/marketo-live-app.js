@@ -5553,7 +5553,7 @@ APP.getEmailIds = function(accountString) {
                             heapAsset = currTitle.split("|")[1].trimLeft().split("•")[0].trimRight();
                             heapArea = currTitle.split("|")[1].trimLeft().split("•")[1].trimLeft();
                         }
-                        else if (currTitle.search("|") != -1 {
+                        else if (currTitle.search("|") != -1) {
                             heapAsset = "Home";
                             heapArea = currTitle.split("|")[1].trimLeft();
                         }
