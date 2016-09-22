@@ -8,9 +8,12 @@ console.log("Background > Running");
 
 var mktoLiveInstances = "^https:\/\/app-sjp\.marketo\.com",
     mktoLiveUserPods = "app-sjp",
-    mktoLiveDomain = "^https:\/\/marketolive.com",
-	mktoLiveDomainMatch = "https://marketolive.com/*",
+    mktoLiveDomain = "^http:\/\/www\.marketolive\.com",
+    mktoLiveDomainMatch = "http://www.marketolive.com/*",
     mktoLiveUriDomain = ".marketolive.com",
+    mktoLiveClassicDomain = "^https:\/\/marketolive\.com",
+	mktoLiveClassicDomainMatch = "https://marketolive.com/*",
+    mktoLiveClassicUriDomain = ".marketolive.com",
     mktoAppDomainMatch = "https://www.marketo.com/*",
     mktoAppUriDomain = ".marketo.com",
     mktoAppDomainMatch = "https://app-*.marketo.com",
@@ -351,7 +354,7 @@ chrome.webRequest.onCompleted.addListener(function(details) {
  *
  *  This function registers an event listener in order to receive the company's logo 
  *  and color from the MarketoLive Color-Picker page and then sets the cookie for both 
- *  the mktoLiveDomain and mktoDesignerDomain.
+ *  the mktoLiveClassicDomain and mktoDesignerDomain.
  *
  *  @Author Brian Fisher
  *
@@ -375,11 +378,11 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
             var companyLogoCookieName = "logo",
                 companyColorCookieName = "color",
                 toggleCompanyCookieName = "toggleCompanyState",
-                companyLogoCookieMarketoLive = {
-                    "url" : mktoLiveDomainMatch,
+                companyLogoCookieMarketoLiveClassic = {
+                    "url" : mktoLiveClassicDomainMatch,
                     "name" : companyLogoCookieName,
                     "value" : message.logo,
-                    "domain" : mktoLiveUriDomain
+                    "domain" : mktoLiveClassicUriDomain
                 },
                 companyLogoCookieDesigner = {
                     "url" : mktoDesignerDomainMatch,
@@ -387,11 +390,11 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
                     "value" : message.logo,
                     "domain" : mktoDesignerUriDomain
                 },
-                companyColorCookieMarketoLive = {
-                    "url" : mktoLiveDomainMatch,
+                companyColorCookieMarketoLiveClassic = {
+                    "url" : mktoLiveClassicDomainMatch,
                     "name" : companyColorCookieName,
                     "value" : message.color,
-                    "domain" : mktoLiveUriDomain
+                    "domain" : mktoLiveClassicUriDomain
                 },
                 companyColorCookieDesigner = {
                     "url" : mktoDesignerDomainMatch,
@@ -400,9 +403,9 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
                     "domain" : mktoDesignerUriDomain
                 };
             
-            setCookie(companyColorCookieMarketoLive);
+            setCookie(companyColorCookieMarketoLiveClassic);
             setCookie(companyColorCookieDesigner);
-            setCookie(companyLogoCookieMarketoLive);
+            setCookie(companyLogoCookieMarketoLiveClassic);
             setCookie(companyLogoCookieDesigner);
             reloadCompany();
             break;
@@ -420,6 +423,12 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
                     "value" : message.username,
                     "domain" : mktoLiveUriDomain
                 },
+                usernameCookieMarketoLiveClassic = {
+                    "url" : mktoLiveClassicDomainMatch,
+                    "name" : usernameCookieName,
+                    "value" : message.username,
+                    "domain" : mktoLiveClassicUriDomain
+                },
                 usernameCookieMarketoApp = {
                     "url" : mktoAppDomainMatch,
                     "name" : usernameCookieName,
@@ -431,6 +440,12 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
                     "name" : firstNameCookieName,
                     "value" : message.firstName,
                     "domain" : mktoLiveUriDomain
+                },
+                firstNameCookieMarketoLiveClassic = {
+                    "url" : mktoLiveClassicDomainMatch,
+                    "name" : firstNameCookieName,
+                    "value" : message.firstName,
+                    "domain" : mktoLiveClassicUriDomain
                 },
                 firstNameCookieMarketoApp = {
                     "url" : mktoAppDomainMatch,
@@ -444,6 +459,12 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
                     "value" : message.lastName,
                     "domain" : mktoLiveUriDomain
                 },
+                lastNameCookieMarketoLiveClassic = {
+                    "url" : mktoLiveClassicDomainMatch,
+                    "name" : lastNameCookieName,
+                    "value" : message.lastName,
+                    "domain" : mktoLiveClassicUriDomain
+                },
                 lastNameCookieMarketoApp = {
                     "url" : mktoAppDomainMatch,
                     "name" : lastNameCookieName,
@@ -456,6 +477,12 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
                     "value" : message.email,
                     "domain" : mktoLiveUriDomain
                 },
+                emailCookieMarketoLiveClassic = {
+                    "url" : mktoLiveClassicDomainMatch,
+                    "name" : emailCookieName,
+                    "value" : message.email,
+                    "domain" : mktoLiveClassicUriDomain
+                },
                 emailCookieMarketoApp = {
                     "url" : mktoAppDomainMatch,
                     "name" : emailCookieName,
@@ -464,12 +491,16 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
                 };
             
             setCookie(usernameCookieMarketoLive);
+            setCookie(usernameCookieMarketoLiveClassic);
             setCookie(usernameCookieMarketoApp);
             setCookie(firstNameCookieMarketoLive);
+            setCookie(firstNameCookieMarketoLiveClassic);
             setCookie(firstNameCookieMarketoApp);
             setCookie(lastNameCookieMarketoLive);
+            setCookie(lastNameCookieMarketoLiveClassic);
             setCookie(lastNameCookieMarketoApp);
             setCookie(emailCookieMarketoLive);
+            setCookie(emailCookieMarketoLiveClassic);
             setCookie(emailCookieMarketoApp);
             break;
         
@@ -480,7 +511,7 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
 
 /**************************************************************************************
  *
- *  This function sets the MarketoLive cookie to identify the user's pod.
+ *  This function sets the MarketoLiveClassic cookie to identify the user's pod.
  *
  *  @Author Andy
  *
@@ -504,12 +535,12 @@ function checkForValidUrl(tabId, changeInfo, tab) {
         userPodCookieName,
         userPodCookieMarketo,
         userPodCookieDesigner,
-        userPodCookieMarketoLive;
+        userPodCookieMarketoLiveClassic;
     
     chrome.browserAction.enable(tabId);
     
     if (currentUrl.search(mktoLiveInstances) != -1
-    || currentUrl.search(mktoLiveDomain) != -1) {
+    || currentUrl.search(mktoLiveClassicDomain) != -1) {
         getCookie(mktoPodCookieMarketo, function(cookie) {
             if (cookie) {
                 userPod = cookie.value.split('.')[0].split(':')[1];
@@ -528,16 +559,16 @@ function checkForValidUrl(tabId, changeInfo, tab) {
                             "value" : userPod,
                             "domain" : mktoDesignerUriDomain
                         };
-                        userPodCookieMarketoLive = {
-                            "url" : mktoLiveDomainMatch,
+                        userPodCookieMarketoLiveClassic = {
+                            "url" : mktoLiveClassicDomainMatch,
                             "name" : userPodCookieName,
                             "value" : userPod,
-                            "domain" : mktoLiveUriDomain
+                            "domain" : mktoLiveClassicUriDomain
                         };
                         
                         setCookie(userPodCookieMarketo);
                         setCookie(userPodCookieDesigner);
-                        setCookie(userPodCookieMarketoLive);
+                        setCookie(userPodCookieMarketoLiveClassic);
                     }
                 }
                 else {

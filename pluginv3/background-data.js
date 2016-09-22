@@ -237,6 +237,7 @@ var webPages = {
     webPageXvisitationRate,
     companyX,
     cookieMarketoLive,
+    cookieMarketoLiveClassic,
     jobTitleCookieName,
     companyNameCookieName,
     industryCookieName,
@@ -257,6 +258,11 @@ companyX = companies[Math.floor((Math.random() * companies.length))];
 cookieMarketoLive = {
     url : mktoLiveDomainMatch,
     domain : mktoLiveUriDomain,
+    expiresInDays : 365,
+};
+cookieMarketoLiveClassic = {
+    url : mktoLiveClassicDomainMatch,
+    domain : mktoLiveClassicUriDomain,
     expiresInDays : 365,
 };
 cookieLandingPage = {
@@ -328,6 +334,13 @@ getCookie(jobTitleCookieName, function(cookie) {
                 value : jobTitleX,
                 expiresInDays : cookieMarketoLive.expiresInDays,
             },
+            jobTitleCookieMarketoLiveClassic = {
+                url : cookieMarketoLiveClassic.url,
+                domain : cookieMarketoLiveClassic.domain,
+                name : jobTitleCookieName,
+                value : jobTitleX,
+                expiresInDays : cookieMarketoLiveClassic.expiresInDays,
+            },
             jobTitleCookieLandingPage = {
                 url : cookieLandingPage.url,
                 domain : cookieLandingPage.domain,
@@ -337,6 +350,7 @@ getCookie(jobTitleCookieName, function(cookie) {
             };
         
         setCookie(jobTitleCookieMarketoLive);
+        setCookie(jobTitleCookieMarketoLiveClassic);
         setCookie(jobTitleCookieLandingPage);
     }
 }
@@ -354,6 +368,13 @@ getCookie(companyNameCookieName, function(cookie) {
                 value : companyName,
                 expiresInDays : cookieMarketoLive.expiresInDays,
             },
+            companyNameCookieMarketoLiveClassic = {
+                url : cookieMarketoLiveClassic.url,
+                domain : cookieMarketoLiveClassic.domain,
+                name : companyNameCookieName,
+                value : companyName,
+                expiresInDays : cookieMarketoLiveClassic.expiresInDays,
+            },
             companyNameCookieLandingPage = {
                 url : cookieLandingPage.url,
                 domain : cookieLandingPage.domain,
@@ -363,6 +384,7 @@ getCookie(companyNameCookieName, function(cookie) {
             };
         
         setCookie(companyNameCookieMarketoLive);
+        setCookie(companyNameCookieMarketoLiveClassic);
         setCookie(companyNameCookieLandingPage);
     }
 }
@@ -380,6 +402,13 @@ getCookie(industryCookieName, function(cookie) {
                 value : industry,
                 expiresInDays : cookieMarketoLive.expiresInDays,
             },
+            industryCookieMarketoLiveClassic = {
+                url : cookieMarketoLiveClassic.url,
+                domain : cookieMarketoLiveClassic.domain,
+                name : industryCookieName,
+                value : industry,
+                expiresInDays : cookieMarketoLiveClassic.expiresInDays,
+            },
             industryCookieLandingPage = {
                 url : cookieLandingPage.url,
                 domain : cookieLandingPage.domain,
@@ -389,6 +418,7 @@ getCookie(industryCookieName, function(cookie) {
             };
         
         setCookie(industryCookieMarketoLive);
+        setCookie(industryCookieMarketoLiveClassic);
         setCookie(industryCookieLandingPage);
     }
 }
@@ -406,6 +436,13 @@ getCookie(leadSourceCookieName, function(cookie) {
                 value : leadSourceX,
                 expiresInDays : cookieMarketoLive.expiresInDays,
             },
+            leadSourceCookieMarketoLiveClassic = {
+                url : cookieMarketoLiveClassic.url,
+                domain : cookieMarketoLiveClassic.domain,
+                name : leadSourceCookieName,
+                value : leadSourceX,
+                expiresInDays : cookieMarketoLiveClassic.expiresInDays,
+            },
             leadSourceCookieLandingPage = {
                 url : cookieLandingPage.url,
                 domain : cookieLandingPage.domain,
@@ -415,6 +452,7 @@ getCookie(leadSourceCookieName, function(cookie) {
             };
         
         setCookie(leadSourceCookieMarketoLive);
+        setCookie(leadSourceCookieMarketoLiveClassic);
         setCookie(leadSourceCookieLandingPage);
     }
 }
