@@ -254,7 +254,7 @@ companyXindustry = companyX[1];
 leadSourceX = leadSources[Math.floor((Math.random() * leadSources.length))];
 checkBoxX = checkBoxes[Math.floor((Math.random() * checkBoxes.length))];
 
-getCookie({url : mktoLiveDomainMatch, name : "visitedPages"}, function(cookie) {
+getCookie({url : mktoLiveMatch, name : "visitedPages"}, function(cookie) {
     if (cookie
     && cookie.value) {
         console.log("Background > visitedPages Cookie for " + cookie.domain + " = " + cookie.value);
