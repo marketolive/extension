@@ -1,7 +1,7 @@
-var getOneLoginUser;
-
-getOneLoginUser = function() {
-    if (typeof(Application) !== "undefined"
+var getOneLoginUser = function() {
+    console.log("OneLogin > Executing: getOneLoginUser");
+    
+    if (Application
     && Application.user) {
         console.log("OneLogin > Getting: User");
         
@@ -24,4 +24,4 @@ getOneLoginUser = function() {
  *  
  **************************************************************************************/
 
-console.log("One Login > Test");
+console.log("One Login > Script Loaded");

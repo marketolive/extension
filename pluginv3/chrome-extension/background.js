@@ -6,7 +6,8 @@ console.log("Background > Running");
  *
  **************************************************************************************/
 
-var mktoLiveInstances = "^https:\/\/app-sjp\.marketo\.com",
+var URL_PATH = "m3-dev",
+    mktoLiveInstances = "^https:\/\/app-sjp\.marketo\.com",
     mktoLiveUserPods = "app-sjp",
     mktoLiveDomain = "^http:\/\/www\.marketolive\.com",
     mktoLiveDomainMatch = "http://www.marketolive.com/*",
@@ -33,8 +34,8 @@ var mktoLiveInstances = "^https:\/\/app-sjp\.marketo\.com",
     mktoLandingPagePreviewWebRequestMatch = "https://na-sjp.marketodesigner.com/lpeditor/preview?pageId=*",
     mktoLandingPagePreviewWebRequestRegex = "^https:\/\/na-sjp\.marketodesigner\.com\/lpeditor\/preview\\?pageId=.+",
     mktoLandingPagePreviewFragment = "LPPD",
-    oneLoginWebRequestMatch = "https://marketo.onelogin.com/client/apps",
-    oneLoginWebRequestRegex = "^https:\/\/marketo\.onelogin\.com\/client\/apps$",
+    oneLoginWebRequestMatch = "https://marketolive.com/"+URL_PATH +"/pluginv3/one-login*.js",
+    oneLoginWebRequestRegex = "^https:\/\/marketolive\.com\/"+URL_PATH +"\/pluginv3\/one-login.*\.js$",
     count = 0;
 
 /**************************************************************************************
@@ -342,7 +343,7 @@ chrome.webRequest.onCompleted.addListener(function(details) {
         var message = {action : "oneLoginUser"};
         
         chrome.tabs.executeScript(details.tabId, {
-            code : "getOneLoginUser();",
+            code : 'console.log("TEST"); getOneLoginUser(); console.log("TEST AGAIN"); Application.user;',
             runAt : "document_end",
         }, function(result) {
             console.log("Background > getOneLoginUser: " + result[0]);

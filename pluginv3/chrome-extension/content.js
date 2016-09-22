@@ -16,7 +16,7 @@ var URL_PATH = "m3-dev",
 	mktoDesignerDomain = "^https:\/\/[a-z0-9]+-[a-z0-9]+\.marketodesigner\.com",
 	mktoWizardDomain = mktoAppDomain + "/m#",
     mktoLiveColorPickerDomain = "^https:\/\/marketolive\.com[a-zA-Z0-9-\/]*\/color-picker\.html",
-    oneLoginDomain = "^https:\/\/marketo\.onelogin\.com",
+    oneLoginDomain = "^https:\/\/marketo\.onelogin\.com\/client\/apps",
 	rtpDemoDomain = "^http:\/\/sjrtp1.marketo.com\/demo\/$|^http:\/\/cloud4.insightera.com\/demo\/$",
 	emailDeliverabilityDomain = "^https:\/\/250ok.com\/",
     invisionAppDomain = "^https:\/\/marketo\.invisionapp\.com\/share\/",
@@ -1391,7 +1391,14 @@ window.onload = function() {
         console.log("Content > Location: OneLogin");
         
         addOneLoginListener();
-        loadScript(ONE_LOGIN_SCRIPT_LOCATION);
+        
+        var isOneLoginUser = window.setInterval(function() {
+            if (typeof(Application) !== "undefined"
+            && Application.user) {
+                window.clearInterval(isOneLoginUser);
+                loadScript(ONE_LOGIN_SCRIPT_LOCATION);
+            }
+        }, 0);
     }
     else if (currentUrl.search(rtpDemoDomain) != -1) {
 		console.log("Content > Location: RTP Demo");
