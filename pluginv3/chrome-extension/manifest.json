@@ -22,7 +22,7 @@
    },
    "manifest_version": 2,
    "name": "MarketoLive",
-   "permissions": [ "management", "storage", "webRequest", "webNavigation", "tabs", "cookies", "*://*.marketodesigner.com/*", "*://*.marketolive.com/*", "*://*.marketo.com/*", "*://go.app.io/*", "http://cloud4.insightera.com/demo/", "*://cloud4.insightera.com/*", "https://250ok.com/*", "https://marketo.invisionapp.com/*", "https://marketo.onelogin.com/*" ],
+   "permissions": [ "management", "storage", "webRequest", "webNavigation", "tabs", "cookies", "activeTab", "*://*.marketodesigner.com/*", "*://*.marketolive.com/*", "*://*.marketo.com/*", "*://go.app.io/*", "http://cloud4.insightera.com/demo/", "*://cloud4.insightera.com/*", "https://250ok.com/*", "https://marketo.invisionapp.com/*", "https://marketo.onelogin.com/*" ],
    "update_url": "https://clients2.google.com/service/update2/crx",
    "version": "4.1.2",
    "web_accessible_resources": ["lib/*"],

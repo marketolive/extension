@@ -340,6 +340,14 @@ chrome.webRequest.onCompleted.addListener(function(details) {
     }
     else if (details.url.search(oneLoginWebRequestRegex) != -1) {
         var message = {action : "oneLoginUser"};
+        
+        chrome.tabs.executeScript(details.tabId, {
+            code : "getOneLoginUser();",
+            runAt : "document_end",
+        }, function(result) {
+            console.log("Background > getOneLoginUser: " + result[0]);
+        });
+        
         chrome.tabs.sendMessage(details.tabId, message, function(response) {
             console.log("Background > Receiving: Message Response from Content for tab: " + details.tabId + " " + response);
         });
