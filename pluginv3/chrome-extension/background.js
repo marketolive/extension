@@ -1,4 +1,4 @@
-console.log("Background > Running");
+console.log("Running");
 
 /**************************************************************************************
  *
@@ -21,8 +21,6 @@ var URL_PATH = "m3-dev",
     mktoDesignerDomainMatch = "https://www.marketodesigner.com/*",
     mktoDesignerUriDomain = ".marketodesigner.com",
     mktoDesignerMatchPattern = "https://*.marketodesigner.com/*",
-    //mktoLandingPageDomainMatch = "http://na-sjdemo1.marketo.com/*",
-    //mktoLandingPageUriDomain = "na-sjdemo1.marketo.com",
     mktoEmailDesignerWebRequestMatch = "https://na-sjp.marketodesigner.com/images/templatePicker/richtext-object.svg",
     mktoEmailDesignerWebRequestRegex = "^https:\/\/na-sjp\.marketodesigner\.com\/images\/templatePicker\/richtext-object\.svg$",
     mktoEmailDesignerFragment = "EME",
@@ -52,7 +50,7 @@ var URL_PATH = "m3-dev",
  **************************************************************************************/
 
 function loadScript(scriptSrc) {
-	console.log("Background > Loading: Script: " + scriptSrc);
+	console.log("Loading: Script: " + scriptSrc);
 	
     var scriptElement = document.createElement("script");
     scriptElement.async = true;
@@ -108,17 +106,17 @@ function getCookie(obj, callback) {
     }, function(cookie) {
         if (cookie) {
             if (cookie.value != null) {
-                console.log("Background > Getting: " + cookie.name + " Cookie for " + cookie.domain + " = " + cookie.value);
+                console.log("Getting: " + cookie.name + " Cookie for " + cookie.domain + " = " + cookie.value);
             }
             else {
-                console.log("Background > Getting: " + cookie.name + " Cookie for " + cookie.domain + " = null");
+                console.log("Getting: " + cookie.name + " Cookie for " + cookie.domain + " = null");
             }
             if (callback) {
                 callback(cookie);
             }
         }
         else {
-            console.error("Background > Getting: " + obj.name + " Cookie for " + obj.url + " = undefined");
+            console.error("Getting: " + obj.name + " Cookie for " + obj.url + " = undefined");
             if (callback) {
                 callback(null);
             }
@@ -156,10 +154,10 @@ function setCookie(obj) {
     }
     chrome.cookies.set(cookie, function() {
         if (cookie.value != null) {
-            console.log("Background > Setting: " + cookie.name + " Cookie for " + cookie.domain + " = " + cookie.value);
+            console.log("Setting: " + cookie.name + " Cookie for " + cookie.domain + " = " + cookie.value);
         }
         else {
-            console.log("Background > Setting: " + cookie.name + " Cookie for " + cookie.domain + " = null");
+            console.log("Setting: " + cookie.name + " Cookie for " + cookie.domain + " = null");
         }
     });
 }
@@ -184,7 +182,7 @@ function removeCookie(obj) {
         name : obj.name
     };
     chrome.cookies.remove(cookie, function() {
-        console.log("Background > Removing: " + cookie.name + " Cookie for " + cookie.url);
+        console.log("Removing: " + cookie.name + " Cookie for " + cookie.url);
     });
 }
 
@@ -224,7 +222,7 @@ function reloadMarketoTabs() {
  **************************************************************************************/
 
 function reloadCompany(webRequest) {
-    console.log("Background > Loading: Company Logo & Color");
+    console.log("Loading: Company Logo & Color");
     
     var companyLogoCookieDesigner = {
             "url" : mktoDesignerDomainMatch,
@@ -246,23 +244,23 @@ function reloadCompany(webRequest) {
         && cookie.value) {
             setAssetData = function(tab) {
                 if (tab.url.search("#" + mktoEmailDesignerFragment + "[0-9]+$") != -1) {
-                    console.log("Background > Loading: Company Logo & Color for Email Designer");
+                    console.log("Loading: Company Logo & Color for Email Designer");
                     message.assetType = "email";
                     message.assetView = "edit";
                 }
                 else if (tab.url.search(mktoEmailPreviewFragmentRegex) != -1
                 || tab.url.search("#" + mktoEmailPreviewFragment + "[0-9]+$") != -1) {
-                    console.log("Background > Loading: Company Logo & Color for Email Previewer");
+                    console.log("Loading: Company Logo & Color for Email Previewer");
                     message.assetType = "email";
                     message.assetView = "preview";
                 }
                 else if (tab.url.search("#" + mktoLandingPageDesignerFragment + "[0-9]+$") != -1) {
-                    console.log("Background > Loading: Company Logo & Color for Landing Page Designer");
+                    console.log("Loading: Company Logo & Color for Landing Page Designer");
                     message.assetType = "landingPage";
                     message.assetView = "edit";
                 }
                 else if (tab.url.search("#" + mktoLandingPagePreviewFragment + "[0-9]+$") != -1) {
-                    console.log("Background > Loading: Company Logo & Color for Landing Page Previewer");
+                    console.log("Loading: Company Logo & Color for Landing Page Previewer");
                     message.assetType = "landingPage";
                     message.assetView = "preview";
                 }
@@ -270,7 +268,7 @@ function reloadCompany(webRequest) {
                 if (message.assetType
                 && message.assetView) {
                     chrome.tabs.sendMessage(tab.id, message, function(response) {
-                        console.log("Background > Receiving: Message Response from Content for tab: " + tab.url + " " + response);
+                        console.log("Receiving: Message Response from Content for tab: " + tab.url + " " + response);
                     });
                     message.assetType = message.assetView = "";
                 }
@@ -297,7 +295,7 @@ function reloadCompany(webRequest) {
             }
         }
         else {
-            console.log("Background > NOT Loading: Company Logo & Color as logo is undefined");
+            console.log("NOT Loading: Company Logo & Color as logo is undefined");
         }
     });
 }
@@ -318,7 +316,7 @@ function reloadCompany(webRequest) {
  **************************************************************************************/
 
 chrome.webRequest.onCompleted.addListener(function(details) {
-    console.log("Background > webRequest Completed: " + details.url);
+    console.log("webRequest Completed: " + details.url);
     
     var webRequest = {
             "tabId" : details.tabId
@@ -328,7 +326,7 @@ chrome.webRequest.onCompleted.addListener(function(details) {
         count++;
         
         if (count == 2) {
-            console.log("Background > webRequest Completed: Email Previewer");
+            console.log("webRequest Completed: Email Previewer");
             reloadCompany(webRequest);
         }
     }
@@ -336,7 +334,7 @@ chrome.webRequest.onCompleted.addListener(function(details) {
         count++;
         
         if (count == 4) {
-            console.log("Background > webRequest Completed: Landing Page Previewer");
+            console.log("webRequest Completed: Landing Page Previewer");
             reloadCompany(webRequest);
         }
     }
@@ -369,7 +367,7 @@ chrome.webRequest.onCompleted.addListener(function(details) {
 chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
     switch (message.action) {
         case "setCompanyCookies":
-            console.log("Background > Receiving: Company Logo & Color");
+            console.log("Receiving: Company Logo & Color");
             
             var companyLogoCookieName = "logo",
                 companyColorCookieName = "color",
@@ -405,102 +403,6 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
             setCookie(companyLogoCookieDesigner);
             reloadCompany();
             break;
-/*        
-        case "setOneLoginUser":
-            console.log("Background > Receiving: OneLogin User");
-            
-            var usernameCookieName = "onelogin_username",
-                firstNameCookieName = "onelogin_first_name",
-                lastNameCookieName = "onelogin_last_name",
-                emailCookieName = "onelogin_email",
-                usernameCookieMarketoLive = {
-                    "url" : mktoLiveDomainMatch,
-                    "name" : usernameCookieName,
-                    "value" : message.username,
-                    "domain" : mktoLiveUriDomain
-                },
-                usernameCookieMarketoLiveClassic = {
-                    "url" : mktoLiveClassicDomainMatch,
-                    "name" : usernameCookieName,
-                    "value" : message.username,
-                    "domain" : mktoLiveClassicUriDomain
-                },
-                usernameCookieMarketoApp = {
-                    "url" : mktoAppDomainMatch,
-                    "name" : usernameCookieName,
-                    "value" : message.username,
-                    "domain" : mktoAppUriDomain
-                },
-                firstNameCookieMarketoLive = {
-                    "url" : mktoLiveDomainMatch,
-                    "name" : firstNameCookieName,
-                    "value" : message.firstName,
-                    "domain" : mktoLiveUriDomain
-                },
-                firstNameCookieMarketoLiveClassic = {
-                    "url" : mktoLiveClassicDomainMatch,
-                    "name" : firstNameCookieName,
-                    "value" : message.firstName,
-                    "domain" : mktoLiveClassicUriDomain
-                },
-                firstNameCookieMarketoApp = {
-                    "url" : mktoAppDomainMatch,
-                    "name" : firstNameCookieName,
-                    "value" : message.firstName,
-                    "domain" : mktoAppUriDomain
-                },
-                lastNameCookieMarketoLive = {
-                    "url" : mktoLiveDomainMatch,
-                    "name" : lastNameCookieName,
-                    "value" : message.lastName,
-                    "domain" : mktoLiveUriDomain
-                },
-                lastNameCookieMarketoLiveClassic = {
-                    "url" : mktoLiveClassicDomainMatch,
-                    "name" : lastNameCookieName,
-                    "value" : message.lastName,
-                    "domain" : mktoLiveClassicUriDomain
-                },
-                lastNameCookieMarketoApp = {
-                    "url" : mktoAppDomainMatch,
-                    "name" : lastNameCookieName,
-                    "value" : message.lastName,
-                    "domain" : mktoAppUriDomain
-                },
-                emailCookieMarketoLive = {
-                    "url" : mktoLiveDomainMatch,
-                    "name" : emailCookieName,
-                    "value" : message.email,
-                    "domain" : mktoLiveUriDomain
-                },
-                emailCookieMarketoLiveClassic = {
-                    "url" : mktoLiveClassicDomainMatch,
-                    "name" : emailCookieName,
-                    "value" : message.email,
-                    "domain" : mktoLiveClassicUriDomain
-                },
-                emailCookieMarketoApp = {
-                    "url" : mktoAppDomainMatch,
-                    "name" : emailCookieName,
-                    "value" : message.email,
-                    "domain" : mktoAppUriDomain
-                };
-            
-            setCookie(usernameCookieMarketoLive);
-            setCookie(usernameCookieMarketoLiveClassic);
-            setCookie(usernameCookieMarketoApp);
-            setCookie(firstNameCookieMarketoLive);
-            setCookie(firstNameCookieMarketoLiveClassic);
-            setCookie(firstNameCookieMarketoApp);
-            setCookie(lastNameCookieMarketoLive);
-            setCookie(lastNameCookieMarketoLiveClassic);
-            setCookie(lastNameCookieMarketoApp);
-            setCookie(emailCookieMarketoLive);
-            setCookie(emailCookieMarketoLiveClassic);
-            setCookie(emailCookieMarketoApp);
-            
-            loadScript(BACKGROUND_DATA_SCRIPT_LOCATION);
-            break;*/
         
         default:
             break;
@@ -508,10 +410,9 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
 });
 
 chrome.runtime.onMessageExternal.addListener(function(message, sender, sendResponse) {
-    console.log("Background > Receiving: OneLogin User: " + message);
     switch (sender.url) {
         case oneLoginExtMsgRegex:
-            console.log("Background > Receiving: OneLogin User");
+            console.log("Receiving: OneLogin User");
             
             var usernameCookieName = "onelogin_username",
                 firstNameCookieName = "onelogin_first_name",
@@ -608,7 +509,7 @@ chrome.runtime.onMessageExternal.addListener(function(message, sender, sendRespo
             break;
         
         default:
-            console.log("Background > NOT Receiving: OneLogin User");
+            console.log("NOT Receiving: OneLogin User");
             return sendResponse;
             break;
     }
@@ -629,7 +530,7 @@ chrome.runtime.onMessageExternal.addListener(function(message, sender, sendRespo
  **************************************************************************************/
 
 function checkForValidUrl(tabId, changeInfo, tab) {
-    console.log("Background > Checking: Valid URL");
+    console.log("Checking: Valid URL");
     
     var currentUrl = tab.url,
         mktoPodCookieMarketo = {
@@ -677,11 +578,11 @@ function checkForValidUrl(tabId, changeInfo, tab) {
                     }
                 }
                 else {
-                    console.error("Background > Checking: " + userPodCookieName + " is null for the tab " + currentUrl);
+                    console.error("Checking: " + userPodCookieName + " is null for the tab " + currentUrl);
                 }
             }
             else {
-                console.error("Background > Checking: mkto_pod is null for the tab " + currentUrl);
+                console.error("Checking: mkto_pod is null for the tab " + currentUrl);
             }
         });
     }

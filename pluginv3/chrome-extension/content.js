@@ -103,7 +103,7 @@ getCookie = function(cookieName) {
     console.log("Content > Getting: Cookie " + cookieName + " not found");
     return null;
 }
-
+/*
 sendBackgroundMsg = function(message) {
     var result = chrome.runtime.sendMessage(message, function(response) {
         console.log("Content > Receiving: Message Response from Background: " + response);
@@ -114,7 +114,6 @@ sendBackgroundMsg = function(message) {
     return result;
 }
 
-/*
 displayProgressModal = function(parameters) {
     console.log("Content > Displaying: Progress Modal Window");
     
@@ -1371,45 +1370,6 @@ window.onload = function() {
     else if (currentUrl.search(oneLoginDomain) != -1 ) {
         console.log("Content > Location: OneLogin");
         
-        var getOneLoginUser,
-            addOneLoginListener;
-        
-        /**************************************************************************************
-         *
-         *  This function creates an event listener in order to capture username, firstname, 
-         *  and lastname whenever a user submits a login to OneLogin in order to leverage this 
-         *  information for Heap Ana;ytics tracking and Marketo form fills and web visits.
-         *
-         *  @Author Brian Fisher
-         *
-         *  @function
-         *
-         *  @param [Object] message - JSON object that contains the following key/value pairs:
-         *      {String} action - The name of the requested action.
-         *      {String} assetType - The type of the asset for this request.
-         *      {String} assetView - The mode in which this asset is being viewed (edit/preview).
-         *  @param {MessageSender} sender - An object containing information about the script 
-         *      context that sent a message.
-         *  @param {function} sendResponse - Function to call when you have a response.
-         *
-         **************************************************************************************/
-/*        
-        addOneLoginListener = function() {
-            console.log("Content > Adding: One Login Listener");
-            
-            chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
-                switch(message.action) {
-                    case "oneLoginUser":
-                        var msg = getOneLoginUser();
-                        msg.action = "setOneLoginUser";
-                        sendBackgroundMsg(msg);
-                        break;
-                    default:
-                        break;
-                }
-            });
-        }*/
-        
         /**************************************************************************************
         *
         *  Execute
@@ -1417,8 +1377,6 @@ window.onload = function() {
         **************************************************************************************/
         
         loadScript(ONE_LOGIN_SCRIPT_LOCATION);
-        //getOneLoginUser();
-        //addOneLoginListener();
     }
     else if (currentUrl.search(rtpDemoDomain) != -1) {
 		console.log("Content > Location: RTP Demo");

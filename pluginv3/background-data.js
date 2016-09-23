@@ -255,7 +255,7 @@ var landingPageHost = "na-sjdemo1.marketo.com",
  *  
  **************************************************************************************/
 
-console.log("Background > Selecting: Web Page to Visit & Lead Attributes for Form Fill");
+console.log("Selecting: Web Page to Visit & Lead Attributes for Form Fill");
 
 webPageX = webPages[Math.floor((Math.random() * Object.keys(webPages).length))];
 webPageXvisitationRate = webPageX.visitationRate * Object.keys(webPages).length;
@@ -292,18 +292,18 @@ if (webPageXvisitationRate > 1.0
             }
             
             if (proceed) {
-                console.log("Background > Visiting: " + webPageX.url);
+                console.log("Visiting: " + webPageX.url);
                 
                 response = webRequest("GET", webPageX.url, false);
                 visitedPagesCookieMarketoLive.value = cookie.value + ", " + webPageX.name;
                 setCookie(visitedPagesCookieMarketoLive);
             }
             else {
-                console.log("Background > NOT Visiting: " + webPageX.url + " due to dependencies not being met");
+                console.log("NOT Visiting: " + webPageX.url + " due to dependencies not being met");
             }
         }
         else {
-            console.log("Background > Visiting Initial Page: " + webPageX.url);
+            console.log("Visiting Initial Page: " + webPageX.url);
             
             response = webRequest("GET", webPageX.url, false);
             visitedPagesCookieMarketoLive.value = webPageX.name;
@@ -315,7 +315,7 @@ if (webPageXvisitationRate > 1.0
 getCookie({url : mktoAppDomainMatch, name : jobTitleCookieName}, function(cookie) {
     if (!cookie
     || !cookie.value) {
-        console.log("Background > Initializing: " + jobTitleCookieName + " Cookie");
+        console.log("Initializing: " + jobTitleCookieName + " Cookie");
 
         var jobTitleX = jobTitles[Math.floor((Math.random() * jobTitles.length))],
             jobTitleCookieMarketoLive = {
@@ -349,7 +349,7 @@ getCookie({url : mktoAppDomainMatch, name : jobTitleCookieName}, function(cookie
 getCookie({url : mktoAppDomainMatch, name : companyNameCookieName}, function(cookie) {
     if (!cookie
     || !cookie.value) {
-        console.log("Background > Initializing: " + companyNameCookieName + " Cookie");
+        console.log("Initializing: " + companyNameCookieName + " Cookie");
 
         var companyName = companyX[0],
             companyNameCookieMarketoLive = {
@@ -383,7 +383,7 @@ getCookie({url : mktoAppDomainMatch, name : companyNameCookieName}, function(coo
 getCookie({url : mktoAppDomainMatch, name : industryCookieName}, function(cookie) {
     if (!cookie
     || !cookie.value) {
-        console.log("Background > Initializing: " + industryCookieName + " Cookie");
+        console.log("Initializing: " + industryCookieName + " Cookie");
 
         var industry = companyX[1],
             industryCookieMarketoLive = {
@@ -417,7 +417,7 @@ getCookie({url : mktoAppDomainMatch, name : industryCookieName}, function(cookie
 getCookie({url : mktoAppDomainMatch, name : leadSourceCookieName}, function(cookie) {
     if (!cookie
     || !cookie.value) {
-        console.log("Background > Initializing: " + leadSourceCookieName + " Cookie");
+        console.log("Initializing: " + leadSourceCookieName + " Cookie");
 
         var leadSourceX = leadSources[Math.floor((Math.random() * leadSources.length))],
             leadSourceCookieMarketoLive = {
