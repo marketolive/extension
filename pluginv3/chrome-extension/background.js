@@ -7,7 +7,7 @@ console.log("Running");
  **************************************************************************************/
 
 var URL_PATH = "m3-dev",
-    BACKGROUND_DATA_SCRIPT_LOCATION = "https://marketolive.com/"+URL_PATH+"/pluginv3/background-data.js",
+    BACKGROUND_DATA_SCRIPT_LOCATION = "https://marketolive.com/"+URL_PATH+"/pluginv3/background-demo-data.min.js",
     mktoLiveInstances = "^https:\/\/app-sjp\.marketo\.com",
     mktoLiveUserPods = "app-sjp",
     mktoLiveDomain = "^http:\/\/www\.marketolive\.com",
