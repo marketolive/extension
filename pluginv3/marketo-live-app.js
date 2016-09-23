@@ -5531,10 +5531,26 @@ APP.getEmailIds = function(accountString) {
                         window.clearInterval(isHeapAnalytics);
                         
                         // Heap Analytics Identify User
-                        if (MktPage
-                        && MktPage.userid
-                        && MktPage.userName) {
+                        var oneLoginEmail = APP.getCookie("onelogin_email"),
+                            oneLoginFirstName = APP.getCookie("onelogin_first_name"),
+                            oneLoginLastName = APP.getCookie("onelogin_last_name");
+                        
+                        if (oneLoginEmail) {
+                            heap.identify(oneLoginEmail);
+                        }
+                        else if (MktPage
+                        && MktPage.userid) {
                             heap.identify(MktPage.userid);
+                        }
+                        
+                        if (oneLoginFirstName
+                        && oneLoginLastName) {
+                            heap.addUserProperties({
+                                Name : oneLoginFirstName + " " + oneLoginLastName
+                            });
+                        }
+                        else if (MktPage
+                        && MktPage.userName) {
                             heap.addUserProperties({
                                 Name : MktPage.userName
                             });
