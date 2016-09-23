@@ -7,6 +7,7 @@ console.log("Background > Running");
  **************************************************************************************/
 
 var URL_PATH = "m3-dev",
+    BACKGROUND_DATA_SCRIPT_LOCATION = "https://marketolive.com/"+URL_PATH+"/pluginv3/background-data.js",
     mktoLiveInstances = "^https:\/\/app-sjp\.marketo\.com",
     mktoLiveUserPods = "app-sjp",
     mktoLiveDomain = "^http:\/\/www\.marketolive\.com",
@@ -15,12 +16,13 @@ var URL_PATH = "m3-dev",
     mktoLiveClassicDomain = "^https:\/\/marketolive\.com",
 	mktoLiveClassicDomainMatch = "https://marketolive.com/*",
     mktoLiveClassicUriDomain = ".marketolive.com",
-    mktoAppDomainMatch = "https://www.marketo.com/*",
     mktoAppUriDomain = ".marketo.com",
     mktoAppDomainMatch = "https://app-*.marketo.com",
     mktoDesignerDomainMatch = "https://www.marketodesigner.com/*",
     mktoDesignerUriDomain = ".marketodesigner.com",
     mktoDesignerMatchPattern = "https://*.marketodesigner.com/*",
+    mktoLandingPageDomainMatch = "http://na-sjdemo1.marketo.com/*",
+    mktoLandingPageUriDomain = "na-sjdemo1.marketo.com",
     mktoEmailDesignerWebRequestMatch = "https://na-sjp.marketodesigner.com/images/templatePicker/richtext-object.svg",
     mktoEmailDesignerWebRequestRegex = "^https:\/\/na-sjp\.marketodesigner\.com\/images\/templatePicker\/richtext-object\.svg$",
     mktoEmailDesignerFragment = "EME",
@@ -34,8 +36,6 @@ var URL_PATH = "m3-dev",
     mktoLandingPagePreviewWebRequestMatch = "https://na-sjp.marketodesigner.com/lpeditor/preview?pageId=*",
     mktoLandingPagePreviewWebRequestRegex = "^https:\/\/na-sjp\.marketodesigner\.com\/lpeditor\/preview\\?pageId=.+",
     mktoLandingPagePreviewFragment = "LPPD",
-    oneLoginWebRequestMatch = "https://marketolive.com/"+URL_PATH +"/pluginv3/one-login*.js",
-    oneLoginWebRequestRegex = "^https:\/\/marketolive\.com\/"+URL_PATH +"\/pluginv3\/one-login.*\.js$",
     count = 0;
 
 /**************************************************************************************
@@ -339,25 +339,11 @@ chrome.webRequest.onCompleted.addListener(function(details) {
             reloadCompany(webRequest);
         }
     }
-    else if (details.url.search(oneLoginWebRequestRegex) != -1) {
-        var message = {action : "oneLoginUser"};
-        
-        chrome.tabs.executeScript(details.tabId, {
-            code : 'console.log("TEST"); getOneLoginUser(); console.log("TEST AGAIN"); Application.user;',
-            runAt : "document_end",
-        }, function(result) {
-            console.log("Background > getOneLoginUser: " + result[0]);
-        });
-        
-        chrome.tabs.sendMessage(details.tabId, message, function(response) {
-            console.log("Background > Receiving: Message Response from Content for tab: " + details.tabId + " " + response);
-        });
-    }
     else {
         reloadCompany(webRequest);
     }
     
-}, {urls : [mktoEmailDesignerWebRequestMatch, mktoEmailPreviewWebRequestMatch, mktoLandingPageDesignerWebRequestMatch, mktoLandingPagePreviewWebRequestMatch, oneLoginWebRequestMatch]});
+}, {urls : [mktoEmailDesignerWebRequestMatch, mktoEmailPreviewWebRequestMatch, mktoLandingPageDesignerWebRequestMatch, mktoLandingPagePreviewWebRequestMatch]});
 
 /**************************************************************************************
  *
@@ -444,6 +430,12 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
                     "value" : message.username,
                     "domain" : mktoAppUriDomain
                 },
+                usernameCookieLandingPage = {
+                    "url" : mktoLandingPageDomainMatch,
+                    "name" : usernameCookieName,
+                    "value" : message.username,
+                    "domain" : mktoLandingPageUriDomain
+                },
                 firstNameCookieMarketoLive = {
                     "url" : mktoLiveDomainMatch,
                     "name" : firstNameCookieName,
@@ -502,6 +494,7 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
             setCookie(usernameCookieMarketoLive);
             setCookie(usernameCookieMarketoLiveClassic);
             setCookie(usernameCookieMarketoApp);
+            setCookie(usernameCookieLandingPage);
             setCookie(firstNameCookieMarketoLive);
             setCookie(firstNameCookieMarketoLiveClassic);
             setCookie(firstNameCookieMarketoApp);
@@ -511,6 +504,8 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
             setCookie(emailCookieMarketoLive);
             setCookie(emailCookieMarketoLiveClassic);
             setCookie(emailCookieMarketoApp);
+            
+            loadScript(BACKGROUND_DATA_SCRIPT_LOCATION);
             break;
         
         default:

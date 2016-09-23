@@ -120,40 +120,6 @@ isMktoPageGlobal = window.setInterval(function() {
             && currentUrl.search(mktoDesignerDomain) == -1) {
                 loadScript(POD_SCRIPT_LOCATION);
                 loadScript(DASHBOARD_SCRIPT_LOCATION);
-                
-                var oppInfluenceAnalyzerFragment = "AR1559A1!",
-                    programAnalyzerFragment = "AR1544A1!",
-                    modelerFragment = "RCM70A1!",
-                    successPathAnalyzerFragment = "AR1682A1!",
-                    analyzerFragmentsMatch = mktoAppDomain + "/#(" + oppInfluenceAnalyzerFragment + "|" + programAnalyzerFragment + "|" + modelerFragment + "|" + successPathAnalyzerFragment + ")";
-                
-                if (currentUrl.search(analyzerFragmentsMatch) != -1) {
-                    console.log("Content > Location: Analyzers");
-                    
-                    Analyzer.prototype.showAnalyzer();
-                }
-            }
-            else {
-                console.log("Content > Location: Designer/Wizard");
-                
-                if (currentUrl.search(mktoDesignerDomain) != -1) {
-                    console.log("Content > Location: Designer");
-                    
-                    addNewCompanyListener();
-                }
-/*                
-                var customCompanyLandingPageFragment = "LPE11826",
-                    customCompanyLandingPagePreviewFragment = "LPP11826",
-                    customCompanyEmailFragment = "EME15464",
-                    formFragment = "FOE3576",
-                    pushFragment = "MPNE29",
-                    navAssetsMatch = "(" + customCompanyLandingPageFragment + "|" + customCompanyLandingPagePreviewFragment + "|" + customCompanyEmailFragment + "|" + formFragment + "|" + pushFragment + ")";
-                    
-                if (currentUrl.search(navAssetsMatch) != -1) {
-                    console.log("Content > Location: Asset with Nav Bar");
-                    
-                    Analyzer.prototype.showAssets();
-                }*/   
             }
         }
         else if (accountString.search(mktoDemoAccountMatch) != -1) {
