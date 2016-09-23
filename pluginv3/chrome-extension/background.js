@@ -156,10 +156,10 @@ function setCookie(obj) {
     }
     chrome.cookies.set(cookie, function() {
         if (cookie.value != null) {
-            console.log("Background > Setting: " + cookie.name + " Cookie for " + cookie.url + " = " + cookie.value);
+            console.log("Background > Setting: " + cookie.name + " Cookie for " + cookie.domain + " = " + cookie.value);
         }
         else {
-            console.log("Background > Setting: " + cookie.name + " Cookie for " + cookie.url + " = null");
+            console.log("Background > Setting: " + cookie.name + " Cookie for " + cookie.domain + " = null");
         }
     });
 }

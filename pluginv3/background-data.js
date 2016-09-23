@@ -312,7 +312,7 @@ if (webPageXvisitationRate > 1.0
     });
 }
 
-getCookie(jobTitleCookieName, function(cookie) {
+getCookie({url : mktoAppDomainMatch, name : jobTitleCookieName}, function(cookie) {
     if (!cookie
     || !cookie.value) {
         console.log("Background > Initializing: " + jobTitleCookieName + " Cookie");
@@ -346,7 +346,7 @@ getCookie(jobTitleCookieName, function(cookie) {
     }
 });
 
-getCookie(companyNameCookieName, function(cookie) {
+getCookie({url : mktoAppDomainMatch, name : companyNameCookieName}, function(cookie) {
     if (!cookie
     || !cookie.value) {
         console.log("Background > Initializing: " + companyNameCookieName + " Cookie");
@@ -380,7 +380,7 @@ getCookie(companyNameCookieName, function(cookie) {
     }
 });
 
-getCookie(industryCookieName, function(cookie) {
+getCookie({url : mktoAppDomainMatch, name : industryCookieName}, function(cookie) {
     if (!cookie
     || !cookie.value) {
         console.log("Background > Initializing: " + industryCookieName + " Cookie");
@@ -414,7 +414,7 @@ getCookie(industryCookieName, function(cookie) {
     }
 });
 
-getCookie(leadSourceCookieName, function(cookie) {
+getCookie({url : mktoAppDomainMatch, name : leadSourceCookieName}, function(cookie) {
     if (!cookie
     || !cookie.value) {
         console.log("Background > Initializing: " + leadSourceCookieName + " Cookie");
