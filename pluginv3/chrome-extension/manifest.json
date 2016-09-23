@@ -53,5 +53,5 @@
     "update_url": "https://clients2.google.com/service/update2/crx",
     "name": "MarketoLive",
     "description": "This plugin is for Marketo employees who have access to the MarketoLive demo environment.",
-    "version": "4.1.2"
+    "version": "4.2.0"
 }
