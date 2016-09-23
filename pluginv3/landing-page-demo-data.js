@@ -1,3 +1,5 @@
+console.log("Landing Page > Script: Loaded");
+
 if (typeof(MktoForms2) !== "undefined") {
     MktoForms2.whenReady(function(form) {
         var demoMailBox = "mktodemosvcs+",
