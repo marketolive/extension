@@ -16,13 +16,13 @@ var URL_PATH = "m3-dev",
     mktoLiveClassicDomain = "^https:\/\/marketolive\.com",
 	mktoLiveClassicDomainMatch = "https://marketolive.com/*",
     mktoLiveClassicUriDomain = ".marketolive.com",
-    mktoAppUriDomain = ".marketo.com",
     mktoAppDomainMatch = "https://app-*.marketo.com",
+    mktoAppUriDomain = ".marketo.com",
     mktoDesignerDomainMatch = "https://www.marketodesigner.com/*",
     mktoDesignerUriDomain = ".marketodesigner.com",
     mktoDesignerMatchPattern = "https://*.marketodesigner.com/*",
-    mktoLandingPageDomainMatch = "http://na-sjdemo1.marketo.com/*",
-    mktoLandingPageUriDomain = "na-sjdemo1.marketo.com",
+    //mktoLandingPageDomainMatch = "http://na-sjdemo1.marketo.com/*",
+    //mktoLandingPageUriDomain = "na-sjdemo1.marketo.com",
     mktoEmailDesignerWebRequestMatch = "https://na-sjp.marketodesigner.com/images/templatePicker/richtext-object.svg",
     mktoEmailDesignerWebRequestRegex = "^https:\/\/na-sjp\.marketodesigner\.com\/images\/templatePicker\/richtext-object\.svg$",
     mktoEmailDesignerFragment = "EME",
@@ -431,12 +431,6 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
                     "value" : message.username,
                     "domain" : mktoAppUriDomain
                 },
-                usernameCookieLandingPage = {
-                    "url" : mktoLandingPageDomainMatch,
-                    "name" : usernameCookieName,
-                    "value" : message.username,
-                    "domain" : mktoLandingPageUriDomain
-                },
                 firstNameCookieMarketoLive = {
                     "url" : mktoLiveDomainMatch,
                     "name" : firstNameCookieName,
@@ -495,7 +489,6 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
             setCookie(usernameCookieMarketoLive);
             setCookie(usernameCookieMarketoLiveClassic);
             setCookie(usernameCookieMarketoApp);
-            setCookie(usernameCookieLandingPage);
             setCookie(firstNameCookieMarketoLive);
             setCookie(firstNameCookieMarketoLiveClassic);
             setCookie(firstNameCookieMarketoApp);
@@ -542,12 +535,6 @@ chrome.runtime.onMessageExternal.addListener(function(message, sender, sendRespo
                     "value" : message.username,
                     "domain" : mktoAppUriDomain
                 },
-                usernameCookieLandingPage = {
-                    "url" : mktoLandingPageDomainMatch,
-                    "name" : usernameCookieName,
-                    "value" : message.username,
-                    "domain" : mktoLandingPageUriDomain
-                },
                 firstNameCookieMarketoLive = {
                     "url" : mktoLiveDomainMatch,
                     "name" : firstNameCookieName,
@@ -606,7 +593,6 @@ chrome.runtime.onMessageExternal.addListener(function(message, sender, sendRespo
             setCookie(usernameCookieMarketoLive);
             setCookie(usernameCookieMarketoLiveClassic);
             setCookie(usernameCookieMarketoApp);
-            setCookie(usernameCookieLandingPage);
             setCookie(firstNameCookieMarketoLive);
             setCookie(firstNameCookieMarketoLiveClassic);
             setCookie(firstNameCookieMarketoApp);

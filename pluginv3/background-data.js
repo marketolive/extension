@@ -1,8 +1,15 @@
-var webPages = {
+var landingPageHost = "na-sjdemo1.marketo.com",
+    devMunchkinId = "685-BTN-772",
+    prodMunchkinId = "185-NGX-811",
+    munchkinId = devMunchkinId,
+    devMarketoLiveHost = "www.marketolive-dev.com",
+    prodMarketoLiveHost = "www.marketolive.com",
+    marketoLiveHost = devMarketoLiveHost,
+    webPages = {
         0 : {
             name : "signup",
             type : "landing",
-            url : "http://na-sjdemo1.marketo.com/lp/185-NGX-811/Lead-Capture_Landing-Page.html",
+            url : "http://"+landingPageHost+"/lp/"+munchkinId+"/Lead-Capture_Landing-Page.html",
             dependentOn : [],
             visitationRate : 1.0,
             conversionRate : 1.0,
@@ -10,7 +17,7 @@ var webPages = {
         1 : {
             name : "preferenceCenter",
             type : "landing",
-            url : "http://na-sjdemo1.marketo.com/lp/185-NGX-811/Subscription-Management_Preference-Center.html",
+            url : "http://"+landingPageHost+"/lp/"+munchkinId+"/Subscription-Management_Preference-Center.html",
             dependentOn : ["signup"],
             visitationRate : 0.05,
             conversionRate : 1.0,
@@ -18,7 +25,7 @@ var webPages = {
         2 : {
             name : "notYouPreferenceCenter",
             type : "landing",
-            url : "http://na-sjdemo1.marketo.com/lp/185-NGX-811/Subscription-Management_Not-You-Preference-Center.html",
+            url : "http://"+landingPageHost+"/lp/"+munchkinId+"/Subscription-Management_Not-You-Preference-Center.html",
             dependentOn : ["signup"],
             visitationRate : 0.01,
             conversionRate : 1.0,
@@ -26,7 +33,7 @@ var webPages = {
         3 : {
             name : "webinarRegistration",
             type : "landing",
-            url : "http://na-sjdemo1.marketo.com/lp/185-NGX-811/Webinar_Registration.html",
+            url : "http://"+landingPageHost+"/lp/"+munchkinId+"/Webinar_Registration.html",
             dependentOn : ["signup"],
             visitationRate : 0.10,
             conversionRate : 1.0,
@@ -34,7 +41,7 @@ var webPages = {
         4 : {
             name : "webinarCheckIn",
             type : "landing",
-            url : "http://na-sjdemo1.marketo.com/lp/185-NGX-811/Webinar_CheckIn.html",
+            url : "http://"+landingPageHost+"/lp/"+munchkinId+"/Webinar_CheckIn.html",
             dependentOn : ["signup", "webinarRegistration"],
             visitationRate : 0.80,
             conversionRate : 1.0,
@@ -42,7 +49,7 @@ var webPages = {
         5 : {
             name : "liveEventRegistration",
             type : "landing",
-            url : "http://na-sjdemo1.marketo.com/lp/185-NGX-811/Live-Event_Registration-Page.html",
+            url : "http://"+landingPageHost+"/lp/"+munchkinId+"/Live-Event_Registration-Page.html",
             dependentOn : ["signup"],
             visitationRate : 0.10,
             conversionRate : 1.0,
@@ -50,7 +57,7 @@ var webPages = {
         6 : {
             name : "liveEventCheckIn",
             type : "landing",
-            url : "http://na-sjdemo1.marketo.com/lp/185-NGX-811/Live-Event_Check-In.html",
+            url : "http://"+landingPageHost+"/lp/"+munchkinId+"/Live-Event_Check-In.html",
             dependentOn : ["signup", "liveEventRegistration"],
             visitationRate : 0.80,
             conversionRate : 1.0,
@@ -58,7 +65,7 @@ var webPages = {
         7 : {
             name : "rewardsSignup",
             type : "landing",
-            url : "http://na-sjdemo1.marketo.com/lp/185-NGX-811/Rewards-for-Champions_Rewards-Page.html",
+            url : "http://"+landingPageHost+"/lp/"+munchkinId+"/Rewards-for-Champions_Rewards-Page.html",
             dependentOn : ["signup"],
             visitationRate : 0.05,
             conversionRate : 1.0,
@@ -66,7 +73,7 @@ var webPages = {
         8 : {
             name : "whyUs",
             type : "web",
-            url : "http://www.marketolive.com/en/info/why-us",
+            url : "http://"+marketoLiveHost+"/en/info/why-us",
             dependentOn : [],
             visitationRate : 0.33,
             conversionRate : 1.0,
@@ -74,7 +81,7 @@ var webPages = {
         9 : {
             name : "integrations",
             type : "web",
-            url : "http://www.marketolive.com/en/info/integrations",
+            url : "http://"+marketoLiveHost+"/en/info/integrations",
             dependentOn : [],
             visitationRate : 0.50,
             conversionRate : 1.0,
@@ -82,7 +89,7 @@ var webPages = {
         10 : {
             name : "contactUs",
             type : "web",
-            url : "http://www.marketolive.com/en/info/contact-us",
+            url : "http://"+marketoLiveHost+"/en/info/contact-us",
             dependentOn : [],
             visitationRate : 0.05,
             conversionRate : 1.0,
@@ -90,7 +97,7 @@ var webPages = {
         11 : {
             name : "community",
             type : "web",
-            url : "http://www.marketolive.com/en/info/community",
+            url : "http://"+marketoLiveHost+"/en/info/community",
             dependentOn : ["signup", "rewardsSignup"],
             visitationRate : 0.03,
             conversionRate : 1.0,
@@ -98,7 +105,7 @@ var webPages = {
         12 : {
             name : "liveEvent",
             type : "web",
-            url : "http://www.marketolive.com/en/info/live-event",
+            url : "http://"+marketoLiveHost+"/en/info/live-event",
             dependentOn : ["signup", "liveEventRegistration"],
             visitationRate : 0.50,
             conversionRate : 1.0,
@@ -106,7 +113,7 @@ var webPages = {
         13 : {
             name : "webinar",
             type : "web",
-            url : "http://www.marketolive.com/en/info/webinar",
+            url : "http://"+marketoLiveHost+"/en/info/webinar",
             dependentOn : ["signup", "webinarRegistration"],
             visitationRate : 0.50,
             conversionRate : 1.0,
@@ -114,7 +121,7 @@ var webPages = {
         14 : {
             name : "products",
             type : "web",
-            url : "http://www.marketolive.com/en/info/products",
+            url : "http://"+marketoLiveHost+"/en/info/products",
             dependentOn : [],
             visitationRate : 0.75,
             conversionRate : 1.0,
@@ -122,7 +129,7 @@ var webPages = {
         15 : {
             name : "pricing",
             type : "web",
-            url : "http://www.marketolive.com/en/info/pricing",
+            url : "http://"+marketoLiveHost+"/en/info/pricing",
             dependentOn : [],
             visitationRate : 0.80,
             conversionRate : 1.0,
@@ -255,10 +262,10 @@ webPageXvisitationRate = webPageX.visitationRate * Object.keys(webPages).length;
 companyX = companies[Math.floor((Math.random() * companies.length))];
 
 cookieExpiresInDays = 365;
-jobTitleCookieName = "jobTitle";
-companyNameCookieName = "companyName";
-industryCookieName = "industry";
-leadSourceCookieName = "leadSource";
+jobTitleCookieName = "attrib_job_title";
+companyNameCookieName = "attrib_company_name";
+industryCookieName = "attrib_industry";
+leadSourceCookieName = "attrib_lead_source";
 
 if (webPageXvisitationRate > 1.0
 || (Math.random()) <= webPageXvisitationRate) {
@@ -326,8 +333,8 @@ getCookie(jobTitleCookieName, function(cookie) {
                 expiresInDays : cookieExpiresInDays,
             },
             jobTitleCookieLandingPage = {
-                url : mktoLandingPageDomainMatch,
-                domain : mktoLandingPageUriDomain,
+                url : mktoAppDomainMatch,
+                domain : mktoAppUriDomain,
                 name : jobTitleCookieName,
                 value : jobTitleX,
                 expiresInDays : cookieExpiresInDays,
@@ -360,8 +367,8 @@ getCookie(companyNameCookieName, function(cookie) {
                 expiresInDays : cookieExpiresInDays,
             },
             companyNameCookieLandingPage = {
-                url : mktoLandingPageDomainMatch,
-                domain : mktoLandingPageUriDomain,
+                url : mktoAppDomainMatch,
+                domain : mktoAppUriDomain,
                 name : companyNameCookieName,
                 value : companyName,
                 expiresInDays : cookieExpiresInDays,
@@ -394,8 +401,8 @@ getCookie(industryCookieName, function(cookie) {
                 expiresInDays : cookieExpiresInDays,
             },
             industryCookieLandingPage = {
-                url : mktoLandingPageDomainMatch,
-                domain : mktoLandingPageUriDomain,
+                url : mktoAppDomainMatch,
+                domain : mktoAppUriDomain,
                 name : industryCookieName,
                 value : industry,
                 expiresInDays : cookieExpiresInDays,
@@ -428,8 +435,8 @@ getCookie(leadSourceCookieName, function(cookie) {
                 expiresInDays : cookieExpiresInDays,
             },
             leadSourceCookieLandingPage = {
-                url : mktoLandingPageDomainMatch,
-                domain : mktoLandingPageUriDomain,
+                url : mktoAppDomainMatch,
+                domain : mktoAppUriDomain,
                 name : leadSourceCookieName,
                 value : leadSourceX,
                 expiresInDays : cookieExpiresInDays,
