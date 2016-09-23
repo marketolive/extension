@@ -1,6 +1,6 @@
 var devExtensionId = "aahhkppadknlakhbppohbeolcfdhmocf",
     prodExtensionId = "onibnnoghllldiecboelbpcaeggfiohl",
-    extensionId = devExtensionId
+    extensionId = devExtensionId,
     getOneLoginUser;
     
 /**************************************************************************************
