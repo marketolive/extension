@@ -1372,38 +1372,7 @@ window.onload = function() {
         console.log("Content > Location: OneLogin");
         
         var getOneLoginUser,
-            addOneLoginListener,
-            msg;
-        
-        /**************************************************************************************
-         *  
-         *  This function retrieves the username, first name, last name, and email address of 
-         *  the current OneLogin user.
-         *
-         *  @Author Brian Fisher
-         *
-         *  @function
-         *
-         **************************************************************************************/
-        
-        getOneLoginUser = function() {
-            var isOneLoginUser = window.setInterval(function() {
-                if (typeof(Application) !== "undefined"
-                && Application.user) {
-                    console.log("OneLogin > Getting: User");
-                    
-                    window.clearInterval(isOneLoginUser);
-                    
-                    var oneLoginUser = {
-                        username : Application.user.username,
-                        firstName : Application.user.firstname,
-                        lastName : Application.user.lastname,
-                        email : Application.user.email
-                    };
-                    return oneLoginUser;
-                }
-            }, 0);
-        }
+            addOneLoginListener;
         
         /**************************************************************************************
          *
@@ -1448,9 +1417,7 @@ window.onload = function() {
         **************************************************************************************/
         
         loadScript(ONE_LOGIN_SCRIPT_LOCATION);
-        msg = getOneLoginUser();
-        msg.action = "setOneLoginUser";
-        sendBackgroundMsg(msg);
+        //getOneLoginUser();
         //addOneLoginListener();
     }
     else if (currentUrl.search(rtpDemoDomain) != -1) {

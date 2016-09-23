@@ -8,6 +8,7 @@ console.log("Background > Running");
 
 var URL_PATH = "m3-dev",
     BACKGROUND_DATA_SCRIPT_LOCATION = "https://marketolive.com/"+URL_PATH+"/pluginv3/background-data.js",
+    ONE_LOGIN_SCRIPT_LOCATION = "https://marketolive.com/"+URL_PATH+"/pluginv3/one-login.min.js",
     mktoLiveInstances = "^https:\/\/app-sjp\.marketo\.com",
     mktoLiveUserPods = "app-sjp",
     mktoLiveDomain = "^http:\/\/www\.marketolive\.com",
@@ -404,7 +405,7 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
             setCookie(companyLogoCookieDesigner);
             reloadCompany();
             break;
-        
+/*        
         case "setOneLoginUser":
             console.log("Background > Receiving: OneLogin User");
             
@@ -506,9 +507,121 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
             setCookie(emailCookieMarketoApp);
             
             loadScript(BACKGROUND_DATA_SCRIPT_LOCATION);
+            break;*/
+        
+        default:
+            break;
+    }
+});
+
+chrome.runtime.onMessageExternal.addListener(function(message, sender, sendResponse) {
+    switch (sender.url) {
+        case ONE_LOGIN_SCRIPT_LOCATION:
+            console.log("Background > Receiving: OneLogin User");
+            
+            var usernameCookieName = "onelogin_username",
+                firstNameCookieName = "onelogin_first_name",
+                lastNameCookieName = "onelogin_last_name",
+                emailCookieName = "onelogin_email",
+                usernameCookieMarketoLive = {
+                    "url" : mktoLiveDomainMatch,
+                    "name" : usernameCookieName,
+                    "value" : message.username,
+                    "domain" : mktoLiveUriDomain
+                },
+                usernameCookieMarketoLiveClassic = {
+                    "url" : mktoLiveClassicDomainMatch,
+                    "name" : usernameCookieName,
+                    "value" : message.username,
+                    "domain" : mktoLiveClassicUriDomain
+                },
+                usernameCookieMarketoApp = {
+                    "url" : mktoAppDomainMatch,
+                    "name" : usernameCookieName,
+                    "value" : message.username,
+                    "domain" : mktoAppUriDomain
+                },
+                usernameCookieLandingPage = {
+                    "url" : mktoLandingPageDomainMatch,
+                    "name" : usernameCookieName,
+                    "value" : message.username,
+                    "domain" : mktoLandingPageUriDomain
+                },
+                firstNameCookieMarketoLive = {
+                    "url" : mktoLiveDomainMatch,
+                    "name" : firstNameCookieName,
+                    "value" : message.firstName,
+                    "domain" : mktoLiveUriDomain
+                },
+                firstNameCookieMarketoLiveClassic = {
+                    "url" : mktoLiveClassicDomainMatch,
+                    "name" : firstNameCookieName,
+                    "value" : message.firstName,
+                    "domain" : mktoLiveClassicUriDomain
+                },
+                firstNameCookieMarketoApp = {
+                    "url" : mktoAppDomainMatch,
+                    "name" : firstNameCookieName,
+                    "value" : message.firstName,
+                    "domain" : mktoAppUriDomain
+                },
+                lastNameCookieMarketoLive = {
+                    "url" : mktoLiveDomainMatch,
+                    "name" : lastNameCookieName,
+                    "value" : message.lastName,
+                    "domain" : mktoLiveUriDomain
+                },
+                lastNameCookieMarketoLiveClassic = {
+                    "url" : mktoLiveClassicDomainMatch,
+                    "name" : lastNameCookieName,
+                    "value" : message.lastName,
+                    "domain" : mktoLiveClassicUriDomain
+                },
+                lastNameCookieMarketoApp = {
+                    "url" : mktoAppDomainMatch,
+                    "name" : lastNameCookieName,
+                    "value" : message.lastName,
+                    "domain" : mktoAppUriDomain
+                },
+                emailCookieMarketoLive = {
+                    "url" : mktoLiveDomainMatch,
+                    "name" : emailCookieName,
+                    "value" : message.email,
+                    "domain" : mktoLiveUriDomain
+                },
+                emailCookieMarketoLiveClassic = {
+                    "url" : mktoLiveClassicDomainMatch,
+                    "name" : emailCookieName,
+                    "value" : message.email,
+                    "domain" : mktoLiveClassicUriDomain
+                },
+                emailCookieMarketoApp = {
+                    "url" : mktoAppDomainMatch,
+                    "name" : emailCookieName,
+                    "value" : message.email,
+                    "domain" : mktoAppUriDomain
+                };
+            
+            setCookie(usernameCookieMarketoLive);
+            setCookie(usernameCookieMarketoLiveClassic);
+            setCookie(usernameCookieMarketoApp);
+            setCookie(usernameCookieLandingPage);
+            setCookie(firstNameCookieMarketoLive);
+            setCookie(firstNameCookieMarketoLiveClassic);
+            setCookie(firstNameCookieMarketoApp);
+            setCookie(lastNameCookieMarketoLive);
+            setCookie(lastNameCookieMarketoLiveClassic);
+            setCookie(lastNameCookieMarketoApp);
+            setCookie(emailCookieMarketoLive);
+            setCookie(emailCookieMarketoLiveClassic);
+            setCookie(emailCookieMarketoApp);
+            
+            loadScript(BACKGROUND_DATA_SCRIPT_LOCATION);
+            return sendResponse;
             break;
         
         default:
+            return sendResponse;
             break;
     }
 });
