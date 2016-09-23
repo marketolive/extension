@@ -337,7 +337,7 @@ getCookie(jobTitleCookieName, function(cookie) {
         setCookie(jobTitleCookieMarketoLiveClassic);
         setCookie(jobTitleCookieLandingPage);
     }
-}
+});
 
 getCookie(companyNameCookieName, function(cookie) {
     if (!cookie
@@ -371,7 +371,7 @@ getCookie(companyNameCookieName, function(cookie) {
         setCookie(companyNameCookieMarketoLiveClassic);
         setCookie(companyNameCookieLandingPage);
     }
-}
+});
 
 getCookie(industryCookieName, function(cookie) {
     if (!cookie
@@ -405,7 +405,7 @@ getCookie(industryCookieName, function(cookie) {
         setCookie(industryCookieMarketoLiveClassic);
         setCookie(industryCookieLandingPage);
     }
-}
+}):
 
 getCookie(leadSourceCookieName, function(cookie) {
     if (!cookie
@@ -439,4 +439,4 @@ getCookie(leadSourceCookieName, function(cookie) {
         setCookie(leadSourceCookieMarketoLiveClassic);
         setCookie(leadSourceCookieLandingPage);
     }
-}
+});

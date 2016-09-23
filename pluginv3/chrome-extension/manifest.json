@@ -13,11 +13,22 @@
         "js": ["content.min.js"],
         "run_at": "document_start",
         "matches": [
-            "*://*.marketodesigner.com/*",  "*://marketolive.com/*", "*://www.marketolive.com/*", "*://*.marketo.com/*", "*://go.app.io/*", "https://250ok.com/*", "http://cloud4.insightera.com/demo/", "*://cloud4.insightera.com/*", "https://marketo.invisionapp.com/*", "https://marketo.onelogin.com/*"
+            "*://*.marketo.com/*",
+            "*://*.marketodesigner.com/*",
+            "*://marketolive.com/*",
+            "*://www.marketolive.com/*",
+            "*://cloud4.insightera.com/*",
+            "*://go.app.io/*",
+            "https://250ok.com/*",
+            "https://marketo.invisionapp.com/*",
+            "https://marketo.onelogin.com/*"
         ]
     }],
     "externally_connectable": {
-        "matches": ["*://marketolive.com/*"]
+        "matches": [
+            "*://marketolive.com/*",
+            "https://marketo.onelogin.com/client/apps"
+        ]
     },
     "icons": {
         "128": "images/icon.png",
@@ -25,7 +36,16 @@
         "48": "images/icon.png"
     },
     "permissions": [
-        "management", "storage", "webRequest", "webNavigation", "tabs", "cookies", "activeTab", "*://*.marketodesigner.com/*", "*://*.marketolive.com/*", "*://*.marketo.com/*", "*://go.app.io/*", "http://cloud4.insightera.com/demo/", "*://cloud4.insightera.com/*", "https://250ok.com/*", "https://marketo.invisionapp.com/*", "https://marketo.onelogin.com/*"
+        "management", "storage", "webRequest", "webNavigation", "tabs", "cookies", "activeTab",
+        "*://*.marketo.com/*",
+        "*://*.marketodesigner.com/*",
+        "*://marketolive.com/*",
+        "*://www.marketolive.com/*",
+        "*://cloud4.insightera.com/*",
+        "*://go.app.io/*",
+        "https://250ok.com/*",
+        "https://marketo.invisionapp.com/*",
+        "https://marketo.onelogin.com/*"
     ],
     "content_security_policy": "script-src 'self' https://marketolive.com; object-src 'self'",
     "web_accessible_resources": ["lib/*"],

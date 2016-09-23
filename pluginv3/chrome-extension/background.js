@@ -8,7 +8,6 @@ console.log("Background > Running");
 
 var URL_PATH = "m3-dev",
     BACKGROUND_DATA_SCRIPT_LOCATION = "https://marketolive.com/"+URL_PATH+"/pluginv3/background-data.js",
-    ONE_LOGIN_SCRIPT_LOCATION = "https://marketolive.com/"+URL_PATH+"/pluginv3/one-login.min.js",
     mktoLiveInstances = "^https:\/\/app-sjp\.marketo\.com",
     mktoLiveUserPods = "app-sjp",
     mktoLiveDomain = "^http:\/\/www\.marketolive\.com",
@@ -37,6 +36,7 @@ var URL_PATH = "m3-dev",
     mktoLandingPagePreviewWebRequestMatch = "https://na-sjp.marketodesigner.com/lpeditor/preview?pageId=*",
     mktoLandingPagePreviewWebRequestRegex = "^https:\/\/na-sjp\.marketodesigner\.com\/lpeditor\/preview\\?pageId=.+",
     mktoLandingPagePreviewFragment = "LPPD",
+    oneLoginExtMsgRegex = "https:\/\/marketo\.onelogin\.com\/client\/apps",
     count = 0;
 
 /**************************************************************************************
@@ -515,8 +515,9 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
 });
 
 chrome.runtime.onMessageExternal.addListener(function(message, sender, sendResponse) {
+    console.log("Background > Receiving: OneLogin User: " + message);
     switch (sender.url) {
-        case ONE_LOGIN_SCRIPT_LOCATION:
+        case oneLoginExtMsgRegex:
             console.log("Background > Receiving: OneLogin User");
             
             var usernameCookieName = "onelogin_username",
@@ -621,6 +622,7 @@ chrome.runtime.onMessageExternal.addListener(function(message, sender, sendRespo
             break;
         
         default:
+            console.log("Background > NOT Receiving: OneLogin User");
             return sendResponse;
             break;
     }
