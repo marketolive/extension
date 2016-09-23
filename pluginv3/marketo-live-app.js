@@ -5571,6 +5571,13 @@ APP.trackTreeNodeSelection = function() {
                                         heapArea = currTitle;
                                     }
                                     
+                                    if (currUrlFragment.search("^SOA") != -1) {
+                                        heapAsset = "Social App";
+                                    }
+                                    else if (currUrlFragment.search("^MPN") != -1) {
+                                        heapAsset = "Push Notification";
+                                    }
+                                    
                                     currTitle = currTitle.replace("Marketo | ", "");
                                     heapEventProps = {
                                         app : heapApp,
@@ -5688,6 +5695,13 @@ APP.trackTreeNodeSelection = function() {
                             else {
                                 heapAsset = "Home";
                                 heapArea = currTitle;
+                            }
+                            
+                            if (currUrlFragment.search("^SOA") != -1) {
+                                heapAsset = "Social App";
+                            }
+                            else if (currUrlFragment.search("^MPN") != -1) {
+                                heapAsset = "Push Notification";
                             }
                             
                             currTitle = currTitle.replace("Marketo | ", "");
