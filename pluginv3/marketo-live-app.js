@@ -5549,8 +5549,9 @@ APP.trackTreeNodeSelection = function() {
                                         area : heapArea,
                                         url : currentUrl
                                     };
-                                    console.log("Marketo App > Tracking: Heap Event " + heapEventName + ":\n" + JSON.stringify(heapEventProps, null, 2));
+                                    console.log("Marketo App > Tracking: Heap Event: " + heapEventName + "\n" + JSON.stringify(heapEventProps, null, 2));
                                     heap.track(heapEventName, heapEventProps);
+                                    heapEventName = heapAssetName = "";
                                 }
                                 else {
                                     currTitle = document.title.replace(" - " + document.location.protocol + "//" + document.location.host + "/", "");
@@ -5577,7 +5578,7 @@ APP.trackTreeNodeSelection = function() {
                                         area : heapArea,
                                         url : currentUrl
                                     };
-                                    console.log("Marketo App > Tracking: Heap Event " + currTitle + ":\n" + JSON.stringify(heapEventProps, null, 2));
+                                    console.log("Marketo App > Tracking: Heap Event: " + currTitle + "\n" + JSON.stringify(heapEventProps, null, 2));
                                     heap.track(currTitle, heapEventProps);
                                 }
                                 
@@ -5667,8 +5668,9 @@ APP.trackTreeNodeSelection = function() {
                                 area : heapArea,
                                 url : currentUrl
                             };
-                            console.log("Marketo App > Tracking: Heap Event " + heapEventName + ":\n" + JSON.stringify(heapEventProps, null, 2));
+                            console.log("Marketo App > Tracking: Heap Event: " + heapEventName + "\n" + JSON.stringify(heapEventProps, null, 2));
                             heap.track(heapEventName, heapEventProps);
+                            heapEventName = heapAssetName = "";
                         }
                         else {
                             currTitle = document.title.replace(" - " + document.location.protocol + "//" + document.location.host + "/", "");
@@ -5695,7 +5697,7 @@ APP.trackTreeNodeSelection = function() {
                                 area : heapArea,
                                 url : currentUrl
                             };
-                            console.log("Marketo App > Tracking: Heap Event " + currTitle + ":\n" + JSON.stringify(heapEventProps, null, 2));
+                            console.log("Marketo App > Tracking: Heap Event: " + currTitle + "\n" + JSON.stringify(heapEventProps, null, 2));
                             heap.track(currTitle, heapEventProps);
                         }
                     }
