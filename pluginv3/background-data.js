@@ -405,7 +405,7 @@ getCookie(industryCookieName, function(cookie) {
         setCookie(industryCookieMarketoLiveClassic);
         setCookie(industryCookieLandingPage);
     }
-}):
+});
 
 getCookie(leadSourceCookieName, function(cookie) {
     if (!cookie
