@@ -5579,6 +5579,16 @@ APP.trackTreeNodeSelection = function() {
                                     }
                                     
                                     currTitle = currTitle.replace("Marketo | ", "");
+                                    
+                                    if (currUrlFragment.search("^SOA") != -1) {
+                                        heapAsset = "Social App";
+                                        currTitle = "ANY Social App";
+                                    }
+                                    else if (currUrlFragment.search("^MPN") != -1) {
+                                        heapAsset = "Push Notification";
+                                        currTitle = "ANY Push Notification";
+                                    }
+                                    
                                     heapEventProps = {
                                         app : heapApp,
                                         asset : heapAsset,
@@ -5697,14 +5707,17 @@ APP.trackTreeNodeSelection = function() {
                                 heapArea = currTitle;
                             }
                             
+                            currTitle = currTitle.replace("Marketo | ", "");
+                            
                             if (currUrlFragment.search("^SOA") != -1) {
                                 heapAsset = "Social App";
+                                currTitle = "ANY Social App";
                             }
                             else if (currUrlFragment.search("^MPN") != -1) {
                                 heapAsset = "Push Notification";
+                                currTitle = "ANY Push Notification";
                             }
                             
-                            currTitle = currTitle.replace("Marketo | ", "");
                             heapEventProps = {
                                 app : heapApp,
                                 asset : heapAsset,
