@@ -236,8 +236,7 @@ var webPages = {
     webPageX,
     webPageXvisitationRate,
     companyX,
-    cookieMarketoLive,
-    cookieMarketoLiveClassic,
+    cookieExpiresInDays,
     jobTitleCookieName,
     companyNameCookieName,
     industryCookieName,
@@ -255,22 +254,7 @@ webPageX = webPages[Math.floor((Math.random() * Object.keys(webPages).length))];
 webPageXvisitationRate = webPageX.visitationRate * Object.keys(webPages).length;
 companyX = companies[Math.floor((Math.random() * companies.length))];
 
-cookieMarketoLive = {
-    url : mktoLiveDomainMatch,
-    domain : mktoLiveUriDomain,
-    expiresInDays : 365,
-};
-cookieMarketoLiveClassic = {
-    url : mktoLiveClassicDomainMatch,
-    domain : mktoLiveClassicUriDomain,
-    expiresInDays : 365,
-};
-cookieLandingPage = {
-    url : "http://na-sjdemo1.marketo.com/*",
-    domain : "na-sjdemo1.marketo.com",
-    expiresInDays : 365,
-};
-
+cookieExpiresInDays = 365;
 jobTitleCookieName = "jobTitle";
 companyNameCookieName = "companyName";
 industryCookieName = "industry";
@@ -280,10 +264,10 @@ if (webPageXvisitationRate > 1.0
 || (Math.random()) <= webPageXvisitationRate) {
     var visitedPagesCookieName = "visitedPages",
         visitedPagesCookieMarketoLive = {
-            url : cookieMarketoLive.url,
-            domain : cookieMarketoLive.domain,
+            url : mktoLiveDomainMatch,
+            domain : mktoLiveUriDomain,
             name : visitedPagesCookieName,
-            expiresInDays : cookieMarketoLive.expiresInDays,
+            expiresInDays : cookieExpiresInDays,
         };
     
     getCookie(visitedPagesCookieMarketoLive, function(cookie) {
@@ -328,25 +312,25 @@ getCookie(jobTitleCookieName, function(cookie) {
 
         var jobTitleX = jobTitles[Math.floor((Math.random() * jobTitles.length))],
             jobTitleCookieMarketoLive = {
-                url : cookieMarketoLive.url,
-                domain : cookieMarketoLive.domain,
+                url : mktoLiveDomainMatch,
+                domain : mktoLiveUriDomain,
                 name : jobTitleCookieName,
                 value : jobTitleX,
-                expiresInDays : cookieMarketoLive.expiresInDays,
+                expiresInDays : cookieExpiresInDays,
             },
             jobTitleCookieMarketoLiveClassic = {
-                url : cookieMarketoLiveClassic.url,
-                domain : cookieMarketoLiveClassic.domain,
+                url : mktoLiveClassicDomainMatch,
+                domain : mktoLiveClassicUriDomain,
                 name : jobTitleCookieName,
                 value : jobTitleX,
-                expiresInDays : cookieMarketoLiveClassic.expiresInDays,
+                expiresInDays : cookieExpiresInDays,
             },
             jobTitleCookieLandingPage = {
-                url : cookieLandingPage.url,
-                domain : cookieLandingPage.domain,
+                url : mktoLandingPageDomainMatch,
+                domain : mktoLandingPageUriDomain,
                 name : jobTitleCookieName,
                 value : jobTitleX,
-                expiresInDays : cookieLandingPage.expiresInDays,
+                expiresInDays : cookieExpiresInDays,
             };
         
         setCookie(jobTitleCookieMarketoLive);
@@ -362,25 +346,25 @@ getCookie(companyNameCookieName, function(cookie) {
 
         var companyName = companyX[0],
             companyNameCookieMarketoLive = {
-                url : cookieMarketoLive.url,
-                domain : cookieMarketoLive.domain,
+                url : mktoLiveDomainMatch,
+                domain : mktoLiveUriDomain,
                 name : companyNameCookieName,
                 value : companyName,
-                expiresInDays : cookieMarketoLive.expiresInDays,
+                expiresInDays : cookieExpiresInDays,
             },
             companyNameCookieMarketoLiveClassic = {
-                url : cookieMarketoLiveClassic.url,
-                domain : cookieMarketoLiveClassic.domain,
+                url : mktoLiveClassicDomainMatch,
+                domain : mktoLiveClassicUriDomain,
                 name : companyNameCookieName,
                 value : companyName,
-                expiresInDays : cookieMarketoLiveClassic.expiresInDays,
+                expiresInDays : cookieExpiresInDays,
             },
             companyNameCookieLandingPage = {
-                url : cookieLandingPage.url,
-                domain : cookieLandingPage.domain,
+                url : mktoLandingPageDomainMatch,
+                domain : mktoLandingPageUriDomain,
                 name : companyNameCookieName,
                 value : companyName,
-                expiresInDays : cookieLandingPage.expiresInDays,
+                expiresInDays : cookieExpiresInDays,
             };
         
         setCookie(companyNameCookieMarketoLive);
@@ -396,25 +380,25 @@ getCookie(industryCookieName, function(cookie) {
 
         var industry = companyX[1],
             industryCookieMarketoLive = {
-                url : cookieMarketoLive.url,
-                domain : cookieMarketoLive.domain,
+                url : mktoLiveDomainMatch,
+                domain : mktoLiveUriDomain,
                 name : industryCookieName,
                 value : industry,
-                expiresInDays : cookieMarketoLive.expiresInDays,
+                expiresInDays : cookieExpiresInDays,
             },
             industryCookieMarketoLiveClassic = {
-                url : cookieMarketoLiveClassic.url,
-                domain : cookieMarketoLiveClassic.domain,
+                url : mktoLiveClassicDomainMatch,
+                domain : mktoLiveClassicUriDomain,
                 name : industryCookieName,
                 value : industry,
-                expiresInDays : cookieMarketoLiveClassic.expiresInDays,
+                expiresInDays : cookieExpiresInDays,
             },
             industryCookieLandingPage = {
-                url : cookieLandingPage.url,
-                domain : cookieLandingPage.domain,
+                url : mktoLandingPageDomainMatch,
+                domain : mktoLandingPageUriDomain,
                 name : industryCookieName,
                 value : industry,
-                expiresInDays : cookieLandingPage.expiresInDays,
+                expiresInDays : cookieExpiresInDays,
             };
         
         setCookie(industryCookieMarketoLive);
@@ -430,25 +414,25 @@ getCookie(leadSourceCookieName, function(cookie) {
 
         var leadSourceX = leadSources[Math.floor((Math.random() * leadSources.length))],
             leadSourceCookieMarketoLive = {
-                url : cookieMarketoLive.url,
-                domain : cookieMarketoLive.domain,
+                url : mktoLiveDomainMatch,
+                domain : mktoLiveUriDomain,
                 name : leadSourceCookieName,
                 value : leadSourceX,
-                expiresInDays : cookieMarketoLive.expiresInDays,
+                expiresInDays : cookieExpiresInDays,
             },
             leadSourceCookieMarketoLiveClassic = {
-                url : cookieMarketoLiveClassic.url,
-                domain : cookieMarketoLiveClassic.domain,
+                url : mktoLiveClassicDomainMatch,
+                domain : mktoLiveClassicUriDomain,
                 name : leadSourceCookieName,
                 value : leadSourceX,
-                expiresInDays : cookieMarketoLiveClassic.expiresInDays,
+                expiresInDays : cookieExpiresInDays,
             },
             leadSourceCookieLandingPage = {
-                url : cookieLandingPage.url,
-                domain : cookieLandingPage.domain,
+                url : mktoLandingPageDomainMatch,
+                domain : mktoLandingPageUriDomain,
                 name : leadSourceCookieName,
                 value : leadSourceX,
-                expiresInDays : cookieLandingPage.expiresInDays,
+                expiresInDays : cookieExpiresInDays,
             };
         
         setCookie(leadSourceCookieMarketoLive);
