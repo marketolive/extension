@@ -39,6 +39,7 @@ var currentUrl = window.location.href,
     mktoAdBridgeSmartListFragment = "SL1119566B2LA1",
     mktoUserWorkspaceId = 172,
     userWorkspaceName = "My Workspace",
+    heapEventName = heapAssetName = "",
     currUrlFragment,
     currCompFragment,
     userName,
@@ -4867,6 +4868,51 @@ APP.getEmailIds = function(accountString) {
 }
 
 /**************************************************************************************
+ *  
+ *  This function tracks the tree node selected. 
+ *
+ *  @Author Brian Fisher
+ *
+ *  @function
+ *
+ **************************************************************************************/
+
+APP.trackTreeNodeSelection = function() {
+    console.log("Marketo App > Tracking: Tree Node Selection");
+    
+    if (MktExplorer
+    && MktExplorer.selectTreeNode) {
+        MktExplorer.selectTreeNode = function(node) {
+            console.log("Marketo App > Executing: Tracking Tree Node Selection")
+            
+            var ii,
+                currNode = node;
+            
+            heapEventName = heapAssetName = currNode.text;
+            
+            for (ii = 0; ii < node.getDepth()-1; ii ++) {
+                currNode = currNode.parentNode;
+                heapEventName = currNode.text + " | " + heapEventName;
+            }
+            //console.log(heapEventName);
+            
+            if (!node
+            || !this.boundTree)
+                return false;
+            if (!node.isSelected()) {
+                this.boundTree.expandPath(node.getPath(), 'id');
+                node.render();
+                node.select();
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+    }
+}
+
+/**************************************************************************************
  *
  *  Main
  *  
@@ -4970,6 +5016,7 @@ APP.getEmailIds = function(accountString) {
                         APP.disableFormSaveButtons();
                         APP.disableAdminSaveButtons();
                         APP.overrideSmartCampaignSaving();
+                        APP.trackTreeNodeSelection();
 //                        APP.overrideSmartCampaignCanvas();
                         APP.overrideUpdatePortletOrder();
                         APP.overrideNewProgramCreate();
@@ -5478,7 +5525,7 @@ APP.getEmailIds = function(accountString) {
                                 currTitle = document.title.replace(" - " + document.location.protocol + "//" + document.location.host + "/", "");
                                 if (MktPage
                                 && MktPage.friendlyName) {
-                                    currTitle.replace("Marketo", MktPage.friendlyName);
+                                    currTitle = currTitle.replace("Marketo", MktPage.friendlyName);
                                 }
                                 var heapApp = currTitle.split("|")[0].trimRight(),
                                     heapAsset,
@@ -5557,32 +5604,63 @@ APP.getEmailIds = function(accountString) {
                         }
                         
                         // Heap Analytics Event Tracking
-                        currTitle = document.title.replace(" - " + document.location.protocol + "//" + document.location.host + "/", "");
+                        var heapApp,
+                            heapArea,
+                            heapEventProps;
+                        
                         if (MktPage
                         && MktPage.friendlyName) {
-                            currTitle.replace("Marketo", MktPage.friendlyName);
-                        }
-                        var heapApp = currTitle.split("|")[0].trimRight(),
-                            heapAsset,
-                            heapArea;
-                        if (currTitle.search("•") != -1) {
-                            heapAsset = currTitle.split("|")[1].trimLeft().split("•")[0].trimRight();
-                            heapArea = currTitle.split("|")[1].trimLeft().split("•")[1].trimLeft();
-                        }
-                        else if (currTitle.search("|") != -1) {
-                            heapAsset = "Home";
-                            heapArea = currTitle.split("|")[1].trimLeft();
+                            heapApp = MktPage.friendlyName;
                         }
                         else {
-                            heapAsset = "Home";
-                            heapArea = currTitle;
+                            heapApp = "Marketo";
                         }
-                        heap.track(currTitle, {
-                            app : heapApp,
-                            asset : heapAsset,
-                            area : heapArea,
-                            url : currentUrl
-                        });
+                        
+                        if (MktPage
+                        && MktPage.baseTitle) {
+                            heapArea = MktPage.baseTitle.split("•")[0].trimRight();
+                        }
+                        else {
+                            heapArea = "Unknown";
+                        }
+                        
+                        if (heapEventName) {
+                            heapEventProps = {
+                                app : heapApp,
+                                asset : heapAssetName,
+                                area : heapArea,
+                                url : currentUrl
+                            };
+                            console.log("Marketo App > Tracking: Heap Event " + heapEventName + ":\n" + JSON.stringify(heapEventProps, null, 2));
+                            heap.track(heapEventName, heapEventProps);
+                        }
+                        else {
+                            currTitle = document.title.replace(" - " + document.location.protocol + "//" + document.location.host + "/", "").replace("Marketo | ", "");
+                            var heapAsset,
+                                heapArea;
+                            
+                            if (currTitle.search("•") != -1) {
+                                heapAsset = currTitle.split("|")[1].trimLeft().split("•")[0].trimRight();
+                                heapArea = currTitle.split("|")[1].trimLeft().split("•")[1].trimLeft();
+                            }
+                            else if (currTitle.search("|") != -1) {
+                                heapAsset = "Home";
+                                heapArea = currTitle.split("|")[1].trimLeft();
+                            }
+                            else {
+                                heapAsset = "Home";
+                                heapArea = currTitle;
+                            }
+                            
+                            heapEventProps = {
+                                app : heapApp,
+                                asset : heapAsset,
+                                area : heapArea,
+                                url : currentUrl
+                            };
+                            console.log("Marketo App > Tracking: Heap Event " + currTitle + ":\n" + JSON.stringify(heapEventProps, null, 2));
+                            heap.track(currTitle, heapEventProps);
+                        }
                     }
                 }, 0);
             }
