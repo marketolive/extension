@@ -3,6 +3,7 @@ console.log("Content > Running");
 var URL_PATH = "m3-dev",
     MARKETO_GLOBAL_APP_LOCATION = "https://marketolive.com/"+URL_PATH+"/pluginv3/marketo-global-app.min.js",
     LIVE_SCRIPT_LOCATION = "https://marketolive.com/"+URL_PATH+"/pluginv3/marketo-live.min.js",
+    GLOBAL_LANDING_PAGE_SCRIPT_LOCATION = "https://marketolive.com/"+URL_PATH+"/pluginv3/global-landing-page.min.js",
     ONE_LOGIN_SCRIPT_LOCATION = "https://marketolive.com/"+URL_PATH+"/pluginv3/one-login.min.js",
 	DELIVERABILITY_TOOLS_SCRIPT_LOCATION = "https://marketolive.com/"+URL_PATH+"/pluginv3/deliverability-tools.min.js",
     INVISION_APP_SCRIPT_LOCATION = "https://marketolive.com/"+URL_PATH+"/pluginv3/invision-app.min.js",
@@ -15,6 +16,7 @@ var URL_PATH = "m3-dev",
     mktoLoginPathName = "/homepage/login",
 	mktoDesignerDomain = "^https:\/\/[a-z0-9]+-[a-z0-9]+\.marketodesigner\.com",
 	mktoWizardDomain = mktoAppDomain + "/m#",
+    mktoLandingPageDomain = "^http:\/\/[^\.]+\.marketo\.com\/lp\/[0-9]{3}-[a-zA-Z]{3}-[0-9]{3}\/.*",
     mktoLiveColorPickerDomain = "^https:\/\/marketolive\.com[a-zA-Z0-9-\/]*\/color-picker\.html",
     oneLoginDomain = "^https:\/\/marketo\.onelogin\.com\/client\/apps",
 	rtpDemoDomain = "^http:\/\/sjrtp1.marketo.com\/demo\/$|^http:\/\/cloud4.insightera.com\/demo\/$",
@@ -1324,6 +1326,17 @@ window.onload = function() {
                 Analyzer.prototype.showAnalyzer();
             }
         }
+    }
+    else if (currentUrl.search(mktoLandingPageDomain) != -1) {
+        console.log("Content > Location: Global Landing Page");
+        
+        /**************************************************************************************
+        *
+        *  Execute
+        *  
+        **************************************************************************************/
+        
+        loadScript(GLOBAL_LANDING_PAGE_SCRIPT_LOCATION);
     }
     else if (currentUrl.search(mktoLiveColorPickerDomain) != -1) {
 		console.log("Content > Location: Color-Picker Page");
