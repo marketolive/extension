@@ -123,7 +123,7 @@ APP.getCookie = function(cookieName) {
     }
     console.log("Marketo App > Getting: Cookie " + cookieName + " not found");
     return null;
-}
+};
 
 /**************************************************************************************
  *  
@@ -149,7 +149,7 @@ APP.disableDemoPluginCheck = function() {
     && MktPage.validateDemoPlugin) {
         MktPage.validateDemoPlugin = function() {};
     }
-}
+};
 
 /**************************************************************************************
  *  
@@ -176,10 +176,11 @@ APP.disablePropertyPanelSaving = function() {
             console.log("Marketo App > Executing: Disable Saving of Landing Page Property Panel & Sync Error Message");
         };
     }
-
+/*    
     // Old way that hid other system errors
-    //MktMessage.showSystemError = function() {};
-    /*
+    MktMessage.showSystemError = function() {};
+    
+    // Original Function
     Mkt3.controller.editor.LandingPagePropertyPanel.prototype.fireSyncProperties = function(record, changes) {
         var prop = record.get('properties');
         if (prop) {
@@ -190,9 +191,8 @@ APP.disablePropertyPanelSaving = function() {
         if (record.data.localeId != mktoDefaultWorkspaceId) { 
             this.application.fireEvent('message.lp.syncProperties', record, changes);
         }
-    }
-    */
-}
+    };*/
+};
 
 /**************************************************************************************
  *  
@@ -282,9 +282,9 @@ APP.disableConfirmationMessage = function() {
             else {
                 this._doClose();
             }
-        }
+        };
     }
-}
+};
 
 /**************************************************************************************
  *  
@@ -373,7 +373,7 @@ APP.overrideHomeTiles = function() {
             container.appendChild(spareTileClone.el.dom);
         }
     }
-}
+};
 
 /**************************************************************************************
  *  
@@ -507,9 +507,9 @@ APP.overrideSuperballMenuItems = function() {
                 // prevent layering in front of the logo
                 menu.setZIndex(logoEl.getStyle('zIndex') - 5);
             }
-        }
+        };
     }
-}
+};
 
 /**************************************************************************************
  *  
@@ -661,7 +661,7 @@ APP.overrideAnalyticsTiles = function() {
             }
         }
     }, 0);
-}
+};
 
 /**************************************************************************************
  *  
@@ -773,9 +773,9 @@ APP.overrideSmartCampaignSaving = function() {
             else {
                 console.log("Marketo App > Disabling: Saving for Smart Campaigns");
             }
-        }
+        };
     }
-}
+};
 
 /**************************************************************************************
  *  
@@ -874,9 +874,9 @@ APP.overrideSmartCampaignCanvas = function() {
                     dp: this
                 });
             }
-        }
+        };
     }
-}
+};
 
 /**************************************************************************************
  *  
@@ -927,9 +927,9 @@ APP.overrideUpdatePortletOrder = function() {
             else {
                 console.log("Marketo App > Disabling: Updating of Portlet Order");
             }
-        }
+        };
     }
-}
+};
 
 /**************************************************************************************
  *  
@@ -964,7 +964,7 @@ APP.discardLandingPageDrafts = function(lpIds) {
             lpMessageBox.hide();
         }
     }
-}
+};
 
 /**************************************************************************************
  *  
@@ -999,7 +999,7 @@ APP.discardEmailDrafts = function(emIds) {
             emMessageBox.hide();
         }
     }
-}
+};
 
 /**************************************************************************************
  *  
@@ -1055,7 +1055,7 @@ APP.discardFormPushDrafts = function(assetType, assetIds) {
             });		
         }
     }
-}
+};
 
 /**************************************************************************************
  *  
@@ -1119,9 +1119,9 @@ APP.overrideTreeNodeExpand = function() {
             }
             MktAsyncTreeNode.superclass.expand.apply(this, arguments);
             attr.mktExpanded = true;
-        }
+        };
     }
-}
+};
 
 /**************************************************************************************
  *  
@@ -1176,9 +1176,9 @@ APP.overrideTreeNodeCollapse = function() {
             }
             MktTreeNode.superclass.collapse.apply(this, arguments);
             attr.mktExpanded = false;
-        }
+        };
     }
-}
+};
 
 /**************************************************************************************
  *  
@@ -1297,9 +1297,9 @@ APP.overrideNewProgramCreate = function() {
                 onMySuccess : this.submitSuccessHandler.createDelegate(this),
                 onMyFailure : this.submitFailedHandler.createDelegate(this)
             });
-        }
+        };
     }
-}
+};
 
 /**************************************************************************************
  *  
@@ -1553,9 +1553,9 @@ APP.overrideAssetSaveEdit = function() {
                     });*/
                 }
             }
-        }
+        };
     }
-}
+};
 
 /**************************************************************************************
  *  
@@ -1615,9 +1615,9 @@ APP.overrideNewAssetCreate = function() {
                 form.showDefaultMessage();
                 form.setSubmitting(false);
             }
-        }
+        };
     }
-}
+};
 
 /**************************************************************************************
  *  
@@ -1664,7 +1664,7 @@ APP.overrideNewFolders = function() {
             if (MktMa.currNode) {
                 MktMa.currNode.unselect();
             }
-        }
+        };
     }
     
     if (MktFolder
@@ -1693,9 +1693,9 @@ APP.overrideNewFolders = function() {
                     }
                 }.createDelegate(this, [tempNodeId])
             });
-        }
+        };
     }
-}
+};
 
 /**************************************************************************************
  *  
@@ -1754,7 +1754,7 @@ APP.overrideRenamingFolders = function() {
                     }.createDelegate(this, [folderId, startValue])
                 });
             }
-        }
+        };
     }
     
     if (MktFolder
@@ -1791,9 +1791,9 @@ APP.overrideRenamingFolders = function() {
                     }.createDelegate(this)
                 });
             }
-        }
+        };
     }
-}
+};
 
 /**************************************************************************************
  *  
@@ -1856,9 +1856,9 @@ APP.hideFoldersOnImport = function() {
                 }
                 this.el.focus();
             }
-        }
+        };
     }
-}
+};
 
 /**************************************************************************************
  *  
@@ -1922,9 +1922,9 @@ APP.hidePageGrid = function() {
                 }
             }
             this.store.load({params:{start: 0, query: this.query}});
-        }
+        };
     }
-}
+};
 
 /**************************************************************************************
  *  
@@ -1945,7 +1945,7 @@ APP.disableButtons = function() {
     && $jQ(".mktButtonPositive")) {
         $jQ(".mktButtonPositive").remove();
     }
-}
+};
 
 /**************************************************************************************
  *  
@@ -2022,7 +2022,7 @@ APP.evaluateMoveItem = function (nodeToMove, destNode) {
             return true;
         }
     }
-}
+};
 
 /**************************************************************************************
  *  
@@ -2082,9 +2082,9 @@ APP.disableDragAndDrop = function() {
             else {
                 return false;
             }
-        }
+        };
     }
-}
+};
 
 /**************************************************************************************
  *  
@@ -2305,7 +2305,7 @@ APP.evaluateMenu = function (triggeredFrom, menu, canvas, toolbar) {
             break;
         }
     }
-}
+};
 
 /**************************************************************************************
  *  
@@ -2890,7 +2890,7 @@ APP.disableMenus = function() {
                 this.focus();
                 this.fireEvent('show', this);
             }
-        }
+        };
     }
     else {
         console.log("Marketo App > Skipped: Disable Actions and Right-click menus for ALL in ALL");
@@ -2940,7 +2940,7 @@ APP.disableMenus = function() {
             if (editor.down("[action=create]").isVisible()) {
                 editor.down("[action=create]").setDisabled(true);
             }
-        }
+        };
     }
     else {
         console.log("Marketo App > Skipped: Disable Create button in Wizard Editors");
@@ -3041,7 +3041,7 @@ APP.disableMenus = function() {
                 }
             }
             return me;
-        }
+        };
     }
     else {
         console.log("Marketo App > Skipped: Disable Toolbar Buttons & Actions Menu in ABM & Admin Sections");
@@ -3076,7 +3076,7 @@ APP.disableMenus = function() {
             toolbar.down('#newMenu').hide();
             toolbar.down('#peopleLink').hide();
             toolbar.down('#deleteNamedAccount').hide();
-        }
+        };
     }
     else {
         console.log("Marketo App > Skipped: Disable Toolbar Buttons for ABM > Named Accounts");
@@ -3116,7 +3116,7 @@ APP.disableMenus = function() {
                     }
                 });
             }
-        }
+        };
     }
     else {
         console.log("Marketo App > Skipped: Disable Toolbar Buttons for ABM > Account Lists > Named Accounts");
@@ -3161,7 +3161,7 @@ APP.disableMenus = function() {
             }
             
             return menu;
-        }
+        };
     }
     else {
         console.log("Marketo App > Skipped: Disable Toolbar Buttons & Actions Menu for Marketing Activities > Social Apps");
@@ -3207,7 +3207,7 @@ APP.disableMenus = function() {
             }
             
             return menu;
-        }
+        };
     }
     else {
         console.log("Marketo App > Skipped: Disable Toolbar Buttons & Actions Menu for Marketing Activities > Push Notifications");
@@ -3281,7 +3281,7 @@ APP.disableMenus = function() {
                     }
                 });
             }
-        }
+        };
     }
     else {
         console.log("Marketo App > Skipped: Disable Toolbar Buttons & Actions Menu for Marketing Activities > In App Messages");
@@ -3511,12 +3511,12 @@ APP.disableMenus = function() {
                     }
                 }
             }
-        }
+        };
     }
     else {
         console.log("Marketo App > Skipped: Disable Content & Actions Menus for Marketing Activities > Nurture Program Stream");
     }
-}
+};
 
 /**************************************************************************************
  *  
@@ -4062,9 +4062,9 @@ APP.hideToolbarItems = function() {
                     }
                 });
             }
-        }
+        };
     }
-}
+};
 
 /**************************************************************************************
  *  
@@ -4163,9 +4163,9 @@ APP.disableFormSaveButtons = function() {
                 }
             }
             return me;
-        }
+        };
     }
-}
+};
 
 /**************************************************************************************
  *  
@@ -4334,9 +4334,9 @@ APP.disableAdminSaveButtons = function() {
                 this.afterShow();
             }
             return this;
-        }
+        };
     }
-}
+};
 
 /**************************************************************************************
  *  
@@ -4396,9 +4396,9 @@ APP.limitNurturePrograms = function() {
             } else {
                 return previousMarketingEventForm.apply(this, arguments);
             }
-        }
+        };
     }
-}
+};
 
 /**************************************************************************************
  *
@@ -4446,7 +4446,7 @@ APP.injectAnalyzerNavBar = function() {
             }
         }
     }, 0);
-}
+};
 
 /**************************************************************************************
  *  
@@ -4474,7 +4474,6 @@ APP.overrideSaving = function() {
             if (window.location.href.search("\/#" + mktoCalendarFragment) != -1) {
                 Mkt3.data.Store.prototype.sync = prevDataStoreSync;
             }
-            
             else {
             
                 var disable;
@@ -4504,7 +4503,7 @@ APP.overrideSaving = function() {
                     console.log("Marketo App > Disabling: Saving for Nurture Streams (sync)");
                 }
             }
-        }
+        };
     }
 
     if (Ext4
@@ -4576,9 +4575,9 @@ APP.overrideSaving = function() {
             else {
                 console.log("Marketo App > Disabling: Saving for Nurture Streams (destroy)");
             }
-        }
+        };
     }
-}
+};
 
 /**************************************************************************************
  *  
@@ -4612,7 +4611,7 @@ APP.enableSaving = function() {
             } else {
                 this.callParent(arguments);
             }
-        }
+        };
     }
 
     if (Ext4
@@ -4667,9 +4666,9 @@ APP.enableSaving = function() {
                 callback(operation);
             }
             return me;
-        }
+        };
     }
-}
+};
 
 /**************************************************************************************
  *  
@@ -4746,9 +4745,9 @@ APP.disableSaving = function() {
             });
             // This allows for multiple form fields to be deleted
             this.renumberWidgets();
-        }
+        };
     }
-}
+};
 
 /**************************************************************************************
  *  
@@ -4771,7 +4770,7 @@ APP.openAdBridgeModal = function() {
         
         document.getElementsByClassName("x-btn-text mkiUserTarget")[0].click();
     }
-}
+};
 
 /**************************************************************************************
  *  
@@ -4826,6 +4825,7 @@ APP.getEmailIds = function(accountString) {
             // Higher Ed Services DIY Design
             emIds.push(20329)
             break;
+        
         case mktoAccountString106d:
             // Default DIY Design
             emIds.push(15464);
@@ -4860,12 +4860,14 @@ APP.getEmailIds = function(accountString) {
             // Higher Ed Services DIY Design
             emIds.push(20329)
             break;
+        
         default:
             console.log("Marketp App > Invalid: account string in getEmailIds(): " + accountString);
             break;
     }
+    
     return emIds;
-}
+};
 
 /**************************************************************************************
  *  
@@ -4894,7 +4896,6 @@ APP.trackTreeNodeSelection = function() {
                 currNode = currNode.parentNode;
                 heapEventName = currNode.text + " | " + heapEventName;
             }
-            //console.log(heapEventName);
             
             if (!node
             || !this.boundTree)
@@ -4908,9 +4909,9 @@ APP.trackTreeNodeSelection = function() {
             else {
                 return false;
             }
-        }
+        };
     }
-}
+};
 
 /**************************************************************************************
  *
@@ -5135,6 +5136,7 @@ APP.trackTreeNodeSelection = function() {
                             // Social Apps: Higher Ed DIY Design
                             socIds.push(860, 1024, 861, 859, 858);
                             break;
+                        
                         case mktoAccountString106d:
                             // DIY Design: Landing Page, Landing Page Responsive
                             lpIds["dpageid_11826"] = "dpageid_11826";
@@ -5215,6 +5217,7 @@ APP.trackTreeNodeSelection = function() {
                             // Social Apps: Higher Ed DIY Design
                             socIds.push(860, 1024, 861, 859, 858);
                             break;
+                        
                         default:
                             break;
                     }
@@ -5622,7 +5625,7 @@ APP.trackTreeNodeSelection = function() {
                             }
                         }
                     }, 0);
-                }
+                };
                 APP.overrideSuperballMenuItems();
                 
                 var isHeapAnalytics = window.setInterval(function() {

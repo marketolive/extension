@@ -46,7 +46,7 @@ loadScript = function(scriptSrc) {
     scriptElement.async = true;
     scriptElement.src = scriptSrc;
     document.getElementsByTagName("head")[0].appendChild(scriptElement);
-}
+};
 
 /**************************************************************************************
  *  
@@ -72,7 +72,7 @@ setCookie = function(name, value, expiresInDays, domain, secure) {
 	d.setTime(d.getTime() + (expiresInDays * 24 * 60 * 60 * 1000));
 	expires = "expires=" + d.toGMTString();
 	document.cookie = name + "=" + value + "; " + expires + "; " + "path=/;" + "domain=" + domain + ";secure="+ secure +";";
-}
+};
 
 /**************************************************************************************
  *  
@@ -102,7 +102,7 @@ getCookie = function(cookieName) {
     }
     console.log("Content > Getting: Cookie " + cookieName + " not found");
     return null;
-}
+};
 /*
 sendBackgroundMsg = function(message) {
     var result = chrome.runtime.sendMessage(message, function(response) {
@@ -112,7 +112,7 @@ sendBackgroundMsg = function(message) {
     });
     
     return result;
-}
+};
 
 displayProgressModal = function(parameters) {
     console.log("Content > Displaying: Progress Modal Window");
@@ -140,7 +140,7 @@ displayProgressModal = function(parameters) {
             document.getElementById("striped-bar").addClass(progress);
         }
     }
-}
+};
 
 grayOutCompletedStories = function() {
     console.log("Content > Displaying: Disabled Completed Stories");
@@ -152,7 +152,7 @@ grayOutCompletedStories = function() {
             }
         }
     });
-}
+};
 
 var port = chrome.runtime.connect({
     name: "mycontentscript"
@@ -223,7 +223,7 @@ window.onload = function() {
                 }
                 
                 return dayOfWeek + ", " + month + " the " + dayOfMonth + " " + year;
-            }
+            };
             
             /**************************************************************************************
              *  
@@ -273,7 +273,7 @@ window.onload = function() {
                 clearOverlayVars = function() {
                     isMktoImgReplaced = isMktoTextReplaced = isMktoSubTextReplaced = isMktoButtonReplaced = isMktoEmail1Replaced = false;
                     emailBody = mktoImgs = mktoTexts = mktoButtons = logoSwapCompany = logoSwapContainer = logoSwapCompanyContainer = logoBkg = buttonBkg = null;
-                }
+                };
                 
                 overlay = function(emailDocument) {
                     if (emailDocument) {
@@ -463,7 +463,7 @@ window.onload = function() {
                     }
                     
                     return false;
-                }
+                };
 
                 isEmailEditor2 = window.setInterval(function() {
                     if (action == "edit") {
@@ -554,7 +554,7 @@ window.onload = function() {
                         }
                     }
                 }, 0);
-            }
+            };
             
             /**************************************************************************************
              *  
@@ -615,7 +615,7 @@ window.onload = function() {
                 clearOverlayVars = function() {
                     isMktoImgReplaced = isMktoTextReplaced = isMktoSubTextReplaced = isMktoButtonReplaced = isMktoBackgroundColorReplaced = isMktoOrigReplaced = false;
                     iframeBody = logoImg = textBackground = bannerBackground = mainTitle = subTitle = mktoImgs = mktoTexts = mktoRichTexts = mktoButtons = null;
-                }
+                };
                 
                 overlay = function(iframeDocument) {
                     if (iframeDocument) {
@@ -944,7 +944,7 @@ window.onload = function() {
                                     iframeDocument.getElementsByTagName("head")[0].appendChild(logoStyle);
                                 }
                                 console.log("Content > Overlaying: Original Landing Page Company Logo Dimensions = " + logoNewWidth + " x " + logoNewHeight);
-                            }
+                            };
                             textBackground.style.backgroundColor = color;
                             bannerBackground.style.backgroundColor = color;
                             mainTitle.innerHTML = mktoMainText;
@@ -963,7 +963,7 @@ window.onload = function() {
                         }
                     }
                     return false;
-                }
+                };
 
                 isLandingPageEditor = window.setInterval(function() {
                     if (action == "edit") {
@@ -1142,7 +1142,7 @@ window.onload = function() {
                         }
                     }
                 }, 0);
-            }
+            };
             
             /**************************************************************************************
              *
@@ -1239,7 +1239,7 @@ window.onload = function() {
                             break;
                     }
                 });
-            }
+            };
             
             /**************************************************************************************
              *
@@ -1279,7 +1279,7 @@ window.onload = function() {
                     
                     this.currPosition = 0;
                     this.pod = pod;
-                }
+                };
                 
                 /**************************************************************************************		
                  *		
@@ -1311,9 +1311,9 @@ window.onload = function() {
                         newElement = document.createElement("div");
                         newElement.innerHTML = xmlHttp.responseText;
                         document.body.appendChild(newElement);
-                    }
+                    };
                     window.onload = pageLoaded();
-                }
+                };
                 
                 /**************************************************************************************
                  *
@@ -1346,7 +1346,7 @@ window.onload = function() {
                 console.log("Content > Receiving: Message Response from Background: " + response);
             });
             window.close();
-        }
+        };
         
         /**************************************************************************************
         *
@@ -1359,13 +1359,13 @@ window.onload = function() {
 			if (e.which == 13) {
 				sendCompanyMsg();
 			}
-		}
+		};
         
         incorrect.onclick = function() {
             document.getElementById('first').style.display = "none";
             document.getElementById('second').style.display = "block";
             document.getElementById('second-incorrect').style.display = "block";
-        }
+        };
     }
     else if (currentUrl.search(oneLoginDomain) != -1 ) {
         console.log("Content > Location: OneLogin");
@@ -1398,7 +1398,7 @@ window.onload = function() {
             newElement.innerHTML = xmlHttp.responseText;
             document.getElementById("demo-page").appendChild(newElement);
             loadScript(RTP_DEEPLINK_SCRIPT_LOCATION);
-        }
+        };
         window.onload = pageLoaded();
     }
 	else if (currentUrl.search(emailDeliverabilityDomain) != -1) {
@@ -1423,4 +1423,4 @@ window.onload = function() {
         
         loadScript(INVISION_APP_SCRIPT_LOCATION);
     }
-}
+};

@@ -5,10 +5,12 @@ var landingPageHost = "na-sjdemo1.marketo.com",
     devMarketoLiveHost = "www.marketolive-dev.com",
     prodMarketoLiveHost = "www.marketolive.com",
     marketoLiveHost = devMarketoLiveHost,
+    landingPageType = "landing",
+    webPageType = "web",
     webPages = {
         0 : {
             name : "signup",
-            type : "landing",
+            type : landingPageType,
             url : "http://"+landingPageHost+"/lp/"+munchkinId+"/Lead-Capture_Landing-Page.html",
             dependentOn : [],
             visitationRate : 1.0,
@@ -16,7 +18,7 @@ var landingPageHost = "na-sjdemo1.marketo.com",
         },
         1 : {
             name : "preferenceCenter",
-            type : "landing",
+            type : landingPageType,
             url : "http://"+landingPageHost+"/lp/"+munchkinId+"/Subscription-Management_Preference-Center.html",
             dependentOn : ["signup"],
             visitationRate : 0.05,
@@ -24,7 +26,7 @@ var landingPageHost = "na-sjdemo1.marketo.com",
         },
         2 : {
             name : "notYouPreferenceCenter",
-            type : "landing",
+            type : landingPageType,
             url : "http://"+landingPageHost+"/lp/"+munchkinId+"/Subscription-Management_Not-You-Preference-Center.html",
             dependentOn : ["signup"],
             visitationRate : 0.01,
@@ -32,7 +34,7 @@ var landingPageHost = "na-sjdemo1.marketo.com",
         },
         3 : {
             name : "webinarRegistration",
-            type : "landing",
+            type : landingPageType,
             url : "http://"+landingPageHost+"/lp/"+munchkinId+"/Webinar_Registration.html",
             dependentOn : ["signup"],
             visitationRate : 0.10,
@@ -40,7 +42,7 @@ var landingPageHost = "na-sjdemo1.marketo.com",
         },
         4 : {
             name : "webinarCheckIn",
-            type : "landing",
+            type : landingPageType,
             url : "http://"+landingPageHost+"/lp/"+munchkinId+"/Webinar_CheckIn.html",
             dependentOn : ["signup", "webinarRegistration"],
             visitationRate : 0.80,
@@ -48,7 +50,7 @@ var landingPageHost = "na-sjdemo1.marketo.com",
         },
         5 : {
             name : "liveEventRegistration",
-            type : "landing",
+            type : landingPageType,
             url : "http://"+landingPageHost+"/lp/"+munchkinId+"/Live-Event_Registration-Page.html",
             dependentOn : ["signup"],
             visitationRate : 0.10,
@@ -56,7 +58,7 @@ var landingPageHost = "na-sjdemo1.marketo.com",
         },
         6 : {
             name : "liveEventCheckIn",
-            type : "landing",
+            type : landingPageType,
             url : "http://"+landingPageHost+"/lp/"+munchkinId+"/Live-Event_Check-In.html",
             dependentOn : ["signup", "liveEventRegistration"],
             visitationRate : 0.80,
@@ -64,7 +66,7 @@ var landingPageHost = "na-sjdemo1.marketo.com",
         },
         7 : {
             name : "rewardsSignup",
-            type : "landing",
+            type : landingPageType,
             url : "http://"+landingPageHost+"/lp/"+munchkinId+"/Rewards-for-Champions_Rewards-Page.html",
             dependentOn : ["signup"],
             visitationRate : 0.05,
@@ -72,7 +74,7 @@ var landingPageHost = "na-sjdemo1.marketo.com",
         },
         8 : {
             name : "whyUs",
-            type : "web",
+            type : webPageType,
             url : "http://"+marketoLiveHost+"/en/info/why-us",
             dependentOn : [],
             visitationRate : 0.33,
@@ -80,7 +82,7 @@ var landingPageHost = "na-sjdemo1.marketo.com",
         },
         9 : {
             name : "integrations",
-            type : "web",
+            type : webPageType,
             url : "http://"+marketoLiveHost+"/en/info/integrations",
             dependentOn : [],
             visitationRate : 0.50,
@@ -88,7 +90,7 @@ var landingPageHost = "na-sjdemo1.marketo.com",
         },
         10 : {
             name : "contactUs",
-            type : "web",
+            type : webPageType,
             url : "http://"+marketoLiveHost+"/en/info/contact-us",
             dependentOn : [],
             visitationRate : 0.05,
@@ -96,7 +98,7 @@ var landingPageHost = "na-sjdemo1.marketo.com",
         },
         11 : {
             name : "community",
-            type : "web",
+            type : webPageType,
             url : "http://"+marketoLiveHost+"/en/info/community",
             dependentOn : ["signup", "rewardsSignup"],
             visitationRate : 0.03,
@@ -104,7 +106,7 @@ var landingPageHost = "na-sjdemo1.marketo.com",
         },
         12 : {
             name : "liveEvent",
-            type : "web",
+            type : webPageType,
             url : "http://"+marketoLiveHost+"/en/info/live-event",
             dependentOn : ["signup", "liveEventRegistration"],
             visitationRate : 0.50,
@@ -112,7 +114,7 @@ var landingPageHost = "na-sjdemo1.marketo.com",
         },
         13 : {
             name : "webinar",
-            type : "web",
+            type : webPageType,
             url : "http://"+marketoLiveHost+"/en/info/webinar",
             dependentOn : ["signup", "webinarRegistration"],
             visitationRate : 0.50,
@@ -120,7 +122,7 @@ var landingPageHost = "na-sjdemo1.marketo.com",
         },
         14 : {
             name : "products",
-            type : "web",
+            type : webPageType,
             url : "http://"+marketoLiveHost+"/en/info/products",
             dependentOn : [],
             visitationRate : 0.75,
@@ -128,7 +130,7 @@ var landingPageHost = "na-sjdemo1.marketo.com",
         },
         15 : {
             name : "pricing",
-            type : "web",
+            type : webPageType,
             url : "http://"+marketoLiveHost+"/en/info/pricing",
             dependentOn : [],
             visitationRate : 0.80,
@@ -267,51 +269,6 @@ companyNameCookieName = "attrib_company_name";
 industryCookieName = "attrib_industry";
 leadSourceCookieName = "attrib_lead_source";
 
-if (webPageXvisitationRate > 1.0
-|| (Math.random()) <= webPageXvisitationRate) {
-    var visitedPagesCookieName = "visitedPages",
-        visitedPagesCookieMarketoLive = {
-            url : mktoLiveDomainMatch,
-            domain : mktoLiveUriDomain,
-            name : visitedPagesCookieName,
-            expiresInDays : cookieExpiresInDays,
-        };
-    
-    getCookie(visitedPagesCookieMarketoLive, function(cookie) {
-        if (cookie
-        && cookie.value) {
-            var proceed = false;
-            for (var ii = 0; ii < webPageX.dependentOn.length; ii++) {
-                if (cookie.value.search("(, )\?" + webPageX.dependentOn[ii] + "(,)\?") != -1) {
-                    proceed = true;
-                }
-                else {
-                    proceed = false;
-                    break;
-                }
-            }
-            
-            if (proceed) {
-                console.log("Visiting: " + webPageX.url);
-                
-                response = webRequest("GET", webPageX.url, false);
-                visitedPagesCookieMarketoLive.value = cookie.value + ", " + webPageX.name;
-                setCookie(visitedPagesCookieMarketoLive);
-            }
-            else {
-                console.log("NOT Visiting: " + webPageX.url + " due to dependencies not being met");
-            }
-        }
-        else {
-            console.log("Visiting Initial Page: " + webPageX.url);
-            
-            response = webRequest("GET", webPageX.url, false);
-            visitedPagesCookieMarketoLive.value = webPageX.name;
-            setCookie(visitedPagesCookieMarketoLive);
-        }
-    });
-}
-
 getCookie({url : mktoAppDomainMatch, name : jobTitleCookieName}, function(cookie) {
     if (!cookie
     || !cookie.value) {
@@ -447,3 +404,77 @@ getCookie({url : mktoAppDomainMatch, name : leadSourceCookieName}, function(cook
         setCookie(leadSourceCookieLandingPage);
     }
 });
+
+if (webPageXvisitationRate >= 1.0
+|| (Math.random()) <= webPageXvisitationRate) {
+    var submitCookieName = "attrib_submit",
+        visitedPagesCookieName = "visitedPages",
+        submitCookieLandingPage = {
+            url : mktoAppDomainMatch,
+            domain : mktoAppUriDomain,
+            name : submitCookieName,
+            expiresInDays : cookieExpiresInDays,
+        },
+        visitedPagesCookieMarketoLive = {
+            url : mktoLiveDomainMatch,
+            domain : mktoLiveUriDomain,
+            name : visitedPagesCookieName,
+            expiresInDays : cookieExpiresInDays,
+        };
+    
+    getCookie(visitedPagesCookieMarketoLive, function(cookie) {
+        if (cookie
+        && cookie.value) {
+            var proceed = false;
+            for (var ii = 0; ii < webPageX.dependentOn.length; ii++) {
+                if (cookie.value.search("(, )\?" + webPageX.dependentOn[ii] + "(,)\?") != -1) {
+                    proceed = true;
+                }
+                else {
+                    proceed = false;
+                    break;
+                }
+            }
+            
+            if (proceed) {
+                console.log("Visiting: " + webPageX.url);
+                
+                if (webPageX.type == landingPageType
+                && (webPageX.conversionRate >= 1.0
+                    || (Math.random()) <= webPageX.conversionRate) {
+                    
+                    submitCookieLandingPage.value = "true";
+                }
+                else {
+                    submitCookieLandingPage.value = "false";
+                }
+                setCookie(submitCookieLandingPage);
+                
+                response = webRequest("GET", webPageX.url, false);
+                visitedPagesCookieMarketoLive.value = cookie.value + ", " + webPageX.name;
+                setCookie(visitedPagesCookieMarketoLive);
+            }
+            else {
+                console.log("NOT Visiting: " + webPageX.url + " due to dependencies not being met");
+            }
+        }
+        else {
+            console.log("Visiting Initial Page: " + webPageX.url);
+            
+            if (webPageX.type == landingPageType
+            && (webPageX.conversionRate >= 1.0
+                || (Math.random()) <= webPageX.conversionRate) {
+                
+                submitCookieLandingPage.value = "true";
+            }
+            else {
+                submitCookieLandingPage.value = "false";
+            }
+            setCookie(submitCookieLandingPage);
+            
+            response = webRequest("GET", webPageX.url, false);
+            visitedPagesCookieMarketoLive.value = webPageX.name;
+            setCookie(visitedPagesCookieMarketoLive);
+        }
+    });
+}

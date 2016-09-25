@@ -139,7 +139,7 @@ APP.overrideSuperballMenuItems = function() {
             }
         }
     }
-}
+};
 
 /**************************************************************************************
  *  
@@ -228,7 +228,7 @@ APP.overrideHomeTiles = function() {
             container.appendChild(spareTileClone.el.dom);
         }
     }
-}
+};
 
 /**************************************************************************************
  *
@@ -258,4 +258,4 @@ window.onhashchange = function() {
             APP.overrideHomeTiles();
         }
     }
-}
+};

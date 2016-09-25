@@ -32,7 +32,7 @@ disableDemoPluginCheck = function() {
     && MktPage.validateDemoPlugin) {
         MktPage.validateDemoPlugin = function() {};
     }
-}
+};
 
 /**************************************************************************************
  *  
@@ -53,7 +53,7 @@ loadScript = function(scriptSrc) {
     scriptElement.async = true;
     scriptElement.src = scriptSrc;
     document.getElementsByTagName("head")[0].appendChild(scriptElement);
-}
+};
 
 /**************************************************************************************
  *  
@@ -83,7 +83,7 @@ getCookie = function(cookieName) {
     }
     console.log("Marketo Global App > Getting: Cookie " + cookieName + " not found");
     return null;
-}
+};
 
 /**************************************************************************************
  *
