@@ -71,10 +71,11 @@ var currentUrl = window.location.href,
     mktoSuccessPathAnalyzerFragment = "AR1682A1!",
     mktoAnalyzersFragmentMatch = "^" + mktoOppInfluenceAnalyzerFragment + "$|^" + mktoProgramAnalyzerFragment + "$|^" + mktoModelerFragment + "$|^" + mktoSuccessPathAnalyzerFragment + "$",
     
-    mktoMobilePushNotification = "MPN",
+    mktoMobilePushNotificationFragment = "MPN",
+    mktoInAppMessageFragment = "IAM",
     mktoSmsMessageFragment = "SMS",
     mktoSocialAppFragment = "SOA",
-    mktoOtherAssetsFragmentMatch = "^" + mktoMobilePushNotification + "|^" + mktoSmsMessageFragment + "|^" + mktoSocialAppFragment,
+    mktoOtherAssetsFragmentMatch = "^" + mktoMobilePushNotificationFragment + "|^" + mktoInAppMessageFragment + "|^" + mktoSmsMessageFragment + "|^" + mktoSocialAppFragment,
     
     mktoEmailDesignerFragment = "EME",
     mktoEmailPreviewFragmentRegex = new RegExp("^EME[0-9]+&isPreview", "i"),
