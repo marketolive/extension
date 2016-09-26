@@ -4695,7 +4695,7 @@ APP.discardLandingPageDrafts = function(lpIds) {
         }*/
         
         for (ii = 0; ii < Object.keys(lpIds).length; ii++) {
-            console.log("Marketo App > Executing: Discard Landing Page Draft: " + ii);
+//            console.log("Marketo App > Executing: Discard Landing Page Draft: " + ii);
             
             var lpIdKey = Object.keys(lpIds)[ii],
                 lpIdVal = lpIds[lpIdKey];
@@ -5071,12 +5071,31 @@ APP.discardDrafts = function (accountString) {
             window.clearInterval(canDiscardDrafts);
             
             APP.discardLandingPageDrafts(lpIds);
-            APP.discardEmailDrafts(emIds);
-            APP.discardOtherDrafts("Form", formIds);
-            APP.discardOtherDrafts("MobilePushNotification", pushIds);
-            APP.discardOtherDrafts("InAppMessage", inAppIds);
-            //APP.discardOtherDrafts("SmsMessage", smsIds);
-            APP.discardOtherDrafts("SocialApp", socIds);
+            
+            var canDiscardEmailDrafts  = window.setInterval(function () {
+                if (typeof(mktEmManager) !== "undefined"
+                && mktEmManager.discardDraft) {
+                    window.clearInterval(canDiscardEmailDrafts);
+                    
+                    APP.discardEmailDrafts(emIds);
+                }
+            }, 0);
+            
+            var canDiscardOtherDrafts  = window.setInterval(function () {
+                if (typeof(Ext4) !== "undefined"
+                && Ext4.getStore
+                && Ext4.create
+                && typeof(Mkt3) !== "undefined") {
+                    window.clearInterval(canDiscardOtherDrafts);
+                    
+                    APP.discardOtherDrafts("Form", formIds);
+                    APP.discardOtherDrafts("MobilePushNotification", pushIds);
+                    APP.discardOtherDrafts("InAppMessage", inAppIds);
+                    //APP.discardOtherDrafts("SmsMessage", smsIds);
+                    APP.discardOtherDrafts("SocialApp", socIds);
+                }
+            }, 0);
+            
             APP.limitNurturePrograms();
         }
     }, 0);
@@ -5376,6 +5395,8 @@ var heapTrack = function(action) {
                 if (!currCompFragment
                 || currCompFragment.search(mktoDesignersFragmentMatch) == -1) {
                     
+                    APP.discardDrafts(accountString);
+                    
                     if (accountString.search(mktoAccountStringsMatch) != -1) {
                         APP.overrideTreeNodeExpand();
                         APP.overrideTreeNodeCollapse();
@@ -5411,8 +5432,6 @@ var heapTrack = function(action) {
                         APP.disableFormSaveButtons();
                         APP.disableAdminSaveButtons();
                     }
-                    
-                    APP.discardDrafts(accountString);
                 }
                 else if (currCompFragment == mktoLandingPageDesignerFragment) {
                     console.log("Marketo App > Location: Landing Page Designer");
