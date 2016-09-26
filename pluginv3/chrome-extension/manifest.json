@@ -21,7 +21,8 @@
             "*://go.app.io/*",
             "https://250ok.com/*",
             "https://marketo.invisionapp.com/*",
-            "https://marketo.onelogin.com/*"
+            "https://marketo.onelogin.com/*",
+            "https://marketo.my.salesforce.com/*"
         ]
     }],
     "externally_connectable": {
@@ -45,7 +46,8 @@
         "*://go.app.io/*",
         "https://250ok.com/*",
         "https://marketo.invisionapp.com/*",
-        "https://marketo.onelogin.com/*"
+        "https://marketo.onelogin.com/*",
+        "https://marketo.my.salesforce.com/*"
     ],
     "content_security_policy": "script-src 'self' https://marketolive.com; object-src 'self'",
     "web_accessible_resources": ["lib/*"],

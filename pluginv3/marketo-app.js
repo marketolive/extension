@@ -171,7 +171,7 @@ APP.disableDemoPluginCheck = function() {
 APP.disablePropertyPanelSaving = function() {
     console.log("Marketo App > Disabling: Saving of Landing Page Property Panel & Sync Error Message");
     
-    if (Mkt3
+    if (typeof(Mkt3) !== "undefined"
     && Mkt3.controller
     && Mkt3.controller.editor
     && Mkt3.controller.editor.LandingPagePropertyPanel
@@ -213,7 +213,7 @@ APP.disablePropertyPanelSaving = function() {
 APP.disableConfirmationMessage = function() {
     console.log("Marketo App > Disabling: Smart Campaign Delete Confirmation Message");
     
-    if (Mkt
+    if (typeof(Mkt) !== "undefined"
     && Mkt.widgets
     && Mkt.widgets.DataPanel
     && Mkt.widgets.DataPanel.prototype
@@ -244,7 +244,7 @@ APP.disableConfirmationMessage = function() {
                     MktLang.getStr('DataFormPanel.Check_your_advanced_filter_rules_after_any_insert_delete_reorder');
                 }
                 
-                if (MktCanvas
+                if (typeof(MktCanvas) !== "undefined"
                 && MktCanvas.getActiveTab()
                 && MktCanvas.getActiveTab().config
                 && MktCanvas.getActiveTab().config.accessZoneId) {
@@ -310,7 +310,7 @@ APP.disableConfirmationMessage = function() {
 APP.overrideHomeTiles = function() {
     console.log("Marketo App > Overriding: My Marketo Home Tiles");
     
-    if (MktCanvas
+    if (typeof(MktCanvas) !== "undefined"
     && MktCanvas.getEl()
     && MktCanvas.getEl().dom
     && MktCanvas.getEl().dom.nextSibling
@@ -399,7 +399,7 @@ APP.overrideHomeTiles = function() {
 APP.overrideSuperballMenuItems = function() {
     console.log("Marketo App > Overriding: Superball Menu Items");
     
-    if (MktPage
+    if (typeof(MktPage) !== "undefined"
     && MktPage.showSuperMenu) {
         MktPage.showSuperMenu = function() {
             console.log("Marketo App > Executing: Override Superball Menu Items");
@@ -453,7 +453,7 @@ APP.overrideSuperballMenuItems = function() {
                             }
                         }
                     });
-                if (menu
+                if (typeof(menu) !== "undefined"
                 && menu.items
                 && menu.items.items) {
                     console.log("Marketo App > Working: Override Superball Menu Items");
@@ -683,7 +683,7 @@ APP.overrideAnalyticsTiles = function() {
 APP.overrideSmartCampaignSaving = function() {
     console.log("Marketo App > Overriding: Saving for Smart Campaigns");
     
-    if (Mkt
+    if (typeof(Mkt) !== "undefined"
     && Mkt.widgets
     && Mkt.widgets.DataPanelManager
     && Mkt.widgets.DataPanelManager.prototype
@@ -798,7 +798,7 @@ APP.overrideSmartCampaignSaving = function() {
 APP.overrideSmartCampaignCanvas = function() {
     console.log("Marketo App > Overriding: Smart Campaign Canvases");
 
-    if (Mkt
+    if (typeof(Mkt) !== "undefined"
     && Mkt.widgets
     && Mkt.widgets.DataPanelLayout
     && Mkt.widgets.DataPanelLayout.prototype
@@ -806,7 +806,7 @@ APP.overrideSmartCampaignCanvas = function() {
         Mkt.widgets.DataPanelLayout.prototype.initComponent = function() {
             console.log("Marketo App > Executing: Override Smart Campaign Canvases");
             
-            if (MktCanvas
+            if (typeof(MktCanvas) !== "undefined"
             && MktCanvas.getActiveTab()
             && MktCanvas.getActiveTab().config
             && MktCanvas.getActiveTab().config.accessZoneId == mktoDefaultWorkspaceId) {
@@ -898,7 +898,7 @@ APP.overrideSmartCampaignCanvas = function() {
 APP.overrideUpdatePortletOrder = function() {
     console.log("Marketo App > Overriding: Updating of Portlet Order");
 
-    if (Mkt
+    if (typeof(Mkt) !== "undefined"
     && Mkt.apps
     && Mkt.apps.localasset
     && Mkt.apps.localasset.LocalAssetPortal
@@ -951,7 +951,7 @@ APP.overrideUpdatePortletOrder = function() {
 APP.discardLandingPageDrafts = function(lpIds) {
     console.log("Marketo App > Discarding: Landing Page Drafts");
     
-    if (mktLPLManager
+    if (typeof(mktLPLManager) !== "undefined"
     && mktLPLManager.doModifyPages) {
         console.log("Marketo App > Executing: Discard Landing Page Drafts");
         
@@ -986,7 +986,7 @@ APP.discardLandingPageDrafts = function(lpIds) {
 APP.discardEmailDrafts = function(emIds) {
     console.log("Marketo App > Discarding: Email Drafts");
 
-    if (mktEmManager
+    if (typeof(mktEmManager) !== "undefined"
     && mktEmManager.discardDraft) {
         console.log("Marketo App > Executing: Discard Email Drafts");
         
@@ -1024,10 +1024,10 @@ APP.discardEmailDrafts = function(emIds) {
 APP.discardFormPushDrafts = function(assetType, assetIds) {
     console.log("Marketo App > Discarding: " + assetType + " Drafts");
     
-    if (Ext4
+    if (typeof(Ext4) !== "undefined"
     && Ext4.getStore
     && Ext4.create
-    && Mkt3) {
+    && typeof(Mkt3) !== "undefined") {
         console.log("Marketo App > Executing: Discard " + assetType + " Drafts");
         
         var assetStore = Ext4.getStore(assetType);
@@ -1036,7 +1036,7 @@ APP.discardFormPushDrafts = function(assetType, assetIds) {
         && MktMessage.showSystemError) {
             MktMessage.showSystemError = function() {};
         }
-        if (typeof(Mkt3) !== 'undefined') {
+        if (typeof(Mkt3) !== "undefined") {
             if (!assetStore) {
                     assetStore = Ext4.create('Mkt3.store.' + assetType, {
                         storeId : assetType
@@ -1077,7 +1077,7 @@ APP.discardFormPushDrafts = function(assetType, assetIds) {
 APP.overrideTreeNodeExpand = function() {
     console.log("Marketo App > Overriding: Tree Node Expand");
  
-    if (MktAsyncTreeNode
+    if (typeof(MktAsyncTreeNode) !== "undefined"
     && MktAsyncTreeNode.prototype
     && MktAsyncTreeNode.prototype.expand
     && userName) {
@@ -1143,7 +1143,7 @@ APP.overrideTreeNodeExpand = function() {
 APP.overrideTreeNodeCollapse = function() {
     console.log("Marketo App > Overriding: Tree Node Collapse");
     
-    if (MktAsyncTreeNode
+    if (typeof(MktAsyncTreeNode) !== "undefined"
     && MktAsyncTreeNode.prototype
     && MktAsyncTreeNode.prototype.collapse
     && userName) {
@@ -1200,7 +1200,7 @@ APP.overrideTreeNodeCollapse = function() {
 APP.overrideNewProgramCreate = function() {
     console.log("Marketo App > Overriding: New Program/Segmentation Creation");
     
-    if (Mkt
+    if (typeof(Mkt) !== "undefined"
     && Mkt.widgets
     && Mkt.widgets.ModalForm
     && Mkt.widgets.ModalForm.prototype
@@ -1323,13 +1323,13 @@ APP.overrideNewProgramCreate = function() {
 APP.overrideAssetSaveEdit = function() {
     console.log("Marketo App > Overriding: Asset Save Edit");
 
-    if (Mkt
+    if (typeof(Mkt) !== "undefined"
     && Mkt.widgets
     && Mkt.widgets.CanvasHeader
     && Mkt.widgets.CanvasHeader.prototype
     && Mkt.widgets.CanvasHeader.prototype.saveEdit) {
         Mkt.widgets.CanvasHeader.prototype.saveEdit = function() {
-            if (MktCanvas
+            if (typeof(MktCanvas) !== "undefined"
             && MktCanvas.getActiveTab()
             && MktCanvas.getActiveTab().config
             && MktCanvas.getActiveTab().config.accessZoneId
@@ -1577,7 +1577,7 @@ APP.overrideAssetSaveEdit = function() {
 APP.overrideNewAssetCreate = function() {
     console.log("Marketo App > Overriding: New Asset Creation");
     
-    if (Mkt3
+    if (typeof(Mkt) !== "undefined"
     && Mkt3.controller
     && Mkt3.controller.lib
     && Mkt3.controller.lib.AbstractModalForm
@@ -1639,7 +1639,7 @@ APP.overrideNewAssetCreate = function() {
 APP.overrideNewFolders = function() {
     console.log("Marketo App > Overriding: New Folders");
     
-    if (MktMa
+    if (typeof(MktMa) !== "undefined"
     && MktMa.newProgramFolderSubmit
     && userName) {
         MktMa.newProgramFolderSubmit = function (text, parentId, tempNodeId) {
@@ -1672,7 +1672,7 @@ APP.overrideNewFolders = function() {
         };
     }
     
-    if (MktFolder
+    if (typeof(MktFolder) !== "undefined"
     && MktFolder.newFolderSubmit
     && userName) {
         MktFolder.newFolderSubmit = function (text, parentNodeId, tempNodeId) {
@@ -1718,7 +1718,7 @@ APP.overrideNewFolders = function() {
 APP.overrideRenamingFolders = function() {
     console.log("Marketo App > Overriding: Renaming Folders");
     
-    if (MktMa
+    if (typeof(MktMa) !== "undefined"
     && MktMa.renameProgramFolderSubmit
     && userName) {
         MktMa.renameProgramFolderSubmit = function (value, startValue, folderId) {
@@ -1762,7 +1762,7 @@ APP.overrideRenamingFolders = function() {
         };
     }
     
-    if (MktFolder
+    if (typeof(MktFolder) !== "undefined"
     && MktFolder.renameFolderSubmit
     && userName) {
         MktFolder.renameFolderSubmit = function (text, startValue, nodeId) {
@@ -1814,7 +1814,7 @@ APP.overrideRenamingFolders = function() {
 APP.hideFoldersOnImport = function() {
     console.log("Marketo App > Hiding: Folders On Program Import via Override");
      
-    if (Ext
+    if (typeof(Ext) !== "undefined"
     && Ext.form
     && Ext.form.ComboBox
     && Ext.form.ComboBox.prototype
@@ -1837,11 +1837,11 @@ APP.hideFoldersOnImport = function() {
                     
                     this.doQuery(this.allQuery, true);
                     
-                    if (this
+                    if (typeof(this) !== "undefined"
                     && this.label
                     && this.label.dom
                     && this.label.dom.textContent == "Campaign Folder:"
-                    && MktCanvas
+                    && typeof(MktCanvas) !== "undefined"
                     && MktCanvas.getActiveTab()
                     && MktCanvas.getActiveTab().config
                     && MktCanvas.getActiveTab().config.accessZoneId == mktoUserWorkspaceId) {
@@ -1881,12 +1881,12 @@ APP.hideFoldersOnImport = function() {
 APP.hidePageGrid = function() {
     console.log("Marketo App > Hiding: Page Grid via Override");
     
-    if (MktGrids
+    if (typeof(MktGrids) !== "undefined"
     && MktGrids.CanvasGridPanel
     && MktGrids.CanvasGridPanel.prototype
     && MktGrids.CanvasGridPanel.prototype.loadPagedGrid) {
         MktGrids.CanvasGridPanel.prototype.loadPagedGrid = function() {
-            if (MktCanvas
+            if (typeof(MktCanvas) !== "undefined"
             && MktCanvas.getActiveTab()
             && MktCanvas.getActiveTab().config
             && MktCanvas.getActiveTab().config.accessZoneId == mktoUserWorkspaceId) {
@@ -2043,7 +2043,7 @@ APP.evaluateMoveItem = function (nodeToMove, destNode) {
 APP.disableDragAndDrop = function() {
     console.log("Marketo App > Disabling: Tree Node Drop");
 
-    if (Ext
+    if (typeof(Ext) !== "undefined"
     && Ext.tree
     && Ext.tree.TreeDropZone
     && Ext.tree.TreeDropZone.prototype
@@ -2326,7 +2326,7 @@ APP.evaluateMenu = function (triggeredFrom, menu, canvas, toolbar) {
 APP.disableMenus = function() {
     console.log("Marketo App > Disabling: Menus");
     
-    if (Ext
+    if (typeof(Ext) !== "undefined"
     && Ext.menu
     && Ext.menu.Menu
     && Ext.menu.Menu.prototype
@@ -2901,7 +2901,7 @@ APP.disableMenus = function() {
         console.log("Marketo App > Skipped: Disable Actions and Right-click menus for ALL in ALL");
     }
     
-    if (Mkt3
+    if (typeof(Mkt3) !== "undefined"
     && Mkt3.controller
     && Mkt3.controller.editor
     && Mkt3.controller.editor.wizard
@@ -2951,7 +2951,7 @@ APP.disableMenus = function() {
         console.log("Marketo App > Skipped: Disable Create button in Wizard Editors");
     }
     
-    if (Ext4
+    if (typeof(Ext4) !== "undefined"
     && Ext4.button
     && Ext4.button.Button
     && Ext4.button.Button.prototype
@@ -3052,7 +3052,7 @@ APP.disableMenus = function() {
         console.log("Marketo App > Skipped: Disable Toolbar Buttons & Actions Menu in ABM & Admin Sections");
     }
     
-    if (Mkt3
+    if (typeof(Mkt3) !== "undefined"
     && Mkt3.controller
     && Mkt3.controller.abm
     && Mkt3.controller.abm.namedAccount
@@ -3087,7 +3087,7 @@ APP.disableMenus = function() {
         console.log("Marketo App > Skipped: Disable Toolbar Buttons for ABM > Named Accounts");
     }
     
-    if (Mkt3
+    if (typeof(Mkt3) !== "undefined"
     && Mkt3.controller
     && Mkt3.controller.abm
     && Mkt3.controller.abm.accountList
@@ -3127,7 +3127,7 @@ APP.disableMenus = function() {
         console.log("Marketo App > Skipped: Disable Toolbar Buttons for ABM > Account Lists > Named Accounts");
     }
     
-    if (Mkt3
+    if (typeof(Mkt3) !== "undefined"
     && Mkt3.controller
     && Mkt3.controller.socialApp
     && Mkt3.controller.socialApp.SocialApp
@@ -3172,7 +3172,7 @@ APP.disableMenus = function() {
         console.log("Marketo App > Skipped: Disable Toolbar Buttons & Actions Menu for Marketing Activities > Social Apps");
     }
     
-    if (Mkt3
+    if (typeof(Mkt3) !== "undefined"
     && Mkt3.controller
     && Mkt3.controller.mobilePushNotification
     && Mkt3.controller.mobilePushNotification.MobilePushNotification
@@ -3218,7 +3218,7 @@ APP.disableMenus = function() {
         console.log("Marketo App > Skipped: Disable Toolbar Buttons & Actions Menu for Marketing Activities > Push Notifications");
     }
     
-    if (Mkt3
+    if (typeof(Mkt3) !== "undefined"
     && Mkt3.controller
     && Mkt3.controller.inAppMessage
     && Mkt3.controller.inAppMessage.InAppMessage
@@ -3292,7 +3292,7 @@ APP.disableMenus = function() {
         console.log("Marketo App > Skipped: Disable Toolbar Buttons & Actions Menu for Marketing Activities > In App Messages");
     }
     
-    if (Ext4
+    if (typeof(Ext4) !== "undefined"
     && Ext4.Component
     && Ext4.Component.prototype
     && Ext4.Component.prototype.showAt) {
@@ -3316,7 +3316,7 @@ APP.disableMenus = function() {
             }
             me.show()
             
-            if (MktCanvas
+            if (typeof(MktCanvas) !== "undefined"
             && MktCanvas.getActiveTab()) {
                 var ii,
                     disable = APP.evaluateMenu("button", null, MktCanvas.getActiveTab(), null);
@@ -3536,7 +3536,7 @@ APP.disableMenus = function() {
 APP.hideToolbarItems = function() {
     console.log("Marketo App > Hiding: Toolbar Items");
     
-    if (Ext
+    if (typeof(Ext) !== "undefined"
     && Ext.layout
     && Ext.layout.ContainerLayout
     && Ext.layout.ContainerLayout.prototype
@@ -3559,7 +3559,7 @@ APP.hideToolbarItems = function() {
                 }
             }
 
-            if (c
+            if (typeof(c) !== "undefined"
             && c.topToolbar
             && c.topToolbar.items) {
                 console.log("Marketo App > Executing: Disable Toolbar items for ALL in ALL");
@@ -4085,7 +4085,7 @@ APP.hideToolbarItems = function() {
 APP.disableFormSaveButtons = function() {
     console.log("Marketo App > Disabling: Form Window Save Buttons");
 
-    if (Ext4
+    if (typeof(Ext4) !== "undefined"
     && Ext4.Component
     && Ext4.Component.prototype
     && Ext4.Component.prototype.show) {
@@ -4186,7 +4186,7 @@ APP.disableFormSaveButtons = function() {
 APP.disableAdminSaveButtons = function() {
     console.log("Marketo App > Disabling: Admin Section Save Buttons");
 
-    if (Ext
+    if (typeof(Ext) !== "undefined"
     && Ext.Window
     && Ext.Window.prototype
     && Ext.Window.prototype.show) {
@@ -4194,10 +4194,10 @@ APP.disableAdminSaveButtons = function() {
             // Disable ALL areas > ALL assets > ALL Save windows
             console.log("Marketo App > Executing: Disable Admin Section Save Buttons");
             
-            if (MktCanvas
+            if (typeof(MktCanvas) !== "undefined"
             && MktCanvas.getActiveTab()
             && MktCanvas.getActiveTab().title
-            && this
+            && typeof(this) !== "undefined"
             && this.buttons
             && this.buttons.length) {
                 var activeTabTitle = MktCanvas.getActiveTab().title,
@@ -4361,7 +4361,7 @@ APP.disableAdminSaveButtons = function() {
 APP.limitNurturePrograms = function() {
     console.log("Marketo App > Limiting: Nurture Programs");
 
-    if (Mkt
+    if (typeof(Mkt) !== "undefined"
     && Mkt.apps
     && Mkt.apps.marketingEvent
     && Mkt.apps.marketingEvent.MarketingEventForm
@@ -4467,7 +4467,7 @@ APP.injectAnalyzerNavBar = function() {
 APP.overrideSaving = function() {
     console.log("Marketo App > Overriding: Saving for Nurture Streams");
     
-    if (Mkt3
+    if (typeof(Mkt3) !== "undefined"
     && Mkt3.data
     && Mkt3.data.Store
     && Mkt3.data.Store.prototype
@@ -4482,7 +4482,7 @@ APP.overrideSaving = function() {
             else {
             
                 var disable;
-                if (MktCanvas
+                if (typeof(MktCanvas) !== "undefined"
                 && MktCanvas.getActiveTab()
                 && APP.getCookie("toggleState") != "false") {
                     disable = APP.evaluateMenu("button", null, MktCanvas.getActiveTab(), null);
@@ -4511,7 +4511,7 @@ APP.overrideSaving = function() {
         };
     }
 
-    if (Ext4
+    if (typeof(Ext4) !== "undefined"
     && Ext4.data
     && Ext4.data.Model
     && Ext4.data.Model.prototype
@@ -4520,7 +4520,7 @@ APP.overrideSaving = function() {
             console.log("Marketo App > Executing: Override Saving for Nurture Streams (destroy)");
             
             var disable;
-            if (MktCanvas
+            if (typeof(MktCanvas) !== "undefined"
             && MktCanvas.getActiveTab()
             && APP.getCookie("toggleState") != "false") {
                 disable = APP.evaluateMenu("button", null, MktCanvas.getActiveTab(), null);
@@ -4598,7 +4598,7 @@ APP.overrideSaving = function() {
 APP.enableSaving = function() {
     console.log("Marketo App > Enabling: Saving for Editors");
 
-    if (Mkt3
+    if (typeof(Mkt3) !== "undefined"
     && Mkt3.data
     && Mkt3.data.Store
     && Mkt3.data.Store.prototype
@@ -4619,7 +4619,7 @@ APP.enableSaving = function() {
         };
     }
 
-    if (Ext4
+    if (typeof(Ext4) !== "undefined"
     && Ext4.data
     && Ext4.data.Model
     && Ext4.data.Model.prototype
@@ -4689,7 +4689,7 @@ APP.enableSaving = function() {
 APP.disableSaving = function() {
     console.log("Marketo App > Disabling: Saving for Editors");
     
-    if (Mkt3
+    if (typeof(Mkt3) !== "undefined"
     && Mkt3.data
     && Mkt3.data.Store
     && Mkt3.data.Store.prototype
@@ -4699,7 +4699,7 @@ APP.disableSaving = function() {
         };
     }
     
-    if (Ext4
+    if (typeof(Ext4) !== "undefined"
     && Ext4.data
     && Ext4.data.Model
     && Ext4.data.Model.prototype
@@ -4709,7 +4709,7 @@ APP.disableSaving = function() {
         };
     }
     
-	if (Mkt3
+	if (typeof(Mkt3) !== "undefined"
     && Mkt3.controller
     && Mkt3.controller.editor
     && Mkt3.controller.editor.form
@@ -5072,7 +5072,7 @@ APP.discardDrafts = function (accountString) {
 APP.trackTreeNodeSelection = function() {
     console.log("Marketo App > Tracking: Tree Node Selection");
     
-    if (MktExplorer
+    if (typeof(MktExplorer) !== "undefined"
     && MktExplorer.selectTreeNode) {
         MktExplorer.selectTreeNode = function(node) {
             console.log("Marketo App > Executing: Tracking Tree Node Selection")
@@ -5116,7 +5116,7 @@ APP.trackTreeNodeSelection = function() {
 APP.trackOtherAssets = function() {
     console.log("Marketo App > Tracking: Social App or Push Notification Selection");
     
-    if (MktExplorer
+    if (typeof(MktExplorer) !== "undefined"
     && MktExplorer.getNodeById) {
         var node = currNode = MktExplorer.getNodeById(currUrlFragment.substring(0, currUrlFragment.length - 5)),
             ii;
@@ -5428,7 +5428,7 @@ var heapTrack = function(action) {
                             }
                         };
                         
-                    if (Ext4
+                    if (typeof(Ext4) !== "undefined"
                     && Ext4.getStore('LandingPage')
                     && Ext4.getStore('LandingPage').load) {
                         console.log("Marketo App > Callback: Landing Page Editor");
@@ -5436,7 +5436,7 @@ var heapTrack = function(action) {
                     }
 */                  
                     var isLandingPageDesigner = window.setInterval(function() {
-                        if (Mkt3
+                        if (typeof(Mkt3) !== "undefined"
                         && Mkt3.app
                         && Mkt3.app.controllers
                         && Mkt3.app.controllers.get("Mkt3.controller.editor.LandingPage")
@@ -5447,7 +5447,7 @@ var heapTrack = function(action) {
                             
                             window.clearInterval(isLandingPageDesigner);
                             APP.disablePropertyPanelSaving();
-                            if (Ext4
+                            if (typeof(Ext4) !== "undefined"
                             && Ext4.ComponentQuery
                             && Ext4.ComponentQuery.query) {
                                 var mItems = Ext4.ComponentQuery.query(
@@ -5495,7 +5495,7 @@ var heapTrack = function(action) {
                                             if (currAssetWorkspaceId.toString().search(mktoGoldenWorkspacesMatch) != -1
                                             || APP.getCookie("toggleState") == "false") {
                                                 APP.disableSaving();
-                                                if (Ext4
+                                                if (typeof(Ext4) !== "undefined"
                                                 && Ext4.ComponentQuery
                                                 && Ext4.ComponentQuery.query) {
                                                     var mItems = Ext4.ComponentQuery.query(
@@ -5541,7 +5541,7 @@ var heapTrack = function(action) {
                             if (currUrlFragment.search(mktoEmailPreviewFragmentRegex) == -1) {
                                 console.log("Marketo App > Location: Email Designer");
                                 
-                                if (Ext4
+                                if (typeof(Ext4) !== "undefined"
                                 && Ext4.getStore('Email')
                                 && Ext4.getStore('Email').load) {
                                     console.log("Marketo App > Callback: Email Editor");
@@ -5556,7 +5556,7 @@ var heapTrack = function(action) {
                         case mktoFormWizardFragment:
                             console.log("Marketo App > Location: Form Wizard");
                             
-                            if (Ext4
+                            if (typeof(Ext4) !== "undefined"
                             && Ext4.getStore('Form')
                             && Ext4.getStore('Form').load) {
                                 console.log("Marketo App > Callback: Form Editor");
@@ -5567,7 +5567,7 @@ var heapTrack = function(action) {
                         case mktoMobilePushNotificationWizardFragment:
                             console.log("Marketo App > Location: Push Notification Wizard");
                             
-                            if (Ext4
+                            if (typeof(Ext4) !== "undefined"
                             && Ext4.getStore('MobilePushNotification')
                             && Ext4.getStore('MobilePushNotification').load) {
                                 console.log("Marketo App > Callback: Push Notification Editor");
@@ -5578,7 +5578,7 @@ var heapTrack = function(action) {
                         case mktoInAppMessageWizardFragment:
                             console.log("Marketo App > Location: In App Message Wizard");
                             
-                            if (Ext4
+                            if (typeof(Ext4) !== "undefined"
                             && Ext4.getStore('InAppMessage')
                             && Ext4.getStore('InAppMessage').load) {
                                 console.log("Marketo App > Callback: In App Message Editor");
@@ -5589,7 +5589,7 @@ var heapTrack = function(action) {
                         case mktoSocialAppWizardFragment:
                             console.log("Marketo App > Location: Social App Wizard");
                             
-                            if (Ext4
+                            if (typeof(Ext4) !== "undefined"
                             && Ext4.getStore('SocialApp')
                             && Ext4.getStore('SocialApp').load) {
                                 console.log("Marketo App > Callback: Social App Editor");
@@ -5601,7 +5601,7 @@ var heapTrack = function(action) {
                             console.log("Marketo App > Location: A/B Test Wizard");
                             
                             var isABtestWizard = window.setInterval(function() {
-                                if (Mkt3
+                                if (typeof(Mkt3) !== "undefined"
                                 && Mkt3.app
                                 && Mkt3.app.controllers
                                 && Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor")
@@ -5623,7 +5623,7 @@ var heapTrack = function(action) {
                             console.log("Marketo App > Location: Email Test Group Wizard");
                             
                             var isEmailTestWizard = window.setInterval(function() {
-                                if (Mkt3
+                                if (typeof(Mkt3) !== "undefined"
                                 && Mkt3.app
                                 && Mkt3.app.controllers
                                 && Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor")
@@ -5653,7 +5653,7 @@ var heapTrack = function(action) {
 //                    console.log("Marketo App > Window: URL = " + currentUrl);
                     // Getting the URL fragment, the part after the #
                     var isNewUrlFragment = window.setInterval(function() {
-                        if (Mkt3
+                        if (typeof(Mkt3) !== "undefined"
                         && Mkt3.DL
                         && Mkt3.DL.getDlToken()) {
                             if (currUrlFragment != Mkt3.DL.getDlToken()) {

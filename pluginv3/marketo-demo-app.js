@@ -24,7 +24,7 @@ var mktoMyMarketoFragment = "MM0A1",
 APP.overrideSuperballMenuItems = function() {
     console.log("Marketo Demo App > Overriding: Superball Menu Items");
     
-    if (MktPage
+    if (typeof(MktPage) !== "undefined"
     && MktPage.showSuperMenu) {
         MktPage.showSuperMenu = function() {
             console.log("Marketo Demo App > Executing: Override Superball Menu Items");
@@ -160,7 +160,7 @@ APP.overrideSuperballMenuItems = function() {
 APP.overrideHomeTiles = function() {
     console.log("Marketo Demo App > Overriding: My Marketo Home Tiles");
     
-    if (MktCanvas
+    if (typeof(MktCanvas) !== "undefined"
     && MktCanvas.getEl()
     && MktCanvas.getEl().dom
     && MktCanvas.getEl().dom.nextSibling
@@ -238,7 +238,7 @@ APP.overrideHomeTiles = function() {
 
 APP.overrideSuperballMenuItems();
 
-if (Mkt3
+if (typeof(Mkt3) !== "undefined"
 && Mkt3.DL
 && Mkt3.DL.getDlToken()) {
     currUrlFragment = Mkt3.DL.getDlToken();
@@ -249,7 +249,7 @@ if (Mkt3
 }
 
 window.onhashchange = function() {
-    if (Mkt3
+    if (typeof(Mkt3) !== "undefined"
     && Mkt3.DL
     && Mkt3.DL.getDlToken()) {
         currUrlFragment = Mkt3.DL.getDlToken();
