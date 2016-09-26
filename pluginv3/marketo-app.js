@@ -39,7 +39,6 @@ var currentUrl = window.location.href,
     mktoAdBridgeSmartListFragment = "SL1119566B2LA1",
     mktoUserWorkspaceId = 172,
     userWorkspaceName = "My Workspace",
-    heapEventName = heapAssetName = "",
     currUrlFragment,
     currCompFragment,
     userName,
@@ -5102,7 +5101,7 @@ APP.trackTreeNodeSelection = function() {
                 currNode = node,
                 heapEventName = currNode.text,
                 heapEvent = {
-                    assetName = currNode.text
+                    assetName : currNode.text
                 };
             
             for (ii = 0; ii < node.getDepth()-1; ii++) {
@@ -5148,7 +5147,7 @@ APP.trackOtherAssets = function() {
             node = currNode = MktExplorer.getNodeById(currUrlFragment.substring(0, currUrlFragment.length - 5)),
             heapEventName = currNode.text,
             heapEvent = {
-                assetName = currNode.text
+                assetName : currNode.text
             };
         
         for (ii = 0; ii < node.getDepth() - 1; ii++) {
