@@ -5483,7 +5483,7 @@ var heapTrack = function(action) {
                                 var assetNode = Mkt3.app.controllers.get("Mkt3.controller.editor.LandingPage").getLandingPage().getNodeJson(),
                                     heapEvent = {
                                         name : assetNode.text,
-                                        assetType : assetNode.compType
+                                        assetType : assetNode.compType,
                                         assetId : assetNode.id,
                                         workspaceId : assetNode.accessZoneId
                                     };
@@ -5548,7 +5548,7 @@ var heapTrack = function(action) {
                                             var assetNode = record.getNodeJson(),
                                                 heapEvent = {
                                                     name : assetNode.text,
-                                                    assetType : assetNode.compType
+                                                    assetType : assetNode.compType,
                                                     assetId : assetNode.id,
                                                     workspaceId : assetNode.accessZoneId
                                                 };
@@ -5694,7 +5694,7 @@ var heapTrack = function(action) {
                                         var assetNode = Mkt3.app.controllers.get("Mkt3.controller.editor.SmsMessage").getSmsMessage().getNodeJson(),
                                             heapEvent = {
                                                 name : assetNode.text,
-                                                assetType : assetNode.compType
+                                                assetType : assetNode.compType,
                                                 assetId : assetNode.id,
                                                 workspaceId : assetNode.accessZoneId
                                             };
@@ -5751,7 +5751,7 @@ var heapTrack = function(action) {
                                         var assetNode = Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor").getEditor().record.getNodeJson(),
                                             heapEvent = {
                                                 name : assetNode.text,
-                                                assetType : assetNode.compType
+                                                assetType : assetNode.compType,
                                                 assetId : assetNode.id,
                                                 workspaceId : assetNode.accessZoneId
                                             };
@@ -5794,7 +5794,7 @@ var heapTrack = function(action) {
                                         var assetNode = Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor").getEditor().record.getNodeJson(),
                                             heapEvent = {
                                                 name : assetNode.text,
-                                                assetType : assetNode.compType
+                                                assetType : assetNode.compType,
                                                 assetId : assetNode.id,
                                                 workspaceId : assetNode.accessZoneId
                                             };
