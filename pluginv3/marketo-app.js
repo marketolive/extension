@@ -5145,7 +5145,8 @@ APP.trackOtherAssets = function() {
     console.log("Marketo App > Tracking: Social App or Push Notification Selection");
     
     if (typeof(MktExplorer) !== "undefined"
-    && MktExplorer.getNodeById) {
+    && MktExplorer.getNodeById
+    && MktExplorer.getNodeById(currUrlFragment.substring(0, currUrlFragment.length - 5))) {
         var ii,
             node = currNode = MktExplorer.getNodeById(currUrlFragment.substring(0, currUrlFragment.length - 5)),
             heapEventName = currNode.text,
@@ -5498,7 +5499,7 @@ var heapTrack = function(action) {
                                     heapEvent.assetName = assetNode.text;
                                 }
                                 
-                                heap("track", heapEvent);
+                                heapTrack("track", heapEvent);
                             }
                             
                             if (Mkt3.app.controllers.get("Mkt3.controller.editor.LandingPage").getLandingPage().get("zoneId").toString().search(mktoGoldenWorkspacesMatch) != -1) {
@@ -5563,7 +5564,7 @@ var heapTrack = function(action) {
                                                 heapEvent.assetName = assetNode.text;
                                             }
                                             
-                                            heap("track", heapEvent);
+                                            heapTrack("track", heapEvent);
                                         }
                                         
                                         if (record.get('zoneId')) {
@@ -5708,6 +5709,8 @@ var heapTrack = function(action) {
                                         else {
                                             heapEvent.assetName = assetNode.text;
                                         }
+                                        
+                                        heapTrack("track", heapEvent);
                                     }
                                     
                                     if (Mkt3.app.controllers.get("Mkt3.controller.editor.SmsMessage").getSmsMessage().get("zoneId").toString().search(mktoGoldenWorkspacesMatch) != -1) {
@@ -5766,7 +5769,7 @@ var heapTrack = function(action) {
                                             heapEvent.assetName = assetNode.text;
                                         }
                                         
-                                        heap("track", heapEvent);
+                                        heapTrack("track", heapEvent);
                                     }
                                     
                                     if (Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor").getEditor().record.get("zoneId").toString().search(mktoGoldenWorkspacesMatch) != -1) {
@@ -5808,6 +5811,8 @@ var heapTrack = function(action) {
                                         else {
                                             heapEvent.assetName = assetNode.text;
                                         }
+                                        
+                                        heapTrack("track", heapEvent);
                                     }
                                     
                                     if (Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor").getEditor().record.get("zoneId").toString().search(mktoGoldenWorkspacesMatch) != -1) {
@@ -5839,9 +5844,6 @@ var heapTrack = function(action) {
                                 
                                 currUrlFragment = Mkt3.DL.getDlToken();
                                 console.log("Marketo App > Loaded: New URL Fragment = " + currUrlFragment);
-                                
-                                // Heap Analytics Event Tracking
-                                heapTrack("track");
                                 
                                 if (Mkt3.DL.dl
                                 && Mkt3.DL.dl.dlCompCode) {
