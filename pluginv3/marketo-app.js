@@ -4697,7 +4697,10 @@ APP.discardLandingPageDrafts = function(lpIds) {
         for (ii = 0; ii < Object.keys(lpIds).length; ii++) {
             console.log("Marketo App > Executing: Discard Landing Page Draft: " + ii);
             
-            mktLPLManager.doModifyPages('revert', lpIds.pop());
+            var lpIdKey = Object.keys(lpIds)[ii],
+                lpIdVal = lpIds[lpIdKey];
+            
+            mktLPLManager.doModifyPages('revert', {[lpIdKey] : lpIdVal});
             
             if (lpMessageBox
             && lpMessageBox.hide) {
