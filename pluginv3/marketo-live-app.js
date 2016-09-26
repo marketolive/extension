@@ -5046,16 +5046,6 @@ var heapTrack = function(action) {
                         }
                         
                         heapEventTitle = heapEventTitle.replace("Marketo | ", "");
-                        
-                        if (currUrlFragment.search("^SOA") != -1) {
-                            heapAsset = "Social App";
-                            heapEventTitle = "ANY Social App";
-                        }
-                        else if (currUrlFragment.search("^MPN") != -1) {
-                            heapAsset = "Push Notification";
-                            heapEventTitle = "ANY Push Notification";
-                        }
-                        
                         heapEventProps = {
                             app : heapApp,
                             asset : heapAsset,
