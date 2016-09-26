@@ -4767,19 +4767,26 @@ APP.disableSaving = function() {
 APP.openAdBridgeModal = function() {
     console.log("Marketo App > Opening: Ad Bridge Modal Window");
     
-    if (document
-    && document.getElementsByClassName("x-btn-text mkiUserTarget")
-    && document.getElementsByClassName("x-btn-text mkiUserTarget")[0]
-    && document.getElementsByClassName("x-btn-text mkiUserTarget")[0].type == "button") {
-        console.log("Marketo App > Executing: Open Ad Bridge Modal Window");
-        
-        document.getElementsByClassName("x-btn-text mkiUserTarget")[0].click();
-    }
+    var isAdBridgeSmartList = window.setInterval(function() {
+        if (typeof(document.getElementsByClassName("x-btn-text mkiUserTarget")[0]) !== "undefined") {
+            
+            window.clearInterval(isAdBridgeSmartList);
+            
+            if (document
+            && document.getElementsByClassName("x-btn-text mkiUserTarget")
+            && document.getElementsByClassName("x-btn-text mkiUserTarget")[0]
+            && document.getElementsByClassName("x-btn-text mkiUserTarget")[0].type == "button") {
+                console.log("Marketo App > Executing: Open Ad Bridge Modal Window");
+                
+                document.getElementsByClassName("x-btn-text mkiUserTarget")[0].click();
+            }
+        }
+    }, 0);
 };
 
 /**************************************************************************************
  *  
- *  This function returns the email IDs of all the email assets in a given instance. 
+ *  This function discards all drafts of golden assets for the specified instance.
  *
  *  @Author Andrew Garcia
  *
@@ -4787,92 +4794,270 @@ APP.openAdBridgeModal = function() {
  *
  **************************************************************************************/
 
-APP.getEmailIds = function(accountString) {
-    console.log("Marketo App > Getting: Email IDs for account string: " + accountString);
+APP.discardDrafts = function (accountString) {
+    console.log("Marketo App > Discarding: Golden Assets for instance: " + accountString);
+    // Setting the asset draft IDs to discard
+    var lpIds = {},
+    emIds = [],
+    formIds = [],
+    pushIds = [],
+    socIds = [];
     
-    var emIds = [];
     switch (accountString) {
-        case mktoAccountString106:
-            // Default DIY Design: Email
-            emIds.push(15464);
-            // Default DIY Design: Email (Modular)
-            emIds.push(21424);
-            // Default DIY Design: Email (Responsive)
-            emIds.push(20931);
-            // Default Email Marketing: AB Test Configuration, AB Test Dashboard, Champion/Chalenger, Email Program Dashboard
-            emIds.push(18113, 18106, 18111, 18110);
-            // Default Replicate Success: Roadshow Example
-            emIds.push(10010, 10179, 10180, 12845, 10181, 10182, 10183, 10184);
-            // Default Replicate Success: Webinar Example
-            emIds.push(4894, 3764, 3765, 3767, 3766, 3762);
-            // Default Intelligent Nurturing
-            emIds.push(12818, 12820, 12819, 12816, 12811, 12815, 12812, 12813, 12814, 12821, 12817, 12823);
-            // Default Actionable Insight: BANT Nurture for Sales
-            emIds.push(12900, 12901, 12899, 12898);
-            // Default Actionable Insight: Sales Auto Reach Out
-            emIds.push(12902, 12903, 12904);
-            // Japanese Default Content Unknown
-            emIds.push(16474);
-            // Japanese Event Roadshow Unknown
-            emIds.push(18117, 18118, 18122, 18119, 18116, 18123, 18120, 18121, 18124);
-            // Japanese Replicate Success Webinar
-            emIds.push(16118, 16119, 16120, 16122, 16121, 16117);
-            // Japanese Replicate Success Roadshow
-            emIds.push(16331, 16332, 16338, 16333, 16123, 16339, 16335, 16336, 17868);
-            // Japanese Intelligent Nurturing
-            emIds.push(16125, 16129, 16126, 16124, 16132, 16131, 16130, 16128, 16127, 16133, 16137, 16136);
-            // Japanese Default Email Blast Unknown
-            emIds.push(18126);
-            // Financial Services DIY Design
-            emIds.push(20350, 20368)
-            // Healthcare Services DIY Design
-            emIds.push(20327)
-            // Higher Ed Services DIY Design
-            emIds.push(20329)
-            break;
+    case mktoAccountString106:
+        // DIY Design: Landing Page, Landing Page Responsive
+        lpIds["dpageid_11826"] = "dpageid_11826";
+        lpIds["dpageid_11822"] = "dpageid_11822";
+        // Replicate Success Roadshow Example: Registration Page, Thank You for Registering
+        lpIds["dpageid_8819"] = "dpageid_8819";
+        lpIds["dpageid_8941"] = "dpageid_8941";
+        // Replicate Success Webinar Example: Recorded Webinar LP, Registration Landing Page, Thank You LP
+        lpIds["dpageid_4876"] = "dpageid_4876";
+        lpIds["dpageid_4872"] = "dpageid_4872";
+        lpIds["dpageid_4874"] = "dpageid_4874";
+        // Japanese DIY Design: 1
+        lpIds["dpageid_11856"] = "dpageid_11856";
+        // Japanese Event Roadshow Unknown: 1, 2
+        lpIds["dpageid_12420"] = "dpageid_12420";
+        lpIds["dpageid_12418"] = "dpageid_12418";
+        // Japanese Replicate Success Webinar Example: 1, 2, 3
+        lpIds["dpageid_11552"] = "dpageid_11552";
+        lpIds["dpageid_11550"] = "dpageid_11550";
+        lpIds["dpageid_11553"] = "dpageid_11553";
+        // Japanese Replicate Success Roadshow Example: 1, 2
+        lpIds["dpageid_12345"] = "dpageid_12345";
+        lpIds["dpageid_11556"] = "dpageid_11556";
+        // Financial Services DIY Design: Mortgage Landing Page, Banking Landing Page, Preferences Page
+        lpIds["dpageid_13187"] = "dpageid_13187";
+        lpIds["dpageid_13185"] = "dpageid_13185";
+        lpIds["dpageid_12709"] = "dpageid_12709";
+        // Financial Services Event Management Home Buyinng Seminar: Recorded Webinar LP, Reg LP, Thank You LP
+        lpIds["dpageid_12720"] = "dpageid_12720";
+        lpIds["dpageid_12717"] = "dpageid_12717";
+        lpIds["dpageid_12719"] = "dpageid_12719";
+        // Healthcare DIY Design: Landing Page, Landing Page Offer, Landing Page Responsive, Preference Page
+        lpIds["dpageid_12569"] = "dpageid_12569";
+        lpIds["dpageid_12932"] = "dpageid_12932";
+        lpIds["dpageid_13165"] = "dpageid_13165";
+        lpIds["dpageid_12586"] = "dpageid_12586";
+        // Healthcare Event Management HC - Tour the Clinic: Recorded Webinar LP
+        lpIds["dpageid_12517"] = "dpageid_12517";
+        // Higher Education DIY Design: Landing Page, Landing Page - In State, Landing Page - Video, Landing Page Responsive, Preference Page
+        lpIds["dpageid_12250"] = "dpageid_12250";
+        lpIds["dpageid_12934"] = "dpageid_12934";
+        lpIds["dpageid_12401"] = "dpageid_12401";
+        lpIds["dpageid_13167"] = "dpageid_13167";
+        lpIds["dpageid_12248"] = "dpageid_12248";
+        // Higher Education Event Management HE - Event: Thanks and Next Event
+        lpIds["dpageid_12177"] = "dpageid_12177";
         
-        case mktoAccountString106d:
-            // Default DIY Design
-            emIds.push(15464);
-            // Default Email Marketing: AB Test Configuration, AB Test Dashboard, Champion/Chalenger, Email Program Dashboard
-            emIds.push(18113, 18106, 18111, 18110);
-            // Default Replicate Success: Roadshow Example
-            emIds.push(10010, 10179, 10180, 12845, 10181, 10182, 10183, 10184);
-            // Default Replicate Success: Webinar Example
-            emIds.push(4894, 3764, 3765, 3767, 3766, 3762);
-            // Default Intelligent Nurturing
-            emIds.push(12818, 12820, 12819, 12816, 12811, 12815, 12812, 12813, 12814, 12821, 12817, 12823);
-            // Default Actionable Insight: BANT Nurture for Sales
-            emIds.push(12900, 12901, 12899, 12898);
-            // Default Actionable Insight: Sales Auto Reach Out
-            emIds.push(12902, 12903, 12904);
-            // Japanese Default Content Unknown
-            emIds.push(16474, 17254, 16403);
-            // Japanese Event Roadshow Unknown
-            emIds.push(18117, 18118, 18122, 18119, 18116, 18123, 18120, 18121, 18124);
-            // Japanese Replicate Success Webinar
-            emIds.push(16118, 16119, 16120, 16122, 16121, 16117);
-            // Japanese Replicate Success Roadshow
-            emIds.push(16331, 16332, 16338, 16333, 16123, 16339, 16335, 16336, 17868);
-            // Japanese Intelligent Nurturing
-            emIds.push(16125, 16129, 16126, 16124, 16132, 16131, 16130, 16128, 16127, 16133, 16137, 16136);
-            // Japanese Default Email Blast Unknown
-            emIds.push(18126);
-            // Financial Services DIY Design
-            emIds.push(20350, 20368)
-            // Healthcare Services DIY Design
-            emIds.push(20327)
-            // Higher Ed Services DIY Design
-            emIds.push(20329)
-            break;
+        // Default DIY Design: Email
+        emIds.push(15464);
+        // Default DIY Design: Email (Modular)
+        emIds.push(21424);
+        // Default DIY Design: Email (Responsive)
+        emIds.push(20931);
+        // Default Email Marketing: AB Test Configuration, AB Test Dashboard, Champion/Chalenger, Email Program Dashboard
+        emIds.push(18113, 18106, 18111, 18110);
+        // Default Replicate Success: Roadshow Example
+        emIds.push(10010, 10179, 10180, 12845, 10181, 10182, 10183, 10184);
+        // Default Replicate Success: Webinar Example
+        emIds.push(4894, 3764, 3765, 3767, 3766, 3762);
+        // Default Intelligent Nurturing
+        emIds.push(12818, 12820, 12819, 12816, 12811, 12815, 12812, 12813, 12814, 12821, 12817, 12823);
+        // Default Actionable Insight: BANT Nurture for Sales
+        emIds.push(12900, 12901, 12899, 12898);
+        // Default Actionable Insight: Sales Auto Reach Out
+        emIds.push(12902, 12903, 12904);
+        // Japanese Default Content Unknown
+        emIds.push(16474);
+        // Japanese Event Roadshow Unknown
+        emIds.push(18117, 18118, 18122, 18119, 18116, 18123, 18120, 18121, 18124);
+        // Japanese Replicate Success Webinar
+        emIds.push(16118, 16119, 16120, 16122, 16121, 16117);
+        // Japanese Replicate Success Roadshow
+        emIds.push(16331, 16332, 16338, 16333, 16123, 16339, 16335, 16336, 17868);
+        // Japanese Intelligent Nurturing
+        emIds.push(16125, 16129, 16126, 16124, 16132, 16131, 16130, 16128, 16127, 16133, 16137, 16136);
+        // Japanese Default Email Blast Unknown
+        emIds.push(18126);
+        // Financial Services DIY Design
+        emIds.push(20350, 20368)
+        // Healthcare Services DIY Design
+        emIds.push(20327)
+        // Higher Ed Services DIY Design
+        emIds.push(20329)
         
-        default:
-            console.log("Marketp App > Invalid: account string in getEmailIds(): " + accountString);
-            break;
+        // Forms: Default DIY Design, Replicate Success Roadshow Example, Replicate Success Webinar Example
+        formIds.push(3576, 1749, 1900);
+        // Forms: Japanese Default DIY Design, Japanese Event Roadshow Unknown, Japanese Replicate Success Webinar Example, Japanese Replicate Success Roadshow Example
+        formIds.push(3018, 3708, 3020, 3021);
+        // Forms: Financial Services DIY Design
+        formIds.push(3952, 3955, 3953);
+        // Forms: Healthcare DIY Design
+        formIds.push(3816, 3818, 3828);
+        // Forms: Higher Ed DIY Design
+        formIds.push(3313, 4125, 3559);
+        
+        // Push Notifications: Default DIY Design, Mobile Engagement
+        pushIds.push(29, 23);
+        // Push Notifications: Japanese DIY Design, Mobile Engagement, Unknown
+        pushIds.push(99, 216, 103, 218);
+        // Push Notifications: Financial Services DIY Design, Mobile Engagement
+        pushIds.push(187);
+        // Push Notifications: Healthcare DIY Design, Mobile Engagement
+        pushIds.push(169);
+        // Push Notifications: Higher Ed DIY Design, Mobile Engagement
+        pushIds.push(131);
+        
+        // Social Apps: Default DIY Design
+        socIds.push(586, 587, 491, 484, 448);
+        // Social Apps: Japanese DIY Design
+        socIds.push(853);
+        // Social Apps: Financial Services DIY Design
+        socIds.push(1091, 1090, 1093, 1092, 1094);
+        // Social Apps: Healthcare DIY Design
+        socIds.push(1021, 1023, 1025, 1022, 1020);
+        // Social Apps: Higher Ed DIY Design
+        socIds.push(860, 1024, 861, 859, 858);
+        break;
+        
+    case mktoAccountString106d:
+        // DIY Design: Landing Page, Landing Page Responsive
+        lpIds["dpageid_11826"] = "dpageid_11826";
+        lpIds["dpageid_11822"] = "dpageid_11822";
+        // Replicate Success Roadshow Example: Registration Page, Thank You for Registering
+        lpIds["dpageid_8819"] = "dpageid_8819";
+        lpIds["dpageid_8941"] = "dpageid_8941";
+        // Replicate Success Webinar Example: Recorded Webinar LP, Registration Landing Page, Thank You LP
+        lpIds["dpageid_4876"] = "dpageid_4876";
+        lpIds["dpageid_4872"] = "dpageid_4872";
+        lpIds["dpageid_4874"] = "dpageid_4874";
+        // Japanese DIY Design: 1
+        lpIds["dpageid_11856"] = "dpageid_11856";
+        // Japanese Event Roadshow Unknown: 1, 2
+        lpIds["dpageid_12420"] = "dpageid_12420";
+        lpIds["dpageid_12418"] = "dpageid_12418";
+        // Japanese Replicate Success Webinar Example: 1, 2, 3
+        lpIds["dpageid_11552"] = "dpageid_11552";
+        lpIds["dpageid_11550"] = "dpageid_11550";
+        lpIds["dpageid_11553"] = "dpageid_11553";
+        // Japanese Replicate Success Roadshow Example: 1, 2
+        lpIds["dpageid_12345"] = "dpageid_12345";
+        lpIds["dpageid_11556"] = "dpageid_11556";
+        // Financial Services DIY Design: Mortgage Landing Page, Banking Landing Page, Preferences Page
+        lpIds["dpageid_13187"] = "dpageid_13187";
+        lpIds["dpageid_13185"] = "dpageid_13185";
+        lpIds["dpageid_12709"] = "dpageid_12709";
+        // Financial Services Event Management Home Buyinng Seminar: Recorded Webinar LP, Reg LP, Thank You LP
+        lpIds["dpageid_12720"] = "dpageid_12720";
+        lpIds["dpageid_12717"] = "dpageid_12717";
+        lpIds["dpageid_12719"] = "dpageid_12719";
+        // Healthcare DIY Design: Landing Page, Landing Page Offer, Landing Page Responsive, Preference Page
+        lpIds["dpageid_12569"] = "dpageid_12569";
+        lpIds["dpageid_12932"] = "dpageid_12932";
+        lpIds["dpageid_13165"] = "dpageid_13165";
+        lpIds["dpageid_12586"] = "dpageid_12586";
+        // Healthcare Event Management HC - Tour the Clinic: Recorded Webinar LP
+        lpIds["dpageid_12517"] = "dpageid_12517";
+        // Higher Education DIY Design: Landing Page, Landing Page - In State, Landing Page - Video, Landing Page Responsive, Preference Page
+        lpIds["dpageid_12250"] = "dpageid_12250";
+        lpIds["dpageid_12934"] = "dpageid_12934";
+        lpIds["dpageid_12401"] = "dpageid_12401";
+        lpIds["dpageid_13167"] = "dpageid_13167";
+        lpIds["dpageid_12248"] = "dpageid_12248";
+        // Higher Education Event Management HE - Event: Thanks and Next Event
+        lpIds["dpageid_12177"] = "dpageid_12177";
+        
+        // Default DIY Design
+        emIds.push(15464);
+        // Default Email Marketing: AB Test Configuration, AB Test Dashboard, Champion/Chalenger, Email Program Dashboard
+        emIds.push(18113, 18106, 18111, 18110);
+        // Default Replicate Success: Roadshow Example
+        emIds.push(10010, 10179, 10180, 12845, 10181, 10182, 10183, 10184);
+        // Default Replicate Success: Webinar Example
+        emIds.push(4894, 3764, 3765, 3767, 3766, 3762);
+        // Default Intelligent Nurturing
+        emIds.push(12818, 12820, 12819, 12816, 12811, 12815, 12812, 12813, 12814, 12821, 12817, 12823);
+        // Default Actionable Insight: BANT Nurture for Sales
+        emIds.push(12900, 12901, 12899, 12898);
+        // Default Actionable Insight: Sales Auto Reach Out
+        emIds.push(12902, 12903, 12904);
+        // Japanese Default Content Unknown
+        emIds.push(16474, 17254, 16403);
+        // Japanese Event Roadshow Unknown
+        emIds.push(18117, 18118, 18122, 18119, 18116, 18123, 18120, 18121, 18124);
+        // Japanese Replicate Success Webinar
+        emIds.push(16118, 16119, 16120, 16122, 16121, 16117);
+        // Japanese Replicate Success Roadshow
+        emIds.push(16331, 16332, 16338, 16333, 16123, 16339, 16335, 16336, 17868);
+        // Japanese Intelligent Nurturing
+        emIds.push(16125, 16129, 16126, 16124, 16132, 16131, 16130, 16128, 16127, 16133, 16137, 16136);
+        // Japanese Default Email Blast Unknown
+        emIds.push(18126);
+        // Financial Services DIY Design
+        emIds.push(20350, 20368)
+        // Healthcare Services DIY Design
+        emIds.push(20327)
+        // Higher Ed Services DIY Design
+        emIds.push(20329)
+        
+        // Forms: Default DIY Design, Replicate Success Roadshow Example, Replicate Success Webinar Example
+        formIds.push(3576, 1749, 1900);
+        // Forms: Japanese Default DIY Design, Japanese Event Roadshow Unknown, Japanese Replicate Success Webinar Example, Japanese Replicate Success Roadshow Example
+        formIds.push(3018, 3708, 3020, 3021);
+        // Forms: Financial Services DIY Design
+        formIds.push(3952, 3955, 3953);
+        // Forms: Healthcare DIY Design
+        formIds.push(3816, 3818, 3828);
+        // Forms: Higher Ed DIY Design
+        formIds.push(3313, 4125, 3559);
+        
+        // Push Notifications: Default DIY Design, Mobile Engagement
+        pushIds.push(29, 23);
+        // Push Notifications: Japanese DIY Design, Mobile Engagement, Unknown
+        pushIds.push(99, 216, 103, 218);
+        // Push Notifications: Financial Services DIY Design, Mobile Engagement
+        pushIds.push(187);
+        // Push Notifications: Healthcare DIY Design, Mobile Engagement
+        pushIds.push(169);
+        // Push Notifications: Higher Ed DIY Design, Mobile Engagement
+        pushIds.push(131);
+        
+        // Social Apps: Default DIY Design
+        socIds.push(586, 587, 491, 484, 448);
+        // Social Apps: Japanese DIY Design
+        socIds.push(853);
+        // Social Apps: Financial Services DIY Design
+        socIds.push(1091, 1090, 1093, 1092, 1094);
+        // Social Apps: Healthcare DIY Design
+        socIds.push(1021, 1023, 1025, 1022, 1020);
+        // Social Apps: Higher Ed DIY Design
+        socIds.push(860, 1024, 861, 859, 858);
+        break;
+        
+    default:
+        break;
     }
     
-    return emIds;
-};
+    var canDiscardDrafts = window.setInterval(function () {
+            if (typeof(mktLPLManager) !== "undefined") {
+                window.clearInterval(canDiscardDrafts);
+                // DIY Design (Landing Pages)
+                APP.discardLandingPageDrafts(lpIds);
+                // DIY Design (Email)
+                APP.discardEmailDrafts(emIds);
+                // DIY Design (Forms)
+                APP.discardFormPushDrafts("Form", formIds);
+                // DIY Design (Push Notifications)
+                APP.discardFormPushDrafts("MobilePushNotification", pushIds);
+                // DIY Design (Social)
+                APP.discardFormPushDrafts("SocialApp", socIds);
+                // Limiting Nurture Programs
+                APP.limitNurturePrograms();
+            }
+        }, 0);
+}
 
 /**************************************************************************************
  *  
@@ -5105,12 +5290,6 @@ var heapTrack = function(action) {
                     }
                 }
             }
-            
-            // This checks to see if the account string is one that would be associated with a MarketoLive subscription.
-            if (accountString.search(mktoAccountStringsMatch) != -1
-            || accountString == mktoAccountStringQe
-            || APP.getCookie("toggleState") == "false") {
-                console.log("Marketo App > Location: MarketoLive Instance");
                 
                 // If the user is the admin or ghost, disable
                 if (userId.search("^admin\.?[a-z]{0,2}@mktodemoaccount") != -1
@@ -5151,14 +5330,9 @@ var heapTrack = function(action) {
                     APP.injectAnalyzerNavBar();
                 }
                 else if (currUrlFragment == mktoAdBridgeSmartListFragment) {
-                    var isAdBridgeSmartList = window.setInterval(function() {
-                        if (typeof(document.getElementsByClassName("x-btn-text mkiUserTarget")[0]) !== "undefined") {
-                            console.log("Marketo App > Location: Ad Bridge Smart List");
-                            
-                            window.clearInterval(isAdBridgeSmartList);
-                            APP.openAdBridgeModal();
-                        }
-                    }, 0);
+                    console.log("Marketo App > Location: Ad Bridge Smart List");
+                    
+                    APP.openAdBridgeModal();
                 }
 
                 // Only execute this block if the user is not on an editor page.
@@ -5200,196 +5374,8 @@ var heapTrack = function(action) {
                         APP.disableFormSaveButtons();
                         APP.disableAdminSaveButtons();
                     }
-
-                    // Setting the asset draft IDs to discard
-                    var lpIds = {},
-                        formIds = [],
-                        pushIds = [],
-                        socIds = [],
-                        emIds = APP.getEmailIds(accountString);
-                    switch (accountString) {
-                        case mktoAccountString106:
-                            // DIY Design: Landing Page, Landing Page Responsive
-                            lpIds["dpageid_11826"] = "dpageid_11826";
-                            lpIds["dpageid_11822"] = "dpageid_11822";
-                            // Replicate Success Roadshow Example: Registration Page, Thank You for Registering
-                            lpIds["dpageid_8819"] = "dpageid_8819";
-                            lpIds["dpageid_8941"] = "dpageid_8941";
-                            // Replicate Success Webinar Example: Recorded Webinar LP, Registration Landing Page, Thank You LP
-                            lpIds["dpageid_4876"] = "dpageid_4876";
-                            lpIds["dpageid_4872"] = "dpageid_4872";
-                            lpIds["dpageid_4874"] = "dpageid_4874";
-                            // Japanese DIY Design: 1
-                            lpIds["dpageid_11856"] = "dpageid_11856";
-                            // Japanese Event Roadshow Unknown: 1, 2
-                            lpIds["dpageid_12420"] = "dpageid_12420";
-                            lpIds["dpageid_12418"] = "dpageid_12418";
-                            // Japanese Replicate Success Webinar Example: 1, 2, 3
-                            lpIds["dpageid_11552"] = "dpageid_11552";
-                            lpIds["dpageid_11550"] = "dpageid_11550";
-                            lpIds["dpageid_11553"] = "dpageid_11553";
-                            // Japanese Replicate Success Roadshow Example: 1, 2
-                            lpIds["dpageid_12345"] = "dpageid_12345";
-                            lpIds["dpageid_11556"] = "dpageid_11556";
-                            // Financial Services DIY Design: Mortgage Landing Page, Banking Landing Page, Preferences Page
-                            lpIds["dpageid_13187"] = "dpageid_13187";
-                            lpIds["dpageid_13185"] = "dpageid_13185";
-                            lpIds["dpageid_12709"] = "dpageid_12709";
-                            // Financial Services Event Management Home Buyinng Seminar: Recorded Webinar LP, Reg LP, Thank You LP
-                            lpIds["dpageid_12720"] = "dpageid_12720";
-                            lpIds["dpageid_12717"] = "dpageid_12717";
-                            lpIds["dpageid_12719"] = "dpageid_12719";
-                            // Healthcare DIY Design: Landing Page, Landing Page Offer, Landing Page Responsive, Preference Page
-                            lpIds["dpageid_12569"] = "dpageid_12569";
-                            lpIds["dpageid_12932"] = "dpageid_12932";
-                            lpIds["dpageid_13165"] = "dpageid_13165";
-                            lpIds["dpageid_12586"] = "dpageid_12586";
-                            // Healthcare Event Management HC - Tour the Clinic: Recorded Webinar LP
-                            lpIds["dpageid_12517"] = "dpageid_12517";
-                            // Higher Education DIY Design: Landing Page, Landing Page - In State, Landing Page - Video, Landing Page Responsive, Preference Page
-                            lpIds["dpageid_12250"] = "dpageid_12250";
-                            lpIds["dpageid_12934"] = "dpageid_12934";
-                            lpIds["dpageid_12401"] = "dpageid_12401";
-                            lpIds["dpageid_13167"] = "dpageid_13167";
-                            lpIds["dpageid_12248"] = "dpageid_12248";
-                            // Higher Education Event Management HE - Event: Thanks and Next Event
-                            lpIds["dpageid_12177"] = "dpageid_12177";
-
-                            // Forms: Default DIY Design, Replicate Success Roadshow Example, Replicate Success Webinar Example
-                            formIds.push(3576, 1749, 1900);
-                            // Forms: Japanese Default DIY Design, Japanese Event Roadshow Unknown, Japanese Replicate Success Webinar Example, Japanese Replicate Success Roadshow Example
-                            formIds.push(3018, 3708, 3020, 3021);
-                            // Forms: Financial Services DIY Design
-                            formIds.push(3952, 3955, 3953);
-                            // Forms: Healthcare DIY Design
-                            formIds.push(3816, 3818, 3828);
-                            // Forms: Higher Ed DIY Design
-                            formIds.push(3313, 4125, 3559);
-                            
-                            // Push Notifications: Default DIY Design, Mobile Engagement
-                            pushIds.push(29, 23);
-                            // Push Notifications: Japanese DIY Design, Mobile Engagement, Unknown
-                            pushIds.push(99, 216, 103, 218);
-                            // Push Notifications: Financial Services DIY Design, Mobile Engagement
-                            pushIds.push(187);
-                            // Push Notifications: Healthcare DIY Design, Mobile Engagement
-                            pushIds.push(169);
-                            // Push Notifications: Higher Ed DIY Design, Mobile Engagement
-                            pushIds.push(131);
-                            
-                            // Social Apps: Default DIY Design
-                            socIds.push(586, 587, 491, 484, 448);
-                            // Social Apps: Japanese DIY Design
-                            socIds.push(853);
-                            // Social Apps: Financial Services DIY Design
-                            socIds.push(1091, 1090, 1093, 1092, 1094);
-                            // Social Apps: Healthcare DIY Design
-                            socIds.push(1021, 1023, 1025, 1022, 1020);
-                            // Social Apps: Higher Ed DIY Design
-                            socIds.push(860, 1024, 861, 859, 858);
-                            break;
-                        
-                        case mktoAccountString106d:
-                            // DIY Design: Landing Page, Landing Page Responsive
-                            lpIds["dpageid_11826"] = "dpageid_11826";
-                            lpIds["dpageid_11822"] = "dpageid_11822";
-                            // Replicate Success Roadshow Example: Registration Page, Thank You for Registering
-                            lpIds["dpageid_8819"] = "dpageid_8819";
-                            lpIds["dpageid_8941"] = "dpageid_8941";
-                            // Replicate Success Webinar Example: Recorded Webinar LP, Registration Landing Page, Thank You LP
-                            lpIds["dpageid_4876"] = "dpageid_4876";
-                            lpIds["dpageid_4872"] = "dpageid_4872";
-                            lpIds["dpageid_4874"] = "dpageid_4874";
-                            // Japanese DIY Design: 1
-                            lpIds["dpageid_11856"] = "dpageid_11856";
-                            // Japanese Event Roadshow Unknown: 1, 2
-                            lpIds["dpageid_12420"] = "dpageid_12420";
-                            lpIds["dpageid_12418"] = "dpageid_12418";
-                            // Japanese Replicate Success Webinar Example: 1, 2, 3
-                            lpIds["dpageid_11552"] = "dpageid_11552";
-                            lpIds["dpageid_11550"] = "dpageid_11550";
-                            lpIds["dpageid_11553"] = "dpageid_11553";
-                            // Japanese Replicate Success Roadshow Example: 1, 2
-                            lpIds["dpageid_12345"] = "dpageid_12345";
-                            lpIds["dpageid_11556"] = "dpageid_11556";
-                            // Financial Services DIY Design: Mortgage Landing Page, Banking Landing Page, Preferences Page
-                            lpIds["dpageid_13187"] = "dpageid_13187";
-                            lpIds["dpageid_13185"] = "dpageid_13185";
-                            lpIds["dpageid_12709"] = "dpageid_12709";
-                            // Financial Services Event Management Home Buyinng Seminar: Recorded Webinar LP, Reg LP, Thank You LP
-                            lpIds["dpageid_12720"] = "dpageid_12720";
-                            lpIds["dpageid_12717"] = "dpageid_12717";
-                            lpIds["dpageid_12719"] = "dpageid_12719";
-                            // Healthcare DIY Design: Landing Page, Landing Page Offer, Landing Page Responsive, Preference Page
-                            lpIds["dpageid_12569"] = "dpageid_12569";
-                            lpIds["dpageid_12932"] = "dpageid_12932";
-                            lpIds["dpageid_13165"] = "dpageid_13165";
-                            lpIds["dpageid_12586"] = "dpageid_12586";
-                            // Healthcare Event Management HC - Tour the Clinic: Recorded Webinar LP
-                            lpIds["dpageid_12517"] = "dpageid_12517";
-                            // Higher Education DIY Design: Landing Page, Landing Page - In State, Landing Page - Video, Landing Page Responsive, Preference Page
-                            lpIds["dpageid_12250"] = "dpageid_12250";
-                            lpIds["dpageid_12934"] = "dpageid_12934";
-                            lpIds["dpageid_12401"] = "dpageid_12401";
-                            lpIds["dpageid_13167"] = "dpageid_13167";
-                            lpIds["dpageid_12248"] = "dpageid_12248";
-                            // Higher Education Event Management HE - Event: Thanks and Next Event
-                            lpIds["dpageid_12177"] = "dpageid_12177";
-
-                            // Forms: Default DIY Design, Replicate Success Roadshow Example, Replicate Success Webinar Example
-                            formIds.push(3576, 1749, 1900);
-                            // Forms: Japanese Default DIY Design, Japanese Event Roadshow Unknown, Japanese Replicate Success Webinar Example, Japanese Replicate Success Roadshow Example
-                            formIds.push(3018, 3708, 3020, 3021);
-                            // Forms: Financial Services DIY Design
-                            formIds.push(3952, 3955, 3953);
-                            // Forms: Healthcare DIY Design
-                            formIds.push(3816, 3818, 3828);
-                            // Forms: Higher Ed DIY Design
-                            formIds.push(3313, 4125, 3559);
-                            
-                            // Push Notifications: Default DIY Design, Mobile Engagement
-                            pushIds.push(29, 23);
-                            // Push Notifications: Japanese DIY Design, Mobile Engagement, Unknown
-                            pushIds.push(99, 216, 103, 218);
-                            // Push Notifications: Financial Services DIY Design, Mobile Engagement
-                            pushIds.push(187);
-                            // Push Notifications: Healthcare DIY Design, Mobile Engagement
-                            pushIds.push(169);
-                            // Push Notifications: Higher Ed DIY Design, Mobile Engagement
-                            pushIds.push(131);
-                            
-                            // Social Apps: Default DIY Design
-                            socIds.push(586, 587, 491, 484, 448);
-                            // Social Apps: Japanese DIY Design
-                            socIds.push(853);
-                            // Social Apps: Financial Services DIY Design
-                            socIds.push(1091, 1090, 1093, 1092, 1094);
-                            // Social Apps: Healthcare DIY Design
-                            socIds.push(1021, 1023, 1025, 1022, 1020);
-                            // Social Apps: Higher Ed DIY Design
-                            socIds.push(860, 1024, 861, 859, 858);
-                            break;
-                        
-                        default:
-                            break;
-                    }
-                    var canDiscardDrafts = window.setInterval(function () {
-                        if (typeof(mktLPLManager) !== "undefined") {
-                            window.clearInterval(canDiscardDrafts);
-                            // DIY Design (Landing Pages)
-                            APP.discardLandingPageDrafts(lpIds);
-                            // DIY Design (Email)
-                            APP.discardEmailDrafts(emIds);
-                            // DIY Design (Forms)
-                            APP.discardFormPushDrafts("Form", formIds);
-                            // DIY Design (Push Notifications)
-                            APP.discardFormPushDrafts("MobilePushNotification", pushIds);
-                            // DIY Design (Social)
-                            APP.discardFormPushDrafts("SocialApp", socIds);
-                            // Limiting Nurture Programs
-                            APP.limitNurturePrograms();
-                        }
-                    }, 0);
+                    
+                    APP.discardDrafts(accountString);
                 }
                 else if (currCompFragment == mktoLandingPageDesignerFragment) {
                     console.log("Marketo App > Location: Landing Page Designer");
@@ -5711,6 +5697,5 @@ var heapTrack = function(action) {
                 // Heap Analytics ID & Event Tracking
                 heapTrack("id");
                 heapTrack("track");
-            }
         }
     }, 0);

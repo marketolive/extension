@@ -14,7 +14,7 @@ var mktoLiveLandingPageHost = "na-sjdemo1.marketo.com",
             url : "http://"+mktoLiveLandingPageHost+"/lp/"+mktoLiveMunchkinId+"/Lead-Capture_Landing-Page.html",
             dependentOn : [],
             visitationRate : 1.0,
-            conversionRate : 1.0,
+            conversionRate : 1.0
         },
         1 : {
             name : "preferenceCenter",
@@ -22,7 +22,7 @@ var mktoLiveLandingPageHost = "na-sjdemo1.marketo.com",
             url : "http://"+mktoLiveLandingPageHost+"/lp/"+mktoLiveMunchkinId+"/Subscription-Management_Preference-Center.html",
             dependentOn : ["signup"],
             visitationRate : 0.05,
-            conversionRate : 1.0,
+            conversionRate : 1.0
         },
         2 : {
             name : "notYouPreferenceCenter",
@@ -30,7 +30,7 @@ var mktoLiveLandingPageHost = "na-sjdemo1.marketo.com",
             url : "http://"+mktoLiveLandingPageHost+"/lp/"+mktoLiveMunchkinId+"/Subscription-Management_Not-You-Preference-Center.html",
             dependentOn : ["signup"],
             visitationRate : 0.01,
-            conversionRate : 1.0,
+            conversionRate : 1.0
         },
         3 : {
             name : "webinarRegistration",
@@ -38,7 +38,7 @@ var mktoLiveLandingPageHost = "na-sjdemo1.marketo.com",
             url : "http://"+mktoLiveLandingPageHost+"/lp/"+mktoLiveMunchkinId+"/Webinar_Registration.html",
             dependentOn : ["signup"],
             visitationRate : 0.10,
-            conversionRate : 1.0,
+            conversionRate : 1.0
         },
         4 : {
             name : "webinarCheckIn",
@@ -46,7 +46,7 @@ var mktoLiveLandingPageHost = "na-sjdemo1.marketo.com",
             url : "http://"+mktoLiveLandingPageHost+"/lp/"+mktoLiveMunchkinId+"/Webinar_CheckIn.html",
             dependentOn : ["signup", "webinarRegistration"],
             visitationRate : 0.80,
-            conversionRate : 1.0,
+            conversionRate : 1.0
         },
         5 : {
             name : "liveEventRegistration",
@@ -54,7 +54,7 @@ var mktoLiveLandingPageHost = "na-sjdemo1.marketo.com",
             url : "http://"+mktoLiveLandingPageHost+"/lp/"+mktoLiveMunchkinId+"/Live-Event_Registration-Page.html",
             dependentOn : ["signup"],
             visitationRate : 0.10,
-            conversionRate : 1.0,
+            conversionRate : 1.0
         },
         6 : {
             name : "liveEventCheckIn",
@@ -62,7 +62,7 @@ var mktoLiveLandingPageHost = "na-sjdemo1.marketo.com",
             url : "http://"+mktoLiveLandingPageHost+"/lp/"+mktoLiveMunchkinId+"/Live-Event_Check-In.html",
             dependentOn : ["signup", "liveEventRegistration"],
             visitationRate : 0.80,
-            conversionRate : 1.0,
+            conversionRate : 1.0
         },
         7 : {
             name : "rewardsSignup",
@@ -70,7 +70,7 @@ var mktoLiveLandingPageHost = "na-sjdemo1.marketo.com",
             url : "http://"+mktoLiveLandingPageHost+"/lp/"+mktoLiveMunchkinId+"/Rewards-for-Champions_Rewards-Page.html",
             dependentOn : ["signup"],
             visitationRate : 0.05,
-            conversionRate : 1.0,
+            conversionRate : 1.0
         },
         8 : {
             name : "whyUs",
@@ -78,7 +78,7 @@ var mktoLiveLandingPageHost = "na-sjdemo1.marketo.com",
             url : "http://"+mktoLiveHost+"/en/info/why-us",
             dependentOn : [],
             visitationRate : 0.33,
-            conversionRate : 1.0,
+            conversionRate : 1.0
         },
         9 : {
             name : "integrations",
@@ -86,7 +86,7 @@ var mktoLiveLandingPageHost = "na-sjdemo1.marketo.com",
             url : "http://"+mktoLiveHost+"/en/info/integrations",
             dependentOn : [],
             visitationRate : 0.50,
-            conversionRate : 1.0,
+            conversionRate : 1.0
         },
         10 : {
             name : "contactUs",
@@ -94,7 +94,7 @@ var mktoLiveLandingPageHost = "na-sjdemo1.marketo.com",
             url : "http://"+mktoLiveHost+"/en/info/contact-us",
             dependentOn : [],
             visitationRate : 0.05,
-            conversionRate : 1.0,
+            conversionRate : 1.0
         },
         11 : {
             name : "community",
@@ -102,7 +102,7 @@ var mktoLiveLandingPageHost = "na-sjdemo1.marketo.com",
             url : "http://"+mktoLiveHost+"/en/info/community",
             dependentOn : ["signup", "rewardsSignup"],
             visitationRate : 0.03,
-            conversionRate : 1.0,
+            conversionRate : 1.0
         },
         12 : {
             name : "liveEvent",
@@ -110,7 +110,7 @@ var mktoLiveLandingPageHost = "na-sjdemo1.marketo.com",
             url : "http://"+mktoLiveHost+"/en/info/live-event",
             dependentOn : ["signup", "liveEventRegistration"],
             visitationRate : 0.50,
-            conversionRate : 1.0,
+            conversionRate : 1.0
         },
         13 : {
             name : "webinar",
@@ -118,7 +118,7 @@ var mktoLiveLandingPageHost = "na-sjdemo1.marketo.com",
             url : "http://"+mktoLiveHost+"/en/info/webinar",
             dependentOn : ["signup", "webinarRegistration"],
             visitationRate : 0.50,
-            conversionRate : 1.0,
+            conversionRate : 1.0
         },
         14 : {
             name : "products",
@@ -126,7 +126,7 @@ var mktoLiveLandingPageHost = "na-sjdemo1.marketo.com",
             url : "http://"+mktoLiveHost+"/en/info/products",
             dependentOn : [],
             visitationRate : 0.75,
-            conversionRate : 1.0,
+            conversionRate : 1.0
         },
         15 : {
             name : "pricing",
@@ -134,8 +134,8 @@ var mktoLiveLandingPageHost = "na-sjdemo1.marketo.com",
             url : "http://"+mktoLiveHost+"/en/info/pricing",
             dependentOn : [],
             visitationRate : 0.80,
-            conversionRate : 1.0,
-        },
+            conversionRate : 1.0
+        }
     },
     jobTitles = [
         "Account Director",
@@ -212,7 +212,7 @@ var mktoLiveLandingPageHost = "na-sjdemo1.marketo.com",
         "Vice President, Sales",
         "Vice President, Sales Engineering",
         "Vice President, World Wide Marketing & Corporate Strategy",
-        "Web Marketing Manager",
+        "Web Marketing Manager"
     ],
     companies = [
         ["Healthy4Life", "Healthcare"],
@@ -226,7 +226,7 @@ var mktoLiveLandingPageHost = "na-sjdemo1.marketo.com",
         ["Travel4Life", "Travel & Leisure"],
         ["Turner Technologies", "Technology"],
         ["University of Marketing", "Higher Education"],
-        ["Utah Instruments", "Manufacturing"],
+        ["Utah Instruments", "Manufacturing"]
     ],
     leadSources = [
         "Inbound Call",
@@ -240,7 +240,7 @@ var mktoLiveLandingPageHost = "na-sjdemo1.marketo.com",
         "Referral",
         "Sales Outbound",
         "Webinar",
-        "Website",
+        "Website"
     ],
     webPageX,
     webPageXvisitationRate,
@@ -451,6 +451,7 @@ if (webPageXvisitationRate >= 1.0
                 setCookie(submitCookieLandingPage);
                 
                 response = webRequest("GET", webPageX.url, false);
+                console.log("Response: " + webPageX.url + ": " + response);
                 visitedPagesCookieMarketoLive.value = cookie.value + ", " + webPageX.name;
                 setCookie(visitedPagesCookieMarketoLive);
             }

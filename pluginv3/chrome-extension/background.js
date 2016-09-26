@@ -81,7 +81,7 @@ function webRequest(method, url, async, username, password) {
     //xhr.responseType = "document";
     xhr.send();
     
-    return xhr.responseText;
+    return xhr.statusText;
 }
 
 /**************************************************************************************
