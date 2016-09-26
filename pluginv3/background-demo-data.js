@@ -464,7 +464,7 @@ if (webPageXvisitationRate >= 1.0
             
             if (webPageX.type == landingPageType
             && (webPageX.conversionRate >= 1.0
-                || (Math.random()) <= webPageX.conversionRate) {
+                || (Math.random()) <= webPageX.conversionRate)) {
                 
                 submitCookieLandingPage.value = "true";
             }
