@@ -86,6 +86,7 @@ var currentUrl = window.location.href,
     mktoFormWizardFragment = "FOE",
     mktoMobilePushNotificationWizardFragment = "MPNE",
     mktoInAppMessageWizardFragment = "IAME",
+    mktoSmsMessageDesignerFragment = "SME",
     mktoSocialAppWizardFragment = "SOAE",
     mktoABtestWizardFragment = "EBE",
     mktoEmailTestWizardFragment = "CCE",
@@ -933,132 +934,6 @@ APP.overrideUpdatePortletOrder = function() {
                 console.log("Marketo App > Disabling: Updating of Portlet Order");
             }
         };
-    }
-};
-
-/**************************************************************************************
- *  
- *  This function discards Landing Page drafts in DIY Design only.
- *
- *  @Author Brian Fisher
- *
- *  @function
- *
- *  @param {String[]} lpIds - The Mkto IDs for the Landing Pages to discard.
- *
- **************************************************************************************/
-
-APP.discardLandingPageDrafts = function(lpIds) {
-    console.log("Marketo App > Discarding: Landing Page Drafts");
-    
-    if (typeof(mktLPLManager) !== "undefined"
-    && mktLPLManager.doModifyPages) {
-        console.log("Marketo App > Executing: Discard Landing Page Drafts");
-        
-        var lpMessageBox = Ext.MessageBox.show({
-            title: "Marketo Live",
-            msg: "Discarding Landing Page Drafts",
-            progress: false,
-            wait: false,
-            width: 270,
-            closable: false
-        });
-        mktLPLManager.doModifyPages('revert', lpIds);
-        if (lpMessageBox
-        && lpMessageBox.hide) {
-            lpMessageBox.hide();
-        }
-    }
-};
-
-/**************************************************************************************
- *  
- *  This function discards Email drafts in DIY Design only.
- *
- *  @Author Brian Fisher
- *
- *  @function
- *
- *  @param {String[]} lpIds - The Mkto IDs for the Landing Pages to discard.
- *
- **************************************************************************************/
-
-APP.discardEmailDrafts = function(emIds) {
-    console.log("Marketo App > Discarding: Email Drafts");
-
-    if (typeof(mktEmManager) !== "undefined"
-    && mktEmManager.discardDraft) {
-        console.log("Marketo App > Executing: Discard Email Drafts");
-        
-        var emMessageBox = Ext.MessageBox.show({
-            title: "Marketo Live",
-            msg: "Discarding Email Drafts",
-            progress: false,
-            wait: false,
-            width: 270,
-            closable: false
-        });
-        mktEmManager.discardDraft(emIds);
-        if (emMessageBox
-        && emMessageBox.hide) {
-            emMessageBox.hide();
-        }
-    }
-};
-
-/**************************************************************************************
- *  
- *  This function discards Form or Push Notification drafts
- *
- *  @Author Andy Garcia
- *
- *  @function
- *
- *  @param {String} assetType - The type of asset to discard. Can be "Form" 
- *                              or "MobilePushNotification"
- *  @param {int[]} assetIds -   The array of asset ids to discard. These should
- *                              be in integer form not string.
- *
- **************************************************************************************/
-
-APP.discardFormPushDrafts = function(assetType, assetIds) {
-    console.log("Marketo App > Discarding: " + assetType + " Drafts");
-    
-    if (typeof(Ext4) !== "undefined"
-    && Ext4.getStore
-    && Ext4.create
-    && typeof(Mkt3) !== "undefined") {
-        console.log("Marketo App > Executing: Discard " + assetType + " Drafts");
-        
-        var assetStore = Ext4.getStore(assetType);
-        
-        if (MktMessage
-        && MktMessage.showSystemError) {
-            MktMessage.showSystemError = function() {};
-        }
-        if (typeof(Mkt3) !== "undefined") {
-            if (!assetStore) {
-                    assetStore = Ext4.create('Mkt3.store.' + assetType, {
-                        storeId : assetType
-                    });
-            }
-            assetStore.load({
-                filters : [{
-                    property : 'id',
-                    value : assetIds
-                }],
-                callback : function(assets) {
-                    for (var i = 0; i < assets.length; i++) {
-                        var asset = assets[i];
-                        asset.discard(function(success) {
-                            if (success) {
-                                asset.updateNode();
-                            }
-                        }, this);
-                    }
-                }
-            });		
-        }
     }
 };
 
@@ -4786,6 +4661,146 @@ APP.openAdBridgeModal = function() {
 
 /**************************************************************************************
  *  
+ *  This function discards Landing Page drafts in DIY Design only.
+ *
+ *  @Author Brian Fisher
+ *
+ *  @function
+ *
+ *  @param {String[]} lpIds - The Mkto IDs for the Landing Pages to discard.
+ *
+ **************************************************************************************/
+
+APP.discardLandingPageDrafts = function(lpIds) {
+    console.log("Marketo App > Discarding: Landing Page Drafts");
+    
+    if (typeof(mktLPLManager) !== "undefined"
+    && mktLPLManager.doModifyPages) {
+        console.log("Marketo App > Executing: Discard Landing Page Drafts");
+        
+        var ii,
+            lpMessageBox = Ext.MessageBox.show({
+                title: "Marketo Live",
+                msg: "Discarding Landing Page Drafts",
+                progress: false,
+                wait: false,
+                width: 270,
+                closable: false
+            });
+/*        
+        mktLPLManager.doModifyPages('revert', lpIds);
+        
+        if (lpMessageBox
+        && lpMessageBox.hide) {
+            lpMessageBox.hide();
+        }*/
+        
+        for (ii = 0; ii < Object.keys(lpIds).length; ii++) {
+            console.log("Marketo App > Executing: Discard Landing Page Draft: " + ii);
+            
+            mktLPLManager.doModifyPages('revert', lpIds.pop());
+            
+            if (lpMessageBox
+            && lpMessageBox.hide) {
+                lpMessageBox.hide();
+            }
+        }
+    }
+};
+
+/**************************************************************************************
+ *  
+ *  This function discards Email drafts in DIY Design only.
+ *
+ *  @Author Brian Fisher
+ *
+ *  @function
+ *
+ *  @param {String[]} emIds - The Mkto IDs for the Landing Pages to discard.
+ *
+ **************************************************************************************/
+
+APP.discardEmailDrafts = function(emIds) {
+    console.log("Marketo App > Discarding: Email Drafts");
+
+    if (typeof(mktEmManager) !== "undefined"
+    && mktEmManager.discardDraft) {
+        console.log("Marketo App > Executing: Discard Email Drafts");
+        
+        var emMessageBox = Ext.MessageBox.show({
+            title: "Marketo Live",
+            msg: "Discarding Email Drafts",
+            progress: false,
+            wait: false,
+            width: 270,
+            closable: false
+        });
+        mktEmManager.discardDraft(emIds);
+        if (emMessageBox
+        && emMessageBox.hide) {
+            emMessageBox.hide();
+        }
+    }
+};
+
+/**************************************************************************************
+ *  
+ *  This function discards Form, Social App, Push Notification drafts
+ *
+ *  @Author Andy Garcia
+ *
+ *  @function
+ *
+ *  @param {String} assetType - The type of asset to discard. Can be "Form" 
+ *                              or "MobilePushNotification"
+ *  @param {int[]} assetIds -   The array of asset ids to discard. These should
+ *                              be in integer form not string.
+ *
+ **************************************************************************************/
+
+APP.discardOtherDrafts = function(assetType, assetIds) {
+    console.log("Marketo App > Discarding: " + assetType + " Drafts");
+    
+    if (typeof(Ext4) !== "undefined"
+    && Ext4.getStore
+    && Ext4.create
+    && typeof(Mkt3) !== "undefined") {
+        console.log("Marketo App > Executing: Discard " + assetType + " Drafts");
+        
+        var assetStore = Ext4.getStore(assetType);
+        
+        if (MktMessage
+        && MktMessage.showSystemError) {
+            MktMessage.showSystemError = function() {};
+        }
+        if (typeof(Mkt3) !== "undefined") {
+            if (!assetStore) {
+                    assetStore = Ext4.create('Mkt3.store.' + assetType, {
+                        storeId : assetType
+                    });
+            }
+            assetStore.load({
+                filters : [{
+                    property : 'id',
+                    value : assetIds
+                }],
+                callback : function(assets) {
+                    for (var i = 0; i < assets.length; i++) {
+                        var asset = assets[i];
+                        asset.discard(function(success) {
+                            if (success) {
+                                asset.updateNode();
+                            }
+                        }, this);
+                    }
+                }
+            });		
+        }
+    }
+};
+
+/**************************************************************************************
+ *  
  *  This function discards all drafts of golden assets for the specified instance.
  *
  *  @Author Andrew Garcia
@@ -4796,267 +4811,273 @@ APP.openAdBridgeModal = function() {
 
 APP.discardDrafts = function (accountString) {
     console.log("Marketo App > Discarding: Golden Assets for instance: " + accountString);
+    
     // Setting the asset draft IDs to discard
     var lpIds = {},
-    emIds = [],
-    formIds = [],
-    pushIds = [],
-    socIds = [];
+        emIds = [],
+        formIds = [],
+        pushIds = [],
+        inAppIds = [],
+        smsIds = [],
+        socIds = [];
     
     switch (accountString) {
-    case mktoAccountString106:
-        // DIY Design: Landing Page, Landing Page Responsive
-        lpIds["dpageid_11826"] = "dpageid_11826";
-        lpIds["dpageid_11822"] = "dpageid_11822";
-        // Replicate Success Roadshow Example: Registration Page, Thank You for Registering
-        lpIds["dpageid_8819"] = "dpageid_8819";
-        lpIds["dpageid_8941"] = "dpageid_8941";
-        // Replicate Success Webinar Example: Recorded Webinar LP, Registration Landing Page, Thank You LP
-        lpIds["dpageid_4876"] = "dpageid_4876";
-        lpIds["dpageid_4872"] = "dpageid_4872";
-        lpIds["dpageid_4874"] = "dpageid_4874";
-        // Japanese DIY Design: 1
-        lpIds["dpageid_11856"] = "dpageid_11856";
-        // Japanese Event Roadshow Unknown: 1, 2
-        lpIds["dpageid_12420"] = "dpageid_12420";
-        lpIds["dpageid_12418"] = "dpageid_12418";
-        // Japanese Replicate Success Webinar Example: 1, 2, 3
-        lpIds["dpageid_11552"] = "dpageid_11552";
-        lpIds["dpageid_11550"] = "dpageid_11550";
-        lpIds["dpageid_11553"] = "dpageid_11553";
-        // Japanese Replicate Success Roadshow Example: 1, 2
-        lpIds["dpageid_12345"] = "dpageid_12345";
-        lpIds["dpageid_11556"] = "dpageid_11556";
-        // Financial Services DIY Design: Mortgage Landing Page, Banking Landing Page, Preferences Page
-        lpIds["dpageid_13187"] = "dpageid_13187";
-        lpIds["dpageid_13185"] = "dpageid_13185";
-        lpIds["dpageid_12709"] = "dpageid_12709";
-        // Financial Services Event Management Home Buyinng Seminar: Recorded Webinar LP, Reg LP, Thank You LP
-        lpIds["dpageid_12720"] = "dpageid_12720";
-        lpIds["dpageid_12717"] = "dpageid_12717";
-        lpIds["dpageid_12719"] = "dpageid_12719";
-        // Healthcare DIY Design: Landing Page, Landing Page Offer, Landing Page Responsive, Preference Page
-        lpIds["dpageid_12569"] = "dpageid_12569";
-        lpIds["dpageid_12932"] = "dpageid_12932";
-        lpIds["dpageid_13165"] = "dpageid_13165";
-        lpIds["dpageid_12586"] = "dpageid_12586";
-        // Healthcare Event Management HC - Tour the Clinic: Recorded Webinar LP
-        lpIds["dpageid_12517"] = "dpageid_12517";
-        // Higher Education DIY Design: Landing Page, Landing Page - In State, Landing Page - Video, Landing Page Responsive, Preference Page
-        lpIds["dpageid_12250"] = "dpageid_12250";
-        lpIds["dpageid_12934"] = "dpageid_12934";
-        lpIds["dpageid_12401"] = "dpageid_12401";
-        lpIds["dpageid_13167"] = "dpageid_13167";
-        lpIds["dpageid_12248"] = "dpageid_12248";
-        // Higher Education Event Management HE - Event: Thanks and Next Event
-        lpIds["dpageid_12177"] = "dpageid_12177";
+        case mktoAccountString106:
+            // DIY Design: Landing Page, Landing Page Responsive
+            lpIds["dpageid_11826"] = "dpageid_11826";
+            lpIds["dpageid_11822"] = "dpageid_11822";
+            // Replicate Success Roadshow Example: Registration Page, Thank You for Registering
+            lpIds["dpageid_8819"] = "dpageid_8819";
+            lpIds["dpageid_8941"] = "dpageid_8941";
+            // Replicate Success Webinar Example: Recorded Webinar LP, Registration Landing Page, Thank You LP
+            lpIds["dpageid_4876"] = "dpageid_4876";
+            lpIds["dpageid_4872"] = "dpageid_4872";
+            lpIds["dpageid_4874"] = "dpageid_4874";
+            // Japanese DIY Design: 1
+            lpIds["dpageid_11856"] = "dpageid_11856";
+            // Japanese Event Roadshow Unknown: 1, 2
+            lpIds["dpageid_12420"] = "dpageid_12420";
+            lpIds["dpageid_12418"] = "dpageid_12418";
+            // Japanese Replicate Success Webinar Example: 1, 2, 3
+            lpIds["dpageid_11552"] = "dpageid_11552";
+            lpIds["dpageid_11550"] = "dpageid_11550";
+            lpIds["dpageid_11553"] = "dpageid_11553";
+            // Japanese Replicate Success Roadshow Example: 1, 2
+            lpIds["dpageid_12345"] = "dpageid_12345";
+            lpIds["dpageid_11556"] = "dpageid_11556";
+            // Financial Services DIY Design: Mortgage Landing Page, Banking Landing Page, Preferences Page
+            lpIds["dpageid_13187"] = "dpageid_13187";
+            lpIds["dpageid_13185"] = "dpageid_13185";
+            lpIds["dpageid_12709"] = "dpageid_12709";
+            // Financial Services Event Management Home Buyinng Seminar: Recorded Webinar LP, Reg LP, Thank You LP
+            lpIds["dpageid_12720"] = "dpageid_12720";
+            lpIds["dpageid_12717"] = "dpageid_12717";
+            lpIds["dpageid_12719"] = "dpageid_12719";
+            // Healthcare DIY Design: Landing Page, Landing Page Offer, Landing Page Responsive, Preference Page
+            lpIds["dpageid_12569"] = "dpageid_12569";
+            lpIds["dpageid_12932"] = "dpageid_12932";
+            lpIds["dpageid_13165"] = "dpageid_13165";
+            lpIds["dpageid_12586"] = "dpageid_12586";
+            // Healthcare Event Management HC - Tour the Clinic: Recorded Webinar LP
+            lpIds["dpageid_12517"] = "dpageid_12517";
+            // Higher Education DIY Design: Landing Page, Landing Page - In State, Landing Page - Video, Landing Page Responsive, Preference Page
+            lpIds["dpageid_12250"] = "dpageid_12250";
+            lpIds["dpageid_12934"] = "dpageid_12934";
+            lpIds["dpageid_12401"] = "dpageid_12401";
+            lpIds["dpageid_13167"] = "dpageid_13167";
+            lpIds["dpageid_12248"] = "dpageid_12248";
+            // Higher Education Event Management HE - Event: Thanks and Next Event
+            lpIds["dpageid_12177"] = "dpageid_12177";
+            
+            // Default DIY Design: Email
+            emIds.push(15464);
+            // Default DIY Design: Email (Modular)
+            emIds.push(21424);
+            // Default DIY Design: Email (Responsive)
+            emIds.push(20931);
+            // Default Email Marketing: AB Test Configuration, AB Test Dashboard, Champion/Chalenger, Email Program Dashboard
+            emIds.push(18113, 18106, 18111, 18110);
+            // Default Replicate Success: Roadshow Example
+            emIds.push(10010, 10179, 10180, 12845, 10181, 10182, 10183, 10184);
+            // Default Replicate Success: Webinar Example
+            emIds.push(4894, 3764, 3765, 3767, 3766, 3762);
+            // Default Intelligent Nurturing
+            emIds.push(12818, 12820, 12819, 12816, 12811, 12815, 12812, 12813, 12814, 12821, 12817, 12823);
+            // Default Actionable Insight: BANT Nurture for Sales
+            emIds.push(12900, 12901, 12899, 12898);
+            // Default Actionable Insight: Sales Auto Reach Out
+            emIds.push(12902, 12903, 12904);
+            // Japanese Default Content Unknown
+            emIds.push(16474);
+            // Japanese Event Roadshow Unknown
+            emIds.push(18117, 18118, 18122, 18119, 18116, 18123, 18120, 18121, 18124);
+            // Japanese Replicate Success Webinar
+            emIds.push(16118, 16119, 16120, 16122, 16121, 16117);
+            // Japanese Replicate Success Roadshow
+            emIds.push(16331, 16332, 16338, 16333, 16123, 16339, 16335, 16336, 17868);
+            // Japanese Intelligent Nurturing
+            emIds.push(16125, 16129, 16126, 16124, 16132, 16131, 16130, 16128, 16127, 16133, 16137, 16136);
+            // Japanese Default Email Blast Unknown
+            emIds.push(18126);
+            // Financial Services DIY Design
+            emIds.push(20350, 20368)
+            // Healthcare Services DIY Design
+            emIds.push(20327)
+            // Higher Ed Services DIY Design
+            emIds.push(20329)
+            
+            // Forms: Default DIY Design, Replicate Success Roadshow Example, Replicate Success Webinar Example
+            formIds.push(3576, 1749, 1900);
+            // Forms: Japanese Default DIY Design, Japanese Event Roadshow Unknown, Japanese Replicate Success Webinar Example, Japanese Replicate Success Roadshow Example
+            formIds.push(3018, 3708, 3020, 3021);
+            // Forms: Financial Services DIY Design
+            formIds.push(3952, 3955, 3953);
+            // Forms: Healthcare DIY Design
+            formIds.push(3816, 3818, 3828);
+            // Forms: Higher Ed DIY Design
+            formIds.push(3313, 4125, 3559);
+            
+            // Push Notifications: Default DIY Design, Mobile Engagement
+            pushIds.push(29, 23);
+            // Push Notifications: Japanese DIY Design, Mobile Engagement, Unknown
+            pushIds.push(99, 216, 103, 218);
+            // Push Notifications: Financial Services DIY Design, Mobile Engagement
+            pushIds.push(187);
+            // Push Notifications: Healthcare DIY Design, Mobile Engagement
+            pushIds.push(169);
+            // Push Notifications: Higher Ed DIY Design, Mobile Engagement
+            pushIds.push(131);
+            
+            // In-App Messages: Default Mobile Engagement
+            inAppIds.push(309, 446);
+            
+            // SMS Messages: Default Mobile Engagement
+            smsIds.push(1);
+            
+            // Social Apps: Default DIY Design
+            socIds.push(586, 587, 491, 484);
+            // Social Apps: Japanese DIY Design
+            socIds.push(853);
+            // Social Apps: Financial Services DIY Design
+            socIds.push(1091, 1090, 1093, 1092, 1094);
+            // Social Apps: Healthcare DIY Design
+            socIds.push(1021, 1023, 1025, 1022, 1020);
+            // Social Apps: Higher Ed DIY Design
+            socIds.push(860, 1024, 861, 859, 858);
+            break;
         
-        // Default DIY Design: Email
-        emIds.push(15464);
-        // Default DIY Design: Email (Modular)
-        emIds.push(21424);
-        // Default DIY Design: Email (Responsive)
-        emIds.push(20931);
-        // Default Email Marketing: AB Test Configuration, AB Test Dashboard, Champion/Chalenger, Email Program Dashboard
-        emIds.push(18113, 18106, 18111, 18110);
-        // Default Replicate Success: Roadshow Example
-        emIds.push(10010, 10179, 10180, 12845, 10181, 10182, 10183, 10184);
-        // Default Replicate Success: Webinar Example
-        emIds.push(4894, 3764, 3765, 3767, 3766, 3762);
-        // Default Intelligent Nurturing
-        emIds.push(12818, 12820, 12819, 12816, 12811, 12815, 12812, 12813, 12814, 12821, 12817, 12823);
-        // Default Actionable Insight: BANT Nurture for Sales
-        emIds.push(12900, 12901, 12899, 12898);
-        // Default Actionable Insight: Sales Auto Reach Out
-        emIds.push(12902, 12903, 12904);
-        // Japanese Default Content Unknown
-        emIds.push(16474);
-        // Japanese Event Roadshow Unknown
-        emIds.push(18117, 18118, 18122, 18119, 18116, 18123, 18120, 18121, 18124);
-        // Japanese Replicate Success Webinar
-        emIds.push(16118, 16119, 16120, 16122, 16121, 16117);
-        // Japanese Replicate Success Roadshow
-        emIds.push(16331, 16332, 16338, 16333, 16123, 16339, 16335, 16336, 17868);
-        // Japanese Intelligent Nurturing
-        emIds.push(16125, 16129, 16126, 16124, 16132, 16131, 16130, 16128, 16127, 16133, 16137, 16136);
-        // Japanese Default Email Blast Unknown
-        emIds.push(18126);
-        // Financial Services DIY Design
-        emIds.push(20350, 20368)
-        // Healthcare Services DIY Design
-        emIds.push(20327)
-        // Higher Ed Services DIY Design
-        emIds.push(20329)
+        case mktoAccountString106d:
+            // DIY Design: Landing Page, Landing Page Responsive
+            lpIds["dpageid_11826"] = "dpageid_11826";
+            lpIds["dpageid_11822"] = "dpageid_11822";
+            // Replicate Success Roadshow Example: Registration Page, Thank You for Registering
+            lpIds["dpageid_8819"] = "dpageid_8819";
+            lpIds["dpageid_8941"] = "dpageid_8941";
+            // Replicate Success Webinar Example: Recorded Webinar LP, Registration Landing Page, Thank You LP
+            lpIds["dpageid_4876"] = "dpageid_4876";
+            lpIds["dpageid_4872"] = "dpageid_4872";
+            lpIds["dpageid_4874"] = "dpageid_4874";
+            // Japanese DIY Design: 1
+            lpIds["dpageid_11856"] = "dpageid_11856";
+            // Japanese Event Roadshow Unknown: 1, 2
+            lpIds["dpageid_12420"] = "dpageid_12420";
+            lpIds["dpageid_12418"] = "dpageid_12418";
+            // Japanese Replicate Success Webinar Example: 1, 2, 3
+            lpIds["dpageid_11552"] = "dpageid_11552";
+            lpIds["dpageid_11550"] = "dpageid_11550";
+            lpIds["dpageid_11553"] = "dpageid_11553";
+            // Japanese Replicate Success Roadshow Example: 1, 2
+            lpIds["dpageid_12345"] = "dpageid_12345";
+            lpIds["dpageid_11556"] = "dpageid_11556";
+            // Financial Services DIY Design: Mortgage Landing Page, Banking Landing Page, Preferences Page
+            lpIds["dpageid_13187"] = "dpageid_13187";
+            lpIds["dpageid_13185"] = "dpageid_13185";
+            lpIds["dpageid_12709"] = "dpageid_12709";
+            // Financial Services Event Management Home Buyinng Seminar: Recorded Webinar LP, Reg LP, Thank You LP
+            lpIds["dpageid_12720"] = "dpageid_12720";
+            lpIds["dpageid_12717"] = "dpageid_12717";
+            lpIds["dpageid_12719"] = "dpageid_12719";
+            // Healthcare DIY Design: Landing Page, Landing Page Offer, Landing Page Responsive, Preference Page
+            lpIds["dpageid_12569"] = "dpageid_12569";
+            lpIds["dpageid_12932"] = "dpageid_12932";
+            lpIds["dpageid_13165"] = "dpageid_13165";
+            lpIds["dpageid_12586"] = "dpageid_12586";
+            // Healthcare Event Management HC - Tour the Clinic: Recorded Webinar LP
+            lpIds["dpageid_12517"] = "dpageid_12517";
+            // Higher Education DIY Design: Landing Page, Landing Page - In State, Landing Page - Video, Landing Page Responsive, Preference Page
+            lpIds["dpageid_12250"] = "dpageid_12250";
+            lpIds["dpageid_12934"] = "dpageid_12934";
+            lpIds["dpageid_12401"] = "dpageid_12401";
+            lpIds["dpageid_13167"] = "dpageid_13167";
+            lpIds["dpageid_12248"] = "dpageid_12248";
+            // Higher Education Event Management HE - Event: Thanks and Next Event
+            lpIds["dpageid_12177"] = "dpageid_12177";
+            
+            // Default DIY Design
+            emIds.push(15464);
+            // Default Email Marketing: AB Test Configuration, AB Test Dashboard, Champion/Chalenger, Email Program Dashboard
+            emIds.push(18113, 18106, 18111, 18110);
+            // Default Replicate Success: Roadshow Example
+            emIds.push(10010, 10179, 10180, 12845, 10181, 10182, 10183, 10184);
+            // Default Replicate Success: Webinar Example
+            emIds.push(4894, 3764, 3765, 3767, 3766, 3762);
+            // Default Intelligent Nurturing
+            emIds.push(12818, 12820, 12819, 12816, 12811, 12815, 12812, 12813, 12814, 12821, 12817, 12823);
+            // Default Actionable Insight: BANT Nurture for Sales
+            emIds.push(12900, 12901, 12899, 12898);
+            // Default Actionable Insight: Sales Auto Reach Out
+            emIds.push(12902, 12903, 12904);
+            // Japanese Default Content Unknown
+            emIds.push(16474, 17254, 16403);
+            // Japanese Event Roadshow Unknown
+            emIds.push(18117, 18118, 18122, 18119, 18116, 18123, 18120, 18121, 18124);
+            // Japanese Replicate Success Webinar
+            emIds.push(16118, 16119, 16120, 16122, 16121, 16117);
+            // Japanese Replicate Success Roadshow
+            emIds.push(16331, 16332, 16338, 16333, 16123, 16339, 16335, 16336, 17868);
+            // Japanese Intelligent Nurturing
+            emIds.push(16125, 16129, 16126, 16124, 16132, 16131, 16130, 16128, 16127, 16133, 16137, 16136);
+            // Japanese Default Email Blast Unknown
+            emIds.push(18126);
+            // Financial Services DIY Design
+            emIds.push(20350, 20368)
+            // Healthcare Services DIY Design
+            emIds.push(20327)
+            // Higher Ed Services DIY Design
+            emIds.push(20329)
+            
+            // Forms: Default DIY Design, Replicate Success Roadshow Example, Replicate Success Webinar Example
+            formIds.push(3576, 1749, 1900);
+            // Forms: Japanese Default DIY Design, Japanese Event Roadshow Unknown, Japanese Replicate Success Webinar Example, Japanese Replicate Success Roadshow Example
+            formIds.push(3018, 3708, 3020, 3021);
+            // Forms: Financial Services DIY Design
+            formIds.push(3952, 3955, 3953);
+            // Forms: Healthcare DIY Design
+            formIds.push(3816, 3818, 3828);
+            // Forms: Higher Ed DIY Design
+            formIds.push(3313, 4125, 3559);
+            
+            // Push Notifications: Default DIY Design, Mobile Engagement
+            pushIds.push(29, 23);
+            // Push Notifications: Japanese DIY Design, Mobile Engagement, Unknown
+            pushIds.push(99, 216, 103, 218);
+            // Push Notifications: Financial Services DIY Design, Mobile Engagement
+            pushIds.push(187);
+            // Push Notifications: Healthcare DIY Design, Mobile Engagement
+            pushIds.push(169);
+            // Push Notifications: Higher Ed DIY Design, Mobile Engagement
+            pushIds.push(131);
+            
+            // Social Apps: Default DIY Design
+            socIds.push(586, 587, 491, 484);
+            // Social Apps: Japanese DIY Design
+            socIds.push(853);
+            // Social Apps: Financial Services DIY Design
+            socIds.push(1091, 1090, 1093, 1092, 1094);
+            // Social Apps: Healthcare DIY Design
+            socIds.push(1021, 1023, 1025, 1022, 1020);
+            // Social Apps: Higher Ed DIY Design
+            socIds.push(860, 1024, 861, 859, 858);
+            break;
         
-        // Forms: Default DIY Design, Replicate Success Roadshow Example, Replicate Success Webinar Example
-        formIds.push(3576, 1749, 1900);
-        // Forms: Japanese Default DIY Design, Japanese Event Roadshow Unknown, Japanese Replicate Success Webinar Example, Japanese Replicate Success Roadshow Example
-        formIds.push(3018, 3708, 3020, 3021);
-        // Forms: Financial Services DIY Design
-        formIds.push(3952, 3955, 3953);
-        // Forms: Healthcare DIY Design
-        formIds.push(3816, 3818, 3828);
-        // Forms: Higher Ed DIY Design
-        formIds.push(3313, 4125, 3559);
-        
-        // Push Notifications: Default DIY Design, Mobile Engagement
-        pushIds.push(29, 23);
-        // Push Notifications: Japanese DIY Design, Mobile Engagement, Unknown
-        pushIds.push(99, 216, 103, 218);
-        // Push Notifications: Financial Services DIY Design, Mobile Engagement
-        pushIds.push(187);
-        // Push Notifications: Healthcare DIY Design, Mobile Engagement
-        pushIds.push(169);
-        // Push Notifications: Higher Ed DIY Design, Mobile Engagement
-        pushIds.push(131);
-        
-        // Social Apps: Default DIY Design
-        socIds.push(586, 587, 491, 484, 448);
-        // Social Apps: Japanese DIY Design
-        socIds.push(853);
-        // Social Apps: Financial Services DIY Design
-        socIds.push(1091, 1090, 1093, 1092, 1094);
-        // Social Apps: Healthcare DIY Design
-        socIds.push(1021, 1023, 1025, 1022, 1020);
-        // Social Apps: Higher Ed DIY Design
-        socIds.push(860, 1024, 861, 859, 858);
-        break;
-        
-    case mktoAccountString106d:
-        // DIY Design: Landing Page, Landing Page Responsive
-        lpIds["dpageid_11826"] = "dpageid_11826";
-        lpIds["dpageid_11822"] = "dpageid_11822";
-        // Replicate Success Roadshow Example: Registration Page, Thank You for Registering
-        lpIds["dpageid_8819"] = "dpageid_8819";
-        lpIds["dpageid_8941"] = "dpageid_8941";
-        // Replicate Success Webinar Example: Recorded Webinar LP, Registration Landing Page, Thank You LP
-        lpIds["dpageid_4876"] = "dpageid_4876";
-        lpIds["dpageid_4872"] = "dpageid_4872";
-        lpIds["dpageid_4874"] = "dpageid_4874";
-        // Japanese DIY Design: 1
-        lpIds["dpageid_11856"] = "dpageid_11856";
-        // Japanese Event Roadshow Unknown: 1, 2
-        lpIds["dpageid_12420"] = "dpageid_12420";
-        lpIds["dpageid_12418"] = "dpageid_12418";
-        // Japanese Replicate Success Webinar Example: 1, 2, 3
-        lpIds["dpageid_11552"] = "dpageid_11552";
-        lpIds["dpageid_11550"] = "dpageid_11550";
-        lpIds["dpageid_11553"] = "dpageid_11553";
-        // Japanese Replicate Success Roadshow Example: 1, 2
-        lpIds["dpageid_12345"] = "dpageid_12345";
-        lpIds["dpageid_11556"] = "dpageid_11556";
-        // Financial Services DIY Design: Mortgage Landing Page, Banking Landing Page, Preferences Page
-        lpIds["dpageid_13187"] = "dpageid_13187";
-        lpIds["dpageid_13185"] = "dpageid_13185";
-        lpIds["dpageid_12709"] = "dpageid_12709";
-        // Financial Services Event Management Home Buyinng Seminar: Recorded Webinar LP, Reg LP, Thank You LP
-        lpIds["dpageid_12720"] = "dpageid_12720";
-        lpIds["dpageid_12717"] = "dpageid_12717";
-        lpIds["dpageid_12719"] = "dpageid_12719";
-        // Healthcare DIY Design: Landing Page, Landing Page Offer, Landing Page Responsive, Preference Page
-        lpIds["dpageid_12569"] = "dpageid_12569";
-        lpIds["dpageid_12932"] = "dpageid_12932";
-        lpIds["dpageid_13165"] = "dpageid_13165";
-        lpIds["dpageid_12586"] = "dpageid_12586";
-        // Healthcare Event Management HC - Tour the Clinic: Recorded Webinar LP
-        lpIds["dpageid_12517"] = "dpageid_12517";
-        // Higher Education DIY Design: Landing Page, Landing Page - In State, Landing Page - Video, Landing Page Responsive, Preference Page
-        lpIds["dpageid_12250"] = "dpageid_12250";
-        lpIds["dpageid_12934"] = "dpageid_12934";
-        lpIds["dpageid_12401"] = "dpageid_12401";
-        lpIds["dpageid_13167"] = "dpageid_13167";
-        lpIds["dpageid_12248"] = "dpageid_12248";
-        // Higher Education Event Management HE - Event: Thanks and Next Event
-        lpIds["dpageid_12177"] = "dpageid_12177";
-        
-        // Default DIY Design
-        emIds.push(15464);
-        // Default Email Marketing: AB Test Configuration, AB Test Dashboard, Champion/Chalenger, Email Program Dashboard
-        emIds.push(18113, 18106, 18111, 18110);
-        // Default Replicate Success: Roadshow Example
-        emIds.push(10010, 10179, 10180, 12845, 10181, 10182, 10183, 10184);
-        // Default Replicate Success: Webinar Example
-        emIds.push(4894, 3764, 3765, 3767, 3766, 3762);
-        // Default Intelligent Nurturing
-        emIds.push(12818, 12820, 12819, 12816, 12811, 12815, 12812, 12813, 12814, 12821, 12817, 12823);
-        // Default Actionable Insight: BANT Nurture for Sales
-        emIds.push(12900, 12901, 12899, 12898);
-        // Default Actionable Insight: Sales Auto Reach Out
-        emIds.push(12902, 12903, 12904);
-        // Japanese Default Content Unknown
-        emIds.push(16474, 17254, 16403);
-        // Japanese Event Roadshow Unknown
-        emIds.push(18117, 18118, 18122, 18119, 18116, 18123, 18120, 18121, 18124);
-        // Japanese Replicate Success Webinar
-        emIds.push(16118, 16119, 16120, 16122, 16121, 16117);
-        // Japanese Replicate Success Roadshow
-        emIds.push(16331, 16332, 16338, 16333, 16123, 16339, 16335, 16336, 17868);
-        // Japanese Intelligent Nurturing
-        emIds.push(16125, 16129, 16126, 16124, 16132, 16131, 16130, 16128, 16127, 16133, 16137, 16136);
-        // Japanese Default Email Blast Unknown
-        emIds.push(18126);
-        // Financial Services DIY Design
-        emIds.push(20350, 20368)
-        // Healthcare Services DIY Design
-        emIds.push(20327)
-        // Higher Ed Services DIY Design
-        emIds.push(20329)
-        
-        // Forms: Default DIY Design, Replicate Success Roadshow Example, Replicate Success Webinar Example
-        formIds.push(3576, 1749, 1900);
-        // Forms: Japanese Default DIY Design, Japanese Event Roadshow Unknown, Japanese Replicate Success Webinar Example, Japanese Replicate Success Roadshow Example
-        formIds.push(3018, 3708, 3020, 3021);
-        // Forms: Financial Services DIY Design
-        formIds.push(3952, 3955, 3953);
-        // Forms: Healthcare DIY Design
-        formIds.push(3816, 3818, 3828);
-        // Forms: Higher Ed DIY Design
-        formIds.push(3313, 4125, 3559);
-        
-        // Push Notifications: Default DIY Design, Mobile Engagement
-        pushIds.push(29, 23);
-        // Push Notifications: Japanese DIY Design, Mobile Engagement, Unknown
-        pushIds.push(99, 216, 103, 218);
-        // Push Notifications: Financial Services DIY Design, Mobile Engagement
-        pushIds.push(187);
-        // Push Notifications: Healthcare DIY Design, Mobile Engagement
-        pushIds.push(169);
-        // Push Notifications: Higher Ed DIY Design, Mobile Engagement
-        pushIds.push(131);
-        
-        // Social Apps: Default DIY Design
-        socIds.push(586, 587, 491, 484, 448);
-        // Social Apps: Japanese DIY Design
-        socIds.push(853);
-        // Social Apps: Financial Services DIY Design
-        socIds.push(1091, 1090, 1093, 1092, 1094);
-        // Social Apps: Healthcare DIY Design
-        socIds.push(1021, 1023, 1025, 1022, 1020);
-        // Social Apps: Higher Ed DIY Design
-        socIds.push(860, 1024, 861, 859, 858);
-        break;
-        
-    default:
-        break;
+        default:
+            break;
     }
     
     var canDiscardDrafts = window.setInterval(function () {
-            if (typeof(mktLPLManager) !== "undefined") {
-                window.clearInterval(canDiscardDrafts);
-                // DIY Design (Landing Pages)
-                APP.discardLandingPageDrafts(lpIds);
-                // DIY Design (Email)
-                APP.discardEmailDrafts(emIds);
-                // DIY Design (Forms)
-                APP.discardFormPushDrafts("Form", formIds);
-                // DIY Design (Push Notifications)
-                APP.discardFormPushDrafts("MobilePushNotification", pushIds);
-                // DIY Design (Social)
-                APP.discardFormPushDrafts("SocialApp", socIds);
-                // Limiting Nurture Programs
-                APP.limitNurturePrograms();
-            }
-        }, 0);
+        if (typeof(mktLPLManager) !== "undefined") {
+            window.clearInterval(canDiscardDrafts);
+            
+            APP.discardLandingPageDrafts(lpIds);
+            APP.discardEmailDrafts(emIds);
+            APP.discardOtherDrafts("Form", formIds);
+            APP.discardOtherDrafts("MobilePushNotification", pushIds);
+            APP.discardOtherDrafts("InAppMessage", inAppIds);
+            //APP.discardOtherDrafts("SmsMessage", smsIds);
+            APP.discardOtherDrafts("SocialApp", socIds);
+            APP.limitNurturePrograms();
+        }
+    }, 0);
 }
 
 /**************************************************************************************
@@ -5078,14 +5099,19 @@ APP.trackTreeNodeSelection = function() {
             console.log("Marketo App > Executing: Tracking Tree Node Selection")
             
             var ii,
-                currNode = node;
-            
-            heapEventName = heapAssetName = currNode.text;
+                currNode = node,
+                heapEventName = currNode.text,
+                heapEvent = {
+                    assetName = currNode.text
+                };
             
             for (ii = 0; ii < node.getDepth()-1; ii++) {
                 currNode = currNode.parentNode;
                 heapEventName = currNode.text + " | " + heapEventName;
             }
+            
+            heapEvent.name = heapEventName;
+            heapTrack("track", heapEvent);
             
             if (!node
             || !this.boundTree)
@@ -5118,15 +5144,20 @@ APP.trackOtherAssets = function() {
     
     if (typeof(MktExplorer) !== "undefined"
     && MktExplorer.getNodeById) {
-        var node = currNode = MktExplorer.getNodeById(currUrlFragment.substring(0, currUrlFragment.length - 5)),
-            ii;
-            
-        heapEventName = heapAssetName = currNode.text;
+        var ii,
+            node = currNode = MktExplorer.getNodeById(currUrlFragment.substring(0, currUrlFragment.length - 5)),
+            heapEventName = currNode.text,
+            heapEvent = {
+                assetName = currNode.text
+            };
         
         for (ii = 0; ii < node.getDepth() - 1; ii++) {
             currNode = currNode.parentNode;
             heapEventName = currNode.text + " | " + heapEventName;
         }
+        
+        heapEvent.name = heapEventName;
+        heapTrack("track", heapEvent);
     }
 };
 
@@ -5149,7 +5180,7 @@ var heapTrack = function(action) {
             
             window.clearInterval(isHeapAnalytics);
             
-            switch (action) {
+            switch (action, event) {
                 // Heap Analytics Identify User
                 case "id":
                     var oneLoginEmail = APP.getCookie("onelogin_email"),
@@ -5201,17 +5232,19 @@ var heapTrack = function(action) {
                         heapArea = "Unknown";
                     }
                     
-                    if (heapEventName) {
+                    if (event) {
                         heapEventProps = {
                             app : heapApp,
-                            asset : heapAssetName,
+                            asset : event.assetName,
+                            assetId : event.assetId,
+                            assetType : event.assetType,
+                            workspaceId : event.workspaceId,
                             area : heapArea,
                             url : currentUrl
                         };
                         
-                        console.log("Marketo App > Tracking: Heap Event: " + heapEventName + "\n" + JSON.stringify(heapEventProps, null, 2));
-                        heap.track(heapEventName, heapEventProps);
-                        heapEventName = heapAssetName = "";
+                        console.log("Marketo App > Tracking: Heap Event: " + event.name + "\n" + JSON.stringify(heapEventProps, null, 2));
+                        heap.track(event.name, heapEventProps);
                     }
                     else {
                         var heapEventTitle = document.title.replace(" - " + document.location.protocol + "//" + document.location.host + "/", ""),
@@ -5441,39 +5474,59 @@ var heapTrack = function(action) {
                         && Mkt3.app
                         && Mkt3.app.controllers
                         && Mkt3.app.controllers.get("Mkt3.controller.editor.LandingPage")
-                        && Mkt3.app.controllers.get("Mkt3.controller.editor.LandingPage").getLandingPage()
-                        && (Mkt3.app.controllers.get("Mkt3.controller.editor.LandingPage").getLandingPage().get("zoneId").toString().search(mktoGoldenWorkspacesMatch) != -1)) {
+                        && Mkt3.app.controllers.get("Mkt3.controller.editor.LandingPage").getLandingPage()) {
                                 
                             console.log("Marketo App > Loaded: Landing Page Editor");
                             
                             window.clearInterval(isLandingPageDesigner);
-                            debugger;
                             
-                            APP.disablePropertyPanelSaving();
-                            if (typeof(Ext4) !== "undefined"
-                            && Ext4.ComponentQuery
-                            && Ext4.ComponentQuery.query) {
-                                var mItems = Ext4.ComponentQuery.query(
-                                // Landing Page Editor
-                                    // Toolbar menu
-                                    //"lpEditor toolbar [action=preview]," + //Preview Draft
-                                    // Actions menu
-                                    "lpEditor menu [action=approveAndClose]," + //Approve and Close
-                                    "lpEditor menu [action=disableMobileVersion]," + //Turn Off Mobile Version
-                                    //"lpEditor menu [action=editPageMeta]," + //Edit Page Meta Tags
-                                    //"lpEditor menu [action=editFormSettings]," + //Edit Form Settings
-                                    "lpEditor menu [action=uploadImage]," + //Upload Image or File
-                                    "lpEditor menu [action=grabImages]," //+ //Grab Images from Web
-                                    //"lpEditor menu [action=toggleGuides]," + //Show Guides
-                                 );
-                                                    
-                                if (mItems) {
-                                    console.log("Marketo App > Disabling Landing Page Editor Toolbar Actions menus");
-                                    mItems.forEach(function(item) {
-                                        if (item) {
-                                                item.setDisabled(true);
-                                        }
-                                    });
+                            if (Mkt3.app.controllers.get("Mkt3.controller.editor.LandingPage").getLandingPage().getNodeJson()) {
+                                var assetNode = Mkt3.app.controllers.get("Mkt3.controller.editor.LandingPage").getLandingPage().getNodeJson(),
+                                    heapEvent = {
+                                        name : assetNode.text,
+                                        assetType : assetNode.compType
+                                        assetId : assetNode.id,
+                                        workspaceId : assetNode.accessZoneId
+                                    };
+                                
+                                if (assetNode.text.search(".") != -1) {
+                                    heapEvent.assetName = assetNode.text.split(".")[1];
+                                }
+                                else {
+                                    heapEvent.assetName = assetNode.text;
+                                }
+                                
+                                heap("track", heapEvent);
+                            }
+                            
+                            if (Mkt3.app.controllers.get("Mkt3.controller.editor.LandingPage").getLandingPage().get("zoneId").toString().search(mktoGoldenWorkspacesMatch) != -1) {
+                                APP.disablePropertyPanelSaving();
+                                
+                                if (typeof(Ext4) !== "undefined"
+                                && Ext4.ComponentQuery
+                                && Ext4.ComponentQuery.query) {
+                                    var mItems = Ext4.ComponentQuery.query(
+                                    // Landing Page Editor
+                                        // Toolbar menu
+                                        //"lpEditor toolbar [action=preview]," + //Preview Draft
+                                        // Actions menu
+                                        "lpEditor menu [action=approveAndClose]," + //Approve and Close
+                                        "lpEditor menu [action=disableMobileVersion]," + //Turn Off Mobile Version
+                                        //"lpEditor menu [action=editPageMeta]," + //Edit Page Meta Tags
+                                        //"lpEditor menu [action=editFormSettings]," + //Edit Form Settings
+                                        "lpEditor menu [action=uploadImage]," + //Upload Image or File
+                                        "lpEditor menu [action=grabImages]," //+ //Grab Images from Web
+                                        //"lpEditor menu [action=toggleGuides]," + //Show Guides
+                                     );
+                                                        
+                                    if (mItems) {
+                                        console.log("Marketo App > Disabling Landing Page Editor Toolbar Actions menus");
+                                        mItems.forEach(function(item) {
+                                            if (item) {
+                                                    item.setDisabled(true);
+                                            }
+                                        });
+                                    }
                                 }
                             }
                         }
@@ -5492,13 +5545,34 @@ var heapTrack = function(action) {
                             callback: function(records) {
                                 records.forEach(
                                     function(record) {
-                                        debugger;
+                                        if (record.getNodeJson()) {
+                                            var assetNode = record.getNodeJson(),
+                                                heapEvent = {
+                                                    name : assetNode.text,
+                                                    assetType : assetNode.compType
+                                                    assetId : assetNode.id,
+                                                    workspaceId : assetNode.accessZoneId
+                                                };
+                                            
+                                            if (assetNode.text.search(".") != -1) {
+                                                heapEvent.assetName = assetNode.text.split(".")[1];
+                                            }
+                                            else {
+                                                heapEvent.assetName = assetNode.text;
+                                            }
+                                            
+                                            heap("track", heapEvent);
+                                        }
+                                        
                                         if (record.get('zoneId')) {
-                                            var currAssetWorkspaceId = record.get('zoneId');
                                             console.log("Marketo App > currAssetWorkspaceId = " + currAssetWorkspaceId);
+                                            
+                                            var currAssetWorkspaceId = record.get('zoneId');
+                                            
                                             if (currAssetWorkspaceId.toString().search(mktoGoldenWorkspacesMatch) != -1
                                             || APP.getCookie("toggleState") == "false") {
                                                 APP.disableSaving();
+                                                
                                                 if (typeof(Ext4) !== "undefined"
                                                 && Ext4.ComponentQuery
                                                 && Ext4.ComponentQuery.query) {
@@ -5526,6 +5600,7 @@ var heapTrack = function(action) {
                                                     
                                                     if (mItems) {
                                                         console.log("Marketo App > Disabling Editor Toolbar Actions menus");
+                                                        
                                                         mItems.forEach(function(item) {
                                                             if (item) {
                                                                 item.setDisabled(true);
@@ -5549,6 +5624,7 @@ var heapTrack = function(action) {
                                 && Ext4.getStore('Email')
                                 && Ext4.getStore('Email').load) {
                                     console.log("Marketo App > Callback: Email Editor");
+                                    
                                     Ext4.getStore('Email').load(loadParameters);
                                 }
                             }
@@ -5600,6 +5676,63 @@ var heapTrack = function(action) {
                                 Ext4.getStore('SocialApp').load(loadParameters);
                             }
                             break;
+                            
+                        case mktoSmsMessageDesignerFragment:
+                            console.log("Marketo App > Location: SMS Message Designer");
+                            
+                            var isSmsMessageDesigner = window.setInterval(function() {
+                                if (typeof(Mkt3) !== "undefined"
+                                && Mkt3.app
+                                && Mkt3.app.controllers
+                                && Mkt3.app.controllers.get("Mkt3.controller.editor.SmsMessage")
+                                && Mkt3.app.controllers.get("Mkt3.controller.editor.SmsMessage").getSmsMessage()) {
+                                        
+                                    console.log("Marketo App > Loaded: Email Test Group Wizard");
+                                    
+                                    window.clearInterval(isSmsMessageDesigner);
+                                    
+                                    if (Mkt3.app.controllers.get("Mkt3.controller.editor.SmsMessage").getSmsMessage().getNodeJson()) {
+                                        var assetNode = Mkt3.app.controllers.get("Mkt3.controller.editor.SmsMessage").getSmsMessage().getNodeJson(),
+                                            heapEvent = {
+                                                name : assetNode.text,
+                                                assetType : assetNode.compType
+                                                assetId : assetNode.id,
+                                                workspaceId : assetNode.accessZoneId
+                                            };
+                                        
+                                        if (assetNode.text.search(".") != -1) {
+                                            heapEvent.assetName = assetNode.text.split(".")[1];
+                                        }
+                                        else {
+                                            heapEvent.assetName = assetNode.text;
+                                        }
+                                    }
+                                    
+                                    if (Mkt3.app.controllers.get("Mkt3.controller.editor.SmsMessage").getSmsMessage().get("zoneId").toString().search(mktoGoldenWorkspacesMatch) != -1) {
+                                        APP.disableSaving();
+                                        
+                                        if (typeof(Ext4) !== "undefined"
+                                        && Ext4.ComponentQuery
+                                        && Ext4.ComponentQuery.query) {
+                                            var mItems = Ext4.ComponentQuery.query(
+                                            // SMS Message Editor
+                                                // Actions menu
+                                                "contextMenu [action=approveAndClose]," //+ //Approve and Close
+                                             );
+                                                                
+                                            if (mItems) {
+                                                console.log("Marketo App > Disabling Landing Page Editor Toolbar Actions menus");
+                                                mItems.forEach(function(item) {
+                                                    if (item) {
+                                                            item.setDisabled(true);
+                                                    }
+                                                });
+                                            }
+                                        }
+                                    }
+                                }
+                            }, 0);
+                            break;
                         
                         case mktoABtestWizardFragment:
                             console.log("Marketo App > Location: A/B Test Wizard");
@@ -5610,14 +5743,33 @@ var heapTrack = function(action) {
                                 && Mkt3.app.controllers
                                 && Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor")
                                 && Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor").getEditor()
-                                && Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor").getEditor().record
-                                && (Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor").getEditor().record.get("zoneId").toString().search(mktoGoldenWorkspacesMatch) != -1)) {
-                                        
+                                && Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor").getEditor().record) {
                                     console.log("Marketo App > Loaded: A/B Test Wizard");
                                     
                                     window.clearInterval(isABtestWizard);
-                                    debugger;
-                                    APP.disableSaving();
+                                    
+                                    if (Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor").getEditor().record.getNodeJson()) {
+                                        var assetNode = Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor").getEditor().record.getNodeJson(),
+                                            heapEvent = {
+                                                name : assetNode.text,
+                                                assetType : assetNode.compType
+                                                assetId : assetNode.id,
+                                                workspaceId : assetNode.accessZoneId
+                                            };
+                                        
+                                        if (assetNode.text.search(".") != -1) {
+                                            heapEvent.assetName = assetNode.text.split(".")[1];
+                                        }
+                                        else {
+                                            heapEvent.assetName = assetNode.text;
+                                        }
+                                        
+                                        heap("track", heapEvent);
+                                    }
+                                    
+                                    if (Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor").getEditor().record.get("zoneId").toString().search(mktoGoldenWorkspacesMatch) != -1) {
+                                        APP.disableSaving();
+                                    }
                                 }
                             }, 0);
 //                            console.log("Callback for A/B Test Editor");
@@ -5633,14 +5785,32 @@ var heapTrack = function(action) {
                                 && Mkt3.app.controllers
                                 && Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor")
                                 && Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor").getEditor()
-                                && Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor").getEditor().record
-                                && (Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor").getEditor().record.get("zoneId").toString().search(mktoGoldenWorkspacesMatch) != -1)) {
+                                && Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor").getEditor().record) {
                                         
                                     console.log("Marketo App > Loaded: Email Test Group Wizard");
                                     
                                     window.clearInterval(isEmailTestWizard);
-                                    debugger;
-                                    APP.disableSaving();
+                                    
+                                    if (Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor").getEditor().record.getNodeJson()) {
+                                        var assetNode = Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor").getEditor().record.getNodeJson(),
+                                            heapEvent = {
+                                                name : assetNode.text,
+                                                assetType : assetNode.compType
+                                                assetId : assetNode.id,
+                                                workspaceId : assetNode.accessZoneId
+                                            };
+                                        
+                                        if (assetNode.text.search(".") != -1) {
+                                            heapEvent.assetName = assetNode.text.split(".")[1];
+                                        }
+                                        else {
+                                            heapEvent.assetName = assetNode.text;
+                                        }
+                                    }
+                                    
+                                    if (Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor").getEditor().record.get("zoneId").toString().search(mktoGoldenWorkspacesMatch) != -1) {
+                                        APP.disableSaving();
+                                    }
                                 }
                             }, 0);
 //                            console.log("Callback for A/B Test Editor");
@@ -5700,8 +5870,7 @@ var heapTrack = function(action) {
                 };
                 APP.overrideSuperballMenuItems();
                 
-                // Heap Analytics ID & Event Tracking
+                // Heap Analytics ID
                 heapTrack("id");
-                heapTrack("track");
         }
     }, 0);
