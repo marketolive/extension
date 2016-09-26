@@ -5127,7 +5127,10 @@ APP.trackTreeNodeSelection = function() {
                 currNode = node,
                 heapEventName = currNode.text,
                 heapEvent = {
-                    assetName : currNode.text
+                    assetName : currNode.text,
+                    assetId : currNode.attributes.id,
+                    assetType : currNode.attributes.compType,
+                    workspaceId : currNode.attributes.accessZoneId
                 };
             
             for (ii = 0; ii < node.getDepth()-1; ii++) {
@@ -5174,7 +5177,10 @@ APP.trackOtherAssets = function() {
             node = currNode = MktExplorer.getNodeById(currUrlFragment.substring(0, currUrlFragment.length - 5)),
             heapEventName = currNode.text,
             heapEvent = {
-                assetName : currNode.text
+                assetName : currNode.text,
+                assetId : currNode.attributes.id,
+                assetType : currNode.attributes.compType,
+                workspaceId : currNode.attributes.accessZoneId
             };
         
         for (ii = 0; ii < node.getDepth() - 1; ii++) {
@@ -5202,7 +5208,7 @@ APP.trackOtherAssets = function() {
 var heapTrack = function(action, event) {
     var isHeapAnalytics = window.setInterval(function() {
         if (typeof(heap) !== "undefined") {
-            console.log("Marketo App > Loaded: Heap Analytics");
+//            console.log("Marketo App > Loaded: Heap Analytics");
             
             window.clearInterval(isHeapAnalytics);
             
@@ -5250,7 +5256,10 @@ var heapTrack = function(action, event) {
                         heapApp = "Marketo";
                     }
                     
-                    if (MktPage
+                    if (event.assetArea) {
+                        heapArea = event.assetArea;
+                    }
+                    else if (MktPage
                     && MktPage.baseTitle) {
                         heapArea = MktPage.baseTitle.split("•")[0].trimRight();
                     }
@@ -5512,6 +5521,7 @@ var heapTrack = function(action, event) {
                                         name : assetNode.text,
                                         assetType : assetNode.compType,
                                         assetId : assetNode.id,
+                                        assetArea : "Designer/Wizard",
                                         workspaceId : assetNode.accessZoneId
                                     };
                                 
@@ -5577,6 +5587,7 @@ var heapTrack = function(action, event) {
                                                     name : assetNode.text,
                                                     assetType : assetNode.compType,
                                                     assetId : assetNode.id,
+                                                    assetArea : "Designer/Wizard",
                                                     workspaceId : assetNode.accessZoneId
                                                 };
                                             
@@ -5645,17 +5656,17 @@ var heapTrack = function(action, event) {
                         case mktoEmailDesignerFragment:
                             if (currUrlFragment.search(mktoEmailPreviewFragmentRegex) == -1) {
                                 console.log("Marketo App > Location: Email Designer");
-                                
-                                if (typeof(Ext4) !== "undefined"
-                                && Ext4.getStore('Email')
-                                && Ext4.getStore('Email').load) {
-                                    console.log("Marketo App > Callback: Email Editor");
-                                    
-                                    Ext4.getStore('Email').load(loadParameters);
-                                }
                             }
                             else {
                                 console.log("Marketo App > Location: Email Previewer");
+                            }
+                            
+                            if (typeof(Ext4) !== "undefined"
+                            && Ext4.getStore('Email')
+                            && Ext4.getStore('Email').load) {
+                                console.log("Marketo App > Callback: Email Editor");
+                                
+                                Ext4.getStore('Email').load(loadParameters);
                             }
                             break;
                         
@@ -5723,6 +5734,7 @@ var heapTrack = function(action, event) {
                                                 name : assetNode.text,
                                                 assetType : assetNode.compType,
                                                 assetId : assetNode.id,
+                                                assetArea : "Designer/Wizard",
                                                 workspaceId : assetNode.accessZoneId
                                             };
                                         
@@ -5782,6 +5794,7 @@ var heapTrack = function(action, event) {
                                                 name : assetNode.text,
                                                 assetType : assetNode.compType,
                                                 assetId : assetNode.id,
+                                                assetArea : "Designer/Wizard",
                                                 workspaceId : assetNode.accessZoneId
                                             };
                                         
@@ -5825,6 +5838,7 @@ var heapTrack = function(action, event) {
                                                 name : assetNode.text,
                                                 assetType : assetNode.compType,
                                                 assetId : assetNode.id,
+                                                assetArea : "Designer/Wizard",
                                                 workspaceId : assetNode.accessZoneId
                                             };
                                         
