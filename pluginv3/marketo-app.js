@@ -5176,6 +5176,7 @@ var heapTrack = function(action) {
                             Name : MktPage.userName
                         });
                     }
+                    console.log("Marketo App > Heap Analytics ID: " + heap.identity);
                     break;
                 
                 // Heap Analytics Event Tracking
@@ -5446,6 +5447,8 @@ var heapTrack = function(action) {
                             console.log("Marketo App > Loaded: Landing Page Editor");
                             
                             window.clearInterval(isLandingPageDesigner);
+                            debugger;
+                            
                             APP.disablePropertyPanelSaving();
                             if (typeof(Ext4) !== "undefined"
                             && Ext4.ComponentQuery
@@ -5489,6 +5492,7 @@ var heapTrack = function(action) {
                             callback: function(records) {
                                 records.forEach(
                                     function(record) {
+                                        debugger;
                                         if (record.get('zoneId')) {
                                             var currAssetWorkspaceId = record.get('zoneId');
                                             console.log("Marketo App > currAssetWorkspaceId = " + currAssetWorkspaceId);
@@ -5612,6 +5616,7 @@ var heapTrack = function(action) {
                                     console.log("Marketo App > Loaded: A/B Test Wizard");
                                     
                                     window.clearInterval(isABtestWizard);
+                                    debugger;
                                     APP.disableSaving();
                                 }
                             }, 0);
@@ -5634,6 +5639,7 @@ var heapTrack = function(action) {
                                     console.log("Marketo App > Loaded: Email Test Group Wizard");
                                     
                                     window.clearInterval(isEmailTestWizard);
+                                    debugger;
                                     APP.disableSaving();
                                 }
                             }, 0);
