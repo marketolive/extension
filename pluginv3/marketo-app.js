@@ -4747,14 +4747,16 @@ APP.discardEmailDrafts = function(emIds) {
 
 /**************************************************************************************
  *  
- *  This function discards Form, Social App, Push Notification drafts
+ *  This function discards Form, Push Notification, In-App Message, SMS Message, 
+ *  Social App drafts.
  *
  *  @Author Andy Garcia
  *
  *  @function
  *
- *  @param {String} assetType - The type of asset to discard. Can be "Form" 
- *                              or "MobilePushNotification"
+ *  @param {String} assetType - The type of asset to discard (Form, 
+ *                              MobilePushNotification, InAppMessage, SmsMessage, 
+ *                              SocialApp).
  *  @param {int[]} assetIds -   The array of asset ids to discard. These should
  *                              be in integer form not string.
  *
