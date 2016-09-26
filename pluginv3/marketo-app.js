@@ -5197,14 +5197,14 @@ APP.trackOtherAssets = function() {
  *
  **************************************************************************************/
 
-var heapTrack = function(action) {
+var heapTrack = function(action, event) {
     var isHeapAnalytics = window.setInterval(function() {
         if (typeof(heap) !== "undefined") {
             console.log("Marketo App > Loaded: Heap Analytics");
             
             window.clearInterval(isHeapAnalytics);
             
-            switch (action, event) {
+            switch (action) {
                 // Heap Analytics Identify User
                 case "id":
                     var oneLoginEmail = APP.getCookie("onelogin_email"),
@@ -5379,7 +5379,7 @@ var heapTrack = function(action) {
                 else if (currUrlFragment == mktoAnalyticsDefaultFragment) {
                     APP.overrideAnalyticsTiles();
                 }
-                else if (currUrlFragment.search(mktoOtherAssetsFragmentMatch)) {
+                else if (currUrlFragment.search(mktoOtherAssetsFragmentMatch) != -1) {
                     APP.trackOtherAssets();
                 }
                 else if (currUrlFragment.search(mktoAnalyzersFragmentMatch) != -1) {
@@ -5881,7 +5881,7 @@ var heapTrack = function(action) {
                                 else if (currUrlFragment == mktoAnalyticsDefaultFragment) {
                                     APP.overrideAnalyticsTiles();
                                 }
-                                else if (currUrlFragment.search(mktoOtherAssetsFragmentMatch)) {
+                                else if (currUrlFragment.search(mktoOtherAssetsFragmentMatch) != -1) {
                                     APP.trackOtherAssets();
                                 }
                                 else if (currUrlFragment.search(mktoAnalyzersFragmentMatch) != -1) {
