@@ -3434,6 +3434,7 @@ APP.hideToolbarItems = function() {
             }
 
             if (typeof(c) !== "undefined"
+            && c
             && c.topToolbar
             && c.topToolbar.items) {
                 console.log("Marketo App > Executing: Disable Toolbar items for ALL in ALL");
