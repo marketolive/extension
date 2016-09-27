@@ -407,14 +407,8 @@ getCookie({url : mktoAppDomainMatch, name : leadSourceCookieName}, function(cook
 
 if (webPageXvisitationRate >= 1.0
 || (Math.random()) <= webPageXvisitationRate) {
-    var submitCookieName = "attrib_submit",
+    var submitParam,
         visitedPagesCookieName = "visitedPages",
-        submitCookieLandingPage = {
-            url : mktoAppDomainMatch,
-            domain : mktoAppUriDomain,
-            name : submitCookieName,
-            expiresInDays : cookieExpiresInDays
-        },
         visitedPagesCookieMarketoLive = {
             url : mktoLiveDomainMatch,
             domain : mktoLiveUriDomain,
@@ -443,15 +437,14 @@ if (webPageXvisitationRate >= 1.0
                 && (webPageX.conversionRate >= 1.0
                     || (Math.random()) <= webPageX.conversionRate)) {
                     
-                    submitCookieLandingPage.value = "true";
+                    submitParam = "submit=true";
                 }
                 else {
-                    submitCookieLandingPage.value = "false";
+                    submitParam = "submit=false";
                 }
-                setCookie(submitCookieLandingPage);
                 
-                response = webRequest("GET", webPageX.url, false);
-                console.log("Response: " + webPageX.url + ": " + response);
+                response = webRequest("GET", webPageX.url + "?" + submitParam, false);
+                console.log("Response: " + webPageX.url + "?" + submitParam + ": " + response);
                 visitedPagesCookieMarketoLive.value = cookie.value + ", " + webPageX.name;
                 setCookie(visitedPagesCookieMarketoLive);
             }
@@ -466,14 +459,14 @@ if (webPageXvisitationRate >= 1.0
             && (webPageX.conversionRate >= 1.0
                 || (Math.random()) <= webPageX.conversionRate)) {
                 
-                submitCookieLandingPage.value = "true";
+                submitParam = "submit=true";
             }
             else {
-                submitCookieLandingPage.value = "false";
+                submitParam = "submit=false";
             }
-            setCookie(submitCookieLandingPage);
             
-            response = webRequest("GET", webPageX.url, false);
+            response = webRequest("GET", webPageX.url + "?" + submitParam, false);
+            console.log("Response: " + webPageX.url + "?" + submitParam + ": " + response);
             visitedPagesCookieMarketoLive.value = webPageX.name;
             setCookie(visitedPagesCookieMarketoLive);
         }

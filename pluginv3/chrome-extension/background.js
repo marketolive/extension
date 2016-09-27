@@ -436,6 +436,12 @@ chrome.runtime.onMessageExternal.addListener(function(message, sender, sendRespo
                     "value" : message.username,
                     "domain" : mktoAppUriDomain
                 },
+                usernameCookieDesigner = {
+                    "url" : mktoDesignerMatchPattern,
+                    "name" : usernameCookieName,
+                    "value" : message.username,
+                    "domain" : mktoDesignerUriDomain
+                },
                 firstNameCookieMarketoLive = {
                     "url" : mktoLiveDomainMatch,
                     "name" : firstNameCookieName,
@@ -453,6 +459,12 @@ chrome.runtime.onMessageExternal.addListener(function(message, sender, sendRespo
                     "name" : firstNameCookieName,
                     "value" : message.firstName,
                     "domain" : mktoAppUriDomain
+                },
+                firstNameCookieDesigner = {
+                    "url" : mktoDesignerMatchPattern,
+                    "name" : firstNameCookieName,
+                    "value" : message.firstName,
+                    "domain" : mktoDesignerUriDomain
                 },
                 lastNameCookieMarketoLive = {
                     "url" : mktoLiveDomainMatch,
@@ -472,6 +484,12 @@ chrome.runtime.onMessageExternal.addListener(function(message, sender, sendRespo
                     "value" : message.lastName,
                     "domain" : mktoAppUriDomain
                 },
+                lastNameCookieDesigner = {
+                    "url" : mktoDesignerMatchPattern,
+                    "name" : lastNameCookieName,
+                    "value" : message.lastName,
+                    "domain" : mktoDesignerUriDomain
+                },
                 emailCookieMarketoLive = {
                     "url" : mktoLiveDomainMatch,
                     "name" : emailCookieName,
@@ -489,20 +507,30 @@ chrome.runtime.onMessageExternal.addListener(function(message, sender, sendRespo
                     "name" : emailCookieName,
                     "value" : message.email,
                     "domain" : mktoAppUriDomain
+                },
+                emailCookieDesigner = {
+                    "url" : mktoDesignerMatchPattern,
+                    "name" : emailCookieName,
+                    "value" : message.email,
+                    "domain" : mktoDesignerUriDomain
                 };
             
             setCookie(usernameCookieMarketoLive);
             setCookie(usernameCookieMarketoLiveClassic);
             setCookie(usernameCookieMarketoApp);
+            setCookie(usernameCookieDesigner);
             setCookie(firstNameCookieMarketoLive);
             setCookie(firstNameCookieMarketoLiveClassic);
             setCookie(firstNameCookieMarketoApp);
+            setCookie(firstNameCookieDesigner);
             setCookie(lastNameCookieMarketoLive);
             setCookie(lastNameCookieMarketoLiveClassic);
             setCookie(lastNameCookieMarketoApp);
+            setCookie(lastNameCookieDesigner);
             setCookie(emailCookieMarketoLive);
             setCookie(emailCookieMarketoLiveClassic);
             setCookie(emailCookieMarketoApp);
+            setCookie(emailCookieDesigner);
             
             loadScript(BACKGROUND_DATA_SCRIPT_LOCATION);
             return sendResponse;

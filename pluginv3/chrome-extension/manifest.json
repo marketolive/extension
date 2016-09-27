@@ -28,7 +28,8 @@
     "externally_connectable": {
         "matches": [
             "*://marketolive.com/*",
-            "https://marketo.onelogin.com/client/apps"
+            "https://marketo.onelogin.com/client/apps",
+            "https://marketo.my.salesforce.com"
         ]
     },
     "icons": {

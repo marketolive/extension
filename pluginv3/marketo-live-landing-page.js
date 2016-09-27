@@ -8,7 +8,8 @@ var isMktoForm = window.setInterval(function() {
         
         MktoForms2.whenReady(function(form) {
             var demoMailBox = "mktodemosvcs+",
-                submitCookieName = "attrib_submit",
+                submitParamName = "submit",
+                submitParamVal,
                 usernameCookieName = "onelogin_username",
                 firstNameCookieName = "onelogin_first_name",
                 lastNameCookieName = "onelogin_last_name",
@@ -19,7 +20,30 @@ var isMktoForm = window.setInterval(function() {
                 leadSourceCookieName = "attrib_lead_source",
                 checkBoxes = ["yes", "no"],
                 answer,
+                getUrlParam,
                 getCookie;
+            
+            getUrlParam = function(param) {
+                console.log("Landing Page > Getting: URL Parameter: " + param);
+                
+                var params = window.location.href.split("?")[1].split("&"),
+                    paramPair,
+                    paramName,
+                    paramValue,
+                    ii;
+                
+                for (ii = 0; ii < params.length; ii++) {
+                    paramPair = params[ii].split("=");
+                    paramName = paramPair[0];
+                    paramValue = paramPair[1];
+                    
+                    if (paramName == param) {
+                        console.log("Landing Page > URL Parameter: " + paramName + " = " + paramValue);
+                        return paramValue;
+                    }
+                }
+                return false;
+            }
             
             getCookie = function(cookieName) {
                 console.log("Landing Page > Getting: Cookie " + cookieName);
@@ -38,7 +62,10 @@ var isMktoForm = window.setInterval(function() {
                 return null;
             };
             
-            if (getCookie(submitCookieName) == "true") {
+            submitParamVal = getUrlParam(submitParamName);
+            
+            if (submitParamVal == "true"
+            || submitParamVal == "test") {
             
                 if (typeof(form.getValues().FirstName) != "undefined") {
                     var firstName = getCookie(firstNameCookieName);
@@ -163,7 +190,10 @@ var isMktoForm = window.setInterval(function() {
                 }
                 
                 //console.log(JSON.stringify(form.vals(), null, 2));
-                form.submit();
+                
+                if (submitParamVal == "true") {
+                    form.submit();
+                }
             }
         });
     }
