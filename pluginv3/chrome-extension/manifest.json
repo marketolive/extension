@@ -29,7 +29,7 @@
         "matches": [
             "*://marketolive.com/*",
             "https://marketo.onelogin.com/client/apps",
-            "https://marketo.my.salesforce.com"
+            "https://marketo.my.salesforce.com/"
         ]
     },
     "icons": {
