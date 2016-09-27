@@ -3947,6 +3947,77 @@ APP.hideToolbarItems = function() {
     }
 };
 
+APP.disableDesignerToolbarMenus = function(assetType) {
+    console.log("Marketo App > Disabling: Designer (Edit/Preview) Toolbar Menus for " + assetType);
+    
+    if (typeof(Mkt3) !== "undefined"
+    && Mkt3
+    && Mkt3.app
+    && Mkt3.app.controllers
+    && Mkt3.app.controllers.get) {
+    
+        switch (assetType) {
+            case "email":
+                if (Mkt3.app.controllers.get("Mkt3.controller.editor.email2.Preview")
+                && Mkt3.app.controllers.get("Mkt3.controller.editor.email2.Preview").getEmail()
+                && Mkt3.app.controllers.get("Mkt3.controller.editor.email2.Preview").getEmail().get("zoneId")) {
+                    var currAssetWorkspaceId = Mkt3.app.controllers.get("Mkt3.controller.editor.email2.Preview").getEmail().get("zoneId");
+                    
+                    if (currAssetWorkspaceId.toString().search(mktoGoldenWorkspacesMatch) != -1
+                    || APP.getCookie("toggleState") == "false") {
+                        
+                        if (typeof(Ext4) !== "undefined"
+                        && Ext4.ComponentQuery
+                        && Ext4.ComponentQuery.query) {
+                            var mItems = Ext4.ComponentQuery.query(
+                                // Email 2.0 Editor
+                                    // Toolbar menu
+                                    //"email2EditorToolbar [action=editSettings]," + //Email Settings
+                                    //"email2EditorToolbar [action=editCode]," + //Edit Code
+                                    //"email2EditorToolbar [action=preview]," + //Preview
+                                    // Actions menu
+                                    "emailEditor2 menu [action=approveEmail]," + //Approve and Close
+                                    "emailEditor2 menu [action=sendTestEmail]," + //Send Sample
+                                    //"emailEditor2 menu [action=editSettings]," + //Email Settings
+                                    //"emailEditor2 menu [action=editCode]," + //Edit Code
+                                    //"emailEditor2 menu [action=downloadHtml]," + //Download HTML
+                                    "emailEditor2 menu [action=uploadImage]," + //Upload Image or File
+                                    "emailEditor2 menu [action=grabImages]," + //Grab Images from Web
+                                    "emailEditor2 menu [action=saveAsTemplate]," + //Save as Template
+                                // Email 2.0 Previewer
+                                    // Toolbar menu
+                                    "email2EditorPreviewToolbar [action=sendSampleEmail]," + //Send Sample
+                                    //"email2EditorPreviewToolbar [action=editDesign]," + //Edit Draft
+                                    // Actions menu
+                                    "menu [action=approveEmail]," + //Approve and Close
+                                    "menu [action=sendSampleEmail]," + //Send Sample
+                                    //"menu [action=viewSummary]," + //View Summary
+                                // In App Message Editor
+                                    // Actions menu
+                                    //"inAppMessageEditor menu [action=preview]," + //Preview
+                                    "inAppMessageEditor menu [action=approveAndClose]," /*+*///Approve & Close
+                                );
+                            
+                            if (mItems) {
+                                console.log("Marketo App > Executing: Disabling Designer Toolbar Menus for " + assetType);
+                                
+                                mItems.forEach(function(item) {
+                                    if (item) {
+                                        item.setDisabled(true);
+                                    }
+                                });
+                            }
+                        }
+                    }
+                }
+                break;
+                
+            default:
+                break;
+        }
+    }
+}
+
 /**************************************************************************************
  *  
  *  This function disables the Save, Create, Add ... buttons in Form windows. 
@@ -5446,7 +5517,8 @@ var heapTrack = function(action, event) {
                         APP.disableAdminSaveButtons();
                     }
                 }
-                else if (currCompFragment == mktoLandingPageDesignerFragment) {
+                else if (currCompFragment == mktoLandingPageDesignerFragment
+                || currCompFragment == mktoLandingPagePreviewFragment) {
                     console.log("Marketo App > Location: Landing Page Designer");
                     
 /*                      
@@ -5556,7 +5628,7 @@ var heapTrack = function(action, event) {
                                      );
                                                         
                                     if (mItems) {
-                                        console.log("Marketo App > Disabling Landing Page Editor Toolbar Actions menus");
+                                        console.log("Marketo App > Disabling Landing Page Designer Toolbar Menus");
                                         mItems.forEach(function(item) {
                                             if (item) {
                                                     item.setDisabled(true);
@@ -5628,7 +5700,14 @@ var heapTrack = function(action, event) {
                                                         "emailEditor2 menu [action=uploadImage]," + //Upload Image or File
                                                         "emailEditor2 menu [action=grabImages]," + //Grab Images from Web
                                                         "emailEditor2 menu [action=saveAsTemplate]," + //Save as Template
-                                                    
+                                                    // Email 2.0 Previewer
+                                                        // Toolbar menu
+                                                        "email2EditorPreviewToolbar [action=sendSampleEmail]," + //Send Sample
+                                                        //"email2EditorPreviewToolbar [action=editDesign]," + //Edit Draft
+                                                        // Actions menu
+                                                        "menu [action=approveEmail]," + //Approve and Close
+                                                        "menu [action=sendSampleEmail]," + //Send Sample
+                                                        //"menu [action=viewSummary]," + //View Summary
                                                     // In App Message Editor
                                                         // Actions menu
                                                         //"inAppMessageEditor menu [action=preview]," + //Preview
@@ -5636,7 +5715,7 @@ var heapTrack = function(action, event) {
                                                     );
                                                     
                                                     if (mItems) {
-                                                        console.log("Marketo App > Disabling Editor Toolbar Actions menus");
+                                                        console.log("Marketo App > Disabling Designer Toolbar Menus");
                                                         
                                                         mItems.forEach(function(item) {
                                                             if (item) {
@@ -5655,10 +5734,12 @@ var heapTrack = function(action, event) {
                     switch (currCompFragment) {
                         case mktoEmailDesignerFragment:
                             if (currUrlFragment.search(mktoEmailPreviewFragmentRegex) == -1) {
-                                console.log("Marketo App > Location: Email Designer");
+                                console.log("Marketo App > Location: Email Previewer");
+                                
+                                APP.disableDesignerToolbarMenus();
                             }
                             else {
-                                console.log("Marketo App > Location: Email Previewer");
+                                console.log("Marketo App > Location: Email Editor");
                             }
                             
                             if (typeof(Ext4) !== "undefined"
