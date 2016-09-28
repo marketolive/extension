@@ -17,19 +17,20 @@
             "*://*.marketodesigner.com/*",
             "*://marketolive.com/*",
             "*://www.marketolive.com/*",
+            "*://www.marketolive-dev.com/*",
             "*://cloud4.insightera.com/*",
             "*://go.app.io/*",
             "https://250ok.com/*",
             "https://marketo.invisionapp.com/*",
-            "https://marketo.onelogin.com/*",
-            "https://marketo.my.salesforce.com/*"
+            "https://marketo.onelogin.com/*"
         ]
     }],
     "externally_connectable": {
         "matches": [
             "*://marketolive.com/*",
-            "https://marketo.onelogin.com/client/apps",
-            "https://marketo.my.salesforce.com/"
+            "*://www.marketolive.com/*",
+            "*://www.marketolive-dev.com/*",
+            "https://marketo.onelogin.com/client/apps"
         ]
     },
     "icons": {
@@ -43,18 +44,18 @@
         "*://*.marketodesigner.com/*",
         "*://marketolive.com/*",
         "*://www.marketolive.com/*",
+        "*://www.marketolive-dev.com/*",
         "*://cloud4.insightera.com/*",
         "*://go.app.io/*",
         "https://250ok.com/*",
         "https://marketo.invisionapp.com/*",
-        "https://marketo.onelogin.com/*",
-        "https://marketo.my.salesforce.com/*"
+        "https://marketo.onelogin.com/*"
     ],
     "content_security_policy": "script-src 'self' https://marketolive.com; object-src 'self'",
     "web_accessible_resources": ["lib/*"],
     "manifest_version": 2,
     "update_url": "https://clients2.google.com/service/update2/crx",
     "name": "MarketoLive",
-    "description": "This plugin is for Marketo employees who have access to the MarketoLive demo environment.",
+    "description": "This extension is for Marketo employees and partners who have access to the MarketoLive demo environment.",
     "version": "4.2.0"
 }

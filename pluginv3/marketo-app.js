@@ -5520,7 +5520,6 @@ var heapTrack = function(action, event) {
                 else if (currCompFragment == mktoLandingPageDesignerFragment
                 || currCompFragment == mktoLandingPagePreviewFragment) {
                     console.log("Marketo App > Location: Landing Page Designer");
-                    
 /*                      
                         lpParameters = {
                             filters: [{
@@ -5574,8 +5573,8 @@ var heapTrack = function(action, event) {
                     && Ext4.getStore('LandingPage').load) {
                         console.log("Marketo App > Callback: Landing Page Editor");
                         Ext4.getStore('LandingPage').load(lpParameters);
-                    }
-*/                  
+                    }*/
+                    
                     var isLandingPageDesigner = window.setInterval(function() {
                         if (typeof(Mkt3) !== "undefined"
                         && Mkt3.app
@@ -5583,7 +5582,7 @@ var heapTrack = function(action, event) {
                         && Mkt3.app.controllers.get("Mkt3.controller.editor.LandingPage")
                         && Mkt3.app.controllers.get("Mkt3.controller.editor.LandingPage").getLandingPage()) {
                                 
-                            console.log("Marketo App > Loaded: Landing Page Editor");
+                            console.log("Marketo App > Loaded: Landing Page Designer");
                             
                             window.clearInterval(isLandingPageDesigner);
                             
