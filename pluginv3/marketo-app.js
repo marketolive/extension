@@ -3947,30 +3947,54 @@ APP.hideToolbarItems = function() {
     }
 };
 
-APP.disableDesignerToolbarMenus = function(assetType) {
-    console.log("Marketo App > Disabling: Designer (Edit/Preview) Toolbar Menus for " + assetType);
+APP.disableDesignerSaving = function(assetType, mode) {
+    console.log("Marketo App > Disabling: Designer (Edit/Preview) Saving & Toolbar Menus for " + assetType);
     
-    if (typeof(Mkt3) !== "undefined"
-    && Mkt3
-    && Mkt3.app
-    && Mkt3.app.controllers
-    && Mkt3.app.controllers.get) {
+    var heapTrackDesigner,
+        loadParameters;
     
-        switch (assetType) {
-            case "email":
-                if (Mkt3.app.controllers.get("Mkt3.controller.editor.email2.Preview")
-                && Mkt3.app.controllers.get("Mkt3.controller.editor.email2.Preview").getEmail()
-                && Mkt3.app.controllers.get("Mkt3.controller.editor.email2.Preview").getEmail().get("zoneId")) {
-                    var currAssetWorkspaceId = Mkt3.app.controllers.get("Mkt3.controller.editor.email2.Preview").getEmail().get("zoneId");
+    heapTrackDesigner = function(assetNode) {
+        var heapEvent = {
+                name : assetNode.text,
+                assetType : assetNode.compType,
+                assetId : assetNode.id,
+                assetArea : "Designer/Wizard",
+                workspaceId : assetNode.accessZoneId
+            };
+        
+        if (assetNode.text.search(".") != -1) {
+            heapEvent.assetName = assetNode.text.split(".")[1];
+        }
+        else {
+            heapEvent.assetName = assetNode.text;
+        }
+        
+        heapTrack("track", heapEvent);
+    };
+    
+    loadParameters = {
+        filters : [{
+                property : 'id',
+                value : Mkt3.DL.dl.compId
+            }
+        ],
+        callback : function(records) {
+            records.forEach(function(record) {
+                if (record.getNodeJson()) {
+                    heapTrackDesigner(record.getNodeJson());
+                }
+                
+                if (record.get("zoneId")) {
                     
-                    if (currAssetWorkspaceId.toString().search(mktoGoldenWorkspacesMatch) != -1
+                    if (record.get("zoneId").toString().search(mktoGoldenWorkspacesMatch) != -1
                     || APP.getCookie("toggleState") == "false") {
+                        APP.disableSaving();
                         
                         if (typeof(Ext4) !== "undefined"
                         && Ext4.ComponentQuery
                         && Ext4.ComponentQuery.query) {
                             var mItems = Ext4.ComponentQuery.query(
-                                // Email 2.0 Editor
+                                    // Email 2.0 Editor
                                     // Toolbar menu
                                     //"email2EditorToolbar [action=editSettings]," + //Email Settings
                                     //"email2EditorToolbar [action=editCode]," + //Edit Code
@@ -3984,7 +4008,7 @@ APP.disableDesignerToolbarMenus = function(assetType) {
                                     "emailEditor2 menu [action=uploadImage]," + //Upload Image or File
                                     "emailEditor2 menu [action=grabImages]," + //Grab Images from Web
                                     "emailEditor2 menu [action=saveAsTemplate]," + //Save as Template
-                                // Email 2.0 Previewer
+                                    // Email 2.0 Previewer
                                     // Toolbar menu
                                     "email2EditorPreviewToolbar [action=sendSampleEmail]," + //Send Sample
                                     //"email2EditorPreviewToolbar [action=editDesign]," + //Edit Draft
@@ -3992,16 +4016,16 @@ APP.disableDesignerToolbarMenus = function(assetType) {
                                     "menu [action=approveEmail]," + //Approve and Close
                                     "menu [action=sendSampleEmail]," + //Send Sample
                                     //"menu [action=viewSummary]," + //View Summary
-                                // In App Message Editor
+                                    // In App Message Editor
                                     // Actions menu
                                     //"inAppMessageEditor menu [action=preview]," + //Preview
                                     "inAppMessageEditor menu [action=approveAndClose]," /*+*///Approve & Close
                                 );
                             
                             if (mItems) {
-                                console.log("Marketo App > Executing: Disabling Designer Toolbar Menus for " + assetType);
+                                console.log("Marketo App > Disabling Designer Toolbar Menus");
                                 
-                                mItems.forEach(function(item) {
+                                mItems.forEach(function (item) {
                                     if (item) {
                                         item.setDisabled(true);
                                     }
@@ -4010,13 +4034,195 @@ APP.disableDesignerToolbarMenus = function(assetType) {
                         }
                     }
                 }
-                break;
-                
-            default:
-                break;
+            });
         }
-    }
-}
+    };
+    
+    var isDesignerAsset = window.setInterval(function() {
+        if (typeof(Mkt3) !== "undefined"
+        && Mkt3
+        && Mkt3.app
+        && Mkt3.app.controllers
+        && Mkt3.app.controllers.get) {
+            
+            window.clearInterval(isDesignerAsset);
+        
+            switch (assetType) {
+                case "landingPage":
+                    switch (mode) {
+                        case "edit":
+                            var isLandingPageEditor = window.setInterval(function() {
+                                
+                                if (Mkt3.app.controllers.get("Mkt3.controller.editor.LandingPage")
+                                && Mkt3.app.controllers.get("Mkt3.controller.editor.LandingPage").getLandingPage()
+                                && Mkt3.app.controllers.get("Mkt3.controller.editor.LandingPage").getLandingPage().getNodeJson()) {
+                                    var currAssetNode = Mkt3.app.controllers.get("Mkt3.controller.editor.LandingPage").getLandingPage().getNodeJson();
+                                        
+                                    console.log("Marketo App > Loaded: Landing Page Editor");
+                                    
+                                    window.clearInterval(isLandingPageEditor);
+                                    
+                                    heapTrackDesigner(currAssetNode);
+                                    
+                                    if (currAssetNode.accessZoneId.toString().search(mktoGoldenWorkspacesMatch) != -1
+                                    || APP.getCookie("toggleState") == "false") {
+                                        APP.disablePropertyPanelSaving();
+                                        
+                                        if (typeof(Ext4) !== "undefined"
+                                        && Ext4.ComponentQuery
+                                        && Ext4.ComponentQuery.query) {
+                                            var mItems = Ext4.ComponentQuery.query(
+                                            // Landing Page Editor
+                                                // Toolbar menu
+                                                //"lpEditor toolbar [action=preview]," + //Preview Draft
+                                                // Actions menu
+                                                "lpEditor menu [action=approveAndClose]," + //Approve and Close
+                                                "lpEditor menu [action=disableMobileVersion]," + //Turn Off Mobile Version
+                                                //"lpEditor menu [action=editPageMeta]," + //Edit Page Meta Tags
+                                                //"lpEditor menu [action=editFormSettings]," + //Edit Form Settings
+                                                "lpEditor menu [action=uploadImage]," + //Upload Image or File
+                                                "lpEditor menu [action=grabImages]," //+ //Grab Images from Web
+                                                //"lpEditor menu [action=toggleGuides]," + //Show Guides
+                                             );
+                                                                
+                                            if (mItems) {
+                                                console.log("Marketo App > Disabling Landing Page Editor Toolbar Menus");
+                                                mItems.forEach(function(item) {
+                                                    if (item) {
+                                                            item.setDisabled(true);
+                                                    }
+                                                });
+                                            }
+                                        }
+                                    }
+                                }
+                            }, 0);
+                            break;
+                        
+                        case "preview":
+                            var isLandingPagePreview = window.setInterval(function() {
+                                
+                                if (Mkt3.app.controllers.get("Mkt3.controller.previewer.LandingPage")
+                                && Mkt3.app.controllers.get("Mkt3.controller.previewer.LandingPage").getLandingPage()
+                                && Mkt3.app.controllers.get("Mkt3.controller.previewer.LandingPage").getLandingPage().getNodeJson()) {
+                                    var currAssetNode = Mkt3.app.controllers.get("Mkt3.controller.previewer.LandingPage").getLandingPage().getNodeJson();
+                                    
+                                    console.log("Marketo App > Loaded: Landing Page Previewer");
+                                    
+                                    window.clearInterval(isLandingPagePreview);
+                                    
+                                    heapTrackDesigner(currAssetNode);
+                                    
+                                    if (currAssetNode.accessZoneId.toString().search(mktoGoldenWorkspacesMatch) != -1) {
+                                        
+                                        if (typeof(Ext4) !== "undefined"
+                                        && Ext4.ComponentQuery
+                                        && Ext4.ComponentQuery.query) {
+                                            var mItems = Ext4.ComponentQuery.query(
+                                            // Landing Page Preview
+                                                // Tab menu
+                                                //"toolbar [action=showDesktop]," + //Desktop
+                                                //"toolbar [action=showMobile]," + //Mobile
+                                                //"toolbar [action=showSideBySide]," + //Side by Side
+                                                //"toolbar [action=edit]," + //Edit Draft
+                                                // Toolbar menu
+                                                //"toolbar [action=viewMenu]," + //View Default
+                                                //"toolbar [action=maximize]," + //(Expand Arrows)
+                                                // Actions menu
+                                                "menu [action=approveAndClose]," //+ //Approve and Close
+                                                //"menu [action=devicePreview]," + //Generate Preview URL
+                                             );
+                                                                
+                                            if (mItems) {
+                                                console.log("Marketo App > Disabling Landing Page Previewer Toolbar Menus");
+                                                mItems.forEach(function(item) {
+                                                    if (item) {
+                                                            item.setDisabled(true);
+                                                    }
+                                                });
+                                            }
+                                        }
+                                    }
+                                }
+                            }, 0);
+                            break;
+                        
+                        default:
+                            break;
+                    }
+                    break;
+                
+                case "email":
+                    switch (mode) {
+                        case "edit":
+                            var isEmailCallback = window.setInterval(function() {
+                                if (typeof(Ext4) !== "undefined"
+                                && Ext4
+                                && Ext4.getStore("Email")
+                                && Ext4.getStore("Email").load) {
+                                    console.log("Marketo App > Callback: Email Editor");
+                                    
+                                    window.clearInterval(isEmailCallback);
+                                    
+                                    Ext4.getStore("Email").load(loadParameters);
+                                }
+                            }, 0);
+                            break;
+                        case "preview":
+                            var isEmailPreview = window.setInterval(function() {
+                                if (Mkt3.app.controllers.get("Mkt3.controller.editor.email2.Preview")
+                                && Mkt3.app.controllers.get("Mkt3.controller.editor.email2.Preview").getEmail()
+                                && Mkt3.app.controllers.get("Mkt3.controller.editor.email2.Preview").getEmail().getNodeJson()) {
+                                    var currAssetNode = Mkt3.app.controllers.get("Mkt3.controller.editor.email2.Preview").getEmail().getNodeJson();
+                                    
+                                    console.log("Marketo App > Loaded: Email Previewer");
+                                    
+                                    window.clearInterval(isEmailPreview);
+                                    
+                                    heapTrackDesigner(currAssetNode);
+                                    
+                                    if (currAssetNode.accessZoneId.toString().search(mktoGoldenWorkspacesMatch) != -1) {
+                                        
+                                        if (typeof(Ext4) !== "undefined"
+                                        && Ext4.ComponentQuery
+                                        && Ext4.ComponentQuery.query) {
+                                            var mItems = Ext4.ComponentQuery.query(
+                                                // Email 2.0 Previewer
+                                                    // Toolbar menu
+                                                    "email2EditorPreviewToolbar [action=sendSampleEmail]," + //Send Sample
+                                                    //"email2EditorPreviewToolbar [action=editDesign]," + //Edit Draft
+                                                    // Actions menu
+                                                    "menu [action=approveEmail]," + //Approve and Close
+                                                    "menu [action=sendSampleEmail]," + //Send Sample
+                                                    //"menu [action=viewSummary]," + //View Summary
+                                                );
+                                            
+                                            if (mItems) {
+                                                console.log("Marketo App > Executing: Disabling Email Previewer Toolbar Menus for " + assetType);
+                                                
+                                                mItems.forEach(function(item) {
+                                                    if (item) {
+                                                        item.setDisabled(true);
+                                                    }
+                                                });
+                                            }
+                                        }
+                                    }
+                                }
+                            }, 0);
+                            break;
+                        
+                        default:
+                            break;
+                    }
+                    break;
+                
+                default:
+                    break;
+            }
+        }
+    }, 0);
+};
 
 /**************************************************************************************
  *  
@@ -5517,9 +5723,8 @@ var heapTrack = function(action, event) {
                         APP.disableAdminSaveButtons();
                     }
                 }
-                else if (currCompFragment == mktoLandingPageDesignerFragment
-                || currCompFragment == mktoLandingPagePreviewFragment) {
-                    console.log("Marketo App > Location: Landing Page Designer");
+                else if (currCompFragment == mktoLandingPageDesignerFragment) {
+                    console.log("Marketo App > Location: Landing Page Editor");
 /*                      
                         lpParameters = {
                             filters: [{
@@ -5573,7 +5778,7 @@ var heapTrack = function(action, event) {
                     && Ext4.getStore('LandingPage').load) {
                         console.log("Marketo App > Callback: Landing Page Editor");
                         Ext4.getStore('LandingPage').load(lpParameters);
-                    }*/
+                    }
                     
                     var isLandingPageDesigner = window.setInterval(function() {
                         if (typeof(Mkt3) !== "undefined"
@@ -5637,116 +5842,29 @@ var heapTrack = function(action, event) {
                                 }
                             }
                         }
-                    }, 0);
+                    }, 0);*/
                     
-                    return;
+                    APP.disableDesignerSaving("landingPage", "edit");
+                }
+                else if (currCompFragment == mktoLandingPagePreviewFragment) {
+                    console.log("Marketo App > Location: Landing Page Previewer");
+                    
+                    APP.disableDesignerSaving("landingPage", "preview");
                 }
                 else {
                     console.log("Marketo App > Location: Designers/Wizards");
                     
-                    var loadParameters = {
-                            filters: [{
-                                property: 'id',
-                                value: Mkt3.DL.dl.compId
-                            }],
-                            callback: function(records) {
-                                records.forEach(
-                                    function(record) {
-                                        if (record.getNodeJson()) {
-                                            var assetNode = record.getNodeJson(),
-                                                heapEvent = {
-                                                    name : assetNode.text,
-                                                    assetType : assetNode.compType,
-                                                    assetId : assetNode.id,
-                                                    assetArea : "Designer/Wizard",
-                                                    workspaceId : assetNode.accessZoneId
-                                                };
-                                            
-                                            if (assetNode.text.search(".") != -1) {
-                                                heapEvent.assetName = assetNode.text.split(".")[1];
-                                            }
-                                            else {
-                                                heapEvent.assetName = assetNode.text;
-                                            }
-                                            
-                                            heapTrack("track", heapEvent);
-                                        }
-                                        
-                                        if (record.get('zoneId')) {
-                                            console.log("Marketo App > currAssetWorkspaceId = " + currAssetWorkspaceId);
-                                            
-                                            var currAssetWorkspaceId = record.get('zoneId');
-                                            
-                                            if (currAssetWorkspaceId.toString().search(mktoGoldenWorkspacesMatch) != -1
-                                            || APP.getCookie("toggleState") == "false") {
-                                                APP.disableSaving();
-                                                
-                                                if (typeof(Ext4) !== "undefined"
-                                                && Ext4.ComponentQuery
-                                                && Ext4.ComponentQuery.query) {
-                                                    var mItems = Ext4.ComponentQuery.query(
-                                                    // Email 2.0 Editor
-                                                        // Toolbar menu
-                                                        //"email2EditorToolbar [action=editSettings]," + //Email Settings
-                                                        //"email2EditorToolbar [action=editCode]," + //Edit Code
-                                                        //"email2EditorToolbar [action=preview]," + //Preview
-                                                        // Actions menu
-                                                        "emailEditor2 menu [action=approveEmail]," + //Approve and Close
-                                                        "emailEditor2 menu [action=sendTestEmail]," + //Send Sample
-                                                        //"emailEditor2 menu [action=editSettings]," + //Email Settings
-                                                        //"emailEditor2 menu [action=editCode]," + //Edit Code
-                                                        //"emailEditor2 menu [action=downloadHtml]," + //Download HTML
-                                                        "emailEditor2 menu [action=uploadImage]," + //Upload Image or File
-                                                        "emailEditor2 menu [action=grabImages]," + //Grab Images from Web
-                                                        "emailEditor2 menu [action=saveAsTemplate]," + //Save as Template
-                                                    // Email 2.0 Previewer
-                                                        // Toolbar menu
-                                                        "email2EditorPreviewToolbar [action=sendSampleEmail]," + //Send Sample
-                                                        //"email2EditorPreviewToolbar [action=editDesign]," + //Edit Draft
-                                                        // Actions menu
-                                                        "menu [action=approveEmail]," + //Approve and Close
-                                                        "menu [action=sendSampleEmail]," + //Send Sample
-                                                        //"menu [action=viewSummary]," + //View Summary
-                                                    // In App Message Editor
-                                                        // Actions menu
-                                                        //"inAppMessageEditor menu [action=preview]," + //Preview
-                                                        "inAppMessageEditor menu [action=approveAndClose]," /*+*/ //Approve & Close
-                                                    );
-                                                    
-                                                    if (mItems) {
-                                                        console.log("Marketo App > Disabling Designer Toolbar Menus");
-                                                        
-                                                        mItems.forEach(function(item) {
-                                                            if (item) {
-                                                                item.setDisabled(true);
-                                                            }
-                                                        });
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                );
-                            }
-                        };
-
                     switch (currCompFragment) {
                         case mktoEmailDesignerFragment:
                             if (currUrlFragment.search(mktoEmailPreviewFragmentRegex) == -1) {
                                 console.log("Marketo App > Location: Email Previewer");
                                 
-                                APP.disableDesignerToolbarMenus();
+                                APP.disableDesignerSaving("email", "preview");
                             }
                             else {
                                 console.log("Marketo App > Location: Email Editor");
-                            }
-                            
-                            if (typeof(Ext4) !== "undefined"
-                            && Ext4.getStore('Email')
-                            && Ext4.getStore('Email').load) {
-                                console.log("Marketo App > Callback: Email Editor");
                                 
-                                Ext4.getStore('Email').load(loadParameters);
+                                APP.disableDesignerSaving("email", "edit");
                             }
                             break;
                         
