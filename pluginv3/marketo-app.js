@@ -5979,20 +5979,22 @@ var heapTrack = function(action, event) {
                         APP.disableAdminSaveButtons();
                     }
                 }
-                else if (currCompFragment == mktoLandingPageEditFragment) {
-                    console.log("Marketo App > Location: Landing Page Editor");
-                    
-                    APP.disableDesignerSaving("landingPage", "edit");
-                }
-                else if (currCompFragment == mktoLandingPagePreviewFragment) {
-                    console.log("Marketo App > Location: Landing Page Previewer");
-                    
-                    APP.disableDesignerSaving("landingPage", "preview");
-                }
                 else {
                     console.log("Marketo App > Location: Designers/Wizards");
                     
                     switch (currCompFragment) {
+                        case mktoLandingPageEditFragment:
+                            console.log("Marketo App > Location: Landing Page Editor");
+                            
+                            APP.disableDesignerSaving("landingPage", "edit");
+                            break;
+                        
+                        case mktoLandingPagePreviewFragment:
+                            console.log("Marketo App > Location: Landing Page Previewer");
+                            
+                            APP.disableDesignerSaving("landingPage", "preview");
+                            break;
+                        
                         case mktoEmailEditFragment:
                             if (currUrlFragment.search(mktoEmailPreviewFragmentRegex) == -1) {
                                 console.log("Marketo App > Location: Email Editor");
@@ -6093,12 +6095,6 @@ var heapTrack = function(action, event) {
                                 currUrlFragment = Mkt3.DL.getDlToken();
                                 console.log("Marketo App > Loaded: New URL Fragment = " + currUrlFragment);
                                 
-                                if (Mkt3.DL.dl
-                                && Mkt3.DL.dl.dlCompCode) {
-                                    currCompFragment = Mkt3.DL.dl.dlCompCode;
-//                                    console.log("Marketo App > Window: Comp Fragment = " + currCompFragment);
-                                }
-                                
                                 if (currUrlFragment == mktoMyMarketoFragment) {
                                     APP.overrideHomeTiles();
                                 }
@@ -6115,6 +6111,112 @@ var heapTrack = function(action, event) {
                                     console.log("Marketo App > Location: Analytics");
                                     
                                     APP.injectAnalyzerNavBar();
+                                }
+                                
+                                if (Mkt3.DL.dl
+                                && Mkt3.DL.dl.dlCompCode) {
+                                    currCompFragment = Mkt3.DL.dl.dlCompCode;
+//                                    console.log("Marketo App > Window: Comp Fragment = " + currCompFragment);
+                                    
+                                    if (currCompFragment.search(mktoDesignersFragmentMatch) != -1) {
+                                        console.log("Marketo App > Location: Designers/Wizards");
+                                        
+                                        switch (currCompFragment) {
+                                            case mktoLandingPageEditFragment:
+                                                console.log("Marketo App > Location: Landing Page Editor");
+                                                
+                                                APP.disableDesignerSaving("landingPage", "edit");
+                                                break;
+                                            
+                                            case mktoLandingPagePreviewFragment:
+                                                console.log("Marketo App > Location: Landing Page Previewer");
+                                                
+                                                APP.disableDesignerSaving("landingPage", "preview");
+                                                break;
+                                            
+                                            case mktoEmailEditFragment:
+                                                if (currUrlFragment.search(mktoEmailPreviewFragmentRegex) == -1) {
+                                                    console.log("Marketo App > Location: Email Editor");
+                                                    
+                                                    APP.disableDesignerSaving("email", "edit");
+                                                }
+                                                else {
+                                                    console.log("Marketo App > Location: Email Previewer");
+                                                    
+                                                    APP.disableDesignerSaving("email", "preview");
+                                                }
+                                                break;
+                                            
+                                            case mktoFormEditFragment:
+                                                console.log("Marketo App > Location: Form Editor");
+                                                
+                                                APP.disableDesignerSaving("form", "edit");
+                                                break;
+                                            
+                                            case mktoFormPreviewFragment:
+                                                console.log("Marketo App > Location: Form Previewer");
+                                                
+                                                APP.disableDesignerSaving("form", "preview");
+                                                break;
+                                            
+                                            case mktoPushNotificationEditFragment:
+                                                console.log("Marketo App > Location: Push Notification Editor");
+                                                
+                                                APP.disableDesignerSaving("pushNotification", "edit");
+                                                break;
+                                            
+                                            case mktoMobilePushNotificationPreviewFragment:
+                                                console.log("Marketo App > Location: Push Notification Previewer");
+                                                
+                                                APP.disableDesignerSaving("pushNotification", "preview");
+                                                break;
+                                            
+                                            case mktoInAppMessageEditFragment:
+                                                console.log("Marketo App > Location: In-App Message Editor");
+                                                
+                                                APP.disableDesignerSaving("inAppMessage", "edit");
+                                                break;
+                                            
+                                            case mktoInAppMessagePreviewFragment:
+                                                console.log("Marketo App > Location: In-App Message Previewer");
+                                                
+                                                APP.disableDesignerSaving("inAppMessage", "preview");
+                                                break;
+                                            
+                                            case mktoSmsMessageEditFragment:
+                                                console.log("Marketo App > Location: SMS Message Editor");
+                                                
+                                                APP.disableDesignerSaving("smsMessage", "edit");
+                                                break;
+                                            
+                                            case mktoSocialAppEditFragment:
+                                                console.log("Marketo App > Location: Social App Editor");
+                                                
+                                                APP.disableDesignerSaving("socialApp", "edit");
+                                                break;
+                                            
+                                            case mktoSocialAppPreviewFragment:
+                                                console.log("Marketo App > Location: Social App Previewer");
+                                                
+                                                APP.disableDesignerSaving("socialApp", "preview");
+                                                break;
+                                            
+                                            case mktoAbTestEditFragment:
+                                                console.log("Marketo App > Location: A/B Test Wizard");
+                                                
+                                                APP.disableDesignerSaving("abTest");
+                                                break;
+                                            
+                                            case mktoEmailTestGroupEditFragment:
+                                                console.log("Marketo App > Location: Email Test Group Wizard");
+                                                
+                                                APP.disableDesignerSaving("abTest");
+                                                break;
+                                            
+                                            default:
+                                                break;
+                                        }
+                                    }
                                 }
                             }
                         }
