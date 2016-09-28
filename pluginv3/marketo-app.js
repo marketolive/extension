@@ -4193,7 +4193,7 @@ APP.disableDesignerSaving = function(assetType, mode) {
                                                     //"email2EditorPreviewToolbar [action=editDesign]," + //Edit Draft
                                                     // Actions menu
                                                     "menu [action=approveEmail]," + //Approve and Close
-                                                    "menu [action=sendSampleEmail]," + //Send Sample
+                                                    "menu [action=sendSampleEmail]," //+ //Send Sample
                                                     //"menu [action=viewSummary]," + //View Summary
                                                 );
                                             
