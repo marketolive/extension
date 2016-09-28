@@ -3951,7 +3951,8 @@ APP.disableDesignerSaving = function(assetType, mode) {
     console.log("Marketo App > Disabling: Designer (Edit/Preview) Saving & Toolbar Menus for " + assetType);
     
     var heapTrackDesigner,
-        loadParameters;
+        loadParameters,
+        editorCallback;
     
     heapTrackDesigner = function(assetNode) {
         var heapEvent = {
@@ -3994,7 +3995,7 @@ APP.disableDesignerSaving = function(assetType, mode) {
                         && Ext4.ComponentQuery
                         && Ext4.ComponentQuery.query) {
                             var mItems = Ext4.ComponentQuery.query(
-                                    // Email 2.0 Editor
+                                // Email 2.0 Editor
                                     // Toolbar menu
                                     //"email2EditorToolbar [action=editSettings]," + //Email Settings
                                     //"email2EditorToolbar [action=editCode]," + //Edit Code
@@ -4008,7 +4009,7 @@ APP.disableDesignerSaving = function(assetType, mode) {
                                     "emailEditor2 menu [action=uploadImage]," + //Upload Image or File
                                     "emailEditor2 menu [action=grabImages]," + //Grab Images from Web
                                     "emailEditor2 menu [action=saveAsTemplate]," + //Save as Template
-                                    // Email 2.0 Previewer
+                                // Email 2.0 Previewer
                                     // Toolbar menu
                                     "email2EditorPreviewToolbar [action=sendSampleEmail]," + //Send Sample
                                     //"email2EditorPreviewToolbar [action=editDesign]," + //Edit Draft
@@ -4016,10 +4017,43 @@ APP.disableDesignerSaving = function(assetType, mode) {
                                     "menu [action=approveEmail]," + //Approve and Close
                                     "menu [action=sendSampleEmail]," + //Send Sample
                                     //"menu [action=viewSummary]," + //View Summary
-                                    // In App Message Editor
+                                // Form Editor
+                                    // Toolbar menu
+                                    //"formEditor toolbar [action=preview]," + //Preview Draft
+                                    // Navigation menu
+                                    //"formEditor toolbar [action=back]," + //Back
+                                    //"formEditor toolbar [action=next]," + //Next
+                                    //"formEditor toolbar [action=close]," + //Close
+                                    "formEditor toolbar [action=approveAndClose]," + //Approve & Close
+                                    "formEditor toolbar [action=finish]," + //Finish
+                                // Form Previewer
+                                    // Toolbar menu
+                                    //"formPreviewer toolbar [action=edit]," + //Edit Draft
+                                // In-App Message Editor
                                     // Actions menu
                                     //"inAppMessageEditor menu [action=preview]," + //Preview
-                                    "inAppMessageEditor menu [action=approveAndClose]," /*+*///Approve & Close
+                                    "inAppMessageEditor menu [action=approveAndClose]," + //Approve & Close
+                                // In-App Message Previewer
+                                    // Toolbar menu
+                                    "inAppMessagePreviewer toolbar [action=approveAndClose]," + //Approve & Close
+                                    //"inAppMessagePreviewer toolbar [action=edit]," + //Edit Draft
+                                // Push Notification Editor
+                                    // Toolbar menu
+                                    "mobilePushNotificationEditor toolbar [action=sendDraftSample]," + //Send Sample
+                                    //"mobilePushNotificationEditor toolbar [action=preview]," + //Preview Draft
+                                    // Navigation menu
+                                    //"mobilePushNotificationEditor toolbar [action=back]," + //Back
+                                    //"mobilePushNotificationEditor toolbar [action=next]," + //Next
+                                    //"mobilePushNotificationEditor toolbar [action=close]," + //Close
+                                    "mobilePushNotificationEditor toolbar [action=finish]," + //Finish
+                                    "mobilePushNotificationEditor toolbar [action=approveAndClose]," + //Approve & Close
+                                // Push Notification Previewer
+                                    // Toolbar menu
+                                    "mobilePushNotificationEditor toolbar [action=sendDraftSample]," + //Send Sample
+                                    //"mobilePushNotificationEditor toolbar [action=edit]," + //Edit Draft
+                                // SMS Message Editor
+                                    // Actions menu
+                                    "smsMessageEditor menu [action=approveAndClose]," //+ //Approve and Close
                                 );
                             
                             if (mItems) {
@@ -4036,6 +4070,22 @@ APP.disableDesignerSaving = function(assetType, mode) {
                 }
             });
         }
+    };
+    
+    editorCallback = function(assetType) {
+        var isEditorCallback = window.setInterval(function() {
+            
+            if (typeof(Ext4) !== "undefined"
+            && Ext4
+            && Ext4.getStore(assetType)
+            && Ext4.getStore(assetType).load) {
+                console.log("Marketo App > Callback: " + assetType + " Editor");
+                
+                window.clearInterval(isEditorCallback);
+                
+                Ext4.getStore(assetType).load(loadParameters);
+            }
+        }, 0);
     };
     
     var isDesignerAsset = window.setInterval(function() {
@@ -4097,6 +4147,14 @@ APP.disableDesignerSaving = function(assetType, mode) {
                                     }
                                 }
                             }, 0);
+/*                            
+                            if (typeof(Ext4) !== "undefined"
+                            && Ext4
+                            && Ext4.getStore("LandingPage")
+                            && Ext4.getStore("LandingPage").load) {
+                                console.log("Marketo App > Callback: Landing Page Editor");
+                                Ext4.getStore("LandingPage").load(lpParameters);
+                            }*/
                             break;
                         
                         case "preview":
@@ -4155,20 +4213,11 @@ APP.disableDesignerSaving = function(assetType, mode) {
                 case "email":
                     switch (mode) {
                         case "edit":
-                            var isEmailCallback = window.setInterval(function() {
-                                if (typeof(Ext4) !== "undefined"
-                                && Ext4
-                                && Ext4.getStore("Email")
-                                && Ext4.getStore("Email").load) {
-                                    console.log("Marketo App > Callback: Email Editor");
-                                    
-                                    window.clearInterval(isEmailCallback);
-                                    
-                                    Ext4.getStore("Email").load(loadParameters);
-                                }
-                            }, 0);
+                            editorCallback("Email");
                             break;
                         case "preview":
+                            editorCallback("Email");
+/*                            
                             var isEmailPreview = window.setInterval(function() {
                                 if (Mkt3.app.controllers.get("Mkt3.controller.editor.email2.Preview")
                                 && Mkt3.app.controllers.get("Mkt3.controller.editor.email2.Preview").getEmail()
@@ -4209,7 +4258,7 @@ APP.disableDesignerSaving = function(assetType, mode) {
                                         }
                                     }
                                 }
-                            }, 0);
+                            }, 0);*/
                             break;
                         
                         default:
@@ -4217,6 +4266,173 @@ APP.disableDesignerSaving = function(assetType, mode) {
                     }
                     break;
                 
+                case "form":
+                    switch (mode) {
+                        case "edit":
+                            editorCallback("Form");
+                            break;
+                        
+                        case "preview":
+//                            editorCallback("Form");
+                            break;
+                            
+                        default:
+                            break;
+                    }
+                    break;
+                
+                case "pushNotification":
+                    switch (mode) {
+                        case "edit":
+                            editorCallback("MobilePushNotification");
+                            break;
+                        
+                        case "preview":
+                            editorCallback("MobilePushNotification");
+                            break;
+                        
+                        default:
+                            break;
+                    }
+                    break;
+                
+                case "inAppMessage":
+                    switch (mode) {
+                        case "edit":
+                            editorCallback("InAppMessage");
+                            break;
+                        
+                        case "preview":
+                            editorCallback("InAppMessage");
+                            break;
+                        
+                        default:
+                            break;
+                    }
+                    break;
+                
+                case "smsMessage":
+                    switch (mode) {
+                        case "edit":
+                            editorCallback("InAppMessage");
+/*                            
+                            var isSmsMessageEditor = window.setInterval(function() {
+                                
+                                if (Mkt3.app.controllers.get("Mkt3.controller.editor.SmsMessage")
+                                && Mkt3.app.controllers.get("Mkt3.controller.editor.SmsMessage").getSmsMessage()
+                                && Mkt3.app.controllers.get("Mkt3.controller.editor.SmsMessage").getSmsMessage().getNodeJson()) {
+                                    var currAssetNode = Mkt3.app.controllers.get("Mkt3.controller.editor.SmsMessage").getSmsMessage().getNodeJson();
+                                        
+                                    console.log("Marketo App > Loaded: SMS Message Editor");
+                                    
+                                    window.clearInterval(isSmsMessageEditor);
+                                    
+                                    heapTrackDesigner(currAssetNode);
+                                    
+                                    if (currAssetNode.accessZoneId.toString().search(mktoGoldenWorkspacesMatch) != -1
+                                    || APP.getCookie("toggleState") == "false") {
+                                        APP.disableSaving();
+                                        
+                                        if (typeof(Ext4) !== "undefined"
+                                        && Ext4.ComponentQuery
+                                        && Ext4.ComponentQuery.query) {
+                                            var mItems = Ext4.ComponentQuery.query(
+                                            // SMS Message Editor
+                                            // Actions menu
+                                            "smsMessageEditor menu [action=approveAndClose]," //+ //Approve and Close
+                                             );
+                                                                
+                                            if (mItems) {
+                                                console.log("Marketo App > Disabling SMS Message Editor Toolbar Menus");
+                                                mItems.forEach(function(item) {
+                                                    if (item) {
+                                                            item.setDisabled(true);
+                                                    }
+                                                });
+                                            }
+                                        }
+                                    }
+                                }
+                            }, 0);*/
+                            break;
+                        
+                        case "preview":
+                            break;
+                        
+                        default:
+                            break;
+                    }
+                    break;
+                
+                case "socialApp":
+                    switch (mode) {
+                        case "edit":
+                            editorCallback("SocialApp");
+                            break;
+                        
+                        case "preview":
+                            break;
+                        
+                        default:
+                            break;
+                    }
+                    break;
+                
+                case "abTest":
+                    switch (mode) {
+                        case "edit":
+                            var isLandingPageEditor = window.setInterval(function() {
+                                
+                                if (Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor")
+                                && Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor").getEditor()
+                                && Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor").getEditor().record
+                                && Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor").getEditor().record.getNodeJson()) {
+                                    var currAssetNode = Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor").getLandingPage().getNodeJson();
+                                        
+                                    console.log("Marketo App > Loaded: A/B Test Wizard");
+                                    
+                                    window.clearInterval(isLandingPageEditor);
+                                    
+                                    heapTrackDesigner(currAssetNode);
+                                    
+                                    if (currAssetNode.accessZoneId.toString().search(mktoGoldenWorkspacesMatch) != -1
+                                    || APP.getCookie("toggleState") == "false") {
+                                        APP.disableSaving();
+/*                                        
+                                        if (typeof(Ext4) !== "undefined"
+                                        && Ext4.ComponentQuery
+                                        && Ext4.ComponentQuery.query) {
+                                            var mItems = Ext4.ComponentQuery.query(
+                                            // A/B Test Wizard
+                                                // Toolbar menu
+                                                //"toolbar [action=preview]," + //Preview Draft
+                                                // Actions menu
+                                                //"menu [action=approveAndClose]," + //Approve and Close
+                                            );
+                                                                
+                                            if (mItems) {
+                                                console.log("Marketo App > Disabling A/B Test Wizard Toolbar Menus");
+                                                mItems.forEach(function(item) {
+                                                    if (item) {
+                                                            item.setDisabled(true);
+                                                    }
+                                                });
+                                            }
+                                        }*/
+                                    }
+                                }
+                            }, 0);
+                            
+//                            editorCallback("EmailBlastTestGroup");
+                            break;
+                        
+                        case "preview":
+                            break;
+                        
+                        default:
+                            break;
+                    }
+                    break;
                 default:
                     break;
             }
@@ -5725,124 +5941,6 @@ var heapTrack = function(action, event) {
                 }
                 else if (currCompFragment == mktoLandingPageDesignerFragment) {
                     console.log("Marketo App > Location: Landing Page Editor");
-/*                      
-                        lpParameters = {
-                            filters: [{
-                                property: 'id',
-                                value: Mkt3.DL.dl.compId
-                            }],
-                            callback: function(records) {
-                                records.forEach(
-                                    function(record) {
-                                        if (record.get('zoneId')) {
-                                            var currAssetWorkspaceId = record.get('zoneId');
-                                            console.log("Marketo App > currAssetWorkspaceId = " + currAssetWorkspaceId);
-                                            if (currAssetWorkspaceId.toString().search(mktoGoldenWorkspacesMatch) != -1
-                                            || APP.getCookie("toggleState") == "false") {
-                                                //APP.disablePropertyPanelSaving();
-                                                if (Ext4
-                                                && Ext4.ComponentQuery
-                                                && Ext4.ComponentQuery.query) {
-                                                    var mItems = Ext4.ComponentQuery.query(
-                                                    // Landing Page Editor
-                                                        // Toolbar menu
-                                                        //"lpEditor toolbar [action=preview]," + //Preview Draft
-                                                        // Actions menu
-                                                        "lpEditor menu [action=approveAndClose]," + //Approve and Close
-                                                        "lpEditor menu [action=disableMobileVersion]," + //Turn Off Mobile Version
-                                                        //"lpEditor menu [action=editPageMeta]," + //Edit Page Meta Tags
-                                                        //"lpEditor menu [action=editFormSettings]," + //Edit Form Settings
-                                                        "lpEditor menu [action=uploadImage]," + //Upload Image or File
-                                                        "lpEditor menu [action=grabImages]," //+ //Grab Images from Web
-                                                        //"lpEditor menu [action=toggleGuides]," + //Show Guides
-                                                    );
-                                                    
-                                                    if (mItems) {
-                                                        console.log("Marketo App > Disabling Landing Page Editor Toolbar Actions menus");
-                                                        mItems.forEach(function(item) {
-                                                            if (item) {
-                                                                item.setDisabled(true);
-                                                            }
-                                                        });
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                );
-                            }
-                        };
-                        
-                    if (typeof(Ext4) !== "undefined"
-                    && Ext4.getStore('LandingPage')
-                    && Ext4.getStore('LandingPage').load) {
-                        console.log("Marketo App > Callback: Landing Page Editor");
-                        Ext4.getStore('LandingPage').load(lpParameters);
-                    }
-                    
-                    var isLandingPageDesigner = window.setInterval(function() {
-                        if (typeof(Mkt3) !== "undefined"
-                        && Mkt3.app
-                        && Mkt3.app.controllers
-                        && Mkt3.app.controllers.get("Mkt3.controller.editor.LandingPage")
-                        && Mkt3.app.controllers.get("Mkt3.controller.editor.LandingPage").getLandingPage()) {
-                                
-                            console.log("Marketo App > Loaded: Landing Page Designer");
-                            
-                            window.clearInterval(isLandingPageDesigner);
-                            
-                            if (Mkt3.app.controllers.get("Mkt3.controller.editor.LandingPage").getLandingPage().getNodeJson()) {
-                                var assetNode = Mkt3.app.controllers.get("Mkt3.controller.editor.LandingPage").getLandingPage().getNodeJson(),
-                                    heapEvent = {
-                                        name : assetNode.text,
-                                        assetType : assetNode.compType,
-                                        assetId : assetNode.id,
-                                        assetArea : "Designer/Wizard",
-                                        workspaceId : assetNode.accessZoneId
-                                    };
-                                
-                                if (assetNode.text.search(".") != -1) {
-                                    heapEvent.assetName = assetNode.text.split(".")[1];
-                                }
-                                else {
-                                    heapEvent.assetName = assetNode.text;
-                                }
-                                
-                                heapTrack("track", heapEvent);
-                            }
-                            
-                            if (Mkt3.app.controllers.get("Mkt3.controller.editor.LandingPage").getLandingPage().get("zoneId").toString().search(mktoGoldenWorkspacesMatch) != -1) {
-                                APP.disablePropertyPanelSaving();
-                                
-                                if (typeof(Ext4) !== "undefined"
-                                && Ext4.ComponentQuery
-                                && Ext4.ComponentQuery.query) {
-                                    var mItems = Ext4.ComponentQuery.query(
-                                    // Landing Page Editor
-                                        // Toolbar menu
-                                        //"lpEditor toolbar [action=preview]," + //Preview Draft
-                                        // Actions menu
-                                        "lpEditor menu [action=approveAndClose]," + //Approve and Close
-                                        "lpEditor menu [action=disableMobileVersion]," + //Turn Off Mobile Version
-                                        //"lpEditor menu [action=editPageMeta]," + //Edit Page Meta Tags
-                                        //"lpEditor menu [action=editFormSettings]," + //Edit Form Settings
-                                        "lpEditor menu [action=uploadImage]," + //Upload Image or File
-                                        "lpEditor menu [action=grabImages]," //+ //Grab Images from Web
-                                        //"lpEditor menu [action=toggleGuides]," + //Show Guides
-                                     );
-                                                        
-                                    if (mItems) {
-                                        console.log("Marketo App > Disabling Landing Page Designer Toolbar Menus");
-                                        mItems.forEach(function(item) {
-                                            if (item) {
-                                                    item.setDisabled(true);
-                                            }
-                                        });
-                                    }
-                                }
-                            }
-                        }
-                    }, 0);*/
                     
                     APP.disableDesignerSaving("landingPage", "edit");
                 }
@@ -5857,206 +5955,57 @@ var heapTrack = function(action, event) {
                     switch (currCompFragment) {
                         case mktoEmailDesignerFragment:
                             if (currUrlFragment.search(mktoEmailPreviewFragmentRegex) == -1) {
-                                console.log("Marketo App > Location: Email Previewer");
-                                
-                                APP.disableDesignerSaving("email", "preview");
-                            }
-                            else {
                                 console.log("Marketo App > Location: Email Editor");
                                 
                                 APP.disableDesignerSaving("email", "edit");
+                            }
+                            else {
+                                console.log("Marketo App > Location: Email Previewer");
+                                
+                                APP.disableDesignerSaving("email", "preview");
                             }
                             break;
                         
                         case mktoFormWizardFragment:
                             console.log("Marketo App > Location: Form Wizard");
                             
-                            if (typeof(Ext4) !== "undefined"
-                            && Ext4.getStore('Form')
-                            && Ext4.getStore('Form').load) {
-                                console.log("Marketo App > Callback: Form Editor");
-                                Ext4.getStore('Form').load(loadParameters);
-                            }
+                            APP.disableDesignerSaving("form", "edit");
                             break;
                         
                         case mktoMobilePushNotificationWizardFragment:
                             console.log("Marketo App > Location: Push Notification Wizard");
                             
-                            if (typeof(Ext4) !== "undefined"
-                            && Ext4.getStore('MobilePushNotification')
-                            && Ext4.getStore('MobilePushNotification').load) {
-                                console.log("Marketo App > Callback: Push Notification Editor");
-                                Ext4.getStore('MobilePushNotification').load(loadParameters);
-                            }
+                            APP.disableDesignerSaving("pushNotification", "edit");
                             break;
                         
                         case mktoInAppMessageWizardFragment:
-                            console.log("Marketo App > Location: In App Message Wizard");
+                            console.log("Marketo App > Location: In-App Message Wizard");
                             
-                            if (typeof(Ext4) !== "undefined"
-                            && Ext4.getStore('InAppMessage')
-                            && Ext4.getStore('InAppMessage').load) {
-                                console.log("Marketo App > Callback: In App Message Editor");
-                                Ext4.getStore('InAppMessage').load(loadParameters);
-                            }
+                            APP.disableDesignerSaving("inAppMessage", "edit");
                             break;
                         
                         case mktoSocialAppWizardFragment:
                             console.log("Marketo App > Location: Social App Wizard");
                             
-                            if (typeof(Ext4) !== "undefined"
-                            && Ext4.getStore('SocialApp')
-                            && Ext4.getStore('SocialApp').load) {
-                                console.log("Marketo App > Callback: Social App Editor");
-                                Ext4.getStore('SocialApp').load(loadParameters);
-                            }
+                            APP.disableDesignerSaving("socialApp", "edit");
                             break;
                             
                         case mktoSmsMessageDesignerFragment:
-                            console.log("Marketo App > Location: SMS Message Designer");
+                            console.log("Marketo App > Location: SMS Message Editor");
                             
-                            var isSmsMessageDesigner = window.setInterval(function() {
-                                if (typeof(Mkt3) !== "undefined"
-                                && Mkt3.app
-                                && Mkt3.app.controllers
-                                && Mkt3.app.controllers.get("Mkt3.controller.editor.SmsMessage")
-                                && Mkt3.app.controllers.get("Mkt3.controller.editor.SmsMessage").getSmsMessage()) {
-                                        
-                                    console.log("Marketo App > Loaded: Email Test Group Wizard");
-                                    
-                                    window.clearInterval(isSmsMessageDesigner);
-                                    
-                                    if (Mkt3.app.controllers.get("Mkt3.controller.editor.SmsMessage").getSmsMessage().getNodeJson()) {
-                                        var assetNode = Mkt3.app.controllers.get("Mkt3.controller.editor.SmsMessage").getSmsMessage().getNodeJson(),
-                                            heapEvent = {
-                                                name : assetNode.text,
-                                                assetType : assetNode.compType,
-                                                assetId : assetNode.id,
-                                                assetArea : "Designer/Wizard",
-                                                workspaceId : assetNode.accessZoneId
-                                            };
-                                        
-                                        if (assetNode.text.search(".") != -1) {
-                                            heapEvent.assetName = assetNode.text.split(".")[1];
-                                        }
-                                        else {
-                                            heapEvent.assetName = assetNode.text;
-                                        }
-                                        
-                                        heapTrack("track", heapEvent);
-                                    }
-                                    
-                                    if (Mkt3.app.controllers.get("Mkt3.controller.editor.SmsMessage").getSmsMessage().get("zoneId").toString().search(mktoGoldenWorkspacesMatch) != -1) {
-                                        APP.disableSaving();
-                                        
-                                        if (typeof(Ext4) !== "undefined"
-                                        && Ext4.ComponentQuery
-                                        && Ext4.ComponentQuery.query) {
-                                            var mItems = Ext4.ComponentQuery.query(
-                                            // SMS Message Editor
-                                                // Actions menu
-                                                "contextMenu [action=approveAndClose]," //+ //Approve and Close
-                                             );
-                                                                
-                                            if (mItems) {
-                                                console.log("Marketo App > Disabling Landing Page Editor Toolbar Actions menus");
-                                                mItems.forEach(function(item) {
-                                                    if (item) {
-                                                            item.setDisabled(true);
-                                                    }
-                                                });
-                                            }
-                                        }
-                                    }
-                                }
-                            }, 0);
+                            APP.disableDesignerSaving("smsMessage", "edit");
                             break;
                         
                         case mktoABtestWizardFragment:
                             console.log("Marketo App > Location: A/B Test Wizard");
                             
-                            var isABtestWizard = window.setInterval(function() {
-                                if (typeof(Mkt3) !== "undefined"
-                                && Mkt3.app
-                                && Mkt3.app.controllers
-                                && Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor")
-                                && Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor").getEditor()
-                                && Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor").getEditor().record) {
-                                    console.log("Marketo App > Loaded: A/B Test Wizard");
-                                    
-                                    window.clearInterval(isABtestWizard);
-                                    
-                                    if (Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor").getEditor().record.getNodeJson()) {
-                                        var assetNode = Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor").getEditor().record.getNodeJson(),
-                                            heapEvent = {
-                                                name : assetNode.text,
-                                                assetType : assetNode.compType,
-                                                assetId : assetNode.id,
-                                                assetArea : "Designer/Wizard",
-                                                workspaceId : assetNode.accessZoneId
-                                            };
-                                        
-                                        if (assetNode.text.search(".") != -1) {
-                                            heapEvent.assetName = assetNode.text.split(".")[1];
-                                        }
-                                        else {
-                                            heapEvent.assetName = assetNode.text;
-                                        }
-                                        
-                                        heapTrack("track", heapEvent);
-                                    }
-                                    
-                                    if (Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor").getEditor().record.get("zoneId").toString().search(mktoGoldenWorkspacesMatch) != -1) {
-                                        APP.disableSaving();
-                                    }
-                                }
-                            }, 0);
-//                            console.log("Callback for A/B Test Editor");
-//                            Ext4.getStore('EmailBlastTestGroup').load(loadParameters);
+                            APP.disableDesignerSaving("abTest");
                             break;
                         
                         case mktoEmailTestWizardFragment:
                             console.log("Marketo App > Location: Email Test Group Wizard");
                             
-                            var isEmailTestWizard = window.setInterval(function() {
-                                if (typeof(Mkt3) !== "undefined"
-                                && Mkt3.app
-                                && Mkt3.app.controllers
-                                && Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor")
-                                && Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor").getEditor()
-                                && Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor").getEditor().record) {
-                                        
-                                    console.log("Marketo App > Loaded: Email Test Group Wizard");
-                                    
-                                    window.clearInterval(isEmailTestWizard);
-                                    
-                                    if (Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor").getEditor().record.getNodeJson()) {
-                                        var assetNode = Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor").getEditor().record.getNodeJson(),
-                                            heapEvent = {
-                                                name : assetNode.text,
-                                                assetType : assetNode.compType,
-                                                assetId : assetNode.id,
-                                                assetArea : "Designer/Wizard",
-                                                workspaceId : assetNode.accessZoneId
-                                            };
-                                        
-                                        if (assetNode.text.search(".") != -1) {
-                                            heapEvent.assetName = assetNode.text.split(".")[1];
-                                        }
-                                        else {
-                                            heapEvent.assetName = assetNode.text;
-                                        }
-                                        
-                                        heapTrack("track", heapEvent);
-                                    }
-                                    
-                                    if (Mkt3.app.controllers.get("Mkt3.controller.editor.wizard.Editor").getEditor().record.get("zoneId").toString().search(mktoGoldenWorkspacesMatch) != -1) {
-                                        APP.disableSaving();
-                                    }
-                                }
-                            }, 0);
-//                            console.log("Callback for A/B Test Editor");
-//                            Ext4.getStore('EmailBlastTestGroup').load(loadParameters);
+                            APP.disableDesignerSaving("abTest");
                             break;
                         
                         default:
