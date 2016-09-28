@@ -84,7 +84,7 @@ var currentUrl = window.location.href,
     mktoLandingPageEditFragment = "LPE",
     mktoLandingPagePreviewFragment = "LPPD",
     mktoFormEditFragment = "FOE",
-    mktoFormPreviewFragment = "FOP",
+    mktoFormPreviewFragment = "FOPD",
     mktoPushNotificationEditFragment = "MPNE",
     mktoMobilePushNotificationPreviewFragment = "MPNP",
     mktoInAppMessageEditFragment = "IAME",
@@ -5289,29 +5289,27 @@ APP.discardOtherDrafts = function(assetType, assetIds) {
         && MktMessage.showSystemError) {
             MktMessage.showSystemError = function() {};
         }
-        if (typeof(Mkt3) !== "undefined") {
-            if (!assetStore) {
-                    assetStore = Ext4.create('Mkt3.store.' + assetType, {
-                        storeId : assetType
-                    });
-            }
-            assetStore.load({
-                filters : [{
-                    property : 'id',
-                    value : assetIds
-                }],
-                callback : function(assets) {
-                    for (var i = 0; i < assets.length; i++) {
-                        var asset = assets[i];
-                        asset.discard(function(success) {
-                            if (success) {
-                                asset.updateNode();
-                            }
-                        }, this);
-                    }
-                }
-            });		
+        if (!assetStore) {
+            assetStore = Ext4.create('Mkt3.store.' + assetType, {
+                storeId : assetType
+            });
         }
+        assetStore.load({
+            filters : [{
+                property : 'id',
+                value : assetIds
+            }],
+            callback : function(assets) {
+                for (var i = 0; i < assets.length; i++) {
+                    var asset = assets[i];
+                    asset.discard(function(success) {
+                        if (success) {
+                            asset.updateNode();
+                        }
+                    }, this);
+                }
+            }
+        });
     }
 };
 
@@ -5385,80 +5383,102 @@ APP.discardDrafts = function (accountString) {
             // Higher Education Event Management HE - Event: Thanks and Next Event
             lpIds["dpageid_12177"] = "dpageid_12177";
             
-            // Default DIY Design: Email
+            // Emails
+            // Default: DIY Design: Email
             emIds.push(15464);
-            // Default DIY Design: Email (Modular)
+            // Default: DIY Design: Email (Modular)
             emIds.push(21424);
-            // Default DIY Design: Email (Responsive)
+            // Default: DIY Design: Email (Responsive)
             emIds.push(20931);
-            // Default Email Marketing: AB Test Configuration, AB Test Dashboard, Champion/Chalenger, Email Program Dashboard
+            // Default: Email Marketing: AB Test Configuration, AB Test Dashboard, Champion/Chalenger, Email Program Dashboard
             emIds.push(18113, 18106, 18111, 18110);
-            // Default Replicate Success: Roadshow Example
+            // Default: Replicate Success: Roadshow Example
             emIds.push(10010, 10179, 10180, 12845, 10181, 10182, 10183, 10184);
-            // Default Replicate Success: Webinar Example
+            // Default: Replicate Success: Webinar Example
             emIds.push(4894, 3764, 3765, 3767, 3766, 3762);
-            // Default Intelligent Nurturing
+            // Default: Intelligent Nurturing
             emIds.push(12818, 12820, 12819, 12816, 12811, 12815, 12812, 12813, 12814, 12821, 12817, 12823);
-            // Default Actionable Insight: BANT Nurture for Sales
+            // Default: Actionable Insight: BANT Nurture for Sales
             emIds.push(12900, 12901, 12899, 12898);
-            // Default Actionable Insight: Sales Auto Reach Out
+            // Default: Actionable Insight: Sales Auto Reach Out
             emIds.push(12902, 12903, 12904);
-            // Japanese Default Content Unknown
+            // Japanese: Content Unknown
             emIds.push(16474);
-            // Japanese Event Roadshow Unknown
+            // Japanese: Event Roadshow Unknown
             emIds.push(18117, 18118, 18122, 18119, 18116, 18123, 18120, 18121, 18124);
-            // Japanese Replicate Success Webinar
+            // Japanese: Replicate Success Webinar
             emIds.push(16118, 16119, 16120, 16122, 16121, 16117);
-            // Japanese Replicate Success Roadshow
+            // Japanese: Replicate Success Roadshow
             emIds.push(16331, 16332, 16338, 16333, 16123, 16339, 16335, 16336, 17868);
-            // Japanese Intelligent Nurturing
+            // Japanese: Intelligent Nurturing
             emIds.push(16125, 16129, 16126, 16124, 16132, 16131, 16130, 16128, 16127, 16133, 16137, 16136);
-            // Japanese Default Email Blast Unknown
+            // Japanese: Email Blast Unknown
             emIds.push(18126);
-            // Financial Services DIY Design
+            // Financial Services > Asset Management: DIY Design
+            emIds.push(22818)
+            // Financial Services > Retail Banking: DIY Design
             emIds.push(20350, 20368)
-            // Healthcare Services DIY Design
-            emIds.push(20327)
-            // Higher Ed Services DIY Design
+            // Healthcare Services: DIY Design
+            emIds.push(20327, 21812)
+            // Higher Ed Services: DIY Design
             emIds.push(20329)
             
-            // Forms: Default DIY Design, Replicate Success Roadshow Example, Replicate Success Webinar Example
+            // Forms
+            // Default: DIY Design, Replicate Success Roadshow Example, Replicate Success Webinar Example
             formIds.push(3576, 1749, 1900);
-            // Forms: Japanese Default DIY Design, Japanese Event Roadshow Unknown, Japanese Replicate Success Webinar Example, Japanese Replicate Success Roadshow Example
+            // Japanese Default: DIY Design, Japanese Event Roadshow Unknown, Japanese Replicate Success Webinar Example, Japanese Replicate Success Roadshow Example
             formIds.push(3018, 3708, 3020, 3021);
-            // Forms: Financial Services DIY Design
-            formIds.push(3952, 3955, 3953);
-            // Forms: Healthcare DIY Design
+            // Financial Services > Asset Management: DIY Design
+            formIds.push(4970, 4968, 4969);
+            // Financial Services > Retail Banking: DIY Design
+            formIds.push(3952, 4476, 3953);
+            // Healthcare DIY Design
             formIds.push(3816, 3818, 3828);
-            // Forms: Higher Ed DIY Design
+            // Higher Ed DIY Design
             formIds.push(3313, 4125, 3559);
             
-            // Push Notifications: Default DIY Design, Mobile Engagement
+            // Push Notifications
+            // Default: DIY Design, Mobile Engagement
             pushIds.push(29, 23);
-            // Push Notifications: Japanese DIY Design, Mobile Engagement, Unknown
+            // Japanese: DIY Design, Mobile Engagement, Unknown
             pushIds.push(99, 216, 103, 218);
-            // Push Notifications: Financial Services DIY Design, Mobile Engagement
-            pushIds.push(187);
-            // Push Notifications: Healthcare DIY Design, Mobile Engagement
-            pushIds.push(169);
-            // Push Notifications: Higher Ed DIY Design, Mobile Engagement
-            pushIds.push(131);
+            // Financial Services > Asset Management: Mobile Engagement
+            //pushIds.push();
+            // Financial Services > Retail Banking: Mobile Engagement
+            pushIds.push(465, 189);
+            // Healthcare DIY: Mobile Engagement
+            pushIds.push(164);
+            // Higher Ed: Mobile Engagement
+            pushIds.push(132);
             
-            // In-App Messages: Default Mobile Engagement
+            // In-App Messages
+            // Default: Mobile Engagement
             inAppIds.push(309, 446);
+            // Financial Services > Asset Management
+            inAppIds.push(464);
+            // Financial Services > Retail Banking
+            inAppIds.push(448);
+            // Healthcare: Mobile Engagement
+            inAppIds.push(449);
+            // Higher Ed: Mobile Engagement
+            inAppIds.push(450);
             
-            // SMS Messages: Default Mobile Engagement
+            // SMS Messages
+            // Default: Mobile Engagement
             smsIds.push(1);
             
-            // Social Apps: Default DIY Design
-            socIds.push(586, 587, 491, 484);
-            // Social Apps: Japanese DIY Design
+            // Social Apps
+            // Default: DIY Design
+            socIds.push(587, 491, 484);
+            // Japanese: DIY Design
             socIds.push(853);
-            // Social Apps: Financial Services DIY Design
+            // Financial Services > Asset Management: DIY Design
+            socIds.push(1238, 1239, 1240, 1241, 1242);
+            // Financial Services > Retail Banking: DIY Design
             socIds.push(1091, 1090, 1093, 1092, 1094);
-            // Social Apps: Healthcare DIY Design
+            // Healthcare: DIY Design
             socIds.push(1021, 1023, 1025, 1022, 1020);
-            // Social Apps: Higher Ed DIY Design
+            // Higher Ed: DIY Design
             socIds.push(860, 1024, 861, 859, 858);
             break;
         
@@ -5542,37 +5562,40 @@ APP.discardDrafts = function (accountString) {
             // Higher Ed Services DIY Design
             emIds.push(20329)
             
-            // Forms: Default DIY Design, Replicate Success Roadshow Example, Replicate Success Webinar Example
+            // Forms
+            // Default: DIY Design, Replicate Success Roadshow Example, Replicate Success Webinar Example
             formIds.push(3576, 1749, 1900);
-            // Forms: Japanese Default DIY Design, Japanese Event Roadshow Unknown, Japanese Replicate Success Webinar Example, Japanese Replicate Success Roadshow Example
+            // Japanese: Default DIY Design, Japanese Event Roadshow Unknown, Japanese Replicate Success Webinar Example, Japanese Replicate Success Roadshow Example
             formIds.push(3018, 3708, 3020, 3021);
-            // Forms: Financial Services DIY Design
+            // Financial Services: DIY Design
             formIds.push(3952, 3955, 3953);
-            // Forms: Healthcare DIY Design
+            // Healthcare: DIY Design
             formIds.push(3816, 3818, 3828);
-            // Forms: Higher Ed DIY Design
+            // Higher Ed: DIY Design
             formIds.push(3313, 4125, 3559);
             
-            // Push Notifications: Default DIY Design, Mobile Engagement
+            //Push Notifications
+            // Default: DIY Design, Mobile Engagement
             pushIds.push(29, 23);
-            // Push Notifications: Japanese DIY Design, Mobile Engagement, Unknown
+            // Japanese: DIY Design, Mobile Engagement, Unknown
             pushIds.push(99, 216, 103, 218);
-            // Push Notifications: Financial Services DIY Design, Mobile Engagement
+            // Financial Services: DIY Design, Mobile Engagement
             pushIds.push(187);
-            // Push Notifications: Healthcare DIY Design, Mobile Engagement
+            // Healthcare: DIY Design, Mobile Engagement
             pushIds.push(169);
-            // Push Notifications: Higher Ed DIY Design, Mobile Engagement
+            // Higher Ed: DIY Design, Mobile Engagement
             pushIds.push(131);
             
-            // Social Apps: Default DIY Design
+            // Social Apps
+            // Default DIY Design
             socIds.push(586, 587, 491, 484);
-            // Social Apps: Japanese DIY Design
+            // Japanese DIY Design
             socIds.push(853);
-            // Social Apps: Financial Services DIY Design
+            // Financial Services DIY Design
             socIds.push(1091, 1090, 1093, 1092, 1094);
-            // Social Apps: Healthcare DIY Design
+            // Healthcare DIY Design
             socIds.push(1021, 1023, 1025, 1022, 1020);
-            // Social Apps: Higher Ed DIY Design
+            // Higher Ed DIY Design
             socIds.push(860, 1024, 861, 859, 858);
             break;
         
