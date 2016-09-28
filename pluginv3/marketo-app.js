@@ -85,6 +85,7 @@ var currentUrl = window.location.href,
     mktoLandingPagePreviewFragment = "LPPD",
     mktoFormEditFragment = "FOE",
     mktoFormPreviewFragment = "FOP",
+    mktoFormPreviewDesignerFragment = "FOPD",
     mktoPushNotificationEditFragment = "MPNE",
     mktoMobilePushNotificationPreviewFragment = "MPNP",
     mktoInAppMessageEditFragment = "IAME",
@@ -94,7 +95,7 @@ var currentUrl = window.location.href,
     mktoSocialAppPreviewFragment = "SOAP",
     mktoAbTestEditFragment = "EBE",
     mktoEmailTestGroupEditFragment = "CCE",
-    mktoDesignersFragmentMatch = "^" + mktoEmailEditFragment + "$|^" + mktoEmailPreviewFragment2 + "|^" + mktoEmailPreviewFragment + "$|^" + mktoLandingPageEditFragment + "$|^" + mktoLandingPagePreviewFragment + "$|^" + mktoFormEditFragment + "$|^" + mktoFormPreviewFragment + "$|^" + mktoPushNotificationEditFragment + "$|^" + mktoMobilePushNotificationPreviewFragment + "$|^" + mktoInAppMessageEditFragment + "$|^" + mktoInAppMessagePreviewFragment + "$|^" + mktoSmsMessageEditFragment + "$|^" + mktoSocialAppEditFragment + "$|^" + mktoSocialAppPreviewFragment + "$|^" + mktoAbTestEditFragment + "$|^" + mktoEmailTestGroupEditFragment + "$",
+    mktoDesignersFragmentMatch = "^" + mktoEmailEditFragment + "$|^" + mktoEmailPreviewFragment2 + "|^" + mktoEmailPreviewFragment + "$|^" + mktoLandingPageEditFragment + "$|^" + mktoLandingPagePreviewFragment + "$|^" + mktoFormEditFragment + "$|^" + mktoFormPreviewFragment + "$|^" + mktoFormPreviewDesignerFragment + "$|^" + mktoPushNotificationEditFragment + "$|^" + mktoMobilePushNotificationPreviewFragment + "$|^" + mktoInAppMessageEditFragment + "$|^" + mktoInAppMessagePreviewFragment + "$|^" + mktoSmsMessageEditFragment + "$|^" + mktoSocialAppEditFragment + "$|^" + mktoSocialAppPreviewFragment + "$|^" + mktoAbTestEditFragment + "$|^" + mktoEmailTestGroupEditFragment + "$",
     
     mktoDefaultWorkspaceId = 1,
     mktoJapaneseWorkspaceId = 173,
@@ -6020,6 +6021,12 @@ var heapTrack = function(action, event) {
                             APP.disableDesignerSaving("form", "preview");
                             break;
                         
+                        case mktoFormPreviewDesignerFragment:
+                            console.log("Marketo App > Location: Form Previewer");
+                            
+                            APP.disableDesignerSaving("form", "preview");
+                            break;
+                        
                         case mktoPushNotificationEditFragment:
                             console.log("Marketo App > Location: Push Notification Editor");
                             
@@ -6154,6 +6161,12 @@ var heapTrack = function(action, event) {
                                                 break;
                                             
                                             case mktoFormPreviewFragment:
+                                                console.log("Marketo App > Location: Form Previewer");
+                                                
+                                                APP.disableDesignerSaving("form", "preview");
+                                                break;
+                                            
+                                            case mktoFormPreviewDesignerFragment:
                                                 console.log("Marketo App > Location: Form Previewer");
                                                 
                                                 APP.disableDesignerSaving("form", "preview");
