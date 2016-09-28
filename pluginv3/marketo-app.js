@@ -77,20 +77,24 @@ var currentUrl = window.location.href,
     mktoSocialAppFragment = "SOA",
     mktoOtherAssetsFragmentMatch = "^" + mktoMobilePushNotificationFragment + "|^" + mktoInAppMessageFragment + "|^" + mktoSmsMessageFragment + "|^" + mktoSocialAppFragment,
     
-    mktoEmailDesignerFragment = "EME",
+    mktoEmailEditFragment = "EME",
     mktoEmailPreviewFragmentRegex = new RegExp("^EME[0-9]+&isPreview", "i"),
     mktoEmailPreviewFragment2 = "EME[0-9]+&isPreview",
     mktoEmailPreviewFragment = "EMP",
-    mktoLandingPageDesignerFragment = "LPE",
+    mktoLandingPageEditFragment = "LPE",
     mktoLandingPagePreviewFragment = "LPPD",
-    mktoFormWizardFragment = "FOE",
-    mktoMobilePushNotificationWizardFragment = "MPNE",
-    mktoInAppMessageWizardFragment = "IAME",
-    mktoSmsMessageDesignerFragment = "SME",
-    mktoSocialAppWizardFragment = "SOAE",
-    mktoABtestWizardFragment = "EBE",
-    mktoEmailTestWizardFragment = "CCE",
-    mktoDesignersFragmentMatch = "^" + mktoEmailDesignerFragment + "$|^" + mktoEmailPreviewFragment2 + "|^" + mktoEmailPreviewFragment + "$|^" + mktoLandingPageDesignerFragment + "$|^" + mktoLandingPagePreviewFragment + "$|^" + mktoFormWizardFragment + "$|^" + mktoMobilePushNotificationWizardFragment + "$|^" + mktoInAppMessageWizardFragment + "$|^" + mktoSocialAppWizardFragment + "$|^" + mktoABtestWizardFragment + "$|^" + mktoEmailTestWizardFragment + "$",
+    mktoFormEditFragment = "FOE",
+    mktoFormPreviewFragment = "FOP",
+    mktoPushNotificationEditFragment = "MPNE",
+    mktoMobilePushNotificationPreviewFragment = "MPNP",
+    mktoInAppMessageEditFragment = "IAME",
+    mktoInAppMessagePreviewFragment = "IAMP",
+    mktoSmsMessageEditFragment = "SME",
+    mktoSocialAppEditFragment = "SOAE",
+    mktoSocialAppPreviewFragment = "SOAP",
+    mktoAbTestEditFragment = "EBE",
+    mktoEmailTestGroupEditFragment = "CCE",
+    mktoDesignersFragmentMatch = "^" + mktoEmailEditFragment + "$|^" + mktoEmailPreviewFragment2 + "|^" + mktoEmailPreviewFragment + "$|^" + mktoLandingPageEditFragment + "$|^" + mktoLandingPagePreviewFragment + "$|^" + mktoFormEditFragment + "$|^" + mktoFormPreviewFragment + "$|^" + mktoPushNotificationEditFragment + "$|^" + mktoMobilePushNotificationPreviewFragment + "$|^" + mktoInAppMessageEditFragment + "$|^" + mktoInAppMessagePreviewFragment + "$|^" + mktoSmsMessageEditFragment + "$|^" + mktoSocialAppEditFragment + "$|^" + mktoSocialAppPreviewFragment + "$|^" + mktoAbTestEditFragment + "$|^" + mktoEmailTestGroupEditFragment + "$",
     
     mktoDefaultWorkspaceId = 1,
     mktoJapaneseWorkspaceId = 173,
@@ -4053,7 +4057,19 @@ APP.disableDesignerSaving = function(assetType, mode) {
                                     //"mobilePushNotificationEditor toolbar [action=edit]," + //Edit Draft
                                 // SMS Message Editor
                                     // Actions menu
-                                    "smsMessageEditor menu [action=approveAndClose]," //+ //Approve and Close
+                                    "smsMessageEditor menu [action=approveAndClose]," + //Approve and Close
+                                // Social App Editor
+                                    // Toolbar menu
+                                    //"socialAppPreviewer toolbar [action=preview]," + //Preview Draft
+                                    // Navigation menu
+                                    //"socialAppPreviewer toolbar [action=back]," + //Back
+                                    //"socialAppPreviewer toolbar [action=next]," + //Next
+                                    //"socialAppPreviewer toolbar [action=close]," + //Close
+                                    "socialAppPreviewer toolbar [action=approveAndClose]," + //Approve and Close
+                                    "socialAppPreviewer toolbar [action=finish]," //+ //Finish
+                                // Social App Previewer
+                                    // Toolbar menu
+                                    //"socialAppPreviewer toolbar [action=edit]," + //Edit Draft
                                 );
                             
                             if (mItems) {
@@ -4273,7 +4289,7 @@ APP.disableDesignerSaving = function(assetType, mode) {
                             break;
                         
                         case "preview":
-//                            editorCallback("Form");
+                            editorCallback("Form");
                             break;
                             
                         default:
@@ -4398,16 +4414,17 @@ APP.disableDesignerSaving = function(assetType, mode) {
                                     if (currAssetNode.accessZoneId.toString().search(mktoGoldenWorkspacesMatch) != -1
                                     || APP.getCookie("toggleState") == "false") {
                                         APP.disableSaving();
-/*                                        
+                                        
                                         if (typeof(Ext4) !== "undefined"
                                         && Ext4.ComponentQuery
                                         && Ext4.ComponentQuery.query) {
                                             var mItems = Ext4.ComponentQuery.query(
                                             // A/B Test Wizard
-                                                // Toolbar menu
-                                                //"toolbar [action=preview]," + //Preview Draft
-                                                // Actions menu
-                                                //"menu [action=approveAndClose]," + //Approve and Close
+                                                // Navigation menu
+                                                //"wizardEditor toolbar[action=back]," + //Back
+                                                //"wizardEditor toolbar[action=next]," + //Next
+                                                "wizardEditor toolbar[action=finish]," //+ //Finish
+                                                //"wizardEditor toolbar[action=close]," + //Close
                                             );
                                                                 
                                             if (mItems) {
@@ -4418,7 +4435,7 @@ APP.disableDesignerSaving = function(assetType, mode) {
                                                     }
                                                 });
                                             }
-                                        }*/
+                                        }
                                     }
                                 }
                             }, 0);
@@ -5939,7 +5956,7 @@ var heapTrack = function(action, event) {
                         APP.disableAdminSaveButtons();
                     }
                 }
-                else if (currCompFragment == mktoLandingPageDesignerFragment) {
+                else if (currCompFragment == mktoLandingPageEditFragment) {
                     console.log("Marketo App > Location: Landing Page Editor");
                     
                     APP.disableDesignerSaving("landingPage", "edit");
@@ -5953,7 +5970,7 @@ var heapTrack = function(action, event) {
                     console.log("Marketo App > Location: Designers/Wizards");
                     
                     switch (currCompFragment) {
-                        case mktoEmailDesignerFragment:
+                        case mktoEmailEditFragment:
                             if (currUrlFragment.search(mktoEmailPreviewFragmentRegex) == -1) {
                                 console.log("Marketo App > Location: Email Editor");
                                 
@@ -5966,43 +5983,67 @@ var heapTrack = function(action, event) {
                             }
                             break;
                         
-                        case mktoFormWizardFragment:
-                            console.log("Marketo App > Location: Form Wizard");
+                        case mktoFormEditFragment:
+                            console.log("Marketo App > Location: Form Editor");
                             
                             APP.disableDesignerSaving("form", "edit");
                             break;
                         
-                        case mktoMobilePushNotificationWizardFragment:
-                            console.log("Marketo App > Location: Push Notification Wizard");
+                        case mktoFormPreviewFragment:
+                            console.log("Marketo App > Location: Form Previewer");
+                            
+                            APP.disableDesignerSaving("form", "preview");
+                            break;
+                        
+                        case mktoPushNotificationEditFragment:
+                            console.log("Marketo App > Location: Push Notification Editor");
                             
                             APP.disableDesignerSaving("pushNotification", "edit");
                             break;
                         
-                        case mktoInAppMessageWizardFragment:
-                            console.log("Marketo App > Location: In-App Message Wizard");
+                        case mktoMobilePushNotificationPreviewFragment:
+                            console.log("Marketo App > Location: Push Notification Previewer");
+                            
+                            APP.disableDesignerSaving("pushNotification", "preview");
+                            break;
+                        
+                        case mktoInAppMessageEditFragment:
+                            console.log("Marketo App > Location: In-App Message Editor");
                             
                             APP.disableDesignerSaving("inAppMessage", "edit");
                             break;
                         
-                        case mktoSocialAppWizardFragment:
-                            console.log("Marketo App > Location: Social App Wizard");
+                        case mktoInAppMessagePreviewFragment:
+                            console.log("Marketo App > Location: In-App Message Previewer");
                             
-                            APP.disableDesignerSaving("socialApp", "edit");
+                            APP.disableDesignerSaving("inAppMessage", "preview");
                             break;
-                            
-                        case mktoSmsMessageDesignerFragment:
+                        
+                        case mktoSmsMessageEditFragment:
                             console.log("Marketo App > Location: SMS Message Editor");
                             
                             APP.disableDesignerSaving("smsMessage", "edit");
                             break;
                         
-                        case mktoABtestWizardFragment:
+                        case mktoSocialAppEditFragment:
+                            console.log("Marketo App > Location: Social App Editor");
+                            
+                            APP.disableDesignerSaving("socialApp", "edit");
+                            break;
+                        
+                        case mktoSocialAppPreviewFragment:
+                            console.log("Marketo App > Location: Social App Previewer");
+                            
+                            APP.disableDesignerSaving("socialApp", "preview");
+                            break;
+                        
+                        case mktoAbTestEditFragment:
                             console.log("Marketo App > Location: A/B Test Wizard");
                             
                             APP.disableDesignerSaving("abTest");
                             break;
                         
-                        case mktoEmailTestWizardFragment:
+                        case mktoEmailTestGroupEditFragment:
                             console.log("Marketo App > Location: Email Test Group Wizard");
                             
                             APP.disableDesignerSaving("abTest");
