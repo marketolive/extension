@@ -5942,8 +5942,6 @@ var heapTrack = function(action, event) {
                 if (!currCompFragment
                 || currCompFragment.search(mktoDesignersFragmentMatch) == -1) {
                     
-                    APP.discardDrafts(accountString);
-                    
                     if (accountString.search(mktoAccountStringsMatch) != -1) {
                         APP.overrideTreeNodeExpand();
                         APP.overrideTreeNodeCollapse();
@@ -5965,6 +5963,7 @@ var heapTrack = function(action, event) {
 //                        APP.hidePageGrid();
                         APP.hideFoldersOnImport();
                         APP.disableConfirmationMessage();
+                        APP.discardDrafts(accountString);
                     }
                     else {
                         APP.overrideSaving();
