@@ -4036,7 +4036,9 @@ APP.disableDesignerSaving = function(assetType, mode) {
                     switch (mode) {
                         case "edit":
                             var isLandingPageEditor = window.setInterval(function () {
-                                if (typeof(Mkt3.app.controllers.get("Mkt3.controller.editor.LandingPage").getLandingPage().getNodeJson()) !== "undefined"
+                                if (typeof(Mkt3.app.controllers.get("Mkt3.controller.editor.LandingPage")) !== "undefined"
+                                && Mkt3.app.controllers.get("Mkt3.controller.editor.LandingPage")
+                                && Mkt3.app.controllers.get("Mkt3.controller.editor.LandingPage").getLandingPage()
                                 && Mkt3.app.controllers.get("Mkt3.controller.editor.LandingPage").getLandingPage().getNodeJson()) {
                                     console.log("Marketo App > Disabling: Landing Page Editor: Saving & Toolbar Menus");
                                     
