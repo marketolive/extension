@@ -72,7 +72,7 @@ var mktoLiveLandingPageHost = "na-sjdemo1.marketo.com",
             visitationRate : 0.05,
             conversionRate : 1.0
         },
-        8 : {
+/*        8 : {
             name : "whyUs",
             type : webPageType,
             url : "http://"+mktoLiveHost+"/en/info/why-us",
@@ -135,7 +135,7 @@ var mktoLiveLandingPageHost = "na-sjdemo1.marketo.com",
             dependentOn : [],
             visitationRate : 0.80,
             conversionRate : 1.0
-        }
+        }*/
     },
     jobTitles = [
         "Account Director",
@@ -420,14 +420,20 @@ if (webPageXvisitationRate >= 1.0
         if (cookie
         && cookie.value) {
             var proceed = false;
-            for (var ii = 0; ii < webPageX.dependentOn.length; ii++) {
-                if (cookie.value.search("(, )\?" + webPageX.dependentOn[ii] + "(,)\?") != -1) {
-                    proceed = true;
+            
+            if (webPageX.dependentOn.length > 0) {
+                for (var ii = 0; ii < webPageX.dependentOn.length; ii++) {
+                    if (cookie.value.search("(, )\?" + webPageX.dependentOn[ii] + "(,)\?") != -1) {
+                        proceed = true;
+                    }
+                    else {
+                        proceed = false;
+                        break;
+                    }
                 }
-                else {
-                    proceed = false;
-                    break;
-                }
+            }
+            else {
+                proceed = true;
             }
             
             if (proceed) {
