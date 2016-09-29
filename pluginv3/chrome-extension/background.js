@@ -418,101 +418,118 @@ chrome.runtime.onMessageExternal.addListener(function(message, sender, sendRespo
                 firstNameCookieName = "onelogin_first_name",
                 lastNameCookieName = "onelogin_last_name",
                 emailCookieName = "onelogin_email",
+                expiresInDays = 365,
                 usernameCookieMarketoLive = {
                     "url" : mktoLiveDomainMatch,
                     "name" : usernameCookieName,
                     "value" : message.username,
-                    "domain" : mktoLiveUriDomain
+                    "domain" : mktoLiveUriDomain,
+                    "expiresInDays" : expiresInDays
                 },
                 usernameCookieMarketoLiveClassic = {
                     "url" : mktoLiveClassicDomainMatch,
                     "name" : usernameCookieName,
                     "value" : message.username,
-                    "domain" : mktoLiveClassicUriDomain
+                    "domain" : mktoLiveClassicUriDomain,
+                    "expiresInDays" : expiresInDays
                 },
                 usernameCookieMarketoApp = {
                     "url" : mktoAppDomainMatch,
                     "name" : usernameCookieName,
                     "value" : message.username,
-                    "domain" : mktoAppUriDomain
+                    "domain" : mktoAppUriDomain,
+                    "expiresInDays" : expiresInDays
                 },
                 usernameCookieDesigner = {
                     "url" : mktoDesignerMatchPattern,
                     "name" : usernameCookieName,
                     "value" : message.username,
-                    "domain" : mktoDesignerUriDomain
+                    "domain" : mktoDesignerUriDomain,
+                    "expiresInDays" : expiresInDays
                 },
                 firstNameCookieMarketoLive = {
                     "url" : mktoLiveDomainMatch,
                     "name" : firstNameCookieName,
                     "value" : message.firstName,
-                    "domain" : mktoLiveUriDomain
+                    "domain" : mktoLiveUriDomain,
+                    "expiresInDays" : expiresInDays
                 },
                 firstNameCookieMarketoLiveClassic = {
                     "url" : mktoLiveClassicDomainMatch,
                     "name" : firstNameCookieName,
                     "value" : message.firstName,
-                    "domain" : mktoLiveClassicUriDomain
+                    "domain" : mktoLiveClassicUriDomain,
+                    "expiresInDays" : expiresInDays
                 },
                 firstNameCookieMarketoApp = {
                     "url" : mktoAppDomainMatch,
                     "name" : firstNameCookieName,
                     "value" : message.firstName,
-                    "domain" : mktoAppUriDomain
+                    "domain" : mktoAppUriDomain,
+                    "expiresInDays" : expiresInDays
                 },
                 firstNameCookieDesigner = {
                     "url" : mktoDesignerMatchPattern,
                     "name" : firstNameCookieName,
                     "value" : message.firstName,
-                    "domain" : mktoDesignerUriDomain
+                    "domain" : mktoDesignerUriDomain,
+                    "expiresInDays" : expiresInDays
                 },
                 lastNameCookieMarketoLive = {
                     "url" : mktoLiveDomainMatch,
                     "name" : lastNameCookieName,
                     "value" : message.lastName,
-                    "domain" : mktoLiveUriDomain
+                    "domain" : mktoLiveUriDomain,
+                    "expiresInDays" : expiresInDays
                 },
                 lastNameCookieMarketoLiveClassic = {
                     "url" : mktoLiveClassicDomainMatch,
                     "name" : lastNameCookieName,
                     "value" : message.lastName,
-                    "domain" : mktoLiveClassicUriDomain
+                    "domain" : mktoLiveClassicUriDomain,
+                    "expiresInDays" : expiresInDays
                 },
                 lastNameCookieMarketoApp = {
                     "url" : mktoAppDomainMatch,
                     "name" : lastNameCookieName,
                     "value" : message.lastName,
-                    "domain" : mktoAppUriDomain
+                    "domain" : mktoAppUriDomain,
+                    "expiresInDays" : expiresInDays
                 },
                 lastNameCookieDesigner = {
                     "url" : mktoDesignerMatchPattern,
                     "name" : lastNameCookieName,
                     "value" : message.lastName,
-                    "domain" : mktoDesignerUriDomain
+                    "domain" : mktoDesignerUriDomain,
+                    "expiresInDays" : expiresInDays
                 },
                 emailCookieMarketoLive = {
                     "url" : mktoLiveDomainMatch,
                     "name" : emailCookieName,
                     "value" : message.email,
-                    "domain" : mktoLiveUriDomain
+                    "domain" : mktoLiveUriDomain,
+                    "expiresInDays" : expiresInDays
                 },
                 emailCookieMarketoLiveClassic = {
                     "url" : mktoLiveClassicDomainMatch,
                     "name" : emailCookieName,
                     "value" : message.email,
-                    "domain" : mktoLiveClassicUriDomain
+                    "domain" : mktoLiveClassicUriDomain,
+                    "expiresInDays" : expiresInDays
                 },
                 emailCookieMarketoApp = {
                     "url" : mktoAppDomainMatch,
                     "name" : emailCookieName,
                     "value" : message.email,
-                    "domain" : mktoAppUriDomain
+                    "domain" : mktoAppUriDomain,
+                    "expiresInDays" : expiresInDays
                 },
                 emailCookieDesigner = {
                     "url" : mktoDesignerMatchPattern,
                     "name" : emailCookieName,
                     "value" : message.email,
-                    "domain" : mktoDesignerUriDomain
+                    "domain" : mktoDesignerUriDomain,
+                    "expiresInDays" : expiresInDays
                 };
             
             setCookie(usernameCookieMarketoLive);
