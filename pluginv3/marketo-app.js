@@ -4005,7 +4005,11 @@ APP.disableDesignerSaving = function(assetType, mode) {
             
             window.clearInterval(isAppController);
             
-            var disableDesignerAsset = function(assetNode, menuItems, disableFunc) {
+            var disableDesignerAsset,
+                assetNode,
+                menuItems;
+            
+            disableDesignerAsset = function(assetNode, menuItems, disableFunc) {
                 var isDesignerAsset = window.setInterval(function () {
                     
                     if (typeof(assetNode) !== "undefined"
@@ -4015,10 +4019,12 @@ APP.disableDesignerSaving = function(assetType, mode) {
                         
                         heapTrackDesigner(assetNode);
                         
-                        if (disableFunc
-                            && (assetNode.accessZoneId.toString().search(mktoGoldenWorkspacesMatch) != -1
-                                || APP.getCookie("toggleState") == "false")) {
-                            disableFunc();
+                        if (assetNode.accessZoneId.toString().search(mktoGoldenWorkspacesMatch) != -1
+                            || APP.getCookie("toggleState") == "false")) {
+                            
+                            if (disableFunc) {
+                                disableFunc();
+                            }
                             
                             if (typeof(Ext4) !== "undefined"
                                 && Ext4
@@ -4041,12 +4047,8 @@ APP.disableDesignerSaving = function(assetType, mode) {
             };
         
             switch (assetType) {
-                var assetNode,
-                    menuItems;
-                
                 case "landingPage":
                     switch (mode) {
-                        
                         case "edit":
                             assetNode = Mkt3.app.controllers.get("Mkt3.controller.editor.LandingPage").getLandingPage().getNodeJson();
                             menuItems = [
