@@ -4020,7 +4020,7 @@ APP.disableDesignerSaving = function(assetType, mode) {
                         heapTrackDesigner(assetNode);
                         
                         if (assetNode.accessZoneId.toString().search(mktoGoldenWorkspacesMatch) != -1
-                            || APP.getCookie("toggleState") == "false")) {
+                            || APP.getCookie("toggleState") == "false") {
                             
                             if (disableFunc) {
                                 disableFunc();
