@@ -455,20 +455,26 @@ if (webPageXvisitationRate >= 1.0
         else {
             console.log("Visiting Initial Page: " + webPageX.url);
             
-            if (webPageX.type == landingPageType
-            && (webPageX.conversionRate >= 1.0
-                || (Math.random()) <= webPageX.conversionRate)) {
+            if (webPageX.dependentOn.length == 0) {
+            
+                if (webPageX.type == landingPageType
+                && (webPageX.conversionRate >= 1.0
+                    || (Math.random()) <= webPageX.conversionRate)) {
+                    
+                    submitParam = "submit=true";
+                }
+                else {
+                    submitParam = "submit=false";
+                }
                 
-                submitParam = "submit=true";
+                response = webRequest("GET", webPageX.url + "?" + submitParam, false);
+                console.log("Response: " + webPageX.url + "?" + submitParam + ": " + response);
+                visitedPagesCookieMarketoLive.value = webPageX.name;
+                setCookie(visitedPagesCookieMarketoLive);
             }
             else {
-                submitParam = "submit=false";
+                console.log("NOT Visiting: " + webPageX.url + " due to dependencies not being met");
             }
-            
-            response = webRequest("GET", webPageX.url + "?" + submitParam, false);
-            console.log("Response: " + webPageX.url + "?" + submitParam + ": " + response);
-            visitedPagesCookieMarketoLive.value = webPageX.name;
-            setCookie(visitedPagesCookieMarketoLive);
         }
     });
 }

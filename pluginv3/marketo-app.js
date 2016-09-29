@@ -5912,7 +5912,7 @@ APP.trackOtherAssets = function() {
  *  @function
  *
  *  @param {String} action - The desired action (id, track).
-  * @param {Object} event - The object of the event to be tracked.
+ *  @param {Object} event - The object of the event to be tracked.
  *
  **************************************************************************************/
 
@@ -5940,17 +5940,20 @@ var heapTrack = function(action, event) {
                     
                     if (oneLoginFirstName
                     && oneLoginLastName) {
+                        console.log("Marketo App > Heap Analytics ID: " + oneLoginFirstName + " " + oneLoginLastName);
+                        
                         heap.addUserProperties({
                             Name : oneLoginFirstName + " " + oneLoginLastName
                         });
                     }
                     else if (MktPage
                     && MktPage.userName) {
+                        console.log("Marketo App > Heap Analytics ID: " + MktPage.userName);
+                        
                         heap.addUserProperties({
                             Name : MktPage.userName
                         });
                     }
-                    console.log("Marketo App > Heap Analytics ID: " + heap.identity);
                     break;
                 
                 // Heap Analytics Event Tracking
