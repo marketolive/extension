@@ -4196,8 +4196,8 @@ APP.disableDesignerSaving = function(assetType, mode) {
                             assetNode = Mkt3.app.controllers.get("Mkt3.controller.editor.inAppMessage.InAppMessage").getInAppMessage().getNodeJson();
                             menuItems = [
                             // Toolbar Menu
-                                "inAppMessageEditor toolbar [action=sendSample]," // Send Sample
-                                //"inAppMessageEditor toolbar [action=preview]," // Preview
+                                "inAppMessageEditor toolbar [action=sendSample]", // Send Sample
+                                //"inAppMessageEditor toolbar [action=preview]", // Preview
                             // Actions Menu
                                 "inAppMessageEditor menu [action=sendSample]", // Send Sample
                                 //"inAppMessageEditor menu [action=preview]", // Preview
@@ -4436,8 +4436,8 @@ APP.disableDesignerSavingCallback = function(assetType) {
                                         "smsMessageEditor menu [action=approveAndClose]", // Approve and Close
                                 // In-App Message Editor
                                     // Toolbar Menu
-                                        "inAppMessageEditor toolbar [action=sendSample]," //Send Sample
-                                        //"inAppMessageEditor toolbar [action=preview]," //Preview
+                                        "inAppMessageEditor toolbar [action=sendSample]", //Send Sample
+                                        //"inAppMessageEditor toolbar [action=preview]", //Preview
                                     // Actions Menu
                                         "inAppMessageEditor menu [action=sendSample]", // Send Sample
                                         //"inAppMessageEditor menu [action=preview]", // Preview
