@@ -4065,7 +4065,9 @@ APP.disableDesignerSaving = function(assetType, mode) {
                         
                         case "preview":
                             var isLandingPagePreviewer = window.setInterval(function () {
-                                if (typeof(Mkt3.app.controllers.get("Mkt3.controller.previewer.LandingPage").getLandingPage().getNodeJson()) !== "undefined"
+                                if (typeof(Mkt3.app.controllers.get("Mkt3.controller.previewer.LandingPage")) !== "undefined"
+                                && Mkt3.app.controllers.get("Mkt3.controller.previewer.LandingPage")
+                                && Mkt3.app.controllers.get("Mkt3.controller.previewer.LandingPage").getLandingPage()
                                 && Mkt3.app.controllers.get("Mkt3.controller.previewer.LandingPage").getLandingPage().getNodeJson()) {
                                     console.log("Marketo App > Disabling: Landing Page Previewer: Saving & Toolbar Menus");
                                     
@@ -4097,7 +4099,9 @@ APP.disableDesignerSaving = function(assetType, mode) {
                     switch (mode) {
                         case "edit":
                             var isEmailEditor = window.setInterval(function () {
-                                if (typeof(Mkt3.app.controllers.get("Mkt3.controller.editor.email2.EmailEditor").getEmail().getNodeJson()) !== "undefined"
+                                if (typeof(Mkt3.app.controllers.get("Mkt3.controller.editor.email2.EmailEditor")) !== "undefined"
+                                && Mkt3.app.controllers.get("Mkt3.controller.editor.email2.EmailEditor")
+                                && Mkt3.app.controllers.get("Mkt3.controller.editor.email2.EmailEditor").getEmail()
                                 && Mkt3.app.controllers.get("Mkt3.controller.editor.email2.EmailEditor").getEmail().getNodeJson()) {
                                     console.log("Marketo App > Disabling: Email Editor: Saving & Toolbar Menus");
                                     
@@ -4127,7 +4131,9 @@ APP.disableDesignerSaving = function(assetType, mode) {
                         
                         case "preview":
                             var isEmailPreviewer = window.setInterval(function () {
-                                if (typeof(Mkt3.app.controllers.get("Mkt3.controller.editor.email2.Preview").getEmail().getNodeJson()) !== "undefined"
+                                if (typeof(Mkt3.app.controllers.get("Mkt3.controller.editor.email2.Preview")) !== "undefined"
+                                && Mkt3.app.controllers.get("Mkt3.controller.editor.email2.Preview")
+                                && Mkt3.app.controllers.get("Mkt3.controller.editor.email2.Preview").getEmail()
                                 && Mkt3.app.controllers.get("Mkt3.controller.editor.email2.Preview").getEmail().getNodeJson()) {
                                     console.log("Marketo App > Disabling: Email Previewer: Saving & Toolbar Menus");
                                     
@@ -4155,7 +4161,9 @@ APP.disableDesignerSaving = function(assetType, mode) {
                     switch (mode) {
                         case "edit":
                             var isFormEditor = window.setInterval(function () {
-                                if (typeof(Mkt3.app.controllers.get("Mkt3.controller.editor.Form").getForm().getNodeJson()) !== "undefined"
+                                if (typeof(Mkt3.app.controllers.get("Mkt3.controller.editor.Form")) !== "undefined"
+                                && Mkt3.app.controllers.get("Mkt3.controller.editor.Form")
+                                && Mkt3.app.controllers.get("Mkt3.controller.editor.Form").getForm()
                                 && Mkt3.app.controllers.get("Mkt3.controller.editor.Form").getForm().getNodeJson()) {
                                     console.log("Marketo App > Disabling: Form Editor: Saving & Toolbar Menus");
                                     
@@ -4180,7 +4188,9 @@ APP.disableDesignerSaving = function(assetType, mode) {
                         
                         case "preview":
                         var isFormPreviewer = window.setInterval(function () {
-                                if (typeof(Mkt3.app.controllers.get("Mkt3.controller.previewer.Form").getForm().getNodeJson()) !== "undefined"
+                                if (typeof(Mkt3.app.controllers.get("Mkt3.controller.previewer.Form")) !== "undefined"
+                                && Mkt3.app.controllers.get("Mkt3.controller.previewer.Form")
+                                && Mkt3.app.controllers.get("Mkt3.controller.previewer.Form").getForm()
                                 && Mkt3.app.controllers.get("Mkt3.controller.previewer.Form").getForm().getNodeJson()) {
                                     console.log("Marketo App > Disabling: Form Previewer: Saving & Toolbar Menus");
                                     
@@ -4203,7 +4213,9 @@ APP.disableDesignerSaving = function(assetType, mode) {
                     switch (mode) {
                         case "edit":
                             var isPushNotificationEditor = window.setInterval(function () {
-                                if (typeof(Mkt3.app.controllers.get("Mkt3.controller.editor.mobilePushNotification.MobilePushNotification").getMobilePushNotification().getNodeJson()) !== "undefined"
+                                if (typeof(Mkt3.app.controllers.get("Mkt3.controller.editor.mobilePushNotification.MobilePushNotification")) !== "undefined"
+                                && Mkt3.app.controllers.get("Mkt3.controller.editor.mobilePushNotification.MobilePushNotification")
+                                && Mkt3.app.controllers.get("Mkt3.controller.editor.mobilePushNotification.MobilePushNotification").getMobilePushNotification()
                                 && Mkt3.app.controllers.get("Mkt3.controller.editor.mobilePushNotification.MobilePushNotification").getMobilePushNotification().getNodeJson()) {
                                     console.log("Marketo App > Disabling: Push Notification Editor: Saving & Toolbar Menus");
                                     
@@ -4229,7 +4241,9 @@ APP.disableDesignerSaving = function(assetType, mode) {
                         
                         case "preview":
                             var isPushNotificationPreview = window.setInterval(function () {
-                                if (typeof(Mkt3.app.controllers.get("Mkt3.controller.previewer.MobilePushNotification").getMobilePushNotification().getNodeJson()) !== "undefined"
+                                if (typeof(Mkt3.app.controllers.get("Mkt3.controller.previewer.MobilePushNotification")) !== "undefined"
+                                && Mkt3.app.controllers.get("Mkt3.controller.previewer.MobilePushNotification")
+                                && Mkt3.app.controllers.get("Mkt3.controller.previewer.MobilePushNotification").getMobilePushNotification()
                                 && Mkt3.app.controllers.get("Mkt3.controller.previewer.MobilePushNotification").getMobilePushNotification().getNodeJson()) {
                                     console.log("Marketo App > Disabling: Push Notification Previewer: Saving & Toolbar Menus");
                                     
@@ -4253,7 +4267,9 @@ APP.disableDesignerSaving = function(assetType, mode) {
                     switch (mode) {
                         case "edit":
                             var isInAppMessageEditor = window.setInterval(function () {
-                                if (typeof(Mkt3.app.controllers.get("Mkt3.controller.editor.inAppMessage.InAppMessage").getInAppMessage().getNodeJson()) !== "undefined"
+                                if (typeof(Mkt3.app.controllers.get("Mkt3.controller.editor.inAppMessage.InAppMessage")) !== "undefined"
+                                && Mkt3.app.controllers.get("Mkt3.controller.editor.inAppMessage.InAppMessage")
+                                && Mkt3.app.controllers.get("Mkt3.controller.editor.inAppMessage.InAppMessage").getInAppMessage()
                                 && Mkt3.app.controllers.get("Mkt3.controller.editor.inAppMessage.InAppMessage").getInAppMessage().getNodeJson()) {
                                     console.log("Marketo App > Disabling: In-App Message Editor: Saving & Toolbar Menus");
                                     
@@ -4277,7 +4293,9 @@ APP.disableDesignerSaving = function(assetType, mode) {
                         
                         case "preview":
                             var isInAppMessagePreviewer = window.setInterval(function () {
-                                if (typeof(Mkt3.app.controllers.get("Mkt3.controller.previewer.InAppMessage").getInAppMessage().getNodeJson()) !== "undefined"
+                                if (typeof(Mkt3.app.controllers.get("Mkt3.controller.previewer.InAppMessage")) !== "undefined"
+                                && Mkt3.app.controllers.get("Mkt3.controller.previewer.InAppMessage")
+                                && Mkt3.app.controllers.get("Mkt3.controller.previewer.InAppMessage").getInAppMessage()
                                 && Mkt3.app.controllers.get("Mkt3.controller.previewer.InAppMessage").getInAppMessage().getNodeJson()) {
                                     console.log("Marketo App > Disabling: In-App Message Previewer: Saving & Toolbar Menus");
                                     
@@ -4304,7 +4322,9 @@ APP.disableDesignerSaving = function(assetType, mode) {
                     switch (mode) {
                         case "edit":
                             var isSmsMessageEditor = window.setInterval(function () {
-                                if (typeof(Mkt3.app.controllers.get("Mkt3.controller.editor.SmsMessage").getSmsMessage().getNodeJson()) !== "undefined"
+                                if (typeof(Mkt3.app.controllers.get("Mkt3.controller.editor.SmsMessage")) !== "undefined"
+                                && Mkt3.app.controllers.get("Mkt3.controller.editor.SmsMessage")
+                                && Mkt3.app.controllers.get("Mkt3.controller.editor.SmsMessage").getSmsMessage()
                                 && Mkt3.app.controllers.get("Mkt3.controller.editor.SmsMessage").getSmsMessage().getNodeJson()) {
                                     console.log("Marketo App > Disabling: SMS Message Editor: Saving & Toolbar Menus");
                                     
@@ -4330,7 +4350,9 @@ APP.disableDesignerSaving = function(assetType, mode) {
                     switch (mode) {
                         case "edit":
                             var isSocialAppEditor = window.setInterval(function () {
-                                if (typeof(Mkt3.app.controllers.get("Mkt3.controller.editor.SocialApp").getSocialApp().getNodeJson()) !== "undefined"
+                                if (typeof(Mkt3.app.controllers.get("Mkt3.controller.editor.SocialApp")) !== "undefined"
+                                && Mkt3.app.controllers.get("Mkt3.controller.editor.SocialApp")
+                                && Mkt3.app.controllers.get("Mkt3.controller.editor.SocialApp").getSocialApp()
                                 && Mkt3.app.controllers.get("Mkt3.controller.editor.SocialApp").getSocialApp().getNodeJson()) {
                                     console.log("Marketo App > Disabling: Social App Editor: Saving & Toolbar Menus");
                                     
@@ -4355,7 +4377,9 @@ APP.disableDesignerSaving = function(assetType, mode) {
                         
                         case "preview":
                             var isSocialAppPreviewer = window.setInterval(function () {
-                                if (typeof(Mkt3.app.controllers.get("Mkt3.controller.previewer.SocialApp").getSocialApp().getNodeJson()) !== "undefined"
+                                if (typeof(Mkt3.app.controllers.get("Mkt3.controller.previewer.SocialApp")) !== "undefined"
+                                && Mkt3.app.controllers.get("Mkt3.controller.previewer.SocialApp")
+                                && Mkt3.app.controllers.get("Mkt3.controller.previewer.SocialApp").getSocialApp()
                                 && Mkt3.app.controllers.get("Mkt3.controller.previewer.SocialApp").getSocialApp().getNodeJson()) {
                                     console.log("Marketo App > Disabling: Social App Previewer: Saving & Toolbar Menus");
                                     
@@ -4378,7 +4402,9 @@ APP.disableDesignerSaving = function(assetType, mode) {
                     switch (mode) {
                         case "edit":
                             var isAbTestEditor = window.setInterval(function () {
-                                if (typeof(Mkt3.app.controllers.get("Mkt3.controller.editor.testGroup.TestGroup").getTestGroup().getNodeJson()) !== "undefined"
+                                if (typeof(Mkt3.app.controllers.get("Mkt3.controller.editor.testGroup.TestGroup")) !== "undefined"
+                                && Mkt3.app.controllers.get("Mkt3.controller.editor.testGroup.TestGroup")
+                                && Mkt3.app.controllers.get("Mkt3.controller.editor.testGroup.TestGroup").getTestGroup()
                                 && Mkt3.app.controllers.get("Mkt3.controller.editor.testGroup.TestGroup").getTestGroup().getNodeJson()) {
                                     console.log("Marketo App > Disabling: A/B Test Editor: Saving & Toolbar Menus");
                                     
