@@ -449,7 +449,7 @@ if (webPageXvisitationRate >= 1.0
                 setCookie(visitedPagesCookieMarketoLive);
             }
             else {
-                console.log("NOT Visiting: " + webPageX.url + " due to dependencies not being met");
+                console.log("NOT Visiting: " + webPageX.url + " due to dependencies not being met (" + webPageX.dependentOn.toString() + ")");
             }
         }
         else {
@@ -476,4 +476,7 @@ if (webPageXvisitationRate >= 1.0
             }
         }
     });
+}
+else {
+    console.log("NOT Visiting: " + webPageX.url + " due to web page visitation rate (" + webPageXvisitationRate + ")");
 }
