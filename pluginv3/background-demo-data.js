@@ -453,10 +453,9 @@ if (webPageXvisitationRate >= 1.0
             }
         }
         else {
-            console.log("Visiting Initial Page: " + webPageX.url);
-            
             if (webPageX.dependentOn.length == 0) {
-            
+                console.log("Visiting Initial Page: " + webPageX.url);
+                
                 if (webPageX.type == landingPageType
                 && (webPageX.conversionRate >= 1.0
                     || (Math.random()) <= webPageX.conversionRate)) {
