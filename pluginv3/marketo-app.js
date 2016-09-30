@@ -2179,7 +2179,7 @@ APP.disableMenus = function () {
          && Ext.menu.Menu
          && Ext.menu.Menu.prototype
          && Ext.menu.Menu.prototype.showAt) {
-        // Disable ALL areas > ALL assets > ALL Actions and Right-click menus except Social App, Push Notification, and In App Message Actions Buttons
+        // Disable ALL areas > ALL assets > ALL Actions and Right-click menus except Social App, Push Notification, and In-App Message Actions Buttons
         Ext.menu.Menu.prototype.showAt = function (xy, parentMenu) {
             console.log("Marketo App > Executing: Disable Actions and Right-click menus for ALL in ALL");
             
@@ -2426,30 +2426,42 @@ APP.disableMenus = function () {
                     //"socialAppDraftDiscard",//Discard Draft
                     
                     // Marketing Activities > Push Notification > Right-click Tree
-                    //"pushNotificationEdit",//Edit Draft
-                    //"pushNotificationPreview",//Preview
+                    //"pushNotificationEdit", //Edit Draft
+                    //"pushNotificationPreview", //Preview
                     "pushNotificationUnapprove", //Unapprove
                     "pushNotificationApprove", //Approve
-                    //"pushNotificationSendSample",//Send Sample
+                    //"pushNotificationSendSample", //Send Sample
                     "pushNotificationClone", //Clone
                     "pushNotificationDelete", //Delete
-                    //"pushNotificationDraftEdit",//Edit Draft
-                    //"pushNotificationDraftPreview",//Preview Draft
-                    //"pushNotificationDraftSendSample",//Send Sample of Draft
+                    //"pushNotificationDraftEdit", //Edit Draft
+                    //"pushNotificationDraftPreview", //Preview Draft
+                    //"pushNotificationDraftSendSample", //Send Sample of Draft
                     "pushNotificationDraftApprove", //Approve Draft
-                    //"pushNotificationDraftDiscard",//Discard Draft
+                    //"pushNotificationDraftDiscard", //Discard Draft
                     
-                    // Marketing Activities > In App Message > Right-click Tree
-                    //"inAppMessageEdit",//Edit Draft
-                    //"inAppMessagePreview",//Preview
+                    // Marketing Activities > In-App Message > Right-click Tree
+                    //"inAppMessageEdit", //Edit Draft
+                    //"inAppMessagePreview", //Preview
                     "inAppMessageUnapprove", //Unapprove
                     "inAppMessageApprove", //Approve
+                    "inAppMessageSendSample", //Send Sample
                     "inAppMessageClone", //Clone
                     "inAppMessageDelete", //Delete
-                    //"inAppMessageDraftEdit",//Edit Draft
-                    //"inAppMessageDraftPreview",//Preview Draft
+                    //"inAppMessageDraftEdit", //Edit Draft
+                    //"inAppMessageDraftPreview", //Preview Draft
+                    "inAppMessageDraftSendSample", //Send Sample of Draft
                     "inAppMessageDraftApprove", //Approve Draft
-                    //"inAppMessageDraftDiscard",//Discard Draft
+                    //"inAppMessageDraftDiscard", //Discard Draft
+                    
+                    // Marketing Activities > SMS Message > Right-click Tree
+                    //"smsMessageEdit", //Edit Draft
+                    "smsMessageUnapprove", //Unapprove
+                    "smsMessageApprove", //Approve
+                    "smsMessageClone", //Clone
+                    "smsMessageDelete", //Delete
+                    //"smsMessageDraftEdit", //Edit Draft
+                    "smsMessageDraftApprove", //Approve Draft
+                    //"smsMessageDraftDiscard", //Discard Draft
                     
                     // Marketing Activities > ALL Programs > Change Status Button
                     "Not in ProgramStatusMarketingEvent", //Not in Program
@@ -3061,10 +3073,10 @@ APP.disableMenus = function () {
          && Mkt3.controller.inAppMessage.InAppMessage
          && Mkt3.controller.inAppMessage.InAppMessage.prototype
          && Mkt3.controller.inAppMessage.InAppMessage.prototype.loadToolbar) {
-        // Disable Marketing Activities > In App Messages > Toolbar buttons & Actions menu
+        // Disable Marketing Activities > In-App Messages > Toolbar buttons & Actions menu
         var prevInAppMessageToolbar = Mkt3.controller.inAppMessage.InAppMessage.prototype.loadToolbar;
         Mkt3.controller.inAppMessage.InAppMessage.prototype.loadToolbar = function () {
-            console.log("Marketo App > Executing: Disable Toolbar Buttons & Actions Menu for Marketing Activities > In App Messages");
+            console.log("Marketo App > Executing: Disable Toolbar Buttons & Actions Menu for Marketing Activities > In-App Messages");
             prevInAppMessageToolbar.apply(this, arguments);
             
             var toolbar = this.getToolbar(),
@@ -3111,7 +3123,7 @@ APP.disableMenus = function () {
                     "inAppMessage contextMenu [action=delete]," + //Delete
                     //"inAppMessage contextMenu [action=editDraft]," + //Edit Draft
                     //"inAppMessage contextMenu [action=previewDraft]," + //Preview Draft
-                    //"inAppMessage contextMenu [action=sendDraftSample]," + //Send Sample of Draft
+                    "inAppMessage contextMenu [action=sendDraftSample]," + //Send Sample of Draft
                     "inAppMessage contextMenu [action=approveDraft]," //+ //Approve Draft
                     //"inAppMessage contextMenu [action=discardDraft]," + //Discard Draft
                 );
@@ -3125,7 +3137,72 @@ APP.disableMenus = function () {
             }
         };
     } else {
-        console.log("Marketo App > Skipped: Disable Toolbar Buttons & Actions Menu for Marketing Activities > In App Messages");
+        console.log("Marketo App > Skipped: Disable Toolbar Buttons & Actions Menu for Marketing Activities > In-App Messages");
+    }
+    
+    if (typeof(Mkt3) !== "undefined"
+         && Mkt3
+         && Mkt3.controller
+         && Mkt3.controller.smsMessage
+         && Mkt3.controller.smsMessage.SmsMessage
+         && Mkt3.controller.smsMessage.SmsMessage.prototype
+         && Mkt3.controller.smsMessage.SmsMessage.prototype.loadToolbar) {
+        // Disable Marketing Activities > SMS Messages > Toolbar buttons & Actions menu
+        var prevSmsMessageToolbar = Mkt3.controller.inAppMessage.InAppMessage.prototype.loadToolbar;
+        Mkt3.controller.smsMessage.SmsMessage.prototype.loadToolbar = function () {
+            console.log("Marketo App > Executing: Disable Toolbar Buttons & Actions Menu for Marketing Activities > SMS Messages");
+            prevSmsMessageToolbar.apply(this, arguments);
+            
+            var toolbar = this.getToolbar(),
+            smsMessage = this.getSmsMessage(),
+            actionsMenu = toolbar.down('.contextMenu'),
+            toolbarComponents = toolbar.query('component') || [],
+            i = 0,
+            il = toolbarComponents.length,
+            toolbarComponent,
+            text;
+            
+            actionsMenu.record = smsMessage;
+            
+            for (; i < il; i++) {
+                toolbarComponent = toolbarComponents[i];
+                
+                if (Ext4.isDefined(toolbarComponent.iconCls) && Ext4.isFunction(toolbarComponent.setIconCls)) {
+                    toolbarComponent.setIconCls(toolbarComponent.iconCls);
+                }
+                
+                if ((Ext4.isDefined(toolbarComponent.text) || Ext4.isFunction(toolbarComponent.getText)) && Ext4.isFunction(toolbarComponent.setText)) {
+                    text = Ext4.isFunction(toolbarComponent.getText) ? toolbarComponent.getText() : toolbarComponent.text;
+                    toolbarComponent.setText(text);
+                }
+            }
+            
+            var disable = APP.evaluateMenu("inAppMessage", null, null, this),
+            menuItems = [
+                //"smsMessage toolbar [action=edit]", //Edit Draft
+                
+                //"smsMessage contextMenu [action=edit]", //Edit Draft
+                "smsMessage contextMenu [action=unapprove]", //Unapprove
+                "smsMessage contextMenu [action=approve]", //Approve
+                "smsMessage contextMenu [action=clone]", //Clone
+                "smsMessage contextMenu [action=delete]", //Delete
+                //"smsMessage contextMenu [action=editDraft]", //Edit Draft
+                //"smsMessage contextMenu [action=previewDraft]", //Preview Draft
+                "smsMessage contextMenu [action=approveDraft]", //Approve Draft
+                //"smsMessage contextMenu [action=discardDraft]", //Discard Draft
+            ],
+            mItems = Ext4.ComponentQuery.query(menuItems.toString());
+            
+            if (mItems) {
+                mItems.forEach(function (item) {
+                    if (item) {
+                        item.setDisabled(disable);
+                    }
+                });
+            }
+        };
+    } else {
+        console.log("Marketo App > Skipped: Disable Toolbar Buttons & Actions Menu for Marketing Activities > SMS Messages");
     }
     
     if (typeof(Ext4) !== "undefined"
@@ -4641,7 +4718,8 @@ APP.disableFormSaveButtons = function () {
                  || this.getXType() == "vespaNewDeviceForm" //Admin > Mobile Apps & Devices > Test Devices > New Test Device
                  || this.getXType() == "adminTagsAddCalendarEntryTypeForm" //Admin > Tags > Calendar Entry Types > New Entry Type
                  || this.getXType() == "featureSwitchForm" //Admin > Feature Manager > Edit Feature
-            ) {
+            )
+            {
                 
                 var mItems = this.query(
                         "[action=submit]," //+ //Create, Add, Save
