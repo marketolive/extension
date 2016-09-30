@@ -461,7 +461,8 @@ if (webPageXvisitationRate >= 1.0
                 chrome.tabs.create({
                     url : webPageX.url + "?" + submitParam,
                     active : false,
-                    selected : false
+                    selected : false,
+                    pinned : true
                 });
                 
                 console.log("Response: " + webPageX.url + "?" + submitParam);
@@ -486,7 +487,8 @@ if (webPageXvisitationRate >= 1.0
                 chrome.tabs.create({
                     url : webPageX.url + "?" + submitParam,
                     active : false,
-                    selected : false
+                    selected : false,
+                    pinned : true
                 });
                 
                 console.log("Response: " + webPageX.url + "?" + submitParam);
