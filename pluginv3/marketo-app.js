@@ -3932,9 +3932,9 @@ APP.disableDesignerSaving = function (assetType, mode) {
                 assetNode,
                 menuItems;
                 
-                heapTrackDesigner = function () {};
-                
                 disableDesignerAsset = function (assetNode, menuItems, disableFunc) {
+                    console.log("Marketo App > Executing: Disabling Designer (Edit/Preview)");
+                    
                     var heapEventName,
                     heapEvent = {};
                     
