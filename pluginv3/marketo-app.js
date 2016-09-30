@@ -3936,17 +3936,15 @@ APP.disableDesignerSaving = function (assetType, mode) {
                     console.log("Marketo App > Executing: Disabling Designer (Edit/Preview)");
                     
                     var heapEventName,
-                    heapEvent = {};
+                    heapEvent = {
+                        name : assetNode.text,
+                        assetType : assetNode.compType,
+                        assetId : assetNode.id,
+                        assetArea : "Designer/Wizard",
+                        workspaceId : assetNode.accessZoneId
+                    };
                     
                     if (assetNode.accessZoneId != mktoUserWorkspaceId) {
-                        
-                        heapEvent = {
-                            name : assetNode.text,
-                            assetType : assetNode.compType,
-                            assetId : assetNode.id,
-                            assetArea : "Designer/Wizard",
-                            workspaceId : assetNode.accessZoneId
-                        };
                         
                         if (assetNode.text.search(".") != -1) {
                             heapEvent.assetName = assetNode.text.split(".")[1];
@@ -3957,6 +3955,7 @@ APP.disableDesignerSaving = function (assetType, mode) {
                         heapEventName = userWorkspaceName + " | " + userName;
                     }
                     
+                    heapEvent.name = heapEventName;
                     heapTrack("track", heapEvent);
                     
                     if (assetNode.accessZoneId.toString().search(mktoGoldenWorkspacesMatch) != -1
@@ -4431,6 +4430,7 @@ heapEventName = userWorkspaceName + " | " + userName;
 }
 }
 
+heapEvent.name = heapEventName;
 heapTrack("track", heapEvent);
 };
 
@@ -4646,8 +4646,7 @@ APP.disableFormSaveButtons = function () {
                  || this.getXType() == "vespaNewDeviceForm" //Admin > Mobile Apps & Devices > Test Devices > New Test Device
                  || this.getXType() == "adminTagsAddCalendarEntryTypeForm" //Admin > Tags > Calendar Entry Types > New Entry Type
                  || this.getXType() == "featureSwitchForm" //Admin > Feature Manager > Edit Feature
-            )
-            {
+            ) {
                 
                 var mItems = this.query(
                         "[action=submit]," //+ //Create, Add, Save
@@ -5787,21 +5786,21 @@ APP.trackTreeNodeSelection = function () {
             
             var currNode = node,
             heapEventName,
-            heapEvent = {};
+            heapEvent = {
+                assetName : currNode.text,
+                assetId : currNode.attributes.id,
+                assetType : currNode.attributes.compType,
+                workspaceId : currNode.attributes.accessZoneId
+            };
             
             if (currNode.attributes.accessZoneId != mktoUserWorkspaceId) {
                 heapEventName = currNode.text;
-                heapEvent = {
-                    assetName : currNode.text,
-                    assetId : currNode.attributes.id,
-                    assetType : currNode.attributes.compType,
-                    workspaceId : currNode.attributes.accessZoneId
-                };
                 
                 for (var ii = 0; ii < node.getDepth() - 1; ii++) {
                     currNode = currNode.parentNode;
                     heapEventName = currNode.text + " | " + heapEventName;
                 }
+                
             } else {
                 heapEventName = userWorkspaceName + " | " + userName;
             }
@@ -5843,21 +5842,21 @@ APP.trackOtherAssets = function () {
         
         var node = currNode = MktExplorer.getNodeById(currUrlFragment.substring(0, currUrlFragment.length - 5)),
         heapEventName,
-        heapEvent = {};
+        heapEvent = {
+            assetName : currNode.text,
+            assetId : currNode.attributes.id,
+            assetType : currNode.attributes.compType,
+            workspaceId : currNode.attributes.accessZoneId
+        };
         
         if (currNode.attributes.accessZoneId != mktoUserWorkspaceId) {
             heapEventName = currNode.text;
-            heapEvent = {
-                assetName : currNode.text,
-                assetId : currNode.attributes.id,
-                assetType : currNode.attributes.compType,
-                workspaceId : currNode.attributes.accessZoneId
-            };
             
             for (var ii = 0; ii < node.getDepth() - 1; ii++) {
                 currNode = currNode.parentNode;
                 heapEventName = currNode.text + " | " + heapEventName;
             }
+            
         } else {
             heapEventName = userWorkspaceName + " | " + userName;
         }
