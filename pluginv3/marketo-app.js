@@ -3174,7 +3174,7 @@ APP.disableMenus = function () {
          && Mkt3.controller.smsMessage.SmsMessage.prototype
          && Mkt3.controller.smsMessage.SmsMessage.prototype.loadToolbar) {
         // Disable Marketing Activities > SMS Messages > Toolbar buttons & Actions menu
-        var prevSmsMessageToolbar = Mkt3.controller.inAppMessage.InAppMessage.prototype.loadToolbar;
+        var prevSmsMessageToolbar = Mkt3.controller.smsMessage.SmsMessage.prototype.loadToolbar;
         Mkt3.controller.smsMessage.SmsMessage.prototype.loadToolbar = function () {
             console.log("Marketo App > Executing: Disable Toolbar Buttons & Actions Menu for Marketing Activities > SMS Messages");
             prevSmsMessageToolbar.apply(this, arguments);
