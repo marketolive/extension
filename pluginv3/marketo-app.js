@@ -3951,442 +3951,437 @@ APP.disableDesignerSaving = function (assetType, mode) {
                             heapEvent.assetName = assetNode.text;
                         }
                     } else {
-                        heapEventName = userWorkspaceName;
-                        
-                        if (typeof(MktPage) !== "undefined"
-                             && MktPage
-                             && MktPage.userid) {
-                            heapEventName = heapEventName + " | " + MktPage.userid;
-                        }
+                        heapEventName = userWorkspaceName + " | " + userName;
                     }
-                    
-                    heapTrack("track", heapEvent);
-                    
-                    if (assetNode.accessZoneId.toString().search(mktoGoldenWorkspacesMatch) != -1
-                         || APP.getCookie("toggleState") == "false") {
-                        
-                        if (disableFunc) {
-                            disableFunc();
-                        }
-                        
-                        if (typeof(Ext4) !== "undefined"
-                             && Ext4
-                             && Ext4.ComponentQuery
-                             && Ext4.ComponentQuery.query) {
-                            var mItems = Ext4.ComponentQuery.query(menuItems.toString());
-                            
-                            if (mItems) {
-                                console.log("Marketo App > Disabling Designer Toolbar Menus");
-                                mItems.forEach(function (item) {
-                                    if (item) {
-                                        item.setDisabled(true);
-                                    }
-                                });
-                            }
-                        }
-                    }
-                };
+                }
                 
-                switch (assetType) {
-                case "landingPage":
-                    switch (mode) {
-                    case "edit":
-                        var isLandingPageEditor = window.setInterval(function () {
-                                if (typeof(Mkt3.app.controllers.get("Mkt3.controller.editor.LandingPage")) !== "undefined"
-                                     && Mkt3.app.controllers.get("Mkt3.controller.editor.LandingPage")
-                                     && Mkt3.app.controllers.get("Mkt3.controller.editor.LandingPage").getLandingPage()
-                                     && Mkt3.app.controllers.get("Mkt3.controller.editor.LandingPage").getLandingPage().getNodeJson()) {
-                                    console.log("Marketo App > Disabling: Landing Page Editor: Saving & Toolbar Menus");
-                                    
-                                    window.clearInterval(isLandingPageEditor);
-                                    
-                                    assetNode = Mkt3.app.controllers.get("Mkt3.controller.editor.LandingPage").getLandingPage().getNodeJson();
-                                    menuItems = [
-                                        // Toolbar Menu
-                                        //"lpEditor toolbar [action=preview]", // Preview Draft
-                                        // Actions Menu
-                                        "lpEditor menu [action=approveAndClose]", // Approve and Close
-                                        "lpEditor menu [action=disableMobileVersion]", // Turn Off Mobile Version
-                                        //"lpEditor menu [action=editPageMeta]", // Edit Page Meta Tags
-                                        //"lpEditor menu [action=editFormSettings]", // Edit Form Settings
-                                        "lpEditor menu [action=uploadImage]", // Upload Image or File
-                                        "lpEditor menu [action=grabImages]", // Grab Images from Web
-                                        //"lpEditor menu [action=toggleGuides]", // Show Guides
-                                    ];
-                                    
-                                    disableDesignerAsset(assetNode, menuItems, APP.disablePropertyPanelSaving);
-                                }
-                            }, 0);
-                        break;
-                        
-                    case "preview":
-                        var isLandingPagePreviewer = window.setInterval(function () {
-                                if (typeof(Mkt3.app.controllers.get("Mkt3.controller.previewer.LandingPage")) !== "undefined"
-                                     && Mkt3.app.controllers.get("Mkt3.controller.previewer.LandingPage")
-                                     && Mkt3.app.controllers.get("Mkt3.controller.previewer.LandingPage").getLandingPage()
-                                     && Mkt3.app.controllers.get("Mkt3.controller.previewer.LandingPage").getLandingPage().getNodeJson()) {
-                                    console.log("Marketo App > Disabling: Landing Page Previewer: Saving & Toolbar Menus");
-                                    
-                                    window.clearInterval(isLandingPagePreviewer);
-                                    
-                                    assetNode = Mkt3.app.controllers.get("Mkt3.controller.previewer.LandingPage").getLandingPage().getNodeJson();
-                                    menuItems = [
-                                        // Tab Menu
-                                        //"landingPagePreviewer toolbar [action=showDesktop]", // Desktop
-                                        //"landingPagePreviewer toolbar [action=showMobile]", // Mobile
-                                        //"landingPagePreviewer toolbar [action=showSideBySide]", // Side by Side
-                                        //"landingPagePreviewer toolbar [action=edit]", // Edit Draft
-                                        // Toolbar Menu
-                                        //"landingPagePreviewer toolbar [action=viewMenu]", // View Default
-                                        //"landingPagePreviewer toolbar [action=maximize]", // (Expand Arrows)
-                                        // Actions Menu
-                                        "landingPagePreviewer menu [action=approveAndClose]", // Approve and Close
-                                        //"landingPagePreviewer menu [action=devicePreview]", // Generate Preview URL
-                                    ];
-                                    
-                                    disableDesignerAsset(assetNode, menuItems);
-                                }
-                            }, 0);
-                        break;
+                heapTrack("track", heapEvent);
+                
+                if (assetNode.accessZoneId.toString().search(mktoGoldenWorkspacesMatch) != -1
+                     || APP.getCookie("toggleState") == "false") {
+                    
+                    if (disableFunc) {
+                        disableFunc();
                     }
+                    
+                    if (typeof(Ext4) !== "undefined"
+                         && Ext4
+                         && Ext4.ComponentQuery
+                         && Ext4.ComponentQuery.query) {
+                        var mItems = Ext4.ComponentQuery.query(menuItems.toString());
+                        
+                        if (mItems) {
+                            console.log("Marketo App > Disabling Designer Toolbar Menus");
+                            mItems.forEach(function (item) {
+                                if (item) {
+                                    item.setDisabled(true);
+                                }
+                            });
+                        }
+                    }
+                }
+            };
+            
+            switch (assetType) {
+            case "landingPage":
+                switch (mode) {
+                case "edit":
+                    var isLandingPageEditor = window.setInterval(function () {
+                            if (typeof(Mkt3.app.controllers.get("Mkt3.controller.editor.LandingPage")) !== "undefined"
+                                 && Mkt3.app.controllers.get("Mkt3.controller.editor.LandingPage")
+                                 && Mkt3.app.controllers.get("Mkt3.controller.editor.LandingPage").getLandingPage()
+                                 && Mkt3.app.controllers.get("Mkt3.controller.editor.LandingPage").getLandingPage().getNodeJson()) {
+                                console.log("Marketo App > Disabling: Landing Page Editor: Saving & Toolbar Menus");
+                                
+                                window.clearInterval(isLandingPageEditor);
+                                
+                                assetNode = Mkt3.app.controllers.get("Mkt3.controller.editor.LandingPage").getLandingPage().getNodeJson();
+                                menuItems = [
+                                    // Toolbar Menu
+                                    //"lpEditor toolbar [action=preview]", // Preview Draft
+                                    // Actions Menu
+                                    "lpEditor menu [action=approveAndClose]", // Approve and Close
+                                    "lpEditor menu [action=disableMobileVersion]", // Turn Off Mobile Version
+                                    //"lpEditor menu [action=editPageMeta]", // Edit Page Meta Tags
+                                    //"lpEditor menu [action=editFormSettings]", // Edit Form Settings
+                                    "lpEditor menu [action=uploadImage]", // Upload Image or File
+                                    "lpEditor menu [action=grabImages]", // Grab Images from Web
+                                    //"lpEditor menu [action=toggleGuides]", // Show Guides
+                                ];
+                                
+                                disableDesignerAsset(assetNode, menuItems, APP.disablePropertyPanelSaving);
+                            }
+                        }, 0);
                     break;
                     
-                case "email":
-                    switch (mode) {
-                    case "edit":
-                        var isEmailEditor = window.setInterval(function () {
-                                if (typeof(Mkt3.app.controllers.get("Mkt3.controller.editor.email2.EmailEditor")) !== "undefined"
-                                     && Mkt3.app.controllers.get("Mkt3.controller.editor.email2.EmailEditor")
-                                     && Mkt3.app.controllers.get("Mkt3.controller.editor.email2.EmailEditor").getEmail()
-                                     && Mkt3.app.controllers.get("Mkt3.controller.editor.email2.EmailEditor").getEmail().getNodeJson()) {
-                                    console.log("Marketo App > Disabling: Email Editor: Saving & Toolbar Menus");
-                                    
-                                    window.clearInterval(isEmailEditor);
-                                    
-                                    assetNode = Mkt3.app.controllers.get("Mkt3.controller.editor.email2.EmailEditor").getEmail().getNodeJson();
-                                    menuItems = [
-                                        // Toolbar Menu
-                                        //"email2EditorToolbar [action=editSettings]", // Email Settings
-                                        //"email2EditorToolbar [action=editCode]", // Edit Code
-                                        //"email2EditorToolbar [action=preview]", // Preview
-                                        // Actions Menu
-                                        "emailEditor2 menu [action=approveEmail]", // Approve and Close
-                                        "emailEditor2 menu [action=sendTestEmail]", // Send Sample
-                                        //"emailEditor2 menu [action=editSettings]", // Email Settings
-                                        //"emailEditor2 menu [action=editCode]", // Edit Code
-                                        //"emailEditor2 menu [action=downloadHtml]", // Download HTML
-                                        "emailEditor2 menu [action=uploadImage]", // Upload Image or File
-                                        "emailEditor2 menu [action=grabImages]", // Grab Images from Web
-                                        "emailEditor2 menu [action=saveAsTemplate]", // Save as Template
-                                    ];
-                                    
-                                    disableDesignerAsset(assetNode, menuItems, APP.disableSaving);
-                                }
-                            }, 0);
-                        break;
-                        
-                    case "preview":
-                        var isEmailPreviewer = window.setInterval(function () {
-                                if (typeof(Mkt3.app.controllers.get("Mkt3.controller.editor.email2.Preview")) !== "undefined"
-                                     && Mkt3.app.controllers.get("Mkt3.controller.editor.email2.Preview")
-                                     && Mkt3.app.controllers.get("Mkt3.controller.editor.email2.Preview").getEmail()
-                                     && Mkt3.app.controllers.get("Mkt3.controller.editor.email2.Preview").getEmail().getNodeJson()) {
-                                    console.log("Marketo App > Disabling: Email Previewer: Saving & Toolbar Menus");
-                                    
-                                    window.clearInterval(isEmailPreviewer);
-                                    
-                                    assetNode = Mkt3.app.controllers.get("Mkt3.controller.editor.email2.Preview").getEmail().getNodeJson();
-                                    menuItems = [
-                                        // Toolbar Menu
-                                        "email2EditorPreviewToolbar [action=sendSampleEmail]", // Send Sample
-                                        //"email2EditorPreviewToolbar [action=editDesign]", // Edit Draft
-                                        // Actions Menu
-                                        "emailPreview menu [action=approveEmail]", // Approve and Close
-                                        "emailPreview menu [action=sendSampleEmail]", // Send Sample
-                                        //"emailPreview menu [action=viewSummary]", // View Summary
-                                    ];
-                                    
-                                    disableDesignerAsset(assetNode, menuItems);
-                                }
-                            }, 0);
-                        break;
-                    }
-                    break;
-                    
-                case "form":
-                    switch (mode) {
-                    case "edit":
-                        var isFormEditor = window.setInterval(function () {
-                                if (typeof(Mkt3.app.controllers.get("Mkt3.controller.editor.Form")) !== "undefined"
-                                     && Mkt3.app.controllers.get("Mkt3.controller.editor.Form")
-                                     && Mkt3.app.controllers.get("Mkt3.controller.editor.Form").getForm()
-                                     && Mkt3.app.controllers.get("Mkt3.controller.editor.Form").getForm().getNodeJson()) {
-                                    console.log("Marketo App > Disabling: Form Editor: Saving & Toolbar Menus");
-                                    
-                                    window.clearInterval(isFormEditor);
-                                    
-                                    assetNode = Mkt3.app.controllers.get("Mkt3.controller.editor.Form").getForm().getNodeJson();
-                                    menuItems = [
-                                        // Toolbar Menu
-                                        //"formEditor toolbar [action=preview]", // Preview Draft
-                                        // Navigation Menu
-                                        //"formEditor toolbar [action=back]", // Back
-                                        //"formEditor toolbar [action=next]", // Next
-                                        //"formEditor toolbar [action=close]", // Close
-                                        "formEditor toolbar [action=approveAndClose]", // Approve & Close
-                                        "formEditor toolbar [action=finish]", // Finish
-                                    ];
-                                    
-                                    disableDesignerAsset(assetNode, menuItems, APP.disableSaving);
-                                }
-                            }, 0);
-                        break;
-                        
-                    case "preview":
-                        var isFormPreviewer = window.setInterval(function () {
-                                if (typeof(Mkt3.app.controllers.get("Mkt3.controller.previewer.Form")) !== "undefined"
-                                     && Mkt3.app.controllers.get("Mkt3.controller.previewer.Form")
-                                     && Mkt3.app.controllers.get("Mkt3.controller.previewer.Form").getForm()
-                                     && Mkt3.app.controllers.get("Mkt3.controller.previewer.Form").getForm().getNodeJson()) {
-                                    console.log("Marketo App > Disabling: Form Previewer: Saving & Toolbar Menus");
-                                    
-                                    window.clearInterval(isFormPreviewer);
-                                    
-                                    assetNode = Mkt3.app.controllers.get("Mkt3.controller.previewer.Form").getForm().getNodeJson();
-                                    menuItems = [
-                                        // Toolbar Menu
-                                        //"formPreviewer toolbar [action=edit]", // Edit Draft
-                                    ];
-                                    
-                                    disableDesignerAsset(assetNode, menuItems);
-                                }
-                            }, 0);
-                        break;
-                    }
-                    break;
-                    
-                case "pushNotification":
-                    switch (mode) {
-                    case "edit":
-                        var isPushNotificationEditor = window.setInterval(function () {
-                                if (typeof(Mkt3.app.controllers.get("Mkt3.controller.editor.mobilePushNotification.MobilePushNotification")) !== "undefined"
-                                     && Mkt3.app.controllers.get("Mkt3.controller.editor.mobilePushNotification.MobilePushNotification")
-                                     && Mkt3.app.controllers.get("Mkt3.controller.editor.mobilePushNotification.MobilePushNotification").getMobilePushNotification()
-                                     && Mkt3.app.controllers.get("Mkt3.controller.editor.mobilePushNotification.MobilePushNotification").getMobilePushNotification().getNodeJson()) {
-                                    console.log("Marketo App > Disabling: Push Notification Editor: Saving & Toolbar Menus");
-                                    
-                                    window.clearInterval(isPushNotificationEditor);
-                                    
-                                    assetNode = Mkt3.app.controllers.get("Mkt3.controller.editor.mobilePushNotification.MobilePushNotification").getMobilePushNotification().getNodeJson();
-                                    menuItems = [
-                                        // Toolbar Menu
-                                        "mobilePushNotificationEditor toolbar [action=sendDraftSample]", // Send Sample
-                                        //"mobilePushNotificationEditor toolbar [action=preview]", // Preview Draft
-                                        // Navigation Menu
-                                        //"mobilePushNotificationEditor toolbar [action=back]", // Back
-                                        //"mobilePushNotificationEditor toolbar [action=next]", // Next
-                                        //"mobilePushNotificationEditor toolbar [action=close]", // Close
-                                        "mobilePushNotificationEditor toolbar [action=finish]", // Finish
-                                        "mobilePushNotificationEditor toolbar [action=approveAndClose]", // Approve & Close
-                                    ];
-                                    
-                                    disableDesignerAsset(assetNode, menuItems, APP.disableSaving);
-                                }
-                            }, 0);
-                        break;
-                        
-                    case "preview":
-                        var isPushNotificationPreview = window.setInterval(function () {
-                                if (typeof(Mkt3.app.controllers.get("Mkt3.controller.previewer.MobilePushNotification")) !== "undefined"
-                                     && Mkt3.app.controllers.get("Mkt3.controller.previewer.MobilePushNotification")
-                                     && Mkt3.app.controllers.get("Mkt3.controller.previewer.MobilePushNotification").getMobilePushNotification()
-                                     && Mkt3.app.controllers.get("Mkt3.controller.previewer.MobilePushNotification").getMobilePushNotification().getNodeJson()) {
-                                    console.log("Marketo App > Disabling: Push Notification Previewer: Saving & Toolbar Menus");
-                                    
-                                    window.clearInterval(isPushNotificationPreview);
-                                    
-                                    assetNode = Mkt3.app.controllers.get("Mkt3.controller.previewer.MobilePushNotification").getMobilePushNotification().getNodeJson();
-                                    menuItems = [
-                                        // Toolbar Menu
-                                        "mobilePushNotificationPreviewer toolbar [action=sendDraftSample]", // Send Sample
-                                        //"mobilePushNotificationPreviewer toolbar [action=edit]", // Edit Draft
-                                    ];
-                                    
-                                    disableDesignerAsset(assetNode, menuItems);
-                                }
-                            }, 0);
-                        break;
-                    }
-                    break;
-                    
-                case "inAppMessage":
-                    switch (mode) {
-                    case "edit":
-                        var isInAppMessageEditor = window.setInterval(function () {
-                                if (typeof(Mkt3.app.controllers.get("Mkt3.controller.editor.inAppMessage.InAppMessage")) !== "undefined"
-                                     && Mkt3.app.controllers.get("Mkt3.controller.editor.inAppMessage.InAppMessage")
-                                     && Mkt3.app.controllers.get("Mkt3.controller.editor.inAppMessage.InAppMessage").getInAppMessage()
-                                     && Mkt3.app.controllers.get("Mkt3.controller.editor.inAppMessage.InAppMessage").getInAppMessage().getNodeJson()) {
-                                    console.log("Marketo App > Disabling: In-App Message Editor: Saving & Toolbar Menus");
-                                    
-                                    window.clearInterval(isInAppMessageEditor);
-                                    
-                                    assetNode = Mkt3.app.controllers.get("Mkt3.controller.editor.inAppMessage.InAppMessage").getInAppMessage().getNodeJson();
-                                    menuItems = [
-                                        // Toolbar Menu
-                                        "inAppMessageEditor toolbar [action=sendSample]", // Send Sample
-                                        //"inAppMessageEditor toolbar [action=preview]", // Preview
-                                        // Actions Menu
-                                        "inAppMessageEditor menu [action=sendSample]", // Send Sample
-                                        //"inAppMessageEditor menu [action=preview]", // Preview
-                                        "inAppMessageEditor menu [action=approveAndClose]", // Approve & Close
-                                    ];
-                                    
-                                    disableDesignerAsset(assetNode, menuItems, APP.disableSaving);
-                                }
-                            }, 0);
-                        break;
-                        
-                    case "preview":
-                        var isInAppMessagePreviewer = window.setInterval(function () {
-                                if (typeof(Mkt3.app.controllers.get("Mkt3.controller.previewer.InAppMessage")) !== "undefined"
-                                     && Mkt3.app.controllers.get("Mkt3.controller.previewer.InAppMessage")
-                                     && Mkt3.app.controllers.get("Mkt3.controller.previewer.InAppMessage").getInAppMessage()
-                                     && Mkt3.app.controllers.get("Mkt3.controller.previewer.InAppMessage").getInAppMessage().getNodeJson()) {
-                                    console.log("Marketo App > Disabling: In-App Message Previewer: Saving & Toolbar Menus");
-                                    
-                                    window.clearInterval(isInAppMessagePreviewer);
-                                    
-                                    assetNode = Mkt3.app.controllers.get("Mkt3.controller.previewer.InAppMessage").getInAppMessage().getNodeJson();
-                                    menuItems = [
-                                        // Toolbar Menu
-                                        "inAppMessagePreviewer toolbar [action=approveAndClose]", // Approve & Close
-                                        //"inAppMessagePreviewer toolbar [action=edit]", // Edit Draft
-                                    ];
-                                    
-                                    disableDesignerAsset(assetNode, menuItems);
-                                }
-                            }, 0);
-                        break;
-                        
-                    default:
-                        break;
-                    }
-                    break;
-                    
-                case "smsMessage":
-                    switch (mode) {
-                    case "edit":
-                        var isSmsMessageEditor = window.setInterval(function () {
-                                if (typeof(Mkt3.app.controllers.get("Mkt3.controller.editor.SmsMessage")) !== "undefined"
-                                     && Mkt3.app.controllers.get("Mkt3.controller.editor.SmsMessage")
-                                     && Mkt3.app.controllers.get("Mkt3.controller.editor.SmsMessage").getSmsMessage()
-                                     && Mkt3.app.controllers.get("Mkt3.controller.editor.SmsMessage").getSmsMessage().getNodeJson()) {
-                                    console.log("Marketo App > Disabling: SMS Message Editor: Saving & Toolbar Menus");
-                                    
-                                    window.clearInterval(isSmsMessageEditor);
-                                    
-                                    assetNode = Mkt3.app.controllers.get("Mkt3.controller.editor.SmsMessage").getSmsMessage().getNodeJson();
-                                    menuItems = [
-                                        // Actions Menu
-                                        "smsMessageEditor menu [action=approveAndClose]", // Approve and Close
-                                    ];
-                                    
-                                    disableDesignerAsset(assetNode, menuItems, APP.disableSaving);
-                                }
-                            }, 0);
-                        break;
-                        
-                    case "preview":
-                        break;
-                    }
-                    break;
-                    
-                case "socialApp":
-                    switch (mode) {
-                    case "edit":
-                        var isSocialAppEditor = window.setInterval(function () {
-                                if (typeof(Mkt3.app.controllers.get("Mkt3.controller.editor.SocialApp")) !== "undefined"
-                                     && Mkt3.app.controllers.get("Mkt3.controller.editor.SocialApp")
-                                     && Mkt3.app.controllers.get("Mkt3.controller.editor.SocialApp").getSocialApp()
-                                     && Mkt3.app.controllers.get("Mkt3.controller.editor.SocialApp").getSocialApp().getNodeJson()) {
-                                    console.log("Marketo App > Disabling: Social App Editor: Saving & Toolbar Menus");
-                                    
-                                    window.clearInterval(isSocialAppEditor);
-                                    
-                                    assetNode = Mkt3.app.controllers.get("Mkt3.controller.editor.SocialApp").getSocialApp().getNodeJson();
-                                    menuItems = [
-                                        // Toolbar Menu
-                                        //"socialAppEditor toolbar [action=preview]", // Preview Draft
-                                        // Navigation Menu
-                                        //"socialAppEditor toolbar [action=back]", // Back
-                                        //"socialAppEditor toolbar [action=next]", // Next
-                                        //"socialAppEditor toolbar [action=close]", // Close
-                                        "socialAppEditor toolbar [action=approveAndClose]", // Approve and Close
-                                        "socialAppEditor toolbar [action=finish]", // Finish
-                                    ];
-                                    
-                                    disableDesignerAsset(assetNode, menuItems, APP.disableSaving);
-                                }
-                            }, 0);
-                        break;
-                        
-                    case "preview":
-                        var isSocialAppPreviewer = window.setInterval(function () {
-                                if (typeof(Mkt3.app.controllers.get("Mkt3.controller.previewer.SocialApp")) !== "undefined"
-                                     && Mkt3.app.controllers.get("Mkt3.controller.previewer.SocialApp")
-                                     && Mkt3.app.controllers.get("Mkt3.controller.previewer.SocialApp").getSocialApp()
-                                     && Mkt3.app.controllers.get("Mkt3.controller.previewer.SocialApp").getSocialApp().getNodeJson()) {
-                                    console.log("Marketo App > Disabling: Social App Previewer: Saving & Toolbar Menus");
-                                    
-                                    window.clearInterval(isSocialAppPreviewer);
-                                    
-                                    assetNode = Mkt3.app.controllers.get("Mkt3.controller.previewer.SocialApp").getSocialApp().getNodeJson();
-                                    menuItems = [
-                                        // Toolbar Menu
-                                        //"socialAppPreviewer toolbar [action=edit]", // Edit Draft
-                                    ];
-                                    
-                                    disableDesignerAsset(assetNode, menuItems);
-                                }
-                            }, 0);
-                        break;
-                    }
-                    break;
-                    
-                case "abTest":
-                    switch (mode) {
-                    case "edit":
-                        var isAbTestEditor = window.setInterval(function () {
-                                if (typeof(Mkt3.app.controllers.get("Mkt3.controller.editor.testGroup.TestGroup")) !== "undefined"
-                                     && Mkt3.app.controllers.get("Mkt3.controller.editor.testGroup.TestGroup")
-                                     && Mkt3.app.controllers.get("Mkt3.controller.editor.testGroup.TestGroup").getTestGroup()
-                                     && Mkt3.app.controllers.get("Mkt3.controller.editor.testGroup.TestGroup").getTestGroup().getNodeJson()) {
-                                    console.log("Marketo App > Disabling: A/B Test Editor: Saving & Toolbar Menus");
-                                    
-                                    window.clearInterval(isAbTestEditor);
-                                    
-                                    assetNode = Mkt3.app.controllers.get("Mkt3.controller.editor.testGroup.TestGroup").getTestGroup().getNodeJson();
-                                    menuItems = [
-                                        // Navigation menu
-                                        //"testGroupEditor toolbar[action=back]", // Back
-                                        //"testGroupEditor toolbar[action=next]", // Next
-                                        "testGroupEditor toolbar[action=finish]", // Finish
-                                        //"testGroupEditor toolbar[action=close]", // Close
-                                    ];
-                                    
-                                    disableDesignerAsset(assetNode, menuItems, APP.disableSaving);
-                                }
-                            }, 0);
-                        break;
-                        
-                    case "preview":
-                        break;
-                    }
+                case "preview":
+                    var isLandingPagePreviewer = window.setInterval(function () {
+                            if (typeof(Mkt3.app.controllers.get("Mkt3.controller.previewer.LandingPage")) !== "undefined"
+                                 && Mkt3.app.controllers.get("Mkt3.controller.previewer.LandingPage")
+                                 && Mkt3.app.controllers.get("Mkt3.controller.previewer.LandingPage").getLandingPage()
+                                 && Mkt3.app.controllers.get("Mkt3.controller.previewer.LandingPage").getLandingPage().getNodeJson()) {
+                                console.log("Marketo App > Disabling: Landing Page Previewer: Saving & Toolbar Menus");
+                                
+                                window.clearInterval(isLandingPagePreviewer);
+                                
+                                assetNode = Mkt3.app.controllers.get("Mkt3.controller.previewer.LandingPage").getLandingPage().getNodeJson();
+                                menuItems = [
+                                    // Tab Menu
+                                    //"landingPagePreviewer toolbar [action=showDesktop]", // Desktop
+                                    //"landingPagePreviewer toolbar [action=showMobile]", // Mobile
+                                    //"landingPagePreviewer toolbar [action=showSideBySide]", // Side by Side
+                                    //"landingPagePreviewer toolbar [action=edit]", // Edit Draft
+                                    // Toolbar Menu
+                                    //"landingPagePreviewer toolbar [action=viewMenu]", // View Default
+                                    //"landingPagePreviewer toolbar [action=maximize]", // (Expand Arrows)
+                                    // Actions Menu
+                                    "landingPagePreviewer menu [action=approveAndClose]", // Approve and Close
+                                    //"landingPagePreviewer menu [action=devicePreview]", // Generate Preview URL
+                                ];
+                                
+                                disableDesignerAsset(assetNode, menuItems);
+                            }
+                        }, 0);
                     break;
                 }
+                break;
+                
+            case "email":
+                switch (mode) {
+                case "edit":
+                    var isEmailEditor = window.setInterval(function () {
+                            if (typeof(Mkt3.app.controllers.get("Mkt3.controller.editor.email2.EmailEditor")) !== "undefined"
+                                 && Mkt3.app.controllers.get("Mkt3.controller.editor.email2.EmailEditor")
+                                 && Mkt3.app.controllers.get("Mkt3.controller.editor.email2.EmailEditor").getEmail()
+                                 && Mkt3.app.controllers.get("Mkt3.controller.editor.email2.EmailEditor").getEmail().getNodeJson()) {
+                                console.log("Marketo App > Disabling: Email Editor: Saving & Toolbar Menus");
+                                
+                                window.clearInterval(isEmailEditor);
+                                
+                                assetNode = Mkt3.app.controllers.get("Mkt3.controller.editor.email2.EmailEditor").getEmail().getNodeJson();
+                                menuItems = [
+                                    // Toolbar Menu
+                                    //"email2EditorToolbar [action=editSettings]", // Email Settings
+                                    //"email2EditorToolbar [action=editCode]", // Edit Code
+                                    //"email2EditorToolbar [action=preview]", // Preview
+                                    // Actions Menu
+                                    "emailEditor2 menu [action=approveEmail]", // Approve and Close
+                                    "emailEditor2 menu [action=sendTestEmail]", // Send Sample
+                                    //"emailEditor2 menu [action=editSettings]", // Email Settings
+                                    //"emailEditor2 menu [action=editCode]", // Edit Code
+                                    //"emailEditor2 menu [action=downloadHtml]", // Download HTML
+                                    "emailEditor2 menu [action=uploadImage]", // Upload Image or File
+                                    "emailEditor2 menu [action=grabImages]", // Grab Images from Web
+                                    "emailEditor2 menu [action=saveAsTemplate]", // Save as Template
+                                ];
+                                
+                                disableDesignerAsset(assetNode, menuItems, APP.disableSaving);
+                            }
+                        }, 0);
+                    break;
+                    
+                case "preview":
+                    var isEmailPreviewer = window.setInterval(function () {
+                            if (typeof(Mkt3.app.controllers.get("Mkt3.controller.editor.email2.Preview")) !== "undefined"
+                                 && Mkt3.app.controllers.get("Mkt3.controller.editor.email2.Preview")
+                                 && Mkt3.app.controllers.get("Mkt3.controller.editor.email2.Preview").getEmail()
+                                 && Mkt3.app.controllers.get("Mkt3.controller.editor.email2.Preview").getEmail().getNodeJson()) {
+                                console.log("Marketo App > Disabling: Email Previewer: Saving & Toolbar Menus");
+                                
+                                window.clearInterval(isEmailPreviewer);
+                                
+                                assetNode = Mkt3.app.controllers.get("Mkt3.controller.editor.email2.Preview").getEmail().getNodeJson();
+                                menuItems = [
+                                    // Toolbar Menu
+                                    "email2EditorPreviewToolbar [action=sendSampleEmail]", // Send Sample
+                                    //"email2EditorPreviewToolbar [action=editDesign]", // Edit Draft
+                                    // Actions Menu
+                                    "emailPreview menu [action=approveEmail]", // Approve and Close
+                                    "emailPreview menu [action=sendSampleEmail]", // Send Sample
+                                    //"emailPreview menu [action=viewSummary]", // View Summary
+                                ];
+                                
+                                disableDesignerAsset(assetNode, menuItems);
+                            }
+                        }, 0);
+                    break;
+                }
+                break;
+                
+            case "form":
+                switch (mode) {
+                case "edit":
+                    var isFormEditor = window.setInterval(function () {
+                            if (typeof(Mkt3.app.controllers.get("Mkt3.controller.editor.Form")) !== "undefined"
+                                 && Mkt3.app.controllers.get("Mkt3.controller.editor.Form")
+                                 && Mkt3.app.controllers.get("Mkt3.controller.editor.Form").getForm()
+                                 && Mkt3.app.controllers.get("Mkt3.controller.editor.Form").getForm().getNodeJson()) {
+                                console.log("Marketo App > Disabling: Form Editor: Saving & Toolbar Menus");
+                                
+                                window.clearInterval(isFormEditor);
+                                
+                                assetNode = Mkt3.app.controllers.get("Mkt3.controller.editor.Form").getForm().getNodeJson();
+                                menuItems = [
+                                    // Toolbar Menu
+                                    //"formEditor toolbar [action=preview]", // Preview Draft
+                                    // Navigation Menu
+                                    //"formEditor toolbar [action=back]", // Back
+                                    //"formEditor toolbar [action=next]", // Next
+                                    //"formEditor toolbar [action=close]", // Close
+                                    "formEditor toolbar [action=approveAndClose]", // Approve & Close
+                                    "formEditor toolbar [action=finish]", // Finish
+                                ];
+                                
+                                disableDesignerAsset(assetNode, menuItems, APP.disableSaving);
+                            }
+                        }, 0);
+                    break;
+                    
+                case "preview":
+                    var isFormPreviewer = window.setInterval(function () {
+                            if (typeof(Mkt3.app.controllers.get("Mkt3.controller.previewer.Form")) !== "undefined"
+                                 && Mkt3.app.controllers.get("Mkt3.controller.previewer.Form")
+                                 && Mkt3.app.controllers.get("Mkt3.controller.previewer.Form").getForm()
+                                 && Mkt3.app.controllers.get("Mkt3.controller.previewer.Form").getForm().getNodeJson()) {
+                                console.log("Marketo App > Disabling: Form Previewer: Saving & Toolbar Menus");
+                                
+                                window.clearInterval(isFormPreviewer);
+                                
+                                assetNode = Mkt3.app.controllers.get("Mkt3.controller.previewer.Form").getForm().getNodeJson();
+                                menuItems = [
+                                    // Toolbar Menu
+                                    //"formPreviewer toolbar [action=edit]", // Edit Draft
+                                ];
+                                
+                                disableDesignerAsset(assetNode, menuItems);
+                            }
+                        }, 0);
+                    break;
+                }
+                break;
+                
+            case "pushNotification":
+                switch (mode) {
+                case "edit":
+                    var isPushNotificationEditor = window.setInterval(function () {
+                            if (typeof(Mkt3.app.controllers.get("Mkt3.controller.editor.mobilePushNotification.MobilePushNotification")) !== "undefined"
+                                 && Mkt3.app.controllers.get("Mkt3.controller.editor.mobilePushNotification.MobilePushNotification")
+                                 && Mkt3.app.controllers.get("Mkt3.controller.editor.mobilePushNotification.MobilePushNotification").getMobilePushNotification()
+                                 && Mkt3.app.controllers.get("Mkt3.controller.editor.mobilePushNotification.MobilePushNotification").getMobilePushNotification().getNodeJson()) {
+                                console.log("Marketo App > Disabling: Push Notification Editor: Saving & Toolbar Menus");
+                                
+                                window.clearInterval(isPushNotificationEditor);
+                                
+                                assetNode = Mkt3.app.controllers.get("Mkt3.controller.editor.mobilePushNotification.MobilePushNotification").getMobilePushNotification().getNodeJson();
+                                menuItems = [
+                                    // Toolbar Menu
+                                    "mobilePushNotificationEditor toolbar [action=sendDraftSample]", // Send Sample
+                                    //"mobilePushNotificationEditor toolbar [action=preview]", // Preview Draft
+                                    // Navigation Menu
+                                    //"mobilePushNotificationEditor toolbar [action=back]", // Back
+                                    //"mobilePushNotificationEditor toolbar [action=next]", // Next
+                                    //"mobilePushNotificationEditor toolbar [action=close]", // Close
+                                    "mobilePushNotificationEditor toolbar [action=finish]", // Finish
+                                    "mobilePushNotificationEditor toolbar [action=approveAndClose]", // Approve & Close
+                                ];
+                                
+                                disableDesignerAsset(assetNode, menuItems, APP.disableSaving);
+                            }
+                        }, 0);
+                    break;
+                    
+                case "preview":
+                    var isPushNotificationPreview = window.setInterval(function () {
+                            if (typeof(Mkt3.app.controllers.get("Mkt3.controller.previewer.MobilePushNotification")) !== "undefined"
+                                 && Mkt3.app.controllers.get("Mkt3.controller.previewer.MobilePushNotification")
+                                 && Mkt3.app.controllers.get("Mkt3.controller.previewer.MobilePushNotification").getMobilePushNotification()
+                                 && Mkt3.app.controllers.get("Mkt3.controller.previewer.MobilePushNotification").getMobilePushNotification().getNodeJson()) {
+                                console.log("Marketo App > Disabling: Push Notification Previewer: Saving & Toolbar Menus");
+                                
+                                window.clearInterval(isPushNotificationPreview);
+                                
+                                assetNode = Mkt3.app.controllers.get("Mkt3.controller.previewer.MobilePushNotification").getMobilePushNotification().getNodeJson();
+                                menuItems = [
+                                    // Toolbar Menu
+                                    "mobilePushNotificationPreviewer toolbar [action=sendDraftSample]", // Send Sample
+                                    //"mobilePushNotificationPreviewer toolbar [action=edit]", // Edit Draft
+                                ];
+                                
+                                disableDesignerAsset(assetNode, menuItems);
+                            }
+                        }, 0);
+                    break;
+                }
+                break;
+                
+            case "inAppMessage":
+                switch (mode) {
+                case "edit":
+                    var isInAppMessageEditor = window.setInterval(function () {
+                            if (typeof(Mkt3.app.controllers.get("Mkt3.controller.editor.inAppMessage.InAppMessage")) !== "undefined"
+                                 && Mkt3.app.controllers.get("Mkt3.controller.editor.inAppMessage.InAppMessage")
+                                 && Mkt3.app.controllers.get("Mkt3.controller.editor.inAppMessage.InAppMessage").getInAppMessage()
+                                 && Mkt3.app.controllers.get("Mkt3.controller.editor.inAppMessage.InAppMessage").getInAppMessage().getNodeJson()) {
+                                console.log("Marketo App > Disabling: In-App Message Editor: Saving & Toolbar Menus");
+                                
+                                window.clearInterval(isInAppMessageEditor);
+                                
+                                assetNode = Mkt3.app.controllers.get("Mkt3.controller.editor.inAppMessage.InAppMessage").getInAppMessage().getNodeJson();
+                                menuItems = [
+                                    // Toolbar Menu
+                                    "inAppMessageEditor toolbar [action=sendSample]", // Send Sample
+                                    //"inAppMessageEditor toolbar [action=preview]", // Preview
+                                    // Actions Menu
+                                    "inAppMessageEditor menu [action=sendSample]", // Send Sample
+                                    //"inAppMessageEditor menu [action=preview]", // Preview
+                                    "inAppMessageEditor menu [action=approveAndClose]", // Approve & Close
+                                ];
+                                
+                                disableDesignerAsset(assetNode, menuItems, APP.disableSaving);
+                            }
+                        }, 0);
+                    break;
+                    
+                case "preview":
+                    var isInAppMessagePreviewer = window.setInterval(function () {
+                            if (typeof(Mkt3.app.controllers.get("Mkt3.controller.previewer.InAppMessage")) !== "undefined"
+                                 && Mkt3.app.controllers.get("Mkt3.controller.previewer.InAppMessage")
+                                 && Mkt3.app.controllers.get("Mkt3.controller.previewer.InAppMessage").getInAppMessage()
+                                 && Mkt3.app.controllers.get("Mkt3.controller.previewer.InAppMessage").getInAppMessage().getNodeJson()) {
+                                console.log("Marketo App > Disabling: In-App Message Previewer: Saving & Toolbar Menus");
+                                
+                                window.clearInterval(isInAppMessagePreviewer);
+                                
+                                assetNode = Mkt3.app.controllers.get("Mkt3.controller.previewer.InAppMessage").getInAppMessage().getNodeJson();
+                                menuItems = [
+                                    // Toolbar Menu
+                                    "inAppMessagePreviewer toolbar [action=approveAndClose]", // Approve & Close
+                                    //"inAppMessagePreviewer toolbar [action=edit]", // Edit Draft
+                                ];
+                                
+                                disableDesignerAsset(assetNode, menuItems);
+                            }
+                        }, 0);
+                    break;
+                    
+                default:
+                    break;
+                }
+                break;
+                
+            case "smsMessage":
+                switch (mode) {
+                case "edit":
+                    var isSmsMessageEditor = window.setInterval(function () {
+                            if (typeof(Mkt3.app.controllers.get("Mkt3.controller.editor.SmsMessage")) !== "undefined"
+                                 && Mkt3.app.controllers.get("Mkt3.controller.editor.SmsMessage")
+                                 && Mkt3.app.controllers.get("Mkt3.controller.editor.SmsMessage").getSmsMessage()
+                                 && Mkt3.app.controllers.get("Mkt3.controller.editor.SmsMessage").getSmsMessage().getNodeJson()) {
+                                console.log("Marketo App > Disabling: SMS Message Editor: Saving & Toolbar Menus");
+                                
+                                window.clearInterval(isSmsMessageEditor);
+                                
+                                assetNode = Mkt3.app.controllers.get("Mkt3.controller.editor.SmsMessage").getSmsMessage().getNodeJson();
+                                menuItems = [
+                                    // Actions Menu
+                                    "smsMessageEditor menu [action=approveAndClose]", // Approve and Close
+                                ];
+                                
+                                disableDesignerAsset(assetNode, menuItems, APP.disableSaving);
+                            }
+                        }, 0);
+                    break;
+                    
+                case "preview":
+                    break;
+                }
+                break;
+                
+            case "socialApp":
+                switch (mode) {
+                case "edit":
+                    var isSocialAppEditor = window.setInterval(function () {
+                            if (typeof(Mkt3.app.controllers.get("Mkt3.controller.editor.SocialApp")) !== "undefined"
+                                 && Mkt3.app.controllers.get("Mkt3.controller.editor.SocialApp")
+                                 && Mkt3.app.controllers.get("Mkt3.controller.editor.SocialApp").getSocialApp()
+                                 && Mkt3.app.controllers.get("Mkt3.controller.editor.SocialApp").getSocialApp().getNodeJson()) {
+                                console.log("Marketo App > Disabling: Social App Editor: Saving & Toolbar Menus");
+                                
+                                window.clearInterval(isSocialAppEditor);
+                                
+                                assetNode = Mkt3.app.controllers.get("Mkt3.controller.editor.SocialApp").getSocialApp().getNodeJson();
+                                menuItems = [
+                                    // Toolbar Menu
+                                    //"socialAppEditor toolbar [action=preview]", // Preview Draft
+                                    // Navigation Menu
+                                    //"socialAppEditor toolbar [action=back]", // Back
+                                    //"socialAppEditor toolbar [action=next]", // Next
+                                    //"socialAppEditor toolbar [action=close]", // Close
+                                    "socialAppEditor toolbar [action=approveAndClose]", // Approve and Close
+                                    "socialAppEditor toolbar [action=finish]", // Finish
+                                ];
+                                
+                                disableDesignerAsset(assetNode, menuItems, APP.disableSaving);
+                            }
+                        }, 0);
+                    break;
+                    
+                case "preview":
+                    var isSocialAppPreviewer = window.setInterval(function () {
+                            if (typeof(Mkt3.app.controllers.get("Mkt3.controller.previewer.SocialApp")) !== "undefined"
+                                 && Mkt3.app.controllers.get("Mkt3.controller.previewer.SocialApp")
+                                 && Mkt3.app.controllers.get("Mkt3.controller.previewer.SocialApp").getSocialApp()
+                                 && Mkt3.app.controllers.get("Mkt3.controller.previewer.SocialApp").getSocialApp().getNodeJson()) {
+                                console.log("Marketo App > Disabling: Social App Previewer: Saving & Toolbar Menus");
+                                
+                                window.clearInterval(isSocialAppPreviewer);
+                                
+                                assetNode = Mkt3.app.controllers.get("Mkt3.controller.previewer.SocialApp").getSocialApp().getNodeJson();
+                                menuItems = [
+                                    // Toolbar Menu
+                                    //"socialAppPreviewer toolbar [action=edit]", // Edit Draft
+                                ];
+                                
+                                disableDesignerAsset(assetNode, menuItems);
+                            }
+                        }, 0);
+                    break;
+                }
+                break;
+                
+            case "abTest":
+                switch (mode) {
+                case "edit":
+                    var isAbTestEditor = window.setInterval(function () {
+                            if (typeof(Mkt3.app.controllers.get("Mkt3.controller.editor.testGroup.TestGroup")) !== "undefined"
+                                 && Mkt3.app.controllers.get("Mkt3.controller.editor.testGroup.TestGroup")
+                                 && Mkt3.app.controllers.get("Mkt3.controller.editor.testGroup.TestGroup").getTestGroup()
+                                 && Mkt3.app.controllers.get("Mkt3.controller.editor.testGroup.TestGroup").getTestGroup().getNodeJson()) {
+                                console.log("Marketo App > Disabling: A/B Test Editor: Saving & Toolbar Menus");
+                                
+                                window.clearInterval(isAbTestEditor);
+                                
+                                assetNode = Mkt3.app.controllers.get("Mkt3.controller.editor.testGroup.TestGroup").getTestGroup().getNodeJson();
+                                menuItems = [
+                                    // Navigation menu
+                                    //"testGroupEditor toolbar[action=back]", // Back
+                                    //"testGroupEditor toolbar[action=next]", // Next
+                                    "testGroupEditor toolbar[action=finish]", // Finish
+                                    //"testGroupEditor toolbar[action=close]", // Close
+                                ];
+                                
+                                disableDesignerAsset(assetNode, menuItems, APP.disableSaving);
+                            }
+                        }, 0);
+                    break;
+                    
+                case "preview":
+                    break;
+                }
+                break;
             }
-        }, 0);
+        }
+}, 0);
 };
 
 /**************************************************************************************
@@ -4430,12 +4425,7 @@ heapEvent.assetName = assetNode.text.split(".")[1];
 heapEvent.assetName = assetNode.text;
 }
 } else {
-heapEventName = userWorkspaceName;
-
-if (typeof(MktPage) !== "undefined"
-&& MktPage
-&& MktPage.userid) {
-heapEventName = heapEventName + " | " + MktPage.userid;
+heapEventName = userWorkspaceName + " | " + userName;
 }
 }
 
@@ -4654,7 +4644,8 @@ APP.disableFormSaveButtons = function () {
                  || this.getXType() == "vespaNewDeviceForm" //Admin > Mobile Apps & Devices > Test Devices > New Test Device
                  || this.getXType() == "adminTagsAddCalendarEntryTypeForm" //Admin > Tags > Calendar Entry Types > New Entry Type
                  || this.getXType() == "featureSwitchForm" //Admin > Feature Manager > Edit Feature
-            ) {
+            )
+            {
                 
                 var mItems = this.query(
                         "[action=submit]," //+ //Create, Add, Save
@@ -5810,13 +5801,7 @@ APP.trackTreeNodeSelection = function () {
                     heapEventName = currNode.text + " | " + heapEventName;
                 }
             } else {
-                heapEventName = userWorkspaceName;
-                
-                if (typeof(MktPage) !== "undefined"
-                     && MktPage
-                     && MktPage.userid) {
-                    heapEventName = heapEventName + " | " + MktPage.userid;
-                }
+                heapEventName = userWorkspaceName + " | " + userName;
             }
             
             heapEvent.name = heapEventName;
@@ -5872,13 +5857,7 @@ APP.trackOtherAssets = function () {
                 heapEventName = currNode.text + " | " + heapEventName;
             }
         } else {
-            heapEventName = userWorkspaceName;
-            
-            if (typeof(MktPage) !== "undefined"
-                 && MktPage
-                 && MktPage.userid) {
-                heapEventName = heapEventName + " | " + MktPage.userid;
-            }
+            heapEventName = userWorkspaceName + " | " + userName;
         }
         
         heapEvent.name = heapEventName;
