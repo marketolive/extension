@@ -1339,6 +1339,7 @@ window.onload = function() {
         loadScript(GLOBAL_LANDING_PAGE_SCRIPT_LOCATION);
     }
     else if (currentUrl.search(mktoLiveColorPickerDomain) != -1) {
+/*        
 		console.log("Content > Location: Color-Picker Page");
         
         var correct = document.getElementById("correct"),
@@ -1366,7 +1367,7 @@ window.onload = function() {
         *  Execute
         *  
         **************************************************************************************/
-
+/*        
         correct.onclick = sendCompanyMsg;
 		document.onkeyup = function(e) {
 			if (e.which == 13) {
@@ -1378,7 +1379,7 @@ window.onload = function() {
             document.getElementById('first').style.display = "none";
             document.getElementById('second').style.display = "block";
             document.getElementById('second-incorrect').style.display = "block";
-        };
+        };*/
     }
     else if (currentUrl.search(oneLoginDomain) != -1 ) {
         console.log("Content > Location: OneLogin");

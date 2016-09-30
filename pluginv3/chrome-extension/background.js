@@ -35,6 +35,7 @@ var URL_PATH = "m3-dev",
     mktoLandingPagePreviewWebRequestRegex = "^https:\/\/na-sjp\.marketodesigner\.com\/lpeditor\/preview\\?pageId=.+",
     mktoLandingPagePreviewFragment = "LPPD",
     oneLoginExtMsgRegex = "https:\/\/marketo\.onelogin\.com\/client\/apps",
+    colorPickerMsgRegex = "https:\/\/marketolive\.com\/"+URL_PATH+"\/apps\/color-picker\.html?*",
     count = 0;
 
 /**************************************************************************************
@@ -553,8 +554,48 @@ chrome.runtime.onMessageExternal.addListener(function(message, sender, sendRespo
             return sendResponse;
             break;
         
+        case colorPickerMsgRegex:
+            if (message.action == "setCompanyCookies") {
+                console.log("Receiving: Company Logo & Color");
+                
+                var companyLogoCookieName = "logo",
+                    companyColorCookieName = "color",
+                    toggleCompanyCookieName = "toggleCompanyState",
+                    companyLogoCookieMarketoLiveClassic = {
+                        "url" : mktoLiveClassicDomainMatch,
+                        "name" : companyLogoCookieName,
+                        "value" : message.logo,
+                        "domain" : mktoLiveClassicUriDomain
+                    },
+                    companyLogoCookieDesigner = {
+                        "url" : mktoDesignerDomainMatch,
+                        "name" : companyLogoCookieName,
+                        "value" : message.logo,
+                        "domain" : mktoDesignerUriDomain
+                    },
+                    companyColorCookieMarketoLiveClassic = {
+                        "url" : mktoLiveClassicDomainMatch,
+                        "name" : companyColorCookieName,
+                        "value" : message.color,
+                        "domain" : mktoLiveClassicUriDomain
+                    },
+                    companyColorCookieDesigner = {
+                        "url" : mktoDesignerDomainMatch,
+                        "name" : companyColorCookieName,
+                        "value" : message.color,
+                        "domain" : mktoDesignerUriDomain
+                    };
+                
+                setCookie(companyColorCookieMarketoLiveClassic);
+                setCookie(companyColorCookieDesigner);
+                setCookie(companyLogoCookieMarketoLiveClassic);
+                setCookie(companyLogoCookieDesigner);
+                reloadCompany();
+            }
+            break;
+        
         default:
-            console.log("NOT Receiving: OneLogin User");
+            console.log("Unexpected Message: " + message + " : " + sender.url);
             return sendResponse;
             break;
     }
