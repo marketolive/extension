@@ -3929,13 +3929,15 @@ APP.disableDesignerSaving = function (assetType, mode) {
                 
                 var disableDesignerAsset,
                 assetNode,
-                menuItems;
+                menuItems,
+                heapEventName,
+                heapEvent = {};
                 
                 disableDesignerAsset = function (assetNode, menuItems, disableFunc) {
                     
                     if (assetNode.accessZoneId != mktoUserWorkspaceId) {
                         
-                        var heapEvent = {
+                        heapEvent = {
                             name : assetNode.text,
                             assetType : assetNode.compType,
                             assetId : assetNode.id,
@@ -4410,9 +4412,11 @@ loadParameters,
 isDesignerCallback;
 
 heapTrackDesigner = function (assetNode) {
+var heapEventName,
+heapEvent;
 if (assetNode.accessZoneId != mktoUserWorkspaceId) {
 
-var heapEvent = {
+heapEvent = {
 name : assetNode.text,
 assetType : assetNode.compType,
 assetId : assetNode.id,
@@ -4650,8 +4654,7 @@ APP.disableFormSaveButtons = function () {
                  || this.getXType() == "vespaNewDeviceForm" //Admin > Mobile Apps & Devices > Test Devices > New Test Device
                  || this.getXType() == "adminTagsAddCalendarEntryTypeForm" //Admin > Tags > Calendar Entry Types > New Entry Type
                  || this.getXType() == "featureSwitchForm" //Admin > Feature Manager > Edit Feature
-            )
-            {
+            ) {
                 
                 var mItems = this.query(
                         "[action=submit]," //+ //Create, Add, Save
@@ -5788,13 +5791,13 @@ APP.trackTreeNodeSelection = function () {
     if (typeof(MktExplorer) !== "undefined"
          && MktExplorer.selectTreeNode) {
         MktExplorer.selectTreeNode = function (node) {
-            console.log("Marketo App > Executing: Tracking Tree Node Selection")
             
-            var currNode = node;
+            var currNode = node,
+            heapEventName,
+            heapEvent = {};
             
             if (currNode.attributes.accessZoneId != mktoUserWorkspaceId) {
-                var ii,
-                heapEventName = currNode.text,
+                heapEventName = currNode.text;
                 heapEvent = {
                     assetName : currNode.text,
                     assetId : currNode.attributes.id,
@@ -5802,7 +5805,7 @@ APP.trackTreeNodeSelection = function () {
                     workspaceId : currNode.attributes.accessZoneId
                 };
                 
-                for (ii = 0; ii < node.getDepth() - 1; ii++) {
+                for (var ii = 0; ii < node.getDepth() - 1; ii++) {
                     currNode = currNode.parentNode;
                     heapEventName = currNode.text + " | " + heapEventName;
                 }
@@ -5850,12 +5853,13 @@ APP.trackOtherAssets = function () {
     if (typeof(MktExplorer) !== "undefined"
          && MktExplorer.getNodeById
          && MktExplorer.getNodeById(currUrlFragment.substring(0, currUrlFragment.length - 5))) {
-        var node = currNode = MktExplorer.getNodeById(currUrlFragment.substring(0, currUrlFragment.length - 5));
+        
+        var node = currNode = MktExplorer.getNodeById(currUrlFragment.substring(0, currUrlFragment.length - 5)),
+        heapEventName,
+        heapEvent = {};
         
         if (currNode.attributes.accessZoneId != mktoUserWorkspaceId) {
-            
-            var ii,
-            heapEventName = currNode.text,
+            heapEventName = currNode.text;
             heapEvent = {
                 assetName : currNode.text,
                 assetId : currNode.attributes.id,
@@ -5863,7 +5867,7 @@ APP.trackOtherAssets = function () {
                 workspaceId : currNode.attributes.accessZoneId
             };
             
-            for (ii = 0; ii < node.getDepth() - 1; ii++) {
+            for (var ii = 0; ii < node.getDepth() - 1; ii++) {
                 currNode = currNode.parentNode;
                 heapEventName = currNode.text + " | " + heapEventName;
             }
