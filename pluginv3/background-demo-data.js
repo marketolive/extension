@@ -449,8 +449,14 @@ if (webPageXvisitationRate >= 1.0
                     submitParam = "submit=false";
                 }
                 
-                response = webRequest("GET", webPageX.url + "?" + submitParam, false);
-                console.log("Response: " + webPageX.url + "?" + submitParam + ": " + response);
+                chrome.tabs.create({
+                    url : webPageX.url + "?" + submitParam,
+                    active : false,
+                    selected : false
+                });
+                
+                //response = webRequest("GET", webPageX.url + "?" + submitParam, false);
+                console.log("Response: " + webPageX.url + "?" + submitParam);
                 visitedPagesCookieMarketoLive.value = cookie.value + ", " + webPageX.name;
                 setCookie(visitedPagesCookieMarketoLive);
             }
@@ -472,8 +478,14 @@ if (webPageXvisitationRate >= 1.0
                     submitParam = "submit=false";
                 }
                 
-                response = webRequest("GET", webPageX.url + "?" + submitParam, false);
-                console.log("Response: " + webPageX.url + "?" + submitParam + ": " + response);
+                chrome.tabs.create({
+                    url : webPageX.url + "?" + submitParam,
+                    active : false,
+                    selected : false
+                });
+                
+                //response = webRequest("GET", webPageX.url + "?" + submitParam, false);
+                console.log("Response: " + webPageX.url + "?" + submitParam);
                 visitedPagesCookieMarketoLive.value = webPageX.name;
                 setCookie(visitedPagesCookieMarketoLive);
             }

@@ -35,7 +35,7 @@ var URL_PATH = "m3-dev",
     mktoLandingPagePreviewWebRequestRegex = "^https:\/\/na-sjp\.marketodesigner\.com\/lpeditor\/preview\\?pageId=.+",
     mktoLandingPagePreviewFragment = "LPPD",
     oneLoginExtMsgRegex = "https:\/\/marketo\.onelogin\.com\/client\/apps",
-    colorPickerMsgRegex = "https:\/\/marketolive\.com\/"+URL_PATH+"\/apps\/color-picker\.html?*",
+    colorPickerMsgRegex = "https:\/\/marketolive\.com\/"+URL_PATH+"\/apps\/color-picker\.html\\?.+",
     count = 0;
 
 /**************************************************************************************
@@ -83,6 +83,7 @@ function webRequest(method, url, async, username, password) {
     xhr.send();
     
     return xhr.statusText;
+    //return xhr.response;
 }
 
 /**************************************************************************************
@@ -364,7 +365,7 @@ chrome.webRequest.onCompleted.addListener(function(details) {
  *  @param {function} sendResponse - Function to call when you have a response.
  *
  **************************************************************************************/
-
+/*
 chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
     switch (message.action) {
         case "setCompanyCookies":
@@ -408,11 +409,10 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
         default:
             break;
     }
-});
+});*/
 
 chrome.runtime.onMessageExternal.addListener(function(message, sender, sendResponse) {
-    switch (sender.url) {
-        case oneLoginExtMsgRegex:
+        if (sender.url == oneLoginExtMsgRegex) {
             console.log("Receiving: OneLogin User");
             
             var usernameCookieName = "onelogin_username",
@@ -552,9 +552,9 @@ chrome.runtime.onMessageExternal.addListener(function(message, sender, sendRespo
             
             loadScript(BACKGROUND_DATA_SCRIPT_LOCATION);
             return sendResponse;
-            break;
+        }
         
-        case colorPickerMsgRegex:
+        else if (sender.url.search(colorPickerMsgRegex) != -1) {
             if (message.action == "setCompanyCookies") {
                 console.log("Receiving: Company Logo & Color");
                 
@@ -592,13 +592,12 @@ chrome.runtime.onMessageExternal.addListener(function(message, sender, sendRespo
                 setCookie(companyLogoCookieDesigner);
                 reloadCompany();
             }
-            break;
+        }
         
-        default:
-            console.log("Unexpected Message: " + message + " : " + sender.url);
+        else {
+            console.log("Unexpected Message: " + JSON.stringify(message) + " : " + sender.url);
             return sendResponse;
-            break;
-    }
+        }
 });
 
 /**************************************************************************************

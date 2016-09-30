@@ -1243,12 +1243,6 @@ window.onload = function() {
                 });
             };
             
-            /**************************************************************************************
-             *
-             *  Execute
-             *  
-             **************************************************************************************/
-            
             addNewCompanyListener();
         }
         else if (currentUrl.search(mktoWizardDomain) == -1
@@ -1317,12 +1311,6 @@ window.onload = function() {
                     window.onload = pageLoaded();
                 };
                 
-                /**************************************************************************************
-                 *
-                 *  Execute
-                 *  
-                 **************************************************************************************/
-                
                 Analyzer.prototype.showAnalyzer();
             }
         }
@@ -1330,16 +1318,10 @@ window.onload = function() {
     else if (currentUrl.search(mktoLandingPageDomain) != -1) {
         console.log("Content > Location: Global Landing Page");
         
-        /**************************************************************************************
-        *
-        *  Execute
-        *  
-        **************************************************************************************/
-        
         loadScript(GLOBAL_LANDING_PAGE_SCRIPT_LOCATION);
     }
-    else if (currentUrl.search(mktoLiveColorPickerDomain) != -1) {
-/*        
+/*    else if (currentUrl.search(mktoLiveColorPickerDomain) != -1) {
+        
 		console.log("Content > Location: Color-Picker Page");
         
         var correct = document.getElementById("correct"),
@@ -1361,13 +1343,7 @@ window.onload = function() {
             });
             window.close();
         };
-        
-        /**************************************************************************************
-        *
-        *  Execute
-        *  
-        **************************************************************************************/
-/*        
+            
         correct.onclick = sendCompanyMsg;
 		document.onkeyup = function(e) {
 			if (e.which == 13) {
@@ -1379,16 +1355,10 @@ window.onload = function() {
             document.getElementById('first').style.display = "none";
             document.getElementById('second').style.display = "block";
             document.getElementById('second-incorrect').style.display = "block";
-        };*/
-    }
+        };
+    }*/
     else if (currentUrl.search(oneLoginDomain) != -1 ) {
         console.log("Content > Location: OneLogin");
-        
-        /**************************************************************************************
-        *
-        *  Execute
-        *  
-        **************************************************************************************/
         
         loadScript(ONE_LOGIN_SCRIPT_LOCATION);
     }
@@ -1398,12 +1368,6 @@ window.onload = function() {
         var xmlHttp = new XMLHttpRequest(),
             pageLoaded,
             newElement;
-        
-        /**************************************************************************************
-        *
-        *  Execute
-        *  
-        **************************************************************************************/
         
         xmlHttp.open("GET", RTP_NAV_BAR_LOCATION, false);
         xmlHttp.send(null);
@@ -1417,23 +1381,11 @@ window.onload = function() {
     }
 	else if (currentUrl.search(emailDeliverabilityDomain) != -1) {
 		console.log("Content > Location: Deliverability Tools");
-		
-		/**************************************************************************************
-        *
-        *  Execute
-        *  
-        **************************************************************************************/
         
         loadScript(DELIVERABILITY_TOOLS_SCRIPT_LOCATION);
 	}
     else if (currentUrl.search(invisionAppDomain) != -1) {
         console.log("Content > Location: InVision App");
-        
-        /**************************************************************************************
-        *
-        *  Execute
-        *  
-        **************************************************************************************/
         
         loadScript(INVISION_APP_SCRIPT_LOCATION);
     }

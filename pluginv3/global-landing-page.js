@@ -1,4 +1,4 @@
-/*
+
 var URL_PATH = "m3-dev",
     MARKETO_LIVE_LANDING_PAGE_SCRIPT_LOCATION = "https://marketolive.com/"+URL_PATH+"/pluginv3/marketo-live-landing-page.min.js",
     currentUrl = document.location.href,
@@ -20,7 +20,7 @@ var URL_PATH = "m3-dev",
  *  @param {String} scriptSrc - The URL of the desired script.
  *
  **************************************************************************************/
-/*
+
 loadScript = function(scriptSrc) {
 	console.log("Global Landing Page > Loading: Script: " + scriptSrc);
 	
@@ -35,7 +35,7 @@ loadScript = function(scriptSrc) {
  *  Main
  *  
  **************************************************************************************/
-/*
+
 console.log("Global Landing Page > Script: Loaded");
 
 if (currentUrl.search(mktoLiveLandingPageDomainMatch) != -1) {
@@ -45,4 +45,4 @@ if (currentUrl.search(mktoLiveLandingPageDomainMatch) != -1) {
 }
 else {
     console.log("Global Landing Page > Location: NOT MarketoLive Landing Page");
-}*/
+}

@@ -66,6 +66,12 @@ var isMktoForm = window.setInterval(function() {
             
             if (submitParamVal == "true"
             || submitParamVal == "test") {
+                
+                form.onSuccess(function(values, followUpUrl) {
+                    window.close();
+                    
+                    return false;
+                });
             
                 if (typeof(form.getValues().FirstName) != "undefined") {
                     var firstName = getCookie(firstNameCookieName);
