@@ -3927,13 +3927,16 @@ APP.disableDesignerSaving = function (assetType, mode) {
                 
                 window.clearInterval(isAppController);
                 
-                var disableDesignerAsset,
+                var heapTrackDesigner,
+                disableDesignerAsset,
                 assetNode,
-                menuItems,
-                heapEventName,
-                heapEvent = {};
+                menuItems;
+                
+                heapTrackDesigner = function () {};
                 
                 disableDesignerAsset = function (assetNode, menuItems, disableFunc) {
+                    var heapEventName,
+                    heapEvent = {};
                     
                     if (assetNode.accessZoneId != mktoUserWorkspaceId) {
                         
@@ -4643,7 +4646,8 @@ APP.disableFormSaveButtons = function () {
                  || this.getXType() == "vespaNewDeviceForm" //Admin > Mobile Apps & Devices > Test Devices > New Test Device
                  || this.getXType() == "adminTagsAddCalendarEntryTypeForm" //Admin > Tags > Calendar Entry Types > New Entry Type
                  || this.getXType() == "featureSwitchForm" //Admin > Feature Manager > Edit Feature
-            ) {
+            )
+            {
                 
                 var mItems = this.query(
                         "[action=submit]," //+ //Create, Add, Save
