@@ -3935,8 +3935,7 @@ APP.disableDesignerSaving = function (assetType, mode) {
                 disableDesignerAsset = function (assetNode, menuItems, disableFunc) {
                     console.log("Marketo App > Executing: Disabling Designer (Edit/Preview)");
                     
-                    var heapEventName,
-                    heapEvent = {
+                    var heapEvent = {
                         name : assetNode.text,
                         assetType : assetNode.compType,
                         assetId : assetNode.id,
@@ -3952,10 +3951,9 @@ APP.disableDesignerSaving = function (assetType, mode) {
                             heapEvent.assetName = assetNode.text;
                         }
                     } else {
-                        heapEventName = userWorkspaceName + " | " + userName;
+                        heapEvent.name = userWorkspaceName + " | " + userName;
                     }
                     
-                    heapEvent.name = heapEventName;
                     heapTrack("track", heapEvent);
                     
                     if (assetNode.accessZoneId.toString().search(mktoGoldenWorkspacesMatch) != -1
@@ -4408,11 +4406,7 @@ loadParameters,
 isDesignerCallback;
 
 heapTrackDesigner = function (assetNode) {
-var heapEventName,
-heapEvent;
-if (assetNode.accessZoneId != mktoUserWorkspaceId) {
-
-heapEvent = {
+var heapEvent = {
 name : assetNode.text,
 assetType : assetNode.compType,
 assetId : assetNode.id,
@@ -4420,17 +4414,18 @@ assetArea : "Designer/Wizard",
 workspaceId : assetNode.accessZoneId
 };
 
+if (assetNode.accessZoneId != mktoUserWorkspaceId) {
+
 if (assetNode.text.search(".") != -1) {
 heapEvent.assetName = assetNode.text.split(".")[1];
 } else {
 heapEvent.assetName = assetNode.text;
 }
 } else {
-heapEventName = userWorkspaceName + " | " + userName;
+heapEvent.name = userWorkspaceName + " | " + userName;
 }
 }
 
-heapEvent.name = heapEventName;
 heapTrack("track", heapEvent);
 };
 
