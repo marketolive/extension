@@ -2153,6 +2153,32 @@ APP.evaluateMenu = function (triggeredFrom, menu, canvas, toolbar) {
             return toBeDisabled;
             break;
             
+        case "smsMessage":
+            if (toolbar.SmsMessage()
+                 && (toolbar.SmsMessage().get('zoneId').toString().search(mktoGoldenWorkspacesMatch) != -1)
+                 || (toolbar.SmsMessage().get('zoneId') == mktoUserWorkspaceId
+                     && toolbar.SmsMessage().getNodeJson()
+                     && toolbar.SmsMessage().getNodeJson().id
+                     && MktExplorer.getNodeById(toolbar.SmsMessage().getNodeJson().id))) {
+                toBeDisabled = true;
+                
+                if (toolbar.SmsMessage().get('zoneId') == mktoUserWorkspaceId) {
+                    var ii,
+                    currNode = MktExplorer.getNodeById(toolbar.SmsMessage().getNodeJson().id),
+                    depth = currNode.getDepth();
+                    
+                    for (ii = 0; ii < depth; ii++) {
+                        if (currNode.attributes.text == userName) {
+                            toBeDisabled = false;
+                            break;
+                        }
+                        currNode = currNode.parentNode;
+                    }
+                }
+            }
+            return toBeDisabled;
+            break;
+            
         default:
             return true;
             break;
@@ -3177,7 +3203,7 @@ APP.disableMenus = function () {
                 }
             }
             
-            var disable = APP.evaluateMenu("inAppMessage", null, null, this),
+            var disable = APP.evaluateMenu("smsMessage", null, null, this),
             menuItems = [
                 //"smsMessage toolbar [action=edit]", //Edit Draft
                 
