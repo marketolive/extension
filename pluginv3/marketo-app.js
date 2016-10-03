@@ -179,6 +179,7 @@ APP.disablePropertyPanelSaving = function () {
     console.log("Marketo App > Disabling: Saving of Landing Page Property Panel & Sync Error Message");
     
     if (typeof(Mkt3) !== "undefined"
+         && Mkt3
          && Mkt3.controller
          && Mkt3.controller.editor
          && Mkt3.controller.editor.LandingPagePropertyPanel
@@ -221,6 +222,7 @@ APP.disableConfirmationMessage = function () {
     console.log("Marketo App > Disabling: Smart Campaign Delete Confirmation Message");
     
     if (typeof(Mkt) !== "undefined"
+         && Mkt3
          && Mkt.widgets
          && Mkt.widgets.DataPanel
          && Mkt.widgets.DataPanel.prototype
@@ -252,6 +254,7 @@ APP.disableConfirmationMessage = function () {
                 }
                 
                 if (typeof(MktCanvas) !== "undefined"
+                     && MktCanvas
                      && MktCanvas.getActiveTab()
                      && MktCanvas.getActiveTab().config
                      && MktCanvas.getActiveTab().config.accessZoneId) {
@@ -316,6 +319,7 @@ APP.overrideHomeTiles = function () {
     console.log("Marketo App > Overriding: My Marketo Home Tiles");
     
     if (typeof(MktCanvas) !== "undefined"
+         && MktCanvas
          && MktCanvas.getEl()
          && MktCanvas.getEl().dom
          && MktCanvas.getEl().dom.nextSibling
@@ -402,6 +406,7 @@ APP.overrideSuperballMenuItems = function () {
     console.log("Marketo App > Overriding: Superball Menu Items");
     
     if (typeof(MktPage) !== "undefined"
+         && MktPage
          && MktPage.showSuperMenu) {
         MktPage.showSuperMenu = function () {
             console.log("Marketo App > Executing: Override Superball Menu Items");
@@ -456,6 +461,7 @@ APP.overrideSuperballMenuItems = function () {
                         }
                     });
                 if (typeof(menu) !== "undefined"
+                     && menu
                      && menu.items
                      && menu.items.items) {
                     console.log("Marketo App > Working: Override Superball Menu Items");
@@ -683,6 +689,7 @@ APP.overrideSmartCampaignSaving = function () {
     console.log("Marketo App > Overriding: Saving for Smart Campaigns");
     
     if (typeof(Mkt) !== "undefined"
+         && Mkt
          && Mkt.widgets
          && Mkt.widgets.DataPanelManager
          && Mkt.widgets.DataPanelManager.prototype
@@ -794,6 +801,7 @@ APP.overrideSmartCampaignCanvas = function () {
     console.log("Marketo App > Overriding: Smart Campaign Canvases");
     
     if (typeof(Mkt) !== "undefined"
+         && Mkt
          && Mkt.widgets
          && Mkt.widgets.DataPanelLayout
          && Mkt.widgets.DataPanelLayout.prototype
@@ -802,6 +810,7 @@ APP.overrideSmartCampaignCanvas = function () {
             console.log("Marketo App > Executing: Override Smart Campaign Canvases");
             
             if (typeof(MktCanvas) !== "undefined"
+                 && MktCanvas
                  && MktCanvas.getActiveTab()
                  && MktCanvas.getActiveTab().config
                  && MktCanvas.getActiveTab().config.accessZoneId == mktoDefaultWorkspaceId) {
@@ -893,6 +902,7 @@ APP.overrideUpdatePortletOrder = function () {
     console.log("Marketo App > Overriding: Updating of Portlet Order");
     
     if (typeof(Mkt) !== "undefined"
+         && Mkt
          && Mkt.apps
          && Mkt.apps.localasset
          && Mkt.apps.localasset.LocalAssetPortal
@@ -945,6 +955,7 @@ APP.overrideTreeNodeExpand = function () {
     console.log("Marketo App > Overriding: Tree Node Expand");
     
     if (typeof(MktAsyncTreeNode) !== "undefined"
+         && MktAsyncTreeNode
          && MktAsyncTreeNode.prototype
          && MktAsyncTreeNode.prototype.expand
          && userName) {
@@ -1008,6 +1019,7 @@ APP.overrideTreeNodeCollapse = function () {
     console.log("Marketo App > Overriding: Tree Node Collapse");
     
     if (typeof(MktAsyncTreeNode) !== "undefined"
+         && MktAsyncTreeNode
          && MktAsyncTreeNode.prototype
          && MktAsyncTreeNode.prototype.collapse
          && userName) {
@@ -1062,6 +1074,7 @@ APP.overrideNewProgramCreate = function () {
     console.log("Marketo App > Overriding: New Program/Segmentation Creation");
     
     if (typeof(Mkt) !== "undefined"
+         && Mkt
          && Mkt.widgets
          && Mkt.widgets.ModalForm
          && Mkt.widgets.ModalForm.prototype
@@ -1181,12 +1194,14 @@ APP.overrideAssetSaveEdit = function () {
     console.log("Marketo App > Overriding: Asset Save Edit");
     
     if (typeof(Mkt) !== "undefined"
+         && Mkt
          && Mkt.widgets
          && Mkt.widgets.CanvasHeader
          && Mkt.widgets.CanvasHeader.prototype
          && Mkt.widgets.CanvasHeader.prototype.saveEdit) {
         Mkt.widgets.CanvasHeader.prototype.saveEdit = function () {
             if (typeof(MktCanvas) !== "undefined"
+                 && MktCanvas
                  && MktCanvas.getActiveTab()
                  && MktCanvas.getActiveTab().config
                  && MktCanvas.getActiveTab().config.accessZoneId
@@ -1434,6 +1449,7 @@ APP.overrideNewAssetCreate = function () {
     console.log("Marketo App > Overriding: New Asset Creation");
     
     if (typeof(Mkt) !== "undefined"
+         && Mkt3
          && Mkt3.controller
          && Mkt3.controller.lib
          && Mkt3.controller.lib.AbstractModalForm
@@ -1494,6 +1510,7 @@ APP.overrideNewFolders = function () {
     console.log("Marketo App > Overriding: New Folders");
     
     if (typeof(MktMa) !== "undefined"
+         && MktMa
          && MktMa.newProgramFolderSubmit
          && userName) {
         MktMa.newProgramFolderSubmit = function (text, parentId, tempNodeId) {
@@ -1528,6 +1545,7 @@ APP.overrideNewFolders = function () {
     }
     
     if (typeof(MktFolder) !== "undefined"
+         && MktFolder
          && MktFolder.newFolderSubmit
          && userName) {
         MktFolder.newFolderSubmit = function (text, parentNodeId, tempNodeId) {
@@ -1575,6 +1593,7 @@ APP.overrideRenamingFolders = function () {
     console.log("Marketo App > Overriding: Renaming Folders");
     
     if (typeof(MktMa) !== "undefined"
+         && MktMa
          && MktMa.renameProgramFolderSubmit
          && userName) {
         MktMa.renameProgramFolderSubmit = function (value, startValue, folderId) {
@@ -1619,6 +1638,7 @@ APP.overrideRenamingFolders = function () {
     }
     
     if (typeof(MktFolder) !== "undefined"
+         && MktFolder
          && MktFolder.renameFolderSubmit
          && userName) {
         MktFolder.renameFolderSubmit = function (text, startValue, nodeId) {
@@ -1671,6 +1691,7 @@ APP.hideFoldersOnImport = function () {
     console.log("Marketo App > Hiding: Folders On Program Import via Override");
     
     if (typeof(Ext) !== "undefined"
+         && Ext
          && Ext.form
          && Ext.form.ComboBox
          && Ext.form.ComboBox.prototype
@@ -1693,10 +1714,12 @@ APP.hideFoldersOnImport = function () {
                     this.doQuery(this.allQuery, true);
                     
                     if (typeof(this) !== "undefined"
+                         && this
                          && this.label
                          && this.label.dom
                          && this.label.dom.textContent == "Campaign Folder:"
                          && typeof(MktCanvas) !== "undefined"
+                         && MktCanvas
                          && MktCanvas.getActiveTab()
                          && MktCanvas.getActiveTab().config
                          && MktCanvas.getActiveTab().config.accessZoneId == mktoUserWorkspaceId) {
@@ -1736,11 +1759,13 @@ APP.hidePageGrid = function () {
     console.log("Marketo App > Hiding: Page Grid via Override");
     
     if (typeof(MktGrids) !== "undefined"
+         && MktGrids
          && MktGrids.CanvasGridPanel
          && MktGrids.CanvasGridPanel.prototype
          && MktGrids.CanvasGridPanel.prototype.loadPagedGrid) {
         MktGrids.CanvasGridPanel.prototype.loadPagedGrid = function () {
             if (typeof(MktCanvas) !== "undefined"
+                 && MktCanvas
                  && MktCanvas.getActiveTab()
                  && MktCanvas.getActiveTab().config
                  && MktCanvas.getActiveTab().config.accessZoneId == mktoUserWorkspaceId) {
@@ -1899,6 +1924,7 @@ APP.disableDragAndDrop = function () {
     console.log("Marketo App > Disabling: Tree Node Drop");
     
     if (typeof(Ext) !== "undefined"
+         && Ext
          && Ext.tree
          && Ext.tree.TreeDropZone
          && Ext.tree.TreeDropZone.prototype
@@ -2154,17 +2180,17 @@ APP.evaluateMenu = function (triggeredFrom, menu, canvas, toolbar) {
             break;
             
         case "smsMessage":
-            if (toolbar.SmsMessage()
-                 && (toolbar.SmsMessage().get('zoneId').toString().search(mktoGoldenWorkspacesMatch) != -1)
-                 || (toolbar.SmsMessage().get('zoneId') == mktoUserWorkspaceId
-                     && toolbar.SmsMessage().getNodeJson()
-                     && toolbar.SmsMessage().getNodeJson().id
-                     && MktExplorer.getNodeById(toolbar.SmsMessage().getNodeJson().id))) {
+            if (toolbar.getSmsMessage()
+                 && (toolbar.getSmsMessage().get('zoneId').toString().search(mktoGoldenWorkspacesMatch) != -1)
+                 || (toolbar.getSmsMessage().get('zoneId') == mktoUserWorkspaceId
+                     && toolbar.getSmsMessage().getNodeJson()
+                     && toolbar.getSmsMessage().getNodeJson().id
+                     && MktExplorer.getNodeById(toolbar.getSmsMessage().getNodeJson().id))) {
                 toBeDisabled = true;
                 
-                if (toolbar.SmsMessage().get('zoneId') == mktoUserWorkspaceId) {
+                if (toolbar.getSmsMessage().get('zoneId') == mktoUserWorkspaceId) {
                     var ii,
-                    currNode = MktExplorer.getNodeById(toolbar.SmsMessage().getNodeJson().id),
+                    currNode = MktExplorer.getNodeById(toolbar.getSmsMessage().getNodeJson().id),
                     depth = currNode.getDepth();
                     
                     for (ii = 0; ii < depth; ii++) {
@@ -2201,6 +2227,7 @@ APP.disableMenus = function () {
     console.log("Marketo App > Disabling: Menus");
     
     if (typeof(Ext) !== "undefined"
+         && Ext
          && Ext.menu
          && Ext.menu.Menu
          && Ext.menu.Menu.prototype
@@ -2783,6 +2810,7 @@ APP.disableMenus = function () {
     }
     
     if (typeof(Mkt3) !== "undefined"
+         && Mkt3
          && Mkt3.controller
          && Mkt3.controller.editor
          && Mkt3.controller.editor.wizard
@@ -2832,6 +2860,7 @@ APP.disableMenus = function () {
     }
     
     if (typeof(Ext4) !== "undefined"
+         && Ext4
          && Ext4.button
          && Ext4.button.Button
          && Ext4.button.Button.prototype
@@ -2839,6 +2868,7 @@ APP.disableMenus = function () {
         Ext4.button.Button.prototype.showMenu = function (fromEvent) {
             console.log("Marketo App > Executing: Disable Toolbar Buttons & Actions Menu in ABM & Admin Sections");
             var mItems = this.menu.items,
+            menuItems,
             itemsToDisable = [
                 // Account Based Marketing > Named Accounts > New Button
                 //"newNamedAccount", //Create Named Account
@@ -2878,27 +2908,27 @@ APP.disableMenus = function () {
                     }
                 });
             }
-            
-            mItems = Ext4.ComponentQuery.query(
-                    // Account Based Marketing > Account Lists > New Button
-                    //"contextMenu [action=newAccountList]," + //Create New Account List
-                    
-                    // Account Based Marketing > Account Lists > Actions Button
-                    //"contextMenu [action=renameAccountList]," + //Rename Account List
-                    "contextMenu [action=deleteAccountList]," + //Delete Account List
-                    
-                    // Admin > Mobile Apps & Devices > Mobile Apps > Actions Button
-                    //"menu [action=create]," + //New Mobile App
-                    //"menu [action=edit]," + //Edit Mobile App
-                    "menu [action=delete]," + //Delete Mobile App
-                    //"menu [action=send]," + //Send To Developer
-                    //"menu [action=verify]," + //Verify Push Configuration
-                    
-                    // Admin > Mobile Apps & Devices > Test Devices > Actions Button
-                    //"menu [action=createTestDevice]," + //New Test Device
-                    "menu [action=editTestDevice]," + //Edit Test Device
-                    "menu [action=deleteTestDevice]," //+ //Delete Test Device
-                );
+            menuItems = [
+                // Account Based Marketing > Account Lists > New Button
+                //"contextMenu [action=newAccountList]", //Create New Account List
+                
+                // Account Based Marketing > Account Lists > Actions Button
+                //"contextMenu [action=renameAccountList]", //Rename Account List
+                "contextMenu [action=deleteAccountList]", //Delete Account List
+                
+                // Admin > Mobile Apps & Devices > Mobile Apps > Actions Button
+                //"menu [action=create]", //New Mobile App
+                //"menu [action=edit]", //Edit Mobile App
+                "menu [action=delete]", //Delete Mobile App
+                //"menu [action=send]", //Send To Developer
+                //"menu [action=verify]", //Verify Push Configuration
+                
+                // Admin > Mobile Apps & Devices > Test Devices > Actions Button
+                //"menu [action=createTestDevice]", //New Test Device
+                "menu [action=editTestDevice]", //Edit Test Device
+                "menu [action=deleteTestDevice]", //Delete Test Device
+            ];
+            mItems = Ext4.ComponentQuery.query(menuItems.toString());
             
             if (mItems) {
                 mItems.forEach(function (item) {
@@ -2932,6 +2962,7 @@ APP.disableMenus = function () {
     }
     
     if (typeof(Mkt3) !== "undefined"
+         && Mkt3
          && Mkt3.controller
          && Mkt3.controller.abm
          && Mkt3.controller.abm.namedAccount
@@ -2941,10 +2972,11 @@ APP.disableMenus = function () {
         Mkt3.controller.abm.namedAccount.Dashboard.prototype.loadToolBar = function () {
             console.log("Marketo App > Executing: Disable Toolbar Buttons for ABM > Named Accounts");
             
-            var mItems = Ext4.ComponentQuery.query(
-                    // Named Account Toolbar Buttons
-                    "abmNamedAccountToolbar [action=linkPeople]," //+ //Add People to Named Account
-                );
+            var menuItems = [
+                // Named Account Toolbar Buttons
+                "abmNamedAccountToolbar [action=linkPeople]", //Add People to Named Account
+            ],
+            mItems = Ext4.ComponentQuery.query(menuItems.toString());
             
             if (mItems) {
                 mItems.forEach(function (item) {
@@ -2966,6 +2998,7 @@ APP.disableMenus = function () {
     }
     
     if (typeof(Mkt3) !== "undefined"
+         && Mkt3
          && Mkt3.controller
          && Mkt3.controller.abm
          && Mkt3.controller.abm.accountList
@@ -2987,10 +3020,11 @@ APP.disableMenus = function () {
                 });
             }
             
-            var mItems = dashboard.query(
-                    // Account Based Marketing > Account Lists > Named Account > Toolbar Buttons
-                    "abmAccountListToolbar [action=removeNamedAccount]," //+ //Remove Named Accounts
-                );
+            var menuItems = [
+                // Account Based Marketing > Account Lists > Named Account > Toolbar Buttons
+                "abmAccountListToolbar [action=removeNamedAccount]", //Remove Named Accounts
+            ],
+            mItems = dashboard.query(menuItems.toString());
             
             if (mItems) {
                 mItems.forEach(function (item) {
@@ -3005,6 +3039,7 @@ APP.disableMenus = function () {
     }
     
     if (typeof(Mkt3) !== "undefined"
+         && Mkt3
          && Mkt3.controller
          && Mkt3.controller.socialApp
          && Mkt3.controller.socialApp.SocialApp
@@ -3017,22 +3052,23 @@ APP.disableMenus = function () {
             prevSocialAppToolbar.apply(this, arguments);
             
             var disable = APP.evaluateMenu("socialAppToolbar", null, null, this),
-            mItems = Ext4.ComponentQuery.query(
-                    //"socialAppToolbar [action=edit]," + //Edit Draft
-                    //"socialAppToolbar [action=preview]," + //Preview
-                    //"socialAppToolbar [action=pickWinners]," + //Pick Winners
-                    
-                    //"socialAppToolbar contextMenu [action=edit]," + //Edit Draft
-                    //"socialAppToolbar contextMenu [action=preview]," + //Preview
-                    "socialAppToolbar contextMenu [action=approve]," + //Approve
-                    "socialAppToolbar contextMenu [action=clone]," + //Clone
-                    "socialAppToolbar contextMenu [action=delete]," + //Delete
-                    //"socialAppToolbar contextMenu [action=getWidgetEmbedCode]," + //Embed Code
-                    //"socialAppToolbar contextMenu [action=editDraft]," + //Edit Draft
-                    //"socialAppToolbar contextMenu [action=previewDraft]," + //Preview Draft
-                    "socialAppToolbar contextMenu [action=approveDraft]," //+ //Approve Draft
-                    //"socialAppToolbar contextMenu [action=discardDraft]," //Discard Draft
-                );
+            menuItems = [
+                //"socialAppToolbar [action=edit]", //Edit Draft
+                //"socialAppToolbar [action=preview]", //Preview
+                //"socialAppToolbar [action=pickWinners]", //Pick Winners
+                
+                //"socialAppToolbar contextMenu [action=edit]", //Edit Draft
+                //"socialAppToolbar contextMenu [action=preview]", //Preview
+                "socialAppToolbar contextMenu [action=approve]", //Approve
+                "socialAppToolbar contextMenu [action=clone]", //Clone
+                "socialAppToolbar contextMenu [action=delete]", //Delete
+                //"socialAppToolbar contextMenu [action=getWidgetEmbedCode]", //Embed Code
+                //"socialAppToolbar contextMenu [action=editDraft]", //Edit Draft
+                //"socialAppToolbar contextMenu [action=previewDraft]", //Preview Draft
+                "socialAppToolbar contextMenu [action=approveDraft]", //Approve Draft
+                //"socialAppToolbar contextMenu [action=discardDraft]", //Discard Draft
+            ],
+            mItems = Ext4.ComponentQuery.query(menuItems.toString());
             
             if (mItems) {
                 mItems.forEach(function (item) {
@@ -3049,6 +3085,7 @@ APP.disableMenus = function () {
     }
     
     if (typeof(Mkt3) !== "undefined"
+         && Mkt3
          && Mkt3.controller
          && Mkt3.controller.mobilePushNotification
          && Mkt3.controller.mobilePushNotification.MobilePushNotification
@@ -3061,23 +3098,24 @@ APP.disableMenus = function () {
             prevMobilePushNotificationToolbar.apply(this, arguments);
             
             var disable = APP.evaluateMenu("mobilePushNotification", null, null, this),
-            mItems = Ext4.ComponentQuery.query(
-                    //"mobilePushNotification mobilePushNotificationToolbar [action=edit]," + //Edit Draft
-                    //"mobilePushNotification mobilePushNotificationToolbar [action=preview]," + //Preview
-                    
-                    //"mobilePushNotification contextMenu [action=edit]," + //Edit Draft
-                    //"mobilePushNotification contextMenu [action=preview]," + //Preview
-                    //"mobilePushNotification contextMenu [action=sendSample]," + //Send Sample
-                    "mobilePushNotification contextMenu [action=unapprove]," + //Unapprove
-                    "mobilePushNotification contextMenu [action=approve]," + //Approve
-                    "mobilePushNotification contextMenu [action=clone]," + //Clone
-                    "mobilePushNotification contextMenu [action=delete]," + //Delete
-                    //"mobilePushNotification contextMenu [action=editDraft]," + //Edit Draft
-                    //"mobilePushNotification contextMenu [action=previewDraft]," + //Preview Draft
-                    //"mobilePushNotification contextMenu [action=sendDraftSample]," + //Send Sample of Draft
-                    "mobilePushNotification contextMenu [action=approveDraft]," //+ //Approve Draft
-                    //"mobilePushNotification contextMenu [action=discardDraft]," //Discard Draft
-                );
+            menuItems = [
+                //"mobilePushNotification mobilePushNotificationToolbar [action=edit]", //Edit Draft
+                //"mobilePushNotification mobilePushNotificationToolbar [action=preview]", //Preview
+                
+                //"mobilePushNotification contextMenu [action=edit]", //Edit Draft
+                //"mobilePushNotification contextMenu [action=preview]", //Preview
+                //"mobilePushNotification contextMenu [action=sendSample]", //Send Sample
+                "mobilePushNotification contextMenu [action=unapprove]", //Unapprove
+                "mobilePushNotification contextMenu [action=approve]", //Approve
+                "mobilePushNotification contextMenu [action=clone]", //Clone
+                "mobilePushNotification contextMenu [action=delete]", //Delete
+                //"mobilePushNotification contextMenu [action=editDraft]", //Edit Draft
+                //"mobilePushNotification contextMenu [action=previewDraft]", //Preview Draft
+                //"mobilePushNotification contextMenu [action=sendDraftSample]", //Send Sample of Draft
+                "mobilePushNotification contextMenu [action=approveDraft]", //Approve Draft
+                //"mobilePushNotification contextMenu [action=discardDraft]", //Discard Draft
+            ],
+            mItems = Ext4.ComponentQuery.query(menuItems.toString());
             
             if (mItems) {
                 mItems.forEach(function (item) {
@@ -3094,6 +3132,7 @@ APP.disableMenus = function () {
     }
     
     if (typeof(Mkt3) !== "undefined"
+         && Mkt3
          && Mkt3.controller
          && Mkt3.controller.inAppMessage
          && Mkt3.controller.inAppMessage.InAppMessage
@@ -3137,22 +3176,23 @@ APP.disableMenus = function () {
             }
             
             var disable = APP.evaluateMenu("inAppMessage", null, null, this),
-            mItems = Ext4.ComponentQuery.query(
-                    //"inAppMessage inAppMessageToolbar [action=edit]," + //Edit Draft
-                    //"inAppMessage inAppMessageToolbar [action=preview]," + //Preview
-                    
-                    //"inAppMessage contextMenu [action=edit]," + //Edit Draft
-                    //"inAppMessage contextMenu [action=preview]," + //Preview
-                    "inAppMessage contextMenu [action=unapprove]," + //Unapprove
-                    "inAppMessage contextMenu [action=approve]," + //Approve
-                    "inAppMessage contextMenu [action=clone]," + //Clone
-                    "inAppMessage contextMenu [action=delete]," + //Delete
-                    //"inAppMessage contextMenu [action=editDraft]," + //Edit Draft
-                    //"inAppMessage contextMenu [action=previewDraft]," + //Preview Draft
-                    "inAppMessage contextMenu [action=sendDraftSample]," + //Send Sample of Draft
-                    "inAppMessage contextMenu [action=approveDraft]," //+ //Approve Draft
-                    //"inAppMessage contextMenu [action=discardDraft]," + //Discard Draft
-                );
+            menuItems = [
+                //"inAppMessage inAppMessageToolbar [action=edit]", //Edit Draft
+                //"inAppMessage inAppMessageToolbar [action=preview]", //Preview
+                
+                //"inAppMessage contextMenu [action=edit]", //Edit Draft
+                //"inAppMessage contextMenu [action=preview]", //Preview
+                "inAppMessage contextMenu [action=unapprove]", //Unapprove
+                "inAppMessage contextMenu [action=approve]", //Approve
+                "inAppMessage contextMenu [action=clone]", //Clone
+                "inAppMessage contextMenu [action=delete]", //Delete
+                //"inAppMessage contextMenu [action=editDraft]", //Edit Draft
+                //"inAppMessage contextMenu [action=previewDraft]", //Preview Draft
+                "inAppMessage contextMenu [action=sendDraftSample]", //Send Sample of Draft
+                "inAppMessage contextMenu [action=approveDraft]", //Approve Draft
+                //"inAppMessage contextMenu [action=discardDraft]", //Discard Draft
+            ],
+            mItems = Ext4.ComponentQuery.query(menuItems.toString());
             
             if (mItems) {
                 mItems.forEach(function (item) {
@@ -3173,7 +3213,7 @@ APP.disableMenus = function () {
          && Mkt3.controller.smsMessage.SmsMessage
          && Mkt3.controller.smsMessage.SmsMessage.prototype
          && Mkt3.controller.smsMessage.SmsMessage.prototype.loadToolbar) {
-        // Disable Marketing Activities > SMS Messages > Toolbar buttons & Actions menu
+        // Disable Marketing menuItemsActivities > SMS Messages > Toolbar buttons & Actions menu
         var prevSmsMessageToolbar = Mkt3.controller.smsMessage.SmsMessage.prototype.loadToolbar;
         Mkt3.controller.smsMessage.SmsMessage.prototype.loadToolbar = function () {
             console.log("Marketo App > Executing: Disable Toolbar Buttons & Actions Menu for Marketing Activities > SMS Messages");
@@ -3232,6 +3272,7 @@ APP.disableMenus = function () {
     }
     
     if (typeof(Ext4) !== "undefined"
+         && Ext4
          && Ext4.Component
          && Ext4.Component.prototype
          && Ext4.Component.prototype.showAt) {
@@ -3255,6 +3296,7 @@ APP.disableMenus = function () {
             me.show()
             
             if (typeof(MktCanvas) !== "undefined"
+                 && MktCanvas
                  && MktCanvas.getActiveTab()) {
                 var ii,
                 disable = APP.evaluateMenu("button", null, MktCanvas.getActiveTab(), null);
@@ -3473,6 +3515,7 @@ APP.hideToolbarItems = function () {
     console.log("Marketo App > Hiding: Toolbar Items");
     
     if (typeof(Ext) !== "undefined"
+         && Ext
          && Ext.layout
          && Ext.layout.ContainerLayout
          && Ext.layout.ContainerLayout.prototype
@@ -4042,9 +4085,22 @@ APP.disableDesignerSaving = function (assetType, mode) {
                         name : assetNode.text,
                         assetType : assetNode.compType,
                         assetId : assetNode.id,
-                        assetArea : "Designer/Wizard",
                         workspaceId : assetNode.accessZoneId
                     };
+                    
+                    switch (mode) {
+                    case "edit":
+                        heapEvent.assetArea = "Editor";
+                        break;
+                    
+                    case "preview":
+                        heapEvent.assetArea = "Previewer";
+                        break;
+                    
+                    default:
+                        heapEvent.assetArea = "Designer/Wizard";
+                        break;
+                    }
                     
                     if (assetNode.accessZoneId != mktoUserWorkspaceId) {
                         
@@ -4551,6 +4607,7 @@ if (record.get("zoneId").toString().search(mktoGoldenWorkspacesMatch) != -1
 APP.disableSaving();
 
 if (typeof(Ext4) !== "undefined"
+&& Ext4
 && Ext4.ComponentQuery
 && Ext4.ComponentQuery.query) {
 var menuItems = [
@@ -4707,6 +4764,7 @@ APP.disableFormSaveButtons = function () {
     console.log("Marketo App > Disabling: Form Window Save Buttons");
     
     if (typeof(Ext4) !== "undefined"
+         && Ext4
          && Ext4.Component
          && Ext4.Component.prototype
          && Ext4.Component.prototype.show) {
@@ -4747,9 +4805,10 @@ APP.disableFormSaveButtons = function () {
             )
             {
                 
-                var mItems = this.query(
-                        "[action=submit]," //+ //Create, Add, Save
-                    );
+                var menuItems = [
+                    "[action=submit]", //Create, Add, Save
+                ],
+                mItems = this.query(menuItems.toString());
                 
                 if (mItems) {
                     mItems.forEach(function (item) {
@@ -4807,6 +4866,7 @@ APP.disableAdminSaveButtons = function () {
     console.log("Marketo App > Disabling: Admin Section Save Buttons");
     
     if (typeof(Ext) !== "undefined"
+         && Ext
          && Ext.Window
          && Ext.Window.prototype
          && Ext.Window.prototype.show) {
@@ -4815,9 +4875,11 @@ APP.disableAdminSaveButtons = function () {
             console.log("Marketo App > Executing: Disable Admin Section Save Buttons");
             
             if (typeof(MktCanvas) !== "undefined"
+                 && MktCanvas
                  && MktCanvas.getActiveTab()
                  && MktCanvas.getActiveTab().title
                  && typeof(this) !== "undefined"
+                 && this
                  && this.buttons
                  && this.buttons.length) {
                 var activeTabTitle = MktCanvas.getActiveTab().title,
@@ -4981,6 +5043,7 @@ APP.limitNurturePrograms = function () {
     console.log("Marketo App > Limiting: Nurture Programs");
     
     if (typeof(Mkt) !== "undefined"
+         && Mkt
          && Mkt.apps
          && Mkt.apps.marketingEvent
          && Mkt.apps.marketingEvent.MarketingEventForm
@@ -5087,6 +5150,7 @@ APP.overrideSaving = function () {
     console.log("Marketo App > Overriding: Saving for Nurture Streams");
     
     if (typeof(Mkt3) !== "undefined"
+         && Mkt3
          && Mkt3.data
          && Mkt3.data.Store
          && Mkt3.data.Store.prototype
@@ -5101,6 +5165,7 @@ APP.overrideSaving = function () {
                 
                 var disable;
                 if (typeof(MktCanvas) !== "undefined"
+                     && MktCanvas
                      && MktCanvas.getActiveTab()
                      && APP.getCookie("toggleState") != "false") {
                     disable = APP.evaluateMenu("button", null, MktCanvas.getActiveTab(), null);
@@ -5127,6 +5192,7 @@ APP.overrideSaving = function () {
     }
     
     if (typeof(Ext4) !== "undefined"
+         && Ext4
          && Ext4.data
          && Ext4.data.Model
          && Ext4.data.Model.prototype
@@ -5136,6 +5202,7 @@ APP.overrideSaving = function () {
             
             var disable;
             if (typeof(MktCanvas) !== "undefined"
+                 && MktCanvas
                  && MktCanvas.getActiveTab()
                  && APP.getCookie("toggleState") != "false") {
                 disable = APP.evaluateMenu("button", null, MktCanvas.getActiveTab(), null);
@@ -5210,6 +5277,7 @@ APP.enableSaving = function () {
     console.log("Marketo App > Enabling: Saving for Editors");
     
     if (typeof(Mkt3) !== "undefined"
+         && Mkt3
          && Mkt3.data
          && Mkt3.data.Store
          && Mkt3.data.Store.prototype
@@ -5231,6 +5299,7 @@ APP.enableSaving = function () {
     }
     
     if (typeof(Ext4) !== "undefined"
+         && Ext4
          && Ext4.data
          && Ext4.data.Model
          && Ext4.data.Model.prototype
@@ -5301,6 +5370,7 @@ APP.disableSaving = function () {
     console.log("Marketo App > Disabling: Saving for Editors");
     
     if (typeof(Mkt3) !== "undefined"
+         && Mkt3
          && Mkt3.data
          && Mkt3.data.Store
          && Mkt3.data.Store.prototype
@@ -5311,6 +5381,7 @@ APP.disableSaving = function () {
     }
     
     if (typeof(Ext4) !== "undefined"
+         && Ext4
          && Ext4.data
          && Ext4.data.Model
          && Ext4.data.Model.prototype
@@ -5321,6 +5392,7 @@ APP.disableSaving = function () {
     }
     
     if (typeof(Mkt3) !== "undefined"
+         && Mkt3
          && Mkt3.controller
          && Mkt3.controller.editor
          && Mkt3.controller.editor.form
@@ -5411,6 +5483,7 @@ APP.discardLandingPageDrafts = function (lpIds) {
     console.log("Marketo App > Discarding: Landing Page Drafts");
     
     if (typeof(mktLPLManager) !== "undefined"
+         && mktLPLManager
          && mktLPLManager.doModifyPages) {
         console.log("Marketo App > Executing: Discard Landing Page Drafts");
         
@@ -5465,6 +5538,7 @@ APP.discardEmailDrafts = function (emIds) {
     console.log("Marketo App > Discarding: Email Drafts");
     
     if (typeof(mktEmManager) !== "undefined"
+         && mktEmManager
          && mktEmManager.discardDraft) {
         console.log("Marketo App > Executing: Discard Email Drafts");
         
@@ -5505,9 +5579,11 @@ APP.discardOtherDrafts = function (assetType, assetIds) {
     console.log("Marketo App > Discarding: " + assetType + " Drafts");
     
     if (typeof(Ext4) !== "undefined"
+         && Ext4
          && Ext4.getStore
          && Ext4.create
-         && typeof(Mkt3) !== "undefined") {
+         && typeof(Mkt3) !== "undefined"
+         && Mkt3) {
         console.log("Marketo App > Executing: Discard " + assetType + " Drafts");
         
         var assetStore = Ext4.getStore(assetType);
@@ -5832,7 +5908,8 @@ APP.discardDrafts = function (accountString) {
     }
     
     var canDiscardDrafts = window.setInterval(function () {
-            if (typeof(mktLPLManager) !== "undefined") {
+            if (typeof(mktLPLManager) !== "undefined"
+             && mktLPLManager) {
                 window.clearInterval(canDiscardDrafts);
                 
                 APP.discardLandingPageDrafts(lpIds);
@@ -5848,9 +5925,11 @@ APP.discardDrafts = function (accountString) {
                 
                 var canDiscardOtherDrafts = window.setInterval(function () {
                         if (typeof(Ext4) !== "undefined"
+                             && Ext4
                              && Ext4.getStore
                              && Ext4.create
-                             && typeof(Mkt3) !== "undefined") {
+                             && typeof(Mkt3) !== "undefined"
+                             && Mkt3) {
                             window.clearInterval(canDiscardOtherDrafts);
                             
                             APP.discardOtherDrafts("Form", formIds);
@@ -5880,6 +5959,7 @@ APP.trackTreeNodeSelection = function () {
     console.log("Marketo App > Tracking: Tree Node Selection");
     
     if (typeof(MktExplorer) !== "undefined"
+         && MktExplorer
          && MktExplorer.selectTreeNode) {
         MktExplorer.selectTreeNode = function (node) {
             
@@ -5936,6 +6016,7 @@ APP.trackOtherAssets = function () {
     console.log("Marketo App > Tracking: Social App or Push Notification Selection");
     
     if (typeof(MktExplorer) !== "undefined"
+         && MktExplorer
          && MktExplorer.getNodeById
          && MktExplorer.getNodeById(currUrlFragment.substring(0, currUrlFragment.length - 5))) {
         
@@ -5980,7 +6061,8 @@ APP.trackOtherAssets = function () {
 
 var heapTrack = function (action, event) {
     var isHeapAnalytics = window.setInterval(function () {
-            if (typeof(heap) !== "undefined") {
+            if (typeof(heap) !== "undefined"
+             && heap) {
                 //            console.log("Marketo App > Loaded: Heap Analytics");
                 
                 window.clearInterval(isHeapAnalytics);
@@ -6323,6 +6405,7 @@ var isMktPageApp = window.setInterval(function () {
                 // Getting the URL fragment, the part after the #
                 var isNewUrlFragment = window.setInterval(function () {
                         if (typeof(Mkt3) !== "undefined"
+                             && Mkt3
                              && Mkt3.DL
                              && Mkt3.DL.getDlToken()) {
                             if (currUrlFragment != Mkt3.DL.getDlToken()) {
