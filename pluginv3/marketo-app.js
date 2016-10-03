@@ -2483,12 +2483,12 @@ APP.disableMenus = function () {
                     //"pushNotificationPreview", //Preview
                     "pushNotificationUnapprove", //Unapprove
                     "pushNotificationApprove", //Approve
-                    //"pushNotificationSendSample", //Send Sample
+                    "pushNotificationSendSample", //Send Sample
                     "pushNotificationClone", //Clone
                     "pushNotificationDelete", //Delete
                     //"pushNotificationDraftEdit", //Edit Draft
                     //"pushNotificationDraftPreview", //Preview Draft
-                    //"pushNotificationDraftSendSample", //Send Sample of Draft
+                    "pushNotificationDraftSendSample", //Send Sample of Draft
                     "pushNotificationDraftApprove", //Approve Draft
                     //"pushNotificationDraftDiscard", //Discard Draft
                     
@@ -3104,14 +3104,14 @@ APP.disableMenus = function () {
                 
                 //"mobilePushNotification contextMenu [action=edit]", //Edit Draft
                 //"mobilePushNotification contextMenu [action=preview]", //Preview
-                //"mobilePushNotification contextMenu [action=sendSample]", //Send Sample
+                "mobilePushNotification contextMenu [action=sendSample]", //Send Sample
                 "mobilePushNotification contextMenu [action=unapprove]", //Unapprove
                 "mobilePushNotification contextMenu [action=approve]", //Approve
                 "mobilePushNotification contextMenu [action=clone]", //Clone
                 "mobilePushNotification contextMenu [action=delete]", //Delete
                 //"mobilePushNotification contextMenu [action=editDraft]", //Edit Draft
                 //"mobilePushNotification contextMenu [action=previewDraft]", //Preview Draft
-                //"mobilePushNotification contextMenu [action=sendDraftSample]", //Send Sample of Draft
+                "mobilePushNotification contextMenu [action=sendDraftSample]", //Send Sample of Draft
                 "mobilePushNotification contextMenu [action=approveDraft]", //Approve Draft
                 //"mobilePushNotification contextMenu [action=discardDraft]", //Discard Draft
             ],
@@ -3182,6 +3182,7 @@ APP.disableMenus = function () {
                 
                 //"inAppMessage contextMenu [action=edit]", //Edit Draft
                 //"inAppMessage contextMenu [action=preview]", //Preview
+                "inAppMessage contextMenu [action=sendSample]", //Send Sample
                 "inAppMessage contextMenu [action=unapprove]", //Unapprove
                 "inAppMessage contextMenu [action=approve]", //Approve
                 "inAppMessage contextMenu [action=clone]", //Clone
@@ -5625,9 +5626,13 @@ APP.discardOtherDrafts = function (assetType, assetIds) {
  *
  *  @function
  *
+ *  @param {String} accountString - instance account string (mktodemoaccount106, 
+ *                                  mktodemoaccount106d)
+ *  @param {String} assetType - type of asset to discard (landingPage, email, other, all)
+ *
  **************************************************************************************/
 
-APP.discardDrafts = function (accountString) {
+APP.discardDrafts = function (accountString, assetType) {
     console.log("Marketo App > Discarding: Golden Assets for instance: " + accountString);
     
     // Setting the asset draft IDs to discard
@@ -5907,42 +5912,89 @@ APP.discardDrafts = function (accountString) {
         break;
     }
     
-    var canDiscardDrafts = window.setInterval(function () {
-            if (typeof(mktLPLManager) !== "undefined"
-             && mktLPLManager) {
-                window.clearInterval(canDiscardDrafts);
-                
-                APP.discardLandingPageDrafts(lpIds);
-                
-                var canDiscardEmailDrafts = window.setInterval(function () {
-                        if (typeof(mktEmManager) !== "undefined"
-                             && mktEmManager.discardDraft) {
-                            window.clearInterval(canDiscardEmailDrafts);
-                            
-                            APP.discardEmailDrafts(emIds);
-                        }
-                    }, 0);
-                
-                var canDiscardOtherDrafts = window.setInterval(function () {
-                        if (typeof(Ext4) !== "undefined"
-                             && Ext4
-                             && Ext4.getStore
-                             && Ext4.create
-                             && typeof(Mkt3) !== "undefined"
-                             && Mkt3) {
-                            window.clearInterval(canDiscardOtherDrafts);
-                            
-                            APP.discardOtherDrafts("Form", formIds);
-                            APP.discardOtherDrafts("MobilePushNotification", pushIds);
-                            APP.discardOtherDrafts("InAppMessage", inAppIds);
-                            //APP.discardOtherDrafts("SmsMessage", smsIds);
-                            APP.discardOtherDrafts("SocialApp", socIds);
-                        }
-                    }, 0);
-                
-                APP.limitNurturePrograms();
-            }
-        }, 0);
+    switch (assetType) {
+    case "landingPage":
+        var canDiscardLandingPageDrafts = window.setInterval(function () {
+                if (typeof(mktLPLManager) !== "undefined"
+                     && mktLPLManager) {
+                    window.clearInterval(canDiscardLandingPageDrafts);
+                    
+                    APP.discardLandingPageDrafts(lpIds);
+                }
+            }, 0);
+        break;
+        
+    case "email":
+        var canDiscardEmailDrafts = window.setInterval(function () {
+                if (typeof(mktEmManager) !== "undefined"
+                     && mktEmManager.discardDraft) {
+                    window.clearInterval(canDiscardEmailDrafts);
+                    
+                    APP.discardEmailDrafts(emIds);
+                }
+            }, 0);
+        break;
+        
+    case "other":
+        var canDiscardOtherDrafts = window.setInterval(function () {
+                if (typeof(Ext4) !== "undefined"
+                     && Ext4
+                     && Ext4.getStore
+                     && Ext4.create
+                     && typeof(Mkt3) !== "undefined"
+                     && Mkt3) {
+                    window.clearInterval(canDiscardOtherDrafts);
+                    
+                    APP.discardOtherDrafts("Form", formIds);
+                    APP.discardOtherDrafts("MobilePushNotification", pushIds);
+                    APP.discardOtherDrafts("InAppMessage", inAppIds);
+                    APP.discardOtherDrafts("SmsMessage", smsIds);
+                    APP.discardOtherDrafts("SocialApp", socIds);
+                }
+            }, 0);
+        break;
+        
+    case "all":
+        var canDiscardLandingPageDrafts,
+        canDiscardEmailDrafts,
+        canDiscardOtherDrafts;
+        
+        canDiscardLandingPageDrafts = window.setInterval(function () {
+                if (typeof(mktLPLManager) !== "undefined"
+                     && mktLPLManager) {
+                    window.clearInterval(canDiscardLandingPageDrafts);
+                    
+                    APP.discardLandingPageDrafts(lpIds);
+                }
+            }, 0);
+        
+        canDiscardEmailDrafts = window.setInterval(function () {
+                if (typeof(mktEmManager) !== "undefined"
+                     && mktEmManager.discardDraft) {
+                    window.clearInterval(canDiscardEmailDrafts);
+                    
+                    APP.discardEmailDrafts(emIds);
+                }
+            }, 0);
+        
+        canDiscardOtherDrafts = window.setInterval(function () {
+                if (typeof(Ext4) !== "undefined"
+                     && Ext4
+                     && Ext4.getStore
+                     && Ext4.create
+                     && typeof(Mkt3) !== "undefined"
+                     && Mkt3) {
+                    window.clearInterval(canDiscardOtherDrafts);
+                    
+                    APP.discardOtherDrafts("Form", formIds);
+                    APP.discardOtherDrafts("MobilePushNotification", pushIds);
+                    APP.discardOtherDrafts("InAppMessage", inAppIds);
+                    APP.discardOtherDrafts("SmsMessage", smsIds);
+                    APP.discardOtherDrafts("SocialApp", socIds);
+                }
+            }, 0);
+        break;
+    }
 }
 
 /**************************************************************************************
@@ -6252,7 +6304,7 @@ var isMktPageApp = window.setInterval(function () {
                  || currCompFragment.search(mktoDesignersFragmentMatch) == -1) {
                 
                 if (accountString.search(mktoAccountStringsMatch) != -1) {
-                    APP.discardDrafts(accountString);
+                    APP.discardDrafts(accountString, "landingPage");
                     APP.overrideTreeNodeExpand();
                     APP.overrideTreeNodeCollapse();
                     APP.overrideSaving();
@@ -6271,6 +6323,7 @@ var isMktPageApp = window.setInterval(function () {
                     APP.overrideNewFolders();
                     APP.overrideRenamingFolders();
                     //                        APP.hidePageGrid();
+                    APP.limitNurturePrograms();
                     APP.hideFoldersOnImport();
                     APP.disableConfirmationMessage();
                 } else {
