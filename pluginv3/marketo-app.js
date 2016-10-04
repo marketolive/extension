@@ -6059,6 +6059,7 @@ APP.discardDrafts = function (accountString, assetType) {
             }, 0);
         break;
     }
+    console.log("Marketo App > Finished: Discarding Golden Assets for instance: " + accountString);
 }
 
 /**************************************************************************************
@@ -6072,7 +6073,7 @@ APP.discardDrafts = function (accountString, assetType) {
  **************************************************************************************/
 
 APP.trackNodeClick = function () {
-    console.log("Marketo App > Tracking: Tree Node Selection");
+    console.log("Marketo App > Tracking: Tree Node Click");
     
     if (typeof(Ext) !== "undefined"
          && Ext
@@ -6080,7 +6081,7 @@ APP.trackNodeClick = function () {
          && Ext.tree.TreeEventModel
          && Ext.tree.TreeEventModel.prototype
          && Ext.tree.TreeEventModel.prototype.onNodeClick) {
-        
+        console.log("Marketo App > Executing: Tracking Tree Node Click");
         Ext.tree.TreeEventModel.prototype.onNodeClick = function (e, node) {
             var currNode = node,
             heapEventName,
@@ -6109,7 +6110,7 @@ APP.trackNodeClick = function () {
             node.ui.onClick(e);
         }
     }
-}
+};
 
 /**************************************************************************************
  *
