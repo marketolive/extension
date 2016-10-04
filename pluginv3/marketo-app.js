@@ -4076,7 +4076,7 @@ APP.hideOtherToolbarItems = function (itemsToHide) {
             
             if (typeof(MktCanvas) !== "undefined"
                  && MktCanvas
-                 && MktCanvas.getActiveTab().
+                 && MktCanvas.getActiveTab()
                  && MktCanvas.getActiveTab().getTopToolbar()) {
                 console.log("Marketo App > Executing: Hiding Other Toolbar Items");
                 
