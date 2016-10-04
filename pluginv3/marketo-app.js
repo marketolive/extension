@@ -4099,19 +4099,19 @@ APP.disableDesignerSaving = function (assetType, mode) {
                         break;
                     
                     default:
-                        heapEvent.assetArea = "Designer/Wizard";
+                        heapEvent.assetArea = "Designer";
                         break;
                     }
                     
                     if (assetNode.accessZoneId != mktoUserWorkspaceId) {
                         
                         if (assetNode.text.search(".") != -1) {
-                            heapEvent.assetName = assetNode.text.split(".")[1];
+                            heapEvent.assetName = "Designer > " + assetNode.text.split(".")[1];
                         } else {
-                            heapEvent.assetName = assetNode.text;
+                            heapEvent.assetName = "Designer > " + assetNode.text;
                         }
                     } else {
-                        heapEvent.name = userWorkspaceName + " | " + userName;
+                        heapEvent.name = userWorkspaceName + " > " + userName;
                     }
                     
                     heapTrack("track", heapEvent);
@@ -4570,19 +4570,19 @@ var heapEvent = {
 name : assetNode.text,
 assetType : assetNode.compType,
 assetId : assetNode.id,
-assetArea : "Designer/Wizard",
+assetArea : "Designer",
 workspaceId : assetNode.accessZoneId
 };
 
 if (assetNode.accessZoneId != mktoUserWorkspaceId) {
 
 if (assetNode.text.search(".") != -1) {
-heapEvent.assetName = assetNode.text.split(".")[1];
+heapEvent.assetName = "Designer > " + assetNode.text.split(".")[1];
 } else {
-heapEvent.assetName = assetNode.text;
+heapEvent.assetName = "Designer > " + assetNode.text;
 }
 } else {
-heapEvent.name = userWorkspaceName + " | " + userName;
+heapEvent.name = userWorkspaceName + " > " + userName;
 }
 }
 
@@ -6029,11 +6029,11 @@ APP.trackTreeNodeSelection = function () {
                 
                 for (var ii = 0; ii < node.getDepth() - 1; ii++) {
                     currNode = currNode.parentNode;
-                    heapEventName = currNode.text + " | " + heapEventName;
+                    heapEventName = currNode.text + " > " + heapEventName;
                 }
                 
             } else {
-                heapEventName = userWorkspaceName + " | " + userName;
+                heapEventName = userWorkspaceName + " > " + userName;
             }
             
             heapEvent.name = heapEventName;
@@ -6086,11 +6086,11 @@ APP.trackOtherAssets = function () {
             
             for (var ii = 0; ii < node.getDepth() - 1; ii++) {
                 currNode = currNode.parentNode;
-                heapEventName = currNode.text + " | " + heapEventName;
+                heapEventName = currNode.text + " > " + heapEventName;
             }
             
         } else {
-            heapEventName = userWorkspaceName + " | " + userName;
+            heapEventName = userWorkspaceName + " > " + userName;
         }
         
         heapEvent.name = heapEventName;
