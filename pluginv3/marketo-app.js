@@ -6283,6 +6283,10 @@ var isMktPageApp = window.setInterval(function () {
             
             if (currUrlFragment == mktoMyMarketoFragment) {
                 APP.overrideHomeTiles();
+                heapTrack("track", {
+                    name : "My Marketo"
+                    assetName : "Home"
+                });
             } else if (currUrlFragment.search(mktoDisableButtonsFragmentMatch) != -1) {
                 APP.disableButtons();
             } else if (currUrlFragment == mktoAnalyticsDefaultFragment) {
@@ -6469,6 +6473,10 @@ var isMktPageApp = window.setInterval(function () {
                                 
                                 if (currUrlFragment == mktoMyMarketoFragment) {
                                     APP.overrideHomeTiles();
+                                    heapTrack("track", {
+                                        name : "My Marketo"
+                                        assetName : "Home"
+                                    });
                                 } else if (currUrlFragment.search(mktoDisableButtonsFragmentMatch) != -1) {
                                     APP.disableButtons();
                                 } else if (currUrlFragment == mktoAnalyticsDefaultFragment) {
