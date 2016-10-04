@@ -1858,8 +1858,10 @@ APP.evaluateMoveItem = function (nodeToMove, destNode) {
         depth;
         
         if ((nodeToMove.attributes
+                 && nodeToMove.attributes.accessZoneId
                  && (nodeToMove.attributes.accessZoneId.toString().search(mktoGoldenWorkspacesMatch) != -1))
              || (destNode.attributes
+                 && destNode.attributes.accessZoneId
                  && (destNode.attributes.accessZoneId.toString().search(mktoGoldenWorkspacesMatch) != -1))) {
             
             return false;
@@ -1995,6 +1997,7 @@ APP.evaluateMenu = function (triggeredFrom, menu, canvas, toolbar) {
             if (menu
                  && menu.currNode
                  && menu.currNode.attributes
+                 && menu.currNode.attributes.accessZoneId
                  && (menu.currNode.attributes.accessZoneId.toString().search(mktoGoldenWorkspacesMatch) != -1
                      || menu.currNode.attributes.accessZoneId == mktoUserWorkspaceId)) {
                 
@@ -2019,6 +2022,7 @@ APP.evaluateMenu = function (triggeredFrom, menu, canvas, toolbar) {
                      || !menu.currNode.attributes.accessZoneId)
                  && (canvas
                      && canvas.config
+                     && canvas.config.accessZoneId
                      && (canvas.config.accessZoneId.toString().search(mktoGoldenWorkspacesMatch) != -1
                          || (canvas.config.accessZoneId == mktoUserWorkspaceId
                              && ((canvas.config.expNodeId
@@ -2064,6 +2068,7 @@ APP.evaluateMenu = function (triggeredFrom, menu, canvas, toolbar) {
         case "button":
             if (canvas
                  && canvas.config
+                 && canvas.config.accessZoneId
                  && (canvas.config.accessZoneId.toString().search(mktoGoldenWorkspacesMatch) != -1
                      || (canvas.config.accessZoneId == mktoUserWorkspaceId
                          && ((canvas.config.expNodeId
@@ -2105,6 +2110,7 @@ APP.evaluateMenu = function (triggeredFrom, menu, canvas, toolbar) {
             
         case "socialAppToolbar":
             if (toolbar.getSocialApp()
+                 && toolbar.getSocialApp().get('zoneId')
                  && (toolbar.getSocialApp().get('zoneId').toString().search(mktoGoldenWorkspacesMatch) != -1)
                  || (toolbar.getSocialApp().get('zoneId') == mktoUserWorkspaceId
                      && toolbar.getSocialApp().getNodeJson()
@@ -2131,6 +2137,7 @@ APP.evaluateMenu = function (triggeredFrom, menu, canvas, toolbar) {
             
         case "mobilePushNotification":
             if (toolbar.getMobilePushNotification()
+                 && toolbar.getMobilePushNotification().get('zoneId')
                  && (toolbar.getMobilePushNotification().get('zoneId').toString().search(mktoGoldenWorkspacesMatch) != -1)
                  || (toolbar.getMobilePushNotification().get('zoneId') == mktoUserWorkspaceId
                      && toolbar.getMobilePushNotification().getNodeJson()
@@ -2157,6 +2164,7 @@ APP.evaluateMenu = function (triggeredFrom, menu, canvas, toolbar) {
             
         case "inAppMessage":
             if (toolbar.getInAppMessage()
+                 && toolbar.getInAppMessage().get('zoneId')
                  && (toolbar.getInAppMessage().get('zoneId').toString().search(mktoGoldenWorkspacesMatch) != -1)
                  || (toolbar.getInAppMessage().get('zoneId') == mktoUserWorkspaceId
                      && toolbar.getInAppMessage().getNodeJson()
@@ -2183,6 +2191,7 @@ APP.evaluateMenu = function (triggeredFrom, menu, canvas, toolbar) {
             
         case "smsMessage":
             if (toolbar.getSmsMessage()
+                 && toolbar.getSmsMessage().get('zoneId')
                  && (toolbar.getSmsMessage().get('zoneId').toString().search(mktoGoldenWorkspacesMatch) != -1)
                  || (toolbar.getSmsMessage().get('zoneId') == mktoUserWorkspaceId
                      && toolbar.getSmsMessage().getNodeJson()
@@ -4082,9 +4091,9 @@ APP.hideOtherToolbarItems = function (itemsToHide) {
                     }
                     if (item) {
                         if (itemToHide.action == "setVisible") {
-                            item.setVisible(!disable);
+                            item.setVisible(false);
                         } else if (itemToHide.action == "setDisabled") {
-                            item.setDisabled(disable);
+                            item.setDisabled(true);
                         }
                     }
                 });
