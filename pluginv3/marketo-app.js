@@ -4863,7 +4863,8 @@ APP.disableFormSaveButtons = function () {
             )
             {
                 
-                var menuItems = [
+                var me = this,
+                menuItems = [
                     "[action=submit]", //Create, Add, Save
                 ],
                 mItems = this.query(menuItems.toString());
@@ -4872,6 +4873,9 @@ APP.disableFormSaveButtons = function () {
                     mItems.forEach(function (item) {
                         if (item) {
                             item.setDisabled(true);
+                            if (me.getXType() == "emailAddMultipleDomainForm") {
+                                item.stayDisabled = true;
+                            }
                         }
                     });
                 }
@@ -4903,6 +4907,9 @@ APP.disableFormSaveButtons = function () {
                 } else {
                     me.onShowVeto();
                 }
+            }
+            if (me.stayDisabled) {
+                me.setVisible(false);
             }
             return me;
         };
@@ -6056,7 +6063,7 @@ APP.discardDrafts = function (accountString, assetType) {
 
 /**************************************************************************************
  *
- *  This function tracks the tree node selected.
+ *  This function tracks tree node clicks for Heap Analytics.
  *
  *  @Author Brian Fisher
  *
@@ -6064,14 +6071,64 @@ APP.discardDrafts = function (accountString, assetType) {
  *
  **************************************************************************************/
 
+APP.trackNodeClick = function () {
+    console.log("Marketo App > Tracking: Tree Node Selection");
+    
+    if (typeof(Ext) !== "undefined"
+         && Ext
+         && Ext.tree
+         && Ext.tree.TreeEventModel
+         && Ext.tree.TreeEventModel.prototype
+         && Ext.tree.TreeEventModel.prototype.onNodeClick) {
+        
+        Ext.tree.TreeEventModel.prototype.onNodeClick = function (e, node) {
+            var currNode = node,
+            heapEventName,
+            heapEvent = {
+                assetName : currNode.text,
+                assetId : currNode.attributes.id,
+                assetType : currNode.attributes.compType,
+                workspaceId : currNode.attributes.accessZoneId
+            };
+            
+            if (currNode.attributes.accessZoneId != mktoUserWorkspaceId) {
+                heapEventName = currNode.text;
+                
+                for (var ii = 0; ii < node.getDepth() - 1; ii++) {
+                    currNode = currNode.parentNode;
+                    heapEventName = currNode.text + " > " + heapEventName;
+                }
+                
+            } else {
+                heapEventName = userWorkspaceName + " > " + userName;
+            }
+            
+            heapEvent.name = heapEventName;
+            heapTrack("track", heapEvent);
+            
+            node.ui.onClick(e);
+        }
+    }
+}
+
+/**************************************************************************************
+ *
+ *  This function tracks the tree node selected.
+ *
+ *  @Author Brian Fisher
+ *
+ *  @function
+ *
+ **************************************************************************************/
+/*
 APP.trackTreeNodeSelection = function () {
     console.log("Marketo App > Tracking: Tree Node Selection");
     
     if (typeof(MktExplorer) !== "undefined"
          && MktExplorer
          && MktExplorer.selectTreeNode) {
+        
         MktExplorer.selectTreeNode = function (node) {
-            
             var currNode = node,
             heapEventName,
             heapEvent = {
@@ -6109,7 +6166,7 @@ APP.trackTreeNodeSelection = function () {
             }
         };
     }
-};
+};*/
 
 /**************************************************************************************
  *
@@ -6120,7 +6177,7 @@ APP.trackTreeNodeSelection = function () {
  *  @function
  *
  **************************************************************************************/
-
+/*
 APP.trackOtherAssets = function () {
     console.log("Marketo App > Tracking: Social App or Push Notification Selection");
     
@@ -6153,7 +6210,7 @@ APP.trackOtherAssets = function () {
         heapEvent.name = heapEventName;
         heapTrack("track", heapEvent);
     }
-};
+};*/
 
 /**************************************************************************************
  *
