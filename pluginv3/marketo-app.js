@@ -6284,7 +6284,7 @@ var isMktPageApp = window.setInterval(function () {
             if (currUrlFragment == mktoMyMarketoFragment) {
                 APP.overrideHomeTiles();
                 heapTrack("track", {
-                    name : "My Marketo"
+                    name : "My Marketo",
                     assetName : "Home"
                 });
             } else if (currUrlFragment.search(mktoDisableButtonsFragmentMatch) != -1) {
@@ -6474,7 +6474,7 @@ var isMktPageApp = window.setInterval(function () {
                                 if (currUrlFragment == mktoMyMarketoFragment) {
                                     APP.overrideHomeTiles();
                                     heapTrack("track", {
-                                        name : "My Marketo"
+                                        name : "My Marketo",
                                         assetName : "Home"
                                     });
                                 } else if (currUrlFragment.search(mktoDisableButtonsFragmentMatch) != -1) {
