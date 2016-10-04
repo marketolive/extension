@@ -37,6 +37,8 @@ mktoAnalyticsFragment = "AR",
 mktoAnalyticsDefaultFragment = "AH0A1ZN17",
 mktoAccountBasedMarketingFragment = "ABM0A1",
 mktoAdBridgeSmartListFragment = "SL1119566B2LA1",
+mktoAdminSalesforceFragment = "SF0A1",
+mktoAdminRcaCustomFieldSync = "CFS0B2",
 mktoUserWorkspaceId = 172,
 userWorkspaceName = "My Workspace",
 currUrlFragment,
@@ -3504,7 +3506,7 @@ APP.disableMenus = function () {
 
 /**************************************************************************************
  *
- *  This function hides Toolbar items for all asset types in all areas.
+ *  This function disables or hides Toolbar items for all asset types in all areas.
  *
  *  @Author Brian Fisher
  *
@@ -4042,6 +4044,52 @@ APP.hideToolbarItems = function () {
             }
         };
     }
+};
+
+/**************************************************************************************
+ *
+ *  This function disables or hides toggled Toolbar items such as in Admin
+ *
+ *  @Author Brian Fisher
+ *
+ *  @function
+ *
+ *  @param {Array} - An array of objects which contain the following attributes:
+ *                   id - ID of the item to disable
+ *                    OR
+ *                   text - name of the item to disable
+ *                   action - action to take on the item (setVisisble, setDisabled)
+ **************************************************************************************/
+
+APP.hideOtherToolbarItems = function (itemsToHide) {
+    var isTopToolbarActive = window.setInterval(function () {
+            console.log("Marketo App > Hiding: Other Toolbar Items");
+            
+            if (typeof(MktCanvas) !== "undefined"
+                 && MktCanvas
+                 && MktCanvas.getActiveTab().
+                 && MktCanvas.getActiveTab().getTopToolbar()) {
+                console.log("Marketo App > Executing: Hiding Other Toolbar Items");
+                
+                window.clearInterval(isTopToolbarActive);
+                
+                var topToolbar = MktCanvas.getActiveTab().getTopToolbar();
+                itemsToHide.forEach(function (itemToHide) {
+                    if (itemToHide.id) {
+                        item = topToolbar.items.get(itemToHide.id);
+                    } else if (itemToHide.text) {
+                        item = topToolbar.find("text", itemToHide.text)[0];
+                    }
+                    if (item) {
+                        if (itemToHide.action == "setVisible") {
+                            item.setVisible(!disable);
+                        } else if (itemToHide.action == "setDisabled") {
+                            item.setDisabled(disable);
+                        }
+                    }
+                });
+            }
+        }, 0);
 };
 
 /**************************************************************************************
@@ -6301,6 +6349,22 @@ var isMktPageApp = window.setInterval(function () {
                 console.log("Marketo App > Location: Ad Bridge Smart List");
                 
                 APP.openAdBridgeModal();
+            } else if (currUrlFragment == mktoAdminSalesforceFragment) {
+                console.log("Marketo App > Location: Admin > Salesforce");
+                
+                APP.hideOtherToolbarItems([{
+                            id : "enableSync", //Enable/Disable Sync
+                            action : "setVisible"
+                        }
+                    ]);
+            } else if (currUrlFragment == mktoAdminRcaCustomFieldSync) {
+                console.log("Marketo App > Location: Admin > Revenue Cycle Analytics > Custom Field Sync");
+                
+                APP.hideOtherToolbarItems([{
+                            id : "cadChangeButton", //Edit Sync Option
+                            action : "setVisible"
+                        }
+                    ]);
             }
             
             // Only execute this block if the user is not on an editor page.
@@ -6487,6 +6551,22 @@ var isMktPageApp = window.setInterval(function () {
                                     console.log("Marketo App > Location: Analytics");
                                     
                                     APP.injectAnalyzerNavBar();
+                                } else if (currUrlFragment == mktoAdminSalesforceFragment) {
+                                    console.log("Marketo App > Location: Admin > Salesforce");
+                                    
+                                    APP.hideOtherToolbarItems([{
+                                                id : "enableSync", //Enable/Disable Sync
+                                                action : "setVisible"
+                                            }
+                                        ]);
+                                } else if (currUrlFragment == mktoAdminRcaCustomFieldSync) {
+                                    console.log("Marketo App > Location: Admin > Revenue Cycle Analytics > Custom Field Sync");
+                                    
+                                    APP.hideOtherToolbarItems([{
+                                                id : "cadChangeButton", //Edit Sync Option
+                                                action : "setVisible"
+                                            }
+                                        ]);
                                 }
                                 
                                 if (Mkt3.DL.dl
