@@ -6405,9 +6405,9 @@ var isMktPageApp = window.setInterval(function () {
                 APP.disableButtons();
             } else if (currUrlFragment == mktoAnalyticsDefaultFragment) {
                 APP.overrideAnalyticsTiles();
-            } else if (currUrlFragment.search(mktoOtherAssetsFragmentMatch) != -1) {
+            } /*else if (currUrlFragment.search(mktoOtherAssetsFragmentMatch) != -1) {
                 APP.trackOtherAssets();
-            } else if (currUrlFragment.search(mktoAnalyzersFragmentMatch) != -1) {
+            }*/ else if (currUrlFragment.search(mktoAnalyzersFragmentMatch) != -1) {
                 console.log("Marketo App > Location: Analytics");
                 
                 APP.injectAnalyzerNavBar();
@@ -6448,7 +6448,8 @@ var isMktPageApp = window.setInterval(function () {
                     APP.disableFormSaveButtons();
                     APP.disableAdminSaveButtons();
                     APP.overrideSmartCampaignSaving();
-                    APP.trackTreeNodeSelection();
+                    APP.trackNodeClick();
+                    //APP.trackTreeNodeSelection();
                     //                        APP.overrideSmartCampaignCanvas();
                     APP.overrideUpdatePortletOrder();
                     APP.overrideNewProgramCreate();
@@ -6611,9 +6612,9 @@ var isMktPageApp = window.setInterval(function () {
                                     APP.disableButtons();
                                 } else if (currUrlFragment == mktoAnalyticsDefaultFragment) {
                                     APP.overrideAnalyticsTiles();
-                                } else if (currUrlFragment.search(mktoOtherAssetsFragmentMatch) != -1) {
+                                } /*else if (currUrlFragment.search(mktoOtherAssetsFragmentMatch) != -1) {
                                     APP.trackOtherAssets();
-                                } else if (currUrlFragment.search(mktoAnalyzersFragmentMatch) != -1) {
+                                }*/ else if (currUrlFragment.search(mktoAnalyzersFragmentMatch) != -1) {
                                     console.log("Marketo App > Location: Analytics");
                                     
                                     APP.injectAnalyzerNavBar();
