@@ -6029,8 +6029,8 @@ APP.discardDrafts = function (accountString, assetType) {
                     window.clearInterval(canDiscardLandingPageDrafts);
                     
                     APP.discardLandingPageDrafts(lpIds);
+                    console.log("Marketo App > Finished: Discarding Landing Pages");
                 }
-                console.log("Marketo App > Finished: Discarding Landing Pages");
             }, 0);
         
         canDiscardEmailDrafts = window.setInterval(function () {
