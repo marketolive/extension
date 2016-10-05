@@ -588,6 +588,16 @@ chrome.runtime.onMessageExternal.addListener(function (message, sender, sendResp
     }
 });
 
+chrome.runtime.onUpdateAvailable.addListener(function (details) {
+    chrome.tabs.create({
+        url : "https://docs.google.com/document/d/1w87HqvlDXwDHFyavRzDEIHzaIOVTYsTR9a_tn6ZpWpk/edit?usp=sharing",
+        active : true,
+        selected : true
+    });
+    
+    return;
+});
+
 /**************************************************************************************
  *
  *  This function sets the MarketoLiveClassic cookie to identify the user's pod.
