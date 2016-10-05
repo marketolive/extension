@@ -5584,6 +5584,7 @@ APP.discardLandingPageDrafts = function (lpIds) {
                 lpMessageBox.hide();
             }
         }
+        console.log("Marketo App > Finished: Discarding Landing Pages");
     }
 };
 
@@ -6029,7 +6030,6 @@ APP.discardDrafts = function (accountString, assetType) {
                     window.clearInterval(canDiscardLandingPageDrafts);
                     
                     APP.discardLandingPageDrafts(lpIds);
-                    console.log("Marketo App > Finished: Discarding Landing Pages");
                 }
             }, 0);
         
