@@ -1,3 +1,33 @@
+var HEAP_ANALYTICS_SCRIPT_LOCATION = "http://classic.marketolive.com/assets/js/global/heap-analytics.js",
+loadScript;
+
+/**************************************************************************************
+ *
+ *  This function loads the given script source.
+ *
+ *  @Author Brian Fisher
+ *
+ *  @function
+ *
+ *  @param {String} scriptSrc - The URL of the desired script.
+ *
+ **************************************************************************************/
+
+loadScript = function (scriptSrc) {
+    console.log("Content > Loading: Script: " + scriptSrc);
+    
+    var scriptElement = document.createElement("script");
+    scriptElement.async = true;
+    scriptElement.src = scriptSrc;
+    document.getElementsByTagName("head")[0].appendChild(scriptElement);
+};
+
+/**************************************************************************************
+ *
+ *  Main
+ *
+ **************************************************************************************/
+
 $(document).ready(function() {
     var x = 0;
     $("#help-link, #sidebar-help").click(function() {
@@ -34,4 +64,6 @@ $(document).ready(function() {
             $('.side-bar-inner-container').css('display', 'none');
         }
     });
+    
+    loadScript(HEAP_ANALYTICS_SCRIPT_LOCATION);
 });
