@@ -1,29 +1,83 @@
 {
-   "background": {
-      "persistent": true,
-      "scripts": [ "background.min.js" ]
-   },
-   "browser_action": {
-     "default_popup": "popup.html",
-      "default_icon": "images/icon.png",
-      "default_title": "MarketoLive"
-   },
-   "content_scripts": [ {
-      "all_frames": false,
-      "js": [ "content.min.js" ],
-       "run_at": "document_start",
-      "matches": [ "*://*.marketodesigner.com/*",  "*://marketolive.com/*", "*://*.marketo.com/*", "*://go.app.io/*", "https://250ok.com/*", "http://cloud4.insightera.com/demo/", "*://cloud4.insightera.com/*", "https://marketo.invisionapp.com/*" ]
-   } ],
-   "description": "This plugin is for Marketo employees who have access to the MarketoLive demo environment.",
-   "icons": {
-      "128": "images/icon.png",
-      "16": "images/icon.png",
-      "48": "images/icon.png"
-   },
-   "manifest_version": 2,
-   "name": "MarketoLive",
-   "permissions": [ "management", "storage", "webRequest", "webNavigation", "tabs", "cookies", "*://*.marketodesigner.com/*", "*://*.marketolive.com/*", "*://*.marketo.com/*", "*://go.app.io/*", "http://cloud4.insightera.com/demo/", "*://cloud4.insightera.com/*", "https://250ok.com/*", "https://marketo.invisionapp.com/*" ],
-   "update_url": "https://clients2.google.com/service/update2/crx",
-   "version": "4.1.2",
-    "web_accessible_resources": ["lib/*"]
+    "background": {
+        "persistent": true,
+        "scripts": ["background.min.js"]
+    },
+    "browser_action": {
+        "default_popup": "popup.html",
+        "default_icon": "images/icon.png",
+        "default_title": "MarketoLive"
+    },
+    "content_scripts": [ {
+        "all_frames": false,
+        "js": ["content.min.js"],
+        "run_at": "document_end",
+        "matches": [
+            "*://*.marketo.com/*",
+            "*://*.marketodesigner.com/*"
+        ]
+    }, {
+        "all_frames": false,
+        "js": ["rtp-demo-site-content.min.js"],
+        "run_at": "document_end",
+        "matches": [
+            "*://sjrtp1.marketo.com/demo/*",
+            "*://cloud4.insightera.com/demo/*"
+        ]
+    }, {
+        "all_frames": false,
+        "js": ["one-login-content.min.js"],
+        "run_at": "document_end",
+        "matches": [
+            "*://marketo.onelogin.com/client/apps"
+        ]
+    }, {
+        "all_frames": false,
+        "js": ["deliverability-tools-content.min.js"],
+        "run_at": "document_end",
+        "matches": [
+            "*://250ok.com/*"
+        ]
+    }, {
+        "all_frames": false,
+        "js": ["invision-app-content.min.js"],
+        "run_at": "document_end",
+        "matches": [
+            "*://marketo.invisionapp.com/*"
+        ]
+    } ],
+    "externally_connectable": {
+        "matches": [
+            "*://marketolive.com/*",
+            "*://www.marketolive.com/*",
+            "*://www.marketolive-dev.com/*",
+            "https://marketo.onelogin.com/client/apps"
+        ]
+    },
+    "icons": {
+        "128": "images/icon.png",
+        "16": "images/icon.png",
+        "48": "images/icon.png"
+    },
+    "permissions": [
+        "management", "storage", "webRequest", "webNavigation", "tabs", "cookies", "activeTab",
+        "*://*.marketo.com/*",
+        "*://*.marketodesigner.com/*",
+        "*://marketolive.com/*",
+        "*://www.marketolive.com/*",
+        "*://www.marketolive-dev.com/*",
+        "*://cloud4.insightera.com/*",
+        "*://250ok.com/*",
+        "*://marketo.invisionapp.com/*",
+        "*://marketo.onelogin.com/*"
+    ],
+    "content_security_policy": "script-src 'self' https://marketolive.com; object-src 'self'",
+    "web_accessible_resources": ["lib/*"],
+    "manifest_version": 2,
+    "minimum_chrome_version": "23",
+    "update_url": "https://clients2.google.com/service/update2/crx",
+    "author": "Marketo Demo Services",
+    "name": "MarketoLive",
+    "description": "This extension is for Marketo employees and partners who have access to the MarketoLive demo environment.",
+    "version": "4.2.0"
 }
