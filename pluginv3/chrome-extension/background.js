@@ -1,5 +1,3 @@
-console.log("Running");
-
 /**************************************************************************************
  *
  *  Global Constants
@@ -594,72 +592,99 @@ chrome.runtime.onMessageExternal.addListener(function (message, sender, sendResp
  *
  *  This function sets the MarketoLiveClassic cookie to identify the user's pod.
  *
+ *  @Author Brian Fisher
+ *
+ *  @function
+ *
+ **************************************************************************************/
+
+function setMarketoUserPodCookie() {
+    console.log("Setting: Marketo User Pod Cookie");
+    
+    var userPodCookieName = "userPod",
+    userPod = "app-sjp",
+    expiresInDays = 365,
+    userPodCookieMarketo = {
+        "url" : mktoAppDomainMatch,
+        "name" : userPodCookieName,
+        "value" : userPod,
+        "domain" : mktoAppUriDomain,
+        "expiresInDays" : expiresInDays
+    },
+    userPodCookieDesigner = {
+        "url" : mktoDesignerDomainMatch,
+        "name" : userPodCookieName,
+        "value" : userPod,
+        "domain" : mktoDesignerUriDomain,
+        "expiresInDays" : expiresInDays
+    },
+    userPodCookieMarketoLiveClassic = {
+        "url" : mktoLiveClassicDomainMatch,
+        "name" : userPodCookieName,
+        "value" : userPod,
+        "domain" : mktoLiveClassicUriDomain,
+        "expiresInDays" : expiresInDays
+    };
+    
+    setCookie(userPodCookieMarketo);
+    setCookie(userPodCookieDesigner);
+    setCookie(userPodCookieMarketoLiveClassic);
+}
+
+/**************************************************************************************
+ *
+ *  This function sets the MarketoLiveClassic cookie to identify the user's pod.
+ *
  *  @Author Andy
  *
  *  @function
  *
- *  @param {Integer} tabId - The browser tab ID.
- *  @param {String} changeInfo - The change event.
- *  @param {Object} tab - The object that represents the browser tab.
- *
  **************************************************************************************/
+/*
+function setMarketoUserPod() {
+console.log("Setting: Marketo User Pod");
 
-function checkForValidUrl(tabId, changeInfo, tab) {
-    console.log("Checking: Valid URL");
-    
-    var currentUrl = tab.url,
-    mktoPodCookieMarketo = {
-        "url" : mktoAppDomainMatch,
-        "name" : "mkto_pod"
-    },
-    userPod,
-    userPodCookieName,
-    userPodCookieMarketo,
-    userPodCookieDesigner,
-    userPodCookieMarketoLiveClassic;
-    
-    chrome.browserAction.enable(tabId);
-    
-    if (currentUrl.search(mktoLiveInstances) != -1
-         || currentUrl.search(mktoLiveClassicDomain) != -1) {
-        getCookie(mktoPodCookieMarketo, function (cookie) {
-            if (cookie) {
-                userPod = cookie.value.split('.')[0].split(':')[1];
-                if (userPod) {
-                    userPodCookieName = "userPod";
-                    if (userPod.search(mktoLiveUserPods) != -1) {
-                        userPodCookieMarketo = {
-                            "url" : mktoAppDomainMatch,
-                            "name" : userPodCookieName,
-                            "value" : userPod,
-                            "domain" : mktoAppUriDomain
-                        };
-                        userPodCookieDesigner = {
-                            "url" : mktoDesignerDomainMatch,
-                            "name" : userPodCookieName,
-                            "value" : userPod,
-                            "domain" : mktoDesignerUriDomain
-                        };
-                        userPodCookieMarketoLiveClassic = {
-                            "url" : mktoLiveClassicDomainMatch,
-                            "name" : userPodCookieName,
-                            "value" : userPod,
-                            "domain" : mktoLiveClassicUriDomain
-                        };
-                        
-                        setCookie(userPodCookieMarketo);
-                        setCookie(userPodCookieDesigner);
-                        setCookie(userPodCookieMarketoLiveClassic);
-                    }
-                } else {
-                    console.error("Checking: " + userPodCookieName + " is null for the tab " + currentUrl);
-                }
-            } else {
-                console.error("Checking: mkto_pod is null for the tab " + currentUrl);
-            }
-        });
-    }
+getCookie({
+"url" : mktoAppDomainMatch,
+"name" : "mkto_pod"
+}, function (cookie) {
+if (cookie) {
+var userPod = cookie.value.split('.')[0].split(':')[1];
+if (userPod) {
+var userPodCookieName = "userPod",
+
+if (userPod.search(mktoLiveUserPods) != -1) {
+var userPodCookieMarketo = {
+"url" : mktoAppDomainMatch,
+"name" : userPodCookieName,
+"value" : userPod,
+"domain" : mktoAppUriDomain
+},
+userPodCookieDesigner = {
+"url" : mktoDesignerDomainMatch,
+"name" : userPodCookieName,
+"value" : userPod,
+"domain" : mktoDesignerUriDomain
+},
+userPodCookieMarketoLiveClassic = {
+"url" : mktoLiveClassicDomainMatch,
+"name" : userPodCookieName,
+"value" : userPod,
+"domain" : mktoLiveClassicUriDomain
+};
+
+setCookie(userPodCookieMarketo);
+setCookie(userPodCookieDesigner);
+setCookie(userPodCookieMarketoLiveClassic);
 }
+} else {
+console.error("Checking: " + userPodCookieName + " is null");
+}
+} else {
+console.error("Checking: mkto_pod is null");
+}
+});
+}*/
 
 /**************************************************************************************
  *
@@ -667,4 +692,6 @@ function checkForValidUrl(tabId, changeInfo, tab) {
  *
  **************************************************************************************/
 
-chrome.tabs.onUpdated.addListener(checkForValidUrl);
+console.log("Running");
+
+setMarketoUserPodCookie();

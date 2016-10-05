@@ -1,4 +1,3 @@
-
 var URL_PATH = "m3-dev",
 MARKETO_LIVE_LANDING_PAGE_SCRIPT_LOCATION = "https://marketolive.com/" + URL_PATH + "/pluginv3/marketo-live-landing-page.min.js",
 currentUrl = document.location.href,

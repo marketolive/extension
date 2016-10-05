@@ -73,6 +73,21 @@ var isMktoForm = window.setInterval(function () {
                         return false;
                     });
                     
+                    if (typeof(form.getValues().Email) != "undefined") {
+                        var userId = getCookie(usernameCookieName),
+                        email = demoMailBox + userId + "@gmail.com";
+                        
+                        if (userId != null) {
+                            form.vals({
+                                Email : email
+                            });
+                        }
+                        else {
+                            window.close();
+                            return null;
+                        }
+                    }
+                    
                     if (typeof(form.getValues().FirstName) != "undefined") {
                         var firstName = getCookie(firstNameCookieName);
                         
@@ -89,16 +104,6 @@ var isMktoForm = window.setInterval(function () {
                         if (lastName != null) {
                             form.vals({
                                 LastName : lastName
-                            });
-                        }
-                    }
-                    
-                    if (typeof(form.getValues().Email) != "undefined") {
-                        var email = demoMailBox + getCookie(usernameCookieName) + "@gmail.com";
-                        
-                        if (email != null) {
-                            form.vals({
-                                Email : email
                             });
                         }
                     }

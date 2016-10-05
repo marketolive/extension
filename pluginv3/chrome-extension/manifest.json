@@ -8,23 +8,44 @@
         "default_icon": "images/icon.png",
         "default_title": "MarketoLive"
     },
-    "content_scripts": [{
+    "content_scripts": [ {
         "all_frames": false,
         "js": ["content.min.js"],
-        "run_at": "document_start",
+        "run_at": "document_end",
         "matches": [
             "*://*.marketo.com/*",
-            "*://*.marketodesigner.com/*",
-            "*://marketolive.com/*",
-            "*://www.marketolive.com/*",
-            "*://www.marketolive-dev.com/*",
-            "*://cloud4.insightera.com/*",
-            "*://go.app.io/*",
-            "https://250ok.com/*",
-            "https://marketo.invisionapp.com/*",
-            "https://marketo.onelogin.com/*"
+            "*://*.marketodesigner.com/*"
         ]
-    }],
+    }, {
+        "all_frames": false,
+        "js": ["rtp-demo-site-content.min.js"],
+        "run_at": "document_end",
+        "matches": [
+            "*://sjrtp1.marketo.com/demo/*",
+            "*://cloud4.insightera.com/demo/*"
+        ]
+    }, {
+        "all_frames": false,
+        "js": ["one-login-content.min.js"],
+        "run_at": "document_end",
+        "matches": [
+            "*://marketo.onelogin.com/client/apps"
+        ]
+    }, {
+        "all_frames": false,
+        "js": ["deliverability-tools-content.min.js"],
+        "run_at": "document_end",
+        "matches": [
+            "*://250ok.com/*"
+        ]
+    }, {
+        "all_frames": false,
+        "js": ["invision-app-content.min.js"],
+        "run_at": "document_end",
+        "matches": [
+            "*://marketo.invisionapp.com/*"
+        ]
+    } ],
     "externally_connectable": {
         "matches": [
             "*://marketolive.com/*",
@@ -46,15 +67,16 @@
         "*://www.marketolive.com/*",
         "*://www.marketolive-dev.com/*",
         "*://cloud4.insightera.com/*",
-        "*://go.app.io/*",
-        "https://250ok.com/*",
-        "https://marketo.invisionapp.com/*",
-        "https://marketo.onelogin.com/*"
+        "*://250ok.com/*",
+        "*://marketo.invisionapp.com/*",
+        "*://marketo.onelogin.com/*"
     ],
     "content_security_policy": "script-src 'self' https://marketolive.com; object-src 'self'",
     "web_accessible_resources": ["lib/*"],
     "manifest_version": 2,
+    "minimum_chrome_version": "23",
     "update_url": "https://clients2.google.com/service/update2/crx",
+    "author": "Marketo Demo Services",
     "name": "MarketoLive",
     "description": "This extension is for Marketo employees and partners who have access to the MarketoLive demo environment.",
     "version": "4.2.0"

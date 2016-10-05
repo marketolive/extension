@@ -47,6 +47,6 @@ getOneLoginUser = function () {
  *
  **************************************************************************************/
 
-console.log("One Login > Script Loaded");
+console.log("OneLogin > Script Loaded");
 
 getOneLoginUser();

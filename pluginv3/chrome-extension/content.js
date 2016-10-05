@@ -2,14 +2,8 @@ console.log("Content > Running");
 
 var URL_PATH = "m3-dev",
 MARKETO_GLOBAL_APP_LOCATION = "https://marketolive.com/" + URL_PATH + "/pluginv3/marketo-global-app.min.js",
-LIVE_SCRIPT_LOCATION = "https://marketolive.com/" + URL_PATH + "/pluginv3/marketo-live.min.js",
 GLOBAL_LANDING_PAGE_SCRIPT_LOCATION = "https://marketolive.com/" + URL_PATH + "/pluginv3/global-landing-page.min.js",
-ONE_LOGIN_SCRIPT_LOCATION = "https://marketolive.com/" + URL_PATH + "/pluginv3/one-login.min.js",
-DELIVERABILITY_TOOLS_SCRIPT_LOCATION = "https://marketolive.com/" + URL_PATH + "/pluginv3/deliverability-tools.min.js",
-INVISION_APP_SCRIPT_LOCATION = "https://marketolive.com/" + URL_PATH + "/pluginv3/invision-app.min.js",
-RTP_DEEPLINK_SCRIPT_LOCATION = "https://marketolive.com/" + URL_PATH + "/pluginv3/rtp-deeplink.min.js",
 ASSET_NAV_BAR_LOCATION = "https://marketolive.com/" + URL_PATH + "/v3/assets.html",
-RTP_NAV_BAR_LOCATION = "https://marketolive.com/" + URL_PATH + "/pluginv3/html/turner-rtp.html",
 currentUrl = window.location.href,
 mktoAppDomain = "^https:\/\/app-[a-z0-9]+\.marketo\.com",
 mktoLoginDomain = "^https:\/\/login\.marketo\.com|^https:\/\/app\.marketo\.com",
@@ -17,11 +11,6 @@ mktoLoginPathName = "/homepage/login",
 mktoDesignerDomain = "^https:\/\/[a-z0-9]+-[a-z0-9]+\.marketodesigner\.com",
 mktoWizardDomain = mktoAppDomain + "/m#",
 mktoLandingPageDomain = "^http:\/\/[^\.]+\.marketo\.com\/lp\/[0-9]{3}-[a-zA-Z]{3}-[0-9]{3}\/.*",
-mktoLiveColorPickerDomain = "^https:\/\/marketolive\.com[a-zA-Z0-9-\/]*\/color-picker\.html",
-oneLoginDomain = "^https:\/\/marketo\.onelogin\.com\/client\/apps",
-rtpDemoDomain = "^http:\/\/sjrtp1.marketo.com\/demo\/$|^http:\/\/cloud4.insightera.com\/demo\/$",
-emailDeliverabilityDomain = "^https:\/\/250ok.com\/",
-invisionAppDomain = "^https:\/\/marketo\.invisionapp\.com\/share\/",
 loadScript,
 getCookie,
 setCookie,
@@ -1253,71 +1242,5 @@ window.onload = function () {
         console.log("Content > Location: Global Landing Page");
         
         loadScript(GLOBAL_LANDING_PAGE_SCRIPT_LOCATION);
-    }
-    /*    else if (currentUrl.search(mktoLiveColorPickerDomain) != -1) {
-    
-    console.log("Content > Location: Color-Picker Page");
-    
-    var correct = document.getElementById("correct"),
-    incorrect = document.getElementById("incorrect"),
-    sendCompanyMsg,
-    companyLogo,
-    companyColor;
-    
-    sendCompanyMsg = function() {
-    companyLogo = document.getElementById("cookie-logo").innerHTML;
-    companyColor = document.getElementById("cookie-color").innerHTML;
-    
-    chrome.runtime.sendMessage({
-    action : "setCompanyCookies",
-    logo : companyLogo,
-    color : companyColor
-    }, function(response) {
-    console.log("Content > Receiving: Message Response from Background: " + response);
-    });
-    window.close();
-    };
-    
-    correct.onclick = sendCompanyMsg;
-    document.onkeyup = function(e) {
-    if (e.which == 13) {
-    sendCompanyMsg();
-    }
-    };
-    
-    incorrect.onclick = function() {
-    document.getElementById('first').style.display = "none";
-    document.getElementById('second').style.display = "block";
-    document.getElementById('second-incorrect').style.display = "block";
-    };
-    }*/
-    else if (currentUrl.search(oneLoginDomain) != -1) {
-        console.log("Content > Location: OneLogin");
-        
-        loadScript(ONE_LOGIN_SCRIPT_LOCATION);
-    } else if (currentUrl.search(rtpDemoDomain) != -1) {
-        console.log("Content > Location: RTP Demo");
-        
-        var xmlHttp = new XMLHttpRequest(),
-        pageLoaded,
-        newElement;
-        
-        xmlHttp.open("GET", RTP_NAV_BAR_LOCATION, false);
-        xmlHttp.send(null);
-        pageLoaded = function () {
-            newElement = document.createElement('div');
-            newElement.innerHTML = xmlHttp.responseText;
-            document.getElementById("demo-page").appendChild(newElement);
-            loadScript(RTP_DEEPLINK_SCRIPT_LOCATION);
-        };
-        window.onload = pageLoaded();
-    } else if (currentUrl.search(emailDeliverabilityDomain) != -1) {
-        console.log("Content > Location: Deliverability Tools");
-        
-        loadScript(DELIVERABILITY_TOOLS_SCRIPT_LOCATION);
-    } else if (currentUrl.search(invisionAppDomain) != -1) {
-        console.log("Content > Location: InVision App");
-        
-        loadScript(INVISION_APP_SCRIPT_LOCATION);
     }
 };
