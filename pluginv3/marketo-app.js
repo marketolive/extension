@@ -962,7 +962,7 @@ APP.overrideTreeNodeExpand = function () {
          && MktAsyncTreeNode.prototype.expand
          && userName) {
         MktAsyncTreeNode.prototype.expand = function () {
-            console.log("Marketo App > Executing: Tree Node Expand");
+            //console.log("Marketo App > Executing: Tree Node Expand");
             
             var attr = this.attributes,
             ii;
@@ -994,7 +994,7 @@ APP.overrideTreeNodeExpand = function () {
                          && this.parentNode.text != userWorkspaceName
                          && this.parentNode.parentNode != null
                          && this.parentNode.parentNode.text != userWorkspaceName) {
-                        console.log("Marketo App > Saving: Folder Expand State");
+                        //console.log("Marketo App > Saving: Folder Expand State");
                         MktFolder.saveExpandState(this, true);
                     }
                 }
@@ -1026,7 +1026,7 @@ APP.overrideTreeNodeCollapse = function () {
          && MktAsyncTreeNode.prototype.collapse
          && userName) {
         MktAsyncTreeNode.prototype.collapse = function () {
-            console.log("Marketo App > Executing: Tree Node Collapse");
+            //console.log("Marketo App > Executing: Tree Node Collapse");
             
             var attr = this.attributes,
             ii;
@@ -4937,7 +4937,7 @@ APP.disableAdminSaveButtons = function () {
          && Ext.Window.prototype.show) {
         Ext.Window.prototype.show = function (animateTarget, cb, scope) {
             // Disable ALL areas > ALL assets > ALL Save windows
-            console.log("Marketo App > Executing: Disable Admin Section Save Buttons");
+            //console.log("Marketo App > Executing: Disable Admin Section Save Buttons");
             
             if (typeof(MktCanvas) !== "undefined"
                  && MktCanvas
@@ -6030,6 +6030,7 @@ APP.discardDrafts = function (accountString, assetType) {
                     
                     APP.discardLandingPageDrafts(lpIds);
                 }
+                console.log("Marketo App > Finished: Discarding Landing Pages");
             }, 0);
         
         canDiscardEmailDrafts = window.setInterval(function () {
@@ -6059,7 +6060,6 @@ APP.discardDrafts = function (accountString, assetType) {
             }, 0);
         break;
     }
-    console.log("Marketo App > Finished: Discarding Golden Assets for instance: " + accountString);
 }
 
 /**************************************************************************************
@@ -6081,7 +6081,7 @@ APP.trackNodeClick = function () {
          && Ext.tree.TreeEventModel
          && Ext.tree.TreeEventModel.prototype
          && Ext.tree.TreeEventModel.prototype.onNodeClick) {
-        console.log("Marketo App > Executing: Tracking Tree Node Click");
+        //console.log("Marketo App > Executing: Tracking Tree Node Click");
         Ext.tree.TreeEventModel.prototype.onNodeClick = function (e, node) {
             var currNode = node,
             heapEventName,
