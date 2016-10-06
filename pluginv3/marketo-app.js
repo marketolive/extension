@@ -6068,7 +6068,6 @@ APP.discardDrafts = function (accountString, assetType) {
                      && mktLPLManager) {
                     window.clearInterval(canDiscardLandingPageDrafts);
                     
-                    console.log("Landing Pages: " + Object.keys(lpIds));
                     APP.discardLandingPageDrafts(lpIds);
                 }
             }, 0);
