@@ -6185,31 +6185,45 @@ APP.trackNodeClick = function () {
          && Ext.tree.TreeEventModel.prototype.onNodeClick) {
         //console.log("Marketo App > Executing: Tracking Tree Node Click");
         Ext.tree.TreeEventModel.prototype.onNodeClick = function (e, node) {
-            var currNode = node,
-            heapEventName,
-            heapEvent = {
-                assetName : currNode.text,
-                assetId : currNode.attributes.id,
-                assetType : currNode.attributes.compType,
-                workspaceId : currNode.attributes.accessZoneId
-            };
             
-            if (currNode.attributes.accessZoneId != mktoUserWorkspaceId) {
-                heapEventName = currNode.text;
+            if (node
+                 && node.text
+                 && node.attributes
+                 && node.attributes.accessZoneId) {
+            
+                var currNode = node,
+                heapEventName,
+                heapEvent = {
+                    assetName : currNode.text,
+                    assetId : currNode.attributes.id,
+                    assetType : currNode.attributes.compType,
+                    workspaceId : currNode.attributes.accessZoneId
+                };
                 
-                for (var ii = 0; ii < node.getDepth() - 1; ii++) {
-                    currNode = currNode.parentNode;
-                    heapEventName = currNode.text + " > " + heapEventName;
+                if (currNode.attributes.accessZoneId.toString().search(mktoGoldenWorkspacesMatch) != -1) {
+                    heapEventName = currNode.text;
+                    
+                    for (var ii = 0; ii < node.getDepth() - 1; ii++) {
+                        currNode = currNode.parentNode;
+                        heapEventName = currNode.text + " > " + heapEventName;
+                    }
+                    
+                } else if (currNode.attributes.accessZoneId == mktoUserWorkspaceId) {
+                    // User's Own Folder in User Workspace
+                    heapEventName = userWorkspaceName + " > " + userName;
+                } else {
+                    // User's Own Workspace
+                    for (var ii = 0; ii < node.getDepth() - 1; ii++) {
+                        currNode = currNode.parentNode;
+                    }
+                    heapEventName = currNode.text;
                 }
                 
-            } else {
-                heapEventName = userWorkspaceName + " > " + userName;
+                heapEvent.name = heapEventName;
+                heapTrack("track", heapEvent);
+                
+                node.ui.onClick(e);
             }
-            
-            heapEvent.name = heapEventName;
-            heapTrack("track", heapEvent);
-            
-            node.ui.onClick(e);
         }
     }
 };
