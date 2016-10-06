@@ -6055,6 +6055,18 @@ APP.discardDrafts = function (accountString, assetType) {
         socIds.push(860, 1024, 861, 859, 858);
         
         // MANUFACTURING
+        // DIY Design:
+        lpIds["dpageid_13280"] = "dpageid_13280";
+        lpIds["dpageid_13278"] = "dpageid_13278";
+        lpIds["dpageid_13276"] = "dpageid_13276";
+        lpIds["dpageid_13503"] = "dpageid_13503";
+        lpIds["dpageid_13505"] = "dpageid_13505";
+        // Event Management:
+        lpIds["dpageid_13283"] = "dpageid_13283";
+        lpIds["dpageid_13282"] = "dpageid_13282";
+        lpIds["dpageid_13289"] = "dpageid_13289";
+        lpIds["dpageid_13286"] = "dpageid_13286";
+        lpIds["dpageid_13288"] = "dpageid_13288";
         
         
         // TRAVEL LESIURE
