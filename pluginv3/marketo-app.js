@@ -6055,13 +6055,13 @@ APP.discardDrafts = function (accountString, assetType) {
         socIds.push(860, 1024, 861, 859, 858);
         
         // MANUFACTURING
-        // DIY Design:
+        // DIY Design
         lpIds["dpageid_13280"] = "dpageid_13280";
         lpIds["dpageid_13278"] = "dpageid_13278";
         lpIds["dpageid_13276"] = "dpageid_13276";
         lpIds["dpageid_13503"] = "dpageid_13503";
         lpIds["dpageid_13505"] = "dpageid_13505";
-        // Event Management:
+        // Event Management
         lpIds["dpageid_13283"] = "dpageid_13283";
         lpIds["dpageid_13282"] = "dpageid_13282";
         lpIds["dpageid_13289"] = "dpageid_13289";
@@ -6070,6 +6070,12 @@ APP.discardDrafts = function (accountString, assetType) {
         
         
         // TRAVEL LESIURE
+        // DIY Design:
+        lpIds["dpageid_13528"] = "dpageid_13528";
+        lpIds["dpageid_13563"] = "dpageid_13563";
+        lpIds["dpageid_13529"] = "dpageid_13529";
+        // Event Management 
+        lpIds["dpageid_13475"] = "dpageid_13475";
         break;
     }
     
