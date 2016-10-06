@@ -5706,7 +5706,7 @@ APP.discardOtherDrafts = function (assetType, assetIds) {
 
 APP.findWorkspace = function (workspaceAssetId) {
     console.log("Marketo App > Finding: Workspace");
-    
+    return true;
     if (typeof(MktExplorer) !== "undefined"
          && MktExplorer
          && MktExplorer.getNodeById) {
