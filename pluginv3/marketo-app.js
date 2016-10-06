@@ -5563,19 +5563,19 @@ APP.discardLandingPageDrafts = function (lpIds) {
         
         var ii,
         lpMessageBox = Ext.MessageBox.show({
-                title : "Marketo Live",
+                title : "MarketoLive",
                 msg : "Discarding Landing Page Drafts",
                 progress : false,
                 wait : false,
                 width : 270,
-                closable : false
+                closable : true
             });
         /*
         mktLPLManager.doModifyPages('revert', lpIds);
         
         if (lpMessageBox
-        && lpMessageBox.hide) {
-        lpMessageBox.hide();
+             && lpMessageBox.hide) {
+            lpMessageBox.hide();
         }*/
         
         for (ii = 0; ii < Object.keys(lpIds).length; ii++) {
@@ -5618,12 +5618,12 @@ APP.discardEmailDrafts = function (emIds) {
         console.log("Marketo App > Executing: Discard Email Drafts");
         
         var emMessageBox = Ext.MessageBox.show({
-                title : "Marketo Live",
+                title : "MarketoLive",
                 msg : "Discarding Email Drafts",
                 progress : false,
                 wait : false,
                 width : 270,
-                closable : false
+                closable : true
             });
         mktEmManager.discardDraft(emIds);
         if (emMessageBox
@@ -5718,7 +5718,7 @@ APP.findWorkspace = function (workspaceAssetId) {
                 if (MktExplorer.getNodeById(workspaceAssetId) != null) {
                     return true;
                 } else {
-                    return false;
+                    return true;
                 }
             }
         }, 0);
@@ -6125,6 +6125,7 @@ APP.discardDrafts = function (accountString, assetType) {
                      && mktLPLManager) {
                     window.clearInterval(canDiscardLandingPageDrafts);
                     
+                    console.log("Landing Pages: " + Object.keys(lpIds));
                     APP.discardLandingPageDrafts(lpIds);
                 }
             }, 0);
