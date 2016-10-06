@@ -5707,21 +5707,18 @@ APP.discardOtherDrafts = function (assetType, assetIds) {
 APP.findWorkspace = function (workspaceAssetId) {
     console.log("Marketo App > Finding: Workspace");
     
-    var isfindWorkspaces = window.setInterval(function () {
-            
-            if (typeof(MktExplorer) !== "undefined"
-                 && MktExplorer
-                 && MktExplorer.getNodeById) {
-                
-                window.clearInterval(isfindWorkspaces);
-                
-                if (MktExplorer.getNodeById(workspaceAssetId) != null) {
-                    return true;
-                } else {
-                    return true;
-                }
-            }
-        }, 0);
+    if (typeof(MktExplorer) !== "undefined"
+         && MktExplorer
+         && MktExplorer.getNodeById) {
+        
+        if (MktExplorer.getNodeById(workspaceAssetId) != null) {
+            return true;
+        } else {
+            return false;
+        }
+    } else {
+        console.log("Marketo App > NOT Finding: Workspace due to MktExplorer");
+    }
 };
 
 /**************************************************************************************
