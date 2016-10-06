@@ -5578,6 +5578,12 @@ APP.discardLandingPageDrafts = function (lpIds) {
             lpMessageBox.hide();
         }*/
         
+        if (typeof(MktMessage) !== "undefined"
+             && MktMessage
+             && MktMessage.show403Forbidden) {
+            MktMessage.show403Forbidden = function () {};
+        }
+        
         for (ii = 0; ii < Object.keys(lpIds).length; ii++) {
             //            console.log("Marketo App > Executing: Discard Landing Page Draft: " + ii);
             
@@ -5591,11 +5597,6 @@ APP.discardLandingPageDrafts = function (lpIds) {
             if (lpMessageBox
                  && lpMessageBox.hide) {
                 lpMessageBox.hide();
-            }
-            
-            if (MktMessage
-                 && MktMessage.hide) {
-                MktMessage.hide();
             }
         }
         console.log("Marketo App > Finished: Discarding Landing Pages");
@@ -5683,15 +5684,9 @@ APP.discardOtherDrafts = function (assetType, assetIds) {
         
         /*
         if (typeof(MktMessage) != "undefined"
-             && MktMessage) {
-            
-            if (MktMessage.showSystemError) {
+             && MktMessage
+             && MktMessage.showSystemError) {
                 MktMessage.showSystemError = function () {};
-            }
-            
-            if (MktMessage.hide) {
-                MktMessage.hide()
-            }
         }*/
         
         if (!assetStore) {
