@@ -45,6 +45,7 @@ mktoFinservWorkspaceAssetId = "20806",
 mktoHealthcareWorkspaceAssetId = "20826",
 mktoHigherEdWorkspaceAssetId = "20846",
 mktoManufacturingWorkspaceAssetId = "26410",
+mktoTechnologyWorkspaceAssetId = "26489",
 mktoTravelLesiureWorkspaceAssetId = "27588",
 mktoUserWorkspaceId = 172,
 userWorkspaceName = "My Workspace",
@@ -113,8 +114,9 @@ mktoFinservWorkspaceId = 174,
 mktoHealthcareWorkspaceId = 175,
 mktoHigherEdWorkspaceId = 176,
 mktoManufacturingWorkspaceId = 184,
+mktoTechnologyWorkspaceId = 185,
 mktoTravelLesiureWorkspaceId = 186,
-mktoGoldenWorkspacesMatch = "^" + mktoDefaultWorkspaceId + "$|^" + mktoJapaneseWorkspaceId + "$|^" + mktoFinservWorkspaceId + "$|^" + mktoHealthcareWorkspaceId + "$|^" + mktoHigherEdWorkspaceId + "$|^" + mktoManufacturingWorkspaceId + "$|^" + mktoTravelLesiureWorkspaceId + "$",
+mktoGoldenWorkspacesMatch = "^" + mktoDefaultWorkspaceId + "$|^" + mktoJapaneseWorkspaceId + "$|^" + mktoFinservWorkspaceId + "$|^" + mktoHealthcareWorkspaceId + "$|^" + mktoHigherEdWorkspaceId + "$|^" + mktoManufacturingWorkspaceId + "$|^" + mktoTechnologyWorkspaceId + "$|^" + mktoTravelLesiureWorkspaceId + "$",
 
 APP = APP || {};
 
@@ -6054,6 +6056,7 @@ APP.discardDrafts = function (accountString, assetType) {
         // Higher Ed DIY Design
         socIds.push(860, 1024, 861, 859, 858);
         
+        
         // MANUFACTURING
         // DIY Design
         lpIds["dpageid_13280"] = "dpageid_13280";
@@ -6067,6 +6070,18 @@ APP.discardDrafts = function (accountString, assetType) {
         lpIds["dpageid_13289"] = "dpageid_13289";
         lpIds["dpageid_13286"] = "dpageid_13286";
         lpIds["dpageid_13288"] = "dpageid_13288";
+        
+        
+        // TECHNOLOGY
+        // DIY Design
+        lpIds["dpageid_13346"] = "dpageid_13346";
+        lpIds["dpageid_13345"] = "dpageid_13345";
+        lpIds["dpageid_13347"] = "dpageid_13347";
+        // Event Management
+        lpIds["dpageid_13319"] = "dpageid_13319";
+        lpIds["dpageid_13332"] = "dpageid_13332";
+        lpIds["dpageid_13329"] = "dpageid_13329";
+        lpIds["dpageid_13331"] = "dpageid_13331";
         
         
         // TRAVEL LESIURE
