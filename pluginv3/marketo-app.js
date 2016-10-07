@@ -6236,9 +6236,9 @@ APP.trackNodeClick = function () {
                 
                 heapEvent.name = heapEventName;
                 heapTrack("track", heapEvent);
-                
-                node.ui.onClick(e);
             }
+            
+            node.ui.onClick(e);
         }
     }
 };
