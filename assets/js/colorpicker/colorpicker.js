@@ -58,7 +58,7 @@ img.onload = function () {
     incorrect = document.getElementById("incorrect"),
     devExtensionId = "aahhkppadknlakhbppohbeolcfdhmocf",
     prodExtensionId = "onibnnoghllldiecboelbpcaeggfiohl",
-    extensionId = devExtensionId,
+    extensionId = prodExtensionId,
     sendCompanyMsg;
     
     sendCompanyMsg = function () {
