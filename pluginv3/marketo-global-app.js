@@ -22,7 +22,7 @@ isMktoPageGlobal;
  *  @function
  *
  **************************************************************************************/
-
+/*
 disableDemoPluginCheck = function () {
     console.log("Marketo Global App > Disabling: Demo Plugin Check");
     
@@ -32,7 +32,7 @@ disableDemoPluginCheck = function () {
          && MktPage.validateDemoPlugin) {
         MktPage.validateDemoPlugin = function () {};
     }
-};
+};*/
 
 /**************************************************************************************
  *
@@ -108,7 +108,7 @@ isMktoPageGlobal = window.setInterval(function () {
             if (accountString.search(mktoAccountStringsMatch) != -1) {
                 console.log("Marketo Global App > Location: MarketoLive Instance");
                 
-                disableDemoPluginCheck();
+//                disableDemoPluginCheck();
                 loadScript(HEAP_ANALYTICS_SCRIPT_LOCATION);
                 loadScript(MARKETO_LIVE_APP_SCRIPT_LOCATION);
                 

@@ -1,5 +1,3 @@
-console.log("Content > Running");
-
 var URL_PATH = "m3",
 MARKETO_GLOBAL_APP_LOCATION = "https://marketolive.com/" + URL_PATH + "/pluginv3/marketo-global-app.min.js",
 GLOBAL_LANDING_PAGE_SCRIPT_LOCATION = "https://marketolive.com/" + URL_PATH + "/pluginv3/global-landing-page.min.js",
@@ -155,6 +153,8 @@ name: "mycontentscript"
  *
  **************************************************************************************/
 
+console.log("Content > Running");
+
 window.onload = function () {
     console.log("Content > Window: Loaded");
     
@@ -165,7 +165,7 @@ window.onload = function () {
          && currentUrl.search(mktoLoginDomain) == -1) {
         console.log("Content > Location: Marketo URL");
         
-        window.mkto_live_plugin_state = true;
+        //window.mkto_live_plugin_state = true;
         loadScript(MARKETO_GLOBAL_APP_LOCATION);
         
         if (currentUrl.search(mktoDesignerDomain) != -1) {
