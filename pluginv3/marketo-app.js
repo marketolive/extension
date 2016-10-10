@@ -5608,7 +5608,7 @@ APP.discardLandingPageDrafts = function (lpIds) {
             console.log("Marketo App > Re-enabling: Forbidden Message");
             
             MktMessage.show403Forbidden = prevForbiddenMsg;
-        }, 20000);
+        }, 15000);
     }
 };
 
