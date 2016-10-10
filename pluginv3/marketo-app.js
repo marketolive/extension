@@ -6229,16 +6229,18 @@ APP.trackNodeClick = function () {
                         currNode = currNode.parentNode;
                         heapEventName = currNode.text + " > " + heapEventName;
                     }
+                    heapEvent.workspaceName = currNode.text;
                     
                 } else if (currNode.attributes.accessZoneId == mktoUserWorkspaceId) {
                     // User's Own Folder in User Workspace
                     heapEventName = userWorkspaceName + " > " + userName;
+                    heapEvent.workspaceName = userWorkspaceName;
                 } else {
                     // User's Own Workspace
                     for (var ii = 0; ii < node.getDepth() - 1; ii++) {
                         currNode = currNode.parentNode;
                     }
-                    heapEventName = currNode.text;
+                    heapEventName = heapEvent.workspaceName = currNode.text;
                 }
                 
                 heapEvent.name = heapEventName;
@@ -6432,6 +6434,7 @@ var heapTrack = function (action, event) {
                             assetId : event.assetId,
                             assetType : event.assetType,
                             workspaceId : event.workspaceId,
+                            workspaceName : event.workspaceName,
                             area : heapArea,
                             url : currentUrl
                         };
