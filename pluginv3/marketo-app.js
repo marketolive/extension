@@ -5603,8 +5603,12 @@ APP.discardLandingPageDrafts = function (lpIds) {
                 lpMessageBox.hide();
             }
         }
-        MktMessage.show403Forbidden = prevForbiddenMsg;
         console.log("Marketo App > Finished: Discarding Landing Pages");
+        window.setTimeout(function () {
+            console.log("Marketo App > Re-enabling: Forbidden Message");
+            
+            MktMessage.show403Forbidden = prevForbiddenMsg;
+        }, 20000);
     }
 };
 
