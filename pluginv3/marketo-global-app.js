@@ -27,11 +27,11 @@ disableDemoPluginCheck = function () {
     console.log("Marketo Global App > Disabling: Demo Plugin Check");
     
     window.mkto_live_plugin_state = true;
-    
+    /*
     if (MktPage
          && MktPage.validateDemoPlugin) {
         MktPage.validateDemoPlugin = function () {};
-    }
+    }*/
 };
 
 /**************************************************************************************
