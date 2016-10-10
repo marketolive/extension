@@ -6521,7 +6521,7 @@ var isMktPageApp = window.setInterval(function () {
                 console.log("Marketo App > User: Admin");
                 
                 // Disabling Demo Plugin Check
-                //APP.disableDemoPluginCheck();
+                APP.disableDemoPluginCheck();
                 
                 // This check ensures that an admin can login and test the plugin as a normal user.
                 if (APP.getCookie("toggleState") != "false") {
@@ -6532,7 +6532,7 @@ var isMktPageApp = window.setInterval(function () {
             }
             
             // Disabling Demo Plugin Check
-            //APP.disableDemoPluginCheck();
+            APP.disableDemoPluginCheck();
             
             if (currUrlFragment == mktoMyMarketoFragment) {
                 APP.overrideHomeTiles();
