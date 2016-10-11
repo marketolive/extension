@@ -6267,6 +6267,7 @@ APP.trackNodeClick = function () {
                     assetName : currNode.text,
                     assetId : currNode.attributes.id,
                     assetType : currNode.attributes.compType,
+                    assetPath : "",
                     workspaceId : currNode.attributes.accessZoneId,
                     workspaceName : ""
                 };
@@ -6288,8 +6289,10 @@ APP.trackNodeClick = function () {
                     }
                     heapEvent.workspaceName = currNode.text;*/
                     
+                    heapEvent.assetPath = currNode.text;
                     for (var ii = 0; ii < node.getDepth() - 1; ii++) {
                         currNode = currNode.parentNode;
+                        heapEvent.assetPath = currNode.text + " > " + heapEvent.assetPath;
                     }
                     heapEvent.workspaceName = currNode.text;
                     heapEventName = heapEvent.workspaceName + " > " + heapEvent.assetArea + " > " + heapEvent.assetType;
