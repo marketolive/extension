@@ -21,8 +21,6 @@ window.mkto_live_plugin_state = true;
  **************************************************************************************/
 
 var currentUrl = window.location.href,
-currentProtocol = window.location.protocol,
-currentHost = window.location.host,
 mktoAppDomain = "^https:\/\/app-[a-z0-9]+\.marketo\.com",
 mktoDesignerDomain = "^https:\/\/[a-z0-9]+-[a-z0-9]+\.marketodesigner\.com",
 mktoWizard = mktoAppDomain + "/m#",
@@ -34,6 +32,8 @@ mktoDemoAccountMatch = "^mktodemoaccount",
 mktoMyMarketoFragment = "MM0A1",
 mktoCalendarFragment = "CAL",
 mktoAnalyticsFragment = "AR",
+mktoModelerFragmentRegex = = new RegExp("^RCM[0-9]+!$", "i"),
+mktoModelerPreviewFragmentRegex = = new RegExp("^preview=true&approved=true/#RCM[0-9]+!$", "i"),
 mktoAnalyticsDefaultFragment = "AH0A1ZN17",
 mktoAccountBasedMarketingFragment = "ABM0A1",
 mktoAdBridgeSmartListFragment = "SL1119566B2LA1",
@@ -65,15 +65,21 @@ mktoMarketingActivitiesJapaneseFragment = "MA19848A1",
 mktoMarketingActivitiesFinservFragment = "MA20806A1",
 mktoMarketingActivitiesHealthcareFragment = "MA20826A1",
 mktoMarketingActivitiesHigherEdFragment = "MA20846A1",
+mktoMarketingActivitiesManufacturingFragment = "MA26410A1",
+mktoMarketingActivitiesTechnologyFragment = "MA26489A1",
+mktoMarketingActivitiesTravelLeisureFragment = "MA27588A1",
 mktoLeadDatabaseDefaultFragment = "ML0A1ZN2",
 mktoLeadDatabaseUserFragment = "ML0A1ZN19788",
 mktoLeadDatabaseJapaneseFragment = "ML0A1ZN19834",
 mktoLeadDatabaseFinservFragment = "ML0A1ZN20792",
 mktoLeadDatabaseHealthcareFragment = "ML0A1ZN20812",
 mktoLeadDatabaseHigherEdFragment = "ML0A1ZN20832",
+mktoLeadDatabaseManufacturingFragment = "ML0A1ZN26396",
+mktoLeadDatabaseTechnologyFragment = "ML0A1ZN26475",
+mktoLeadDatabaseTravelLeisureFragment = "ML0A1ZN27574",
 mktoAdminEmailEmailFragment = "EA0A1",
 mktoAdminWebServicesFragment = "MW0A1",
-mktoDisableButtonsFragmentMatch = "^" + mktoMarketingActivitiesDefaultFragment + "$|^" + mktoMarketingActivitiesUserFragment + "$|^" + mktoMarketingActivitiesJapaneseFragment + "$|^" + mktoMarketingActivitiesFinservFragment + "$|^" + mktoMarketingActivitiesHealthcareFragment + "$|^" + mktoMarketingActivitiesHigherEdFragment + "$|^" + mktoLeadDatabaseDefaultFragment + "$|^" + mktoLeadDatabaseUserFragment + "$|^" + mktoLeadDatabaseJapaneseFragment + "$|^" + mktoLeadDatabaseFinservFragment + "$|^" + mktoLeadDatabaseHealthcareFragment + "$|^" + mktoLeadDatabaseHigherEdFragment + "$|^" + mktoAdminEmailEmailFragment + "$|^" + mktoAdminWebServicesFragment + "$",
+mktoDisableButtonsFragmentMatch = "^" + mktoMarketingActivitiesDefaultFragment + "$|^" + mktoMarketingActivitiesUserFragment + "$|^" + mktoMarketingActivitiesJapaneseFragment + "$|^" + mktoMarketingActivitiesFinservFragment + "$|^" + mktoMarketingActivitiesHealthcareFragment + "$|^" + mktoMarketingActivitiesHigherEdFragment + "$|^" + mktoMarketingActivitiesManufacturingFragment + "$|^" + mktoMarketingActivitiesTechnologyFragment + "$|^" + mktoMarketingActivitiesTravelLeisureFragment + "$|^" + mktoLeadDatabaseDefaultFragment + "$|^" + mktoLeadDatabaseUserFragment + "$|^" + mktoLeadDatabaseJapaneseFragment + "$|^" + mktoLeadDatabaseFinservFragment + "$|^" + mktoLeadDatabaseHealthcareFragment + "$|^" + mktoLeadDatabaseHigherEdFragment + "$|^" + mktoLeadDatabaseManufacturingFragment + "$|^" + mktoLeadDatabaseTechnologyFragment + "$|^" + mktoLeadDatabaseTravelLeisureFragment + "$|^" + mktoAdminEmailEmailFragment + "$|^" + mktoAdminWebServicesFragment + "$",
 
 mktoOppInfluenceAnalyzerFragment = "AR1559A1!",
 mktoProgramAnalyzerFragment = "AR1544A1!",
@@ -174,6 +180,65 @@ APP.disableDemoPluginCheck = function () {
          && MktPage.validateDemoPlugin) {
         MktPage.validateDemoPlugin = function () {};
     }
+};
+
+/**************************************************************************************
+ *
+ *  This function returns the workspace name given the workspace ID.
+ *
+ *  @Author Brian Fisher
+ *
+ *  @function
+ *
+ *  @param {int} workspaceId - workspace ID
+ *
+ **************************************************************************************/
+
+APP.getWorkspaceName = function (workspaceId) {
+    var workspaceName;
+    
+    switch (workspaceId) {
+    case mktoDefaultWorkspaceId:
+        workspaceName = "Default";
+        break;
+        
+    case mktoJapaneseWorkspaceId:
+        workspaceName = "デモ";
+        break;
+        
+    case mktoFinservWorkspaceId:
+        workspaceName = "Financial Services";
+        break;
+        
+    case mktoHealthcareWorkspaceId:
+        workspaceName = "Healthcare";
+        break;
+        
+    case mktoHigherEdWorkspaceId:
+        workspaceName = "Higher Education";
+        break;
+        
+    case mktoManufacturingWorkspaceId:
+        workspaceName = "Manufacturing";
+        break;
+        
+    case mktoTechnologyWorkspaceId:
+        workspaceName = "Technology";
+        break;
+        
+    case mktoTravelLesiureWorkspaceId:
+        workspaceName = "Travel Leisure";
+        break;
+    
+    case mktoUserWorkspaceId:
+        workspaceName = workspaceName;
+    
+    default:
+        return;
+        break;
+    }
+    
+    return workspaceName;
 };
 
 /**************************************************************************************
@@ -4114,6 +4179,79 @@ APP.hideOtherToolbarItems = function (itemsToHide) {
 
 /**************************************************************************************
  *
+ *  This function disables saving for Revenue Cycle Models and issues a tracking 
+ *  request to Heap Analytics.
+ *
+ *  @Author Brian Fisher
+ *
+ *  @function
+ *
+ *  @param {String} mode - Mode view (edit, preview)
+ *
+ **************************************************************************************/
+
+APP.disableModelerSaving = function (mode) {
+    console.log("Marketo App > Disabling: Revenue Cycle Model (Edit/Preview) Saving");
+    
+    var isRevenueCycleModel;
+    
+    isRevenueCycleModel = window.setInterval(function () {
+            if (typeof(MktCanvas) !== "undefined"
+                 && MktCanvas
+                 && MktCanvas.getActiveTab()
+                 && MktCanvas.getActiveTab().config
+                 && MktCanvas.getActiveTab().config.accessZoneId) {
+                
+                window.clearInterval(isRevenueCycleModel);
+                
+                var assetNode = MktCanvas.getActiveTab().config,
+                heapEvent = {
+                    name : "",
+                    assetName : assetNode.satelliteTitle,
+                    assetType : assetNode.compType,
+                    assetId : assetNode.expNodeId,
+                    workspaceId : assetNode.accessZoneId,
+                    workspaceName : ""
+                },
+                titleReplaceRegex = new RegExp("\\([^\\)]+\\)$");
+                
+                switch (mode) {
+                case "edit":
+                    APP.disableSaving();
+                    heapEvent.assetArea = "Editor";
+                    break;
+                    
+                case "preview":
+                    heapEvent.assetArea = "Previewer";
+                    break;
+                }
+                
+                if (assetNode.accessZoneId.toString().search(mktoGoldenWorkspacesMatch) != -1) {
+                    heapEvent.workspaceName = APP.getWorkspaceName(assetNode.accessZoneId);
+                    heapEvent.name = heapEvent.workspaceName + " > " + heapEvent.assetType;
+                } else if (assetNode.accessZoneId == mktoUserWorkspaceId) {
+                    heapEvent.name = userWorkspaceName + " > " + userName;
+                    heapEvent.workspaceName = userWorkspaceName;
+                } else {
+                    heapEvent.name = "User's Workspace > " + userName;
+                    heapEvent.workspaceName = "User's Workspace";
+                }
+                
+                if (heapEvent.assetName.search(titleReplaceRegex) != -1) {
+                    heapEvent.assetName = heapEvent.assetName.replace(titleReplaceRegex).trimRight();
+                }
+                
+                if (heapEvent.assetName.search(/"/) != -1) {
+                    heapEvent.assetName = heapEvent.assetName.replace(/"/g, "");
+                }
+                
+                heapTrack("track", heapEvent);
+            }
+        }, 0);
+};
+
+/**************************************************************************************
+ *
  *  This function disables saving for all asset types within the Designers edit mode
  *  and disables the harmful toolbar menu items and buttons in both edit and preview
  *  modes. It also issues a tracking request to Heap Analytics.
@@ -4131,7 +4269,7 @@ APP.hideOtherToolbarItems = function (itemsToHide) {
 APP.disableDesignerSaving = function (assetType, mode) {
     console.log("Marketo App > Disabling: Designer (Edit/Preview) Saving & Toolbar Menus for " + assetType);
     
-    var isDesignerAsset;
+    var isAppController;
     
     isAppController = window.setInterval(function () {
             if (typeof(Mkt3) !== "undefined"
@@ -4142,8 +4280,7 @@ APP.disableDesignerSaving = function (assetType, mode) {
                 
                 window.clearInterval(isAppController);
                 
-                var heapTrackDesigner,
-                disableDesignerAsset,
+                var disableDesignerAsset,
                 assetNode,
                 menuItems;
                 
@@ -4151,7 +4288,7 @@ APP.disableDesignerSaving = function (assetType, mode) {
                     console.log("Marketo App > Executing: Disabling Designer (Edit/Preview)");
                     
                     var heapEvent = {
-                        name : assetNode.text,
+                        name : "",
                         assetName : "",
                         assetType : assetNode.compType,
                         assetId : assetNode.id,
@@ -4160,7 +4297,6 @@ APP.disableDesignerSaving = function (assetType, mode) {
                     };
                     
                     switch (mode) {
-                    
                     case "edit":
                         heapEvent.assetArea = "Editor";
                         break;
@@ -4175,45 +4311,8 @@ APP.disableDesignerSaving = function (assetType, mode) {
                     }
                     
                     if (assetNode.accessZoneId.toString().search(mktoGoldenWorkspacesMatch) != -1) {
-                        var workspaceName;
-                        
-                        switch (assetNode.accessZoneId) {
-                        
-                        case mktoDefaultWorkspaceId:
-                            workspaceName = "Default";
-                            break;
-                        
-                        case mktoJapaneseWorkspaceId:
-                            workspaceName = "デモ";
-                            break;
-                        
-                        case mktoFinservWorkspaceId:
-                            workspaceName = "Financial Services";
-                            break;
-                        
-                        case mktoHealthcareWorkspaceId:
-                            workspaceName = "Healthcare";
-                            break;
-                        
-                        case mktoHigherEdWorkspaceId:
-                            workspaceName = "Higher Education";
-                            break;
-                        
-                        case mktoManufacturingWorkspaceId:
-                            workspaceName = "Manufacturing";
-                            break;
-                        
-                        case mktoTechnologyWorkspaceId:
-                            workspaceName = "Technology";
-                            break;
-                        
-                        case mktoTravelLesiureWorkspaceId:
-                            workspaceName = "Travel Leisure";
-                            break;
-                        }
-                        
-                        heapEvent.name = workspaceName + " > " + heapEvent.assetArea + " > " + heapEvent.assetType;
-                        heapEvent.workspaceName = workspaceName;
+                        heapEvent.workspaceName = APP.getWorkspaceName(assetNode.accessZoneId);
+                        heapEvent.name = heapEvent.workspaceName + " > " + heapEvent.assetType;
                     } else if (assetNode.accessZoneId == mktoUserWorkspaceId) {
                         heapEvent.name = userWorkspaceName + " > " + userName;
                         heapEvent.workspaceName = userWorkspaceName;
@@ -6263,7 +6362,6 @@ APP.trackNodeClick = function () {
                 heapEventName,
                 heapEvent = {
                     name : "",
-                    assetArea : "",
                     assetName : currNode.text,
                     assetId : currNode.attributes.id,
                     assetType : currNode.attributes.compType,
@@ -6271,13 +6369,6 @@ APP.trackNodeClick = function () {
                     workspaceId : currNode.attributes.accessZoneId,
                     workspaceName : ""
                 };
-                
-                if (MktPage
-                     && MktPage.baseTitle) {
-                    heapEvent.assetArea = MktPage.baseTitle.split("•")[0].trimRight();
-                } else {
-                    heapEvent.assetArea = "Unknown";
-                }
                 
                 if (currNode.attributes.accessZoneId.toString().search(mktoGoldenWorkspacesMatch) != -1) {
                     /*
@@ -6295,7 +6386,13 @@ APP.trackNodeClick = function () {
                         heapEvent.assetPath = currNode.text + " > " + heapEvent.assetPath;
                     }
                     heapEvent.workspaceName = currNode.text;
-                    heapEventName = heapEvent.workspaceName + " > " + heapEvent.assetArea + " > " + heapEvent.assetType;
+                    
+                    if (heapEvent.workspaceName != "Admin") {
+                        heapEventName = heapEvent.workspaceName + " > " + heapEvent.assetType;
+                    } else {
+                        heapEventName = heapEvent.assetPath;
+                        heapEvent.assetId = 0;
+                    }
                     
                 } else if (currNode.attributes.accessZoneId == mktoUserWorkspaceId) {
                     // User's Own Folder in User Workspace
@@ -6639,6 +6736,16 @@ var isMktPageApp = window.setInterval(function () {
                             action : "setVisible"
                         }
                     ]);
+            } else if (currUrlFragment.search(mktoModelerFragmentRegex) != -1) {
+                if (currentUrl.split("?")[1].search(mktoModelerPreviewFragmentRegex) == -1) {
+                    console.log("Marketo App > Location: Revenue Cycle Model Editor");
+                    
+                    APP.disableModelerSaving("edit");
+                } else {
+                    console.log("Marketo App > Location: Revenue Cycle Model Previewer");
+                    
+                    APP.disableModelerSaving("preview");
+                }
             }
             
             // Only execute this block if the user is not on an editor page.
