@@ -4212,7 +4212,7 @@ APP.disableDesignerSaving = function (assetType, mode) {
                             break;
                         }
                         
-                        heapEvent.name = workspaceName + " > " heapEvent.assetArea + " > " + heapEvent.assetType;
+                        heapEvent.name = workspaceName + " > " + heapEvent.assetArea + " > " + heapEvent.assetType;
                         heapEvent.workspaceName = workspaceName;
                     } else if (assetNode.accessZoneId == mktoUserWorkspaceId) {
                         heapEvent.name = userWorkspaceName + " > " + userName;
