@@ -4152,12 +4152,15 @@ APP.disableDesignerSaving = function (assetType, mode) {
                     
                     var heapEvent = {
                         name : assetNode.text,
+                        assetName : "",
                         assetType : assetNode.compType,
                         assetId : assetNode.id,
-                        workspaceId : assetNode.accessZoneId
+                        workspaceId : assetNode.accessZoneId,
+                        workspaceName : ""
                     };
                     
                     switch (mode) {
+                    
                     case "edit":
                         heapEvent.assetArea = "Editor";
                         break;
@@ -4171,15 +4174,58 @@ APP.disableDesignerSaving = function (assetType, mode) {
                         break;
                     }
                     
-                    if (assetNode.accessZoneId != mktoUserWorkspaceId) {
+                    if (assetNode.accessZoneId.toString().search(mktoGoldenWorkspacesMatch) != -1) {
+                        var workspaceName;
                         
-                        if (assetNode.text.search(".") != -1) {
-                            heapEvent.assetName = "Designer > " + assetNode.text.split(".")[1];
-                        } else {
-                            heapEvent.assetName = "Designer > " + assetNode.text;
+                        switch (assetNode.accessZoneId) {
+                        
+                        case mktoDefaultWorkspaceId:
+                            workspaceName = "Default";
+                            break;
+                        
+                        case mktoJapaneseWorkspaceId:
+                            workspaceName = "デモ";
+                            break;
+                        
+                        case mktoFinservWorkspaceId:
+                            workspaceName = "Financial Services";
+                            break;
+                        
+                        case mktoHealthcareWorkspaceId:
+                            workspaceName = "Healthcare";
+                            break;
+                        
+                        case mktoHigherEdWorkspaceId:
+                            workspaceName = "Higher Education";
+                            break;
+                        
+                        case mktoManufacturingWorkspaceId:
+                            workspaceName = "Manufacturing";
+                            break;
+                        
+                        case mktoTechnologyWorkspaceId:
+                            workspaceName = "Technology";
+                            break;
+                        
+                        case mktoTravelLesiureWorkspaceId:
+                            workspaceName = "Travel Leisure";
+                            break;
                         }
-                    } else {
+                        
+                        heapEvent.name = workspaceName + " > " heapEvent.assetArea + " > " + heapEvent.assetType;
+                        heapEvent.workspaceName = workspaceName;
+                    } else if (assetNode.accessZoneId == mktoUserWorkspaceId) {
                         heapEvent.name = userWorkspaceName + " > " + userName;
+                        heapEvent.workspaceName = userWorkspaceName;
+                    } else {
+                        heapEvent.name = "User's Workspace > " + userName;
+                        heapEvent.workspaceName = "User's Workspace";
+                    }
+                    
+                    if (assetNode.text.search(".") != -1) {
+                        heapEvent.assetName = assetNode.text.split(".")[1];
+                    } else {
+                        heapEvent.assetName = assetNode.text;
                     }
                     
                     heapTrack("track", heapEvent);
@@ -6216,20 +6262,37 @@ APP.trackNodeClick = function () {
                 var currNode = node,
                 heapEventName,
                 heapEvent = {
+                    name : "",
+                    assetArea : "",
                     assetName : currNode.text,
                     assetId : currNode.attributes.id,
                     assetType : currNode.attributes.compType,
-                    workspaceId : currNode.attributes.accessZoneId
+                    workspaceId : currNode.attributes.accessZoneId,
+                    workspaceName : ""
                 };
                 
+                if (MktPage
+                     && MktPage.baseTitle) {
+                    heapEvent.assetArea = MktPage.baseTitle.split("•")[0].trimRight();
+                } else {
+                    heapEvent.assetArea = "Unknown";
+                }
+                
                 if (currNode.attributes.accessZoneId.toString().search(mktoGoldenWorkspacesMatch) != -1) {
+                    /*
                     heapEventName = currNode.text;
                     
                     for (var ii = 0; ii < node.getDepth() - 1; ii++) {
                         currNode = currNode.parentNode;
                         heapEventName = currNode.text + " > " + heapEventName;
                     }
+                    heapEvent.workspaceName = currNode.text;*/
+                    
+                    for (var ii = 0; ii < node.getDepth() - 1; ii++) {
+                        currNode = currNode.parentNode;
+                    }
                     heapEvent.workspaceName = currNode.text;
+                    heapEventName = heapEvent.workspaceName + " > " + heapEvent.assetArea + " > " + heapEvent.assetType;
                     
                 } else if (currNode.attributes.accessZoneId == mktoUserWorkspaceId) {
                     // User's Own Folder in User Workspace
