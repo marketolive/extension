@@ -35,7 +35,7 @@ mktoAnalyticsFragment = "AR",
 mktoReportFragmentRegex = new RegExp("^AR[^!]+!$", "i"),
 mktoModelerFragmentRegex = new RegExp("^RCM[^!]+!$", "i"),
 mktoAnalyticsFragmentMatch = new RegExp("^AR[^!]+!$|^RCM[^!]+!$", "i"),
-mktoModelerPreviewFragmentRegex = new RegExp("^preview=true&approved=true/#RCM[^!]+!$", "i"),
+mktoModelerPreviewFragmentRegex = new RegExp("preview=true&approved=true/#RCM[^!]+!$", "i"),
 mktoAnalyticsDefaultFragment = "AH0A1ZN17",
 mktoAccountBasedMarketingFragment = "ABM0A1",
 mktoAdBridgeSmartListFragment = "SL1119566B2LA1",
@@ -6954,8 +6954,7 @@ var isMktPageApp = window.setInterval(function () {
                         
                         APP.disableAnalyticsSaving("report");
                     } else if (currUrlFragment.search(mktoModelerFragmentRegex) != -1) {
-                        if (currentUrl.search("?") != -1
-                             && currentUrl.split("?")[1].search(mktoModelerPreviewFragmentRegex) == -1) {
+                        if (currentUrl.search(mktoModelerPreviewFragmentRegex) == -1) {
                             console.log("Marketo App > Location: Revenue Cycle Model Editor");
                             
                             APP.disableAnalyticsSaving("model", "edit");
