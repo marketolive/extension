@@ -2725,12 +2725,14 @@ APP.disableMenus = function () {
                     //"newSubscription_atxCanvasOverview", //New Report Subscription
                     //"newSubscription_atxCanvasDetailView", //New Report Subscription (Report Tab)
                     //"newSubscription_atxCanvasSmartlist", //New Report Subscription (Smart List Tab)
+                    //"newSubscription_atxCanvasSetup", //New Report Subscription (Setup Tab)
                     //"newSubscription_atxCanvasSubscriptions", //New Report Subscription (Subscriptions Tab)
                     //"newSubscription_rcmMembersCanvas", //New Report Subscription (Members Tab)
                     "newRcm_rcmCanvasOverview", //New Revenue Cycle Model
                     "newRcm_atxCanvasOverview", //New Revenue Cycle Model
                     "newRcm_atxCanvasDetailView", //New Revenue Cycle Model (Report Tab)
                     "newRcm_atxCanvasSmartlist", //New Revenue Cycle Model (Smart List Tab)
+                    "newRcm_atxCanvasSetup", //New Revenue Cycle Model (Setup Tab)
                     "newRcm_atxCanvasSubscriptions", //New Revenue Cycle Model (Subscriptions Tab)
                     "newRcm_rcmMembersCanvas", //New Revenue Cycle Model (Members Tab)
                     
@@ -5045,6 +5047,7 @@ APP.disableFormSaveButtons = function () {
             if (this.getXType() == "createNamedAccountForm" //ABM > Named Accounts > New Named Account
                  || this.getXType() == "addToAccountListForm" //ABM > Named Accounts > Add To Account List
                  || this.getXType() == "createAccountListForm" //ABM > Account Lists > Create New/Rename Account List
+                 || this.getXType() == "analyticsReportSubscriptionForm" //Analytics > Analyzer & Report > New Report Subscription
                  || this.getXType() == "adminUserInviteWizard" //Admin > User & Roles > Users > Invite New User
                  || this.getXType() == "adminEditLicensesForm" //Admin > User & Roles > Users > Issue License
                  || this.getXType() == "adminSubscriptionInformationForm" //Admin > My Account > Subcription Information
