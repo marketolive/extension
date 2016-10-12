@@ -4278,7 +4278,7 @@ APP.disableAnalyticsSaving = function (assetType, mode) {
                 case "model":
                     heapEvent.assetName = assetNode.satelliteTitle;
                     if (heapEvent.assetName.search(titleReplaceRegex) != -1) {
-                        heapEvent.assetName = heapEvent.assetName.replace(titleReplaceRegex).trimRight();
+                        heapEvent.assetName = heapEvent.assetName.replace(titleReplaceRegex, "").trimRight();
                     }
                     
                     if (heapEvent.assetName.search(/"/) != -1) {
