@@ -54,7 +54,6 @@ userWorkspaceName = "My Workspace",
 currUrlFragment,
 currCompFragment,
 userName,
-pod,
 
 mktoAccountStringQe = "globalsales",
 mktoAccountString106 = "mktodemoaccount106",
@@ -86,9 +85,8 @@ mktoDisableButtonsFragmentMatch = "^" + mktoMarketingActivitiesDefaultFragment +
 mktoOppInfluenceAnalyzerFragment = "AR1559A1!",
 mktoProgramAnalyzerFragment = "AR1544A1!",
 mktoModelerFragment = "RCM70A1!",
-mktoModelerPreviewFragment = "preview=true&approved=true/#RCM70A1!",
 mktoSuccessPathAnalyzerFragment = "AR1682A1!",
-mktoAnalyzersFragmentMatch = "^" + mktoOppInfluenceAnalyzerFragment + "$|^" + mktoProgramAnalyzerFragment + "$|^" + mktoModelerFragment + "$|^" + mktoModelerPreviewFragment + "$|^" + mktoSuccessPathAnalyzerFragment + "$",
+mktoAnalyzersFragmentMatch = "^" + mktoOppInfluenceAnalyzerFragment + "$|^" + mktoProgramAnalyzerFragment + "$|^" + mktoModelerFragment + "$|^" + mktoSuccessPathAnalyzerFragment + "$",
 
 mktoMobilePushNotificationFragment = "MPN",
 mktoInAppMessageFragment = "IAM",
@@ -5385,9 +5383,8 @@ APP.injectAnalyzerNavBar = function () {
                 console.log("Marketo App > Injecting: Analyzer Navigation Bar");
                 
                 window.clearInterval(isPodsLoaded);
-                if (typeof(pod) == "undefined") {
-                    pod = new PODS.Pod(PODS.getCookie("userPod"));
-                }
+                
+                var pod = new PODS.Pod(PODS.getCookie("userPod"));
                 
                 for (var y = 0; y < pod.valueSet.length; y++) {
                     if (currentUrl == pod.valueSet[y].url) {
@@ -6957,7 +6954,8 @@ var isMktPageApp = window.setInterval(function () {
                         
                         APP.disableAnalyticsSaving("report");
                     } else if (currUrlFragment.search(mktoModelerFragmentRegex) != -1) {
-                        if (currentUrl.split("?")[1].search(mktoModelerPreviewFragmentRegex) == -1) {
+                        if (currentUrl.search("?") != -1
+                             && currentUrl.split("?")[1].search(mktoModelerPreviewFragmentRegex) == -1) {
                             console.log("Marketo App > Location: Revenue Cycle Model Editor");
                             
                             APP.disableAnalyticsSaving("model", "edit");
