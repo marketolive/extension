@@ -1175,8 +1175,9 @@ window.onload = function () {
             var oppInfluenceAnalyzerFragment = "AR1559A1!",
             programAnalyzerFragment = "AR1544A1!",
             modelerFragment = "RCM70A1!",
+            modelerPreviewFragment = "?preview=true&approved=true/#RCM70A1!",
             successPathAnalyzerFragment = "AR1682A1!",
-            analyzerFragmentsMatch = mktoAppDomain + "/#(" + oppInfluenceAnalyzerFragment + "|" + programAnalyzerFragment + "|" + modelerFragment + "|" + successPathAnalyzerFragment + ")";
+            analyzerFragmentsMatch = mktoAppDomain + "/#(" + oppInfluenceAnalyzerFragment + "|" + programAnalyzerFragment + "|" + modelerFragment + "|" + modelerPreviewFragment + "|" + successPathAnalyzerFragment + ")";
             
             if (currentUrl.search(analyzerFragmentsMatch) != -1) {
                 console.log("Content > Location: Analyzers");
