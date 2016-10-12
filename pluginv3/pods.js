@@ -106,7 +106,7 @@ PODS.Pod = function (id) {
             position : 'modeler',
             url : this.funnelAnalysis
         }, {
-            position : 'modeler-preview',
+            position : 'modeler',
             url : this.funnelAnalysisPreview
         }, {
             position : 'success-path-analyzer',
