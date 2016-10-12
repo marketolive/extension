@@ -86,8 +86,9 @@ mktoDisableButtonsFragmentMatch = "^" + mktoMarketingActivitiesDefaultFragment +
 mktoOppInfluenceAnalyzerFragment = "AR1559A1!",
 mktoProgramAnalyzerFragment = "AR1544A1!",
 mktoModelerFragment = "RCM70A1!",
+mktoModelerPreviewFragment = "preview=true&approved=true/#RCM70A1!",
 mktoSuccessPathAnalyzerFragment = "AR1682A1!",
-mktoAnalyzersFragmentMatch = "^" + mktoOppInfluenceAnalyzerFragment + "$|^" + mktoProgramAnalyzerFragment + "$|^" + mktoModelerFragment + "$|^" + mktoSuccessPathAnalyzerFragment + "$",
+mktoAnalyzersFragmentMatch = "^" + mktoOppInfluenceAnalyzerFragment + "$|^" + mktoProgramAnalyzerFragment + "$|^" + mktoModelerFragment + "$|^" + mktoModelerPreviewFragment + "$|^" + mktoSuccessPathAnalyzerFragment + "$",
 
 mktoMobilePushNotificationFragment = "MPN",
 mktoInAppMessageFragment = "IAM",
@@ -6770,13 +6771,7 @@ var isMktPageApp = window.setInterval(function () {
                 APP.disableButtons();
             } else if (currUrlFragment == mktoAnalyticsDefaultFragment) {
                 APP.overrideAnalyticsTiles();
-            } /*else if (currUrlFragment.search(mktoOtherAssetsFragmentMatch) != -1) {
-                APP.trackOtherAssets();
-            } else if (currUrlFragment.search(mktoAnalyzersFragmentMatch) != -1) {
-                console.log("Marketo App > Location: Analytics");
-                
-                APP.injectAnalyzerNavBar();
-            }*/ else if (currUrlFragment == mktoAdBridgeSmartListFragment) {
+            } else if (currUrlFragment == mktoAdBridgeSmartListFragment) {
                 console.log("Marketo App > Location: Ad Bridge Smart List");
                 
                 APP.openAdBridgeModal();
@@ -6796,27 +6791,6 @@ var isMktPageApp = window.setInterval(function () {
                             action : "setVisible"
                         }
                     ]);
-            } else if (currUrlFragment.search(mktoAnalyticsFragmentMatch) != -1) {
-                if (currUrlFragment.search(mktoAnalyzersFragmentMatch) != -1) {
-                    console.log("Marketo App > Location: Golden Analytics");
-                    
-                    APP.injectAnalyzerNavBar();
-                }
-                
-                if (currUrlFragment.search(mktoReportFragmentRegex) != -1) {
-                    console.log("Marketo App > Location: Fullscreen Report");
-                    
-                } else if (currUrlFragment.search(mktoModelerFragmentRegex) != -1) {
-                    if (currentUrl.split("?")[1].search(mktoModelerPreviewFragmentRegex) == -1) {
-                        console.log("Marketo App > Location: Revenue Cycle Model Editor");
-                        
-                        APP.disableAnalyticsSaving("model", "edit");
-                    } else {
-                        console.log("Marketo App > Location: Revenue Cycle Model Previewer");
-                        
-                        APP.disableAnalyticsSaving("model", "preview");
-                    }
-                }
             }
             
             // Only execute this block if the user is not on an editor page.
@@ -6862,7 +6836,7 @@ var isMktPageApp = window.setInterval(function () {
                     APP.disableAdminSaveButtons();
                 }
             } else {
-                console.log("Marketo App > Location: Designers/Wizards");
+                console.log("Marketo App > Location: Designers, Full Screen Reports/Models");
                 
                 switch (currCompFragment) {
                 case mktoLandingPageEditFragment:
@@ -6970,6 +6944,30 @@ var isMktPageApp = window.setInterval(function () {
                 default:
                     break;
                 }
+                
+                if (currUrlFragment.search(mktoAnalyticsFragmentMatch) != -1) {
+                    if (currUrlFragment.search(mktoAnalyzersFragmentMatch) != -1) {
+                        console.log("Marketo App > Location: Golden Analytics");
+                        
+                        APP.injectAnalyzerNavBar();
+                    }
+                    
+                    if (currUrlFragment.search(mktoReportFragmentRegex) != -1) {
+                        console.log("Marketo App > Location: Fullscreen Report");
+                        
+                        APP.disableAnalyticsSaving("report");
+                    } else if (currUrlFragment.search(mktoModelerFragmentRegex) != -1) {
+                        if (currentUrl.split("?")[1].search(mktoModelerPreviewFragmentRegex) == -1) {
+                            console.log("Marketo App > Location: Revenue Cycle Model Editor");
+                            
+                            APP.disableAnalyticsSaving("model", "edit");
+                        } else {
+                            console.log("Marketo App > Location: Revenue Cycle Model Previewer");
+                            
+                            APP.disableAnalyticsSaving("model", "preview");
+                        }
+                    }
+                }
             }
             
             window.onhashchange = function () {
@@ -6999,12 +6997,6 @@ var isMktPageApp = window.setInterval(function () {
                                     APP.disableButtons();
                                 } else if (currUrlFragment == mktoAnalyticsDefaultFragment) {
                                     APP.overrideAnalyticsTiles();
-                                } /*else if (currUrlFragment.search(mktoOtherAssetsFragmentMatch) != -1) {
-                                    APP.trackOtherAssets();
-                                }*/ else if (currUrlFragment.search(mktoAnalyzersFragmentMatch) != -1) {
-                                    console.log("Marketo App > Location: Analytics");
-                                    
-                                    APP.injectAnalyzerNavBar();
                                 } else if (currUrlFragment == mktoAdminSalesforceFragment) {
                                     console.log("Marketo App > Location: Admin > Salesforce");
                                     
