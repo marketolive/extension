@@ -32,8 +32,7 @@ mktoDemoAccountMatch = "^mktodemoaccount",
 mktoMyMarketoFragment = "MM0A1",
 mktoCalendarFragment = "CAL",
 mktoAnalyticsFragment = "AR",
-mktoModelerFragmentRegex = new RegExp("^RCM[0-9]+!$", "i"),
-mktoModelerPreviewFragmentRegex = new RegExp("^preview=true&approved=true/#RCM[0-9]+!$", "i"),
+mktoModelerPreviewFragmentRegex = new RegExp("^preview=true&approved=true/#RCM[^!]+!$", "i"),
 mktoAnalyticsDefaultFragment = "AH0A1ZN17",
 mktoAccountBasedMarketingFragment = "ABM0A1",
 mktoAdBridgeSmartListFragment = "SL1119566B2LA1",
@@ -80,6 +79,10 @@ mktoLeadDatabaseTravelLeisureFragment = "ML0A1ZN27574",
 mktoAdminEmailEmailFragment = "EA0A1",
 mktoAdminWebServicesFragment = "MW0A1",
 mktoDisableButtonsFragmentMatch = "^" + mktoMarketingActivitiesDefaultFragment + "$|^" + mktoMarketingActivitiesUserFragment + "$|^" + mktoMarketingActivitiesJapaneseFragment + "$|^" + mktoMarketingActivitiesFinservFragment + "$|^" + mktoMarketingActivitiesHealthcareFragment + "$|^" + mktoMarketingActivitiesHigherEdFragment + "$|^" + mktoMarketingActivitiesManufacturingFragment + "$|^" + mktoMarketingActivitiesTechnologyFragment + "$|^" + mktoMarketingActivitiesTravelLeisureFragment + "$|^" + mktoLeadDatabaseDefaultFragment + "$|^" + mktoLeadDatabaseUserFragment + "$|^" + mktoLeadDatabaseJapaneseFragment + "$|^" + mktoLeadDatabaseFinservFragment + "$|^" + mktoLeadDatabaseHealthcareFragment + "$|^" + mktoLeadDatabaseHigherEdFragment + "$|^" + mktoLeadDatabaseManufacturingFragment + "$|^" + mktoLeadDatabaseTechnologyFragment + "$|^" + mktoLeadDatabaseTravelLeisureFragment + "$|^" + mktoAdminEmailEmailFragment + "$|^" + mktoAdminWebServicesFragment + "$",
+
+mktoReportFragmentRegex = new RegExp("^AR[^!]+!$", "i"),
+mktoModelerFragmentRegex = new RegExp("^RCM[^!]+!$", "i"),
+mktoAnalyticsFragmentMatch = mktoReportFragmentRegex + "|" + mktoModelerFragmentRegex,
 
 mktoOppInfluenceAnalyzerFragment = "AR1559A1!",
 mktoProgramAnalyzerFragment = "AR1544A1!",
@@ -2325,6 +2328,7 @@ APP.disableMenus = function () {
             
             if (this.fireEvent('beforeshow', this) !== false) {
                 var disable,
+                menu = this,
                 mItems = this.items,
                 canvas = MktCanvas.getActiveTab(),
                 itemsToDisable = [
@@ -2707,22 +2711,28 @@ APP.disableMenus = function () {
                     
                     // Lead Database > Segmentation > Actions Button & Right-click Tree
                     "createDraftSegmentation", //Create Draft
-                    //"editSegmentation",//Edit Segments
+                    //"editSegmentation", //Edit Segments
                     "approveSegmentation", //Approve
                     "unapproveSegmentation", //Unapprove
                     "deleteSegmentation", //Delete
                     "refreshSegmentation", //Refresh Status
-                    //"editDraftSegmentation",//Edit Segments
+                    //"editDraftSegmentation", //Edit Segments
                     "approveDraftSegmentation", //Approve Draft
-                    //"discardDraftSegmentation",//Discard Draft
+                    //"discardDraftSegmentation", //Discard Draft
                     
                     // Analytics > New Button
-                    //"newSubscription_atxCanvasOverview",//New Report Subscription
-                    "newRcm_atxCanvasOverview", //New Revenue Cycle Model
-                    //"newSubscription_rcmCanvasOverview",//New Report Subscription
+                    //"newSubscription_rcmCanvasOverview", //New Report Subscription
+                    //"newSubscription_atxCanvasOverview", //New Report Subscription
+                    //"newSubscription_atxCanvasDetailView", //New Report Subscription (Report Tab)
+                    //"newSubscription_atxCanvasSmartlist", //New Report Subscription (Smart List Tab)
+                    //"newSubscription_atxCanvasSubscriptions", //New Report Subscription (Subscriptions Tab)
+                    //"newSubscription_rcmMembersCanvas", //New Report Subscription (Members Tab)
                     "newRcm_rcmCanvasOverview", //New Revenue Cycle Model
-                    //"newSubscription_atxCanvasSubscriptions",//New Report Subscription
-                    "newRcm_atxCanvasSubscriptions", //New Revenue Cycle Model
+                    "newRcm_atxCanvasOverview", //New Revenue Cycle Model
+                    "newRcm_atxCanvasDetailView", //New Revenue Cycle Model (Report Tab)
+                    "newRcm_atxCanvasSmartlist", //New Revenue Cycle Model (Smart List Tab)
+                    "newRcm_atxCanvasSubscriptions", //New Revenue Cycle Model (Subscriptions Tab)
+                    "newRcm_rcmMembersCanvas", //New Revenue Cycle Model (Members Tab)
                     
                     // Analytics > Folder > Right-click Tree
                     "newRcm", //New Revenue Cycle Model
@@ -2735,7 +2745,12 @@ APP.disableMenus = function () {
                     
                     // Analytics > Analyzer & Report > Actions Button
                     "newReport_atxCanvasOverview", //Export Data
+                    "newReport_atxCanvasSetup", //Export Data (Setup Tab)
                     "cloneReport_atxCanvasOverview", //Clone Analyzer
+                    "cloneReport_atxCanvasDetailView", //Clone Analyzer (Report Tab)
+                    "cloneReport_atxCanvasSmartlist", //Clone Analyzer (Smart List Tab)
+                    "cloneReport_atxCanvasSetup", //Clone Analyzer (Setup Tab)
+                    "cloneReport_atxCanvasSubscriptions", //Clone Analyzer (Subscriptions Tab)
                     "deleteReport", //Delete Analyzer
                     
                     // Analytics > Analyzer > Right-click Tree
@@ -2775,6 +2790,13 @@ APP.disableMenus = function () {
                     "rcmApproveDraft", //Approve Model Draft
                     //"rcmDiscardDraft",//Discard Model Draft
                     "rcmAassignmentRules", //Assignment Rules
+                    
+                    // Analytics > Model > Stage > Actions Button & Right-click
+                    "Delete", //Delete
+                    
+                    // Analytics > Model > Transition > Actions Button & Right-click
+                    //"Edit Transition", //Edit Transition
+                    "Delete", //Delete
                     
                     // Admin > Tags > Tags > New Button
                     //"newDescriptor",//New Tag Type
@@ -2836,7 +2858,14 @@ APP.disableMenus = function () {
                 }
                 
                 itemsToDisable.forEach(function (itemToDisable) {
-                    var item = mItems.get(itemToDisable);
+                    var item;
+                    
+                    if (itemToDisable == "Delete") {
+                        item = menu.find("text", itemToDisable)[0];
+                    } else {
+                        item = mItems.get(itemToDisable);
+                    }
+                    
                     if (item) {
                         item.setDisabled(disable);
                     }
@@ -4186,28 +4215,29 @@ APP.hideOtherToolbarItems = function (itemsToHide) {
  *
  *  @function
  *
+ *  @param {String} assetType - Asset type (report, model)
  *  @param {String} mode - Mode view (edit, preview)
  *
  **************************************************************************************/
 
-APP.disableModelerSaving = function (mode) {
-    console.log("Marketo App > Disabling: Revenue Cycle Model (Edit/Preview) Saving");
+APP.disableAnalyticsSaving = function (assetType, mode) {
+    console.log("Marketo App > Disabling: Analytics Saving for " + assetType);
     
-    var isRevenueCycleModel;
+    var isAnalyticsAsset;
     
-    isRevenueCycleModel = window.setInterval(function () {
+    isAnalyticsAsset = window.setInterval(function () {
             if (typeof(MktCanvas) !== "undefined"
                  && MktCanvas
                  && MktCanvas.getActiveTab()
                  && MktCanvas.getActiveTab().config
                  && MktCanvas.getActiveTab().config.accessZoneId) {
                 
-                window.clearInterval(isRevenueCycleModel);
+                window.clearInterval(isAnalyticsAsset);
                 
                 var assetNode = MktCanvas.getActiveTab().config,
                 heapEvent = {
                     name : "",
-                    assetName : assetNode.satelliteTitle,
+                    assetName : "",
                     assetType : assetNode.compType,
                     assetId : assetNode.expNodeId,
                     workspaceId : assetNode.accessZoneId,
@@ -4218,12 +4248,47 @@ APP.disableModelerSaving = function (mode) {
                 switch (mode) {
                 case "edit":
                     APP.disableSaving();
+                    APP.disableMenus();
+                    APP.hideToolbarItems();
+                    APP.disableFormSaveButtons();
                     heapEvent.assetArea = "Editor";
                     break;
                     
                 case "preview":
+                    APP.disableFormSaveButtons();
                     heapEvent.assetArea = "Previewer";
                     break;
+                
+                default:
+                    APP.disableSaving();
+                    APP.disableMenus();
+                    APP.hideToolbarItems();
+                    APP.disableFormSaveButtons();
+                    heapEvent.assetArea = "Full Screen";
+                }
+                
+                switch (assetType) {
+                case "report":
+                    heapEvent.assetName = assetNode.title;
+                    
+                    break;
+                
+                case "model":
+                    heapEvent.assetName = assetNode.satelliteTitle;
+                    if (heapEvent.assetName.search(titleReplaceRegex) != -1) {
+                        heapEvent.assetName = heapEvent.assetName.replace(titleReplaceRegex).trimRight();
+                    }
+                    
+                    if (heapEvent.assetName.search(/"/) != -1) {
+                        heapEvent.assetName = heapEvent.assetName.replace(/"/g, "");
+                    }
+                    break;
+                }
+                
+                if (heapEvent.assetType.charAt(0).search(/[a-z]/) != -1) {
+                    var firstChar = heapEvent.assetType.charAt(0);
+                    
+                    heapEvent.assetType = firstChar.toUpperCase() + heapEvent.assetType.slice(1);
                 }
                 
                 if (assetNode.accessZoneId.toString().search(mktoGoldenWorkspacesMatch) != -1) {
@@ -4235,14 +4300,6 @@ APP.disableModelerSaving = function (mode) {
                 } else {
                     heapEvent.name = "User's Workspace > " + userName;
                     heapEvent.workspaceName = "User's Workspace";
-                }
-                
-                if (heapEvent.assetName.search(titleReplaceRegex) != -1) {
-                    heapEvent.assetName = heapEvent.assetName.replace(titleReplaceRegex).trimRight();
-                }
-                
-                if (heapEvent.assetName.search(/"/) != -1) {
-                    heapEvent.assetName = heapEvent.assetName.replace(/"/g, "");
                 }
                 
                 heapTrack("track", heapEvent);
@@ -6596,6 +6653,7 @@ var heapTrack = function (action, event) {
                             asset : event.assetName,
                             assetId : event.assetId,
                             assetType : event.assetType,
+                            assetPath : event.assetPath,
                             workspaceId : event.workspaceId,
                             workspaceName : event.workspaceName,
                             area : heapArea,
@@ -6712,11 +6770,11 @@ var isMktPageApp = window.setInterval(function () {
                 APP.overrideAnalyticsTiles();
             } /*else if (currUrlFragment.search(mktoOtherAssetsFragmentMatch) != -1) {
                 APP.trackOtherAssets();
-            }*/ else if (currUrlFragment.search(mktoAnalyzersFragmentMatch) != -1) {
+            } else if (currUrlFragment.search(mktoAnalyzersFragmentMatch) != -1) {
                 console.log("Marketo App > Location: Analytics");
                 
                 APP.injectAnalyzerNavBar();
-            } else if (currUrlFragment == mktoAdBridgeSmartListFragment) {
+            }*/ else if (currUrlFragment == mktoAdBridgeSmartListFragment) {
                 console.log("Marketo App > Location: Ad Bridge Smart List");
                 
                 APP.openAdBridgeModal();
@@ -6736,15 +6794,26 @@ var isMktPageApp = window.setInterval(function () {
                             action : "setVisible"
                         }
                     ]);
-            } else if (currUrlFragment.search(mktoModelerFragmentRegex) != -1) {
-                if (currentUrl.split("?")[1].search(mktoModelerPreviewFragmentRegex) == -1) {
-                    console.log("Marketo App > Location: Revenue Cycle Model Editor");
+            } else if (currUrlFragment.search(mktoAnalyticsFragmentMatch) != -1) {
+                if (currUrlFragment.search(mktoAnalyzersFragmentMatch) != -1) {
+                    console.log("Marketo App > Location: Golden Analytics");
                     
-                    APP.disableModelerSaving("edit");
-                } else {
-                    console.log("Marketo App > Location: Revenue Cycle Model Previewer");
+                    APP.injectAnalyzerNavBar();
+                }
+                
+                if (currUrlFragment.search(mktoReportFragmentRegex) != -1) {
+                    console.log("Marketo App > Location: Fullscreen Report");
                     
-                    APP.disableModelerSaving("preview");
+                } else if (currUrlFragment.search(mktoModelerFragmentRegex) != -1) {
+                    if (currentUrl.split("?")[1].search(mktoModelerPreviewFragmentRegex) == -1) {
+                        console.log("Marketo App > Location: Revenue Cycle Model Editor");
+                        
+                        APP.disableAnalyticsSaving("model", "edit");
+                    } else {
+                        console.log("Marketo App > Location: Revenue Cycle Model Previewer");
+                        
+                        APP.disableAnalyticsSaving("model", "preview");
+                    }
                 }
             }
             
