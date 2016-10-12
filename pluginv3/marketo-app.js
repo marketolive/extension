@@ -4302,7 +4302,7 @@ APP.disableAnalyticsSaving = function (assetType, mode) {
                     heapEvent.workspaceName = "User's Workspace";
                 }
                 
-                heapTrack("track", heapEvent);
+                APP.heapTrack("track", heapEvent);
             }
         }, 0);
 };
@@ -4384,7 +4384,7 @@ APP.disableDesignerSaving = function (assetType, mode) {
                         heapEvent.assetName = assetNode.text;
                     }
                     
-                    heapTrack("track", heapEvent);
+                    APP.heapTrack("track", heapEvent);
                     
                     if (assetNode.accessZoneId.toString().search(mktoGoldenWorkspacesMatch) != -1
                          || APP.getCookie("toggleState") == "false") {
@@ -4856,7 +4856,7 @@ heapEvent.name = userWorkspaceName + " > " + userName;
 }
 }
 
-heapTrack("track", heapEvent);
+APP.heapTrack("track", heapEvent);
 };
 
 loadParameters = {
@@ -6464,7 +6464,7 @@ APP.trackNodeClick = function () {
                 }
                 
                 heapEvent.name = heapEventName;
-                heapTrack("track", heapEvent);
+                APP.heapTrack("track", heapEvent);
             }
             
             node.ui.onClick(e);
@@ -6512,7 +6512,7 @@ APP.trackTreeNodeSelection = function () {
             }
             
             heapEvent.name = heapEventName;
-            heapTrack("track", heapEvent);
+            APP.heapTrack("track", heapEvent);
             
             if (!node
                  || !this.boundTree)
@@ -6569,7 +6569,7 @@ APP.trackOtherAssets = function () {
         }
         
         heapEvent.name = heapEventName;
-        heapTrack("track", heapEvent);
+        APP.heapTrack("track", heapEvent);
     }
 };*/
 
@@ -6586,10 +6586,10 @@ APP.trackOtherAssets = function () {
  *
  **************************************************************************************/
 
-var heapTrack = function (action, event) {
+APP.heapTrack = function (action, event) {
     var isHeapAnalytics = window.setInterval(function () {
             if (typeof(heap) !== "undefined"
-             && heap) {
+                 && heap) {
                 //            console.log("Marketo App > Loaded: Heap Analytics");
                 
                 window.clearInterval(isHeapAnalytics);
@@ -6760,7 +6760,7 @@ var isMktPageApp = window.setInterval(function () {
             
             if (currUrlFragment == mktoMyMarketoFragment) {
                 APP.overrideHomeTiles();
-                heapTrack("track", {
+                APP.heapTrack("track", {
                     name : "My Marketo",
                     assetName : "Home"
                 });
@@ -6986,7 +6986,7 @@ var isMktPageApp = window.setInterval(function () {
                                 
                                 if (currUrlFragment == mktoMyMarketoFragment) {
                                     APP.overrideHomeTiles();
-                                    heapTrack("track", {
+                                    APP.heapTrack("track", {
                                         name : "My Marketo",
                                         assetName : "Home"
                                     });
@@ -7135,6 +7135,6 @@ var isMktPageApp = window.setInterval(function () {
             APP.overrideSuperballMenuItems();
             
             // Heap Analytics ID
-            heapTrack("id");
+            APP.heapTrack("id");
         }
     }, 0);

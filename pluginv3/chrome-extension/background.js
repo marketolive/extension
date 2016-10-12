@@ -147,8 +147,7 @@ function setCookie(obj) {
     };
     
     if (obj.expiresInDays) {
-        var d = new Date();
-        cookie.expirationDate = d.setTime(d.getTime() + (obj.expiresInDays * 24 * 60 * 60));
+        cookie.expirationDate = new Date().getTime()/1000 + (obj.expiresInDays * 24 * 60 * 60);
     }
     chrome.cookies.set(cookie, function () {
         if (cookie.value != null) {
