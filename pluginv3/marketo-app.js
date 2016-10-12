@@ -32,6 +32,9 @@ mktoDemoAccountMatch = "^mktodemoaccount",
 mktoMyMarketoFragment = "MM0A1",
 mktoCalendarFragment = "CAL",
 mktoAnalyticsFragment = "AR",
+mktoReportFragmentRegex = new RegExp("^AR[^!]+!$", "i"),
+mktoModelerFragmentRegex = new RegExp("^RCM[^!]+!$", "i"),
+mktoAnalyticsFragmentMatch = new RegExp("^AR[^!]+!$|^RCM[^!]+!$", "i"),
 mktoModelerPreviewFragmentRegex = new RegExp("^preview=true&approved=true/#RCM[^!]+!$", "i"),
 mktoAnalyticsDefaultFragment = "AH0A1ZN17",
 mktoAccountBasedMarketingFragment = "ABM0A1",
@@ -79,10 +82,6 @@ mktoLeadDatabaseTravelLeisureFragment = "ML0A1ZN27574",
 mktoAdminEmailEmailFragment = "EA0A1",
 mktoAdminWebServicesFragment = "MW0A1",
 mktoDisableButtonsFragmentMatch = "^" + mktoMarketingActivitiesDefaultFragment + "$|^" + mktoMarketingActivitiesUserFragment + "$|^" + mktoMarketingActivitiesJapaneseFragment + "$|^" + mktoMarketingActivitiesFinservFragment + "$|^" + mktoMarketingActivitiesHealthcareFragment + "$|^" + mktoMarketingActivitiesHigherEdFragment + "$|^" + mktoMarketingActivitiesManufacturingFragment + "$|^" + mktoMarketingActivitiesTechnologyFragment + "$|^" + mktoMarketingActivitiesTravelLeisureFragment + "$|^" + mktoLeadDatabaseDefaultFragment + "$|^" + mktoLeadDatabaseUserFragment + "$|^" + mktoLeadDatabaseJapaneseFragment + "$|^" + mktoLeadDatabaseFinservFragment + "$|^" + mktoLeadDatabaseHealthcareFragment + "$|^" + mktoLeadDatabaseHigherEdFragment + "$|^" + mktoLeadDatabaseManufacturingFragment + "$|^" + mktoLeadDatabaseTechnologyFragment + "$|^" + mktoLeadDatabaseTravelLeisureFragment + "$|^" + mktoAdminEmailEmailFragment + "$|^" + mktoAdminWebServicesFragment + "$",
-
-mktoReportFragmentRegex = new RegExp("^AR[^!]+!$", "i"),
-mktoModelerFragmentRegex = new RegExp("^RCM[^!]+!$", "i"),
-mktoAnalyticsFragmentMatch = mktoReportFragmentRegex + "|" + mktoModelerFragmentRegex,
 
 mktoOppInfluenceAnalyzerFragment = "AR1559A1!",
 mktoProgramAnalyzerFragment = "AR1544A1!",
@@ -6821,8 +6820,9 @@ var isMktPageApp = window.setInterval(function () {
             }
             
             // Only execute this block if the user is not on an editor page.
-            if (!currCompFragment
-                 || currCompFragment.search(mktoDesignersFragmentMatch) == -1) {
+            if (currUrlFragment.search(mktoAnalyticsFragmentMatch) == -1
+                 && (!currCompFragment
+                     || currCompFragment.search(mktoDesignersFragmentMatch) == -1)) {
                 
                 if (accountString.search(mktoAccountStringsMatch) != -1) {
                     APP.discardDrafts(accountString, "landingPage");
