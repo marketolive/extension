@@ -232,7 +232,7 @@ APP.getWorkspaceName = function (workspaceId) {
         break;
     
     case mktoUserWorkspaceId:
-        workspaceName = workspaceName;
+        workspaceName = userWorkspaceName;
         break;
     
     default:
