@@ -1068,7 +1068,7 @@ APP.overrideTreeNodeExpand = function () {
                      && this.attributes
                      && this.attributes.accessZoneId) {
                     
-                    if (this.accessZoneId != mktoUserWorkspaceId) {
+                    if (this.attributes.accessZoneId != mktoUserWorkspaceId) {
                         console.log("Marketo App > Saving: Folder Expand State");
                         MktFolder.saveExpandState(this, true);
                     }
@@ -6438,9 +6438,9 @@ APP.trackNodeClick = function () {
                     heapEvent.assetPath = currNode.text + " > " + heapEvent.assetPath;
                 }
                 
-                heapEvent.workspaceName = APP.getWorkspaceName(currNode.accessZoneId);
+                heapEvent.workspaceName = APP.getWorkspaceName(currNode.attributes.accessZoneId);
                 
-                if (currNode.accessZoneId.toString().search(mktoGoldenWorkspacesMatch) != -1) {
+                if (currNode.attributes.accessZoneId.toString().search(mktoGoldenWorkspacesMatch) != -1) {
                     heapEvent.name = heapEvent.workspaceName;
                     
                     if (heapEvent.workspaceName == "Admin") {
