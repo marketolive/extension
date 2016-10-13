@@ -1,4 +1,6 @@
-var devExtensionId = "aahhkppadknlakhbppohbeolcfdhmocf",
+var URL_PATH = "m3",
+HEAP_ANALYTICS_SCRIPT_LOCATION = "https://marketolive.com/" + URL_PATH + "/pluginv3/heap-analytics-ext.min.js",
+devExtensionId = "aahhkppadknlakhbppohbeolcfdhmocf",
 prodExtensionId = "onibnnoghllldiecboelbpcaeggfiohl",
 extensionId = prodExtensionId,
 getOneLoginUser;
@@ -27,7 +29,8 @@ getOneLoginUser = function () {
                     firstName : Application.user.firstname,
                     lastName : Application.user.lastname,
                     email : Application.user.email
-                };
+                },
+                isHeapAnalyticsForOneLogin;
                 
                 oneLoginUser.action = "setOneLoginUser";
                 chrome.runtime.sendMessage(extensionId, oneLoginUser, function (response) {
