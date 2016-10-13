@@ -6520,9 +6520,7 @@ APP.heapTrack = function (action, event) {
                         heapApp = "Marketo";
                     }
                     
-                    if (event.assetArea) {
-                        heapArea = event.assetArea;
-                    } else if (MktPage
+                    if (MktPage
                          && MktPage.baseTitle) {
                         heapArea = MktPage.baseTitle.split("•")[0].trimRight();
                     } else {
@@ -6538,9 +6536,16 @@ APP.heapTrack = function (action, event) {
                             assetPath : event.assetPath,
                             workspaceId : event.workspaceId,
                             workspaceName : event.workspaceName,
-                            area : heapArea,
+                            area : "",
                             url : currentUrl
                         };
+                        
+                        if (event.assetArea) {
+                            heapEventProps.area = event.assetArea;
+                        }
+                        else {
+                            heapEventProps.area = heapArea;
+                        }
                         
                         console.log("Marketo App > Tracking: Heap Event: " + event.name + "\n" + JSON.stringify(heapEventProps, null, 2));
                         heap.track(event.name, heapEventProps);
