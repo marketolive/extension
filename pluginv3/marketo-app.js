@@ -6538,6 +6538,7 @@ APP.heapTrack = function (action, event) {
                             assetPath : event.assetPath,
                             workspaceId : event.workspaceId,
                             workspaceName : event.workspaceName,
+                            userFolder : event.userFolder,
                             area : "",
                             url : currentUrl
                         };
