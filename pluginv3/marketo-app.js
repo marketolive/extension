@@ -1069,17 +1069,11 @@ APP.overrideTreeNodeExpand = function () {
                      && this.attributes.accessZoneId) {
                     
                     if (this.attributes.accessZoneId != mktoUserWorkspaceId) {
-                        console.log("Marketo App > Saving: Folder Expand State");
                         MktFolder.saveExpandState(this, true);
                     }
-                    /*
-                    if (this.text != userWorkspaceName
-                         && this.parentNode.text != userWorkspaceName
-                         && this.parentNode.parentNode != null
-                         && this.parentNode.parentNode.text != userWorkspaceName) {
-                        console.log("Marketo App > Saving: Folder Expand State");
-                        MktFolder.saveExpandState(this, true);
-                    }*/
+                    else {
+                        console.log("Marketo App > NOT Saving: Folder Expand State");
+                    }
                 }
             }
             MktAsyncTreeNode.superclass.expand.apply(this, arguments);
@@ -6446,7 +6440,7 @@ APP.trackNodeClick = function () {
                     if (heapEvent.workspaceName == "Admin") {
                         heapEvent.workspaceId = 0;
                     }
-                } else if (currNode.accessZoneId == mktoUserWorkspaceId) {
+                } else if (currNode.attributes.accessZoneId == mktoUserWorkspaceId) {
                     heapEvent.name = heapEvent.workspaceName;
                     heapEvent.userFolder = userName;
                 } else {
@@ -6550,32 +6544,45 @@ APP.heapTrack = function (action, event) {
                         
                         console.log("Marketo App > Tracking: Heap Event: " + event.name + "\n" + JSON.stringify(heapEventProps, null, 2));
                         heap.track(event.name, heapEventProps);
-                    } /*else {
-                        var heapEventTitle = document.title.replace(" - " + document.location.protocol + "//" + document.location.host + "/", ""),
-                        heapAsset,
-                        heapArea;
-                        
-                        if (heapEventTitle.search("•") != -1) {
-                            heapAsset = heapEventTitle.split("|")[1].trimLeft().split("•")[0].trimRight();
-                            heapArea = heapEventTitle.split("|")[1].trimLeft().split("•")[1].trimLeft();
-                        } else if (heapEventTitle.search("|") != -1) {
-                            heapAsset = "Home";
-                            heapArea = heapEventTitle.split("|")[1].trimLeft();
-                        } else {
-                            heapAsset = "Home";
-                            heapArea = heapEventTitle;
+                    } else {
+                        if (typeof(MktCanvas) !== "undefined"
+                             && MktCanvas
+                             && MktCanvas.getActiveTab()
+                             && MktCanvas.getActiveTab().config
+                             && MktCanvas.getActiveTab().config.accessZoneId) {
+                            
+                            heapEventProps = {
+                                app : heapApp,
+                                assetId : activeTabConfig.expNodeId,
+                                assetType : activeTabConfig.compType,
+                                workspaceId : activeTabConfig.accessZoneId,
+                                workspaceName : "",
+                                area : heapArea,
+                                url : currentUrl
+                            };
+                            
+                            var activeTabConfig = MktCanvas.getActiveTab().config,
+                            heapEventTitle = heapEventProps.workspaceName = APP.getWorkspaceName(activeTabConfig.accessZoneId);
+                            
+                            if (typeof(MktExplorer) !== "undefined"
+                                 && MktExplorer
+                                 && MktExplorer.getNodeById
+                                 && heapEventProps.assetId) {
+                                
+                                var currNode = MktExplorer.getNodeById(heapEventProps.assetId);
+                                
+                                heapEventProps.assetName = heapEventProps.assetPath = currNode.text;
+                                
+                                for (var ii = 0; ii < node.getDepth() - 1; ii++) {
+                                    currNode = currNode.parentNode;
+                                    heapEventProps.assetPath = currNode.text + " > " + heapEventProps.assetPath;
+                                }
+                            }
+                            
+                            console.log("Marketo App > Tracking: Heap Event: " + heapEventTitle + "\n" + JSON.stringify(heapEventProps, null, 2));
+                            heap.track(heapEventTitle, heapEventProps);
                         }
-                        
-                        heapEventTitle = heapEventTitle.replace("Marketo | ", "");
-                        heapEventProps = {
-                            app : heapApp,
-                            assetName : heapAsset,
-                            area : heapArea,
-                            url : currentUrl
-                        };
-                        console.log("Marketo App > Tracking: Heap Event: " + heapEventTitle + "\n" + JSON.stringify(heapEventProps, null, 2));
-                        heap.track(heapEventTitle, heapEventProps);
-                    }*/
+                    }
                     break;
                 }
             }
@@ -6704,6 +6711,7 @@ var isMktPageApp = window.setInterval(function () {
                     APP.limitNurturePrograms();
                     APP.hideFoldersOnImport();
                     APP.disableConfirmationMessage();
+                    APP.heapTrack("track");
                     APP.heapTrack("track", {
                         name : "Last Loaded",
                         assetName : "Page"
