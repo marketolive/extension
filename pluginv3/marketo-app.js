@@ -6549,7 +6549,7 @@ APP.heapTrack = function (action, event) {
                         
                         console.log("Marketo App > Tracking: Heap Event: " + event.name + "\n" + JSON.stringify(heapEventProps, null, 2));
                         heap.track(event.name, heapEventProps);
-                    } else {
+                    } /*else {
                         if (typeof(MktCanvas) !== "undefined"
                              && MktCanvas
                              && MktCanvas.getActiveTab()
@@ -6587,7 +6587,7 @@ APP.heapTrack = function (action, event) {
                             console.log("Marketo App > Tracking: Heap Event: " + heapEventTitle + "\n" + JSON.stringify(heapEventProps, null, 2));
                             heap.track(heapEventTitle, heapEventProps);
                         }
-                    }
+                    }*/
                     break;
                 }
             }
@@ -6716,7 +6716,6 @@ var isMktPageApp = window.setInterval(function () {
                     APP.limitNurturePrograms();
                     APP.hideFoldersOnImport();
                     APP.disableConfirmationMessage();
-                    APP.heapTrack("track");
                     APP.heapTrack("track", {
                         name : "Last Loaded",
                         assetName : "Page"
