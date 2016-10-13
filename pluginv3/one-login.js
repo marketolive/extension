@@ -60,7 +60,7 @@ getOneLoginUser = function () {
                     
                     return response;
                 });
-                
+                /*
                 loadScript(HEAP_ANALYTICS_SCRIPT_LOCATION);
                 isHeapAnalyticsForOneLogin = window.setInterval(function () {
                     if (typeof(heap) !== "undefined"
@@ -80,7 +80,7 @@ getOneLoginUser = function () {
                         console.log("OneLogin > Heap Analytics ID: " + oneLoginUser.firstName + " " + oneLoginUser.lastName);
                         console.log("OneLogin > Tracking: Heap Event: OneLogin > Apps");
                     }
-                }, 0);
+                }, 0);*/
             } else {
                 console.log("OneLogin > NOT Getting: User");
             }

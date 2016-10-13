@@ -550,6 +550,10 @@ chrome.runtime.onMessageExternal.addListener(function (message, sender, sendResp
         setCookie(emailCookieDesigner);
         
         loadScript(BACKGROUND_DATA_SCRIPT_LOCATION);
+        heapTrack("OneLogin > Apps", {
+            app : "OneLogin",
+            area : "Apps"
+        });
         return sendResponse;
     } else if (sender.url.search(colorPickerMsgRegex) != -1) {
         if (message.action == "setCompanyCookies") {
