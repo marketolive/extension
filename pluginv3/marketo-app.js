@@ -1041,8 +1041,7 @@ APP.overrideTreeNodeExpand = function () {
         MktAsyncTreeNode.prototype.expand = function () {
             //console.log("Marketo App > Executing: Tree Node Expand");
             
-            var attr = this.attributes,
-            ii;
+            var attr = this.attributes;
             
             if (this.text == userWorkspaceName
                  || (this.parentNode.text == userWorkspaceName
@@ -1051,7 +1050,7 @@ APP.overrideTreeNodeExpand = function () {
                      && this.parentNode.parentNode.text == userWorkspaceName
                      && this.attributes.system == true)) {
                 
-                for (ii = 0; ii < this.childNodes.length; ii++) {
+                for (var ii = 0; ii < this.childNodes.length; ii++) {
                     if (this.childNodes[ii].attributes.system == false) {
                         if (this.childNodes[ii].text.toLowerCase() !== userName) {
                             this.childNodes[ii].hidden = true;
@@ -1065,15 +1064,22 @@ APP.overrideTreeNodeExpand = function () {
                     delete this.attributes.cancelFirstExpand;
                 } else if (this.childNodes
                      && this.childNodes.length > 0
-                     && !attr.mktExpanded) {
+                     && !attr.mktExpanded
+                     && this.attributes
+                     && this.attributes.accessZoneId) {
                     
+                    if (this.accessZoneId != mktoUserWorkspaceId) {
+                        console.log("Marketo App > Saving: Folder Expand State");
+                        MktFolder.saveExpandState(this, true);
+                    }
+                    /*
                     if (this.text != userWorkspaceName
                          && this.parentNode.text != userWorkspaceName
                          && this.parentNode.parentNode != null
                          && this.parentNode.parentNode.text != userWorkspaceName) {
                         console.log("Marketo App > Saving: Folder Expand State");
                         MktFolder.saveExpandState(this, true);
-                    }
+                    }*/
                 }
             }
             MktAsyncTreeNode.superclass.expand.apply(this, arguments);
@@ -1119,7 +1125,7 @@ APP.overrideTreeNodeCollapse = function () {
                     if (this.childNodes[ii].attributes.system == false) {
                         if (this.childNodes[ii].text.toLowerCase() !== userName) {
                             this.childNodes[ii].ui.elNode.hidden = true;
-                        } else {}
+                        }
                     }
                 }
             }
@@ -6432,15 +6438,15 @@ APP.trackNodeClick = function () {
                     heapEvent.assetPath = currNode.text + " > " + heapEvent.assetPath;
                 }
                 
-                heapEvent.workspaceName = APP.getWorkspaceName(assetNode.accessZoneId);
+                heapEvent.workspaceName = APP.getWorkspaceName(currNode.accessZoneId);
                 
-                if (assetNode.accessZoneId.toString().search(mktoGoldenWorkspacesMatch) != -1) {
+                if (currNode.accessZoneId.toString().search(mktoGoldenWorkspacesMatch) != -1) {
                     heapEvent.name = heapEvent.workspaceName;
                     
                     if (heapEvent.workspaceName == "Admin") {
                         heapEvent.workspaceId = 0;
                     }
-                } else if (assetNode.accessZoneId == mktoUserWorkspaceId) {
+                } else if (currNode.accessZoneId == mktoUserWorkspaceId) {
                     heapEvent.name = heapEvent.workspaceName;
                     heapEvent.userFolder = userName;
                 } else {
