@@ -1071,7 +1071,7 @@ APP.overrideTreeNodeExpand = function () {
                          && this.parentNode.text != userWorkspaceName
                          && this.parentNode.parentNode != null
                          && this.parentNode.parentNode.text != userWorkspaceName) {
-                        //console.log("Marketo App > Saving: Folder Expand State");
+                        console.log("Marketo App > Saving: Folder Expand State");
                         MktFolder.saveExpandState(this, true);
                     }
                 }
@@ -4270,7 +4270,6 @@ APP.disableAnalyticsSaving = function (assetType, mode) {
                 switch (assetType) {
                 case "report":
                     heapEvent.assetName = assetNode.title;
-                    
                     break;
                 
                 case "model":
@@ -4291,15 +4290,15 @@ APP.disableAnalyticsSaving = function (assetType, mode) {
                     heapEvent.assetType = firstChar.toUpperCase() + heapEvent.assetType.slice(1);
                 }
                 
+                heapEvent.workspaceName = APP.getWorkspaceName(assetNode.accessZoneId);
+                
                 if (assetNode.accessZoneId.toString().search(mktoGoldenWorkspacesMatch) != -1) {
-                    heapEvent.workspaceName = APP.getWorkspaceName(assetNode.accessZoneId);
-                    heapEvent.name = heapEvent.workspaceName + " > " + heapEvent.assetType;
+                    heapEvent.name = heapEvent.workspaceName;
                 } else if (assetNode.accessZoneId == mktoUserWorkspaceId) {
-                    heapEvent.name = userWorkspaceName + " > " + userName;
-                    heapEvent.workspaceName = userWorkspaceName;
+                    heapEvent.name = heapEvent.workspaceName;
+                    heapEvent.userFolder = userName;
                 } else {
-                    heapEvent.name = "User's Workspace > " + userName;
-                    heapEvent.workspaceName = "User's Workspace";
+                    heapEvent.name = "User's Workspace"
                 }
                 
                 APP.heapTrack("track", heapEvent);
@@ -4367,15 +4366,15 @@ APP.disableDesignerSaving = function (assetType, mode) {
                         break;
                     }
                     
+                    heapEvent.workspaceName = APP.getWorkspaceName(assetNode.accessZoneId);
+                    
                     if (assetNode.accessZoneId.toString().search(mktoGoldenWorkspacesMatch) != -1) {
-                        heapEvent.workspaceName = APP.getWorkspaceName(assetNode.accessZoneId);
-                        heapEvent.name = heapEvent.workspaceName + " > " + heapEvent.assetType;
+                        heapEvent.name = heapEvent.workspaceName;
                     } else if (assetNode.accessZoneId == mktoUserWorkspaceId) {
-                        heapEvent.name = userWorkspaceName + " > " + userName;
-                        heapEvent.workspaceName = userWorkspaceName;
+                        heapEvent.name = heapEvent.workspaceName;
+                        heapEvent.userFolder = userName;
                     } else {
-                        heapEvent.name = "User's Workspace > " + userName;
-                        heapEvent.workspaceName = "User's Workspace";
+                        heapEvent.name = "User's Workspace"
                     }
                     
                     if (assetNode.text.search(".") != -1) {
@@ -6416,7 +6415,6 @@ APP.trackNodeClick = function () {
                  && node.attributes.accessZoneId) {
             
                 var currNode = node,
-                heapEventName,
                 heapEvent = {
                     name : "",
                     assetName : currNode.text,
@@ -6427,43 +6425,28 @@ APP.trackNodeClick = function () {
                     workspaceName : ""
                 };
                 
-                if (currNode.attributes.accessZoneId.toString().search(mktoGoldenWorkspacesMatch) != -1) {
-                    /*
-                    heapEventName = currNode.text;
-                    
-                    for (var ii = 0; ii < node.getDepth() - 1; ii++) {
-                        currNode = currNode.parentNode;
-                        heapEventName = currNode.text + " > " + heapEventName;
-                    }
-                    heapEvent.workspaceName = currNode.text;*/
-                    
-                    heapEvent.assetPath = currNode.text;
-                    for (var ii = 0; ii < node.getDepth() - 1; ii++) {
-                        currNode = currNode.parentNode;
-                        heapEvent.assetPath = currNode.text + " > " + heapEvent.assetPath;
-                    }
-                    heapEvent.workspaceName = currNode.text;
-                    
-                    if (heapEvent.workspaceName != "Admin") {
-                        heapEventName = heapEvent.workspaceName + " > " + heapEvent.assetType;
-                    } else {
-                        heapEventName = heapEvent.assetPath;
-                        heapEvent.assetId = 0;
-                    }
-                    
-                } else if (currNode.attributes.accessZoneId == mktoUserWorkspaceId) {
-                    // User's Own Folder in User Workspace
-                    heapEventName = userWorkspaceName + " > " + userName;
-                    heapEvent.workspaceName = userWorkspaceName;
-                } else {
-                    // User's Own Workspace
-                    for (var ii = 0; ii < node.getDepth() - 1; ii++) {
-                        currNode = currNode.parentNode;
-                    }
-                    heapEventName = heapEvent.workspaceName = currNode.text;
+                heapEvent.assetPath = currNode.text;
+                
+                for (var ii = 0; ii < node.getDepth() - 1; ii++) {
+                    currNode = currNode.parentNode;
+                    heapEvent.assetPath = currNode.text + " > " + heapEvent.assetPath;
                 }
                 
-                heapEvent.name = heapEventName;
+                heapEvent.workspaceName = APP.getWorkspaceName(assetNode.accessZoneId);
+                
+                if (assetNode.accessZoneId.toString().search(mktoGoldenWorkspacesMatch) != -1) {
+                    heapEvent.name = heapEvent.workspaceName;
+                    
+                    if (heapEvent.workspaceName == "Admin") {
+                        heapEvent.workspaceId = 0;
+                    }
+                } else if (assetNode.accessZoneId == mktoUserWorkspaceId) {
+                    heapEvent.name = heapEvent.workspaceName;
+                    heapEvent.userFolder = userName;
+                } else {
+                    heapEvent.name = "User's Workspace"
+                }
+                
                 APP.heapTrack("track", heapEvent);
             }
             
@@ -6549,7 +6532,7 @@ APP.heapTrack = function (action, event) {
                     if (event) {
                         heapEventProps = {
                             app : heapApp,
-                            asset : event.assetName,
+                            assetName : event.assetName,
                             assetId : event.assetId,
                             assetType : event.assetType,
                             assetPath : event.assetPath,
@@ -6561,7 +6544,7 @@ APP.heapTrack = function (action, event) {
                         
                         console.log("Marketo App > Tracking: Heap Event: " + event.name + "\n" + JSON.stringify(heapEventProps, null, 2));
                         heap.track(event.name, heapEventProps);
-                    } else {
+                    } /*else {
                         var heapEventTitle = document.title.replace(" - " + document.location.protocol + "//" + document.location.host + "/", ""),
                         heapAsset,
                         heapArea;
@@ -6580,16 +6563,13 @@ APP.heapTrack = function (action, event) {
                         heapEventTitle = heapEventTitle.replace("Marketo | ", "");
                         heapEventProps = {
                             app : heapApp,
-                            asset : heapAsset,
+                            assetName : heapAsset,
                             area : heapArea,
                             url : currentUrl
                         };
                         console.log("Marketo App > Tracking: Heap Event: " + heapEventTitle + "\n" + JSON.stringify(heapEventProps, null, 2));
                         heap.track(heapEventTitle, heapEventProps);
-                    }
-                    break;
-                    
-                default:
+                    }*/
                     break;
                 }
             }
@@ -6718,6 +6698,10 @@ var isMktPageApp = window.setInterval(function () {
                     APP.limitNurturePrograms();
                     APP.hideFoldersOnImport();
                     APP.disableConfirmationMessage();
+                    APP.heapTrack("track", {
+                        name : "Last Loaded",
+                        assetName : "Page"
+                    });
                 } else {
                     APP.overrideSaving();
                     APP.overrideSmartCampaignSaving();
