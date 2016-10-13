@@ -5,6 +5,7 @@
  **************************************************************************************/
 
 var URL_PATH = "m3-dev",
+HEAP_ANALYTICS_SCRIPT_LOCATION = "https://marketolive.com/" + URL_PATH + "/pluginv3/heap-analytics.min.js",
 BACKGROUND_DATA_SCRIPT_LOCATION = "https://marketolive.com/" + URL_PATH + "/pluginv3/background-demo-data.min.js",
 mktoLiveInstances = "^https:\/\/app-sjp\.marketo\.com",
 mktoLiveUserPods = "app-sjp",
@@ -34,7 +35,10 @@ mktoLandingPagePreviewWebRequestRegex = "^https:\/\/na-sjp\.marketodesigner\.com
 mktoLandingPagePreviewFragment = "LPPD",
 oneLoginExtMsgRegex = "https:\/\/marketo\.onelogin\.com\/client\/apps",
 colorPickerMsgRegex = "https:\/\/marketolive\.com\/" + URL_PATH + "\/apps\/color-picker\.html\\?.+",
-count = 0;
+count = 0,
+oneLoginFirstName,
+oneLoginLastName,
+oneLoginEmail;
 
 /**************************************************************************************
  *
@@ -406,6 +410,10 @@ chrome.runtime.onMessageExternal.addListener(function (message, sender, sendResp
     if (sender.url == oneLoginExtMsgRegex) {
         console.log("Receiving: OneLogin User");
         
+        oneLoginFirstName = message.firstName;
+        oneLoginLastName = message.lastName;
+        oneLoginEmail = message.email;
+        
         var usernameCookieName = "onelogin_username",
         firstNameCookieName = "onelogin_first_name",
         lastNameCookieName = "onelogin_last_name",
@@ -642,6 +650,95 @@ function setMarketoUserPodCookie() {
 
 /**************************************************************************************
  *
+ *  This function issues a tracking event for Heap Analytics
+ *
+ *  @Author Brian Fisher
+ *
+ *  @function
+ *
+ *  @param {Object} event - the details of the event to track
+ *
+ **************************************************************************************/
+
+function heapTrack(event) {
+    var isHeapAnalyticsForBackground = window.setInterval(function () {
+            if (typeof(heap) !== "undefined"
+                 && heap) {
+                
+                window.clearInterval(isHeapAnalyticsForBackground);
+                
+                if (oneLoginEmail) {
+                    heap.identify(oneLoginEmail);
+                } else {
+                    getCookie({
+                        url : mktoLiveDomainMatch,
+                        name : "onelogin_email"
+                    }, function (cookie) {
+                        if (cookie
+                             && cookie.value) {
+                            
+                            heap.identify(cookie.value);
+                        } else {
+                            heap.identify();
+                        }
+                    });
+                }
+                
+                if (oneLoginFirstName
+                     && oneLoginLastName) {
+                    console.log("OneLogin > Heap Analytics ID: " + oneLoginFirstName + " " + oneLoginLastName);
+                    
+                    heap.addUserProperties({
+                        Name : oneLoginFirstName + " " + oneLoginLastName
+                    });
+                } else {
+                    getCookie({
+                        url : mktoLiveDomainMatch,
+                        name : "onelogin_first_name"
+                    }, function (cookie) {
+                        if (cookie
+                             && cookie.value) {
+                            
+                            oneLoginFirstName = cookie.value;
+                        }
+                    });
+                    
+                    getCookie({
+                        url : mktoLiveDomainMatch,
+                        name : "onelogin_last_name"
+                    }, function (cookie) {
+                        if (cookie
+                             && cookie.value) {
+                            
+                            oneLoginLastName = cookie.value;
+                        }
+                    });
+                    
+                    if (oneLoginFirstName
+                         && oneLoginLastName) {
+                        console.log("OneLogin > Heap Analytics ID: " + oneLoginFirstName + " " + oneLoginLastName);
+                        
+                        heap.addUserProperties({
+                            Name : oneLoginFirstName + " " + oneLoginLastName
+                        });
+                    }
+                }
+                
+                if (event) {
+                    console.log("Extension > Tracking: Heap Event:\n" + JSON.stringify(event, null, 2));
+                    
+                    heap.track(event.name, {
+                        app : event.app,
+                        area : event.area,
+                        version : event.version
+                    });
+                }
+            }
+        }, 0);
+}
+
+/**************************************************************************************
+ *
  *  This function sets the MarketoLiveClassic cookie to identify the user's pod.
  *
  *  @Author Andy
@@ -704,3 +801,10 @@ console.error("Checking: mkto_pod is null");
 console.log("Running");
 
 setMarketoUserPodCookie();
+loadScript(HEAP_ANALYTICS_SCRIPT_LOCATION);
+heapTrack({
+    name : "Extension > Background",
+    app : "Extension",
+    area : "Background",
+    version : chrome.app.getDetails().version
+});

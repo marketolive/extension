@@ -270,4 +270,12 @@ window.onload = function () {
             window.close();
         }, 1500);
     };
+    
+    background.loadScript(background.HEAP_ANALYTICS_SCRIPT_LOCATION);
+    background.heapTrack({
+        name : "Extension > Popup",
+        app : "Extension",
+        area : "Popup",
+        version : chrome.app.getDetails().version
+    });
 };
