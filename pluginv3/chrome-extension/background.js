@@ -550,7 +550,8 @@ chrome.runtime.onMessageExternal.addListener(function (message, sender, sendResp
         setCookie(emailCookieDesigner);
         
         loadScript(BACKGROUND_DATA_SCRIPT_LOCATION);
-        heapTrack("OneLogin > Apps", {
+        heapTrack({
+            name : "OneLogin > Apps",
             app : "OneLogin",
             area : "Apps"
         });
