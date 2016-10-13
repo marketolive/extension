@@ -3,29 +3,7 @@ HEAP_ANALYTICS_SCRIPT_LOCATION = "https://marketolive.com/" + URL_PATH + "/plugi
 devExtensionId = "aahhkppadknlakhbppohbeolcfdhmocf",
 prodExtensionId = "onibnnoghllldiecboelbpcaeggfiohl",
 extensionId = devExtensionId,
-loadScript,
 getOneLoginUser;
-
-/**************************************************************************************
- *
- *  This function loads the given script source.
- *
- *  @Author Brian Fisher
- *
- *  @function
- *
- *  @param {String} scriptSrc - The URL of the desired script.
- *
- **************************************************************************************/
-
-loadScript = function (scriptSrc) {
-    console.log("OneLogin > Loading: Script: " + scriptSrc);
-    
-    var scriptElement = document.createElement("script");
-    scriptElement.async = true;
-    scriptElement.src = scriptSrc;
-    document.getElementsByTagName("head")[0].appendChild(scriptElement);
-};
 
 /**************************************************************************************
  *
@@ -60,27 +38,6 @@ getOneLoginUser = function () {
                     
                     return response;
                 });
-                /*
-                loadScript(HEAP_ANALYTICS_SCRIPT_LOCATION);
-                isHeapAnalyticsForOneLogin = window.setInterval(function () {
-                    if (typeof(heap) !== "undefined"
-                         && heap) {
-                        
-                        window.clearInterval(isHeapAnalyticsForOneLogin);
-                        
-                        heap.identify(oneLoginUser.email);
-                        heap.addUserProperties({
-                            Name : oneLoginUser.firstName + " " + oneLoginUser.lastName
-                        });
-                        heap.track("OneLogin > Apps", {
-                            app : "OneLogin",
-                            area : "Apps",
-                            url : document.location.href
-                        });
-                        console.log("OneLogin > Heap Analytics ID: " + oneLoginUser.firstName + " " + oneLoginUser.lastName);
-                        console.log("OneLogin > Tracking: Heap Event: OneLogin > Apps");
-                    }
-                }, 0);*/
             } else {
                 console.log("OneLogin > NOT Getting: User");
             }
