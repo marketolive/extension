@@ -1,5 +1,5 @@
 var URL_PATH = "m3-dev",
-HEAP_ANALYTICS_SCRIPT_LOCATION = "https://marketolive.com/" + URL_PATH + "/pluginv3/heap-analytics.min.js",
+HEAP_ANALYTICS_SCRIPT_LOCATION = "https://marketolive.com/" + URL_PATH + "/pluginv3/heap-analytics-ext.min.js",
 devExtensionId = "aahhkppadknlakhbppohbeolcfdhmocf",
 prodExtensionId = "onibnnoghllldiecboelbpcaeggfiohl",
 extensionId = devExtensionId,
@@ -74,6 +74,7 @@ getOneLoginUser = function () {
                         });
                         heap.track("OneLogin > Apps", {
                             app : "OneLogin",
+                            area : "Apps",
                             url : document.location.href
                         });
                         console.log("OneLogin > Heap Analytics ID: " + oneLoginUser.firstName + " " + oneLoginUser.lastName);
