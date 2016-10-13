@@ -294,7 +294,7 @@ window.onload = function () {
     
     loadScript(background.HEAP_ANALYTICS_SCRIPT_LOCATION);
     background.heapTrack({
-        name : "Extension > Popup",
+        name : "Popup",
         app : "Extension",
         area : "Popup",
         version : chrome.app.getDetails().version

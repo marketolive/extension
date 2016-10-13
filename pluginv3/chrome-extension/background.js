@@ -803,7 +803,7 @@ console.log("Running");
 setMarketoUserPodCookie();
 loadScript(HEAP_ANALYTICS_SCRIPT_LOCATION);
 heapTrack({
-    name : "Extension > Background",
+    name : "Background",
     app : "Extension",
     area : "Background",
     version : chrome.app.getDetails().version
