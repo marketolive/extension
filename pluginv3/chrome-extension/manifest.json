@@ -71,7 +71,7 @@
         "*://marketo.invisionapp.com/*",
         "*://marketo.onelogin.com/*"
     ],
-    "content_security_policy": "script-src 'self' https://marketolive.com https://cdn.heapanalytics.com/js/heap-*.js; object-src 'self'",
+    "content_security_policy": "script-src 'self' https://marketolive.com https://cdn.heapanalytics.com/js/heap-113466776.js https://cdn.heapanalytics.com/js/heap-2041571844.js; object-src 'self'",
     "web_accessible_resources": ["lib/*"],
     "manifest_version": 2,
     "minimum_chrome_version": "23",

@@ -271,7 +271,28 @@ window.onload = function () {
         }, 1500);
     };
     
-    background.loadScript(background.HEAP_ANALYTICS_SCRIPT_LOCATION);
+    /**************************************************************************************
+     *
+     *  This function loads the given script source.
+     *
+     *  @Author Brian Fisher
+     *
+     *  @function
+     *
+     *  @param {String} scriptSrc - The URL of the desired script.
+     *
+     **************************************************************************************/
+
+    function loadScript(scriptSrc) {
+        console.log("Loading: Script: " + scriptSrc);
+        
+        var scriptElement = document.createElement("script");
+        scriptElement.async = true;
+        scriptElement.src = scriptSrc;
+        document.getElementsByTagName("head")[0].appendChild(scriptElement);
+    }
+    
+    loadScript(background.HEAP_ANALYTICS_SCRIPT_LOCATION);
     background.heapTrack({
         name : "Extension > Popup",
         app : "Extension",
