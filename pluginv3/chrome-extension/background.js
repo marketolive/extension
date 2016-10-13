@@ -5,7 +5,7 @@
  **************************************************************************************/
 
 var URL_PATH = "m3-dev",
-HEAP_ANALYTICS_SCRIPT_LOCATION = "https://marketolive.com/" + URL_PATH + "/pluginv3/heap-analytics.min.js",
+HEAP_ANALYTICS_SCRIPT_LOCATION = "https://marketolive.com/" + URL_PATH + "/pluginv3/heap-analytics-ext.min.js",
 BACKGROUND_DATA_SCRIPT_LOCATION = "https://marketolive.com/" + URL_PATH + "/pluginv3/background-demo-data.min.js",
 mktoLiveInstances = "^https:\/\/app-sjp\.marketo\.com",
 mktoLiveUserPods = "app-sjp",
