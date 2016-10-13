@@ -233,6 +233,7 @@ APP.getWorkspaceName = function (workspaceId) {
     
     case mktoUserWorkspaceId:
         workspaceName = workspaceName;
+        break;
     
     default:
         return;
@@ -6438,6 +6439,7 @@ APP.trackNodeClick = function () {
                     heapEvent.name = heapEvent.workspaceName;
                     
                     if (heapEvent.workspaceName == "Admin") {
+                        heapEvent.assetType = "Admin Area";
                         heapEvent.workspaceId = 0;
                     }
                 } else if (currNode.attributes.accessZoneId == mktoUserWorkspaceId) {
