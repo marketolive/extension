@@ -1,7 +1,7 @@
 {
     "background": {
         "persistent": true,
-        "scripts": ["background.min.js"]
+        "scripts": ["background.js"]
     },
     "browser_action": {
         "default_popup": "popup.html",
@@ -10,7 +10,7 @@
     },
     "content_scripts": [ {
         "all_frames": false,
-        "js": ["content.min.js"],
+        "js": ["content.js"],
         "run_at": "document_end",
         "matches": [
             "*://*.marketo.com/*",
@@ -18,7 +18,7 @@
         ]
     }, {
         "all_frames": false,
-        "js": ["rtp-demo-site-content.min.js"],
+        "js": ["rtp-demo-site-content.js"],
         "run_at": "document_end",
         "matches": [
             "*://sjrtp1.marketo.com/demo/*",
@@ -26,21 +26,21 @@
         ]
     }, {
         "all_frames": false,
-        "js": ["one-login-content.min.js"],
+        "js": ["one-login-content.js"],
         "run_at": "document_end",
         "matches": [
             "*://marketo.onelogin.com/client/apps"
         ]
     }, {
         "all_frames": false,
-        "js": ["deliverability-tools-content.min.js"],
+        "js": ["deliverability-tools-content.js"],
         "run_at": "document_end",
         "matches": [
             "*://250ok.com/*"
         ]
     }, {
         "all_frames": false,
-        "js": ["invision-app-content.min.js"],
+        "js": ["invision-app-content.js"],
         "run_at": "document_end",
         "matches": [
             "*://marketo.invisionapp.com/*"
