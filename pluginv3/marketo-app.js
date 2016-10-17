@@ -4783,6 +4783,7 @@ APP.disableDesignerSaving = function (assetType, mode) {
                 case "abTest":
                     switch (mode) {
                     case "edit":
+                        console.log("Marketo App > Executing: A/B Test Editor: Saving & Toolbar Menus");
                         var isAbTestEditor = window.setInterval(function () {
                                 if (typeof(Mkt3.app.controllers.get("Mkt3.controller.editor.testGroup.TestGroup")) !== "undefined"
                                      && Mkt3.app.controllers.get("Mkt3.controller.editor.testGroup.TestGroup")
@@ -4795,10 +4796,10 @@ APP.disableDesignerSaving = function (assetType, mode) {
                                     assetNode = Mkt3.app.controllers.get("Mkt3.controller.editor.testGroup.TestGroup").getTestGroup().getNodeJson();
                                     menuItems = [
                                         // Navigation menu
-                                        //"testGroupEditor toolbar[action=back]", // Back
-                                        //"testGroupEditor toolbar[action=next]", // Next
-                                        "testGroupEditor toolbar[action=finish]", // Finish
-                                        //"testGroupEditor toolbar[action=close]", // Close
+                                        //"testGroupEditor toolbar [action=back]", // Back
+                                        //"testGroupEditor toolbar [action=next]", // Next
+                                        "testGroupEditor toolbar [action=finish]", // Finish
+                                        //"testGroupEditor toolbar [action=close]", // Close
                                     ];
                                     
                                     disableDesignerAsset(assetNode, menuItems, APP.disableSaving);
@@ -6609,12 +6610,12 @@ APP.heapTrack = function (action, event) {
  *
  **************************************************************************************/
 
+var toggleState = APP.getCookie("toggleState");
 var isMktPageApp = window.setInterval(function () {
         if (typeof(MktPage) !== "undefined") {
             console.log("Marketo App > Location: Marketo Page");
             
-            var toggleState = APP.getCookie("toggleState"),
-            accountString,
+            var accountString,
             userId;
             
             if (MktPage.savedState
@@ -6846,7 +6847,7 @@ var isMktPageApp = window.setInterval(function () {
                 case mktoEmailTestGroupEditFragment:
                     console.log("Marketo App > Location: Email Test Group Wizard");
                     
-                    APP.disableDesignerSaving("abTest");
+                    APP.disableDesignerSaving("abTest", "edit");
                     break;
                     
                 default:
