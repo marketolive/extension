@@ -780,7 +780,8 @@ APP.overrideSmartCampaignSaving = function () {
             this._updateDataPanelOrder(true);
             var canvas = MktCanvas.getActiveTab();
             if (!APP.evaluateMenu("button", null, canvas, null)
-                 && APP.getCookie("toggleState") != "false") {
+                 && toggleState
+                 && toggleState != "false") {
                 
                 if (this.saveQueue.blockingSaveInProgress) {
                     this.saveQueue.pendingChangesCount++;
@@ -1543,7 +1544,8 @@ APP.overrideNewAssetCreate = function () {
                  || form.ownerAsset == null
                  || form.ownerAsset.isOneOfProgramTypes == null
                  || form.ownerAsset.isOneOfProgramTypes() == false) {
-                if (this != null
+                if (form.getXType() != "nurtureTrackForm"
+                     && this != null
                      && this.getField("name") != null
                      && this.getField("name").getValue() != null) {
                     var assetName = this.getField("name").getValue();
@@ -4387,7 +4389,7 @@ APP.disableDesignerSaving = function (assetType, mode) {
                     APP.heapTrack("track", heapEvent);
                     
                     if (assetNode.accessZoneId.toString().search(mktoGoldenWorkspacesMatch) != -1
-                         || APP.getCookie("toggleState") == "false") {
+                         || toggleState == "false") {
                         
                         if (disableFunc) {
                             disableFunc();
@@ -4874,7 +4876,7 @@ heapTrackDesigner(record.getNodeJson());
 if (record.get("zoneId")) {
 
 if (record.get("zoneId").toString().search(mktoGoldenWorkspacesMatch) != -1
-|| APP.getCookie("toggleState") == "false") {
+|| toggleState == "false") {
 APP.disableSaving();
 
 if (typeof(Ext4) !== "undefined"
@@ -5046,6 +5048,7 @@ APP.disableFormSaveButtons = function () {
                  || this.getXType() == "addToAccountListForm" //ABM > Named Accounts > Add To Account List
                  || this.getXType() == "createAccountListForm" //ABM > Account Lists > Create New/Rename Account List
                  || this.getXType() == "analyticsReportSubscriptionForm" //Analytics > Analyzer & Report > New Report Subscription
+                 || this.getXType() == "fileUploadForm" //Design Studio > Images & Files > Grab Images from Web
                  || this.getXType() == "adminUserInviteWizard" //Admin > User & Roles > Users > Invite New User
                  || this.getXType() == "adminEditLicensesForm" //Admin > User & Roles > Users > Issue License
                  || this.getXType() == "adminSubscriptionInformationForm" //Admin > My Account > Subcription Information
@@ -5080,6 +5083,7 @@ APP.disableFormSaveButtons = function () {
                 var me = this,
                 menuItems = [
                     "[action=submit]", //Create, Add, Save
+                    "[action=import]", //Import
                 ],
                 mItems = this.query(menuItems.toString());
                 
@@ -5435,7 +5439,7 @@ APP.overrideSaving = function () {
          && Mkt3.data.Store.prototype.sync) {
         var prevDataStoreSync = Mkt3.data.Store.prototype.sync;
         Mkt3.data.Store.prototype.sync = function () {
-            console.log("Marketo App > Executing: Override Saving for Nurture Streams (sync)");
+            //console.log("Marketo App > Executing: Override Saving for Nurture Streams (sync)");
             
             if (window.location.href.search("\/#" + mktoCalendarFragment) != -1) {
                 Mkt3.data.Store.prototype.sync = prevDataStoreSync;
@@ -5445,9 +5449,10 @@ APP.overrideSaving = function () {
                 if (typeof(MktCanvas) !== "undefined"
                      && MktCanvas
                      && MktCanvas.getActiveTab()
-                     && APP.getCookie("toggleState") != "false") {
+                     && toggleState
+                     && toggleState != "false") {
                     disable = APP.evaluateMenu("button", null, MktCanvas.getActiveTab(), null);
-                } else if (APP.getCookie("toggleState") == "false") {
+                } else if (toggleState == "false") {
                     disable = true;
                 }
                 
@@ -5463,7 +5468,7 @@ APP.overrideSaving = function () {
                         this.callParent(arguments);
                     }
                 } else {
-                    console.log("Marketo App > Disabling: Saving for Nurture Streams (sync)");
+                    //console.log("Marketo App > Disabling: Saving for Nurture Streams (sync)");
                 }
             }
         };
@@ -5476,15 +5481,16 @@ APP.overrideSaving = function () {
          && Ext4.data.Model.prototype
          && Ext4.data.Model.prototype.destroy) {
         Ext4.data.Model.prototype.destroy = function (options) {
-            console.log("Marketo App > Executing: Override Saving for Nurture Streams (destroy)");
+            //console.log("Marketo App > Executing: Override Saving for Nurture Streams (destroy)");
             
             var disable;
             if (typeof(MktCanvas) !== "undefined"
                  && MktCanvas
                  && MktCanvas.getActiveTab()
-                 && APP.getCookie("toggleState") != "false") {
+                 && toggleState
+                 && toggleState != "false") {
                 disable = APP.evaluateMenu("button", null, MktCanvas.getActiveTab(), null);
-            } else if (APP.getCookie("toggleState") == "false") {
+            } else if (toggleState == "false") {
                 disable = true;
             }
             
@@ -5534,7 +5540,7 @@ APP.overrideSaving = function () {
                 }
                 return me;
             } else {
-                console.log("Marketo App > Disabling: Saving for Nurture Streams (destroy)");
+                //console.log("Marketo App > Disabling: Saving for Nurture Streams (destroy)");
             }
         };
     }
@@ -6607,7 +6613,8 @@ var isMktPageApp = window.setInterval(function () {
         if (typeof(MktPage) !== "undefined") {
             console.log("Marketo App > Location: Marketo Page");
             
-            var accountString,
+            var toggleState = APP.getCookie("toggleState"),
+            accountString,
             userId;
             
             if (MktPage.savedState
@@ -6648,7 +6655,7 @@ var isMktPageApp = window.setInterval(function () {
                 APP.disableDemoPluginCheck();
                 
                 // This check ensures that an admin can login and test the plugin as a normal user.
-                if (APP.getCookie("toggleState") != "false") {
+                if (toggleState != "false") {
                     return;
                 } else {
                     console.log("Marketo App > User: Admin is now a normal user");
@@ -6833,7 +6840,7 @@ var isMktPageApp = window.setInterval(function () {
                 case mktoAbTestEditFragment:
                     console.log("Marketo App > Location: A/B Test Wizard");
                     
-                    APP.disableDesignerSaving("abTest");
+                    APP.disableDesignerSaving("abTest", "edit");
                     break;
                     
                 case mktoEmailTestGroupEditFragment:
@@ -7018,13 +7025,13 @@ var isMktPageApp = window.setInterval(function () {
                                         case mktoAbTestEditFragment:
                                             console.log("Marketo App > Location: A/B Test Wizard");
                                             
-                                            APP.disableDesignerSaving("abTest");
+                                            APP.disableDesignerSaving("abTest", "edit");
                                             break;
                                             
                                         case mktoEmailTestGroupEditFragment:
                                             console.log("Marketo App > Location: Email Test Group Wizard");
                                             
-                                            APP.disableDesignerSaving("abTest");
+                                            APP.disableDesignerSaving("abTest", "edit");
                                             break;
                                             
                                         default:
