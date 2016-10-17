@@ -6846,7 +6846,7 @@ var isMktPageApp = window.setInterval(function () {
                 case mktoEmailTestGroupEditFragment:
                     console.log("Marketo App > Location: Email Test Group Wizard");
                     
-                    APP.disableDesignerSaving("abTest");
+                    APP.disableDesignerSaving("abTest", "edit");
                     break;
                     
                 default:
