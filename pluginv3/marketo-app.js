@@ -4783,6 +4783,7 @@ APP.disableDesignerSaving = function (assetType, mode) {
                 case "abTest":
                     switch (mode) {
                     case "edit":
+                        console.log("Marketo App > Executing: A/B Test Editor: Saving & Toolbar Menus");
                         var isAbTestEditor = window.setInterval(function () {
                                 if (typeof(Mkt3.app.controllers.get("Mkt3.controller.editor.testGroup.TestGroup")) !== "undefined"
                                      && Mkt3.app.controllers.get("Mkt3.controller.editor.testGroup.TestGroup")
