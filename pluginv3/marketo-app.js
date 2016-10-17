@@ -4795,10 +4795,10 @@ APP.disableDesignerSaving = function (assetType, mode) {
                                     assetNode = Mkt3.app.controllers.get("Mkt3.controller.editor.testGroup.TestGroup").getTestGroup().getNodeJson();
                                     menuItems = [
                                         // Navigation menu
-                                        //"testGroupEditor toolbar[action=back]", // Back
-                                        //"testGroupEditor toolbar[action=next]", // Next
-                                        "testGroupEditor toolbar[action=finish]", // Finish
-                                        //"testGroupEditor toolbar[action=close]", // Close
+                                        //"testGroupEditor toolbar [action=back]", // Back
+                                        //"testGroupEditor toolbar [action=next]", // Next
+                                        "testGroupEditor toolbar [action=finish]", // Finish
+                                        //"testGroupEditor toolbar [action=close]", // Close
                                     ];
                                     
                                     disableDesignerAsset(assetNode, menuItems, APP.disableSaving);
