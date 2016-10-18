@@ -4,7 +4,7 @@ mktoLiveProdMunchkinId = "185-NGX-811",
 mktoLiveMunchkinId = mktoLiveDevMunchkinId,
 mktoLiveDevHost = "www.marketolive-dev.com",
 mktoLiveProdHost = "www.marketolive.com",
-mktoLiveHost = mktoLiveDevHost,
+mktoLiveHost = mktoLiveProdHost,
 landingPageType = "landing",
 webPageType = "web",
 webPages = {
@@ -72,10 +72,10 @@ webPages = {
         visitationRate : 0.05,
         conversionRate : 1.0
     },
-    /*        8 : {
+    8 : {
     name : "whyUs",
     type : webPageType,
-    url : "http://"+mktoLiveHost+"/en/info/why-us",
+    url : "http://"+mktoLiveHost+"/info/why-us",
     dependentOn : [],
     visitationRate : 0.33,
     conversionRate : 1.0
@@ -83,7 +83,7 @@ webPages = {
     9 : {
     name : "integrations",
     type : webPageType,
-    url : "http://"+mktoLiveHost+"/en/info/integrations",
+    url : "http://"+mktoLiveHost+"/info/integrations",
     dependentOn : [],
     visitationRate : 0.50,
     conversionRate : 1.0
@@ -91,7 +91,7 @@ webPages = {
     10 : {
     name : "contactUs",
     type : webPageType,
-    url : "http://"+mktoLiveHost+"/en/info/contact-us",
+    url : "http://"+mktoLiveHost+"/info/contact-us",
     dependentOn : [],
     visitationRate : 0.05,
     conversionRate : 1.0
@@ -99,7 +99,7 @@ webPages = {
     11 : {
     name : "community",
     type : webPageType,
-    url : "http://"+mktoLiveHost+"/en/info/community",
+    url : "http://"+mktoLiveHost+"/info/community",
     dependentOn : ["signup", "rewardsSignup"],
     visitationRate : 0.03,
     conversionRate : 1.0
@@ -107,7 +107,7 @@ webPages = {
     12 : {
     name : "liveEvent",
     type : webPageType,
-    url : "http://"+mktoLiveHost+"/en/info/live-event",
+    url : "http://"+mktoLiveHost+"/info/live-event",
     dependentOn : ["signup", "liveEventRegistration"],
     visitationRate : 0.50,
     conversionRate : 1.0
@@ -115,7 +115,7 @@ webPages = {
     13 : {
     name : "webinar",
     type : webPageType,
-    url : "http://"+mktoLiveHost+"/en/info/webinar",
+    url : "http://"+mktoLiveHost+"/info/webinar",
     dependentOn : ["signup", "webinarRegistration"],
     visitationRate : 0.50,
     conversionRate : 1.0
@@ -123,7 +123,7 @@ webPages = {
     14 : {
     name : "products",
     type : webPageType,
-    url : "http://"+mktoLiveHost+"/en/info/products",
+    url : "http://"+mktoLiveHost+"/info/products",
     dependentOn : [],
     visitationRate : 0.75,
     conversionRate : 1.0
@@ -131,11 +131,11 @@ webPages = {
     15 : {
     name : "pricing",
     type : webPageType,
-    url : "http://"+mktoLiveHost+"/en/info/pricing",
+    url : "http://"+mktoLiveHost+"/info/pricing",
     dependentOn : [],
     visitationRate : 0.80,
     conversionRate : 1.0
-    }*/
+    }
 },
 jobTitles = [
     "Account Director",
