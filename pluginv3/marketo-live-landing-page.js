@@ -68,9 +68,13 @@ var isMktoForm = window.setInterval(function () {
                      || submitParamVal == "test") {
                     
                     form.onSuccess(function (values, followUpUrl) {
-                        window.close();
-                        
-                        return false;
+                        if (submitParamVal == "true") {
+                            window.close();
+                            return false;
+                        } else {
+                            followUpUrl = "http://www.marketolive.com";
+                            return true;
+                        }
                     });
                     
                     if (typeof(form.getValues().Email) != "undefined") {
