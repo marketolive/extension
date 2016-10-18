@@ -55,6 +55,8 @@ currUrlFragment,
 currCompFragment,
 userName,
 
+adminUserNamesMatch = "^admin(\.[a-z]{0,2})?@(marketolive.com$|mktodemoaccount)" + "|" + "^mktodemoaccount[a-z0-9]*@marketo\.com" + "|" + "^marketodemo.*@gmail\.com$",
+
 mktoAccountStringQe = "globalsales",
 mktoAccountString106 = "mktodemoaccount106",
 mktoAccountString106d = "mktodemoaccount106d",
@@ -6647,9 +6649,7 @@ var isMktPageApp = window.setInterval(function () {
             }
             
             // If the user is the admin or ghost, disable
-            if (userId.search("^admin\.?[a-z]{0,2}@mktodemoaccount") != -1
-                 || userId.search("^mktodemoaccount[a-z0-9]*@marketo\.com") != -1
-                 || userId.search("^marketodemo.*@gmail\.com$") != -1) {
+            if (userId.search(adminUserNamesMatch) != -1) {
                 console.log("Marketo App > User: Admin");
                 
                 // Disabling Demo Plugin Check
@@ -6715,7 +6715,6 @@ var isMktPageApp = window.setInterval(function () {
                     APP.disableAdminSaveButtons();
                     APP.overrideSmartCampaignSaving();
                     APP.trackNodeClick();
-                    //APP.trackTreeNodeSelection();
                     //                        APP.overrideSmartCampaignCanvas();
                     APP.overrideUpdatePortletOrder();
                     APP.overrideNewProgramCreate();
