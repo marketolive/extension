@@ -73,68 +73,68 @@ webPages = {
         conversionRate : 1.0
     },
     8 : {
-    name : "whyUs",
-    type : webPageType,
-    url : "http://"+mktoLiveHost+"/info/why-us",
-    dependentOn : [],
-    visitationRate : 0.33,
-    conversionRate : 1.0
+        name : "whyUs",
+        type : webPageType,
+        url : "http://" + mktoLiveHost + "/info/why-us",
+        dependentOn : [],
+        visitationRate : 0.33,
+        conversionRate : 1.0
     },
     9 : {
-    name : "integrations",
-    type : webPageType,
-    url : "http://"+mktoLiveHost+"/info/integrations",
-    dependentOn : [],
-    visitationRate : 0.50,
-    conversionRate : 1.0
+        name : "integrations",
+        type : webPageType,
+        url : "http://" + mktoLiveHost + "/info/integrations",
+        dependentOn : [],
+        visitationRate : 0.50,
+        conversionRate : 1.0
     },
     10 : {
-    name : "contactUs",
-    type : webPageType,
-    url : "http://"+mktoLiveHost+"/info/contact-us",
-    dependentOn : [],
-    visitationRate : 0.05,
-    conversionRate : 1.0
+        name : "contactUs",
+        type : webPageType,
+        url : "http://" + mktoLiveHost + "/info/contact-us",
+        dependentOn : [],
+        visitationRate : 0.05,
+        conversionRate : 1.0
     },
     11 : {
-    name : "community",
-    type : webPageType,
-    url : "http://"+mktoLiveHost+"/info/community",
-    dependentOn : ["signup", "rewardsSignup"],
-    visitationRate : 0.03,
-    conversionRate : 1.0
+        name : "community",
+        type : webPageType,
+        url : "http://" + mktoLiveHost + "/info/community",
+        dependentOn : ["signup", "rewardsSignup"],
+        visitationRate : 0.03,
+        conversionRate : 1.0
     },
     12 : {
-    name : "liveEvent",
-    type : webPageType,
-    url : "http://"+mktoLiveHost+"/info/live-event",
-    dependentOn : ["signup", "liveEventRegistration"],
-    visitationRate : 0.50,
-    conversionRate : 1.0
+        name : "liveEvent",
+        type : webPageType,
+        url : "http://" + mktoLiveHost + "/info/live-event",
+        dependentOn : ["signup", "liveEventRegistration"],
+        visitationRate : 0.50,
+        conversionRate : 1.0
     },
     13 : {
-    name : "webinar",
-    type : webPageType,
-    url : "http://"+mktoLiveHost+"/info/webinar",
-    dependentOn : ["signup", "webinarRegistration"],
-    visitationRate : 0.50,
-    conversionRate : 1.0
+        name : "webinar",
+        type : webPageType,
+        url : "http://" + mktoLiveHost + "/info/webinar",
+        dependentOn : ["signup", "webinarRegistration"],
+        visitationRate : 0.50,
+        conversionRate : 1.0
     },
     14 : {
-    name : "products",
-    type : webPageType,
-    url : "http://"+mktoLiveHost+"/info/products",
-    dependentOn : [],
-    visitationRate : 0.75,
-    conversionRate : 1.0
+        name : "products",
+        type : webPageType,
+        url : "http://" + mktoLiveHost + "/info/products",
+        dependentOn : [],
+        visitationRate : 0.75,
+        conversionRate : 1.0
     },
     15 : {
-    name : "pricing",
-    type : webPageType,
-    url : "http://"+mktoLiveHost+"/info/pricing",
-    dependentOn : [],
-    visitationRate : 0.80,
-    conversionRate : 1.0
+        name : "pricing",
+        type : webPageType,
+        url : "http://" + mktoLiveHost + "/info/pricing",
+        dependentOn : [],
+        visitationRate : 0.80,
+        conversionRate : 1.0
     }
 },
 jobTitles = [
@@ -242,6 +242,22 @@ leadSources = [
     "Webinar",
     "Website"
 ],
+usAreaCodes = [201, 202, 203, 205, 206, 207, 208, 209, 210, 212, 213, 214, 215, 216, 217, 218, 219, 224, 225, 228, 229, 231, 234, 239, 240, 248, 251, 252, 253, 254, 256, 260, 262, 267, 269, 270, 272, 276, 281, 301, 302, 303, 304, 305, 307, 308, 309, 310, 312, 313, 314, 315, 316, 317, 318, 319, 320, 321, 323, 325, 330, 331, 334, 336, 337, 339, 340, 346, 347, 351, 352, 360, 361, 385, 386, 401, 402, 404, 405, 406, 407, 408, 409, 410, 412, 413, 414, 415, 417, 419, 423, 424, 425, 430, 432, 434, 435, 440, 442, 443, 458, 469, 470, 475, 478, 479, 480, 484, 501, 502, 503, 504, 505, 507, 508, 509, 510, 512, 513, 515, 516, 517, 518, 520, 530, 531, 534, 539, 540, 541, 551, 559, 561, 562, 563, 567, 570, 571, 573, 574, 575, 580, 585, 586, 601, 602, 603, 605, 606, 607, 608, 609, 610, 612, 614, 615, 616, 617, 618, 619, 620, 623, 626, 630, 631, 636, 641, 646, 650, 651, 657, 660, 661, 662, 667, 669, 670, 671, 678, 681, 682, 684, 701, 702, 703, 704, 706, 707, 708, 712, 713, 714, 715, 716, 717, 718, 719, 720, 724, 725, 727, 731, 732, 734, 737, 740, 747, 754, 757, 760, 762, 763, 765, 769, 770, 772, 773, 774, 775, 779, 781, 785, 786, 787, 801, 802, 803, 804, 805, 806, 808, 810, 812, 813, 814, 815, 816, 817, 818, 828, 830, 831, 832, 843, 845, 847, 848, 850, 856, 857, 858, 859, 860, 862, 863, 864, 865, 870, 872, 878, 901, 903, 904, 906, 907, 908, 909, 910, 912, 913, 914, 915, 916, 917, 918, 919, 920, 925, 928, 929, 931, 936, 937, 938, 939, 940, 941, 947, 949, 951, 952, 954, 956, 970, 971, 972, 973, 978, 979, 980, 984, 985, 989],
+frMobile = "+33 06 55 55 55 55",
+ukMobile = "+44 070 5555 5555",
+deMobile = "+49 0151 5555555",
+auMobile = "+61 04011 555 555",
+jpMobile = "+81 070 5555  5555",
+frPhone = "+33 01 55 55 55 55",
+ukPhone = "+44 020 5555 5555",
+dePhone = "+49 030 5555 5555",
+auPhone = "+61 02 5555 5555",
+jpPhone = "+81 03 5555 5555",
+mobileNumbers = [frMobile, ukMobile, deMobile, auMobile, jpMobile],
+phoneNumbers = [frPhone, ukPhone, dePhone, auPhone, jpPhone],
+mobileNumberConversionRate = 0.25,
+phoneNumberConversionRate = 0.5,
+usNumberRate = 0.75,
 webPageX,
 webPageXvisitationRate,
 companyX,
@@ -249,7 +265,9 @@ cookieExpiresInDays,
 jobTitleCookieName,
 companyNameCookieName,
 industryCookieName,
-leadSourceCookieName;
+leadSourceCookieName,
+phoneNumberCookieName,
+mobileNumberCookieName;
 
 /**************************************************************************************
  *
@@ -268,6 +286,8 @@ jobTitleCookieName = "attrib_job_title";
 companyNameCookieName = "attrib_company_name";
 industryCookieName = "attrib_industry";
 leadSourceCookieName = "attrib_lead_source";
+mobileNumberCookieName = "attrib_mobile_number";
+phoneNumberCookieName = "attrib_phone_number";
 
 getCookie({
     url : mktoAppDomainMatch,
@@ -414,6 +434,94 @@ getCookie({
         setCookie(leadSourceCookieMarketoLive);
         setCookie(leadSourceCookieMarketoLiveClassic);
         setCookie(leadSourceCookieLandingPage);
+    }
+});
+
+getCookie({
+    url : mktoAppDomainMatch,
+    name : mobileNumberCookieName
+}, function (cookie) {
+    if (!cookie
+         || !cookie.value) {
+        
+        if ((Math.random()) <= mobileNumberConversionRate) {
+            console.log("Initializing: " + mobileNumberCookieName + " Cookie");
+            
+            var mobileNumberX;
+            if ((Math.random()) <= usNumberRate) {
+                mobileNumberX = "+1-" + usAreaCodes[Math.floor((Math.random() * usAreaCodes.length))] + "-555-" + Math.floor((Math.random() * 10)) + Math.floor((Math.random() * 10)) + Math.floor((Math.random() * 10)) + Math.floor((Math.random() * 10));
+            } else {
+                mobileNumberX = mobileNumbers[Math.floor((Math.random() * mobileNumbers.length))];
+            }
+            
+            setCookie({
+                url : mktoLiveDomainMatch,
+                domain : mktoLiveUriDomain,
+                name : mobileNumberCookieName,
+                value : mobileNumberX,
+                expiresInDays : cookieExpiresInDays
+            });
+            setCookie({
+                url : mktoLiveClassicDomainMatch,
+                domain : mktoLiveClassicUriDomain,
+                name : mobileNumberCookieName,
+                value : mobileNumberX,
+                expiresInDays : cookieExpiresInDays
+            });
+            setCookie({
+                url : mktoAppDomainMatch,
+                domain : mktoAppUriDomain,
+                name : mobileNumberCookieName,
+                value : mobileNumberX,
+                expiresInDays : cookieExpiresInDays
+            });
+        } else {
+            console.log("NOT Initializing: " + mobileNumberCookieName + " Cookie due to conversion rate " + mobileNumberConversionRate);
+        }
+    }
+});
+
+getCookie({
+    url : mktoAppDomainMatch,
+    name : phoneNumberCookieName
+}, function (cookie) {
+    if (!cookie
+         || !cookie.value) {
+        
+        if ((Math.random()) <= phoneNumberConversionRate) {
+            console.log("Initializing: " + phoneNumberCookieName + " Cookie");
+            
+            var phoneNumberX;
+            if ((Math.random()) <= usNumberRate) {
+                phoneNumberX = "+1-" + usAreaCodes[Math.floor((Math.random() * usAreaCodes.length))] + "-555-" + Math.floor((Math.random() * 10)) + Math.floor((Math.random() * 10)) + Math.floor((Math.random() * 10)) + Math.floor((Math.random() * 10));
+            } else {
+                phoneNumberX = phoneNumbers[Math.floor((Math.random() * phoneNumbers.length))];
+            }
+            
+            setCookie({
+                url : mktoLiveDomainMatch,
+                domain : mktoLiveUriDomain,
+                name : phoneNumberCookieName,
+                value : phoneNumberX,
+                expiresInDays : cookieExpiresInDays
+            });
+            setCookie({
+                url : mktoLiveClassicDomainMatch,
+                domain : mktoLiveClassicUriDomain,
+                name : phoneNumberCookieName,
+                value : phoneNumberX,
+                expiresInDays : cookieExpiresInDays
+            });
+            setCookie({
+                url : mktoAppDomainMatch,
+                domain : mktoAppUriDomain,
+                name : phoneNumberCookieName,
+                value : phoneNumberX,
+                expiresInDays : cookieExpiresInDays
+            });
+        } else {
+            console.log("NOT Initializing: " + phoneNumberCookieName + " Cookie due to conversion rate " + phoneNumberConversionRate);
+        }
     }
 });
 
