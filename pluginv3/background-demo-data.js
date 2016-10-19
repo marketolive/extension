@@ -71,7 +71,7 @@ webPages = {
         dependentOn : ["signup"],
         visitationRate : 0.05,
         conversionRate : 1.0
-    },
+    }/*,
     8 : {
         name : "whyUs",
         type : webPageType,
@@ -135,7 +135,7 @@ webPages = {
         dependentOn : [],
         visitationRate : 0.80,
         conversionRate : 1.0
-    }
+    }*/
 },
 jobTitles = [
     "Account Director",
