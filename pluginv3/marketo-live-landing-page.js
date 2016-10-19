@@ -18,12 +18,12 @@ var isMktoForm = window.setInterval(function () {
                 companyNameCookieName = "attrib_company_name",
                 industryCookieName = "attrib_industry",
                 leadSourceCookieName = "attrib_lead_source",
+                mobileNumberCookieName = "attrib_mobile_number",
+                phoneNumberCookieName = "attrib_phone_number",
                 checkBoxes = ["yes", "no"],
-                answer,
-                getUrlParam,
-                getCookie;
+                answer;
                 
-                getUrlParam = function (param) {
+                function getUrlParam(param) {
                     console.log("Landing Page > Getting: URL Parameter: " + param);
                     
                     var params = window.location.href.split("?")[1].split("&"),
@@ -45,7 +45,7 @@ var isMktoForm = window.setInterval(function () {
                     return false;
                 }
                 
-                getCookie = function (cookieName) {
+                function getCookie(cookieName) {
                     console.log("Landing Page > Getting: Cookie " + cookieName);
                     
                     var name = cookieName + '=',
@@ -60,7 +60,7 @@ var isMktoForm = window.setInterval(function () {
                     }
                     console.log("Landing Page > Getting: Cookie " + cookieName + " not found");
                     return null;
-                };
+                }
                 
                 submitParamVal = getUrlParam(submitParamName);
                 
@@ -152,7 +152,27 @@ var isMktoForm = window.setInterval(function () {
                         }
                     }
                     
-                    if (typeof(form.getValues().subscribedToNewsletter) != "undefined") {
+                    if (typeof(form.getValues().MobilePhone) != "undefined") {
+                        var mobileNumber = getCookie(mobileNumberCookieName);
+                        
+                        if (mobileNumber != null) {
+                            form.vals({
+                                MobilePhone : mobileNumber
+                            });
+                        }
+                    }
+                    
+                    if (typeof(form.getValues().Phone) != "undefined") {
+                        var phoneNumber = getCookie(phoneNumberCookieName);
+                        
+                        if (phoneNumber != null) {
+                            form.vals({
+                                Phone : phoneNumber
+                            });
+                        }
+                    }
+                    
+                    if (typeof(form.getValues().Subscribed_to_Newsletter__c) != "undefined") {
                         if ((Math.random()) <= 0.80) {
                             answer = checkBoxes[0];
                         } else {
@@ -160,11 +180,11 @@ var isMktoForm = window.setInterval(function () {
                         }
                         
                         form.vals({
-                            subscribedToNewsletter : answer
+                            Subscribed_to_Newsletter__c : answer
                         });
                     }
                     
-                    if (typeof(form.getValues().subscribedToEventInvitations) != "undefined") {
+                    if (typeof(form.getValues().Subscribed_to_Blog_Posts__c) != "undefined") {
                         if ((Math.random()) <= 0.80) {
                             answer = checkBoxes[0];
                         } else {
@@ -172,11 +192,11 @@ var isMktoForm = window.setInterval(function () {
                         }
                         
                         form.vals({
-                            subscribedToEventInvitations : answer
+                            Subscribed_to_Blog_Posts__c : answer
                         });
                     }
                     
-                    if (typeof(form.getValues().subscribedToWebinarInvitations) != "undefined") {
+                    if (typeof(form.getValues().Subscribed_to_Event_Invitations__c) != "undefined") {
                         if ((Math.random()) <= 0.80) {
                             answer = checkBoxes[0];
                         } else {
@@ -184,11 +204,11 @@ var isMktoForm = window.setInterval(function () {
                         }
                         
                         form.vals({
-                            subscribedToWebinarInvitations : answer
+                            Subscribed_to_Event_Invitations__c : answer
                         });
                     }
                     
-                    if (typeof(form.getValues().subscribedToAppMessages) != "undefined") {
+                    if (typeof(form.getValues().Subscribed_to_Webinar_Invitations__c) != "undefined") {
                         if ((Math.random()) <= 0.80) {
                             answer = checkBoxes[0];
                         } else {
@@ -196,11 +216,11 @@ var isMktoForm = window.setInterval(function () {
                         }
                         
                         form.vals({
-                            subscribedToAppMessages : answer
+                            Subscribed_to_Webinar_Invitations__c : answer
                         });
                     }
                     
-                    if (typeof(form.getValues().subscribedToSms) != "undefined") {
+                    if (typeof(form.getValues().Subscribed_to_App_Messages__c) != "undefined") {
                         if ((Math.random()) <= 0.80) {
                             answer = checkBoxes[0];
                         } else {
@@ -208,11 +228,23 @@ var isMktoForm = window.setInterval(function () {
                         }
                         
                         form.vals({
-                            subscribedToSms : answer
+                            Subscribed_to_App_Messages__c : answer
                         });
                     }
                     
-                    if (typeof(form.getValues().Unsubscribed) != "undefined") {
+                    if (typeof(form.getValues().Subscribed_to_SMS__c) != "undefined") {
+                        if ((Math.random()) <= 0.80) {
+                            answer = checkBoxes[0];
+                        } else {
+                            answer = checkBoxes[1];
+                        }
+                        
+                        form.vals({
+                            Subscribed_to_SMS__c : answer
+                        });
+                    }
+                    
+                    if (typeof(form.getValues().Unsubscribed_from_All__c) != "undefined") {
                         if ((Math.random()) <= 0.05) {
                             answer = checkBoxes[0];
                         } else {
@@ -220,7 +252,7 @@ var isMktoForm = window.setInterval(function () {
                         }
                         
                         form.vals({
-                            Unsubscribed : answer
+                            Unsubscribed_from_All__c : answer
                         });
                     }
                     
