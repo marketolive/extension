@@ -96,6 +96,11 @@ mktoSmsMessageFragment = "SMS",
 mktoSocialAppFragment = "SOA",
 mktoOtherAssetsFragmentMatch = "^" + mktoMobilePushNotificationFragment + "|^" + mktoInAppMessageFragment + "|^" + mktoSmsMessageFragment + "|^" + mktoSocialAppFragment,
 
+mktoAbmDiscoverMarketoCompaniesFragment = "ABMDM",
+mktoAbmDiscoverCrmAccountsFragment = "ABMDC",
+mktoAbmNamedAccountFragment = "NA",
+mktoAbmFragmentMatch = "^" + mktoAbmDiscoverMarketoCompaniesFragment + "$|^" + mktoAbmDiscoverCrmAccountsFragment + "$|^" + mktoAbmNamedAccountFragment + "$",
+
 mktoEmailEditFragment = "EME",
 mktoEmailPreviewFragmentRegex = new RegExp("^EME[0-9]+&isPreview", "i"),
 mktoEmailPreviewFragment2 = "EME[0-9]+&isPreview",
@@ -232,11 +237,11 @@ APP.getWorkspaceName = function (workspaceId) {
     case mktoTravelLesiureWorkspaceId:
         workspaceName = "Travel Leisure";
         break;
-    
+        
     case mktoUserWorkspaceId:
         workspaceName = userWorkspaceName;
         break;
-    
+        
     default:
         return;
         break;
@@ -1074,8 +1079,7 @@ APP.overrideTreeNodeExpand = function () {
                     
                     if (this.attributes.accessZoneId != mktoUserWorkspaceId) {
                         MktFolder.saveExpandState(this, true);
-                    }
-                    else {
+                    } else {
                         console.log("Marketo App > NOT Saving: Folder Expand State");
                     }
                 }
@@ -4213,7 +4217,7 @@ APP.hideOtherToolbarItems = function (itemsToHide) {
 
 /**************************************************************************************
  *
- *  This function disables saving for Revenue Cycle Models and issues a tracking 
+ *  This function disables saving for Revenue Cycle Models and issues a tracking
  *  request to Heap Analytics.
  *
  *  @Author Brian Fisher
@@ -4263,7 +4267,7 @@ APP.disableAnalyticsSaving = function (assetType, mode) {
                     APP.disableFormSaveButtons();
                     heapEvent.assetArea = "Previewer";
                     break;
-                
+                    
                 default:
                     APP.disableSaving();
                     APP.disableMenus();
@@ -4276,7 +4280,7 @@ APP.disableAnalyticsSaving = function (assetType, mode) {
                 case "report":
                     heapEvent.assetName = assetNode.title;
                     break;
-                
+                    
                 case "model":
                     heapEvent.assetName = assetNode.satelliteTitle;
                     if (heapEvent.assetName.search(titleReplaceRegex) != -1) {
@@ -4361,11 +4365,11 @@ APP.disableDesignerSaving = function (assetType, mode) {
                     case "edit":
                         heapEvent.assetArea = "Editor";
                         break;
-                    
+                        
                     case "preview":
                         heapEvent.assetArea = "Previewer";
                         break;
-                    
+                        
                     default:
                         heapEvent.assetArea = "Designer";
                         break;
@@ -5080,8 +5084,7 @@ APP.disableFormSaveButtons = function () {
                  || this.getXType() == "vespaNewDeviceForm" //Admin > Mobile Apps & Devices > Test Devices > New Test Device
                  || this.getXType() == "adminTagsAddCalendarEntryTypeForm" //Admin > Tags > Calendar Entry Types > New Entry Type
                  || this.getXType() == "featureSwitchForm" //Admin > Feature Manager > Edit Feature
-            )
-            {
+            ) {
                 
                 var me = this,
                 menuItems = [
@@ -5788,8 +5791,8 @@ APP.discardLandingPageDrafts = function (lpIds) {
         mktLPLManager.doModifyPages('revert', lpIds);
         
         if (lpMessageBox
-             && lpMessageBox.hide) {
-            lpMessageBox.hide();
+        && lpMessageBox.hide) {
+        lpMessageBox.hide();
         }*/
         
         if (typeof(MktMessage) !== "undefined"
@@ -5905,9 +5908,9 @@ APP.discardOtherDrafts = function (assetType, assetIds) {
         
         /*
         if (typeof(MktMessage) != "undefined"
-             && MktMessage
-             && MktMessage.showSystemError) {
-                MktMessage.showSystemError = function () {};
+        && MktMessage
+        && MktMessage.showSystemError) {
+        MktMessage.showSystemError = function () {};
         }*/
         
         if (!assetStore) {
@@ -5943,7 +5946,7 @@ APP.discardOtherDrafts = function (assetType, assetIds) {
  *
  *  @function
  *
- *  @param {String} accountString - instance account string (mktodemoaccount106, 
+ *  @param {String} accountString - instance account string (mktodemoaccount106,
  *                                  mktodemoaccount106d)
  *  @param {String} assetType - type of asset to discard (landingPage, email, other, all)
  *
@@ -6275,7 +6278,6 @@ APP.discardDrafts = function (accountString, assetType) {
         // Higher Ed DIY Design
         socIds.push(860, 1024, 861, 859, 858);
         
-        
         // MANUFACTURING
         // DIY Design
         lpIds["dpageid_13280"] = "dpageid_13280";
@@ -6290,7 +6292,6 @@ APP.discardDrafts = function (accountString, assetType) {
         lpIds["dpageid_13286"] = "dpageid_13286";
         lpIds["dpageid_13288"] = "dpageid_13288";
         
-        
         // TECHNOLOGY
         // DIY Design
         lpIds["dpageid_13346"] = "dpageid_13346";
@@ -6302,13 +6303,12 @@ APP.discardDrafts = function (accountString, assetType) {
         lpIds["dpageid_13329"] = "dpageid_13329";
         lpIds["dpageid_13331"] = "dpageid_13331";
         
-        
         // TRAVEL LESIURE
         // DIY Design:
         lpIds["dpageid_13528"] = "dpageid_13528";
         lpIds["dpageid_13563"] = "dpageid_13563";
         lpIds["dpageid_13529"] = "dpageid_13529";
-        // Event Management 
+        // Event Management
         lpIds["dpageid_13475"] = "dpageid_13475";
         break;
     }
@@ -6424,7 +6424,7 @@ APP.trackNodeClick = function () {
                  && node.text
                  && node.attributes
                  && node.attributes.accessZoneId) {
-            
+                
                 var currNode = node,
                 heapEvent = {
                     name : "",
@@ -6555,51 +6555,51 @@ APP.heapTrack = function (action, event) {
                         
                         if (event.assetArea) {
                             heapEventProps.area = event.assetArea;
-                        }
-                        else {
+                        } else {
                             heapEventProps.area = heapArea;
                         }
                         
                         console.log("Marketo App > Tracking: Heap Event: " + event.name + "\n" + JSON.stringify(heapEventProps, null, 2));
                         heap.track(event.name, heapEventProps);
-                    } /*else {
-                        if (typeof(MktCanvas) !== "undefined"
-                             && MktCanvas
-                             && MktCanvas.getActiveTab()
-                             && MktCanvas.getActiveTab().config
-                             && MktCanvas.getActiveTab().config.accessZoneId) {
-                            
-                            heapEventProps = {
-                                app : heapApp,
-                                assetId : activeTabConfig.expNodeId,
-                                assetType : activeTabConfig.compType,
-                                workspaceId : activeTabConfig.accessZoneId,
-                                workspaceName : "",
-                                area : heapArea,
-                                url : currentUrl
-                            };
-                            
-                            var activeTabConfig = MktCanvas.getActiveTab().config,
-                            heapEventTitle = heapEventProps.workspaceName = APP.getWorkspaceName(activeTabConfig.accessZoneId);
-                            
-                            if (typeof(MktExplorer) !== "undefined"
-                                 && MktExplorer
-                                 && MktExplorer.getNodeById
-                                 && heapEventProps.assetId) {
-                                
-                                var currNode = MktExplorer.getNodeById(heapEventProps.assetId);
-                                
-                                heapEventProps.assetName = heapEventProps.assetPath = currNode.text;
-                                
-                                for (var ii = 0; ii < node.getDepth() - 1; ii++) {
-                                    currNode = currNode.parentNode;
-                                    heapEventProps.assetPath = currNode.text + " > " + heapEventProps.assetPath;
-                                }
-                            }
-                            
-                            console.log("Marketo App > Tracking: Heap Event: " + heapEventTitle + "\n" + JSON.stringify(heapEventProps, null, 2));
-                            heap.track(heapEventTitle, heapEventProps);
-                        }
+                    }
+                    /*else {
+                    if (typeof(MktCanvas) !== "undefined"
+                    && MktCanvas
+                    && MktCanvas.getActiveTab()
+                    && MktCanvas.getActiveTab().config
+                    && MktCanvas.getActiveTab().config.accessZoneId) {
+                    
+                    heapEventProps = {
+                    app : heapApp,
+                    assetId : activeTabConfig.expNodeId,
+                    assetType : activeTabConfig.compType,
+                    workspaceId : activeTabConfig.accessZoneId,
+                    workspaceName : "",
+                    area : heapArea,
+                    url : currentUrl
+                    };
+                    
+                    var activeTabConfig = MktCanvas.getActiveTab().config,
+                    heapEventTitle = heapEventProps.workspaceName = APP.getWorkspaceName(activeTabConfig.accessZoneId);
+                    
+                    if (typeof(MktExplorer) !== "undefined"
+                    && MktExplorer
+                    && MktExplorer.getNodeById
+                    && heapEventProps.assetId) {
+                    
+                    var currNode = MktExplorer.getNodeById(heapEventProps.assetId);
+                    
+                    heapEventProps.assetName = heapEventProps.assetPath = currNode.text;
+                    
+                    for (var ii = 0; ii < node.getDepth() - 1; ii++) {
+                    currNode = currNode.parentNode;
+                    heapEventProps.assetPath = currNode.text + " > " + heapEventProps.assetPath;
+                    }
+                    }
+                    
+                    console.log("Marketo App > Tracking: Heap Event: " + heapEventTitle + "\n" + JSON.stringify(heapEventProps, null, 2));
+                    heap.track(heapEventTitle, heapEventProps);
+                    }
                     }*/
                     break;
                 }
@@ -6702,7 +6702,8 @@ var isMktPageApp = window.setInterval(function () {
             // Only execute this block if the user is not on an editor page.
             if (currUrlFragment.search(mktoAnalyticsFragmentMatch) == -1
                  && (!currCompFragment
-                     || currCompFragment.search(mktoDesignersFragmentMatch) == -1)) {
+                     || (currCompFragment.search(mktoAbmFragmentMatch) == -1
+                         && currCompFragment.search(mktoDesignersFragmentMatch) == -1))) {
                 
                 if (accountString.search(mktoAccountStringsMatch) != -1) {
                     APP.discardDrafts(accountString, "landingPage");
@@ -6745,9 +6746,23 @@ var isMktPageApp = window.setInterval(function () {
                     APP.disableAdminSaveButtons();
                 }
             } else {
-                console.log("Marketo App > Location: Designers, Full Screen Reports/Models");
+                console.log("Marketo App > Location: Designers, Full Screen Reports/Models, ABM Areas");
                 
                 switch (currCompFragment) {
+                case mktoAbmDiscoverMarketoCompaniesFragment:
+                case mktoAbmDiscoverCrmAccountsFragment:
+                case mktoAbmNamedAccountFragment:
+                    console.log("Marketo App > Location: Account Based Marketing Areas");
+                    APP.disableMenus();
+                    APP.hideToolbarItems();
+                    APP.disableFormSaveButtons();
+                    APP.disableAdminSaveButtons();
+                    APP.heapTrack("track", {
+                        name : "Last Loaded",
+                        assetName : "Page"
+                    });
+                    break;
+                    
                 case mktoLandingPageEditFragment:
                     console.log("Marketo App > Location: Landing Page Editor");
                     
