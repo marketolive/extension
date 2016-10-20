@@ -270,7 +270,7 @@ leadSourceCookieName = "attrib_lead_source",
 mobileNumberCookieName = "attrib_mobile_number",
 phoneNumberCookieName = "attrib_phone_number",
 hasUsernameCookie,
-usernameCookieName = "onelogin_username";
+usernameCookieName = "onelogin_username",
 visitedPagesCookieMarketoLive = {
     url : mktoLiveDomainMatch,
     domain : mktoLiveUriDomain,
