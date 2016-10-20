@@ -5806,7 +5806,8 @@ APP.discardLandingPageDrafts = function (lpIds) {
             lpIdVal = lpIds[lpIdKey];
             
             mktLPLManager.doModifyPages('revert', {
-                [lpIdKey] : lpIdVal
+                [lpIdKey] : lpIdVal,
+                beForDemoAccount : true
             });
             
             if (lpMessageBox

@@ -85,8 +85,7 @@ var isMktoForm = window.setInterval(function () {
                             form.vals({
                                 Email : email
                             });
-                        }
-                        else {
+                        } else {
                             window.close();
                             return null;
                         }
@@ -261,6 +260,8 @@ var isMktoForm = window.setInterval(function () {
                     if (submitParamVal == "true") {
                         form.submit();
                     }
+                } else if (submitParamVal == "false") {
+                    window.close();
                 }
             });
         }
