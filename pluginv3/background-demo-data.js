@@ -7,6 +7,7 @@ mktoLiveProdHost = "www.marketolive.com",
 mktoLiveHost = mktoLiveProdHost,
 landingPageType = "landing",
 webPageType = "web",
+signupPageIndex = 0;
 webPages = {
     0 : {
         name : "signup",
@@ -268,15 +269,15 @@ industryCookieName = "attrib_industry",
 leadSourceCookieName = "attrib_lead_source",
 mobileNumberCookieName = "attrib_mobile_number",
 phoneNumberCookieName = "attrib_phone_number",
+hasUsernameCookie,
+usernameCookieName = "onelogin_username";
 visitedPagesCookieMarketoLive = {
     url : mktoLiveDomainMatch,
     domain : mktoLiveUriDomain,
     name : "visitedPages",
     expiresInDays : cookieExpiresInDays
 },
-visitedPagesCookie,
-hasUsernameCookie,
-usernameCookieName = "onelogin_username";
+visitedPagesCookie; ;
 
 /**************************************************************************************
  *
@@ -547,11 +548,8 @@ getCookie(visitedPagesCookieMarketoLive, function (cookie) {
     }
 });
 
-if (hasUsernameCookie
-     && visitedPagesCookie
-     && visitedPagesCookie.value) {
-    var submitParam,
-    tabId;
+if (hasUsernameCookie) {
+    var tabId;
     
     function visitPage(visit) {
         chrome.tabs.create({
@@ -574,25 +572,51 @@ if (hasUsernameCookie
         setCookie(visitedPagesCookieMarketoLive);
     }
     
-    if (webPageXvisitationRate >= 1.0
-         || (Math.random()) <= webPageXvisitationRate) {
-        var proceed = false;
+    if (visitedPagesCookie
+         && visitedPagesCookie.value) {
+        var submitParam;
         
-        if (webPageX.dependentOn.length > 0) {
-            for (var ii = 0; ii < webPageX.dependentOn.length; ii++) {
-                if (visitedPagesCookie.value.search("(, )\?" + webPageX.dependentOn[ii] + "(,)\?") != -1) {
-                    proceed = true;
-                } else {
-                    proceed = false;
-                    break;
+        if (webPageXvisitationRate >= 1.0
+             || (Math.random()) <= webPageXvisitationRate) {
+            var proceed = false;
+            
+            if (webPageX.dependentOn.length > 0) {
+                for (var ii = 0; ii < webPageX.dependentOn.length; ii++) {
+                    if (visitedPagesCookie.value.search("(, )\?" + webPageX.dependentOn[ii] + "(,)\?") != -1) {
+                        proceed = true;
+                    } else {
+                        proceed = false;
+                        break;
+                    }
                 }
+            } else {
+                proceed = true;
+            }
+            
+            if (proceed) {
+                console.log("Visiting: " + webPageX.url);
+                
+                if (webPageX.type == landingPageType
+                     && (webPageX.conversionRate >= 1.0
+                         || (Math.random()) <= webPageX.conversionRate)) {
+                    
+                    submitParam = "submit=true";
+                } else {
+                    submitParam = "submit=false";
+                }
+                
+                visitPage();
+            } else {
+                console.log("NOT Visiting: " + webPageX.url + " due to dependencies not being met (" + webPageX.dependentOn.toString() + ")");
             }
         } else {
-            proceed = true;
+            console.log("NOT Visiting: " + webPageX.url + " due to web page visitation rate (" + webPageXvisitationRate + ")");
         }
+    } else {
+        webPageX = webPages[signupPageIndex];
         
-        if (proceed) {
-            console.log("Visiting: " + webPageX.url);
+        if ((Math.random()) <= webPageX.visitationRate) {
+            console.log("Visiting Initial Page: " + webPageX.url);
             
             if (webPageX.type == landingPageType
                  && (webPageX.conversionRate >= 1.0
@@ -603,30 +627,11 @@ if (hasUsernameCookie
                 submitParam = "submit=false";
             }
             
-            visitPage();
+            visitPage("initial");
         } else {
-            console.log("NOT Visiting: " + webPageX.url + " due to dependencies not being met (" + webPageX.dependentOn.toString() + ")");
+            console.log("NOT Visiting: " + webPageX.url + " due to web page visitation rate (" + webPageX.visitationRate + ")");
         }
-    } else {
-        console.log("NOT Visiting: " + webPageX.url + " due to web page visitation rate (" + webPageXvisitationRate + ")");
     }
 } else {
-    webPageX = webPages[0];
-    
-    if ((Math.random()) <= webPageX.visitationRate) {
-        console.log("Visiting Initial Page: " + webPageX.url);
-        
-        if (webPageX.type == landingPageType
-             && (webPageX.conversionRate >= 1.0
-                 || (Math.random()) <= webPageX.conversionRate)) {
-            
-            submitParam = "submit=true";
-        } else {
-            submitParam = "submit=false";
-        }
-        
-        visitPage("initial");
-    } else {
-        console.log("NOT Visiting: " + webPageX.url + " due to web page visitation rate (" + webPageX.visitationRate + ")");
-    }
+    console.log("NOT Visiting: " + webPageX.url + " due to " + usernameCookieName + " cookie is null");
 }
