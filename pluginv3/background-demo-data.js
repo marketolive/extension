@@ -7,7 +7,7 @@ mktoLiveProdHost = "www.marketolive.com",
 mktoLiveHost = mktoLiveProdHost,
 landingPageType = "landing",
 webPageType = "web",
-signupPageIndex = 0;
+signupPageIndex = 0,
 webPages = {
     0 : {
         name : "signup",
@@ -277,7 +277,7 @@ visitedPagesCookieMarketoLive = {
     name : "visitedPages",
     expiresInDays : cookieExpiresInDays
 },
-visitedPagesCookie; ;
+visitedPagesCookie;
 
 /**************************************************************************************
  *
