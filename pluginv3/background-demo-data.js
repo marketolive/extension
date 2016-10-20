@@ -557,6 +557,8 @@ if (hasUsernameCookie) {
             active : false,
             selected : false,
             pinned : true
+        }, function (tab) {
+            tabId = tab.id;
         });
         
         window.setTimeout(function () {
