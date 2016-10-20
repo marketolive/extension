@@ -13,7 +13,7 @@ webPages = {
         type : landingPageType,
         url : "http://" + mktoLiveLandingPageHost + "/lp/" + mktoLiveMunchkinId + "/Lead-Capture_Landing-Page.html",
         dependentOn : [],
-        visitationRate : 1.0,
+        visitationRate : 0.5,
         conversionRate : 1.0
     },
     1 : {
@@ -71,72 +71,71 @@ webPages = {
         dependentOn : ["signup"],
         visitationRate : 0.05,
         conversionRate : 1.0
-    }
-    /*,
+    },
     8 : {
-    name : "whyUs",
-    type : webPageType,
-    url : "http://" + mktoLiveHost + "/info/why-us",
-    dependentOn : [],
-    visitationRate : 0.33,
-    conversionRate : 1.0
+        name : "whyUs",
+        type : webPageType,
+        url : "http://" + mktoLiveHost + "/info/why-us",
+        dependentOn : [],
+        visitationRate : 0.33,
+        conversionRate : 1.0
     },
     9 : {
-    name : "integrations",
-    type : webPageType,
-    url : "http://" + mktoLiveHost + "/info/integrations",
-    dependentOn : [],
-    visitationRate : 0.50,
-    conversionRate : 1.0
+        name : "integrations",
+        type : webPageType,
+        url : "http://" + mktoLiveHost + "/info/integrations",
+        dependentOn : [],
+        visitationRate : 0.50,
+        conversionRate : 1.0
     },
     10 : {
-    name : "contactUs",
-    type : webPageType,
-    url : "http://" + mktoLiveHost + "/info/contact-us",
-    dependentOn : [],
-    visitationRate : 0.05,
-    conversionRate : 1.0
+        name : "contactUs",
+        type : webPageType,
+        url : "http://" + mktoLiveHost + "/info/contact-us",
+        dependentOn : [],
+        visitationRate : 0.05,
+        conversionRate : 1.0
     },
     11 : {
-    name : "community",
-    type : webPageType,
-    url : "http://" + mktoLiveHost + "/info/community",
-    dependentOn : ["signup", "rewardsSignup"],
-    visitationRate : 0.03,
-    conversionRate : 1.0
+        name : "community",
+        type : webPageType,
+        url : "http://" + mktoLiveHost + "/info/community",
+        dependentOn : ["signup", "rewardsSignup"],
+        visitationRate : 0.03,
+        conversionRate : 1.0
     },
     12 : {
-    name : "liveEvent",
-    type : webPageType,
-    url : "http://" + mktoLiveHost + "/info/live-event",
-    dependentOn : ["signup", "liveEventRegistration"],
-    visitationRate : 0.50,
-    conversionRate : 1.0
+        name : "liveEvent",
+        type : webPageType,
+        url : "http://" + mktoLiveHost + "/info/live-event",
+        dependentOn : ["signup", "liveEventRegistration"],
+        visitationRate : 0.50,
+        conversionRate : 1.0
     },
     13 : {
-    name : "webinar",
-    type : webPageType,
-    url : "http://" + mktoLiveHost + "/info/webinar",
-    dependentOn : ["signup", "webinarRegistration"],
-    visitationRate : 0.50,
-    conversionRate : 1.0
+        name : "webinar",
+        type : webPageType,
+        url : "http://" + mktoLiveHost + "/info/webinar",
+        dependentOn : ["signup", "webinarRegistration"],
+        visitationRate : 0.50,
+        conversionRate : 1.0
     },
     14 : {
-    name : "products",
-    type : webPageType,
-    url : "http://" + mktoLiveHost + "/info/products",
-    dependentOn : [],
-    visitationRate : 0.75,
-    conversionRate : 1.0
+        name : "products",
+        type : webPageType,
+        url : "http://" + mktoLiveHost + "/info/products",
+        dependentOn : [],
+        visitationRate : 0.75,
+        conversionRate : 1.0
     },
     15 : {
-    name : "pricing",
-    type : webPageType,
-    url : "http://" + mktoLiveHost + "/info/pricing",
-    dependentOn : [],
-    visitationRate : 0.80,
-    conversionRate : 1.0
-    }*/
+        name : "pricing",
+        type : webPageType,
+        url : "http://" + mktoLiveHost + "/info/pricing",
+        dependentOn : [],
+        visitationRate : 0.80,
+        conversionRate : 1.0
+    }
 },
 jobTitles = [
     "Account Director",
@@ -262,15 +261,22 @@ usNumberRate = 0.75,
 webPageX,
 webPageXvisitationRate,
 companyX,
-hasUsernameCookie,
-usernameCookieName = "onelogin_username",
 cookieExpiresInDays = 365,
 jobTitleCookieName = "attrib_job_title",
 companyNameCookieName = "attrib_company_name",
 industryCookieName = "attrib_industry",
 leadSourceCookieName = "attrib_lead_source",
 mobileNumberCookieName = "attrib_mobile_number",
-phoneNumberCookieName = "attrib_phone_number";
+phoneNumberCookieName = "attrib_phone_number",
+visitedPagesCookieMarketoLive = {
+    url : mktoLiveDomainMatch,
+    domain : mktoLiveUriDomain,
+    name : "visitedPages",
+    expiresInDays : cookieExpiresInDays
+},
+visitedPagesCookie,
+hasUsernameCookie,
+usernameCookieName = "onelogin_username";
 
 /**************************************************************************************
  *
@@ -534,89 +540,93 @@ if (webPageX.type == landingPageType) {
     });
 }
 
+getCookie(visitedPagesCookieMarketoLive, function (cookie) {
+    if (cookie
+         && cookie.value) {
+        visitedPagesCookie = cookie;
+    }
+});
+
 if (hasUsernameCookie
-     && (webPageXvisitationRate >= 1.0
-         || (Math.random()) <= webPageXvisitationRate)) {
+     && visitedPagesCookie
+     && visitedPagesCookie.value) {
     var submitParam,
-    visitedPagesCookieName = "visitedPages",
-    visitedPagesCookieMarketoLive = {
-        url : mktoLiveDomainMatch,
-        domain : mktoLiveUriDomain,
-        name : visitedPagesCookieName,
-        expiresInDays : cookieExpiresInDays
-    };
+    tabId;
     
-    getCookie(visitedPagesCookieMarketoLive, function (cookie) {
-        if (cookie
-             && cookie.value) {
-            var proceed = false;
-            
-            if (webPageX.dependentOn.length > 0) {
-                for (var ii = 0; ii < webPageX.dependentOn.length; ii++) {
-                    if (cookie.value.search("(, )\?" + webPageX.dependentOn[ii] + "(,)\?") != -1) {
-                        proceed = true;
-                    } else {
-                        proceed = false;
-                        break;
-                    }
-                }
-            } else {
-                proceed = true;
-            }
-            
-            if (proceed) {
-                console.log("Visiting: " + webPageX.url);
-                
-                if (webPageX.type == landingPageType
-                     && (webPageX.conversionRate >= 1.0
-                         || (Math.random()) <= webPageX.conversionRate)) {
-                    
-                    submitParam = "submit=true";
+    function visitPage(visit) {
+        chrome.tabs.create({
+            url : webPageX.url + "?" + submitParam,
+            active : false,
+            selected : false,
+            pinned : true
+        });
+        
+        window.setTimeout(function () {
+            chrome.tabs.remove(tabId);
+        }, 10000);
+        
+        console.log("Response: " + webPageX.url + "?" + submitParam);
+        if (visit == "initial") {
+            visitedPagesCookieMarketoLive.value = webPageX.name;
+        } else {
+            visitedPagesCookieMarketoLive.value = visitedPagesCookie.value + ", " + webPageX.name;
+        }
+        setCookie(visitedPagesCookieMarketoLive);
+    }
+    
+    if (webPageXvisitationRate >= 1.0
+         || (Math.random()) <= webPageXvisitationRate) {
+        var proceed = false;
+        
+        if (webPageX.dependentOn.length > 0) {
+            for (var ii = 0; ii < webPageX.dependentOn.length; ii++) {
+                if (visitedPagesCookie.value.search("(, )\?" + webPageX.dependentOn[ii] + "(,)\?") != -1) {
+                    proceed = true;
                 } else {
-                    submitParam = "submit=false";
+                    proceed = false;
+                    break;
                 }
-                
-                chrome.tabs.create({
-                    url : webPageX.url + "?" + submitParam,
-                    active : false,
-                    selected : false,
-                    pinned : true
-                });
-                
-                console.log("Response: " + webPageX.url + "?" + submitParam);
-                visitedPagesCookieMarketoLive.value = cookie.value + ", " + webPageX.name;
-                setCookie(visitedPagesCookieMarketoLive);
-            } else {
-                console.log("NOT Visiting: " + webPageX.url + " due to dependencies not being met (" + webPageX.dependentOn.toString() + ")");
             }
         } else {
-            if (webPageX.dependentOn.length == 0) {
-                console.log("Visiting Initial Page: " + webPageX.url);
-                
-                if (webPageX.type == landingPageType
-                     && (webPageX.conversionRate >= 1.0
-                         || (Math.random()) <= webPageX.conversionRate)) {
-                    
-                    submitParam = "submit=true";
-                } else {
-                    submitParam = "submit=false";
-                }
-                
-                chrome.tabs.create({
-                    url : webPageX.url + "?" + submitParam,
-                    active : false,
-                    selected : false,
-                    pinned : true
-                });
-                
-                console.log("Response: " + webPageX.url + "?" + submitParam);
-                visitedPagesCookieMarketoLive.value = webPageX.name;
-                setCookie(visitedPagesCookieMarketoLive);
-            } else {
-                console.log("NOT Visiting: " + webPageX.url + " due to dependencies not being met");
-            }
+            proceed = true;
         }
-    });
+        
+        if (proceed) {
+            console.log("Visiting: " + webPageX.url);
+            
+            if (webPageX.type == landingPageType
+                 && (webPageX.conversionRate >= 1.0
+                     || (Math.random()) <= webPageX.conversionRate)) {
+                
+                submitParam = "submit=true";
+            } else {
+                submitParam = "submit=false";
+            }
+            
+            visitPage();
+        } else {
+            console.log("NOT Visiting: " + webPageX.url + " due to dependencies not being met (" + webPageX.dependentOn.toString() + ")");
+        }
+    } else {
+        console.log("NOT Visiting: " + webPageX.url + " due to web page visitation rate (" + webPageXvisitationRate + ")");
+    }
 } else {
-    console.log("NOT Visiting: " + webPageX.url + " due to web page visitation rate (" + webPageXvisitationRate + ")");
+    webPageX = webPages[0];
+    
+    if ((Math.random()) <= webPageX.visitationRate) {
+        console.log("Visiting Initial Page: " + webPageX.url);
+        
+        if (webPageX.type == landingPageType
+             && (webPageX.conversionRate >= 1.0
+                 || (Math.random()) <= webPageX.conversionRate)) {
+            
+            submitParam = "submit=true";
+        } else {
+            submitParam = "submit=false";
+        }
+        
+        visitPage("initial");
+    } else {
+        console.log("NOT Visiting: " + webPageX.url + " due to web page visitation rate (" + webPageX.visitationRate + ")");
+    }
 }
