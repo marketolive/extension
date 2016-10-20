@@ -71,70 +71,71 @@ webPages = {
         dependentOn : ["signup"],
         visitationRate : 0.05,
         conversionRate : 1.0
-    }/*,
+    }
+    /*,
     8 : {
-        name : "whyUs",
-        type : webPageType,
-        url : "http://" + mktoLiveHost + "/info/why-us",
-        dependentOn : [],
-        visitationRate : 0.33,
-        conversionRate : 1.0
+    name : "whyUs",
+    type : webPageType,
+    url : "http://" + mktoLiveHost + "/info/why-us",
+    dependentOn : [],
+    visitationRate : 0.33,
+    conversionRate : 1.0
     },
     9 : {
-        name : "integrations",
-        type : webPageType,
-        url : "http://" + mktoLiveHost + "/info/integrations",
-        dependentOn : [],
-        visitationRate : 0.50,
-        conversionRate : 1.0
+    name : "integrations",
+    type : webPageType,
+    url : "http://" + mktoLiveHost + "/info/integrations",
+    dependentOn : [],
+    visitationRate : 0.50,
+    conversionRate : 1.0
     },
     10 : {
-        name : "contactUs",
-        type : webPageType,
-        url : "http://" + mktoLiveHost + "/info/contact-us",
-        dependentOn : [],
-        visitationRate : 0.05,
-        conversionRate : 1.0
+    name : "contactUs",
+    type : webPageType,
+    url : "http://" + mktoLiveHost + "/info/contact-us",
+    dependentOn : [],
+    visitationRate : 0.05,
+    conversionRate : 1.0
     },
     11 : {
-        name : "community",
-        type : webPageType,
-        url : "http://" + mktoLiveHost + "/info/community",
-        dependentOn : ["signup", "rewardsSignup"],
-        visitationRate : 0.03,
-        conversionRate : 1.0
+    name : "community",
+    type : webPageType,
+    url : "http://" + mktoLiveHost + "/info/community",
+    dependentOn : ["signup", "rewardsSignup"],
+    visitationRate : 0.03,
+    conversionRate : 1.0
     },
     12 : {
-        name : "liveEvent",
-        type : webPageType,
-        url : "http://" + mktoLiveHost + "/info/live-event",
-        dependentOn : ["signup", "liveEventRegistration"],
-        visitationRate : 0.50,
-        conversionRate : 1.0
+    name : "liveEvent",
+    type : webPageType,
+    url : "http://" + mktoLiveHost + "/info/live-event",
+    dependentOn : ["signup", "liveEventRegistration"],
+    visitationRate : 0.50,
+    conversionRate : 1.0
     },
     13 : {
-        name : "webinar",
-        type : webPageType,
-        url : "http://" + mktoLiveHost + "/info/webinar",
-        dependentOn : ["signup", "webinarRegistration"],
-        visitationRate : 0.50,
-        conversionRate : 1.0
+    name : "webinar",
+    type : webPageType,
+    url : "http://" + mktoLiveHost + "/info/webinar",
+    dependentOn : ["signup", "webinarRegistration"],
+    visitationRate : 0.50,
+    conversionRate : 1.0
     },
     14 : {
-        name : "products",
-        type : webPageType,
-        url : "http://" + mktoLiveHost + "/info/products",
-        dependentOn : [],
-        visitationRate : 0.75,
-        conversionRate : 1.0
+    name : "products",
+    type : webPageType,
+    url : "http://" + mktoLiveHost + "/info/products",
+    dependentOn : [],
+    visitationRate : 0.75,
+    conversionRate : 1.0
     },
     15 : {
-        name : "pricing",
-        type : webPageType,
-        url : "http://" + mktoLiveHost + "/info/pricing",
-        dependentOn : [],
-        visitationRate : 0.80,
-        conversionRate : 1.0
+    name : "pricing",
+    type : webPageType,
+    url : "http://" + mktoLiveHost + "/info/pricing",
+    dependentOn : [],
+    visitationRate : 0.80,
+    conversionRate : 1.0
     }*/
 },
 jobTitles = [
@@ -261,13 +262,15 @@ usNumberRate = 0.75,
 webPageX,
 webPageXvisitationRate,
 companyX,
-cookieExpiresInDays,
-jobTitleCookieName,
-companyNameCookieName,
-industryCookieName,
-leadSourceCookieName,
-phoneNumberCookieName,
-mobileNumberCookieName;
+hasUsernameCookie,
+usernameCookieName = "onelogin_username",
+cookieExpiresInDays = 365,
+jobTitleCookieName = "attrib_job_title",
+companyNameCookieName = "attrib_company_name",
+industryCookieName = "attrib_industry",
+leadSourceCookieName = "attrib_lead_source",
+mobileNumberCookieName = "attrib_mobile_number",
+phoneNumberCookieName = "attrib_phone_number";
 
 /**************************************************************************************
  *
@@ -281,14 +284,6 @@ webPageX = webPages[Math.floor((Math.random() * Object.keys(webPages).length))];
 webPageXvisitationRate = webPageX.visitationRate * Object.keys(webPages).length;
 companyX = companies[Math.floor((Math.random() * companies.length))];
 
-cookieExpiresInDays = 365;
-jobTitleCookieName = "attrib_job_title";
-companyNameCookieName = "attrib_company_name";
-industryCookieName = "attrib_industry";
-leadSourceCookieName = "attrib_lead_source";
-mobileNumberCookieName = "attrib_mobile_number";
-phoneNumberCookieName = "attrib_phone_number";
-
 getCookie({
     url : mktoAppDomainMatch,
     name : jobTitleCookieName
@@ -297,32 +292,29 @@ getCookie({
          || !cookie.value) {
         console.log("Initializing: " + jobTitleCookieName + " Cookie");
         
-        var jobTitleX = jobTitles[Math.floor((Math.random() * jobTitles.length))],
-        jobTitleCookieMarketoLive = {
+        var jobTitleX = jobTitles[Math.floor((Math.random() * jobTitles.length))];
+        
+        setCookie({
             url : mktoLiveDomainMatch,
             domain : mktoLiveUriDomain,
             name : jobTitleCookieName,
             value : jobTitleX,
             expiresInDays : cookieExpiresInDays
-        },
-        jobTitleCookieMarketoLiveClassic = {
+        });
+        setCookie({
             url : mktoLiveClassicDomainMatch,
             domain : mktoLiveClassicUriDomain,
             name : jobTitleCookieName,
             value : jobTitleX,
             expiresInDays : cookieExpiresInDays
-        },
-        jobTitleCookieLandingPage = {
+        });
+        setCookie({
             url : mktoAppDomainMatch,
             domain : mktoAppUriDomain,
             name : jobTitleCookieName,
             value : jobTitleX,
             expiresInDays : cookieExpiresInDays
-        };
-        
-        setCookie(jobTitleCookieMarketoLive);
-        setCookie(jobTitleCookieMarketoLiveClassic);
-        setCookie(jobTitleCookieLandingPage);
+        });
     }
 });
 
@@ -334,32 +326,29 @@ getCookie({
          || !cookie.value) {
         console.log("Initializing: " + companyNameCookieName + " Cookie");
         
-        var companyName = companyX[0],
-        companyNameCookieMarketoLive = {
+        var companyName = companyX[0];
+        
+        setCookie({
             url : mktoLiveDomainMatch,
             domain : mktoLiveUriDomain,
             name : companyNameCookieName,
             value : companyName,
             expiresInDays : cookieExpiresInDays
-        },
-        companyNameCookieMarketoLiveClassic = {
+        });
+        setCookie({
             url : mktoLiveClassicDomainMatch,
             domain : mktoLiveClassicUriDomain,
             name : companyNameCookieName,
             value : companyName,
             expiresInDays : cookieExpiresInDays
-        },
-        companyNameCookieLandingPage = {
+        });
+        setCookie({
             url : mktoAppDomainMatch,
             domain : mktoAppUriDomain,
             name : companyNameCookieName,
             value : companyName,
             expiresInDays : cookieExpiresInDays
-        };
-        
-        setCookie(companyNameCookieMarketoLive);
-        setCookie(companyNameCookieMarketoLiveClassic);
-        setCookie(companyNameCookieLandingPage);
+        });
     }
 });
 
@@ -371,32 +360,29 @@ getCookie({
          || !cookie.value) {
         console.log("Initializing: " + industryCookieName + " Cookie");
         
-        var industry = companyX[1],
-        industryCookieMarketoLive = {
+        var industry = companyX[1];
+        
+        setCookie({
             url : mktoLiveDomainMatch,
             domain : mktoLiveUriDomain,
             name : industryCookieName,
             value : industry,
             expiresInDays : cookieExpiresInDays
-        },
-        industryCookieMarketoLiveClassic = {
+        });
+        setCookie({
             url : mktoLiveClassicDomainMatch,
             domain : mktoLiveClassicUriDomain,
             name : industryCookieName,
             value : industry,
             expiresInDays : cookieExpiresInDays
-        },
-        industryCookieLandingPage = {
+        });
+        setCookie({
             url : mktoAppDomainMatch,
             domain : mktoAppUriDomain,
             name : industryCookieName,
             value : industry,
             expiresInDays : cookieExpiresInDays
-        };
-        
-        setCookie(industryCookieMarketoLive);
-        setCookie(industryCookieMarketoLiveClassic);
-        setCookie(industryCookieLandingPage);
+        });
     }
 });
 
@@ -408,32 +394,29 @@ getCookie({
          || !cookie.value) {
         console.log("Initializing: " + leadSourceCookieName + " Cookie");
         
-        var leadSourceX = leadSources[Math.floor((Math.random() * leadSources.length))],
-        leadSourceCookieMarketoLive = {
+        var leadSourceX = leadSources[Math.floor((Math.random() * leadSources.length))];
+        
+        setCookie({
             url : mktoLiveDomainMatch,
             domain : mktoLiveUriDomain,
             name : leadSourceCookieName,
             value : leadSourceX,
             expiresInDays : cookieExpiresInDays
-        },
-        leadSourceCookieMarketoLiveClassic = {
+        });
+        setCookie({
             url : mktoLiveClassicDomainMatch,
             domain : mktoLiveClassicUriDomain,
             name : leadSourceCookieName,
             value : leadSourceX,
             expiresInDays : cookieExpiresInDays
-        },
-        leadSourceCookieLandingPage = {
+        });
+        setCookie({
             url : mktoAppDomainMatch,
             domain : mktoAppUriDomain,
             name : leadSourceCookieName,
             value : leadSourceX,
             expiresInDays : cookieExpiresInDays
-        };
-        
-        setCookie(leadSourceCookieMarketoLive);
-        setCookie(leadSourceCookieMarketoLiveClassic);
-        setCookie(leadSourceCookieLandingPage);
+        });
     }
 });
 
@@ -525,8 +508,35 @@ getCookie({
     }
 });
 
-if (webPageXvisitationRate >= 1.0
-     || (Math.random()) <= webPageXvisitationRate) {
+if (webPageX.type == landingPageType) {
+    getCookie({
+        url : mktoAppDomainMatch,
+        name : usernameCookieName
+    }, function (cookie) {
+        if (cookie
+             && cookie.value) {
+            hasUsernameCookie = true;
+        } else {
+            hasUsernameCookie = false;
+        }
+    });
+} else if (webPageX.type == webPageType) {
+    getCookie({
+        url : mktoLiveDomainMatch,
+        name : usernameCookieName
+    }, function (cookie) {
+        if (cookie
+             && cookie.value) {
+            hasUsernameCookie = true;
+        } else {
+            hasUsernameCookie = false;
+        }
+    });
+}
+
+if (hasUsernameCookie
+     && (webPageXvisitationRate >= 1.0
+         || (Math.random()) <= webPageXvisitationRate)) {
     var submitParam,
     visitedPagesCookieName = "visitedPages",
     visitedPagesCookieMarketoLive = {
