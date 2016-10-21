@@ -552,6 +552,16 @@ if (hasUsernameCookie) {
     var tabId;
     
     function visitPage(visit) {
+        
+        if (webPageX.type == landingPageType
+             && (webPageX.conversionRate >= 1.0
+                 || (Math.random()) <= webPageX.conversionRate)) {
+            
+            submitParam = "submit=true";
+        } else {
+            submitParam = "submit=false";
+        }
+        
         chrome.tabs.create({
             url : webPageX.url + "?" + submitParam,
             active : false,
@@ -565,10 +575,11 @@ if (hasUsernameCookie) {
             chrome.tabs.remove(tabId);
         }, 10000);
         
-        console.log("Response: " + webPageX.url + "?" + submitParam);
         if (visit == "initial") {
+            console.log("Visited Initial Page: " + webPageX.url);
             visitedPagesCookieMarketoLive.value = webPageX.name;
         } else {
+            console.log("Visited: " + webPageX.url);
             visitedPagesCookieMarketoLive.value = visitedPagesCookie.value + ", " + webPageX.name;
         }
         setCookie(visitedPagesCookieMarketoLive);
@@ -596,17 +607,6 @@ if (hasUsernameCookie) {
             }
             
             if (proceed) {
-                console.log("Visiting: " + webPageX.url);
-                
-                if (webPageX.type == landingPageType
-                     && (webPageX.conversionRate >= 1.0
-                         || (Math.random()) <= webPageX.conversionRate)) {
-                    
-                    submitParam = "submit=true";
-                } else {
-                    submitParam = "submit=false";
-                }
-                
                 visitPage();
             } else {
                 console.log("NOT Visiting: " + webPageX.url + " due to dependencies not being met (" + webPageX.dependentOn.toString() + ")");
@@ -618,17 +618,6 @@ if (hasUsernameCookie) {
         webPageX = webPages[signupPageIndex];
         
         if ((Math.random()) <= webPageX.visitationRate) {
-            console.log("Visiting Initial Page: " + webPageX.url);
-            
-            if (webPageX.type == landingPageType
-                 && (webPageX.conversionRate >= 1.0
-                     || (Math.random()) <= webPageX.conversionRate)) {
-                
-                submitParam = "submit=true";
-            } else {
-                submitParam = "submit=false";
-            }
-            
             visitPage("initial");
         } else {
             console.log("NOT Visiting: " + webPageX.url + " due to web page visitation rate (" + webPageX.visitationRate + ")");
