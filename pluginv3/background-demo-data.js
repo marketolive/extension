@@ -545,6 +545,7 @@ function visitPage(visitedPagesCookie, visitType) {
     } else {
         console.log("Visited: " + webPageX.url);
         visitedPagesCookie.value = visitedPagesCookie.value + ", " + webPageX.name;
+        console.log("Cookie : " + JSON.stringify(visitedPagesCookie, null, 2));
     }
     setCookie(visitedPagesCookie);
 }
