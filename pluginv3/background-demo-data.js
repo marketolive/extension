@@ -269,15 +269,13 @@ industryCookieName = "attrib_industry",
 leadSourceCookieName = "attrib_lead_source",
 mobileNumberCookieName = "attrib_mobile_number",
 phoneNumberCookieName = "attrib_phone_number",
-hasUsernameCookie,
 usernameCookieName = "onelogin_username",
 visitedPagesCookieMarketoLive = {
     url : mktoLiveDomainMatch,
     domain : mktoLiveUriDomain,
     name : "visitedPages",
     expiresInDays : cookieExpiresInDays
-},
-visitedPagesCookie;
+};
 
 /**************************************************************************************
  *
@@ -515,65 +513,44 @@ getCookie({
     }
 });
 
-if (webPageX.type == landingPageType) {
-    getCookie({
-        url : mktoAppDomainMatch,
-        name : usernameCookieName
-    }, function (cookie) {
-        if (cookie
-             && cookie.value) {
-            hasUsernameCookie = true;
-        } else {
-            hasUsernameCookie = false;
-        }
-    });
-} else if (webPageX.type == webPageType) {
-    getCookie({
-        url : mktoLiveDomainMatch,
-        name : usernameCookieName
-    }, function (cookie) {
-        if (cookie
-             && cookie.value) {
-            hasUsernameCookie = true;
-        } else {
-            hasUsernameCookie = false;
-        }
-    });
-}
-
-getCookie(visitedPagesCookieMarketoLive, function (cookie) {
-    if (cookie
-         && cookie.value) {
-        visitedPagesCookie = cookie;
-    }
-});
-
-if (hasUsernameCookie) {
+function visitPage(visitedPagesCookie, visitType) {
     var tabId;
     
-    function visitPage(visit) {
-        chrome.tabs.create({
-            url : webPageX.url + "?" + submitParam,
-            active : false,
-            selected : false,
-            pinned : true
-        }, function (tab) {
-            tabId = tab.id;
-        });
+    if (webPageX.type == landingPageType
+         && (webPageX.conversionRate >= 1.0
+             || (Math.random()) <= webPageX.conversionRate)) {
         
-        window.setTimeout(function () {
-            chrome.tabs.remove(tabId);
-        }, 10000);
-        
-        console.log("Response: " + webPageX.url + "?" + submitParam);
-        if (visit == "initial") {
-            visitedPagesCookieMarketoLive.value = webPageX.name;
-        } else {
-            visitedPagesCookieMarketoLive.value = visitedPagesCookie.value + ", " + webPageX.name;
-        }
-        setCookie(visitedPagesCookieMarketoLive);
+        submitParam = "submit=true";
+    } else {
+        submitParam = "submit=false";
     }
     
+    chrome.tabs.create({
+        url : webPageX.url + "?" + submitParam,
+        active : false,
+        selected : false,
+        pinned : true
+    }, function (tab) {
+        tabId = tab.id;
+    });
+    
+    window.setTimeout(function () {
+        chrome.tabs.remove(tabId);
+    }, 10000);
+    
+    if (visitType == "initial") {
+        console.log("Visited Initial Page: " + webPageX.url);
+        visitedPagesCookie = visitedPagesCookieMarketoLive;
+        visitedPagesCookie.value = webPageX.name;
+    } else {
+        console.log("Visited: " + webPageX.url);
+        visitedPagesCookie.url = visitedPagesCookieMarketoLive.url;
+        visitedPagesCookie.value = visitedPagesCookie.value + ", " + webPageX.name;
+    }
+    setCookie(visitedPagesCookie);
+}
+
+function determineVisit(visitedPagesCookie) {
     if (visitedPagesCookie
          && visitedPagesCookie.value) {
         var submitParam;
@@ -596,18 +573,7 @@ if (hasUsernameCookie) {
             }
             
             if (proceed) {
-                console.log("Visiting: " + webPageX.url);
-                
-                if (webPageX.type == landingPageType
-                     && (webPageX.conversionRate >= 1.0
-                         || (Math.random()) <= webPageX.conversionRate)) {
-                    
-                    submitParam = "submit=true";
-                } else {
-                    submitParam = "submit=false";
-                }
-                
-                visitPage();
+                visitPage(visitedPagesCookie, "append");
             } else {
                 console.log("NOT Visiting: " + webPageX.url + " due to dependencies not being met (" + webPageX.dependentOn.toString() + ")");
             }
@@ -618,22 +584,49 @@ if (hasUsernameCookie) {
         webPageX = webPages[signupPageIndex];
         
         if ((Math.random()) <= webPageX.visitationRate) {
-            console.log("Visiting Initial Page: " + webPageX.url);
-            
-            if (webPageX.type == landingPageType
-                 && (webPageX.conversionRate >= 1.0
-                     || (Math.random()) <= webPageX.conversionRate)) {
-                
-                submitParam = "submit=true";
-            } else {
-                submitParam = "submit=false";
-            }
-            
-            visitPage("initial");
+            visitPage(null, "initial");
         } else {
             console.log("NOT Visiting: " + webPageX.url + " due to web page visitation rate (" + webPageX.visitationRate + ")");
         }
     }
-} else {
-    console.log("NOT Visiting: " + webPageX.url + " due to " + usernameCookieName + " cookie is null");
+}
+
+if (webPageX.type == landingPageType) {
+    getCookie({
+        url : mktoAppDomainMatch,
+        name : usernameCookieName
+    }, function (cookie) {
+        if (cookie
+             && cookie.value) {
+            getCookie(visitedPagesCookieMarketoLive, function (cookie) {
+                if (cookie
+                     && cookie.value) {
+                    determineVisit(cookie);
+                } else {
+                    determineVisit();
+                }
+            });
+        } else {
+            console.log("NOT Visiting: " + webPageX.url + " due to " + usernameCookieName + " cookie is null");
+        }
+    });
+} else if (webPageX.type == webPageType) {
+    getCookie({
+        url : mktoLiveDomainMatch,
+        name : usernameCookieName
+    }, function (cookie) {
+        if (cookie
+             && cookie.value) {
+            getCookie(visitedPagesCookieMarketoLive, function (cookie) {
+                if (cookie
+                     && cookie.value) {
+                    determineVisit(cookie);
+                } else {
+                    determineVisit();
+                }
+            });
+        } else {
+            console.log("NOT Visiting: " + webPageX.url + " due to " + usernameCookieName + " cookie is null");
+        }
+    });
 }
