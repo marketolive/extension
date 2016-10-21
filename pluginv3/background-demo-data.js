@@ -544,8 +544,8 @@ function visitPage(visitedPagesCookie, visitType) {
         visitedPagesCookie.value = webPageX.name;
     } else {
         console.log("Visited: " + webPageX.url);
+        visitedPagesCookie.url = visitedPagesCookieMarketoLive.url;
         visitedPagesCookie.value = visitedPagesCookie.value + ", " + webPageX.name;
-        console.log("Cookie : " + JSON.stringify(visitedPagesCookie, null, 2));
     }
     setCookie(visitedPagesCookie);
 }
