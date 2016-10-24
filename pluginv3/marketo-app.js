@@ -5746,15 +5746,15 @@ APP.disableRequests = function () {
          && MktSession.ajaxRequest) {
         var origFunc = MktSession.ajaxRequest;
         MktSession.ajaxRequest = function (url, opts) {
-            console.log("Marketo App > Executing: Disable Specific Requests");
-            
             switch (url) {
             case "leadDatabase/updateLead":
             case "fieldManagement/analyticsOptionsSubmit":
+                console.log("Marketo App > Executing: Disable Specific Requests");
                 return null;
             }
             
             if (url.search("^salesforce/enableSynch") != -1) {
+                console.log("Marketo App > Executing: Disable Specific Requests");
                 return null;
             };
             origFunc.apply(this, arguments);
@@ -6977,6 +6977,7 @@ var isMktPageApp = window.setInterval(function () {
                                 } else if (currUrlFragment == mktoAdminSalesforceFragment) {
                                     console.log("Marketo App > Location: Admin > Salesforce");
                                     
+                                    APP.disableRequests();
                                     APP.hideOtherToolbarItems([{
                                                 id : "enableSync", //Enable/Disable Sync
                                                 action : "setVisible"
@@ -6985,6 +6986,7 @@ var isMktPageApp = window.setInterval(function () {
                                 } else if (currUrlFragment == mktoAdminRcaCustomFieldSync) {
                                     console.log("Marketo App > Location: Admin > Revenue Cycle Analytics > Custom Field Sync");
                                     
+                                    APP.disableRequests();
                                     APP.hideOtherToolbarItems([{
                                                 id : "cadChangeButton", //Edit Sync Option
                                                 action : "setVisible"
