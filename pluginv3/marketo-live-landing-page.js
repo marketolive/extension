@@ -258,10 +258,27 @@ var isMktoForm = window.setInterval(function () {
                     //console.log(JSON.stringify(form.vals(), null, 2));
                     
                     if (submitParamVal == "true") {
-                        form.submit();
+                        var isMunchkinInitSubmit = window.setInterval(function () {
+                                if (typeof(Munchkin.init) !== "undefined") {
+                                    console.log("Landing Page > Munchkin is Defined");
+                                    
+                                    window.clearInterval(isMunchkinInitSubmit);
+                                    
+                                    form.submit();
+                                }
+                            }, 0);
                     }
+                
                 } else if (submitParamVal == "false") {
-                    window.close();
+                    var isMunchkinInit = window.setInterval(function () {
+                            if (typeof(Munchkin.init) !== "undefined") {
+                                console.log("Landing Page > Munchkin is Defined");
+                                
+                                window.clearInterval(isMunchkinInit);
+                                
+                                window.close();
+                            }
+                        }, 0);
                 }
             });
         }
