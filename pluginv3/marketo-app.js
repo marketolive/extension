@@ -6902,7 +6902,9 @@ var isMktPageApp = window.setInterval(function () {
             } else if (document.location.pathname == mktoPersonDetailPath) {
                 console.log("Marketo App > Location: Lead Database > Person Detail");
                 
-                APP.disableSaving();
+                window.clearInterval(isMktPageApp);
+                
+                MktLeadDetail.updateLeadFromField = function () {};
                 APP.heapTrack("track", {
                     name : "Last Loaded",
                     assetName : "Page"
