@@ -6672,37 +6672,41 @@ var isMktPageApp = window.setInterval(function () {
             // Disabling Demo Plugin Check
             APP.disableDemoPluginCheck();
             
-            if (currUrlFragment == mktoMyMarketoFragment) {
-                APP.overrideHomeTiles();
-                APP.heapTrack("track", {
-                    name : "My Marketo",
-                    assetName : "Home"
-                });
-            } else if (currUrlFragment.search(mktoDisableButtonsFragmentMatch) != -1) {
-                APP.disableButtons();
-            } else if (currUrlFragment == mktoAnalyticsDefaultFragment) {
-                APP.overrideAnalyticsTiles();
-            } else if (currUrlFragment == mktoAdBridgeSmartListFragment) {
-                console.log("Marketo App > Location: Ad Bridge Smart List");
-                
-                APP.openAdBridgeModal();
-            } else if (currUrlFragment == mktoAdminSalesforceFragment) {
-                console.log("Marketo App > Location: Admin > Salesforce");
-                
-                APP.hideOtherToolbarItems([{
-                            id : "enableSync", //Enable/Disable Sync
-                            action : "setVisible"
-                        }
-                    ]);
-            } else if (currUrlFragment == mktoAdminRcaCustomFieldSync) {
-                console.log("Marketo App > Location: Admin > Revenue Cycle Analytics > Custom Field Sync");
-                
-                APP.hideOtherToolbarItems([{
-                            id : "cadChangeButton", //Edit Sync Option
-                            action : "setVisible"
-                        }
-                    ]);
+            if (currUrlFragment) {
+                if (currUrlFragment == mktoMyMarketoFragment) {
+                    APP.overrideHomeTiles();
+                    APP.heapTrack("track", {
+                        name : "My Marketo",
+                        assetName : "Home"
+                    });
+                } else if (currUrlFragment.search(mktoDisableButtonsFragmentMatch) != -1) {
+                    APP.disableButtons();
+                } else if (currUrlFragment == mktoAnalyticsDefaultFragment) {
+                    APP.overrideAnalyticsTiles();
+                } else if (currUrlFragment == mktoAdBridgeSmartListFragment) {
+                    console.log("Marketo App > Location: Ad Bridge Smart List");
+                    
+                    APP.openAdBridgeModal();
+                } else if (currUrlFragment == mktoAdminSalesforceFragment) {
+                    console.log("Marketo App > Location: Admin > Salesforce");
+                    
+                    APP.hideOtherToolbarItems([{
+                                id : "enableSync", //Enable/Disable Sync
+                                action : "setVisible"
+                            }
+                        ]);
+                } else if (currUrlFragment == mktoAdminRcaCustomFieldSync) {
+                    console.log("Marketo App > Location: Admin > Revenue Cycle Analytics > Custom Field Sync");
+                    
+                    APP.hideOtherToolbarItems([{
+                                id : "cadChangeButton", //Edit Sync Option
+                                action : "setVisible"
+                            }
+                        ]);
+                }
             } else if (document.location.pathname == mktoPersonDetailPath) {
+                console.log("Marketo App > Location: Lead Database > Person Detail");
+                
                 APP.disableSaving();
                 APP.heapTrack("track", {
                     name : "Last Loaded",
@@ -6712,7 +6716,8 @@ var isMktPageApp = window.setInterval(function () {
             }
             
             // Only execute this block if the user is not on an editor page.
-            if (currUrlFragment.search(mktoAnalyticsFragmentMatch) == -1
+            if (currUrlFragment
+                 && currUrlFragment.search(mktoAnalyticsFragmentMatch) == -1
                  && (!currCompFragment
                      || (currCompFragment.search(mktoAbmFragmentMatch) == -1
                          && currCompFragment.search(mktoDesignersFragmentMatch) == -1))) {
