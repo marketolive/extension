@@ -5730,6 +5730,40 @@ APP.disableSaving = function () {
 
 /**************************************************************************************
  *
+ *  This function disables specific requests from completing to prevent saving.
+ *
+ *  @Author Brian Fisher
+ *
+ *  @function
+ *
+ **************************************************************************************/
+
+APP.disableRequests = function () {
+    console.log("Marketo App > Disabling: Specific Requests");
+    
+    if (typeof(MktSession) !== "undefined"
+         && MktSession
+         && MktSession.ajaxRequest) {
+        var origFunc = MktSession.ajaxRequest;
+        MktSession.ajaxRequest = function (url, opts) {
+            console.log("Marketo App > Executing: Disable Specific Requests");
+            
+            switch (url) {
+            case "leadDatabase/updateLead":
+            case "fieldManagement/analyticsOptionsSubmit":
+                return null;
+            }
+            
+            if (url.search("^salesforce/enableSynch") != -1) {
+                return null;
+            };
+            origFunc.apply(this, arguments);
+        };
+    }
+};
+
+/**************************************************************************************
+ *
  *  This function opens the Send via Ad Bridge modal window
  *
  *  @Author Brian Fisher
@@ -6690,6 +6724,7 @@ var isMktPageApp = window.setInterval(function () {
                 } else if (currUrlFragment == mktoAdminSalesforceFragment) {
                     console.log("Marketo App > Location: Admin > Salesforce");
                     
+                    APP.disableRequests();
                     APP.hideOtherToolbarItems([{
                                 id : "enableSync", //Enable/Disable Sync
                                 action : "setVisible"
@@ -6698,6 +6733,7 @@ var isMktPageApp = window.setInterval(function () {
                 } else if (currUrlFragment == mktoAdminRcaCustomFieldSync) {
                     console.log("Marketo App > Location: Admin > Revenue Cycle Analytics > Custom Field Sync");
                     
+                    APP.disableRequests();
                     APP.hideOtherToolbarItems([{
                                 id : "cadChangeButton", //Edit Sync Option
                                 action : "setVisible"
@@ -6904,7 +6940,7 @@ var isMktPageApp = window.setInterval(function () {
                 
                 window.clearInterval(isMktPageApp);
                 
-                MktLeadDetail.updateLeadFromField = function () {};
+                APP.disableRequests();
                 APP.heapTrack("track", {
                     name : "Last Loaded",
                     assetName : "Page"
