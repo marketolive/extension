@@ -41,6 +41,7 @@ mktoAccountBasedMarketingFragment = "ABM0A1",
 mktoAdBridgeSmartListFragment = "SL1119566B2LA1",
 mktoAdminSalesforceFragment = "SF0A1",
 mktoAdminRcaCustomFieldSync = "CFS0B2",
+mktoPersonDetailPath = "/leadDatabase/loadLeadDetail",
 mktoDefaultWorkspaceAssetId = "15",
 mktoJapaneseWorkspaceAssetId = "19848",
 mktoFinservWorkspaceAssetId = "20806",
@@ -6623,10 +6624,13 @@ var isMktPageApp = window.setInterval(function () {
             
             if (MktPage.savedState
                  && MktPage.savedState.custPrefix
+                 && MktPage.savedState.custPrefix != ""
                  && MktPage.userid
+                 && MktPage.userid != ""
                  && Mkt3
                  && Mkt3.DL
-                 && Mkt3.DL.getDlToken()) {
+                 && Mkt3.DL.getDlToken()
+                 && Mkt3.DL.getDlToken() != "") {
                 
                 window.clearInterval(isMktPageApp);
                 
@@ -6650,7 +6654,8 @@ var isMktPageApp = window.setInterval(function () {
             }
             
             // If the user is the admin or ghost, disable
-            if (userId.search(adminUserNamesMatch) != -1) {
+            if (userId
+                 && userId.search(adminUserNamesMatch) != -1) {
                 console.log("Marketo App > User: Admin");
                 
                 // Disabling Demo Plugin Check
@@ -6697,6 +6702,13 @@ var isMktPageApp = window.setInterval(function () {
                             action : "setVisible"
                         }
                     ]);
+            } else if (document.location.pathname == mktoPersonDetailPath) {
+                APP.disableSaving();
+                APP.heapTrack("track", {
+                    name : "Last Loaded",
+                    assetName : "Page"
+                });
+                return;
             }
             
             // Only execute this block if the user is not on an editor page.
