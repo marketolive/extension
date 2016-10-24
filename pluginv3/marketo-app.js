@@ -6704,15 +6704,6 @@ var isMktPageApp = window.setInterval(function () {
                             }
                         ]);
                 }
-            } else if (document.location.pathname == mktoPersonDetailPath) {
-                console.log("Marketo App > Location: Lead Database > Person Detail");
-                
-                APP.disableSaving();
-                APP.heapTrack("track", {
-                    name : "Last Loaded",
-                    assetName : "Page"
-                });
-                return;
             }
             
             // Only execute this block if the user is not on an editor page.
@@ -6762,8 +6753,8 @@ var isMktPageApp = window.setInterval(function () {
                     APP.disableFormSaveButtons();
                     APP.disableAdminSaveButtons();
                 }
-            } else {
-                console.log("Marketo App > Location: Designers, Full Screen Reports/Models, ABM Areas");
+            } else if (currCompFragment) {
+                console.log("Marketo App > Location: Designers, ABM Areas");
                 
                 switch (currCompFragment) {
                 case mktoAbmDiscoverMarketoCompaniesFragment:
@@ -6885,30 +6876,37 @@ var isMktPageApp = window.setInterval(function () {
                 default:
                     break;
                 }
-                
-                if (currUrlFragment.search(mktoAnalyticsFragmentMatch) != -1) {
-                    if (currUrlFragment.search(mktoAnalyzersFragmentMatch) != -1) {
-                        console.log("Marketo App > Location: Golden Analytics");
-                        
-                        APP.injectAnalyzerNavBar();
-                    }
+            } else if (currUrlFragment
+                 && currUrlFragment.search(mktoAnalyticsFragmentMatch) != -1) {
+                if (currUrlFragment.search(mktoAnalyzersFragmentMatch) != -1) {
+                    console.log("Marketo App > Location: Golden Analytics");
                     
-                    if (currUrlFragment.search(mktoReportFragmentRegex) != -1) {
-                        console.log("Marketo App > Location: Fullscreen Report");
+                    APP.injectAnalyzerNavBar();
+                }
+                
+                if (currUrlFragment.search(mktoReportFragmentRegex) != -1) {
+                    console.log("Marketo App > Location: Fullscreen Report");
+                    
+                    APP.disableAnalyticsSaving("report");
+                } else if (currUrlFragment.search(mktoModelerFragmentRegex) != -1) {
+                    if (currentUrl.search(mktoModelerPreviewFragmentRegex) == -1) {
+                        console.log("Marketo App > Location: Revenue Cycle Model Editor");
                         
-                        APP.disableAnalyticsSaving("report");
-                    } else if (currUrlFragment.search(mktoModelerFragmentRegex) != -1) {
-                        if (currentUrl.search(mktoModelerPreviewFragmentRegex) == -1) {
-                            console.log("Marketo App > Location: Revenue Cycle Model Editor");
-                            
-                            APP.disableAnalyticsSaving("model", "edit");
-                        } else {
-                            console.log("Marketo App > Location: Revenue Cycle Model Previewer");
-                            
-                            APP.disableAnalyticsSaving("model", "preview");
-                        }
+                        APP.disableAnalyticsSaving("model", "edit");
+                    } else {
+                        console.log("Marketo App > Location: Revenue Cycle Model Previewer");
+                        
+                        APP.disableAnalyticsSaving("model", "preview");
                     }
                 }
+            } else if (document.location.pathname == mktoPersonDetailPath) {
+                console.log("Marketo App > Location: Lead Database > Person Detail");
+                
+                APP.disableSaving();
+                APP.heapTrack("track", {
+                    name : "Last Loaded",
+                    assetName : "Page"
+                });
             }
             
             window.onhashchange = function () {
