@@ -41,6 +41,7 @@ mktoAccountBasedMarketingFragment = "ABM0A1",
 mktoAdBridgeSmartListFragment = "SL1119566B2LA1",
 mktoAdminSalesforceFragment = "SF0A1",
 mktoAdminRcaCustomFieldSync = "CFS0B2",
+mktoPersonDetailPath = "/leadDatabase/loadLeadDetail",
 mktoDefaultWorkspaceAssetId = "15",
 mktoJapaneseWorkspaceAssetId = "19848",
 mktoFinservWorkspaceAssetId = "20806",
@@ -5729,6 +5730,40 @@ APP.disableSaving = function () {
 
 /**************************************************************************************
  *
+ *  This function disables specific requests from completing to prevent saving.
+ *
+ *  @Author Brian Fisher
+ *
+ *  @function
+ *
+ **************************************************************************************/
+
+APP.disableRequests = function () {
+    console.log("Marketo App > Disabling: Specific Requests");
+    
+    if (typeof(MktSession) !== "undefined"
+         && MktSession
+         && MktSession.ajaxRequest) {
+        var origFunc = MktSession.ajaxRequest;
+        MktSession.ajaxRequest = function (url, opts) {
+            switch (url) {
+            case "leadDatabase/updateLead":
+            case "fieldManagement/analyticsOptionsSubmit":
+                console.log("Marketo App > Executing: Disable Specific Requests");
+                return null;
+            }
+            
+            if (url.search("^salesforce/enableSynch") != -1) {
+                console.log("Marketo App > Executing: Disable Specific Requests");
+                return null;
+            };
+            origFunc.apply(this, arguments);
+        };
+    }
+};
+
+/**************************************************************************************
+ *
  *  This function opens the Send via Ad Bridge modal window
  *
  *  @Author Brian Fisher
@@ -6623,10 +6658,13 @@ var isMktPageApp = window.setInterval(function () {
             
             if (MktPage.savedState
                  && MktPage.savedState.custPrefix
+                 && MktPage.savedState.custPrefix != ""
                  && MktPage.userid
+                 && MktPage.userid != ""
                  && Mkt3
                  && Mkt3.DL
-                 && Mkt3.DL.getDlToken()) {
+                 && Mkt3.DL.getDlToken()
+                 && Mkt3.DL.getDlToken() != "") {
                 
                 window.clearInterval(isMktPageApp);
                 
@@ -6650,7 +6688,8 @@ var isMktPageApp = window.setInterval(function () {
             }
             
             // If the user is the admin or ghost, disable
-            if (userId.search(adminUserNamesMatch) != -1) {
+            if (userId
+                 && userId.search(adminUserNamesMatch) != -1) {
                 console.log("Marketo App > User: Admin");
                 
                 // Disabling Demo Plugin Check
@@ -6667,40 +6706,45 @@ var isMktPageApp = window.setInterval(function () {
             // Disabling Demo Plugin Check
             APP.disableDemoPluginCheck();
             
-            if (currUrlFragment == mktoMyMarketoFragment) {
-                APP.overrideHomeTiles();
-                APP.heapTrack("track", {
-                    name : "My Marketo",
-                    assetName : "Home"
-                });
-            } else if (currUrlFragment.search(mktoDisableButtonsFragmentMatch) != -1) {
-                APP.disableButtons();
-            } else if (currUrlFragment == mktoAnalyticsDefaultFragment) {
-                APP.overrideAnalyticsTiles();
-            } else if (currUrlFragment == mktoAdBridgeSmartListFragment) {
-                console.log("Marketo App > Location: Ad Bridge Smart List");
-                
-                APP.openAdBridgeModal();
-            } else if (currUrlFragment == mktoAdminSalesforceFragment) {
-                console.log("Marketo App > Location: Admin > Salesforce");
-                
-                APP.hideOtherToolbarItems([{
-                            id : "enableSync", //Enable/Disable Sync
-                            action : "setVisible"
-                        }
-                    ]);
-            } else if (currUrlFragment == mktoAdminRcaCustomFieldSync) {
-                console.log("Marketo App > Location: Admin > Revenue Cycle Analytics > Custom Field Sync");
-                
-                APP.hideOtherToolbarItems([{
-                            id : "cadChangeButton", //Edit Sync Option
-                            action : "setVisible"
-                        }
-                    ]);
+            if (currUrlFragment) {
+                if (currUrlFragment == mktoMyMarketoFragment) {
+                    APP.overrideHomeTiles();
+                    APP.heapTrack("track", {
+                        name : "My Marketo",
+                        assetName : "Home"
+                    });
+                } else if (currUrlFragment.search(mktoDisableButtonsFragmentMatch) != -1) {
+                    APP.disableButtons();
+                } else if (currUrlFragment == mktoAnalyticsDefaultFragment) {
+                    APP.overrideAnalyticsTiles();
+                } else if (currUrlFragment == mktoAdBridgeSmartListFragment) {
+                    console.log("Marketo App > Location: Ad Bridge Smart List");
+                    
+                    APP.openAdBridgeModal();
+                } else if (currUrlFragment == mktoAdminSalesforceFragment) {
+                    console.log("Marketo App > Location: Admin > Salesforce");
+                    
+                    APP.disableRequests();
+                    APP.hideOtherToolbarItems([{
+                                id : "enableSync", //Enable/Disable Sync
+                                action : "setVisible"
+                            }
+                        ]);
+                } else if (currUrlFragment == mktoAdminRcaCustomFieldSync) {
+                    console.log("Marketo App > Location: Admin > Revenue Cycle Analytics > Custom Field Sync");
+                    
+                    APP.disableRequests();
+                    APP.hideOtherToolbarItems([{
+                                id : "cadChangeButton", //Edit Sync Option
+                                action : "setVisible"
+                            }
+                        ]);
+                }
             }
             
             // Only execute this block if the user is not on an editor page.
-            if (currUrlFragment.search(mktoAnalyticsFragmentMatch) == -1
+            if (currUrlFragment
+                 && currUrlFragment.search(mktoAnalyticsFragmentMatch) == -1
                  && (!currCompFragment
                      || (currCompFragment.search(mktoAbmFragmentMatch) == -1
                          && currCompFragment.search(mktoDesignersFragmentMatch) == -1))) {
@@ -6745,8 +6789,8 @@ var isMktPageApp = window.setInterval(function () {
                     APP.disableFormSaveButtons();
                     APP.disableAdminSaveButtons();
                 }
-            } else {
-                console.log("Marketo App > Location: Designers, Full Screen Reports/Models, ABM Areas");
+            } else if (currCompFragment) {
+                console.log("Marketo App > Location: Designers, ABM Areas");
                 
                 switch (currCompFragment) {
                 case mktoAbmDiscoverMarketoCompaniesFragment:
@@ -6868,30 +6912,39 @@ var isMktPageApp = window.setInterval(function () {
                 default:
                     break;
                 }
-                
-                if (currUrlFragment.search(mktoAnalyticsFragmentMatch) != -1) {
-                    if (currUrlFragment.search(mktoAnalyzersFragmentMatch) != -1) {
-                        console.log("Marketo App > Location: Golden Analytics");
-                        
-                        APP.injectAnalyzerNavBar();
-                    }
+            } else if (currUrlFragment
+                 && currUrlFragment.search(mktoAnalyticsFragmentMatch) != -1) {
+                if (currUrlFragment.search(mktoAnalyzersFragmentMatch) != -1) {
+                    console.log("Marketo App > Location: Golden Analytics");
                     
-                    if (currUrlFragment.search(mktoReportFragmentRegex) != -1) {
-                        console.log("Marketo App > Location: Fullscreen Report");
+                    APP.injectAnalyzerNavBar();
+                }
+                
+                if (currUrlFragment.search(mktoReportFragmentRegex) != -1) {
+                    console.log("Marketo App > Location: Fullscreen Report");
+                    
+                    APP.disableAnalyticsSaving("report");
+                } else if (currUrlFragment.search(mktoModelerFragmentRegex) != -1) {
+                    if (currentUrl.search(mktoModelerPreviewFragmentRegex) == -1) {
+                        console.log("Marketo App > Location: Revenue Cycle Model Editor");
                         
-                        APP.disableAnalyticsSaving("report");
-                    } else if (currUrlFragment.search(mktoModelerFragmentRegex) != -1) {
-                        if (currentUrl.search(mktoModelerPreviewFragmentRegex) == -1) {
-                            console.log("Marketo App > Location: Revenue Cycle Model Editor");
-                            
-                            APP.disableAnalyticsSaving("model", "edit");
-                        } else {
-                            console.log("Marketo App > Location: Revenue Cycle Model Previewer");
-                            
-                            APP.disableAnalyticsSaving("model", "preview");
-                        }
+                        APP.disableAnalyticsSaving("model", "edit");
+                    } else {
+                        console.log("Marketo App > Location: Revenue Cycle Model Previewer");
+                        
+                        APP.disableAnalyticsSaving("model", "preview");
                     }
                 }
+            } else if (document.location.pathname == mktoPersonDetailPath) {
+                console.log("Marketo App > Location: Lead Database > Person Detail");
+                
+                window.clearInterval(isMktPageApp);
+                
+                APP.disableRequests();
+                APP.heapTrack("track", {
+                    name : "Last Loaded",
+                    assetName : "Page"
+                });
             }
             
             window.onhashchange = function () {
@@ -6924,6 +6977,7 @@ var isMktPageApp = window.setInterval(function () {
                                 } else if (currUrlFragment == mktoAdminSalesforceFragment) {
                                     console.log("Marketo App > Location: Admin > Salesforce");
                                     
+                                    APP.disableRequests();
                                     APP.hideOtherToolbarItems([{
                                                 id : "enableSync", //Enable/Disable Sync
                                                 action : "setVisible"
@@ -6932,6 +6986,7 @@ var isMktPageApp = window.setInterval(function () {
                                 } else if (currUrlFragment == mktoAdminRcaCustomFieldSync) {
                                     console.log("Marketo App > Location: Admin > Revenue Cycle Analytics > Custom Field Sync");
                                     
+                                    APP.disableRequests();
                                     APP.hideOtherToolbarItems([{
                                                 id : "cadChangeButton", //Edit Sync Option
                                                 action : "setVisible"
