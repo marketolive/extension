@@ -5912,8 +5912,9 @@ APP.discardLandingPageDrafts = function (lpIds) {
         window.setTimeout(function () {
             console.log("Marketo App > Re-enabling: Forbidden Message");
             
+            APP.resetGoldenLandingPageProps();
             MktMessage.show403Forbidden = prevForbiddenMsg;
-        }, 15000);
+        }, 10000);
     }
 };
 
@@ -6804,7 +6805,6 @@ var isMktPageApp = window.setInterval(function () {
                 
                 if (accountString.search(mktoAccountStringsMatch) != -1) {
                     APP.discardDrafts(accountString, "landingPage");
-                    APP.resetGoldenLandingPageProps();
                     APP.overrideTreeNodeExpand();
                     APP.overrideTreeNodeCollapse();
                     APP.overrideSaving();
