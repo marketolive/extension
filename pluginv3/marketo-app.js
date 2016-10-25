@@ -42,6 +42,7 @@ mktoAdBridgeSmartListFragment = "SL1119566B2LA1",
 mktoAdminSalesforceFragment = "SF0A1",
 mktoAdminRcaCustomFieldSync = "CFS0B2",
 mktoPersonDetailPath = "/leadDatabase/loadLeadDetail",
+mktoDefaultDiyLandingPageResponsive = "LP11822",
 mktoDefaultWorkspaceAssetId = "15",
 mktoJapaneseWorkspaceAssetId = "19848",
 mktoFinservWorkspaceAssetId = "20806",
@@ -163,6 +164,33 @@ APP.getCookie = function (cookieName) {
     }
     console.log("Marketo App > Getting: Cookie " + cookieName + " not found");
     return null;
+};
+
+/**************************************************************************************
+ *
+ *  This function issues an HTTP request.
+ *
+ *  @Author Brian Fisher
+ *
+ *  @function
+ *
+ *  @param {String} method - The HTTP request method (e.g. GET, POST, PATCH).
+ *  @param {String} url - The HTTP request URL.
+ *  @param {Boolean} async - The HTTP async flag [OPTIONAL].
+ *  @param {String} username - The URL's username [OPTIONAL].
+ *  @param {String} password - The URL's password [OPTIONAL].
+ *
+ **************************************************************************************/
+
+APP.webRequest = function (method, url, async, username, password) {
+    var xhr = new XMLHttpRequest();
+    
+    xhr.open(method, url, async, username, password);
+    //xhr.responseType = "document";
+    xhr.send();
+    
+    return xhr.statusText;
+    //return xhr.response;
 };
 
 /**************************************************************************************
@@ -4362,6 +4390,19 @@ APP.disableDesignerSaving = function (assetType, mode) {
                         workspaceName : ""
                     };
                     
+                    switch (assetNode.compType) {
+                    case "Landing Page":
+                        var mktoDesignerDomain = "na-sjp.marketodesigner.com";
+                        
+                        switch (assetNode.id) {
+                        case mktoDefaultDiyLandingPageResponsive:
+                            console.log("Marketo App > Executing: Restoring Variables/Properties for " + assetNode.text);
+                            APP.webRequest('POST', 'https://' + mktoDesignerDomain + '/data/landingPage/update?context=LPE11822&data=%5B%7B%22id%22%3A11822%2C%22responsiveOptions%22%3A%7B%22variables%22%3A%7B%22gradient1%22%3A%22%232A5370%22%2C%22gradient2%22%3A%22%23F2F2F2%22%2C%22showSection2%22%3Atrue%2C%22showSection3%22%3Atrue%2C%22showSection4%22%3Atrue%2C%22showFooter%22%3Atrue%2C%22showSocialButtons%22%3Atrue%2C%22section4ButtonLabel%22%3A%22Need%20More%20Info%3F%22%2C%22section4ButtonLink%22%3A%22%23%22%2C%22section3LeftButtonLabel%22%3A%22Join%20Us%22%2C%22section4BgColor%22%3A%22%23F2F2F2%22%2C%22footerBgColor%22%3A%22%232A5370%22%2C%22section2BgColor%22%3A%22%23F2F2F2%22%2C%22section3BgColor%22%3A%22%232A5370%22%2C%22section3LeftButtonLink%22%3A%22https%3A%2F%2Fwww.marketo.com%22%2C%22section3RightButtonLabel%22%3A%22Sign%20Up%22%7D%7D%7D%5D&xsrfId=e3e29457504baef4ba1ea1a4832d917f');
+                            break;
+                        }
+                        break;
+                    }
+                    
                     switch (mode) {
                     case "edit":
                         heapEvent.assetArea = "Editor";
@@ -6724,7 +6765,6 @@ var isMktPageApp = window.setInterval(function () {
                 } else if (currUrlFragment == mktoAdminSalesforceFragment) {
                     console.log("Marketo App > Location: Admin > Salesforce");
                     
-                    APP.disableRequests();
                     APP.hideOtherToolbarItems([{
                                 id : "enableSync", //Enable/Disable Sync
                                 action : "setVisible"
@@ -6733,7 +6773,6 @@ var isMktPageApp = window.setInterval(function () {
                 } else if (currUrlFragment == mktoAdminRcaCustomFieldSync) {
                     console.log("Marketo App > Location: Admin > Revenue Cycle Analytics > Custom Field Sync");
                     
-                    APP.disableRequests();
                     APP.hideOtherToolbarItems([{
                                 id : "cadChangeButton", //Edit Sync Option
                                 action : "setVisible"
@@ -6769,9 +6808,10 @@ var isMktPageApp = window.setInterval(function () {
                     APP.overrideNewFolders();
                     APP.overrideRenamingFolders();
                     //                        APP.hidePageGrid();
-                    APP.limitNurturePrograms();
+                    //APP.limitNurturePrograms();
                     APP.hideFoldersOnImport();
                     APP.disableConfirmationMessage();
+                    APP.disableRequests();
                     APP.heapTrack("track", {
                         name : "Last Loaded",
                         assetName : "Page"
@@ -6977,7 +7017,6 @@ var isMktPageApp = window.setInterval(function () {
                                 } else if (currUrlFragment == mktoAdminSalesforceFragment) {
                                     console.log("Marketo App > Location: Admin > Salesforce");
                                     
-                                    APP.disableRequests();
                                     APP.hideOtherToolbarItems([{
                                                 id : "enableSync", //Enable/Disable Sync
                                                 action : "setVisible"
@@ -6986,7 +7025,6 @@ var isMktPageApp = window.setInterval(function () {
                                 } else if (currUrlFragment == mktoAdminRcaCustomFieldSync) {
                                     console.log("Marketo App > Location: Admin > Revenue Cycle Analytics > Custom Field Sync");
                                     
-                                    APP.disableRequests();
                                     APP.hideOtherToolbarItems([{
                                                 id : "cadChangeButton", //Edit Sync Option
                                                 action : "setVisible"
