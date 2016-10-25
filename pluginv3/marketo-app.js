@@ -44,6 +44,7 @@ mktoAdminSalesforceFragment = "SF0A1",
 mktoAdminRcaCustomFieldSync = "CFS0B2",
 mktoPersonDetailPath = "/leadDatabase/loadLeadDetail",
 mktoDefaultDiyLandingPageResponsive = "LP11822",
+mktoGoldenLandingPageDraftFragments = "^(LPE11822|LPPD11822)$",
 mktoDefaultWorkspaceAssetId = "15",
 mktoJapaneseWorkspaceAssetId = "19848",
 mktoFinservWorkspaceAssetId = "20806",
@@ -5834,21 +5835,6 @@ APP.openAdBridgeModal = function () {
 
 /**************************************************************************************
  *
- *  This function resets the Golden Landing Page properties/variables
- *
- *  @Author Brian Fisher
- *
- *  @function
- *
- **************************************************************************************/
-
-APP.resetGoldenLandingPageProps = function () {
-    console.log("Marketo App > Reseting: Golden Landing Page Properties/Variables");
-    APP.webRequest('POST', 'https://'+mktoDesignerHost+'/data/landingPage/update?context=LPE11822&data=%5B%7B%22id%22%3A11822%2C%22responsiveOptions%22%3A%7B%22variables%22%3A%7B%22gradient1%22%3A%22%232A5370%22%2C%22gradient2%22%3A%22%23F2F2F2%22%2C%22showSection2%22%3Atrue%2C%22showSection3%22%3Atrue%2C%22showSection4%22%3Atrue%2C%22showFooter%22%3Atrue%2C%22showSocialButtons%22%3Atrue%2C%22section4ButtonLabel%22%3A%22Need%20More%20Info%3F%22%2C%22section4ButtonLink%22%3A%22%23%22%2C%22section3LeftButtonLabel%22%3A%22Join%20Us%22%2C%22section4BgColor%22%3A%22%23F2F2F2%22%2C%22footerBgColor%22%3A%22%232A5370%22%2C%22section2BgColor%22%3A%22%23F2F2F2%22%2C%22section3BgColor%22%3A%22%232A5370%22%2C%22section3LeftButtonLink%22%3A%22https%3A%2F%2Fwww.marketo.com%22%2C%22section3RightButtonLabel%22%3A%22Sign%20Up%22%7D%7D%7D%5D&xsrfId=e3e29457504baef4ba1ea1a4832d917f');
-};
-
-/**************************************************************************************
- *
  *  This function discards Landing Page drafts in DIY Design only.
  *
  *  @Author Brian Fisher
@@ -5912,7 +5898,6 @@ APP.discardLandingPageDrafts = function (lpIds) {
         window.setTimeout(function () {
             console.log("Marketo App > Re-enabling: Forbidden Message");
             
-            APP.resetGoldenLandingPageProps();
             MktMessage.show403Forbidden = prevForbiddenMsg;
         }, 10000);
     }
@@ -6865,6 +6850,12 @@ var isMktPageApp = window.setInterval(function () {
                 case mktoLandingPageEditFragment:
                     console.log("Marketo App > Location: Landing Page Editor");
                     
+                    if (currUrlFragment
+                         && currUrlFragment.search(mktoGoldenLandingPageDraftFragments) != -1) {
+                        console.log("Marketo App > Executing: Resetting Landing Page Properties/Variables");
+                        
+                        APP.webRequest('POST', 'https://'+mktoDesignerHost+'/data/landingPage/update?context=LPE11822&data=%5B%7B%22id%22%3A11822%2C%22responsiveOptions%22%3A%7B%22variables%22%3A%7B%22gradient1%22%3A%22%232A5370%22%2C%22gradient2%22%3A%22%23F2F2F2%22%2C%22showSection2%22%3Atrue%2C%22showSection3%22%3Atrue%2C%22showSection4%22%3Atrue%2C%22showFooter%22%3Atrue%2C%22showSocialButtons%22%3Atrue%2C%22section4ButtonLabel%22%3A%22Need%20More%20Info%3F%22%2C%22section4ButtonLink%22%3A%22%23%22%2C%22section3LeftButtonLabel%22%3A%22Join%20Us%22%2C%22section4BgColor%22%3A%22%23F2F2F2%22%2C%22footerBgColor%22%3A%22%232A5370%22%2C%22section2BgColor%22%3A%22%23F2F2F2%22%2C%22section3BgColor%22%3A%22%232A5370%22%2C%22section3LeftButtonLink%22%3A%22https%3A%2F%2Fwww.marketo.com%22%2C%22section3RightButtonLabel%22%3A%22Sign%20Up%22%7D%7D%7D%5D&xsrfId=e3e29457504baef4ba1ea1a4832d917f');
+                    }
                     APP.disableDesignerSaving("landingPage", "edit");
                     break;
                     
@@ -6877,6 +6868,12 @@ var isMktPageApp = window.setInterval(function () {
                 case mktoLandingPagePreviewDraftFragment:
                     console.log("Marketo App > Location: Landing Page Draft Previewer");
                     
+                    if (currUrlFragment
+                         && currUrlFragment.search(mktoGoldenLandingPageDraftFragments) != -1) {
+                        console.log("Marketo App > Executing: Resetting Landing Page Properties/Variables");
+                        
+                        APP.webRequest('POST', 'https://'+mktoDesignerHost+'/data/landingPage/update?context=LPE11822&data=%5B%7B%22id%22%3A11822%2C%22responsiveOptions%22%3A%7B%22variables%22%3A%7B%22gradient1%22%3A%22%232A5370%22%2C%22gradient2%22%3A%22%23F2F2F2%22%2C%22showSection2%22%3Atrue%2C%22showSection3%22%3Atrue%2C%22showSection4%22%3Atrue%2C%22showFooter%22%3Atrue%2C%22showSocialButtons%22%3Atrue%2C%22section4ButtonLabel%22%3A%22Need%20More%20Info%3F%22%2C%22section4ButtonLink%22%3A%22%23%22%2C%22section3LeftButtonLabel%22%3A%22Join%20Us%22%2C%22section4BgColor%22%3A%22%23F2F2F2%22%2C%22footerBgColor%22%3A%22%232A5370%22%2C%22section2BgColor%22%3A%22%23F2F2F2%22%2C%22section3BgColor%22%3A%22%232A5370%22%2C%22section3LeftButtonLink%22%3A%22https%3A%2F%2Fwww.marketo.com%22%2C%22section3RightButtonLabel%22%3A%22Sign%20Up%22%7D%7D%7D%5D&xsrfId=e3e29457504baef4ba1ea1a4832d917f');
+                    }
                     APP.disableDesignerSaving("landingPage", "preview");
                     break;
                     
