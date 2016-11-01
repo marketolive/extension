@@ -7,7 +7,7 @@ mktoLiveProdHost = "www.marketolive.com",
 mktoLiveHost = mktoLiveProdHost,
 landingPageType = "landing",
 webPageType = "web",
-signupPageIndex = 0,
+signUpPages = [0, 1, 2],
 webPages = {
     0 : {
         name : "signup",
@@ -15,127 +15,143 @@ webPages = {
         url : "http://" + mktoLiveLandingPageHost + "/lp/" + mktoLiveMunchkinId + "/Lead-Capture_Landing-Page.html",
         dependentOn : [],
         visitationRate : 0.5,
-        conversionRate : 1.0
+        conversionRate : 0.5
     },
     1 : {
+        name : "signup",
+        type : landingPageType,
+        url : "http://" + mktoLiveLandingPageHost + "/lp/" + mktoLiveMunchkinId + "/Newsletter_Signup.html",
+        dependentOn : [],
+        visitationRate : 0.5,
+        conversionRate : 0.5
+    },
+    2 : {
+        name : "signup",
+        type : landingPageType,
+        url : "http://" + mktoLiveLandingPageHost + "/lp/" + mktoLiveMunchkinId + "/Blog-Post_Signup.html",
+        dependentOn : [],
+        visitationRate : 0.5,
+        conversionRate : 0.5
+    },
+    3 : {
         name : "preferenceCenter",
         type : landingPageType,
         url : "http://" + mktoLiveLandingPageHost + "/lp/" + mktoLiveMunchkinId + "/Subscription-Management_Preference-Center.html",
         dependentOn : ["signup"],
         visitationRate : 0.05,
-        conversionRate : 1.0
+        conversionRate : 0.5
     },
-    2 : {
+    4 : {
         name : "notYouPreferenceCenter",
         type : landingPageType,
         url : "http://" + mktoLiveLandingPageHost + "/lp/" + mktoLiveMunchkinId + "/Subscription-Management_Not-You-Preference-Center.html",
         dependentOn : ["signup"],
         visitationRate : 0.01,
-        conversionRate : 1.0
+        conversionRate : 0.5
     },
-    3 : {
+    5 : {
         name : "webinarRegistration",
         type : landingPageType,
         url : "http://" + mktoLiveLandingPageHost + "/lp/" + mktoLiveMunchkinId + "/Webinar_Registration.html",
         dependentOn : ["signup"],
         visitationRate : 0.10,
-        conversionRate : 1.0
+        conversionRate : 0.5
     },
-    4 : {
+    6 : {
         name : "webinarCheckIn",
         type : landingPageType,
         url : "http://" + mktoLiveLandingPageHost + "/lp/" + mktoLiveMunchkinId + "/Webinar_CheckIn.html",
         dependentOn : ["signup", "webinarRegistration"],
         visitationRate : 0.80,
-        conversionRate : 1.0
+        conversionRate : 0.5
     },
-    5 : {
+    7 : {
         name : "liveEventRegistration",
         type : landingPageType,
         url : "http://" + mktoLiveLandingPageHost + "/lp/" + mktoLiveMunchkinId + "/Live-Event_Registration-Page.html",
         dependentOn : ["signup"],
         visitationRate : 0.10,
-        conversionRate : 1.0
+        conversionRate : 0.5
     },
-    6 : {
+    8 : {
         name : "liveEventCheckIn",
         type : landingPageType,
         url : "http://" + mktoLiveLandingPageHost + "/lp/" + mktoLiveMunchkinId + "/Live-Event_Check-In.html",
         dependentOn : ["signup", "liveEventRegistration"],
         visitationRate : 0.80,
-        conversionRate : 1.0
+        conversionRate : 0.5
     },
-    7 : {
+    9 : {
         name : "rewardsSignup",
         type : landingPageType,
         url : "http://" + mktoLiveLandingPageHost + "/lp/" + mktoLiveMunchkinId + "/Rewards-for-Champions_Rewards-Page.html",
         dependentOn : ["signup"],
         visitationRate : 0.05,
-        conversionRate : 1.0
+        conversionRate : 0.5
     },
-    8 : {
+    10 : {
         name : "whyUs",
         type : webPageType,
         url : "http://" + mktoLiveHost + "/info/why-us",
         dependentOn : [],
         visitationRate : 0.33,
-        conversionRate : 1.0
+        conversionRate : 0.5
     },
-    9 : {
+    11 : {
         name : "integrations",
         type : webPageType,
         url : "http://" + mktoLiveHost + "/info/integrations",
         dependentOn : [],
         visitationRate : 0.50,
-        conversionRate : 1.0
+        conversionRate : 0.5
     },
-    10 : {
+    12 : {
         name : "contactUs",
         type : webPageType,
         url : "http://" + mktoLiveHost + "/info/contact-us",
         dependentOn : [],
         visitationRate : 0.05,
-        conversionRate : 1.0
+        conversionRate : 0.5
     },
-    11 : {
+    13 : {
         name : "community",
         type : webPageType,
         url : "http://" + mktoLiveHost + "/info/community",
         dependentOn : ["signup", "rewardsSignup"],
         visitationRate : 0.03,
-        conversionRate : 1.0
+        conversionRate : 0.5
     },
-    12 : {
+    14 : {
         name : "liveEvent",
         type : webPageType,
         url : "http://" + mktoLiveHost + "/info/live-event",
         dependentOn : ["signup", "liveEventRegistration"],
         visitationRate : 0.50,
-        conversionRate : 1.0
+        conversionRate : 0.5
     },
-    13 : {
+    15 : {
         name : "webinar",
         type : webPageType,
         url : "http://" + mktoLiveHost + "/info/webinar",
         dependentOn : ["signup", "webinarRegistration"],
         visitationRate : 0.50,
-        conversionRate : 1.0
+        conversionRate : 0.5
     },
-    14 : {
+    16 : {
         name : "products",
         type : webPageType,
         url : "http://" + mktoLiveHost + "/info/products",
         dependentOn : [],
         visitationRate : 0.75,
-        conversionRate : 1.0
+        conversionRate : 0.5
     },
-    15 : {
+    17 : {
         name : "pricing",
         type : webPageType,
         url : "http://" + mktoLiveHost + "/info/pricing",
         dependentOn : [],
         visitationRate : 0.80,
-        conversionRate : 1.0
+        conversionRate : 0.5
     }
 },
 jobTitles = [
@@ -539,11 +555,11 @@ function visitPage(visitedPagesCookie, visitType) {
     }, 10000);
     
     if (visitType == "initial") {
-        console.log("Visited Initial Page: " + webPageX.url);
+        console.log("Visited Initial Page: " + webPageX.url + "?" + submitParam);
         visitedPagesCookie = visitedPagesCookieMarketoLive;
         visitedPagesCookie.value = webPageX.name;
     } else {
-        console.log("Visited: " + webPageX.url);
+        console.log("Visited: " + webPageX.url + "?" + submitParam);
         visitedPagesCookie.url = visitedPagesCookieMarketoLive.url;
         visitedPagesCookie.value = visitedPagesCookie.value + ", " + webPageX.name;
     }
@@ -581,7 +597,7 @@ function determineVisit(visitedPagesCookie) {
             console.log("NOT Visiting: " + webPageX.url + " due to web page visitation rate (" + webPageXvisitationRate + ")");
         }
     } else {
-        webPageX = webPages[signupPageIndex];
+        webPageX = webPages[signUpPages[Math.floor((Math.random()) * signUpPages.length)]];
         
         if ((Math.random()) <= webPageX.visitationRate) {
             visitPage(null, "initial");
