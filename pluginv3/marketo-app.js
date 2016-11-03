@@ -6705,6 +6705,9 @@ APP.heapTrack = function (action, event) {
  **************************************************************************************/
 
 var toggleState = APP.getCookie("toggleState");
+if (toggleState == null) {
+    toggleState = true;
+}
 var isMktPageApp = window.setInterval(function () {
         if (typeof(MktPage) !== "undefined") {
             console.log("Marketo App > Location: Marketo Page");
