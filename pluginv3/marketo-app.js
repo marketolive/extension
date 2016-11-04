@@ -817,7 +817,6 @@ APP.overrideSmartCampaignSaving = function () {
             this._updateDataPanelOrder(true);
             var canvas = MktCanvas.getActiveTab();
             if (!APP.evaluateMenu("button", null, canvas, null)
-                 && toggleState
                  && toggleState != "false") {
                 
                 if (this.saveQueue.blockingSaveInProgress) {
@@ -5485,7 +5484,6 @@ APP.overrideSaving = function () {
                 if (typeof(MktCanvas) !== "undefined"
                      && MktCanvas
                      && MktCanvas.getActiveTab()
-                     && toggleState
                      && toggleState != "false") {
                     disable = APP.evaluateMenu("button", null, MktCanvas.getActiveTab(), null);
                 } else if (toggleState == "false") {
@@ -5523,7 +5521,6 @@ APP.overrideSaving = function () {
             if (typeof(MktCanvas) !== "undefined"
                  && MktCanvas
                  && MktCanvas.getActiveTab()
-                 && toggleState
                  && toggleState != "false") {
                 disable = APP.evaluateMenu("button", null, MktCanvas.getActiveTab(), null);
             } else if (toggleState == "false") {
