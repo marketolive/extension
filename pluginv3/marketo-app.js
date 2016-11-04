@@ -817,7 +817,7 @@ APP.overrideSmartCampaignSaving = function () {
             this._updateDataPanelOrder(true);
             var canvas = MktCanvas.getActiveTab();
             if (!APP.evaluateMenu("button", null, canvas, null)
-                 toggleState != "false") {
+                 && toggleState != "false") {
                 
                 if (this.saveQueue.blockingSaveInProgress) {
                     this.saveQueue.pendingChangesCount++;
