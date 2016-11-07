@@ -5927,7 +5927,7 @@ APP.discardLandingPageDrafts = function (lpIds) {
             MktMessage.show403Forbidden = prevForbiddenMsg;
             MktMessage.showNotFound = prevNotFoundMsg;
             MktMessage.showSystemError = prevSystemErrorMsg;
-        }, 10000);
+        }, 15000);
     }
 };
 
