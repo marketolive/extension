@@ -366,8 +366,7 @@ APP.disableConfirmationMessage = function () {
                 }
                 
                 if (this.dpMgr.isSmartlist && !this.dpMeta.trigger && this.dpMgr.smartListRuleLogic.customMode()) {
-                    msg += MktLang.getStr('DataFormPanel.Reminder') +
-                    MktLang.getStr('DataFormPanel.Check_your_advanced_filter_rules_after_any_insert_delete_reorder');
+                    msg += MktLang.getStr('DataFormPanel.Reminder') + MktLang.getStr('DataFormPanel.Check_your_advanced_filter_rules_after_any_insert_delete_reorder');
                 }
                 
                 if (typeof(MktCanvas) !== "undefined"
@@ -3448,7 +3447,7 @@ APP.disableMenus = function () {
             } else {
                 me.setPagePosition(x, y, animate)
             }
-            me.show()
+            me.show();
             
             if (typeof(MktCanvas) !== "undefined"
                  && MktCanvas
@@ -5441,8 +5440,9 @@ APP.injectAnalyzerNavBar = function () {
                             
                             // Updates the currPosition based on the div selected
                             for (var x = 0; x < pod.valueSet.length; x++) {
-                                if (e.target.id == pod.valueSet[x].position)
+                                if (e.target.id == pod.valueSet[x].position) {
                                     currPosition = x;
+                                }
                             }
                             window.location = pod.valueSet[currPosition].url;
                         });
@@ -5867,6 +5867,7 @@ APP.discardLandingPageDrafts = function (lpIds) {
         
         var ii,
         prevForbiddenMsg,
+        prevNotFoundMsg,
         lpMessageBox = Ext.MessageBox.show({
                 title : "MarketoLive",
                 msg : "Discarding Landing Page Drafts",
@@ -5884,10 +5885,17 @@ APP.discardLandingPageDrafts = function (lpIds) {
         }*/
         
         if (typeof(MktMessage) !== "undefined"
-             && MktMessage
-             && MktMessage.show403Forbidden) {
-            prevForbiddenMsg = MktMessage.show403Forbidden;
-            MktMessage.show403Forbidden = function () {};
+             && MktMessage) {
+            
+            if (MktMessage.show403Forbidden) {
+                prevForbiddenMsg = MktMessage.show403Forbidden;
+                MktMessage.show403Forbidden = function () {};
+            }
+            
+            if (MktMessage.showNotFound) {
+                prevNotFoundMsg = MktMessage.showNotFound;
+                MktMessage.showNotFound = function () {};
+            }
         }
         
         for (ii = 0; ii < Object.keys(lpIds).length; ii++) {
@@ -5911,7 +5919,8 @@ APP.discardLandingPageDrafts = function (lpIds) {
             console.log("Marketo App > Re-enabling: Forbidden Message");
             
             MktMessage.show403Forbidden = prevForbiddenMsg;
-        }, 15000);
+            MktMessage.showNotFound = prevNotFoundMsg;
+        }, 10000);
     }
 };
 
@@ -6148,9 +6157,9 @@ APP.discardDrafts = function (accountString, assetType) {
         lpIds["dpageid_12719"] = "dpageid_12719";
         
         // Financial Services > Asset Management: DIY Design
-        emIds.push(22818)
+        emIds.push(22818);
         // Financial Services > Retail Banking: DIY Design
-        emIds.push(20350, 20368)
+        emIds.push(20350, 20368);
         
         // Financial Services > Asset Management: DIY Design
         formIds.push(4970, 4968, 4969);
@@ -6182,7 +6191,7 @@ APP.discardDrafts = function (accountString, assetType) {
         lpIds["dpageid_12517"] = "dpageid_12517";
         
         // Healthcare Services: DIY Design
-        emIds.push(20327, 21812)
+        emIds.push(20327, 21812);
         
         // Healthcare DIY Design
         formIds.push(3816, 3818, 3828);
@@ -6207,7 +6216,7 @@ APP.discardDrafts = function (accountString, assetType) {
         lpIds["dpageid_12177"] = "dpageid_12177";
         
         // Higher Ed Services: DIY Design
-        emIds.push(20329)
+        emIds.push(20329);
         
         // Higher Ed DIY Design
         formIds.push(3313, 4125, 3559);
@@ -6312,7 +6321,7 @@ APP.discardDrafts = function (accountString, assetType) {
         lpIds["dpageid_12719"] = "dpageid_12719";
         
         // Financial Services DIY Design
-        emIds.push(20350, 20368)
+        emIds.push(20350, 20368);
         
         // Financial Services: DIY Design
         formIds.push(3952, 3955, 3953);
@@ -6333,7 +6342,7 @@ APP.discardDrafts = function (accountString, assetType) {
         lpIds["dpageid_12517"] = "dpageid_12517";
         
         // Healthcare Services DIY Design
-        emIds.push(20327)
+        emIds.push(20327);
         
         // Healthcare: DIY Design
         formIds.push(3816, 3818, 3828);
@@ -6355,7 +6364,7 @@ APP.discardDrafts = function (accountString, assetType) {
         lpIds["dpageid_12177"] = "dpageid_12177";
         
         // Higher Ed Services DIY Design
-        emIds.push(20329)
+        emIds.push(20329);
         
         // Higher Ed: DIY Design
         formIds.push(3313, 4125, 3559);
