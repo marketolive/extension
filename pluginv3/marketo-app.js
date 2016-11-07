@@ -5868,6 +5868,7 @@ APP.discardLandingPageDrafts = function (lpIds) {
         var ii,
         prevForbiddenMsg,
         prevNotFoundMsg,
+        prevSystemErrorMsg,
         lpMessageBox = Ext.MessageBox.show({
                 title : "MarketoLive",
                 msg : "Discarding Landing Page Drafts",
@@ -5896,6 +5897,11 @@ APP.discardLandingPageDrafts = function (lpIds) {
                 prevNotFoundMsg = MktMessage.showNotFound;
                 MktMessage.showNotFound = function () {};
             }
+            
+            if (MktMessage.showSystemError) {
+                prevSystemErrorMsg = MktMessage.showSystemError;
+                MktMessage.showSystemError = function () {};
+            }
         }
         
         for (ii = 0; ii < Object.keys(lpIds).length; ii++) {
@@ -5916,10 +5922,11 @@ APP.discardLandingPageDrafts = function (lpIds) {
         }
         console.log("Marketo App > Finished: Discarding Landing Pages");
         window.setTimeout(function () {
-            console.log("Marketo App > Re-enabling: Forbidden Message");
+            console.log("Marketo App > Re-enabling: System Messages");
             
             MktMessage.show403Forbidden = prevForbiddenMsg;
             MktMessage.showNotFound = prevNotFoundMsg;
+            MktMessage.showSystemError = prevSystemErrorMsg;
         }, 10000);
     }
 };
