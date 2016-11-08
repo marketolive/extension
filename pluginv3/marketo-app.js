@@ -6602,14 +6602,14 @@ APP.heapTrack = function (action, event) {
                     if (oneLoginEmail) {
                         if (MktPage
                          && MktPage.userid) {
-                            console.log("Marketo App > Heap Analytics ID: " + MktPage.userName);
+                            console.log("Marketo App > Heap Analytics ID: " + MktPage.userid);
                             heap.identify(MktPage.userid);
                         }
                         console.log("Marketo App > Heap Analytics ID: " + oneLoginEmail);
                         heap.identify(oneLoginEmail);
                     } else if (MktPage
                          && MktPage.userid) {
-                        console.log("Marketo App > Heap Analytics ID: " + MktPage.userName);
+                        console.log("Marketo App > Heap Analytics ID: " + MktPage.userid);
                         heap.identify(MktPage.userid);
                     }
                     
