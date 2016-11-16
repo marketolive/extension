@@ -5775,6 +5775,7 @@ APP.disableRequests = function () {
             switch (url) {
             case "leadDatabase/updateLead":
             case "fieldManagement/analyticsOptionsSubmit":
+            case "analytics/editReportSettings":
                 console.log("Marketo App > Executing: Disable Specific Requests");
                 return null;
             }
