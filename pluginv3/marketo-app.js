@@ -5775,6 +5775,7 @@ APP.disableRequests = function () {
             switch (url) {
             case "leadDatabase/updateLead":
             case "fieldManagement/analyticsOptionsSubmit":
+            case "analytics/editReportSettings":
                 console.log("Marketo App > Executing: Disable Specific Requests");
                 return null;
             }
@@ -6600,23 +6601,21 @@ APP.heapTrack = function (action, event) {
                     oneLoginLastName = APP.getCookie("onelogin_last_name");
                     
                     if (oneLoginEmail) {
+                        console.log("Marketo App > Heap Analytics ID: " + oneLoginEmail);
                         heap.identify(oneLoginEmail);
                     } else if (MktPage
                          && MktPage.userid) {
+                        console.log("Marketo App > Heap Analytics ID: " + MktPage.userid);
                         heap.identify(MktPage.userid);
                     }
                     
                     if (oneLoginFirstName
                          && oneLoginLastName) {
-                        console.log("Marketo App > Heap Analytics ID: " + oneLoginFirstName + " " + oneLoginLastName);
-                        
                         heap.addUserProperties({
                             Name : oneLoginFirstName + " " + oneLoginLastName
                         });
                     } else if (MktPage
                          && MktPage.userName) {
-                        console.log("Marketo App > Heap Analytics ID: " + MktPage.userName);
-                        
                         heap.addUserProperties({
                             Name : MktPage.userName
                         });
