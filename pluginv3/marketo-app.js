@@ -5711,7 +5711,7 @@ APP.disableSaving = function () {
     if (typeof(Mkt3) !== "undefined"
          && Mkt3
          && Mkt3.controller
-         && Mkt3.controller.editor {
+         && Mkt3.controller.editor) {
         
         if (Mkt3.controller.editor.email2
              && Mkt3.controller.editor.email2.EmailEditor
