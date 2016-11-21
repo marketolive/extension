@@ -5087,7 +5087,7 @@ APP.disableFormSaveButtons = function () {
                  || this.getXType() == "adminUserInviteWizard" //Admin > User & Roles > Users > Invite New User
                  || this.getXType() == "adminEditLicensesForm" //Admin > User & Roles > Users > Issue License
                  || this.getXType() == "adminSubscriptionInformationForm" //Admin > My Account > Subcription Information
-                //|| this.getXType() == "adminAccountSettingsForm" //Admin > My Account > Account Settings
+                 || this.getXType() == "adminAccountSettingsForm" //Admin > My Account > Account Settings
                 //|| this.getXType() == "localePicker" //Admin > My Account/Location > Location Settings
                  || this.getXType() == "deleteZoneForm" //Admin > Workspaces & Partitions > Workspaces > Delete Workspace
                  || this.getXType() == "adminTinyMceSettingForm" //Admin > *Email > Email > Edit Text Editor Settings
@@ -5711,46 +5711,57 @@ APP.disableSaving = function () {
     if (typeof(Mkt3) !== "undefined"
          && Mkt3
          && Mkt3.controller
-         && Mkt3.controller.editor
-         && Mkt3.controller.editor.form
-         && Mkt3.controller.editor.form.settings
-         && Mkt3.controller.editor.form.settings.FieldSelection
-         && Mkt3.controller.editor.form.settings.FieldSelection.prototype
-         && Mkt3.controller.editor.form.settings.FieldSelection.prototype.deleteFormField) {
-        Mkt3.controller.editor.form.settings.FieldSelection.prototype.deleteFormField = function (formField) {
-            console.log("Marketo App > Executing: Enable Deleting Form Field");
+         && Mkt3.controller.editor) {
+        
+        if (Mkt3.controller.editor.email2
+             && Mkt3.controller.editor.email2.EmailEditor
+             && Mkt3.controller.editor.email2.EmailEditor.prototype
+             && Mkt3.controller.editor.email2.EmailEditor.prototype.changeModuleOrder) {
+            Mkt3.controller.editor.email2.EmailEditor.prototype.changeModuleOrder = function(moduleComponent, orderDelta) {
+                console.log("Marketo App > Executing: Disable Saving for Editors (changeModuleOrder)");
+            };
+        }
             
-            var formFieldWidget = formField.getFieldWidget(),
-            formFieldId,
-            childFieldIndex,
-            childFormField,
-            allFormFields;
-            
-            if (formFieldWidget
-                 && formFieldWidget.get('datatype') === 'fieldset') {
-                allFormFields = this.getForm().getFormFields();
-                formFieldId = formField.get('id');
-                for (childFieldIndex = 0; childFieldIndex < allFormFields.getCount(); childFieldIndex++) {
-                    childFormField = allFormFields.getAt(childFieldIndex);
-                    if (childFormField.get('fieldsetFieldId') == formFieldId) {
-                        this.deleteFormField(childFormField);
-                    }
-                }
-            }
-            
-            formField.destroy({
-                scope : this,
-                callback : function (field, response) {
-                    if (response.success) {
-                        if (formFieldWidget) {
-                            formFieldWidget.destroy();
+        if (Mkt3.controller.editor.form
+             && Mkt3.controller.editor.form.settings
+             && Mkt3.controller.editor.form.settings.FieldSelection
+             && Mkt3.controller.editor.form.settings.FieldSelection.prototype
+             && Mkt3.controller.editor.form.settings.FieldSelection.prototype.deleteFormField) {
+            Mkt3.controller.editor.form.settings.FieldSelection.prototype.deleteFormField = function (formField) {
+                console.log("Marketo App > Executing: Enable Deleting Form Field");
+                
+                var formFieldWidget = formField.getFieldWidget(),
+                formFieldId,
+                childFieldIndex,
+                childFormField,
+                allFormFields;
+                
+                if (formFieldWidget
+                     && formFieldWidget.get('datatype') === 'fieldset') {
+                    allFormFields = this.getForm().getFormFields();
+                    formFieldId = formField.get('id');
+                    for (childFieldIndex = 0; childFieldIndex < allFormFields.getCount(); childFieldIndex++) {
+                        childFormField = allFormFields.getAt(childFieldIndex);
+                        if (childFormField.get('fieldsetFieldId') == formFieldId) {
+                            this.deleteFormField(childFormField);
                         }
                     }
                 }
-            });
-            // This allows for multiple form fields to be deleted
-            this.renumberWidgets();
-        };
+                
+                formField.destroy({
+                    scope : this,
+                    callback : function (field, response) {
+                        if (response.success) {
+                            if (formFieldWidget) {
+                                formFieldWidget.destroy();
+                            }
+                        }
+                    }
+                });
+                // This allows for multiple form fields to be deleted
+                this.renumberWidgets();
+            };
+        }
     }
 };
 
@@ -6594,16 +6605,13 @@ APP.heapTrack = function (action, event) {
                 window.clearInterval(isHeapAnalytics);
                 
                 switch (action) {
-                    // Heap Analytics Identify User
+                // Heap Analytics Identify User
                 case "id":
                     var oneLoginEmail = APP.getCookie("onelogin_email"),
                     oneLoginFirstName = APP.getCookie("onelogin_first_name"),
                     oneLoginLastName = APP.getCookie("onelogin_last_name");
                     
-                    if (oneLoginEmail) {
-                        console.log("Marketo App > Heap Analytics ID: " + oneLoginEmail);
-                        heap.identify(oneLoginEmail);
-                    } else if (MktPage
+                    if (MktPage
                          && MktPage.userid) {
                         console.log("Marketo App > Heap Analytics ID: " + MktPage.userid);
                         heap.identify(MktPage.userid);
@@ -6617,12 +6625,29 @@ APP.heapTrack = function (action, event) {
                     } else if (MktPage
                          && MktPage.userName) {
                         heap.addUserProperties({
-                            Name : MktPage.userName
+                            Name : MktPage.userName.replace(/ ?\[[^\]]+\]/, "")
+                        });
+                    }
+                    
+                    if (MktPage
+                         && MktPage.userName) {
+                        var roleSubstring = MktPage.userName.search(/\[[^\]]+\]/);
+                        
+                        if (roleSubstring != -1) {
+                            heap.addUserProperties({
+                                Role : MktPage.userName.substring(roleSubstring)
+                            });
+                        }
+                    }
+                    
+                    if (oneLoginEmail) {
+                        heap.addUserProperties({
+                            Email : oneLoginEmail
                         });
                     }
                     break;
                     
-                    // Heap Analytics Event Tracking
+                // Heap Analytics Event Tracking
                 case "track":
                     var heapApp,
                     heapArea,
