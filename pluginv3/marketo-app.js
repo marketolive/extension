@@ -4550,13 +4550,11 @@ APP.hideToolbarItems = function () {
                                     });
                                     discardMsg.hide();
                                     Ext.MessageBox.hide();
-                                    window.setTimeout(function () {
-                                        Mkt.app.DesignStudio.Pages.editPage({
-                                            triggeredFrom: "button",
-                                            el: this.getEl()
-                                        });
-                                        Ext.MessageBox.hide();
-                                    }, waitAfterDiscard);
+                                    Mkt.app.DesignStudio.Pages.editPage({
+                                        triggeredFrom: "button",
+                                        el: this.getEl()
+                                    });
+                                    Ext.MessageBox.hide();
                                 } else {
                                     origHandler.apply(this, arguments);
                                 }
@@ -4583,13 +4581,11 @@ APP.hideToolbarItems = function () {
                                     });
                                     discardMsg.hide();
                                     Ext.MessageBox.hide();
-                                    window.setTimeout(function (button, e) {
-                                        Mkt.app.DesignStudio.Emails.editDraft({
-                                            triggeredFrom: 'button',
-                                            panelId: attr.panelId
-                                        });
-                                        Ext.MessageBox.hide();
-                                    }, waitAfterDiscard);
+                                    Mkt.app.DesignStudio.Emails.editDraft({
+                                        triggeredFrom: 'button',
+                                        panelId: attr.panelId
+                                    });
+                                    Ext.MessageBox.hide();
                                 } else {
                                     origHandler.apply(this, arguments);
                                 }
