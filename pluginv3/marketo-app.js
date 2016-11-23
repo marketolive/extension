@@ -54,6 +54,7 @@ mktoTechnologyWorkspaceAssetId = "26489",
 mktoTravelLesiureWorkspaceAssetId = "27588",
 mktoUserWorkspaceId = 172,
 userWorkspaceName = "My Workspace",
+waitAfterDiscard = 2000,
 currUrlFragment,
 currCompFragment,
 userName,
@@ -3657,6 +3658,305 @@ APP.disableMenus = function () {
 
 /**************************************************************************************
  *
+ *  This function override the draft edit menu items in all areas.
+ *
+ *  @Author Brian Fisher
+ *
+ *  @function
+ *
+ **************************************************************************************/
+
+APP.overrideDraftEdits = function () {
+    console.log("Marketo App > Overriding: Draft Edit Menu Items");
+    
+    if (typeof(MktDsMenu) !== "undefined"
+         && MktDsMenu) {
+        console.log("Marketo App > Executing: Override Draft Edit Menu Items");
+        var origForbidMsg = Ext4.Msg.forbid,
+        origPageEditHandler = MktDsMenu.getPageMenu().get("pageEdit").handler,
+        origPageDraftEditHandler = MktDsMenu.getPageMenu().get("pageDraftEdit").handler,
+        origEmailEditHandler = MktDsMenu.getEmailMenu().get("emailEdit").handler,
+        origEmailDraftEditHandler = MktDsMenu.getEmailMenu().get("emailDraftEdit").handler;
+        /*
+        origFormEditHandler = MktDsMenu.getFormMenu().get("formEdit").handler,
+        origFormDraftEditHandler = MktDsMenu.getFormMenu().get("formDraftEdit").handler,
+        origSocialAppEditHandler = MktDsMenu.getSocialAppMenu().get("socialAppEdit").handler,
+        origSocialAppDraftEditHandler = MktDsMenu.getSocialAppMenu().get("socialAppDraftEdit").handler,
+        origPushEditHandler = MktDsMenu.getPushNotificationMenu().get("pushNotificationEdit").handler,
+        origPushDraftEditHandler = MktDsMenu.getPushNotificationMenu().get("pushNotificationDraftEdit").handler,
+        origInAppEditHandler = MktDsMenu.getInAppMessageMenu().get("inAppMessageEdit").handler,
+        origInAppDraftEditHandler = MktDsMenu.getInAppMessageMenu().get("inAppMessageDraftEdit").handler,
+        origSmsEditHandler = MktDsMenu.getSmsMessageMenu().get("smsMessageEdit").handler;
+        origSmsDraftEditHandler = MktDsMenu.getSmsMessageMenu().get("smsMessageDraftEdit").handler;
+        */
+        
+        // Landing Page Edit
+        /*
+        MktDsMenu.getPageMenu().get("pageEdit").setHandler(function (el) {
+            if (attr
+                 && attr.accessZoneId.toString().search(mktoGoldenWorkspacesMatch) != -1) {
+                origPageEditHandler.apply(this, arguments);
+                Ext4.MessageBox.hide();
+            } else {
+                origPageEditHandler.apply(this, arguments);
+            }
+        });
+        */
+        // Landing Page Draft Edit
+        MktDsMenu.getPageMenu().get("pageDraftEdit").setHandler(function (el) {
+            if (attr
+                 && attr.accessZoneId.toString().search(mktoGoldenWorkspacesMatch) != -1) {
+                var triggeredFrom = this.parentMenu.triggeredFrom,
+                xtra = el.parentMenu.xtra;
+                Mkt.app.DesignStudio.Pages.discardDraft({
+                    triggeredFrom: triggeredFrom,
+                    xtra: xtra
+                });
+                el.parentMenu.hide(true);
+                Ext.MessageBox.hide();
+                Mkt.app.DesignStudio.Pages.editPageDraft({
+                    triggeredFrom: triggeredFrom,
+                    xtra: xtra
+                });
+            } else {
+                origPageDraftEditHandler.apply(this, arguments);
+            }
+        });
+        
+        // Email Edit
+        MktDsMenu.getEmailMenu().get("emailEdit").setHandler(function (el) {
+            if (attr
+                 && attr.accessZoneId.toString().search(mktoGoldenWorkspacesMatch) != -1) {
+                var triggeredFrom = this.parentMenu.triggeredFrom,
+                xtra = el.parentMenu.xtra,
+                newEl = this.getEl();
+                Ext4.Msg.forbid = function () {};
+                Mkt.app.DesignStudio.Emails.discardDraft({
+                    triggeredFrom: triggeredFrom,
+                    xtra: xtra
+                });
+                el.parentMenu.hide(true);
+                Mkt.app.DesignStudio.Emails.editDraft({
+                    triggeredFrom: triggeredFrom,
+                    xtra: xtra,
+                    el: newEl
+                });
+                window.setTimeout(function () {
+                    Ext4.Msg.forbid = origForbidMsg;
+                }, 1000);
+            } else {
+                origEmailEditHandler.apply(this, arguments);
+            }
+        });
+        // Email Draft Edit
+        MktDsMenu.getEmailMenu().get("emailDraftEdit").setHandler(function (el) {
+            if (attr
+                 && attr.accessZoneId.toString().search(mktoGoldenWorkspacesMatch) != -1) {
+                var triggeredFrom = this.parentMenu.triggeredFrom,
+                xtra = el.parentMenu.xtra,
+                newEl = this.getEl();
+                Mkt.app.DesignStudio.Emails.discardDraft({
+                    triggeredFrom: triggeredFrom,
+                    xtra: xtra
+                });
+                el.parentMenu.hide(true);
+                Mkt.app.DesignStudio.Emails.editDraft({
+                    triggeredFrom: triggeredFrom,
+                    xtra: xtra,
+                    el: newEl
+                });
+            } else {
+                origEmailDraftEditHandler.apply(this, arguments);
+            }
+        });
+        
+        /*
+        // Form Edit
+        MktDsMenu.getFormMenu().get("formEdit").setHandler(function (el) {
+            if (attr
+                 && attr.accessZoneId.toString().search(mktoGoldenWorkspacesMatch) != -1) {
+                Ext4.Msg.forbid = function () {};
+                origFormEditHandler.apply(this, arguments);
+                window.setTimeout(function () {
+                    Ext4.Msg.forbid = origForbidMsg;
+                }, 1000);
+            } else {
+                origFormEditHandler.apply(this, arguments);
+            }
+        });
+        // Form Draft Edit
+        MktDsMenu.getFormMenu().get("formDraftEdit").setHandler(function (el) {
+            if (attr
+                 && attr.accessZoneId.toString().search(mktoGoldenWorkspacesMatch) != -1) {
+                var triggeredFrom = this.parentMenu.triggeredFrom,
+                xtra = el.parentMenu.xtra,
+                newEl = this.getEl();
+                Mkt.app.DesignStudio.Forms.discardDraft({
+                    triggeredFrom: triggeredFrom,
+                    xtra: xtra,
+                    el: newEl
+                });
+                el.parentMenu.hide(true);
+                Ext.MessageBox.hide();
+                window.setTimeout(function (el) {
+                    Mkt.app.DesignStudio.Forms.editDraft({
+                        triggeredFrom: triggeredFrom,
+                        xtra: xtra,
+                        el: newEl
+                    });
+                }, 1);
+            } else {
+                origFormDraftEditHandler.apply(this, arguments);
+            }
+        });
+        
+        // Social App Edit
+        MktDsMenu.getSocialAppMenu().get("socialAppEdit").setHandler(function (el) {
+            if (attr
+                 && attr.accessZoneId.toString().search(mktoGoldenWorkspacesMatch) != -1) {
+                origSocialAppEditHandler.apply(this, arguments);
+                Ext4.MessageBox.hide();
+            } else {
+                origSocialAppEditHandler.apply(this, arguments);
+            }
+        });
+        // Social App Draft Edit
+        MktDsMenu.getSocialAppMenu().get("socialAppEdit").setHandler(function (el) {
+            if (attr
+                 && attr.accessZoneId.toString().search(mktoGoldenWorkspacesMatch) != -1) {
+                var triggeredFrom = this.parentMenu.triggeredFrom,
+                xtra = el.parentMenu.xtra,
+                newEl = this.getEl();
+                Mkt.app.DesignStudio.SocialApp.discardDraft({
+                    triggeredFrom: triggeredFrom,
+                    xtra: xtra,
+                    el: newEl
+                });
+                el.parentMenu.hide(true);
+                window.setTimeout(function(el) {
+                    Mkt.app.DesignStudio.SocialApp.editDraft({
+                        triggeredFrom: triggeredFrom,
+                        xtra: xtra,
+                        el: newEl
+                    });
+                }, 1);
+            } else {
+                origSocialAppDraftEditHandler.apply(this, arguments);
+            }
+        });
+        
+        // Push Notification Edit
+        MktDsMenu.getPushNotificationMenu().get("pushNotificationEdit").setHandler(function (el) {
+            if (attr
+                 && attr.accessZoneId.toString().search(mktoGoldenWorkspacesMatch) != -1) {
+                origPushEditHandler.apply(this, arguments);
+                Ext4.MessageBox.hide();
+            } else {
+                origPushEditHandler.apply(this, arguments);
+            }
+        });
+        // Push Notification Draft Edit
+        MktDsMenu.getPushNotificationMenu().get("pushNotificationDraftEdit").setHandler(function (el) {
+            if (attr
+                 && attr.accessZoneId.toString().search(mktoGoldenWorkspacesMatch) != -1) {
+                var triggeredFrom = this.parentMenu.triggeredFrom,
+                xtra = el.parentMenu.xtra,
+                newEl = this.getEl();
+                Mkt.app.DesignStudio.PushNotifications.discardDraft({
+                    triggeredFrom: triggeredFrom,
+                    xtra: xtra,
+                    el: newEl
+                });
+                el.parentMenu.hide(true);
+                window.setTimeout(function(el) {
+                    Mkt.app.DesignStudio.PushNotifications.editDraft({
+                        triggeredFrom: triggeredFrom,
+                        xtra: xtra,
+                        el: newEl
+                    });
+                }, 1);
+            } else {
+                origPushDraftEditHandler.apply(this, arguments);
+            }
+        });
+        
+        // In-App Message Edit
+        MktDsMenu.getInAppMessageMenu().get("inAppMessageEdit").setHandler(function (el) {
+            if (attr
+                 && attr.accessZoneId.toString().search(mktoGoldenWorkspacesMatch) != -1) {
+                origInAppEditHandler.apply(this, arguments);
+                Ext4.MessageBox.hide();
+            } else {
+                origInAppEditHandler.apply(this, arguments);
+            }
+        });
+        // In-App Message Draft Edit
+        MktDsMenu.getInAppMessageMenu().get("inAppMessageDraftEdit").setHandler(function (el) {
+            if (attr
+                 && attr.accessZoneId.toString().search(mktoGoldenWorkspacesMatch) != -1) {
+                var triggeredFrom = this.parentMenu.triggeredFrom,
+                xtra = el.parentMenu.xtra,
+                newEl = this.getEl();
+                Mkt.app.DesignStudio.InAppMessage.discardDraft({
+                    triggeredFrom: triggeredFrom,
+                    xtra: xtra,
+                    el: newEl
+                });
+                el.parentMenu.hide(true);
+                window.setTimeout(function(el) {
+                    Mkt.app.DesignStudio.InAppMessage.editDraft({
+                        triggeredFrom: triggeredFrom,
+                        xtra: xtra,
+                        el: newEl
+                    });
+                }, 1);
+            } else {
+                origInAppDraftEditHandler.apply(this, arguments);
+            }
+        });
+        
+        // SMS Message Edit
+        MktDsMenu.getSmsMessageMenu().get("smsMessageEdit").setHandler(function (el) {
+            if (attr
+                 && attr.accessZoneId.toString().search(mktoGoldenWorkspacesMatch) != -1) {
+                origSmsEditHandler.apply(this, arguments);
+                Ext4.MessageBox.hide();
+            } else {
+                origSmsEditHandler.apply(this, arguments);
+            }
+        });
+        // SMS Message Draft Edit
+        MktDsMenu.getSmsMessageMenu().get("smsMessageDraftEdit").setHandler(function (el) {
+            if (attr
+                 && attr.accessZoneId.toString().search(mktoGoldenWorkspacesMatch) != -1) {
+                var triggeredFrom = this.parentMenu.triggeredFrom,
+                xtra = el.parentMenu.xtra,
+                newEl = this.getEl();
+                Mkt.app.DesignStudio.SmsMessage.discardDraft({
+                    triggeredFrom: triggeredFrom,
+                    xtra: xtra,
+                    el: newEl
+                });
+                el.parentMenu.hide(true);
+                window.setTimeout(function(el) {
+                    Mkt.app.DesignStudio.SmsMessage.editDraft({
+                        triggeredFrom: triggeredFrom,
+                        xtra: xtra,
+                        el: newEl
+                    });
+                }, 1);
+            } else {
+                origSmsDraftEditHandler.apply(this, arguments);
+            }
+        });
+        */
+    } else {
+        console.log("Marketo App > Skipping: Override Draft Edit Menu Items");
+    }
+};
+
+/**************************************************************************************
+ *
  *  This function disables or hides Toolbar items for all asset types in all areas.
  *
  *  @Author Brian Fisher
@@ -3722,26 +4022,26 @@ APP.hideToolbarItems = function () {
                     },
                     
                     // Global > Form
-                    /*{
+                    {
                     "id" : "formEdit_landingFODetail",//Edit Form
-                    "action" : "setVisible",
-                    },*/
+                    "action" : "handler",
+                    },
                     
                     // Global > Landing Page
-                    /*{
+                    {
                     "id" : "pageEdit_landingLPDetail",//Edit Draft
-                    "action" : "setVisible",
-                    },*/
+                    "action" : "handler",
+                    },
                     /*{
                     "id" : "pagePreview_landingLPDetail",//Preview Page
                     "action" : "setVisible",
                     },*/
                     
                     // Global > Email
-                    /*{
+                    {
                     "id" : "emailEdit_landingEMDetail",//Edit Draft
-                    "action" : "setVisible",
-                    },*/
+                    "action" : "handler",
+                    },
                     /*{
                     "id" : "emailPreview_landingEMDetail",//Preview Email
                     "action" : "setVisible",
@@ -4189,6 +4489,112 @@ APP.hideToolbarItems = function () {
                             item.setVisible(!disable);
                         } else if (itemToHide.action == "setDisabled") {
                             item.setDisabled(disable);
+                        }
+                        
+                        switch (itemToHide.id) {
+                        /*
+                        case "formEdit_landingFODetail":
+                            var origHandler = item.handler;
+                            item.setHandler(function () {
+                                if (attr
+                                     && attr.accessZoneId.toString().search(mktoGoldenWorkspacesMatch) != -1) {
+                                    var parent = this.findParentBy(function (item) {
+                                            return item.xtra && item.xtra.subType
+                                        }),
+                                    xtra = parent ? parent.xtra : attr,
+                                    discardMsg = Ext.MessageBox.show({
+                                            title: "MarketoLive",
+                                            msg: "Discarding Draft",
+                                            progress: false,
+                                            wait: false,
+                                            width: 270,
+                                            closable: true
+                                        });
+                                    Mkt.app.DesignStudio.Forms.discardDraft({
+                                        triggeredFrom: "button",
+                                        xtra: xtra,
+                                        el: this.getEl()
+                                    });
+                                    discardMsg.hide();
+                                    Ext.MessageBox.hide();
+                                    window.setTimeout(function () {
+                                        Mkt.app.DesignStudio.Forms.editForm({
+                                            triggeredFrom: "button",
+                                            xtra: xtra
+                                        });
+                                        MktMessage.hide();
+                                        Ext.MessageBox.hide();
+                                    }, waitAfterDiscard);
+                                } else {
+                                    origHandler.apply(this, arguments);
+                                }
+                            });
+                            break;
+                        */
+                        case "pageEdit_landingLPDetail":
+                            var origHandler = item.handler;
+                            item.setHandler(function () {
+                                if (attr
+                                     && attr.accessZoneId.toString().search(mktoGoldenWorkspacesMatch) != -1) {
+                                    var discardMsg = Ext.MessageBox.show({
+                                            title: "MarketoLive",
+                                            msg: "Discarding Draft",
+                                            progress: false,
+                                            wait: false,
+                                            width: 270,
+                                            closable: true
+                                        });
+                                    Mkt.app.DesignStudio.Pages.discardDraft({
+                                        triggeredFrom: "button",
+                                        xtra: attr
+                                    });
+                                    discardMsg.hide();
+                                    Ext.MessageBox.hide();
+                                    window.setTimeout(function () {
+                                        Mkt.app.DesignStudio.Pages.editPage({
+                                            triggeredFrom: "button",
+                                            el: this.getEl()
+                                        });
+                                        Ext.MessageBox.hide();
+                                    }, waitAfterDiscard);
+                                } else {
+                                    origHandler.apply(this, arguments);
+                                }
+                            });
+                            break;
+                        
+                        case "emailEdit_landingEMDetail":
+                            var origHandler = item.handler;
+                            item.setHandler(function (button, e) {
+                                if (attr
+                                     && attr.accessZoneId.toString().search(mktoGoldenWorkspacesMatch) != -1) {
+                                    var discardMsg = Ext.MessageBox.show({
+                                            title: "MarketoLive",
+                                            msg: "Discarding Draft",
+                                            progress: false,
+                                            wait: false,
+                                            width: 270,
+                                            closable: true
+                                        });
+                                    Mkt.app.DesignStudio.Emails.discardDraft({
+                                        triggeredFrom: 'button',
+                                        xtra: attr,
+                                        el: this.getEl()
+                                    });
+                                    discardMsg.hide();
+                                    Ext.MessageBox.hide();
+                                    window.setTimeout(function (button, e) {
+                                        Mkt.app.DesignStudio.Emails.editDraft({
+                                            triggeredFrom: 'button',
+                                            panelId: attr.panelId
+                                        });
+                                        Ext.MessageBox.hide();
+                                    }, waitAfterDiscard);
+                                } else {
+                                    origHandler.apply(this, arguments);
+                                }
+                            });
+                            break;
                         }
                     }
                 });
