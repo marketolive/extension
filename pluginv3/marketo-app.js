@@ -3672,10 +3672,7 @@ APP.overrideDraftEdits = function () {
     if (typeof(MktDsMenu) !== "undefined"
          && MktDsMenu) {
         console.log("Marketo App > Executing: Override Draft Edit Menu Items");
-        var origExtMessageBoxShow = Ext.MessageBox.show,
-        origExt4MessageBoxShow = Ext4.MessageBox.show,
-        origMktMessageShow = MktMessage.show,
-        origPageEditHandler = MktDsMenu.getPageMenu().get("pageEdit").handler,
+        var origPageEditHandler = MktDsMenu.getPageMenu().get("pageEdit").handler,
         origPageDraftEditHandler = MktDsMenu.getPageMenu().get("pageDraftEdit").handler,
         origEmailEditHandler = MktDsMenu.getEmailMenu().get("emailEdit").handler,
         origEmailDraftEditHandler = MktDsMenu.getEmailMenu().get("emailDraftEdit").handler;
@@ -3733,7 +3730,10 @@ APP.overrideDraftEdits = function () {
                 console.log("Marketo App > Executing: Override Draft Edit Menu Items > Email Edit");
                 var triggeredFrom = this.parentMenu.triggeredFrom,
                 xtra = el.parentMenu.xtra,
-                newEl = this.getEl();
+                newEl = this.getEl(),
+                origExtMessageBoxShow = Ext.MessageBox.show,
+                origExt4MessageBoxShow = Ext4.MessageBox.show,
+                origMktMessageShow = MktMessage.show;
                 Ext.MessageBox.show = Ext4.MessageBox.show = MktMessage.show = function () {};
                 Mkt.app.DesignStudio.Emails.discardDraft({
                     triggeredFrom: triggeredFrom,
@@ -3975,9 +3975,6 @@ APP.overrideDraftEdits = function () {
 
 APP.hideToolbarItems = function () {
     console.log("Marketo App > Hiding: Toolbar Items");
-    var origExtMessageBoxShow = Ext.MessageBox.show,
-    origExt4MessageBoxShow = Ext4.MessageBox.show,
-    origMktMessageShow = MktMessage.show;
     
     if (typeof(Ext) !== "undefined"
          && Ext
@@ -4577,6 +4574,9 @@ APP.hideToolbarItems = function () {
                                 if (attr
                                      && attr.accessZoneId.toString().search(mktoGoldenWorkspacesMatch) != -1) {
                                     console.log("Marketo App > Executing: Override Edit Draft Toolbar Button > Email");
+                                    var origExtMessageBoxShow = Ext.MessageBox.show,
+                                    origExt4MessageBoxShow = Ext4.MessageBox.show,
+                                    origMktMessageShow = MktMessage.show;
                                     Ext.MessageBox.show = Ext4.MessageBox.show = MktMessage.show = function () {};
                                     Mkt.app.DesignStudio.Emails.discardDraft({
                                         triggeredFrom: 'button',
