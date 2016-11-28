@@ -7077,6 +7077,20 @@ APP.heapTrack = function (action, event) {
                             Email : oneLoginEmail
                         });
                     }
+                    
+                    if (MktPage
+                         && MktPage.savedState
+                         && MktPage.savedState.custPrefix) {
+                        if (MktPage.savedState.custPrefix == mktoAccountString106) {
+                            heap.addUserProperties({
+                                Environment : "Internal"
+                            });
+                        } else if (MktPage.savedState.custPrefix == mktoAccountString106d) {
+                            heap.addUserProperties({
+                                Environment : "Partner"
+                            });
+                        }
+                    }
                     break;
                     
                 // Heap Analytics Event Tracking
@@ -7110,6 +7124,7 @@ APP.heapTrack = function (action, event) {
                             workspaceName : event.workspaceName,
                             userFolder : event.userFolder,
                             area : "",
+                            environment : "",
                             url : currentUrl
                         };
                         
@@ -7117,6 +7132,16 @@ APP.heapTrack = function (action, event) {
                             heapEventProps.area = event.assetArea;
                         } else {
                             heapEventProps.area = heapArea;
+                        }
+                        
+                        if (MktPage
+                             && MktPage.savedState
+                             && MktPage.savedState.custPrefix) {
+                            if (MktPage.savedState.custPrefix == mktoAccountString106) {
+                                heapEventProps.environment = "Internal";
+                            } else if (MktPage.savedState.custPrefix == mktoAccountString106d) {
+                                heapEventProps.environment = "Partner";
+                            }
                         }
                         
                         console.log("Marketo App > Tracking: Heap Event: " + event.name + "\n" + JSON.stringify(heapEventProps, null, 2));
