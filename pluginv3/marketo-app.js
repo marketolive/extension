@@ -4566,26 +4566,28 @@ APP.hideToolbarItems = function () {
                             item.setHandler(function (button, e) {
                                 if (attr
                                      && attr.accessZoneId.toString().search(mktoGoldenWorkspacesMatch) != -1) {
-                                    var discardMsg = Ext.MessageBox.show({
+                                    /*var discardMsg = Ext.MessageBox.show({
                                             title: "MarketoLive",
                                             msg: "Discarding Draft",
                                             progress: false,
                                             wait: false,
                                             width: 270,
                                             closable: true
-                                        });
+                                        });*/
                                     Mkt.app.DesignStudio.Emails.discardDraft({
                                         triggeredFrom: 'button',
                                         xtra: attr,
                                         el: this.getEl()
                                     });
-                                    discardMsg.hide();
+                                    //discardMsg.hide();
                                     Ext.MessageBox.hide();
                                     Mkt.app.DesignStudio.Emails.editDraft({
                                         triggeredFrom: 'button',
                                         panelId: attr.panelId
                                     });
+                                    Ext4.Msg.hide();
                                     Ext.MessageBox.hide();
+                                    MktMessage.hide();
                                 } else {
                                     origHandler.apply(this, arguments);
                                 }
