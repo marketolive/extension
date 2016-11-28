@@ -3733,7 +3733,7 @@ APP.overrideDraftEdits = function () {
                 console.log("Marketo App > Executing: Override Draft Edit Menu Items > Email Edit");
                 var triggeredFrom = this.parentMenu.triggeredFrom,
                 xtra = el.parentMenu.xtra,
-                newEl = this.getEl(),
+                newEl = this.getEl();
                 Ext.MessageBox.show = Ext4.MessageBox.show = MktMessage.show = function () {};
                 Mkt.app.DesignStudio.Emails.discardDraft({
                     triggeredFrom: triggeredFrom,
