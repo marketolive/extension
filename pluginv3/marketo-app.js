@@ -4949,7 +4949,7 @@ APP.disableDesignerSaving = function (assetType, mode) {
                                         "emailEditor2 menu [action=saveAsTemplate]", // Save as Template
                                     ];
                                     
-                                    disableDesignerAsset(assetNode, menuItems, APP.disableSaving);
+                                    disableDesignerAsset(assetNode, menuItems);
                                 }
                             }, 0);
                         break;
