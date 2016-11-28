@@ -4587,7 +4587,7 @@ APP.hideToolbarItems = function () {
                                         triggeredFrom: 'button',
                                         panelId: attr.panelId
                                     });
-                                    window.setInterval(function () {
+                                    window.setTimeout(function () {
                                         console.log("Marketo App > Restoring: System Messages");
                                         Ext.MessageBox.show = origExtMessageBoxShow;
                                         Ext4.MessageBox.show = origExt4MessageBoxShow;
