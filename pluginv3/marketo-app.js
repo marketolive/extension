@@ -58,6 +58,9 @@ waitAfterDiscard = 2000,
 currUrlFragment,
 currCompFragment,
 userName,
+//origExtMessageBoxShow,
+//origExt4MessageBoxShow,
+//origMktMessageShow,
 
 adminUserNamesMatch = "^admin(\.[a-z]{0,2})?@(marketolive.com$|mktodemoaccount)" + "|" + "^mktodemoaccount[a-z0-9]*@marketo\.com" + "|" + "^marketodemo.*@gmail\.com$",
 
@@ -280,6 +283,115 @@ APP.getWorkspaceName = function (workspaceId) {
     
     return workspaceName;
 };
+
+/**************************************************************************************
+ *
+ *  This function stores the original system message functions that get disabled in
+ *  order to prevent specific messages from being displayed.
+ *
+ *  @Author Brian Fisher
+ *
+ *  @function
+ *
+ *  @param {int} workspaceId - workspace ID
+ *
+ **************************************************************************************/
+/*
+APP.setOriginalSystemMessages = function () {
+    origExtMessageBoxShow = function (options) {
+        var isCarboltEnabled = Ext.isDefined(window.MktPage) && Ext.isDefined(MktPage.isFeatureEnabled) &&
+            MktPage.isFeatureEnabled('carbolt');
+        options = options || {};
+        if (isCarboltEnabled && options.progress) {
+            Ext.apply(options, {
+                width: 400,
+                height: 200
+            });
+        }
+        
+        overriddenExtMessageBoxShow.call(this, options);
+        
+        var dlg = this.getDialog();
+        if (dlg) {
+            if (!options.buttons) {
+                dlg.getEl().addClass(MESSAGE_BOX_NO_BUTTONS_CLASS);
+            } else {
+                dlg.getEl().removeClass(MESSAGE_BOX_NO_BUTTONS_CLASS);
+            }
+        }
+        
+        return this;
+    };
+
+    origExt4MessageBoxShow = function (cfg) {
+        if (cfg.maskViewport === true) {
+            cfg.cls = Mkt3.cssPrefix + 'viewport-message-box';
+            cfg.closable = false;
+            cfg.width = 600;
+        }
+        
+        this.autoScroll = true;
+        this.callParent(arguments);
+        
+        if (cfg.maskViewport === true) {
+            Ext4.WindowManager.mask.addCls(Mkt3.cssPrefix + 'viewport-mask');
+            Ext4.WindowManager.mask.set({
+                'data-message': cfg.title
+            });
+        }
+    };
+
+    origMktMessageShow = function (config) {
+        
+        console.debug('MktMessage.show', config);
+        this._cleanupMessageWindow();
+        
+        // Format the main message HTML
+        if (!config.icon) {
+            config.icon = 'mki48Information2';
+        }
+        if (config.msg && !config.html) {
+            config.html = String.format(config.msgTmpl || this.msgTmpl, config.icon, config.msg);
+        }
+        if (config.showSessionInfo) {
+            config.html += this.buildSessionInfo();
+        }
+        
+        // Show date info in the header
+        if (config.showDateInfo) {
+            var headerTmpl = '<div class="mktMessageDateInfo">{1}</div><div>{0}</div>';
+            var dt = new Date();
+            var date = dt.format(MktLang.getPatternDateTimeMedium(true));
+            if (!config.title)
+                config.title = 'Marketo';
+            config.title = String.format(headerTmpl, config.title, date);
+        }
+        
+        // Default config
+        var defaults = {
+            title: MktLang.getStr('message.Marketo'),
+            iconCls: 'mkiAbout',
+            frame: true,
+            modal: true,
+            resizable: true,
+            icon: 'mki48About',
+            width: MktPage.isFeatureEnabled && MktPage.isFeatureEnabled('carbolt') ? 500 : 450,
+            height: MktPage.isFeatureEnabled && MktPage.isFeatureEnabled('carbolt') ? 350 : 250,
+            minWidth: MktPage.isFeatureEnabled && MktPage.isFeatureEnabled('carbolt') ? 500 : 440,
+            minHeight: MktPage.isFeatureEnabled && MktPage.isFeatureEnabled('carbolt') ? 300 : 220,
+            cls: 'mktModalForm',
+            closeAction: 'hide',
+            animateTarget: null,
+            autoScroll: true,
+            okCallback: Ext.emptyFn,
+            cancelCallback: Ext.emptyFn
+        };
+        
+        this._messageWindow = new Ext.Window(Ext.apply(defaults, config));
+        this._messageWindow.show();
+        return this._messageWindow;
+    };
+};*/
 
 /**************************************************************************************
  *
@@ -3672,10 +3784,7 @@ APP.overrideDraftEdits = function () {
     if (typeof(MktDsMenu) !== "undefined"
          && MktDsMenu) {
         console.log("Marketo App > Executing: Override Draft Edit Menu Items");
-        var origExtMessageBoxShow = Ext.MessageBox.show,
-        origExt4MessageBoxShow = Ext4.MessageBox.show,
-        origMktMessageShow = MktMessage.show,
-        origPageEditHandler = MktDsMenu.getPageMenu().get("pageEdit").handler,
+        var origPageEditHandler = MktDsMenu.getPageMenu().get("pageEdit").handler,
         origPageDraftEditHandler = MktDsMenu.getPageMenu().get("pageDraftEdit").handler,
         origEmailEditHandler = MktDsMenu.getEmailMenu().get("emailEdit").handler,
         origEmailDraftEditHandler = MktDsMenu.getEmailMenu().get("emailDraftEdit").handler;
@@ -3748,7 +3857,7 @@ APP.overrideDraftEdits = function () {
                 window.setTimeout(function () {
                     console.log("Marketo App > Restoring: System Messages");
                     Ext.MessageBox.show = origExtMessageBoxShow;
-                    Ext.MessageBox.show = origExt4MessageBoxShow;
+                    Ext4.MessageBox.show = origExt4MessageBoxShow;
                     MktMessage.show = origMktMessageShow;
                 }, 5000);
             } else {
