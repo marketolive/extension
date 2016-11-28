@@ -4549,12 +4549,12 @@ APP.hideToolbarItems = function () {
                                         xtra: attr
                                     });
                                     discardMsg.hide();
-                                    Ext.MessageBox.hide();
+                                    //Ext.MessageBox.hide();
                                     Mkt.app.DesignStudio.Pages.editPage({
                                         triggeredFrom: "button",
                                         el: this.getEl()
                                     });
-                                    Ext.MessageBox.hide();
+                                    //Ext.MessageBox.hide();
                                 } else {
                                     origHandler.apply(this, arguments);
                                 }
@@ -4574,20 +4574,28 @@ APP.hideToolbarItems = function () {
                                             width: 270,
                                             closable: true
                                         });*/
+                                    var origExtMessageBoxShow = Ext.MessageBox.show,
+                                    origExt4MessageBoxShow = Ext4.MessageBox.show,
+                                    origMktMessageShow = MktMessage.show;
+                                    Ext.MessageBox.show = function () {};
+                                    Ext4.MessageBox.show = function () {};
+                                    MktMessage.show = function () {};
                                     Mkt.app.DesignStudio.Emails.discardDraft({
                                         triggeredFrom: 'button',
                                         xtra: attr,
                                         el: this.getEl()
                                     });
                                     //discardMsg.hide();
-                                    Ext.MessageBox.hide();
+                                    //Ext.MessageBox.hide();
                                     Mkt.app.DesignStudio.Emails.editDraft({
                                         triggeredFrom: 'button',
                                         panelId: attr.panelId
                                     });
-                                    Ext4.Msg.hide();
-                                    Ext.MessageBox.hide();
-                                    MktMessage.hide();
+                                    window.setInterval(function () {
+                                        Ext.MessageBox.show = origExtMessageBoxShow;
+                                        Ext4.MessageBox.show = origExt4MessageBoxShow;
+                                        MktMessage.show = origMktMessageShow;
+                                    }, 5000);
                                 } else {
                                     origHandler.apply(this, arguments);
                                 }
