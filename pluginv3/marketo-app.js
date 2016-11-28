@@ -3672,7 +3672,9 @@ APP.overrideDraftEdits = function () {
     if (typeof(MktDsMenu) !== "undefined"
          && MktDsMenu) {
         console.log("Marketo App > Executing: Override Draft Edit Menu Items");
-        var origForbidMsg = Ext4.Msg.forbid,
+        var origExtMessageBoxShow = Ext.MessageBox.show,
+        origExt4MessageBoxShow = Ext4.MessageBox.show,
+        origMktMessageShow = MktMessage.show,
         origPageEditHandler = MktDsMenu.getPageMenu().get("pageEdit").handler,
         origPageDraftEditHandler = MktDsMenu.getPageMenu().get("pageDraftEdit").handler,
         origEmailEditHandler = MktDsMenu.getEmailMenu().get("emailEdit").handler,
@@ -3706,6 +3708,7 @@ APP.overrideDraftEdits = function () {
         MktDsMenu.getPageMenu().get("pageDraftEdit").setHandler(function (el) {
             if (attr
                  && attr.accessZoneId.toString().search(mktoGoldenWorkspacesMatch) != -1) {
+                console.log("Marketo App > Executing: Override Draft Edit Menu Items > Landing Page Draft Edit");
                 var triggeredFrom = this.parentMenu.triggeredFrom,
                 xtra = el.parentMenu.xtra;
                 Mkt.app.DesignStudio.Pages.discardDraft({
@@ -3727,10 +3730,11 @@ APP.overrideDraftEdits = function () {
         MktDsMenu.getEmailMenu().get("emailEdit").setHandler(function (el) {
             if (attr
                  && attr.accessZoneId.toString().search(mktoGoldenWorkspacesMatch) != -1) {
+                console.log("Marketo App > Executing: Override Draft Edit Menu Items > Email Edit");
                 var triggeredFrom = this.parentMenu.triggeredFrom,
                 xtra = el.parentMenu.xtra,
                 newEl = this.getEl();
-                Ext4.Msg.forbid = function () {};
+                Ext.MessageBox.show = Ext4.MessageBox.show = MktMessage.show = function () {};
                 Mkt.app.DesignStudio.Emails.discardDraft({
                     triggeredFrom: triggeredFrom,
                     xtra: xtra
@@ -3742,8 +3746,11 @@ APP.overrideDraftEdits = function () {
                     el: newEl
                 });
                 window.setTimeout(function () {
-                    Ext4.Msg.forbid = origForbidMsg;
-                }, 1000);
+                    console.log("Marketo App > Restoring: System Messages");
+                    Ext.MessageBox.show = origExtMessageBoxShow;
+                    Ext.MessageBox.show = origExt4MessageBoxShow;
+                    MktMessage.show = origMktMessageShow;
+                }, 5000);
             } else {
                 origEmailEditHandler.apply(this, arguments);
             }
@@ -3752,6 +3759,7 @@ APP.overrideDraftEdits = function () {
         MktDsMenu.getEmailMenu().get("emailDraftEdit").setHandler(function (el) {
             if (attr
                  && attr.accessZoneId.toString().search(mktoGoldenWorkspacesMatch) != -1) {
+                console.log("Marketo App > Executing: Override Draft Edit Menu Items > Email Draft Edit");
                 var triggeredFrom = this.parentMenu.triggeredFrom,
                 xtra = el.parentMenu.xtra,
                 newEl = this.getEl();
@@ -3967,6 +3975,9 @@ APP.overrideDraftEdits = function () {
 
 APP.hideToolbarItems = function () {
     console.log("Marketo App > Hiding: Toolbar Items");
+    var origExtMessageBoxShow = Ext.MessageBox.show,
+    origExt4MessageBoxShow = Ext4.MessageBox.show,
+    origMktMessageShow = MktMessage.show;
     
     if (typeof(Ext) !== "undefined"
          && Ext
@@ -4536,6 +4547,7 @@ APP.hideToolbarItems = function () {
                             item.setHandler(function () {
                                 if (attr
                                      && attr.accessZoneId.toString().search(mktoGoldenWorkspacesMatch) != -1) {
+                                    console.log("Marketo App > Executing: Override Edit Draft Toolbar Button > Landing Page");
                                     var discardMsg = Ext.MessageBox.show({
                                             title: "MarketoLive",
                                             msg: "Discarding Draft",
@@ -4549,12 +4561,10 @@ APP.hideToolbarItems = function () {
                                         xtra: attr
                                     });
                                     discardMsg.hide();
-                                    //Ext.MessageBox.hide();
                                     Mkt.app.DesignStudio.Pages.editPage({
                                         triggeredFrom: "button",
                                         el: this.getEl()
                                     });
-                                    //Ext.MessageBox.hide();
                                 } else {
                                     origHandler.apply(this, arguments);
                                 }
@@ -4566,32 +4576,19 @@ APP.hideToolbarItems = function () {
                             item.setHandler(function (button, e) {
                                 if (attr
                                      && attr.accessZoneId.toString().search(mktoGoldenWorkspacesMatch) != -1) {
-                                    /*var discardMsg = Ext.MessageBox.show({
-                                            title: "MarketoLive",
-                                            msg: "Discarding Draft",
-                                            progress: false,
-                                            wait: false,
-                                            width: 270,
-                                            closable: true
-                                        });*/
-                                    var origExtMessageBoxShow = Ext.MessageBox.show,
-                                    origExt4MessageBoxShow = Ext4.MessageBox.show,
-                                    origMktMessageShow = MktMessage.show;
-                                    Ext.MessageBox.show = function () {};
-                                    Ext4.MessageBox.show = function () {};
-                                    MktMessage.show = function () {};
+                                    console.log("Marketo App > Executing: Override Edit Draft Toolbar Button > Email");
+                                    Ext.MessageBox.show = Ext4.MessageBox.show = MktMessage.show = function () {};
                                     Mkt.app.DesignStudio.Emails.discardDraft({
                                         triggeredFrom: 'button',
                                         xtra: attr,
                                         el: this.getEl()
                                     });
-                                    //discardMsg.hide();
-                                    //Ext.MessageBox.hide();
                                     Mkt.app.DesignStudio.Emails.editDraft({
                                         triggeredFrom: 'button',
                                         panelId: attr.panelId
                                     });
                                     window.setInterval(function () {
+                                        console.log("Marketo App > Restoring: System Messages");
                                         Ext.MessageBox.show = origExtMessageBoxShow;
                                         Ext4.MessageBox.show = origExt4MessageBoxShow;
                                         MktMessage.show = origMktMessageShow;
@@ -7256,13 +7253,14 @@ var isMktPageApp = window.setInterval(function () {
                          && currCompFragment.search(mktoDesignersFragmentMatch) == -1))) {
                 
                 if (accountString.search(mktoAccountStringsMatch) != -1) {
-                    APP.discardDrafts(accountString, "landingPage");
+                    //APP.discardDrafts(accountString, "landingPage");
                     APP.overrideTreeNodeExpand();
                     APP.overrideTreeNodeCollapse();
                     APP.overrideSaving();
                     APP.disableDragAndDrop();
                     APP.disableMenus();
                     APP.hideToolbarItems();
+                    APP.overrideDraftEdits();
                     APP.disableFormSaveButtons();
                     APP.disableAdminSaveButtons();
                     APP.overrideSmartCampaignSaving();
