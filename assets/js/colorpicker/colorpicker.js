@@ -70,7 +70,7 @@ img.onload = function () {
         colorOption2.style.border = null;
         colorOption3.style.border = null;
         this.style.border = "2px solid #000000";
-        colorElement.innerHTML = this.style.background-color;
+        colorElement.innerHTML = this.style.backgroundColor;
         console.log("Color Picker > The Selected Color is: " + colorElement.innerHTML);
     };
     
@@ -105,7 +105,7 @@ img.onload = function () {
         this.style.backgroundColor = this.style.backgroundColor.substr(0, 3).concat("a").concat(this.style.backgroundColor.substring(3).replace(")", ", 0.8)"));
     };
     colorOption1.onmouseleave = colorOption2.onmouseleave = colorOption3.onmouseleave = function () {
-        this.style.backgroundColor = this.style.backgroundColor.substr(0, 3).concat("a").concat(this.style.backgroundColor.substring(3).replace(")", ", 1)"));
+        this.style.backgroundColor = this.style.backgroundColor.replace(/,[^,\)]+\)$/, ", 1)");
     };
     colorOption1.onclick = colorOption2.onclick = colorOption3.onclick = selectColor;
     
