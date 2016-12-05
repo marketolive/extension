@@ -38,6 +38,7 @@ function resultsHandler(response) {
             if (!this.style.transform) {
                 this.style.transform = "scale(1.25)";
             } else {
+                this.style.transform = "scale(1)";
                 this.style.transform = null;
             }
             selectImgSrc = this.src;
