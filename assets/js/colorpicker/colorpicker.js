@@ -31,7 +31,7 @@ getCompanyDomain = function () {
         }
     }
     return false;
-}
+};
 companyDomain = getCompanyDomain();
 
 if (reload) {
@@ -53,13 +53,31 @@ if (companyDomain) {
 
 img.onload = function () {
     var logoElement = document.getElementById("cookie-logo"),
+    colorOption1 = document.getElementById("color-option-1"),
+    colorOption2 = document.getElementById("color-option-2"),
+    colorOption3 = document.getElementById("color-option-3"),
     colorElement = document.getElementById("cookie-color"),
     correct = document.getElementById("correct"),
     incorrect = document.getElementById("incorrect"),
     devExtensionId = "aahhkppadknlakhbppohbeolcfdhmocf",
     prodExtensionId = "onibnnoghllldiecboelbpcaeggfiohl",
     extensionId = devExtensionId,
+    colorOptionHover,
+    selectColor,
     sendCompanyMsg;
+    
+    colorOptionHover = function (alpha) {
+        this.style.backgroundColor = this.style.backgroundColor.substr(0, 3).concat("a").concat(this.style.backgroundColor.substring(3).replace(")", ", " + alpha + ")"));
+    };
+    
+    selectColor = function () {
+        colorOption1.style.border = null;
+        colorOption2.style.border = null;
+        colorOption3.style.border = null;
+        this.style.border = "2px solid #000000";
+        colorElement.innerHTML = this.style.background-color;
+        console.log("Color Picker > The Selected Color is: " + colorElement.innerHTML);
+    };
     
     sendCompanyMsg = function () {
         
@@ -78,11 +96,19 @@ img.onload = function () {
     };
     
     canvas.drawImage(img, 0, 0);
-    colorSet = colorThief.getPalette(img, 2)[1];
-    console.log("Color Picker > The Company Secondary Color is: " + colorSet);
-    colorElement.innerHTML = 'rgb(' + colorSet[0] + ',' + colorSet[1] + ',' + colorSet[2] + ')';
+    colorSet = colorThief.getPalette(img, 3);
+    colorOption1.style.backgroundColor = "rgb(" + colorSet[0][0] + ", " + colorSet[0][1] + ", " + colorSet[0][2] + ")";
+    colorOption2.style.backgroundColor = "rgb(" + colorSet[1][0] + ", " + colorSet[1][1] + ", " + colorSet[1][2] + ")";
+    colorOption3.style.backgroundColor = "rgb(" + colorSet[2][0] + ", " + colorSet[2][1] + ", " + colorSet[2][2] + ")";
+    secondaryColor = colorSet[1];
+    //console.log("Color Picker > The Company Secondary Color is: " + secondaryColor);
+    //colorElement.innerHTML = 'rgb(' + secondaryColor[0] + ',' + secondaryColor[1] + ',' + secondaryColor[2] + ')';
     console.log("Color Picker > The Company Logo is: " + img.src);
     logoElement.innerHTML = img.src;
+    
+    colorOption1.onmouseenter = colorOption2.onmouseenter = colorOption3.onmouseenter = colorOptionHover("0.8");
+    colorOption1.onmouseleave = colorOption2.onmouseleave = colorOption3.onmouseleave = colorOptionHover("1");
+    colorOption1.onclick = colorOption2.onclick = colorOption3.onclick = selectColor;
     
     correct.onclick = sendCompanyMsg;
     document.onkeyup = function (e) {
@@ -96,4 +122,4 @@ img.onload = function () {
         document.getElementById('second').style.display = "block";
         document.getElementById('second-incorrect').style.display = "block";
     };
-}
+};

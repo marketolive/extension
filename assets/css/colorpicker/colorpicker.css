@@ -45,11 +45,21 @@ html, body{
   background-color: #5a54a4;
   box-shadow: 1px 1px 1px #505050;
 }
+.color-option{
+  display: inline-block;
+  cursor: pointer;
+  width: 200px;
+  height: 40px;
+  padding-top: 7px;
+  color: #fff;
+  font-size: 18px;
+  box-shadow: 1px 1px 1px #505050;
+}
 .option-space{
   margin-right: 5%;
 }
 .correct-image-options-inner-container{
-  display:inline-block;
+  display: inline-block;
   margin-left: auto;
   margin-right: auto;
 }
