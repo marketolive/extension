@@ -62,13 +62,8 @@ img.onload = function () {
     devExtensionId = "aahhkppadknlakhbppohbeolcfdhmocf",
     prodExtensionId = "onibnnoghllldiecboelbpcaeggfiohl",
     extensionId = devExtensionId,
-    colorOptionHover,
     selectColor,
     sendCompanyMsg;
-    
-    colorOptionHover = function (alpha) {
-        this.style.backgroundColor = this.style.backgroundColor.substr(0, 3).concat("a").concat(this.style.backgroundColor.substring(3).replace(")", ", " + alpha + ")"));
-    };
     
     selectColor = function () {
         colorOption1.style.border = null;
@@ -106,8 +101,12 @@ img.onload = function () {
     console.log("Color Picker > The Company Logo is: " + img.src);
     logoElement.innerHTML = img.src;
     
-    colorOption1.onmouseenter = colorOption2.onmouseenter = colorOption3.onmouseenter = colorOptionHover("0.8");
-    colorOption1.onmouseleave = colorOption2.onmouseleave = colorOption3.onmouseleave = colorOptionHover("1");
+    colorOption1.onmouseenter = colorOption2.onmouseenter = colorOption3.onmouseenter = function () {
+        this.style.backgroundColor = this.style.backgroundColor.substr(0, 3).concat("a").concat(this.style.backgroundColor.substring(3).replace(")", ", 0.8)"));
+    };
+    colorOption1.onmouseleave = colorOption2.onmouseleave = colorOption3.onmouseleave = function () {
+        this.style.backgroundColor = this.style.backgroundColor.substr(0, 3).concat("a").concat(this.style.backgroundColor.substring(3).replace(")", ", 1)"));
+    };
     colorOption1.onclick = colorOption2.onclick = colorOption3.onclick = selectColor;
     
     correct.onclick = sendCompanyMsg;
