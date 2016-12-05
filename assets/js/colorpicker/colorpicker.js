@@ -31,16 +31,16 @@ function resultsHandler(response) {
         
         itemImg.className = "grow";
         itemImg.style.padding = "0 12px 12px 0";
-        itemImg.style.maxWidth = "367px";
+        itemImg.style.maxWidth = "423px";
         itemImg.style.maxHeight = "183px";
         itemImg.src = item.link;
         itemImg.onclick = function () {
-            if (!itemImg.style.border) {
-                itemImg.style.border = "2px solid black";
+            if (!this.style.transform) {
+                this.style.transform = "scale(1.25)";
             } else {
-                itemImg.style.border = null;
+                this.style.transform = null;
             }
-            selectImgSrc = itemImg.src;
+            selectImgSrc = this.src;
         };
         
         searchResults.appendChild(itemImg);
