@@ -75,3 +75,24 @@ html, body{
 #second, #second-correct, #second-incorrect{
   display: none;
 }
+#searchBox {
+  background-color: #f2f2f2;
+  display: inline-block;
+  cursor: pointer;
+  width: 525px;
+  height: 40px;
+  padding-top: 7px;
+  color: #000;
+  border: none;
+  border-bottom: 1px solid #c2c2c2;
+  font-size: 18px;
+  box-shadow: 1px 1px 1px #505050;
+}
+#search-button{
+  display: inline-block;
+  cursor: pointer;
+  width: 75px;
+  height: 40px;
+  padding-top: 7px;
+  box-shadow: 1px 1px 1px #505050;
+}
