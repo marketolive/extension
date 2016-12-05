@@ -79,8 +79,8 @@ html, body{
   background-color: #fff;
   display: inline-block;
   cursor: pointer;
-  width: 525px;
-  height: 48px;
+  width: 252px;
+  height: 47px;
   color: #000;
   border: none;
   border-bottom: 2px solid #c2c2c2;
@@ -92,6 +92,6 @@ html, body{
 #searchButton{
   display: inline-block;
   cursor: pointer;
-  width: 75px;
+  width: 48px;
   height: 48px;
 }
