@@ -55,6 +55,12 @@ html, body{
   font-size: 18px;
   box-shadow: 1px 1px 1px #505050;
 }
+.grow {
+  transition: all .3s ease-in-out;
+}
+.grow:hover {
+  transform: scale(1.25);
+}
 .option-space{
   margin-right: 5%;
 }
@@ -80,7 +86,7 @@ html, body{
   display: inline-block;
   cursor: pointer;
   width: 252px;
-  height: 47px;
+  height: 46px;
   color: #000;
   border: none;
   border-bottom: 2px solid #c2c2c2;

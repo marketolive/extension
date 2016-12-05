@@ -3,13 +3,78 @@ $('.body-container').click(function () {
     $('.side-bar').css('background-color', 'transparent');
     $('.side-bar-inner-container').css('display', 'none');
 });
-var reload = location.search.split('reloaded=')[1],
+var devExtensionId = "aahhkppadknlakhbppohbeolcfdhmocf",
+prodExtensionId = "onibnnoghllldiecboelbpcaeggfiohl",
+extensionId = devExtensionId,
+reload = location.search.split('reloaded=')[1],
 colorThief = new ColorThief(),
 canvas = document.getElementById('image').getContext("2d"),
 img = new Image(),
+logoElement = document.getElementById("cookie-logo"),
+colorElement = document.getElementById("cookie-color"),
+searchBox = document.getElementById("searchBox"),
+searchButton = document.getElementById("searchButton"),
+key = "AIzaSyC9pdVq6GfquP_MtHCS_izS6Vijdv1ZfNc",
+cx = "014680826408884315290:pmyltjjihus",
 colorSet,
+selectImgSrc,
+loadScript,
 getCompanyDomain,
 companyDomain;
+
+function resultsHandler(response) {
+    var searchResults = document.getElementById("searchResults");
+    
+    for (var ii = 0; ii < response.items.length; ii++) {
+        var item = response.items[ii],
+        itemImg = document.createElement("img");
+        
+        itemImg.className = "grow";
+        itemImg.style.padding = "0 12px 12px 0";
+        itemImg.style.max-width = "367px";
+        itemImg.style.max-height = "183px";
+        itemImg.src = item.link;
+        itemImg.onclick = function () {
+            if (!itemImg.style.border) {
+                itemImg.style.border = "2px solid black";
+            } else {
+                itemImg.style.border = null;
+            }
+            selectImgSrc = itemImg.src;
+        };
+        
+        searchResults.appendChild(itemImg);
+    }
+}
+
+searchButton.onclick = function () {
+    loadScript("https://www.googleapis.com/customsearch/v1?key="+key+"&amp;cx="+cx+"&amp;searchType=image&q="+encodeURIComponent(searchBox.value)+"callback=resultsHandler");
+};
+
+function sendCompanyMsg() {
+    chrome.runtime.sendMessage(extensionId, {
+        action: "setCompanyCookies",
+        logo: logoElement.innerHTML,
+        color: colorElement.innerHTML,
+        image: selectImgSrc
+    },
+        function (response) {
+        console.log("Color Picker > Receiving: Message Response from Background: " + response);
+        
+        return response;
+    });
+    
+    window.close();
+}
+
+loadScript = function (scriptSrc) {
+    console.log("Content > Loading: Script: " + scriptSrc);
+    
+    var scriptElement = document.createElement("script");
+    scriptElement.async = true;
+    scriptElement.src = scriptSrc;
+    document.getElementsByTagName("head")[0].appendChild(scriptElement);
+};
 
 getCompanyDomain = function () {
     console.log("Color Picker > Getting: Company Domain");
@@ -52,16 +117,11 @@ if (companyDomain) {
 }
 
 img.onload = function () {
-    var logoElement = document.getElementById("cookie-logo"),
-    colorOption1 = document.getElementById("color-option-1"),
+    var colorOption1 = document.getElementById("color-option-1"),
     colorOption2 = document.getElementById("color-option-2"),
     colorOption3 = document.getElementById("color-option-3"),
-    colorElement = document.getElementById("cookie-color"),
     correct = document.getElementById("correct"),
     incorrect = document.getElementById("incorrect"),
-    devExtensionId = "aahhkppadknlakhbppohbeolcfdhmocf",
-    prodExtensionId = "onibnnoghllldiecboelbpcaeggfiohl",
-    extensionId = devExtensionId,
     selectColor,
     sendCompanyMsg;
     
@@ -73,22 +133,6 @@ img.onload = function () {
         this.style.backgroundColor = this.style.backgroundColor.replace("rgba", "rgb").replace(/,[^,\)]+\)$/, ")");
         colorElement.innerHTML = this.style.backgroundColor;
         console.log("Color Picker > The Selected Color is: " + colorElement.innerHTML);
-    };
-    
-    sendCompanyMsg = function () {
-        
-        chrome.runtime.sendMessage(extensionId, {
-            action : "setCompanyCookies",
-            logo : logoElement.innerHTML,
-            color : colorElement.innerHTML
-        },
-            function (response) {
-            console.log("Color Picker > Receiving: Message Response from Background: " + response);
-            
-            return response;
-        });
-        
-        window.close();
     };
     
     canvas.drawImage(img, 0, 0);
