@@ -80,8 +80,7 @@ html, body{
   display: inline-block;
   cursor: pointer;
   width: 525px;
-  height: 40px;
-  padding-top: 7px;
+  height: 47px;
   color: #000;
   border: none;
   border-bottom: 1px solid #c2c2c2;
@@ -92,7 +91,6 @@ html, body{
   display: inline-block;
   cursor: pointer;
   width: 75px;
-  height: 40px;
-  padding-top: 7px;
+  height: 47px;
   box-shadow: 1px 1px 1px #505050;
 }
