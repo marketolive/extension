@@ -31,7 +31,7 @@ function resultsHandler(response) {
         
         itemImg.className = "grow";
         itemImg.style.padding = "0 12px 12px 0";
-        itemImg.style.maxWidth = "423px";
+        itemImg.style.maxWidth = "441px";
         itemImg.style.maxHeight = "183px";
         itemImg.src = item.link;
         itemImg.onclick = function () {
