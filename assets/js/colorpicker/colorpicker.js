@@ -48,7 +48,7 @@ function resultsHandler(response) {
 }
 
 searchButton.onclick = function () {
-    loadScript("https://www.googleapis.com/customsearch/v1?key="+key+"&amp;cx="+cx+"&amp;searchType=image&amp;q="+encodeURIComponent(searchBox.value)+"&amp;callback=resultsHandler");
+    loadScript("https://www.googleapis.com/customsearch/v1?key="+key+"&cx="+cx+"&searchType=image&q="+encodeURIComponent(searchBox.value)+"&callback=resultsHandler");
 };
 
 function sendCompanyMsg() {
