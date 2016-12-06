@@ -58,6 +58,7 @@ function resultsHandler(response) {
 }
 
 searchButton.onclick = function () {
+    searchResults.innerHTML = null;
     loadScript("https://www.googleapis.com/customsearch/v1?key="+key+"&cx="+cx+"&searchType=image&q="+encodeURIComponent(searchBox.value)+"&num=10&callback=resultsHandler");
 };
 
