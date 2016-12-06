@@ -38,6 +38,7 @@ function resultsHandler(response) {
             var imgs = document.getElementsByClassName("search-result-img");
             if (!this.isSelected) {
                 this.isSelected = true;
+                selectImgSrc = this.src;
                 this.style.opacity = null;
                 for (var jj = 0; jj < imgs.length; jj++) {
                     if (imgs[jj].src != this.src) {
@@ -45,13 +46,13 @@ function resultsHandler(response) {
                         imgs[jj].style.opacity = "0.5";
                     }
                 }
+                console.log("Color Picker > Hero Image: " + selectImgSrc);
             } else {
                 this.isSelected = false;
                 for (var jj = 0; jj < imgs.length; jj++) {
                     imgs[jj].style.opacity = null;
                 }
             }
-            selectImgSrc = this.src;
         };
         itemImgText.className = "search-result-text";
         itemImgText.innerText = item.image.width + " × " + item.image.height;
@@ -107,7 +108,7 @@ getCompanyDomain = function () {
         paramValue = paramPair[1];
         
         if (paramName == "company") {
-            console.log("Color Picker > Company Domain is: " + companyDomain);
+            console.log("Color Picker > Company Domain: " + companyDomain);
             return paramValue;
         }
     }
@@ -147,7 +148,7 @@ img.onload = function () {
     secondaryColor = colorSet[1];
     //console.log("Color Picker > The Company Secondary Color is: " + secondaryColor);
     //colorElement.innerHTML = 'rgb(' + secondaryColor[0] + ',' + secondaryColor[1] + ',' + secondaryColor[2] + ')';
-    console.log("Color Picker > The Company Logo is: " + img.src);
+    console.log("Color Picker > Company Logo: " + img.src);
     logoElement.innerHTML = img.src;
     
     colorOption1.onclick = colorOption2.onclick = colorOption3.onclick = function () {
@@ -162,6 +163,7 @@ img.onload = function () {
                     colorOptions[jj].style.opacity = "0.5";
                 }
             }
+            console.log("Color Picker > Company Color: " + colorElement.innerHTML);
         } else {
             this.isSelected = false;
             colorElement.innerHTML = null;
