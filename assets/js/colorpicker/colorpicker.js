@@ -41,14 +41,14 @@ function resultsHandler(response) {
                     if (currImg.src != this.src) {
                         currImg.style.opacity = "0.5";
                     }
-                }
+                });
             } else {
                 this.style.transform = null;
                 document.getElementsByClassName("grow").forEach(function (currImg) {
                     if (currImg.src != this.src) {
                         currImg.style.opacity = null;
                     }
-                }
+                });
             }
             selectImgSrc = this.src;
         };
