@@ -50,7 +50,7 @@ html, body{
 }
 .color-option:hover, .search-result:hover {
   transform: scale(1.25);
-  zIndex : 1;
+  z-index : 1;
 }
 .color-option{
   display: inline-block;
