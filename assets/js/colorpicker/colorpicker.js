@@ -38,18 +38,18 @@ function resultsHandler(response) {
             var imgs = document.getElementsByClassName("grow");
             if (!this.style.transform) {
                 this.style.transform = "scale(1.25)";
-                imgs.forEach(function (currImg) {
-                    if (currImg.src != this.src) {
-                        currImg.style.opacity = "0.5";
+                for (var jj = 0; jj < imgs.length; jj++) {
+                    if (imgs[jj].src != this.src) {
+                        imgs[jj].style.opacity = "0.5";
                     }
-                });
+                }
             } else {
                 this.style.transform = null;
-                imgs.forEach(function (currImg) {
-                    if (currImg.src != this.src) {
-                        currImg.style.opacity = null;
+                for (var jj = 0; jj < imgs.length; jj++) {
+                    if (imgs[jj].src != this.src) {
+                        imgs[jj].style.opacity = null;
                     }
-                });
+                }
             }
             selectImgSrc = this.src;
         };
