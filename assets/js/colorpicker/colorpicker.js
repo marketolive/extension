@@ -36,19 +36,17 @@ function resultsHandler(response) {
         itemImg.src = item.link;
         itemImg.onclick = function () {
             var imgs = document.getElementsByClassName("grow");
-            if (!this.style.transform) {
-                this.style.transform = "scale(1.25)";
+            if (!this.isSelected) {
+                this.isSelected = true;
                 for (var jj = 0; jj < imgs.length; jj++) {
                     if (imgs[jj].src != this.src) {
                         imgs[jj].style.opacity = "0.5";
                     }
                 }
             } else {
-                this.style.transform = null;
+                this.isSelected = false;
                 for (var jj = 0; jj < imgs.length; jj++) {
-                    if (imgs[jj].src != this.src) {
-                        imgs[jj].style.opacity = null;
-                    }
+                    imgs[jj].style.opacity = null;
                 }
             }
             selectImgSrc = this.src;
