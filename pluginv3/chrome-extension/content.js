@@ -234,12 +234,14 @@ window.onload = function () {
                 var isEmailEditor2,
                 clearOverlayVars,
                 overlay,
-                isMktoImgReplaced = isMktoTextReplaced = isMktoSubTextReplaced = isMktoButtonReplaced = isMktoEmail1Replaced = editorPrevReady = desktopPrevReady = phonePrevReady = isDesktopPreviewReplaced = isPhonePreviewReplaced = false,
+                isMktoImgReplaced = isMktoHeroBgReplaced = isMktoTextReplaced = isMktoSubTextReplaced = isMktoButtonReplaced = isMktoEmail1Replaced = editorPrevReady = desktopPrevReady = phonePrevReady = isDesktopPreviewReplaced = isPhonePreviewReplaced = false,
                 logoMktoNameRegex = new RegExp("logo", "i"),
+                heroMktoNameRegex = new RegExp("hero", "i"),
                 mainTitleMktoNameRegex = new RegExp("^main title$|^mainTitle$|^main-title$|^title$", "i"),
                 subTitleMktoNameRegex = new RegExp("^subtitle$|^sub-title$", "i"),
                 buttonTextRegex = new RegExp("signup|sign up|call to action|cta", "i"),
                 logo = getCookie("logo"),
+                heroBackground = getCookie("heroBackground"),
                 color = getCookie("color"),
                 defaultColor = "rgb(42, 83, 112)",
                 logoMaxHeight = "55",
@@ -261,7 +263,7 @@ window.onload = function () {
                 }
                 
                 clearOverlayVars = function () {
-                    isMktoImgReplaced = isMktoTextReplaced = isMktoSubTextReplaced = isMktoButtonReplaced = isMktoEmail1Replaced = false;
+                    isMktoImgReplaced = isMktoHeroBgReplaced = isMktoTextReplaced = isMktoSubTextReplaced = isMktoButtonReplaced = isMktoEmail1Replaced = false;
                     emailBody = mktoImgs = mktoTexts = mktoButtons = logoSwapCompany = logoSwapContainer = logoSwapCompanyContainer = logoBkg = buttonBkg = null;
                 };
                 
@@ -277,6 +279,7 @@ window.onload = function () {
                         if (emailBody
                              && emailBody.innerHTML) {
                             var mktoImgs = emailBody.getElementsByClassName("mktoImg"),
+                            mktoModules = emailBody.getElementsByClassName("mktoModule"),
                             mktoTexts = emailBody.getElementsByClassName("mktoText"),
                             mktoButtons = emailBody.getElementsByClassName("secondary-font button");
                             
@@ -323,6 +326,38 @@ window.onload = function () {
                                                 console.log("Content > Overlaying: Email 2.0 Company Logo Dimensions = " + currMktoImgTag.width + " x " + currMktoImgTag.height);
                                             }
                                             isMktoImgReplaced = true;
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                            
+                            if (!isMktoHeroBgReplaced
+                                 && mktoModules.length != 0) {
+                                var ii,
+                                currMktoModule,
+                                currMktoModuleMktoName,
+                                currMktoModuleTag;
+                                
+                                for (ii = 0; ii < mktoModules.length; ii++) {
+                                    currMktoModule = mktoModules[ii];
+                                    
+                                    if (currMktoModule.getAttribute("mktoname")) {
+                                        currMktoModuleMktoName = currMktoModule.getAttribute("mktoname");
+                                    } else if (currMktoModule.getAttribute("id")) {
+                                        currMktoModuleMktoName = currMktoModule.getAttribute("id");
+                                    }
+                                    
+                                    if (currMktoModuleMktoName
+                                         && currMktoModuleMktoName.search(heroMktoNameRegex) != -1) {
+                                        currMktoModuleTag = currMktoModule.getElementsByTagName("td")[0];
+                                        
+                                        if (currMktoModuleTag
+                                             && currMktoModuleTag.getAttribute("background")) {
+                                            console.log("Content > Overlaying: Email 2.0 Hero Background");
+                                            currMktoModuleTag.setAttribute("background", heroBackground);
+                                            currMktoModuleTag.style.setProperty("background-size", "cover");
+                                            isMktoHeroBgReplaced = true;
                                             break;
                                         }
                                     }
@@ -547,7 +582,7 @@ window.onload = function () {
                 var isLandingPageEditor,
                 clearOverlayVars,
                 overlay,
-                isMktoFreeForm = isMktoImgReplaced = isMktoTextReplaced = isMktoSubTextReplaced = isMktoButtonReplaced = isMktoBackgroundColorReplaced = isMktoOrigReplaced = desktopPrevReady = phonePrevReady = sideBySideDesktopPrevReady = sideBySidePhonePrevReady = isDesktopReplaced = isPhoneReplaced = isSideBySideDesktopReplaced = isSideBySidePhoneReplaced = false,
+                isMktoFreeForm = isMktoImgReplaced = isMktoHeroBgImgReplaced = isMktoTextReplaced = isMktoSubTextReplaced = isMktoButtonReplaced = isMktoBackgroundColorReplaced = isMktoOrigReplaced = desktopPrevReady = phonePrevReady = sideBySideDesktopPrevReady = sideBySidePhonePrevReady = isDesktopReplaced = isPhoneReplaced = isSideBySideDesktopReplaced = isSideBySidePhoneReplaced = false,
                 mktoBodyId = "bodyId",
                 mktoFreeFormClassName = "mktoMobileShow",
                 logoRegex = new RegExp("primaryImage|primary_image|primary-image|logo|image_1|image-1|image1", "i"),
@@ -585,7 +620,7 @@ window.onload = function () {
                 linearGradient = "linear-gradient(to bottom, " + color + ", rgb(242, 242, 242))";
                 
                 clearOverlayVars = function () {
-                    isMktoImgReplaced = isMktoTextReplaced = isMktoSubTextReplaced = isMktoButtonReplaced = isMktoBackgroundColorReplaced = isMktoOrigReplaced = false;
+                    isMktoImgReplaced = isMktoHeroBgImgReplaced = isMktoTextReplaced = isMktoSubTextReplaced = isMktoButtonReplaced = isMktoBackgroundColorReplaced = isMktoOrigReplaced = false;
                     iframeBody = logoImg = textBackground = bannerBackground = mainTitle = subTitle = mktoImgs = mktoTexts = mktoRichTexts = mktoButtons = null;
                 };
                 
@@ -678,6 +713,27 @@ window.onload = function () {
                                             console.log("Content > Overlaying: Freeform Landing Page Company Logo Dimensions = " + logoNewWidth + " x " + logoNewHeight);
                                         }
                                         isMktoImgReplaced = true;
+                                        break;
+                                    }
+                                }
+                            }
+                            
+                            if (!isMktoHeroBgImgReplaced
+                                 && mktoImgs.length != 0) {
+                                var ii,
+                                currMktoImg;
+                                
+                                for (ii = 0; ii < mktoImgs.length; ii++) {
+                                    currMktoImg = mktoImgs[ii];
+                                    
+                                    if (currMktoImg.getAttribute("src")
+                                         && currMktoImg.getAttribute("id")
+                                         && currMktoImg.getAttribute("id").search(heroBgImgIdRegex) != -1) {
+                                        
+                                        console.log("Content > Overlaying: Guided Landing Page Hero Background");
+                                        currMktoImg.setAttribute("src", heroBackground);
+                                        currMktoImg.style.setProperty("opacity", "0.2");
+                                        isMktoHeroBgImgReplaced = true;
                                         break;
                                     }
                                 }
