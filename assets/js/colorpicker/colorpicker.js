@@ -27,11 +27,9 @@ function resultsHandler(response) {
     
     for (var ii = 0; ii < response.items.length; ii++) {
         var item = response.items[ii],
-        itemResult = document.createElement("div"),
         itemImg = document.createElement("img"),
         itemImgText = document.createElement("div");
         
-        itemResult.className = "search-result";
         itemImg.className = "search-result-img";
         itemImg.src = item.link;
         itemImg.onclick = function () {
@@ -41,6 +39,7 @@ function resultsHandler(response) {
                 this.style.opacity = null;
                 for (var jj = 0; jj < imgs.length; jj++) {
                     if (imgs[jj].src != this.src) {
+                        imgs[jj].isSelected = false;
                         imgs[jj].style.opacity = "0.5";
                     }
                 }
@@ -52,12 +51,11 @@ function resultsHandler(response) {
             }
             selectImgSrc = this.src;
         };
-        itemImgText.className = "img-overlay-text";
+        itemImgText.className = "search-result-text";
         itemImgText.innerText = item.image.width + "&nbsp;×&nbsp;" + item.image.height;
         
-        itemResult.appendChild(itemImg);
-        itemResult.appendChild(itemImgText);
-        searchResults.appendChild(itemResult);
+        searchResults.appendChild(itemImg);
+        searchResults.appendChild(itemImgText);
     }
 }
 
@@ -174,6 +172,7 @@ img.onload = function () {
             this.style.opacity = null;
             for (var jj = 0; jj < colorOptions.length; jj++) {
                 if (colorOptions[jj].style.backgroundColor != this.style.backgroundColor) {
+                    colorOptions[jj].isSelected = false;
                     colorOptions[jj].style.opacity = "0.5";
                 }
             }
