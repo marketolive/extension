@@ -27,15 +27,15 @@ function resultsHandler(response) {
     
     for (var ii = 0; ii < response.items.length; ii++) {
         var item = response.items[ii],
-        itemImg = document.createElement("img");
+        itemResult = document.createElement("div"),
+        itemImg = document.createElement("img"),
+        itemImgText = document.createElement("div");
         
-        itemImg.className = "grow";
-        itemImg.style.padding = "0 12px 12px 0";
-        itemImg.style.maxWidth = "441px";
-        itemImg.style.maxHeight = "183px";
+        itemResult.className = "search-result";
+        itemImg.className = "search-result-img";
         itemImg.src = item.link;
         itemImg.onclick = function () {
-            var imgs = document.getElementsByClassName("grow");
+            var imgs = document.getElementsByClassName("search-result-img");
             if (!this.isSelected) {
                 this.isSelected = true;
                 this.style.opacity = null;
@@ -52,14 +52,18 @@ function resultsHandler(response) {
             }
             selectImgSrc = this.src;
         };
+        itemImgText.className = "img-overlay-text";
+        itemImgText.innerText = item.image.width + "&nbsp;×&nbsp;" + item.image.height;
         
-        searchResults.appendChild(itemImg);
+        itemResult.appendChild(itemImg);
+        itemResult.appendChild(itemImgText);
+        searchResults.appendChild(itemResult);
     }
 }
 
 searchButton.onclick = function () {
     searchResults.innerHTML = null;
-    loadScript("https://www.googleapis.com/customsearch/v1?key="+key+"&cx="+cx+"&searchType=image&q="+encodeURIComponent(searchBox.value)+"&num=10&callback=resultsHandler");
+    loadScript("https://www.googleapis.com/customsearch/v1?key="+key+"&cx="+cx+"&fields=items(link,image/height,image/width)&filter=1&num=10&searchType=image&imgType=photo&q="+encodeURIComponent(searchBox.value)+"&callback=resultsHandler");
 };
 
 function sendCompanyMsg() {
@@ -163,7 +167,23 @@ img.onload = function () {
     colorOption1.onmouseleave = colorOption2.onmouseleave = colorOption3.onmouseleave = function () {
         this.style.backgroundColor = this.style.backgroundColor.replace("rgba", "rgb").replace(/,[^,\)]+\)$/, ")");
     };
-    colorOption1.onclick = colorOption2.onclick = colorOption3.onclick = selectColor;
+    colorOption1.onclick = colorOption2.onclick = colorOption3.onclick = function () {
+        var colorOptions = document.getElementsByClassName("color-option");
+        if (!this.isSelected) {
+            this.isSelected = true;
+            this.style.opacity = null;
+            for (var jj = 0; jj < colorOptions.length; jj++) {
+                if (colorOptions[jj].style.backgroundColor != this.style.backgroundColor) {
+                    colorOptions[jj].style.opacity = "0.5";
+                }
+            }
+        } else {
+            this.isSelected = false;
+            for (var jj = 0; jj < colorOptions.length; jj++) {
+                colorOptions[jj].style.opacity = null;
+            }
+        }
+    };
     
     correct.onclick = sendCompanyMsg;
     document.onkeyup = function (e) {

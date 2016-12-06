@@ -23,7 +23,7 @@ html, body{
 .center-image{
   width: 100%;
   text-align: center;
-  padding-top: 100px;
+  padding-top: 50px;
 }
 .image-size{
   width: 200px;
@@ -45,6 +45,12 @@ html, body{
   background-color: #5a54a4;
   box-shadow: 1px 1px 1px #505050;
 }
+.search-result-img, .color-option, .img-overlay-text {
+  transition: all .3s ease-in-out;
+}
+.search-result-img:hover, .color-option:hover, .img-overlay-text:hover {
+  transform: scale(1.25);
+}
 .color-option{
   display: inline-block;
   cursor: pointer;
@@ -55,11 +61,25 @@ html, body{
   font-size: 18px;
   box-shadow: 1px 1px 1px #505050;
 }
-.grow {
-  transition: all .3s ease-in-out;
+.search-result, .search-result-img {
+  max-width: 441px;
+  max-height: 208px;
 }
-.grow:hover {
-  transform: scale(1.25);
+.search-result {
+  padding: 0 12px 12px 0;
+}
+.img-overlay-text {
+  background: rgba(51, 51, 51, 0.8);
+  margin-left: 0;
+  padding: 2px 4px;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  -webkit-box-sizing: border-box;
+  color: #fff;
+  font: normal 11px arial,sans-serif;
+  line-height: 100%;
+  white-space: nowrap;
 }
 .option-space{
   margin-right: 5%;
@@ -86,7 +106,7 @@ html, body{
   display: inline-block;
   cursor: pointer;
   width: 252px;
-  height: 46px;
+  height: 48px;
   color: #000;
   border: none;
   border-bottom: 2px solid #c2c2c2;
@@ -98,6 +118,6 @@ html, body{
 #searchButton{
   display: inline-block;
   cursor: pointer;
-  width: 48px;
-  height: 48px;
+  width: 50px;
+  height: 50px;
 }
