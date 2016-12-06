@@ -45,10 +45,10 @@ html, body{
   background-color: #5a54a4;
   box-shadow: 1px 1px 1px #505050;
 }
-.color-option, .search-result-img, .search-result-text {
+.color-option, .search-result {
   transition: all .3s ease-in-out;
 }
-.color-option:hover, .search-result-img:hover, .search-result-text:hover {
+.color-option:hover, .search-result:hover {
   transform: scale(1.25);
 }
 .color-option{
@@ -66,11 +66,12 @@ html, body{
   max-height: 208px;
 }
 .search-result, .search-result-text {
-  padding: 0 12px 12px 0;
+  margin: 0 12px 12px 0;
 }
 .search-result {
   display: inline-block;
   position: relative;
+  vertical-align: top;
 }
 .search-result-text {
   display: block;
@@ -124,7 +125,8 @@ html, body{
 #searchButton{
   background-color: #5a54a4;
   display: inline-block;
-  padding-bottom: 2px;
+  padding: 0;
+  vertical-align: middle;
   cursor: pointer;
   width: 50px;
   height: 50px;
