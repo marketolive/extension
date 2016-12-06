@@ -38,9 +38,12 @@ function resultsHandler(response) {
             if (!this.style.transform) {
                 this.style.transform = "scale(1.25)";
             } else {
-                this.style.transform = "scale(1)";
                 this.style.transform = null;
             }
+            for (var currImg in document.getElementsByClassName("grow")) {
+                currImg.style.opacity = "0.5";
+            }
+            this.style.opacity = null;
             selectImgSrc = this.src;
         };
         
