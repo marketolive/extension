@@ -35,13 +35,15 @@ function resultsHandler(response) {
         itemImg.style.maxHeight = "183px";
         itemImg.src = item.link;
         itemImg.onclick = function () {
+            var itemImgs = document.getElementsByClassName("grow");
             if (!this.style.transform) {
                 this.style.transform = "scale(1.25)";
             } else {
                 this.style.transform = null;
             }
-            for (var currImg in document.getElementsByClassName("grow")) {
-                currImg.style.opacity = "0.5";
+            
+            for (var x in itemImgs) {
+                itemImgs[x].style.opacity = "0.5";
             }
             this.style.opacity = null;
             selectImgSrc = this.src;
