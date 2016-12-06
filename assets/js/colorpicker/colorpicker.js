@@ -38,6 +38,7 @@ function resultsHandler(response) {
             var imgs = document.getElementsByClassName("grow");
             if (!this.isSelected) {
                 this.isSelected = true;
+                this.style.opacity = null;
                 for (var jj = 0; jj < imgs.length; jj++) {
                     if (imgs[jj].src != this.src) {
                         imgs[jj].style.opacity = "0.5";
