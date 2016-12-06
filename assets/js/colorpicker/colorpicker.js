@@ -35,17 +35,21 @@ function resultsHandler(response) {
         itemImg.style.maxHeight = "183px";
         itemImg.src = item.link;
         itemImg.onclick = function () {
-            var itemImgs = document.getElementsByClassName("grow");
             if (!this.style.transform) {
                 this.style.transform = "scale(1.25)";
+                document.getElementsByClassName("grow").forEach(function (currImg) {
+                    if (currImg.src != this.src) {
+                        currImg.style.opacity = "0.5";
+                    }
+                }
             } else {
                 this.style.transform = null;
+                document.getElementsByClassName("grow").forEach(function (currImg) {
+                    if (currImg.src != this.src) {
+                        currImg.style.opacity = null;
+                    }
+                }
             }
-            
-            for (var x in itemImgs) {
-                itemImgs[x].style.opacity = "0.5";
-            }
-            this.style.opacity = null;
             selectImgSrc = this.src;
         };
         
