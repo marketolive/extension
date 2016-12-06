@@ -61,15 +61,21 @@ html, body{
   font-size: 18px;
   box-shadow: 1px 1px 1px #505050;
 }
-.search-result-img, .search-result-text {
+.search-result, .search-result-img, .search-result-text {
   max-width: 441px;
   max-height: 208px;
+}
+.search-result {
+  display: inline-block;
+  position: relative;
   padding: 0 12px 12px 0;
 }
 .search-result-text {
+  display: block;
   background: rgba(51, 51, 51, 0.8);
   margin-left: 0;
   position: absolute;
+  padding: 2px 4px;
   right: 0;
   bottom: 0;
   -webkit-box-sizing: border-box;
@@ -77,6 +83,7 @@ html, body{
   font: normal 11px arial,sans-serif;
   line-height: 100%;
   white-space: nowrap;
+  width: 100%;
 }
 .option-space{
   margin-right: 5%;
@@ -115,8 +122,9 @@ html, body{
 #searchButton{
   background-color: #5a54a4;
   display: inline-block;
+  padding-bottom: 2px;
   cursor: pointer;
   width: 50px;
-  height: 50px;
+  height: 48px;
   border: none;
 }

@@ -27,9 +27,11 @@ function resultsHandler(response) {
     
     for (var ii = 0; ii < response.items.length; ii++) {
         var item = response.items[ii],
+        itemResult = document.createElement("div"),
         itemImg = document.createElement("img"),
         itemImgText = document.createElement("div");
         
+        itemResult.className = "search-result";
         itemImg.className = "search-result-img";
         itemImg.src = item.link;
         itemImg.onclick = function () {
@@ -52,10 +54,11 @@ function resultsHandler(response) {
             selectImgSrc = this.src;
         };
         itemImgText.className = "search-result-text";
-        itemImgText.innerText = item.image.width + "&nbsp;×&nbsp;" + item.image.height;
+        itemImgText.innerText = item.image.width + " × " + item.image.height;
         
-        searchResults.appendChild(itemImg);
-        searchResults.appendChild(itemImgText);
+        itemResult.appendChild(itemImg);
+        itemResult.appendChild(itemImgText);
+        searchResults.appendChild(itemResult);
     }
 }
 
@@ -134,19 +137,7 @@ img.onload = function () {
     colorOption2 = document.getElementById("color-option-2"),
     colorOption3 = document.getElementById("color-option-3"),
     correct = document.getElementById("correct"),
-    incorrect = document.getElementById("incorrect"),
-    selectColor,
-    sendCompanyMsg;
-    
-    selectColor = function () {
-        colorOption1.style.border = null;
-        colorOption2.style.border = null;
-        colorOption3.style.border = null;
-        this.style.border = "2px solid #000000";
-        this.style.backgroundColor = this.style.backgroundColor.replace("rgba", "rgb").replace(/,[^,\)]+\)$/, ")");
-        colorElement.innerHTML = this.style.backgroundColor;
-        console.log("Color Picker > The Selected Color is: " + colorElement.innerHTML);
-    };
+    incorrect = document.getElementById("incorrect");
     
     canvas.drawImage(img, 0, 0);
     colorSet = colorThief.getPalette(img, 3);
@@ -187,7 +178,7 @@ img.onload = function () {
     correct.onclick = sendCompanyMsg;
     document.onkeyup = function (e) {
         if (e.which == 13) {
-            sendCompanyMsg();
+            searchButton.onclick();
         }
     };
     
