@@ -150,16 +150,11 @@ img.onload = function () {
     console.log("Color Picker > The Company Logo is: " + img.src);
     logoElement.innerHTML = img.src;
     
-    colorOption1.onmouseenter = colorOption2.onmouseenter = colorOption3.onmouseenter = function () {
-        this.style.backgroundColor = this.style.backgroundColor.substr(0, 3).concat("a").concat(this.style.backgroundColor.substring(3).replace(")", ", 0.8)"));
-    };
-    colorOption1.onmouseleave = colorOption2.onmouseleave = colorOption3.onmouseleave = function () {
-        this.style.backgroundColor = this.style.backgroundColor.replace("rgba", "rgb").replace(/,[^,\)]+\)$/, ")");
-    };
     colorOption1.onclick = colorOption2.onclick = colorOption3.onclick = function () {
         var colorOptions = document.getElementsByClassName("color-option");
         if (!this.isSelected) {
             this.isSelected = true;
+            colorElement.innerHTML = this.style.backgroundColor;
             this.style.opacity = null;
             for (var jj = 0; jj < colorOptions.length; jj++) {
                 if (colorOptions[jj].style.backgroundColor != this.style.backgroundColor) {
@@ -169,6 +164,7 @@ img.onload = function () {
             }
         } else {
             this.isSelected = false;
+            colorElement.innerHTML = null;
             for (var jj = 0; jj < colorOptions.length; jj++) {
                 colorOptions[jj].style.opacity = null;
             }
