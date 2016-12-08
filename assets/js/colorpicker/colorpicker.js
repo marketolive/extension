@@ -160,13 +160,26 @@ if (heroBackground) {
     itemResult.className = "search-result";
     itemImg.className = "search-result-img";
     itemImg.src = heroBackground;
+    itemImg.isSelected = true;
+    selectImgSrc = heroBackground;
     itemImgText.className = "search-result-text";
     itemImgText.innerText = heroBackgroundRes;
-    
+    itemImg.onclick = function () {
+        if (!this.isSelected) {
+            this.isSelected = true;
+            this.style.opacity = null;
+            selectImgSrc = heroBackground;
+            console.log("Color Picker > Hero Image: " + selectImgSrc);
+        } else {
+            this.isSelected = false;
+            this.style.opacity = "0.5";
+            selectImgSrc = null;
+        }
+    };
+        
     itemResult.appendChild(itemImg);
     itemResult.appendChild(itemImgText);
     searchResults.appendChild(itemResult);
-    selectImgSrc = heroBackground;
 }
 
 img.onload = function () {
@@ -194,7 +207,7 @@ img.onload = function () {
             for (var jj = 0; jj < colorOptions.length; jj++) {
                 if (colorOptions[jj].style.backgroundColor != this.style.backgroundColor) {
                     colorOptions[jj].isSelected = false;
-                    colorOptions[jj].style.opacity = "0.5";
+                    colorOptions[jj].style.opacity = "0.2";
                 }
             }
             console.log("Color Picker > Company Color: " + colorElement.innerHTML);

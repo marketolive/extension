@@ -595,6 +595,16 @@ chrome.runtime.onMessageExternal.addListener(function (message, sender, sendResp
                     "value" : message.color,
                     "domain" : mktoDesignerUriDomain
                 });
+            } else {
+                removeCookie({
+                    "url" : mktoLiveClassicDomainMatch,
+                    "name" : companyColorCookieName
+                });
+                
+                removeCookie({
+                    "url" : mktoDesignerDomainMatch,
+                    "name" : companyColorCookieName
+                });
             }
             
             if (message.image) {
@@ -610,6 +620,16 @@ chrome.runtime.onMessageExternal.addListener(function (message, sender, sendResp
                     "name" : companyImageCookieName,
                     "value" : message.image,
                     "domain" : mktoDesignerUriDomain
+                });
+            } else {
+                removeCookie({
+                    "url" : mktoLiveClassicDomainMatch,
+                    "name" : companyImageCookieName
+                });
+                
+                removeCookie({
+                    "url" : mktoDesignerDomainMatch,
+                    "name" : companyImageCookieName
                 });
             }
             
