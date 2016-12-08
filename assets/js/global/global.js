@@ -1,4 +1,4 @@
-var HEAP_ANALYTICS_SCRIPT_LOCATION = "https://classic.marketolive.com/assets/js/global/heap-analytics.js",
+var HEAP_ANALYTICS_SCRIPT_LOCATION = "heap-analytics.js",
 loadScript;
 
 /**************************************************************************************
