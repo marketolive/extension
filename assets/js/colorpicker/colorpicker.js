@@ -70,7 +70,7 @@ function resultsHandler(response) {
                 for (var jj = 0; jj < imgs.length; jj++) {
                     if (imgs[jj].src != this.src) {
                         imgs[jj].isSelected = false;
-                        imgs[jj].style.opacity = "0.5";
+                        imgs[jj].parentElement.style.opacity = "0.5";
                     }
                 }
                 console.log("Color Picker > Hero Image: " + selectImgSrc);
@@ -172,7 +172,7 @@ if (heroBackground) {
             console.log("Color Picker > Hero Image: " + selectImgSrc);
         } else {
             this.isSelected = false;
-            this.style.opacity = "0.5";
+            this.parentElement.style.opacity = "0.5";
             selectImgSrc = null;
         }
     };
@@ -207,7 +207,7 @@ img.onload = function () {
             for (var jj = 0; jj < colorOptions.length; jj++) {
                 if (colorOptions[jj].style.backgroundColor != this.style.backgroundColor) {
                     colorOptions[jj].isSelected = false;
-                    colorOptions[jj].style.opacity = "0.2";
+                    colorOptions[jj].style.opacity = "0.33";
                 }
             }
             console.log("Color Picker > Company Color: " + colorElement.innerHTML);
