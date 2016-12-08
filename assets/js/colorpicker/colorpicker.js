@@ -78,7 +78,7 @@ function resultsHandler(response) {
                 this.isSelected = false;
                 selectImgSrc = null;
                 for (var jj = 0; jj < imgs.length; jj++) {
-                    imgs[jj].style.opacity = null;
+                    imgs[jj].parentElement.style.opacity = null;
                 }
             }
         };
@@ -167,7 +167,7 @@ if (heroBackground) {
     itemImg.onclick = function () {
         if (!this.isSelected) {
             this.isSelected = true;
-            this.style.opacity = null;
+            this.parentElement.style.opacity = null;
             selectImgSrc = heroBackground;
             console.log("Color Picker > Hero Image: " + selectImgSrc);
         } else {
