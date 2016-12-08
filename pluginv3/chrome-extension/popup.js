@@ -54,6 +54,8 @@ window.onload = function () {
     toggleCookieName = "toggleState",
     companyLogoCookieName = "logo",
     companyColorCookieName = "color",
+    companyImageCookieName = "heroBackground",
+    companyImageResCookieName = "heroBackgroundRes",
     toggleCookieMarketo = {
         "url" : mktoDomainMatch,
         "name" : toggleCookieName,
@@ -87,6 +89,30 @@ window.onload = function () {
     companyColorCookieDesigner = {
         "url" : mktoDesignerMatch,
         "name" : companyColorCookieName,
+        "value" : "",
+        "domain" : mktoDesignerUriDomain
+    },
+    companyImageCookieMarketoLive = {
+        "url" : mktoLiveClassicMatch,
+        "name" : companyImageCookieName,
+        "value" : "",
+        "domain" : mktoLiveClassicUriDomain
+    },
+    companyImageCookieDesigner = {
+        "url" : mktoDesignerMatch,
+        "name" : companyImageCookieName,
+        "value" : "",
+        "domain" : mktoDesignerUriDomain
+    },
+    companyImageResCookieMarketoLive = {
+        "url" : mktoLiveClassicMatch,
+        "name" : companyImageResCookieName,
+        "value" : "",
+        "domain" : mktoLiveClassicUriDomain
+    },
+    companyImageResCookieDesigner = {
+        "url" : mktoDesignerMatch,
+        "name" : companyImageResCookieName,
         "value" : "",
         "domain" : mktoDesignerUriDomain
     };
@@ -209,6 +235,7 @@ window.onload = function () {
     
     clear.onclick = function () {
         company.value = "";
+        /*
         companyLogoCookieMarketoLive = {
             "url" : mktoLiveClassicMatch,
             "name" : companyLogoCookieName
@@ -224,11 +251,15 @@ window.onload = function () {
         companyColorCookieDesigner = {
             "url" : mktoDesignerMatch,
             "name" : companyColorCookieName
-        };
+        };*/
         background.removeCookie(companyLogoCookieMarketoLive);
         background.removeCookie(companyLogoCookieDesigner);
         background.removeCookie(companyColorCookieMarketoLive);
         background.removeCookie(companyColorCookieDesigner);
+        background.removeCookie(companyImageCookieMarketoLive);
+        background.removeCookie(companyImageCookieDesigner);
+        background.removeCookie(companyImageResCookieMarketoLive);
+        background.removeCookie(companyImageResCookieDesigner);
         setTimeout(function () {
             window.close();
         }, 1100);

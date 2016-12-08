@@ -563,7 +563,7 @@ chrome.runtime.onMessageExternal.addListener(function (message, sender, sendResp
             var companyLogoCookieName = "logo",
             companyColorCookieName = "color",
             companyImageCookieName = "heroBackground",
-            toggleCompanyCookieName = "toggleCompanyState";
+            companyImageResCookieName = "heroBackgroundRes";
             
             if (message.logo) {
                 setCookie({
@@ -599,9 +599,32 @@ chrome.runtime.onMessageExternal.addListener(function (message, sender, sendResp
             
             if (message.image) {
                 setCookie({
+                    "url" : mktoLiveClassicDomainMatch,
+                    "name" : companyImageCookieName,
+                    "value" : message.image,
+                    "domain" : mktoLiveClassicUriDomain
+                });
+                
+                setCookie({
                     "url" : mktoDesignerDomainMatch,
                     "name" : companyImageCookieName,
                     "value" : message.image,
+                    "domain" : mktoDesignerUriDomain
+                });
+            }
+            
+            if (message.imageRes) {
+                setCookie({
+                    "url" : mktoLiveClassicDomainMatch,
+                    "name" : companyImageResCookieName,
+                    "value" : message.imageRes,
+                    "domain" : mktoLiveClassicUriDomain
+                });
+                
+                setCookie({
+                    "url" : mktoDesignerDomainMatch,
+                    "name" : companyImageResCookieName,
+                    "value" : message.imageRes,
                     "domain" : mktoDesignerUriDomain
                 });
             }

@@ -10,6 +10,7 @@ reload = location.search.split('reloaded=')[1],
 colorThief = new ColorThief(),
 canvas = document.getElementById('image').getContext("2d"),
 heroBackground = getCookie("heroBackground"),
+heroBackgroundRes = getCookie("heroBackgroundRes"),
 img = new Image(),
 logoElement = document.getElementById("cookie-logo"),
 colorElement = document.getElementById("cookie-color"),
@@ -20,11 +21,12 @@ key = "AIzaSyC9pdVq6GfquP_MtHCS_izS6Vijdv1ZfNc",
 cx = "014680826408884315290:pmyltjjihus",
 colorSet,
 selectImgSrc,
+selectImgRes,
 getCompanyDomain,
 companyDomain;
 
 function loadScript (scriptSrc) {
-    console.log("Content > Loading: Script: " + scriptSrc);
+    console.log("Color Picker > Loading: Script: " + scriptSrc);
     
     var scriptElement = document.createElement("script");
     scriptElement.async = true;
@@ -81,7 +83,7 @@ function resultsHandler(response) {
             }
         };
         itemImgText.className = "search-result-text";
-        itemImgText.innerText = item.image.width + " × " + item.image.height;
+        itemImgText.innerText = selectImgRes = item.image.width + " × " + item.image.height;
         
         itemResult.appendChild(itemImg);
         itemResult.appendChild(itemImgText);
@@ -99,7 +101,8 @@ function sendCompanyMsg() {
         action: "setCompanyCookies",
         logo: logoElement.innerHTML,
         color: colorElement.innerHTML,
-        image: selectImgSrc
+        image: selectImgSrc,
+        imageRes: selectImgRes
     },
         function (response) {
         console.log("Color Picker > Receiving: Message Response from Background: " + response);
@@ -158,7 +161,7 @@ if (heroBackground) {
     itemImg.className = "search-result-img";
     itemImg.src = heroBackground;
     itemImgText.className = "search-result-text";
-    itemImgText.innerText = item.image.width + " × " + item.image.height;
+    itemImgText.innerText = heroBackgroundRes;
     
     itemResult.appendChild(itemImg);
     itemResult.appendChild(itemImgText);
