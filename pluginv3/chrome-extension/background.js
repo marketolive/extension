@@ -563,44 +563,55 @@ chrome.runtime.onMessageExternal.addListener(function (message, sender, sendResp
             var companyLogoCookieName = "logo",
             companyColorCookieName = "color",
             companyImageCookieName = "heroBackground",
-            toggleCompanyCookieName = "toggleCompanyState",
-            companyLogoCookieMarketoLiveClassic = {
-                "url" : mktoLiveClassicDomainMatch,
-                "name" : companyLogoCookieName,
-                "value" : message.logo,
-                "domain" : mktoLiveClassicUriDomain
-            },
-            companyLogoCookieDesigner = {
-                "url" : mktoDesignerDomainMatch,
-                "name" : companyLogoCookieName,
-                "value" : message.logo,
-                "domain" : mktoDesignerUriDomain
-            },
-            companyColorCookieMarketoLiveClassic = {
-                "url" : mktoLiveClassicDomainMatch,
-                "name" : companyColorCookieName,
-                "value" : message.color,
-                "domain" : mktoLiveClassicUriDomain
-            },
-            companyColorCookieDesigner = {
-                "url" : mktoDesignerDomainMatch,
-                "name" : companyColorCookieName,
-                "value" : message.color,
-                "domain" : mktoDesignerUriDomain
-            },
-            companyImageCookieDesigner = {
-                "url" : mktoDesignerDomainMatch,
-                "name" : companyImageCookieName,
-                "value" : message.image,
-                "domain" : mktoDesignerUriDomain
-            };
+            toggleCompanyCookieName = "toggleCompanyState";
             
-            setCookie(companyColorCookieMarketoLiveClassic);
-            setCookie(companyColorCookieDesigner);
-            setCookie(companyLogoCookieMarketoLiveClassic);
-            setCookie(companyLogoCookieDesigner);
-            setCookie(companyImageCookieDesigner);
-            reloadCompany();
+            if (message.logo) {
+                setCookie({
+                    "url" : mktoLiveClassicDomainMatch,
+                    "name" : companyLogoCookieName,
+                    "value" : message.logo,
+                    "domain" : mktoLiveClassicUriDomain
+                });
+                
+                setCookie({
+                    "url" : mktoDesignerDomainMatch,
+                    "name" : companyLogoCookieName,
+                    "value" : message.logo,
+                    "domain" : mktoDesignerUriDomain
+                });
+            }
+            
+            if (message.color) {
+                setCookie({
+                    "url" : mktoLiveClassicDomainMatch,
+                    "name" : companyColorCookieName,
+                    "value" : message.color,
+                    "domain" : mktoLiveClassicUriDomain
+                });
+                
+                setCookie({
+                    "url" : mktoDesignerDomainMatch,
+                    "name" : companyColorCookieName,
+                    "value" : message.color,
+                    "domain" : mktoDesignerUriDomain
+                });
+            }
+            
+            if (message.image) {
+                setCookie({
+                    "url" : mktoDesignerDomainMatch,
+                    "name" : companyImageCookieName,
+                    "value" : message.image,
+                    "domain" : mktoDesignerUriDomain
+                });
+            }
+            
+            if (message.logo
+                 || message.color
+                 || message.image) {
+                
+                reloadCompany();
+            }
         }
     } else {
         console.log("Unexpected Message: " + JSON.stringify(message) + " : " + sender.url);

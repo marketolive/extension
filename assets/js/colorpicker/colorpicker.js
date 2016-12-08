@@ -9,22 +9,47 @@ extensionId = devExtensionId,
 reload = location.search.split('reloaded=')[1],
 colorThief = new ColorThief(),
 canvas = document.getElementById('image').getContext("2d"),
+heroBackground = getCookie("heroBackground"),
 img = new Image(),
 logoElement = document.getElementById("cookie-logo"),
 colorElement = document.getElementById("cookie-color"),
 searchBox = document.getElementById("searchBox"),
 searchButton = document.getElementById("searchButton"),
+searchResults = document.getElementById("searchResults"),
 key = "AIzaSyC9pdVq6GfquP_MtHCS_izS6Vijdv1ZfNc",
 cx = "014680826408884315290:pmyltjjihus",
 colorSet,
 selectImgSrc,
-loadScript,
 getCompanyDomain,
 companyDomain;
 
-function resultsHandler(response) {
-    var searchResults = document.getElementById("searchResults");
+function loadScript (scriptSrc) {
+    console.log("Content > Loading: Script: " + scriptSrc);
     
+    var scriptElement = document.createElement("script");
+    scriptElement.async = true;
+    scriptElement.src = scriptSrc;
+    document.getElementsByTagName("head")[0].appendChild(scriptElement);
+}
+
+function getCookie(cookieName) {
+    console.log("Color Picker > Getting: Cookie " + cookieName);
+    
+    var name = cookieName + '=',
+    cookies = document.cookie.split(';'),
+    currCookie;
+    
+    for (var ii = 0; ii < cookies.length; ii++) {
+        currCookie = cookies[ii].trim();
+        if (currCookie.indexOf(name) == 0) {
+            return currCookie.substring(name.length, currCookie.length);
+        }
+    }
+    console.log("Color Picker > Getting: Cookie " + cookieName + " not found");
+    return null;
+}
+
+function resultsHandler(response) {
     for (var ii = 0; ii < response.items.length; ii++) {
         var item = response.items[ii],
         itemResult = document.createElement("div"),
@@ -49,6 +74,7 @@ function resultsHandler(response) {
                 console.log("Color Picker > Hero Image: " + selectImgSrc);
             } else {
                 this.isSelected = false;
+                selectImgSrc = null;
                 for (var jj = 0; jj < imgs.length; jj++) {
                     imgs[jj].style.opacity = null;
                 }
@@ -83,16 +109,6 @@ function sendCompanyMsg() {
     
     window.close();
 }
-
-loadScript = function (scriptSrc) {
-    console.log("Content > Loading: Script: " + scriptSrc);
-    
-    var scriptElement = document.createElement("script");
-    scriptElement.async = true;
-    scriptElement.src = scriptSrc;
-    document.getElementsByTagName("head")[0].appendChild(scriptElement);
-};
-
 getCompanyDomain = function () {
     console.log("Color Picker > Getting: Company Domain");
     
@@ -133,8 +149,26 @@ if (companyDomain) {
     img.src = "";
 }
 
+if (heroBackground) {
+    var itemResult = document.createElement("div"),
+    itemImg = document.createElement("img"),
+    itemImgText = document.createElement("div");
+    
+    itemResult.className = "search-result";
+    itemImg.className = "search-result-img";
+    itemImg.src = heroBackground;
+    itemImgText.className = "search-result-text";
+    itemImgText.innerText = item.image.width + " × " + item.image.height;
+    
+    itemResult.appendChild(itemImg);
+    itemResult.appendChild(itemImgText);
+    searchResults.appendChild(itemResult);
+    selectImgSrc = heroBackground;
+}
+
 img.onload = function () {
-    var colorOption1 = document.getElementById("color-option-1"),
+    var color = getCookie("color"),
+    colorOption1 = document.getElementById("color-option-1"),
     colorOption2 = document.getElementById("color-option-2"),
     colorOption3 = document.getElementById("color-option-3"),
     correct = document.getElementById("correct"),
@@ -145,9 +179,6 @@ img.onload = function () {
     colorOption1.style.backgroundColor = "rgb(" + colorSet[0][0] + ", " + colorSet[0][1] + ", " + colorSet[0][2] + ")";
     colorOption2.style.backgroundColor = "rgb(" + colorSet[1][0] + ", " + colorSet[1][1] + ", " + colorSet[1][2] + ")";
     colorOption3.style.backgroundColor = "rgb(" + colorSet[2][0] + ", " + colorSet[2][1] + ", " + colorSet[2][2] + ")";
-    secondaryColor = colorSet[1];
-    //console.log("Color Picker > The Company Secondary Color is: " + secondaryColor);
-    //colorElement.innerHTML = 'rgb(' + secondaryColor[0] + ',' + secondaryColor[1] + ',' + secondaryColor[2] + ')';
     console.log("Color Picker > Company Logo: " + img.src);
     logoElement.innerHTML = img.src;
     
@@ -172,6 +203,20 @@ img.onload = function () {
             }
         }
     };
+    
+    switch (color) {
+    case colorOption1.style.backgroundColor:
+        colorOption1.click();
+        break;
+    
+    case colorOption2.style.backgroundColor:
+        colorOption2.click();
+        break;
+    
+    case colorOption3.style.backgroundColor:
+        colorOption3.click();
+        break;
+    }
     
     correct.onclick = sendCompanyMsg;
     document.onkeyup = function (e) {
