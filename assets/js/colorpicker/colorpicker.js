@@ -55,6 +55,7 @@ function getCookie(cookieName) {
 }
 
 function resultsHandler(response) {
+    /*
     if (response.queries.previousPage
         && response.queries.previousPage[0]
         && response.queries.previousPage[0].startIndex) {
@@ -65,7 +66,7 @@ function resultsHandler(response) {
         prevButton.style.display = "inline-block";
     } else {
         prevButton.style.display = "none";
-    }
+    }*/
     
     if (response.queries.nextPage
         && response.queries.nextPage[0]
