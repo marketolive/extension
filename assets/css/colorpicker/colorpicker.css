@@ -127,7 +127,7 @@ html, body{
 #searchButton, #prevButton, #nextButton {
   background-color: #5a54a4;
   display: inline-block;
-  margin: 0, 5px;
+  margin: 0 5px;
   padding: 0;
   vertical-align: middle;
   cursor: pointer;
