@@ -55,29 +55,34 @@ function getCookie(cookieName) {
 }
 
 function resultsHandler(response) {
-    /*
-    if (response.queries.previousPage
-        && response.queries.previousPage[0]
-        && response.queries.previousPage[0].startIndex) {
-        
-        prevButton.onclick = function () {
-            searchButton.onclick(response.queries.previousPage[0].startIndex);
+    if (response.queries) {
+        if (response.queries.request
+             && response.queries.request[0]
+             && response.queries.request[0].startIndex > 1
+             && response.queries.previousPage
+             && response.queries.previousPage[0]
+             && response.queries.previousPage[0].startIndex) {
+            
+            prevButton.onclick = function () {
+                searchButton.onclick(response.queries.previousPage[0].startIndex);
+            }
+            prevButton.style.display = "inline-block";
+        } else {
+            prevButton.style.display = "none";
         }
-        prevButton.style.display = "inline-block";
-    } else {
-        prevButton.style.display = "none";
-    }*/
-    
-    if (response.queries.nextPage
-        && response.queries.nextPage[0]
-        && response.queries.nextPage[0].startIndex) {
         
-        nextButton.onclick = function () {
-            searchButton.onclick(response.queries.nextPage[0].startIndex);
+        if (response.queries.nextPage
+             && response.queries.nextPage[0]
+             && response.queries.nextPage[0].startIndex) {
+            
+            nextButton.onclick = function () {
+                searchButton.onclick(response.queries.nextPage[0].startIndex);
+            }
+            nextButton.style.display = "inline-block";
+            
+        } else {
+            nextButton.style.display = "none";
         }
-        nextButton.style.display = "inline-block";
-    } else {
-        nextButton.style.display = "none";
     }
     
     for (var ii = 0; ii < response.items.length; ii++) {
