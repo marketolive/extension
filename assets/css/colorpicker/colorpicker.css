@@ -64,7 +64,7 @@ html, body{
 }
 .search-result, .search-result-img, .search-result-text {
   max-width: 380px;
-  max-height: 218px;
+  max-height: 220px;
 }
 .search-result, .search-result-text {
   margin: 0 12px 12px 0;
