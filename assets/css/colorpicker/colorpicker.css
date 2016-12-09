@@ -114,7 +114,7 @@ html, body{
   background-color: #fff;
   display: inline-block;
   cursor: pointer;
-  width: 252px;
+  width: 392px;
   height: 48px;
   color: #000;
   border: none;
@@ -123,11 +123,12 @@ html, body{
 }
 #searchBox:focus{
   border-bottom: 2px solid #5a54a4;
+  margin: 0 3px;
 }
 #searchButton, #prevButton, #nextButton {
   background-color: #5a54a4;
   display: inline-block;
-  margin: 0 5px;
+  margin: 0 3px;
   padding: 0;
   vertical-align: middle;
   cursor: pointer;
