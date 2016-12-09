@@ -7,6 +7,7 @@
 var URL_PATH = "m3-dev",
 HEAP_ANALYTICS_SCRIPT_LOCATION = "https://marketolive.com/" + URL_PATH + "/pluginv3/heap-analytics-ext.min.js",
 BACKGROUND_DATA_SCRIPT_LOCATION = "https://marketolive.com/" + URL_PATH + "/pluginv3/background-demo-data.min.js",
+EDIT_ASSET_VARIABLES_SCRIPT_LOCATION = "https://marketolive.com/" + URL_PATH + "/pluginv3/edit-asset-variables.min.js",
 mktoLiveInstances = "^https:\/\/app-sjp\.marketo\.com",
 mktoLiveUserPods = "app-sjp",
 mktoLiveDomain = "^http:\/\/www\.marketolive\.com",
@@ -268,7 +269,11 @@ function reloadCompany(webRequest) {
                     message.assetView = "preview";
                 }
                 
-                if (message.assetType
+                if (message.action == "editVariables") {
+                    chrome.tabs.executeScript(tab.id, {file: EDIT_ASSET_VARIABLES_SCRIPT_LOCATION, runAt: "document_idle"}, function () {
+                        chrome.tabs.executeScript(tab.id, {code: 'editAssetVariables(message.assetView);', runAt: "document_idle"});
+                    });
+                } else if (message.assetType
                      && message.assetView) {
                     chrome.tabs.sendMessage(tab.id, message, function (response) {
                         console.log("Receiving: Message Response from Content for tab: " + tab.url + " " + response);
@@ -281,7 +286,7 @@ function reloadCompany(webRequest) {
                 getCookie(saveEditsToggleCookieDesigner, function (cookie) {
                     if (cookie
                          && cookie.value) {
-                        message.action = null;
+                        message.action = "editVariables";
                     } else {
                         count = 0;
                         message.action = "initialCompany";

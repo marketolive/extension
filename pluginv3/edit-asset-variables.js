@@ -1,4 +1,4 @@
-editEmailVariables = function (action) {
+function editEmailVariables (assetView) {
     var httpRegEx = new RegExp("^http", "i"),
     textRegex = new RegExp("^[^#]", "i"),
     colorRegex = new RegExp("^(#[0-9a-f]{3,6}|rgb)$", "i"),
@@ -30,7 +30,7 @@ editEmailVariables = function (action) {
     
     console.log("Content > Editing: Email Variables");
     
-    if (action == "edit") {
+    if (assetView == "edit") {
         var isEmailEditorVariables = window.setInterval(function () {
                 console.log("Content > Waiting: Email Editor Variables");
                 if (typeof(Mkt3) !== "undefined"
@@ -49,7 +49,7 @@ editEmailVariables = function (action) {
                     assetVars = asset.getVariableValues();
                     for (var ii = 0; ii < Object.keys(assetVars).length; ii++) {
                         var currVariableKey = Object.keys(assetVars)[ii],
-                        currVariableValue = Object.values(assetVars)[ii];
+                        currVariableValue = Object.values(assetVars)[ii].toString();
                         
                         if (currVariableKey.search(logoRegex) != -1) {
                             if (currVariableValue.search(httpRegEx) != -1) {
@@ -79,12 +79,12 @@ editEmailVariables = function (action) {
                     }
                 }
             }, 0);
-    } else if (action == "preview") {
+    } else if (assetView == "preview") {
         console.log("Content > Editing: Email Previewer Variables");
     }
-};
+}
 
-editLandingPageVariables = function (action) {
+function editLandingPageVariables (assetView) {
     var httpRegEx = new RegExp("^http", "i"),
     textRegex = new RegExp("^[^#]", "i"),
     colorRegex = new RegExp("^(#[0-9a-f]{3,6}|rgb)$", "i"),
@@ -118,7 +118,7 @@ editLandingPageVariables = function (action) {
     
     console.log("Content > Editing: Landing Page Variables");
     
-    if (action == "edit") {
+    if (assetView == "edit") {
         var isLandingPageEditorVariables = window.setInterval(function () {
                 if (typeof(Mkt3) !== "undefined"
                      && Mkt3
@@ -139,7 +139,7 @@ editLandingPageVariables = function (action) {
                     
                     for (var ii = 0; ii < Object.keys(assetVars).length; ii++) {
                         var currVariableKey = Object.keys(assetVars)[ii],
-                        currVariableValue = Object.values(assetVars)[ii];
+                        currVariableValue = Object.values(assetVars)[ii].toString();
                         
                         if (currVariableKey.search(logoRegex) != -1) {
                             if (currVariableValue.search(httpRegEx) != -1) {
@@ -169,7 +169,15 @@ editLandingPageVariables = function (action) {
                     }
                 }
             }, 0);
-    } else if (action == "preview") {
+    } else if (assetView == "preview") {
         console.log("Content > Editing: Landing Page Previewer Variables");
     }
-};
+}
+
+function editAssetVariables(assetType, assetView) {
+    if (assetType == "email") {
+        editEmailVariables(assetView);
+    } else if (assetType == "landingPage") {
+        editLandingPageVariables(assetView);
+    }
+}

@@ -1,7 +1,6 @@
 var URL_PATH = "m3-dev",
 MARKETO_GLOBAL_APP_LOCATION = "https://marketolive.com/" + URL_PATH + "/pluginv3/marketo-global-app.min.js",
 GLOBAL_LANDING_PAGE_SCRIPT_LOCATION = "https://marketolive.com/" + URL_PATH + "/pluginv3/global-landing-page.min.js",
-EDIT_ASSET_VARIABLES_LOCATION = "https://marketolive.com/" + URL_PATH + "/pluginv3/edit-asset-variables.min.js",
 ASSET_NAV_BAR_LOCATION = "https://marketolive.com/" + URL_PATH + "/v3/assets.html",
 currentUrl = window.location.href,
 mktoAppDomain = "^https:\/\/app-[a-z0-9]+\.marketo\.com",
@@ -30,15 +29,12 @@ grayOutCompletedStories;
  *
  **************************************************************************************/
 
-loadScript = function (scriptSrc, onLoad) {
+loadScript = function (scriptSrc) {
     console.log("Content > Loading: Script: " + scriptSrc);
     
     var scriptElement = document.createElement("script");
     scriptElement.async = true;
     scriptElement.src = scriptSrc;
-    if (onLoad) {
-        scriptElement.onload = onLoad;
-    }
     document.getElementsByTagName("head")[0].appendChild(scriptElement);
 };
 
@@ -1343,43 +1339,6 @@ window.onload = function () {
                             } else if (message.assetView == "preview") {
                                 console.log("Content > Capturing: New Company for Landing Page Previewer");
                                 overlayLandingPage("preview");
-                            }
-                            break;
-                        default:
-                            break;
-                        }
-                        break;
-                    case "editVariables":
-                        console.log("Content > Capturing: New Company via Editing Asset Variables");
-                        switch (message.assetType) {
-                        case "email":
-                            if (message.assetView == "edit") {
-                                console.log("Content > Capturing: New Company for Email Designer via Editing Asset Variables");
-                                loadScript(EDIT_ASSET_VARIABLES_LOCATION, function () {
-                                    console.log("Content > Running: editEmailVariables(edit)");
-                                    editEmailVariables("edit");
-                                });
-                            } else if (message.assetView == "preview") {
-                                console.log("Content > Capturing: New Company for Email Previewer via Editing Asset Variables");
-                                loadScript(EDIT_ASSET_VARIABLES_LOCATION, function () {
-                                    console.log("Content > Running: editEmailVariables(preview)");
-                                    editEmailVariables("preview");
-                                });
-                            }
-                            break;
-                        case "landingPage":
-                            if (message.assetView == "edit") {
-                                console.log("Content > Capturing: New Company for Landing Page Designer via Editing Asset Variables");
-                                loadScript(EDIT_ASSET_VARIABLES_LOCATION, function () {
-                                    console.log("Content > Running: editLandingPageVariables(edit)");
-                                    editLandingPageVariables("edit");
-                                });
-                            } else if (message.assetView == "preview") {
-                                console.log("Content > Capturing: New Company for Landing Page Previewer via Editing Asset Variables");
-                                loadScript(EDIT_ASSET_VARIABLES_LOCATION, function () {
-                                    console.log("Content > Running: editLandingPageVariables(preview)");
-                                    editLandingPageVariables("preview");
-                                });
                             }
                             break;
                         default:
