@@ -63,7 +63,7 @@ html, body{
   box-shadow: 1px 1px 1px #505050;
 }
 .search-result, .search-result-img, .search-result-text {
-  max-width: 380px;
+  max-width: 366px;
   max-height: 218px;
 }
 .search-result, .search-result-text {
@@ -115,7 +115,7 @@ html, body{
   display: inline-block;
   margin: 0 2px;
   cursor: pointer;
-  width: 366px;
+  width: 350px;
   height: 48px;
   color: #000;
   border: none;
