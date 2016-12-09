@@ -188,7 +188,7 @@ function removeCookie(obj) {
 
 /**************************************************************************************
  *
- *  This function reloads all Marketo tabs.
+ *  This function reloads all tabs that match the specified URL pattern.
  *
  *  @Author Brian Fisher
  *
@@ -197,9 +197,9 @@ function removeCookie(obj) {
  *
  **************************************************************************************/
 
-function reloadMarketoTabs() {
+function reloadTabs(urlMatch) {
     chrome.tabs.query({
-        url : "*://*.marketo.com/*"
+        url : urlMatch
     }, function (tabs) {
         for (var ii = 0; ii < tabs.length; ii++) {
             chrome.tabs.reload(tabs[ii].id);
@@ -229,6 +229,10 @@ function reloadCompany(webRequest) {
     var companyLogoCookieDesigner = {
         "url" : mktoDesignerDomainMatch,
         "name" : "logo"
+    },
+    saveEditsToggleCookieDesigner = {
+        "url" : mktoDesignerDomainMatch,
+        "name" : "saveEditsToggleState"
     },
     setAssetData,
     queryInfo = {
@@ -274,19 +278,29 @@ function reloadCompany(webRequest) {
             }
             
             if (webRequest) {
-                count = 0;
-                message.action = "initialCompany";
-                
+                getCookie(saveEditsToggleCookieDesigner, function (cookie) {
+                    if (cookie
+                         && cookie.value) {
+                        message.action = null;
+                    } else {
+                        count = 0;
+                        message.action = "initialCompany";
+                    }
+                });
                 chrome.tabs.get(webRequest.tabId, function (tab) {
                     setAssetData(tab);
                 });
             } else {
-                message.action = "newCompany";
-                
+                getCookie(saveEditsToggleCookieDesigner, function (cookie) {
+                    if (cookie
+                         && cookie.value) {
+                        message.action = "editVariables";
+                    } else {
+                        message.action = "newCompany";
+                    }
+                });
                 chrome.tabs.query(queryInfo, function (tabs) {
-                    var ii;
-                    
-                    for (ii = 0; ii < tabs.length; ii++) {
+                    for (var ii = 0; ii < tabs.length; ii++) {
                         setAssetData(tabs[ii]);
                     }
                 });

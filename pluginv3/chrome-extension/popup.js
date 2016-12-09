@@ -20,12 +20,13 @@ window.onload = function () {
     document.getElementById("logo-size").src = chrome.extension.getURL("images/marketo-live-image-purp.png");
     document.getElementById("gear-size").src = chrome.extension.getURL("images/popupsettings.png");
     document.getElementById("rtp").src = chrome.extension.getURL("images/rtp-image.png");
-    document.getElementById("ecommerce").src = chrome.extension.getURL("images/shopping-cart-purple.png");
+    //document.getElementById("ecommerce").src = chrome.extension.getURL("images/shopping-cart-purple.png");
     document.getElementById("mobile-moments").src = chrome.extension.getURL("images/marketo_moments.png");
     document.getElementById("mobile-engagement").src = chrome.extension.getURL("images/mobile_engagement.png");
     document.getElementById("mobile-msi").src = chrome.extension.getURL("images/mobile_msi.png");
-    document.getElementById("event-check-in").src = chrome.extension.getURL("images/marketoball.png");
-    document.getElementById("toggle").src = chrome.extension.getURL("images/toggle-on.png");
+    //document.getElementById("event-check-in").src = chrome.extension.getURL("images/marketoball.png");
+    document.getElementById("privilegesToggle").src = chrome.extension.getURL("images/toggle-on.png");
+    document.getElementById("saveEditsToggle").src = chrome.extension.getURL("images/toggle-on.png");
     document.getElementById("help-size").src = chrome.extension.getURL("images/help-white.png");
     document.getElementById("training").src = chrome.extension.getURL("images/training-icon-purple-small.png");
     document.getElementById("report-a-bug").src = chrome.extension.getURL("images/report-a-bug-img-purp.png");
@@ -42,7 +43,8 @@ window.onload = function () {
     tags = document.getElementsByClassName("link"),
     company = document.getElementById("name-entered"),
     submit = document.getElementById("company-submit"),
-    toggle = document.getElementById("option-toggle"),
+    privilegesToggle = document.getElementById("privilegesToggle"),
+    saveEditsToggle = document.getElementById("saveEditsToggle"),
     clear = document.getElementById("clear-submit"),
     settings = document.getElementById("settings"),
     help = document.getElementById("help"),
@@ -51,20 +53,33 @@ window.onload = function () {
     helpOpen = false,
     openColorPicker,
     currToggleState,
-    toggleCookieName = "toggleState",
+    privilegesToggleCookieName = "toggleState",
+    saveEditsToggleCookieName = "saveEditsToggleState",
     companyLogoCookieName = "logo",
     companyColorCookieName = "color",
     companyImageCookieName = "heroBackground",
     companyImageResCookieName = "heroBackgroundRes",
-    toggleCookieMarketo = {
+    privilegesToggleCookieMarketo = {
         "url" : mktoDomainMatch,
-        "name" : toggleCookieName,
+        "name" : privilegesToggleCookieName,
         "value" : "",
         "domain" : mktoUriDomain
     },
-    toggleCookieDesigner = {
+    privilegesToggleCookieDesigner = {
         "url" : mktoDesignerMatch,
-        "name" : toggleCookieName,
+        "name" : privilegesToggleCookieName,
+        "value" : "",
+        "domain" : mktoDesignerUriDomain
+    },
+    saveEditsToggleCookieMarketo = {
+        "url" : mktoDomainMatch,
+        "name" : saveEditsToggleCookieName,
+        "value" : "",
+        "domain" : mktoUriDomain
+    },
+    saveEditsToggleCookieDesigner = {
+        "url" : mktoDesignerMatch,
+        "name" : saveEditsToggleCookieName,
         "value" : "",
         "domain" : mktoDesignerUriDomain
     },
@@ -117,47 +132,91 @@ window.onload = function () {
         "domain" : mktoDesignerUriDomain
     };
     
-    background.getCookie(toggleCookieMarketo, function (cookie) {
+    background.getCookie(privilegesToggleCookieMarketo, function (cookie) {
         if (cookie == null
              || cookie.value == null) {
-            console.log("Popup > Getting: " + toggleCookieMarketo.name + " Cookie for " + toggleCookieMarketo.url + " = null");
+            console.log("Popup > Getting: " + privilegesToggleCookieMarketo.name + " Cookie for " + privilegesToggleCookieMarketo.url + " = null");
             currToggleState = true;
-            toggleCookieMarketo.value = "true";
-            document.getElementById("toggle-text").innerHTML = "Privileges Enabled";
-            document.getElementById("toggle").src = chrome.extension.getURL("images/toggle-on.png");
-            background.setCookie(toggleCookieMarketo);
+            privilegesToggleCookieMarketo.value = "true";
+            document.getElementById("privilegesToggleText").innerHTML = "Privileges Enabled";
+            document.getElementById("privilegesToggle").src = chrome.extension.getURL("images/toggle-on.png");
+            background.setCookie(privilegesToggleCookieMarketo);
         } else if (cookie.value == "true") {
             console.log("Popup > Getting: " + cookie.name + " Cookie for " + cookie.domain + " = " + cookie.value);
             currToggleState = true;
-            document.getElementById("toggle-text").innerHTML = "Privileges Enabled";
-            document.getElementById("toggle").src = chrome.extension.getURL("images/toggle-on.png");
+            document.getElementById("privilegesToggleText").innerHTML = "Privileges Enabled";
+            document.getElementById("privilegesToggle").src = chrome.extension.getURL("images/toggle-on.png");
         } else {
             console.log("Popup > Getting: " + cookie.name + " Cookie for " + cookie.domain + " = " + cookie.value);
             currToggleState = false;
-            document.getElementById("toggle-text").innerHTML = "Privileges Disabled";
-            document.getElementById("toggle").src = chrome.extension.getURL("images/toggle-off.png");
+            document.getElementById("privilegesToggleText").innerHTML = "Privileges Disabled";
+            document.getElementById("privilegesToggle").src = chrome.extension.getURL("images/toggle-off.png");
         }
     });
     
-    background.getCookie(toggleCookieDesigner, function (cookie) {
+    background.getCookie(privilegesToggleCookieDesigner, function (cookie) {
         if (cookie == null
              || cookie.value == null) {
-            console.log("Popup > Getting: " + toggleCookieDesigner.name + " Cookie for " + toggleCookieDesigner.url + " = null");
+            console.log("Popup > Getting: " + privilegesToggleCookieDesigner.name + " Cookie for " + privilegesToggleCookieDesigner.url + " = null");
             currToggleState = true;
-            toggleCookieDesigner.value = "true";
-            document.getElementById("toggle-text").innerHTML = "Privileges Enabled";
-            document.getElementById("toggle").src = chrome.extension.getURL("images/toggle-on.png");
-            background.setCookie(toggleCookieDesigner);
+            privilegesToggleCookieDesigner.value = "true";
+            document.getElementById("privilegesToggleText").innerHTML = "Privileges Enabled";
+            document.getElementById("privilegesToggle").src = chrome.extension.getURL("images/toggle-on.png");
+            background.setCookie(privilegesToggleCookieDesigner);
         } else if (cookie.value == "true") {
             console.log("Popup > Getting: " + cookie.name + " Cookie for " + cookie.domain + " = " + cookie.value);
             currToggleState = true;
-            document.getElementById("toggle-text").innerHTML = "Privileges Enabled";
-            document.getElementById("toggle").src = chrome.extension.getURL("images/toggle-on.png");
+            document.getElementById("privilegesToggleText").innerHTML = "Privileges Enabled";
+            document.getElementById("privilegesToggle").src = chrome.extension.getURL("images/toggle-on.png");
         } else {
             console.log("Popup > Getting: " + cookie.name + " Cookie for " + cookie.domain + " = " + cookie.value);
             currToggleState = false;
-            document.getElementById("toggle-text").innerHTML = "Privileges Disabled";
-            document.getElementById("toggle").src = chrome.extension.getURL("images/toggle-off.png");
+            document.getElementById("privilegesToggleText").innerHTML = "Privileges Disabled";
+            document.getElementById("privilegesToggle").src = chrome.extension.getURL("images/toggle-off.png");
+        }
+    });
+    
+    background.getCookie(saveEditsToggleCookieMarketo, function (cookie) {
+        if (cookie == null
+             || cookie.value == null) {
+            console.log("Popup > Getting: " + saveEditsToggleCookieMarketo.name + " Cookie for " + saveEditsToggleCookieMarketo.url + " = null");
+            currToggleState = true;
+            saveEditsToggleCookieMarketo.value = "true";
+            document.getElementById("saveEditsToggleText").innerHTML = "Save Edits Enabled";
+            document.getElementById("saveEditsToggle").src = chrome.extension.getURL("images/toggle-on.png");
+            background.setCookie(saveEditsToggleCookieMarketo);
+        } else if (cookie.value == "true") {
+            console.log("Popup > Getting: " + cookie.name + " Cookie for " + cookie.domain + " = " + cookie.value);
+            currToggleState = true;
+            document.getElementById("saveEditsToggleText").innerHTML = "Save Edits Enabled";
+            document.getElementById("saveEditsToggle").src = chrome.extension.getURL("images/toggle-on.png");
+        } else {
+            console.log("Popup > Getting: " + cookie.name + " Cookie for " + cookie.domain + " = " + cookie.value);
+            currToggleState = false;
+            document.getElementById("saveEditsToggleText").innerHTML = "Save Edits Disabled";
+            document.getElementById("saveEditsToggle").src = chrome.extension.getURL("images/toggle-off.png");
+        }
+    });
+    
+    background.getCookie(saveEditsToggleCookieDesigner, function (cookie) {
+        if (cookie == null
+             || cookie.value == null) {
+            console.log("Popup > Getting: " + saveEditsToggleCookieDesigner.name + " Cookie for " + saveEditsToggleCookieDesigner.url + " = null");
+            currToggleState = true;
+            saveEditsToggleCookieDesigner.value = "true";
+            document.getElementById("saveEditsToggleText").innerHTML = "Save Edits Enabled";
+            document.getElementById("saveEditsToggle").src = chrome.extension.getURL("images/toggle-on.png");
+            background.setCookie(saveEditsToggleCookieDesigner);
+        } else if (cookie.value == "true") {
+            console.log("Popup > Getting: " + cookie.name + " Cookie for " + cookie.domain + " = " + cookie.value);
+            currToggleState = true;
+            document.getElementById("saveEditsToggleText").innerHTML = "Save Edits Enabled";
+            document.getElementById("saveEditsToggle").src = chrome.extension.getURL("images/toggle-on.png");
+        } else {
+            console.log("Popup > Getting: " + cookie.name + " Cookie for " + cookie.domain + " = " + cookie.value);
+            currToggleState = false;
+            document.getElementById("saveEditsToggleText").innerHTML = "Save Edits Disabled";
+            document.getElementById("saveEditsToggle").src = chrome.extension.getURL("images/toggle-off.png");
         }
     });
     
@@ -235,23 +294,6 @@ window.onload = function () {
     
     clear.onclick = function () {
         company.value = "";
-        /*
-        companyLogoCookieMarketoLive = {
-            "url" : mktoLiveClassicMatch,
-            "name" : companyLogoCookieName
-        };
-        companyLogoCookieDesigner = {
-            "url" : mktoDesignerMatch,
-            "name" : companyLogoCookieName
-        };
-        companyColorCookieMarketoLive = {
-            "url" : mktoLiveClassicMatch,
-            "name" : companyColorCookieName
-        };
-        companyColorCookieDesigner = {
-            "url" : mktoDesignerMatch,
-            "name" : companyColorCookieName
-        };*/
         background.removeCookie(companyLogoCookieMarketoLive);
         background.removeCookie(companyLogoCookieDesigner);
         background.removeCookie(companyColorCookieMarketoLive);
@@ -260,6 +302,7 @@ window.onload = function () {
         background.removeCookie(companyImageCookieDesigner);
         background.removeCookie(companyImageResCookieMarketoLive);
         background.removeCookie(companyImageResCookieDesigner);
+        background.reloadTabs(background.mktoDesignerMatchPattern);
         setTimeout(function () {
             window.close();
         }, 1100);
@@ -280,23 +323,46 @@ window.onload = function () {
         }
     };
     
-    toggle.onclick = function () {
+    privilegesToggle.onclick = function () {
         if (!currToggleState) {
             currToggleState = true;
-            toggleCookieMarketo.value = "true";
-            toggleCookieDesigner.value = "true";
-            document.getElementById("toggle-text").innerHTML = "Privileges Enabled";
-            document.getElementById("toggle").src = chrome.extension.getURL("images/toggle-on.png");
+            privilegesToggleCookieMarketo.value = "true";
+            privilegesToggleCookieDesigner.value = "true";
+            document.getElementById("privilegesToggleText").innerHTML = "Privileges Enabled";
+            document.getElementById("privilegesToggle").src = chrome.extension.getURL("images/toggle-on.png");
         } else {
             currToggleState = false;
-            toggleCookieMarketo.value = "false";
-            toggleCookieDesigner.value = "false";
-            document.getElementById("toggle-text").innerHTML = "Privileges Disabled";
-            document.getElementById("toggle").src = chrome.extension.getURL("images/toggle-off.png");
+            privilegesToggleCookieMarketo.value = "false";
+            privilegesToggleCookieDesigner.value = "false";
+            document.getElementById("privilegesToggleText").innerHTML = "Privileges Disabled";
+            document.getElementById("privilegesToggle").src = chrome.extension.getURL("images/toggle-off.png");
         }
-        background.setCookie(toggleCookieMarketo);
-        background.setCookie(toggleCookieDesigner);
-        background.reloadMarketoTabs();
+        background.setCookie(privilegesToggleCookieMarketo);
+        background.setCookie(privilegesToggleCookieDesigner);
+        background.reloadTabs("*://*.marketo.com/*");
+        setTimeout(function () {
+            window.close();
+        }, 1500);
+    };
+    
+    saveEditsToggle.onclick = function () {
+        if (!currToggleState) {
+            currToggleState = true;
+            saveEditsToggleCookieMarketo.value = "true";
+            saveEditsToggleCookieDesigner.value = "true";
+            document.getElementById("saveEditsToggleText").innerHTML = "Save Edits Enabled";
+            document.getElementById("saveEditsToggle").src = chrome.extension.getURL("images/toggle-on.png");
+            background.reloadCompany();
+        } else {
+            currToggleState = false;
+            saveEditsToggleCookieMarketo.value = "false";
+            saveEditsToggleCookieDesigner.value = "false";
+            document.getElementById("saveEditsToggleText").innerHTML = "Save Edits Disabled";
+            document.getElementById("saveEditsToggle").src = chrome.extension.getURL("images/toggle-off.png");
+            background.reloadCompany();
+        }
+        background.setCookie(saveEditsToggleCookieMarketo);
+        background.setCookie(saveEditsToggleCookieDesigner);
         setTimeout(function () {
             window.close();
         }, 1500);
