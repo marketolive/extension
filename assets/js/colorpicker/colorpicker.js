@@ -125,7 +125,7 @@ function resultsHandler(response) {
 }
 
 searchButton.onclick = function (startIndex) {
-    if (!startIndex) {
+    if (!Number.isInteger(startIndex)) {
         startIndex = 1;
     }
     searchResults.innerHTML = null;
@@ -273,7 +273,8 @@ img.onload = function () {
     correct.onclick = sendCompanyMsg;
     document.onkeyup = function (e) {
         if (e.which == 13) {
-            searchButton.onclick();
+            startIndex = 1;
+            searchButton.onclick(startIndex);
         }
     };
     
