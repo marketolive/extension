@@ -124,13 +124,20 @@ html, body{
 #searchBox:focus{
   border-bottom: 2px solid #5a54a4;
 }
-#searchButton{
+#searchButton, #prevButton, #nextButton {
   background-color: #5a54a4;
   display: inline-block;
-  padding: 0;
+  padding: 0, 5px;
   vertical-align: middle;
   cursor: pointer;
+  border: none;
+}
+#searchButton {
   width: 50px;
   height: 50px;
-  border: none;
+}
+#prevButton, #nextButton {
+  width: 70px;
+  height: 35px;
+  font-size: 15px;
 }
