@@ -66,7 +66,7 @@ function resultsHandler(response) {
             if (!this.isSelected) {
                 this.isSelected = true;
                 selectImgSrc = this.src;
-                this.style.opacity = null;
+                this.parentElement.style.opacity = null;
                 for (var jj = 0; jj < imgs.length; jj++) {
                     if (imgs[jj].src != this.src) {
                         imgs[jj].isSelected = false;
