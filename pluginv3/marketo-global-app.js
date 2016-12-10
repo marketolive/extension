@@ -100,7 +100,7 @@ GLOBAL.getCookie = function (cookieName) {
  *
  **************************************************************************************/
 
-GLOBAL.editLandingPageVariables function (mode, asset) {
+GLOBAL.editLandingPageVariables = function (mode, asset) {
     var httpRegEx = new RegExp("^http", "i"),
     textRegex = new RegExp("^[^#]", "i"),
     colorRegex = new RegExp("^(#[0-9a-f]{3,6}|rgb)$", "i"),
