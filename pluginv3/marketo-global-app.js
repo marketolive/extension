@@ -6,6 +6,8 @@ DASHBOARD_SCRIPT_LOCATION = "https://marketolive.com/" + URL_PATH + "/pluginv3/d
 HEAP_ANALYTICS_SCRIPT_LOCATION = "https://marketolive.com/" + URL_PATH + "/pluginv3/heap-analytics.min.js",
 disableDemoPluginCheck,
 loadScript,
+editLandingPageVariables,
+editEmailVariables,
 isMktoPageGlobal;
 
 /**************************************************************************************

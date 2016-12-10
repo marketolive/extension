@@ -252,7 +252,7 @@ function reloadCompany(webRequest) {
                 if (tab.url.search("#" + mktoEmailDesignerFragment + "[0-9]+$") != -1) {
                     console.log("Loading: Company Logo, Hero Background, Color for Email Designer");
                     if (message.action == "editVariables") {
-                        chrome.tabs.executeScript(tab.id, {code: 'GLOBAL.editEmailVariables("edit");', runAt: "document_end"});
+                        chrome.tabs.executeScript(tab.id, {code: 'editEmailVariables("edit");', runAt: "document_end"});
                     } else {
                         message.assetType = "email";
                         message.assetView = "edit";
