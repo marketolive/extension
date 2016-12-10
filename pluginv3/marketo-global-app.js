@@ -4,10 +4,8 @@ MARKETO_DEMO_APP_SCRIPT_LOCATION = "https://marketolive.com/" + URL_PATH + "/plu
 POD_SCRIPT_LOCATION = "https://marketolive.com/" + URL_PATH + "/pluginv3/pods.min.js",
 DASHBOARD_SCRIPT_LOCATION = "https://marketolive.com/" + URL_PATH + "/pluginv3/dashboards/remote-data.min.js",
 HEAP_ANALYTICS_SCRIPT_LOCATION = "https://marketolive.com/" + URL_PATH + "/pluginv3/heap-analytics.min.js",
-disableDemoPluginCheck,
+//disableDemoPluginCheck,
 loadScript,
-editLandingPageVariables,
-editEmailVariables,
 isMktoPageGlobal;
 
 /**************************************************************************************
@@ -100,7 +98,7 @@ getCookie = function (cookieName) {
  *
  **************************************************************************************/
 
-editLandingPageVariables = function (mode, asset) {
+function editLandingPageVariables (mode, asset) {
     var httpRegEx = new RegExp("^http", "i"),
     textRegex = new RegExp("^[^#]", "i"),
     colorRegex = new RegExp("^(#[0-9a-f]{3,6}|rgb)$", "i"),
@@ -211,7 +209,7 @@ editLandingPageVariables = function (mode, asset) {
  *
  **************************************************************************************/
 
-editEmailVariables = function (mode, asset) {
+function editEmailVariables (mode, asset) {
     var httpRegEx = new RegExp("^http", "i"),
     textRegex = new RegExp("^[^#]", "i"),
     colorRegex = new RegExp("^(#[0-9a-f]{3,6}|rgb)$", "i"),

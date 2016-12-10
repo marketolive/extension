@@ -93,6 +93,7 @@ getCookie = function (cookieName) {
     console.log("Content > Getting: Cookie " + cookieName + " not found");
     return null;
 };
+
 /*
 sendBackgroundMsg = function(message) {
 var result = chrome.runtime.sendMessage(message, function(response) {
