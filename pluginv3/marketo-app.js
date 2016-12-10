@@ -4782,9 +4782,19 @@ APP.disableDesignerSaving = function (assetType, mode) {
                 
                 window.clearInterval(isAppController);
                 
-                var disableDesignerAsset,
+                var logo = APP.getCookie("logo"),
+                heroBackground = APP.getCookie("heroBackground"),
+                color = APP.getCookie("color"),
+                isCustomCompany,
+                disableDesignerAsset,
                 assetNode,
                 menuItems;
+                
+                if (logo != null
+                     || color != null
+                     || heroBackground != null) {
+                    isCustomCompany = true;
+                }
                 
                 disableDesignerAsset = function (assetNode, menuItems, disableFunc) {
                     console.log("Marketo App > Executing: Disabling Designer (Edit/Preview)");
@@ -4869,7 +4879,8 @@ APP.disableDesignerSaving = function (assetType, mode) {
                                     
                                     window.clearInterval(isLandingPageEditor);
                                     
-                                    assetNode = Mkt3.app.controllers.get("Mkt3.controller.editor.LandingPage").getLandingPage().getNodeJson();
+                                    var asset = Mkt3.app.controllers.get("Mkt3.controller.editor.LandingPage").getLandingPage();
+                                    assetNode = asset.getNodeJson();
                                     menuItems = [
                                         // Toolbar Menu
                                         //"lpEditor toolbar [action=preview]", // Preview Draft
@@ -4884,6 +4895,9 @@ APP.disableDesignerSaving = function (assetType, mode) {
                                     ];
                                     
                                     disableDesignerAsset(assetNode, menuItems, APP.disablePropertyPanelSaving);
+                                    if (isCustomCompany) {
+                                        GLOBAL.editLandingPageVariables(asset);
+                                    }
                                 }
                             }, 0);
                         break;
@@ -4932,7 +4946,8 @@ APP.disableDesignerSaving = function (assetType, mode) {
                                     
                                     window.clearInterval(isEmailEditor);
                                     
-                                    assetNode = Mkt3.app.controllers.get("Mkt3.controller.editor.email2.EmailEditor").getEmail().getNodeJson();
+                                    var asset = Mkt3.app.controllers.get("Mkt3.controller.editor.email2.EmailEditor").getEmail();
+                                    assetNode = asset.getNodeJson();
                                     menuItems = [
                                         // Toolbar Menu
                                         //"email2EditorToolbar [action=editSettings]", // Email Settings
@@ -4950,6 +4965,9 @@ APP.disableDesignerSaving = function (assetType, mode) {
                                     ];
                                     
                                     disableDesignerAsset(assetNode, menuItems);
+                                    if (isCustomCompany) {
+                                        GLOBAL.editEmailVariables(asset);
+                                    }
                                 }
                             }, 0);
                         break;

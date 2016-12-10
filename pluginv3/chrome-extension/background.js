@@ -7,7 +7,6 @@
 var URL_PATH = "m3-dev",
 HEAP_ANALYTICS_SCRIPT_LOCATION = "https://marketolive.com/" + URL_PATH + "/pluginv3/heap-analytics-ext.min.js",
 BACKGROUND_DATA_SCRIPT_LOCATION = "https://marketolive.com/" + URL_PATH + "/pluginv3/background-demo-data.min.js",
-EDIT_ASSET_VARIABLES_SCRIPT_LOCATION = "https://marketolive.com/" + URL_PATH + "/pluginv3/edit-asset-variables.min.js",
 mktoLiveInstances = "^https:\/\/app-sjp\.marketo\.com",
 mktoLiveUserPods = "app-sjp",
 mktoLiveDomain = "^http:\/\/www\.marketolive\.com",
@@ -253,9 +252,7 @@ function reloadCompany(webRequest) {
                 if (tab.url.search("#" + mktoEmailDesignerFragment + "[0-9]+$") != -1) {
                     console.log("Loading: Company Logo, Hero Background, Color for Email Designer");
                     if (message.action == "editVariables") {
-                        chrome.tabs.executeScript(tab.id, {file: EDIT_ASSET_VARIABLES_SCRIPT_LOCATION, runAt: "document_end"}, function () {
-                            chrome.tabs.executeScript(tab.id, {code: 'editAssetVariables("email", "edit");', runAt: "document_end"});
-                        });
+                        chrome.tabs.executeScript(tab.id, {code: 'GLOBAL.editEmailVariables("edit");', runAt: "document_end"});
                     } else {
                         message.assetType = "email";
                         message.assetView = "edit";
