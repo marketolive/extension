@@ -6,9 +6,7 @@ DASHBOARD_SCRIPT_LOCATION = "https://marketolive.com/" + URL_PATH + "/pluginv3/d
 HEAP_ANALYTICS_SCRIPT_LOCATION = "https://marketolive.com/" + URL_PATH + "/pluginv3/heap-analytics.min.js",
 disableDemoPluginCheck,
 loadScript,
-isMktoPageGlobal,
-
-GLOBAL = GLOBAL || {};
+isMktoPageGlobal;
 
 /**************************************************************************************
  *
@@ -25,7 +23,7 @@ GLOBAL = GLOBAL || {};
  *
  **************************************************************************************/
 /*
-GLOBAL.disableDemoPluginCheck = function () {
+disableDemoPluginCheck = function () {
     console.log("Marketo Global App > Disabling: Demo Plugin Check");
     
     window.mkto_live_plugin_state = true;
@@ -48,7 +46,7 @@ GLOBAL.disableDemoPluginCheck = function () {
  *
  **************************************************************************************/
 
-GLOBAL.loadScript = function (scriptSrc) {
+loadScript = function (scriptSrc) {
     console.log("Marketo Global App > Loading: Script: " + scriptSrc);
     
     var scriptElement = document.createElement("script");
@@ -70,7 +68,7 @@ GLOBAL.loadScript = function (scriptSrc) {
  *
  **************************************************************************************/
 
-GLOBAL.getCookie = function (cookieName) {
+getCookie = function (cookieName) {
     console.log("Marketo Global App > Getting: Cookie " + cookieName);
     
     var name = cookieName + '=',
@@ -100,7 +98,7 @@ GLOBAL.getCookie = function (cookieName) {
  *
  **************************************************************************************/
 
-GLOBAL.editLandingPageVariables = function (mode, asset) {
+editLandingPageVariables = function (mode, asset) {
     var httpRegEx = new RegExp("^http", "i"),
     textRegex = new RegExp("^[^#]", "i"),
     colorRegex = new RegExp("^(#[0-9a-f]{3,6}|rgb)$", "i"),
@@ -112,9 +110,9 @@ GLOBAL.editLandingPageVariables = function (mode, asset) {
     buttonBorderColorRegex = new RegExp("^(heroButtonBorderColor|hero-button-border-color|heroBorderColor|hero-border-color)$", "i"),
     headerBgColor = "headerBgColor",
     formButtonBgColor = "formButtonBgColor",
-    logo = GLOBAL.getCookie("logo"),
-    heroBackground = GLOBAL.getCookie("heroBackground"),
-    color = GLOBAL.getCookie("color"),
+    logo = getCookie("logo"),
+    heroBackground = getCookie("heroBackground"),
+    color = getCookie("color"),
     title = "You<br><br>PREMIER BUSINESS EVENT<br>OF THE YEAR",
     company,
     companyName,
@@ -211,7 +209,7 @@ GLOBAL.editLandingPageVariables = function (mode, asset) {
  *
  **************************************************************************************/
 
-GLOBAL.editEmailVariables = function (mode, asset) {
+editEmailVariables = function (mode, asset) {
     var httpRegEx = new RegExp("^http", "i"),
     textRegex = new RegExp("^[^#]", "i"),
     colorRegex = new RegExp("^(#[0-9a-f]{3,6}|rgb)$", "i"),
@@ -221,9 +219,9 @@ GLOBAL.editEmailVariables = function (mode, asset) {
     subtitleRegex = new RegExp("^(subtitle|sub-title|heroSubtitle|hero-subtitle)$", "i"),
     buttonBgColorRegex = new RegExp("^(heroButtonBgColor|hero-button-bg-color|heroButtonBackgroundColor|hero-button-background-color|heroBkgColor|hero-bkg-color)$", "i"),
     buttonBorderColorRegex = new RegExp("^(heroButtonBorderColor|hero-button-border-color|heroBorderColor|hero-border-color)$", "i"),
-    logo = GLOBAL.getCookie("logo"),
-    heroBackground = GLOBAL.getCookie("heroBackground"),
-    color = GLOBAL.getCookie("color"),
+    logo = getCookie("logo"),
+    heroBackground = getCookie("heroBackground"),
+    color = getCookie("color"),
     title = "You<br><br>PREMIER BUSINESS EVENT<br>OF THE YEAR",
     company,
     companyName,
@@ -330,11 +328,11 @@ isMktoPageGlobal = window.setInterval(function () {
             if (accountString.search(mktoAccountStringsMatch) != -1) {
                 console.log("Marketo Global App > Location: MarketoLive Instance");
                 
-//                GLOBAL.disableDemoPluginCheck();
-                GLOBAL.loadScript(MARKETO_LIVE_APP_SCRIPT_LOCATION);
+//                disableDemoPluginCheck();
+                loadScript(MARKETO_LIVE_APP_SCRIPT_LOCATION);
                 
                 if (accountString.search(mktoAccountStringsMatch106) != -1) {
-                    GLOBAL.loadScript(HEAP_ANALYTICS_SCRIPT_LOCATION);
+                    loadScript(HEAP_ANALYTICS_SCRIPT_LOCATION);
                 }
                 
                 var mktoAppDomain = "^https:\/\/app-[a-z0-9]+\.marketo\.com",
@@ -343,18 +341,18 @@ isMktoPageGlobal = window.setInterval(function () {
                 
                 if (currentUrl.search(mktoWizardDomain) == -1
                      && currentUrl.search(mktoDesignerDomain) == -1) {
-                    GLOBAL.loadScript(POD_SCRIPT_LOCATION);
-                    GLOBAL.loadScript(DASHBOARD_SCRIPT_LOCATION);
+                    loadScript(POD_SCRIPT_LOCATION);
+                    loadScript(DASHBOARD_SCRIPT_LOCATION);
                 }
             } else if (accountString.search(mktoDemoAccountMatch) != -1) {
                 console.log("Marketo Global App > Location: Marketo Demo Instance");
                 
-                GLOBAL.loadScript(MARKETO_DEMO_APP_SCRIPT_LOCATION);
-                GLOBAL.loadScript(DASHBOARD_SCRIPT_LOCATION);
-            } else if (GLOBAL.getCookie("toggleState") == "false") {
+                loadScript(MARKETO_DEMO_APP_SCRIPT_LOCATION);
+                loadScript(DASHBOARD_SCRIPT_LOCATION);
+            } else if (getCookie("toggleState") == "false") {
                 console.log("Marketo Global App > toggleState = false");
                 
-                GLOBAL.loadScript(MARKETO_LIVE_APP_SCRIPT_LOCATION);
+                loadScript(MARKETO_LIVE_APP_SCRIPT_LOCATION);
             }
         }
     }, 0);
