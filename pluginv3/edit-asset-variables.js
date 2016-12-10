@@ -82,7 +82,7 @@ function editEmailVariables (assetView) {
     } else if (assetView == "preview") {
         console.log("Content > Editing: Email Previewer Variables");
     }
-}
+};
 
 function editLandingPageVariables (assetView) {
     var httpRegEx = new RegExp("^http", "i"),
@@ -172,7 +172,7 @@ function editLandingPageVariables (assetView) {
     } else if (assetView == "preview") {
         console.log("Content > Editing: Landing Page Previewer Variables");
     }
-}
+};
 
 function editAssetVariables(assetType, assetView) {
     if (assetType == "email") {
@@ -180,4 +180,4 @@ function editAssetVariables(assetType, assetView) {
     } else if (assetType == "landingPage") {
         editLandingPageVariables(assetView);
     }
-}
+};

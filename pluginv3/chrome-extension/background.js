@@ -251,29 +251,31 @@ function reloadCompany(webRequest) {
              && cookie.value) {
             setAssetData = function (tab) {
                 if (tab.url.search("#" + mktoEmailDesignerFragment + "[0-9]+$") != -1) {
-                    console.log("Loading: Company Logo & Color for Email Designer");
-                    message.assetType = "email";
-                    message.assetView = "edit";
+                    console.log("Loading: Company Logo, Hero Background, Color for Email Designer");
+                    if (message.action == "editVariables") {
+                        chrome.tabs.executeScript(tab.id, {file: EDIT_ASSET_VARIABLES_SCRIPT_LOCATION, runAt: "document_end"}, function () {
+                            chrome.tabs.executeScript(tab.id, {code: 'editAssetVariables("email", "edit");', runAt: "document_end"});
+                        });
+                    } else {
+                        message.assetType = "email";
+                        message.assetView = "edit";
+                    }
                 } else if (tab.url.search(mktoEmailPreviewFragmentRegex) != -1
                      || tab.url.search("#" + mktoEmailPreviewFragment + "[0-9]+$") != -1) {
-                    console.log("Loading: Company Logo & Color for Email Previewer");
+                    console.log("Loading: Company Logo, Hero Background, Color for Email Previewer");
                     message.assetType = "email";
                     message.assetView = "preview";
                 } else if (tab.url.search("#" + mktoLandingPageDesignerFragment + "[0-9]+$") != -1) {
-                    console.log("Loading: Company Logo & Color for Landing Page Designer");
+                    console.log("Loading: Company Logo, Hero Background, Color for Landing Page Designer");
                     message.assetType = "landingPage";
                     message.assetView = "edit";
                 } else if (tab.url.search("#" + mktoLandingPagePreviewFragment + "[0-9]+$") != -1) {
-                    console.log("Loading: Company Logo & Color for Landing Page Previewer");
+                    console.log("Loading: Company Logo, Hero Background, Color for Landing Page Previewer");
                     message.assetType = "landingPage";
                     message.assetView = "preview";
                 }
                 
-                if (message.action == "editVariables") {
-                    chrome.tabs.executeScript(tab.id, {file: EDIT_ASSET_VARIABLES_SCRIPT_LOCATION, runAt: "document_idle"}, function () {
-                        chrome.tabs.executeScript(tab.id, {code: 'editAssetVariables(message.assetView);', runAt: "document_idle"});
-                    });
-                } else if (message.assetType
+                if (message.assetType
                      && message.assetView) {
                     chrome.tabs.sendMessage(tab.id, message, function (response) {
                         console.log("Receiving: Message Response from Content for tab: " + tab.url + " " + response);
