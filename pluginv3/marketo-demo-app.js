@@ -325,7 +325,7 @@ APP.editAssetVariables = function (assetType, mode, asset) {
         if (assetType == "landingPage") {
             var httpRegEx = new RegExp("^http", "i"),
             textRegex = new RegExp("^[^#]", "i"),
-            colorRegex = new RegExp("^(#[0-9a-f]{3,6}|rgb)$", "i"),
+            colorRegex = new RegExp("^#[0-9a-f]{3,6}$|^rgb", "i"),
             logoRegex = new RegExp("logo|headerLogo|header-logo", "i"),
             heroBgRegex = new RegExp("heroBackground|hero-background|heroBkg|hero-bkg|heroBg|hero-bg|hero1Bg|hero-1-bg|hero1Bkg|hero-1-bkg|hero1Background", "i"),
             titleRegex = new RegExp("^(mainTitle|main-title|heroTitle|hero-title|title)$", "i"),
@@ -413,7 +413,7 @@ APP.editAssetVariables = function (assetType, mode, asset) {
         } else if (assetType == "email") {
             var httpRegEx = new RegExp("^http", "i"),
             textRegex = new RegExp("^[^#]", "i"),
-            colorRegex = new RegExp("^(#[0-9a-f]{3,6}|rgb)$", "i"),
+            colorRegex = new RegExp("^#[0-9a-f]{3,6}$|^rgb", "i"),
             logoRegex = new RegExp("logo|headerLogo|header-logo", "i"),
             heroBgRegex = new RegExp("heroBackground|hero-background|heroBkg|hero-bkg|heroBg|hero-bg", "i"),
             titleRegex = new RegExp("^(mainTitle|main-title|heroTitle|hero-title|title)$", "i"),
