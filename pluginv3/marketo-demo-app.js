@@ -288,7 +288,7 @@ APP.editAssetVariables = function (assetType, mode, asset) {
     color = APP.getCookie("color"),
     getHumanDate;
     
-    if (saveEditsToggle
+    if (saveEditsToggle == "true"
          && (logo != null
             || heroBackground != null
             || color != null)) {

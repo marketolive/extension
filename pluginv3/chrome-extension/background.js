@@ -658,7 +658,7 @@ chrome.runtime.onMessageExternal.addListener(function (message, sender, sendResp
                     "name": "saveEditsToggleState"
                 }, function (cookie) {
                     if (cookie
-                         && cookie.value) {
+                         && cookie.value == "true") {
                         reloadTabs("*://*"+mktoDesignerUriDomain+"/*");
                     } else {
                         reloadCompany();
