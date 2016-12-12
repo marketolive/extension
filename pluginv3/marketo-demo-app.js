@@ -290,37 +290,37 @@ APP.editAssetVariables = function (assetType, mode, asset) {
     
     if (saveEditsToggle
          && (logo != null
-             || heroBackground != null
-             || color != null)) {
-        
-        getHumanDate = function () {
-            console.log("Marketo Demo App > Getting: Today's Date");
+            || heroBackground != null
+            || color != null)) {
             
-            var dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
-            monthNames = ["JAN", "FEB", "MAR", "APR", "MAY", "JUNE", "JULY", "AUG", "SEPT", "OCT", "NOV", "DEC"],
-            date = new Date(),
-            dayOfWeek = dayNames[date.getDay()],
-            month = monthNames[date.getMonth()],
-            dayOfMonth,
-            year = date.getFullYear();
-            
-            switch (date.getDate()) {
-            case 1:
-                dayOfMonth = "1st";
-                break;
-            case 2:
-                dayOfMonth = "2nd";
-                break;
-            case 3:
-                dayOfMonth = "3rd";
-                break;
-            default:
-                dayOfMonth = date.getDate() + "th";
-                break;
-            }
-            
-            return dayOfWeek + ", " + month + " the " + dayOfMonth + " " + year;
-        };
+            getHumanDate = function () {
+                console.log("Marketo Demo App > Getting: Today's Date");
+                
+                var dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+                monthNames = ["JAN", "FEB", "MAR", "APR", "MAY", "JUNE", "JULY", "AUG", "SEPT", "OCT", "NOV", "DEC"],
+                date = new Date(),
+                dayOfWeek = dayNames[date.getDay()],
+                month = monthNames[date.getMonth()],
+                dayOfMonth,
+                year = date.getFullYear();
+                
+                switch (date.getDate()) {
+                case 1:
+                    dayOfMonth = "1st";
+                    break;
+                case 2:
+                    dayOfMonth = "2nd";
+                    break;
+                case 3:
+                    dayOfMonth = "3rd";
+                    break;
+                default:
+                    dayOfMonth = date.getDate() + "th";
+                    break;
+                }
+                
+                return dayOfWeek + ", " + month + " the " + dayOfMonth + " " + year;
+            };
         
         if (assetType == "landingPage") {
             var httpRegEx = new RegExp("^http", "i"),
@@ -334,7 +334,7 @@ APP.editAssetVariables = function (assetType, mode, asset) {
             buttonBorderColorRegex = new RegExp("^(heroButtonBorderColor|hero-button-border-color|heroBorderColor|hero-border-color)$", "i"),
             headerBgColor = "headerBgColor",
             formButtonBgColor = "formButtonBgColor",
-            title = "You<br><br>PREMIER BUSINESS EVENT<br>OF THE YEAR",
+            title = "You To Our PREMIER BUSINESS EVENT OF THE YEAR",
             company,
             companyName,
             editAssetVars;
@@ -423,7 +423,7 @@ APP.editAssetVariables = function (assetType, mode, asset) {
             logo = getCookie("logo"),
             heroBackground = getCookie("heroBackground"),
             color = getCookie("color"),
-            title = "You PREMIER BUSINESS EVENT OF THE YEAR",
+            title = "You To Our PREMIER BUSINESS EVENT OF THE YEAR",
             company,
             companyName,
             editAssetVars;
