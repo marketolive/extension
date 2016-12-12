@@ -352,7 +352,7 @@ window.onload = function () {
             saveEditsToggleCookieDesigner.value = "true";
             document.getElementById("saveEditsToggleText").innerHTML = "Save Edits Enabled";
             document.getElementById("saveEditsToggle").src = chrome.extension.getURL("images/toggle-on.png");
-            background.reloadCompany();
+            background.reloadTabs("*://*"+mktoDesignerUriDomain+"/*");
         } else {
             currToggleState = false;
             saveEditsToggleCookieMarketo.value = "false";

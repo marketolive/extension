@@ -251,12 +251,8 @@ function reloadCompany(webRequest) {
             setAssetData = function (tab) {
                 if (tab.url.search("#" + mktoEmailDesignerFragment + "[0-9]+$") != -1) {
                     console.log("Loading: Company Logo, Hero Background, Color for Email Designer");
-                    if (message.action == "editVariables") {
-                        chrome.tabs.executeScript(tab.id, {code: 'editEmailVariables("edit");', runAt: "document_end"});
-                    } else {
-                        message.assetType = "email";
-                        message.assetView = "edit";
-                    }
+                    message.assetType = "email";
+                    message.assetView = "edit";
                 } else if (tab.url.search(mktoEmailPreviewFragmentRegex) != -1
                      || tab.url.search("#" + mktoEmailPreviewFragment + "[0-9]+$") != -1) {
                     console.log("Loading: Company Logo, Hero Background, Color for Email Previewer");
@@ -282,27 +278,13 @@ function reloadCompany(webRequest) {
             }
             
             if (webRequest) {
-                getCookie(saveEditsToggleCookieDesigner, function (cookie) {
-                    if (cookie
-                         && cookie.value) {
-                        message.action = "editVariables";
-                    } else {
-                        count = 0;
-                        message.action = "initialCompany";
-                    }
-                });
+                count = 0;
+                message.action = "initialCompany";
                 chrome.tabs.get(webRequest.tabId, function (tab) {
                     setAssetData(tab);
                 });
             } else {
-                getCookie(saveEditsToggleCookieDesigner, function (cookie) {
-                    if (cookie
-                         && cookie.value) {
-                        message.action = "editVariables";
-                    } else {
-                        message.action = "newCompany";
-                    }
-                });
+                message.action = "newCompany";
                 chrome.tabs.query(queryInfo, function (tabs) {
                     for (var ii = 0; ii < tabs.length; ii++) {
                         setAssetData(tabs[ii]);

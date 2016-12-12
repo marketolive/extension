@@ -4654,6 +4654,210 @@ APP.hideOtherToolbarItems = function (itemsToHide) {
 
 /**************************************************************************************
  *
+ *  This function edits the variables within the Landing Page & Email Editors for
+ *  custom company.
+ *
+ *  @Author Brian Fisher
+ *
+ *  @function
+ *
+ *  @param {String} assetType - Asset type (landingPage, email)
+ *  @param {String} mode - Mode view (edit, preview)
+ *  @param {Object} asset - The asset to be edited
+ *
+ **************************************************************************************/
+
+APP.editAssetVariables = function (assetType, mode, asset) {
+    var logo = APP.getCookie("logo"),
+    heroBackground = APP.getCookie("heroBackground"),
+    color = APP.getCookie("color");
+    
+    if (logo != null
+         || heroBackground != null
+         || color != null) {
+        
+        if (assetType == "landingPage") {
+            var httpRegEx = new RegExp("^http", "i"),
+            textRegex = new RegExp("^[^#]", "i"),
+            colorRegex = new RegExp("^(#[0-9a-f]{3,6}|rgb)$", "i"),
+            logoRegex = new RegExp("logo|headerLogo|header-logo", "i"),
+            heroBgRegex = new RegExp("heroBackground|hero-background|heroBkg|hero-bkg|heroBg|hero-bg|hero1Bg|hero-1-bg|hero1Bkg|hero-1-bkg|hero1Background", "i"),
+            titleRegex = new RegExp("^(mainTitle|main-title|heroTitle|hero-title|title)$", "i"),
+            subtitleRegex = new RegExp("^(subtitle|sub-title|heroSubtitle|hero-subtitle)$", "i"),
+            buttonBgColorRegex = new RegExp("^(heroButtonBgColor|hero-button-bg-color|heroButtonBackgroundColor|hero-button-background-color|heroBkgColor|hero-bkg-color)$", "i"),
+            buttonBorderColorRegex = new RegExp("^(heroButtonBorderColor|hero-button-border-color|heroBorderColor|hero-border-color)$", "i"),
+            headerBgColor = "headerBgColor",
+            formButtonBgColor = "formButtonBgColor",
+            title = "You<br><br>PREMIER BUSINESS EVENT<br>OF THE YEAR",
+            company,
+            companyName,
+            editAssetVars;
+            
+            if (logo != null) {
+                company = logo.split("https://logo.clearbit.com/")[1].split(".")[0];
+                companyName = company.charAt(0).toUpperCase() + company.slice(1);
+                title = companyName + " Invites " + title;
+            } else {
+                title = "We Invite " + title;
+            }
+            
+            var editAssetVars = function (asset) {
+                var assetVars = asset.getResponsiveVarValues();
+                asset.setResponsiveVarValue(headerBgColor, color);
+                asset.setResponsiveVarValue(formButtonBgColor, color);
+                
+                for (var ii = 0; ii < Object.keys(assetVars).length; ii++) {
+                    var currVariableKey = Object.keys(assetVars)[ii],
+                    currVariableValue = Object.values(assetVars)[ii].toString();
+                    
+                    if (currVariableKey.search(logoRegex) != -1) {
+                        if (currVariableValue.search(httpRegEx) != -1) {
+                            asset.setResponsiveVarValue(currVariableKey, logo);
+                        }
+                    } else if (currVariableKey.search(heroBgRegex) != -1) {
+                        if (currVariableValue.search(httpRegEx) != -1) {
+                            asset.setResponsiveVarValue(currVariableKey, heroBackground);
+                        }
+                    } else if (currVariableKey.search(titleRegex) != -1) {
+                        if (currVariableValue.search(textRegex) != -1) {
+                            asset.setResponsiveVarValue(currVariableKey, title);
+                        }
+                    } else if (currVariableKey.search(subtitleRegex) != -1) {
+                        if (currVariableValue.search(textRegex) != -1) {
+                            asset.setResponsiveVarValue(currVariableKey, getHumanDate());
+                        }
+                    } else if (currVariableKey.search(buttonBgColorRegex) != -1) {
+                        if (currVariableValue.search(colorRegex) != -1) {
+                            asset.setResponsiveVarValue(currVariableKey, color);
+                        }
+                    } else if (currVariableKey.search(buttonBorderColorRegex) != -1) {
+                        if (currVariableValue.search(colorRegex) != -1) {
+                            asset.setResponsiveVarValue(currVariableKey, color);
+                        }
+                    }
+                }
+            };
+            
+            console.log("Marketo Demo App > Editing: Landing Page Variables");
+            
+            if (mode == "edit") {
+                if (asset) {
+                    editAssetVars(asset);
+                } else {
+                    var isLandingPageEditorVariables = window.setInterval(function () {
+                            if (typeof(Mkt3) !== "undefined"
+                                 && Mkt3
+                                 && Mkt3.app
+                                 && Mkt3.app.controllers
+                                 && Mkt3.app.controllers.get("Mkt3.controller.editor.LandingPage")
+                                 && Mkt3.app.controllers.get("Mkt3.controller.editor.LandingPage").getLandingPage()
+                                 && Mkt3.app.controllers.get("Mkt3.controller.editor.LandingPage").getLandingPage().getResponsiveVarValues()
+                                 && Mkt3.app.controllers.get("Mkt3.controller.editor.LandingPage").getLandingPage().setResponsiveVarValue) {
+                                console.log("Marketo Demo App > Editing: Landing Page Editor Variables");
+                                
+                                window.clearInterval(isLandingPageEditorVariables);
+                                
+                                editAssetVars(Mkt3.app.controllers.get("Mkt3.controller.editor.LandingPage").getLandingPage());
+                            }
+                        }, 0);
+                }
+            } else if (mode == "preview") {
+                console.log("Marketo Demo App > Editing: Landing Page Previewer Variables");
+            }
+        } else if (assetType == "email") {
+            var httpRegEx = new RegExp("^http", "i"),
+            textRegex = new RegExp("^[^#]", "i"),
+            colorRegex = new RegExp("^(#[0-9a-f]{3,6}|rgb)$", "i"),
+            logoRegex = new RegExp("logo|headerLogo|header-logo", "i"),
+            heroBgRegex = new RegExp("heroBackground|hero-background|heroBkg|hero-bkg|heroBg|hero-bg", "i"),
+            titleRegex = new RegExp("^(mainTitle|main-title|heroTitle|hero-title|title)$", "i"),
+            subtitleRegex = new RegExp("^(subtitle|sub-title|heroSubtitle|hero-subtitle)$", "i"),
+            buttonBgColorRegex = new RegExp("^(heroButtonBgColor|hero-button-bg-color|heroButtonBackgroundColor|hero-button-background-color|heroBkgColor|hero-bkg-color)$", "i"),
+            buttonBorderColorRegex = new RegExp("^(heroButtonBorderColor|hero-button-border-color|heroBorderColor|hero-border-color)$", "i"),
+            logo = getCookie("logo"),
+            heroBackground = getCookie("heroBackground"),
+            color = getCookie("color"),
+            title = "You<br><br>PREMIER BUSINESS EVENT<br>OF THE YEAR",
+            company,
+            companyName,
+            editAssetVars;
+            
+            if (logo != null) {
+                company = logo.split("https://logo.clearbit.com/")[1].split(".")[0];
+                companyName = company.charAt(0).toUpperCase() + company.slice(1);
+                title = companyName + " Invites " + title;
+            } else {
+                title = "We Invite " + title;
+            }
+            
+            var editAssetVars = function (asset) {
+                var assetVars = asset.getVariableValues();
+                
+                for (var ii = 0; ii < Object.keys(assetVars).length; ii++) {
+                    var currVariableKey = Object.keys(assetVars)[ii],
+                    currVariableValue = Object.values(assetVars)[ii].toString();
+                    
+                    if (currVariableKey.search(logoRegex) != -1) {
+                        if (currVariableValue.search(httpRegEx) != -1) {
+                            asset.setVariableValue(currVariableKey, logo);
+                        }
+                    } else if (currVariableKey.search(heroBgRegex) != -1) {
+                        if (currVariableValue.search(httpRegEx) != -1) {
+                            asset.setVariableValue(currVariableKey, heroBackground);
+                        }
+                    } else if (currVariableKey.search(titleRegex) != -1) {
+                        if (currVariableValue.search(textRegex) != -1) {
+                            asset.setVariableValue(currVariableKey, title);
+                        }
+                    } else if (currVariableKey.search(subtitleRegex) != -1) {
+                        if (currVariableValue.search(textRegex) != -1) {
+                            asset.setVariableValue(currVariableKey, getHumanDate());
+                        }
+                    } else if (currVariableKey.search(buttonBgColorRegex) != -1) {
+                        if (currVariableValue.search(colorRegex) != -1) {
+                            asset.setVariableValue(currVariableKey, color);
+                        }
+                    } else if (currVariableKey.search(buttonBorderColorRegex) != -1) {
+                        if (currVariableValue.search(colorRegex) != -1) {
+                            asset.setVariableValue(currVariableKey, color);
+                        }
+                    }
+                }
+            };
+            
+            console.log("Marketo Demo App > Editing: Email Variables");
+            
+            if (mode == "edit") {
+                if (asset) {
+                    editAssetVars(asset);
+                } else {
+                    var isEmailEditorVariables = window.setInterval(function () {
+                            console.log("Marketo Demo App > Waiting: Email Editor Variables");
+                            if (typeof(Mkt3) !== "undefined"
+                                 && Mkt3
+                                 && Mkt3.app
+                                 && Mkt3.app.controllers
+                                 && Mkt3.app.controllers.get("Mkt3.controller.editor.email2.EmailEditor")
+                                 && Mkt3.app.controllers.get("Mkt3.controller.editor.email2.EmailEditor").getEmail()
+                                 && Mkt3.app.controllers.get("Mkt3.controller.editor.email2.EmailEditor").getEmail().getVariableValues()
+                                 && Mkt3.app.controllers.get("Mkt3.controller.editor.email2.EmailEditor").getEmail().setVariableValue) {
+                                console.log("Marketo Demo App > Editing: Email Editor Variables");
+                                
+                                window.clearInterval(isEmailEditorVariables);
+                                
+                                editAssetVars(Mkt3.app.controllers.get("Mkt3.controller.editor.email2.EmailEditor").getEmail());
+                            }
+                        }, 0);
+                }
+            } else if (mode == "preview") {
+                console.log("Marketo Demo App > Editing: Email Previewer Variables");
+            }
+        }
+    }
+};
+
+/**************************************************************************************
+ *
  *  This function disables saving for Revenue Cycle Models and issues a tracking
  *  request to Heap Analytics.
  *
@@ -4782,19 +4986,9 @@ APP.disableDesignerSaving = function (assetType, mode) {
                 
                 window.clearInterval(isAppController);
                 
-                var logo = APP.getCookie("logo"),
-                heroBackground = APP.getCookie("heroBackground"),
-                color = APP.getCookie("color"),
-                isCustomCompany,
-                disableDesignerAsset,
+                var disableDesignerAsset,
                 assetNode,
                 menuItems;
-                
-                if (logo != null
-                     || color != null
-                     || heroBackground != null) {
-                    isCustomCompany = true;
-                }
                 
                 disableDesignerAsset = function (assetNode, menuItems, disableFunc) {
                     console.log("Marketo App > Executing: Disabling Designer (Edit/Preview)");
@@ -4895,9 +5089,7 @@ APP.disableDesignerSaving = function (assetType, mode) {
                                     ];
                                     
                                     disableDesignerAsset(assetNode, menuItems, APP.disablePropertyPanelSaving);
-                                    if (isCustomCompany) {
-                                        GLOBAL.editLandingPageVariables(asset);
-                                    }
+                                    APP.editAssetVariables("landingPage", "edit", asset);
                                 }
                             }, 0);
                         break;
@@ -4965,9 +5157,7 @@ APP.disableDesignerSaving = function (assetType, mode) {
                                     ];
                                     
                                     disableDesignerAsset(assetNode, menuItems);
-                                    if (isCustomCompany) {
-                                        GLOBAL.editEmailVariables(asset);
-                                    }
+                                    APP.editAssetVariables("email", "edit", asset);
                                 }
                             }, 0);
                         break;
