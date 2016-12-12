@@ -220,6 +220,7 @@ if (heroBackground) {
 
 img.onload = function () {
     var color = getCookie("color"),
+    logo = getCookie("logo"),
     colorOption1 = document.getElementById("color-option-1"),
     colorOption2 = document.getElementById("color-option-2"),
     colorOption3 = document.getElementById("color-option-3"),
@@ -233,6 +234,9 @@ img.onload = function () {
     colorOption3.style.backgroundColor = "rgb(" + colorSet[2][0] + ", " + colorSet[2][1] + ", " + colorSet[2][2] + ")";
     console.log("Color Picker > Company Logo: " + img.src);
     logoElement.innerHTML = img.src;
+    if (img.src == logo) {
+        colorElement.innerHTML = null;
+    }
     
     colorOption1.onclick = colorOption2.onclick = colorOption3.onclick = function () {
         var colorOptions = document.getElementsByClassName("color-option");

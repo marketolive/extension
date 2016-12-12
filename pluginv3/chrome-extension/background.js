@@ -653,7 +653,17 @@ chrome.runtime.onMessageExternal.addListener(function (message, sender, sendResp
                  || message.color
                  || message.image) {
                 
-                reloadCompany();
+                getCookie({
+                    "url": mktoDesignerDomainMatch,
+                    "name": "saveEditsToggleState"
+                }, function (cookie) {
+                    if (cookie
+                         && cookie.value) {
+                        reloadTabs("*://*"+mktoDesignerUriDomain+"/*");
+                    } else {
+                        reloadCompany();
+                    }
+                });
             }
         }
     } else {

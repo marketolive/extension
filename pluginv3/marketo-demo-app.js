@@ -282,13 +282,15 @@ APP.overrideHomeTiles = function () {
  **************************************************************************************/
 
 APP.editAssetVariables = function (assetType, mode, asset) {
-    var logo = APP.getCookie("logo"),
+    var saveEditsToggle = APP.getCookie("saveEditsToggleState"),
+    logo = APP.getCookie("logo"),
     heroBackground = APP.getCookie("heroBackground"),
     color = APP.getCookie("color");
     
-    if (logo != null
-         || heroBackground != null
-         || color != null) {
+    if (saveEditsToggle
+         && (logo != null
+            || heroBackground != null
+            || color != null)) {
         
         if (assetType == "landingPage") {
             var httpRegEx = new RegExp("^http", "i"),

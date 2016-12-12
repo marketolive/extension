@@ -71,12 +71,6 @@ window.onload = function () {
         "value" : "",
         "domain" : mktoDesignerUriDomain
     },
-    saveEditsToggleCookieMarketo = {
-        "url" : mktoDomainMatch,
-        "name" : saveEditsToggleCookieName,
-        "value" : "",
-        "domain" : mktoUriDomain
-    },
     saveEditsToggleCookieDesigner = {
         "url" : mktoDesignerMatch,
         "name" : saveEditsToggleCookieName,
@@ -173,28 +167,6 @@ window.onload = function () {
             currToggleState = false;
             document.getElementById("privilegesToggleText").innerHTML = "Privileges Disabled";
             document.getElementById("privilegesToggle").src = chrome.extension.getURL("images/toggle-off.png");
-        }
-    });
-    
-    background.getCookie(saveEditsToggleCookieMarketo, function (cookie) {
-        if (cookie == null
-             || cookie.value == null) {
-            console.log("Popup > Getting: " + saveEditsToggleCookieMarketo.name + " Cookie for " + saveEditsToggleCookieMarketo.url + " = null");
-            currToggleState = true;
-            saveEditsToggleCookieMarketo.value = "true";
-            document.getElementById("saveEditsToggleText").innerHTML = "Save Edits Enabled";
-            document.getElementById("saveEditsToggle").src = chrome.extension.getURL("images/toggle-on.png");
-            background.setCookie(saveEditsToggleCookieMarketo);
-        } else if (cookie.value == "true") {
-            console.log("Popup > Getting: " + cookie.name + " Cookie for " + cookie.domain + " = " + cookie.value);
-            currToggleState = true;
-            document.getElementById("saveEditsToggleText").innerHTML = "Save Edits Enabled";
-            document.getElementById("saveEditsToggle").src = chrome.extension.getURL("images/toggle-on.png");
-        } else {
-            console.log("Popup > Getting: " + cookie.name + " Cookie for " + cookie.domain + " = " + cookie.value);
-            currToggleState = false;
-            document.getElementById("saveEditsToggleText").innerHTML = "Save Edits Disabled";
-            document.getElementById("saveEditsToggle").src = chrome.extension.getURL("images/toggle-off.png");
         }
     });
     
@@ -348,20 +320,17 @@ window.onload = function () {
     saveEditsToggle.onclick = function () {
         if (!currToggleState) {
             currToggleState = true;
-            saveEditsToggleCookieMarketo.value = "true";
             saveEditsToggleCookieDesigner.value = "true";
             document.getElementById("saveEditsToggleText").innerHTML = "Save Edits Enabled";
             document.getElementById("saveEditsToggle").src = chrome.extension.getURL("images/toggle-on.png");
             background.reloadTabs("*://*"+mktoDesignerUriDomain+"/*");
         } else {
             currToggleState = false;
-            saveEditsToggleCookieMarketo.value = "false";
             saveEditsToggleCookieDesigner.value = "false";
             document.getElementById("saveEditsToggleText").innerHTML = "Save Edits Disabled";
             document.getElementById("saveEditsToggle").src = chrome.extension.getURL("images/toggle-off.png");
             background.reloadCompany();
         }
-        background.setCookie(saveEditsToggleCookieMarketo);
         background.setCookie(saveEditsToggleCookieDesigner);
         setTimeout(function () {
             window.close();
