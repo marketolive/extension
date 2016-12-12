@@ -285,12 +285,42 @@ APP.editAssetVariables = function (assetType, mode, asset) {
     var saveEditsToggle = APP.getCookie("saveEditsToggleState"),
     logo = APP.getCookie("logo"),
     heroBackground = APP.getCookie("heroBackground"),
-    color = APP.getCookie("color");
+    color = APP.getCookie("color"),
+    getHumanDate;
     
     if (saveEditsToggle
          && (logo != null
-            || heroBackground != null
-            || color != null)) {
+             || heroBackground != null
+             || color != null)) {
+        
+        getHumanDate = function () {
+            console.log("Marketo Demo App > Getting: Today's Date");
+            
+            var dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+            monthNames = ["JAN", "FEB", "MAR", "APR", "MAY", "JUNE", "JULY", "AUG", "SEPT", "OCT", "NOV", "DEC"],
+            date = new Date(),
+            dayOfWeek = dayNames[date.getDay()],
+            month = monthNames[date.getMonth()],
+            dayOfMonth,
+            year = date.getFullYear();
+            
+            switch (date.getDate()) {
+            case 1:
+                dayOfMonth = "1st";
+                break;
+            case 2:
+                dayOfMonth = "2nd";
+                break;
+            case 3:
+                dayOfMonth = "3rd";
+                break;
+            default:
+                dayOfMonth = date.getDate() + "th";
+                break;
+            }
+            
+            return dayOfWeek + ", " + month + " the " + dayOfMonth + " " + year;
+        };
         
         if (assetType == "landingPage") {
             var httpRegEx = new RegExp("^http", "i"),
@@ -393,7 +423,7 @@ APP.editAssetVariables = function (assetType, mode, asset) {
             logo = getCookie("logo"),
             heroBackground = getCookie("heroBackground"),
             color = getCookie("color"),
-            title = "You<br><br>PREMIER BUSINESS EVENT<br>OF THE YEAR",
+            title = "You PREMIER BUSINESS EVENT OF THE YEAR",
             company,
             companyName,
             editAssetVars;

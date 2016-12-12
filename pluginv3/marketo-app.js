@@ -4668,13 +4668,45 @@ APP.hideOtherToolbarItems = function (itemsToHide) {
  **************************************************************************************/
 
 APP.editAssetVariables = function (assetType, mode, asset) {
-    var logo = APP.getCookie("logo"),
+    var saveEditsToggle = APP.getCookie("saveEditsToggleState"),
+    logo = APP.getCookie("logo"),
     heroBackground = APP.getCookie("heroBackground"),
-    color = APP.getCookie("color");
+    color = APP.getCookie("color"),
+    getHumanDate;
     
-    if (logo != null
-         || heroBackground != null
-         || color != null) {
+    if (saveEditsToggle
+         && (logo != null
+             || heroBackground != null
+             || color != null)) {
+        
+        getHumanDate = function () {
+            console.log("Marketo App > Getting: Today's Date");
+            
+            var dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+            monthNames = ["JAN", "FEB", "MAR", "APR", "MAY", "JUNE", "JULY", "AUG", "SEPT", "OCT", "NOV", "DEC"],
+            date = new Date(),
+            dayOfWeek = dayNames[date.getDay()],
+            month = monthNames[date.getMonth()],
+            dayOfMonth,
+            year = date.getFullYear();
+            
+            switch (date.getDate()) {
+            case 1:
+                dayOfMonth = "1st";
+                break;
+            case 2:
+                dayOfMonth = "2nd";
+                break;
+            case 3:
+                dayOfMonth = "3rd";
+                break;
+            default:
+                dayOfMonth = date.getDate() + "th";
+                break;
+            }
+            
+            return dayOfWeek + ", " + month + " the " + dayOfMonth + " " + year;
+        };
         
         if (assetType == "landingPage") {
             var httpRegEx = new RegExp("^http", "i"),
@@ -4738,7 +4770,7 @@ APP.editAssetVariables = function (assetType, mode, asset) {
                 }
             };
             
-            console.log("Marketo Demo App > Editing: Landing Page Variables");
+            console.log("Marketo App > Editing: Landing Page Variables");
             
             if (mode == "edit") {
                 if (asset) {
@@ -4753,7 +4785,7 @@ APP.editAssetVariables = function (assetType, mode, asset) {
                                  && Mkt3.app.controllers.get("Mkt3.controller.editor.LandingPage").getLandingPage()
                                  && Mkt3.app.controllers.get("Mkt3.controller.editor.LandingPage").getLandingPage().getResponsiveVarValues()
                                  && Mkt3.app.controllers.get("Mkt3.controller.editor.LandingPage").getLandingPage().setResponsiveVarValue) {
-                                console.log("Marketo Demo App > Editing: Landing Page Editor Variables");
+                                console.log("Marketo App > Editing: Landing Page Editor Variables");
                                 
                                 window.clearInterval(isLandingPageEditorVariables);
                                 
@@ -4762,7 +4794,7 @@ APP.editAssetVariables = function (assetType, mode, asset) {
                         }, 0);
                 }
             } else if (mode == "preview") {
-                console.log("Marketo Demo App > Editing: Landing Page Previewer Variables");
+                console.log("Marketo App > Editing: Landing Page Previewer Variables");
             }
         } else if (assetType == "email") {
             var httpRegEx = new RegExp("^http", "i"),
@@ -4777,7 +4809,7 @@ APP.editAssetVariables = function (assetType, mode, asset) {
             logo = getCookie("logo"),
             heroBackground = getCookie("heroBackground"),
             color = getCookie("color"),
-            title = "You<br><br>PREMIER BUSINESS EVENT<br>OF THE YEAR",
+            title = "You PREMIER BUSINESS EVENT OF THE YEAR",
             company,
             companyName,
             editAssetVars;
@@ -4825,14 +4857,14 @@ APP.editAssetVariables = function (assetType, mode, asset) {
                 }
             };
             
-            console.log("Marketo Demo App > Editing: Email Variables");
+            console.log("Marketo App > Editing: Email Variables");
             
             if (mode == "edit") {
                 if (asset) {
                     editAssetVars(asset);
                 } else {
                     var isEmailEditorVariables = window.setInterval(function () {
-                            console.log("Marketo Demo App > Waiting: Email Editor Variables");
+                            console.log("Marketo App > Waiting: Email Editor Variables");
                             if (typeof(Mkt3) !== "undefined"
                                  && Mkt3
                                  && Mkt3.app
@@ -4841,7 +4873,7 @@ APP.editAssetVariables = function (assetType, mode, asset) {
                                  && Mkt3.app.controllers.get("Mkt3.controller.editor.email2.EmailEditor").getEmail()
                                  && Mkt3.app.controllers.get("Mkt3.controller.editor.email2.EmailEditor").getEmail().getVariableValues()
                                  && Mkt3.app.controllers.get("Mkt3.controller.editor.email2.EmailEditor").getEmail().setVariableValue) {
-                                console.log("Marketo Demo App > Editing: Email Editor Variables");
+                                console.log("Marketo App > Editing: Email Editor Variables");
                                 
                                 window.clearInterval(isEmailEditorVariables);
                                 
@@ -4850,11 +4882,12 @@ APP.editAssetVariables = function (assetType, mode, asset) {
                         }, 0);
                 }
             } else if (mode == "preview") {
-                console.log("Marketo Demo App > Editing: Email Previewer Variables");
+                console.log("Marketo App > Editing: Email Previewer Variables");
             }
         }
     }
 };
+
 
 /**************************************************************************************
  *
