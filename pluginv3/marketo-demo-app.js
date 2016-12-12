@@ -561,8 +561,8 @@ var isMktPageDemoApp = window.setInterval(function () {
                     
                     APP.editAssetVariables("inAppMessage", "preview");
                     break;
-                }
                 */
+                }
             }
             
             window.onhashchange = function () {
@@ -642,8 +642,8 @@ var isMktPageDemoApp = window.setInterval(function () {
                                             
                                             APP.editAssetVariables("inAppMessage", "preview");
                                             break;
-                                        }
                                         */
+                                        }
                                     }
                                 }
                             }
