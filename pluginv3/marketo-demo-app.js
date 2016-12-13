@@ -474,7 +474,7 @@ APP.editAssetVariables = function (assetType, mode, asset) {
                     }
                 }
                 
-                webRequestAsync('/emaileditor/downloadHtmlFile2?xsrfId=' + MktSecurity.getXsrfId() + '&emailId=' + Mkt3.DL.dl.compId, null, 'GET', 'document', function (response) {
+                APP.webRequest('/emaileditor/downloadHtmlFile2?xsrfId=' + MktSecurity.getXsrfId() + '&emailId=' + Mkt3.DL.dl.compId, null, 'GET', 'document', function (response) {
                     var isLogoReplaced,
                     isTitleReplaced,
                     isSubtitleReplaced;
@@ -521,7 +521,7 @@ APP.editAssetVariables = function (assetType, mode, asset) {
                     if (isLogoReplaced
                          || isTitleReplaced
                          || isSubtitleReplaced) {
-                        webRequestAsync('/emaileditor/updateContent2', 'ajaxHandler=MktSession&mktReqUid=' + new Date().getTime() + Ext.id(null, ':') + '&emailId=' + Mkt3.DL.dl.compId + '&content=' + new XMLSerializer().serializeToString(response) + '&xsrfId=' + MktSecurity.getXsrfId(), 'POST', "", function (response) {
+                        APP.webRequest('/emaileditor/updateContent2', 'ajaxHandler=MktSession&mktReqUid=' + new Date().getTime() + Ext.id(null, ':') + '&emailId=' + Mkt3.DL.dl.compId + '&content=' + new XMLSerializer().serializeToString(response) + '&xsrfId=' + MktSecurity.getXsrfId(), 'POST', "", function (response) {
                             console.log(response);
                             window.location.reload();
                         });
