@@ -486,8 +486,6 @@ APP.editAssetVariables = function (assetType, mode, asset) {
                                  && currElement.getAttribute("src") != logo) {
                                 isLogoReplaced = true;
                                 currElement.setAttribute("src", logo);
-                            } else {
-                                isLogoReplaced = false;
                             }
                         }
                     }
@@ -499,8 +497,6 @@ APP.editAssetVariables = function (assetType, mode, asset) {
                                  && currElement.innerHTML != title) {
                                 isTitleReplaced = true;
                                 currElement.innerHTML = title;
-                            } else {
-                                isTitleReplaced = false;
                             }
                         }
                     }
@@ -512,8 +508,6 @@ APP.editAssetVariables = function (assetType, mode, asset) {
                                  && currElement.innerHTML != subtitle) {
                                 isSubtitleReplaced = true;
                                 currElement.innerHTML = subtitle;
-                            } else {
-                                isSubtitleReplaced = false;
                             }
                         }
                     }
