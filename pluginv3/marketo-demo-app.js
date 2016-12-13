@@ -498,7 +498,7 @@ APP.editAssetVariables = function (assetType, mode, asset) {
                             if (currElement
                                  && currElement.innerHTML != title) {
                                 isTitleReplaced = true;
-                                currElement.innerHTML = title);
+                                currElement.innerHTML = title;
                             } else {
                                 isTitleReplaced = false;
                             }
