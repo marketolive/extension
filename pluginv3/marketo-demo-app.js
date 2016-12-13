@@ -47,6 +47,18 @@ APP.getCookie = function (cookieName) {
     return null;
 };
 
+APP.webRequest = function (url, params, method, responseType, callback) {
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.onreadystatechange = function() { 
+        if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+            callback(xmlHttp.response);
+    }
+    xmlHttp.open(method, url, true); // true for asynchronous
+    xmlHttp.responseType = responseType;
+    xmlHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xmlHttp.send(params);
+};
+
 /**************************************************************************************
  *
  *  This function overrides the target links for the Email Insights and Deliverability
@@ -413,17 +425,18 @@ APP.editAssetVariables = function (assetType, mode, asset) {
         } else if (assetType == "email") {
             var httpRegEx = new RegExp("^http", "i"),
             textRegex = new RegExp("^[^#]", "i"),
-            colorRegex = new RegExp("^#[0-9a-f]{3,6}$|^rgb", "i"),
-            logoRegex = new RegExp("logo|headerLogo|header-logo", "i"),
+            colorRegex = new RegExp("^#[0-9a-f]{3,6}$|^rgb(", "i"),
+            logoIds = ["heroLogo", "footerLogo", "headerLogo", "logo"],
             heroBgRegex = new RegExp("heroBackground|hero-background|heroBkg|hero-bkg|heroBg|hero-bg", "i"),
-            titleRegex = new RegExp("^(mainTitle|main-title|heroTitle|hero-title|title)$", "i"),
-            subtitleRegex = new RegExp("^(subtitle|sub-title|heroSubtitle|hero-subtitle)$", "i"),
+            titleIds = ["title", "heroTitle", "mainTitle"],
+            subtitleIds = ["subtitle", "herosubTitle"],
             buttonBgColorRegex = new RegExp("^(heroButtonBgColor|hero-button-bg-color|heroButtonBackgroundColor|hero-button-background-color|heroBkgColor|hero-bkg-color)$", "i"),
             buttonBorderColorRegex = new RegExp("^(heroButtonBorderColor|hero-button-border-color|heroBorderColor|hero-border-color)$", "i"),
             logo = getCookie("logo"),
             heroBackground = getCookie("heroBackground"),
             color = getCookie("color"),
-            title = "You To Our PREMIER BUSINESS EVENT OF THE YEAR",
+            title = "You<br><br>PREMIER BUSINESS EVENT<br>OF THE YEAR",
+            subtitle = getHumanDate();
             company,
             companyName,
             editAssetVars;
@@ -443,32 +456,77 @@ APP.editAssetVariables = function (assetType, mode, asset) {
                     var currVariableKey = Object.keys(assetVars)[ii],
                     currVariableValue = Object.values(assetVars)[ii].toString();
                     
-                    if (currVariableKey.search(logoRegex) != -1) {
-                        if (currVariableValue.search(httpRegEx) != -1) {
-                            asset.setVariableValue(currVariableKey, logo);
-                        }
-                    } else if (currVariableKey.search(heroBgRegex) != -1) {
-                        if (currVariableValue.search(httpRegEx) != -1) {
+                    if (currVariableKey.search(heroBgRegex) != -1) {
+                        if (currVariableValue != heroBackground
+                             && currVariableValue.search(httpRegEx) != -1) {
                             asset.setVariableValue(currVariableKey, heroBackground);
                         }
-                    } else if (currVariableKey.search(titleRegex) != -1) {
-                        if (currVariableValue.search(textRegex) != -1) {
-                            asset.setVariableValue(currVariableKey, title);
-                        }
-                    } else if (currVariableKey.search(subtitleRegex) != -1) {
-                        if (currVariableValue.search(textRegex) != -1) {
-                            asset.setVariableValue(currVariableKey, getHumanDate());
-                        }
                     } else if (currVariableKey.search(buttonBgColorRegex) != -1) {
-                        if (currVariableValue.search(colorRegex) != -1) {
+                        if (currVariableValue != color
+                             && currVariableValue.search(colorRegex) != -1) {
                             asset.setVariableValue(currVariableKey, color);
                         }
                     } else if (currVariableKey.search(buttonBorderColorRegex) != -1) {
-                        if (currVariableValue.search(colorRegex) != -1) {
+                        if (currVariableValue != color
+                             && currVariableValue.search(colorRegex) != -1) {
                             asset.setVariableValue(currVariableKey, color);
                         }
                     }
                 }
+                
+                webRequestAsync('/emaileditor/downloadHtmlFile2?xsrfId=' + MktSecurity.getXsrfId() + '&emailId=' + Mkt3.DL.dl.compId, null, 'GET', 'document', function (response) {
+                    var isLogoReplaced,
+                    isTitleReplaced,
+                    isSubtitleReplaced;
+                    
+                    if (logo) {
+                        for (var ii = 0; ii < logoIds.length; ii++) {
+                            var currElement = response.getElementById(logoIds[ii]);
+                            if (currElement
+                                 && currElement.getAttribute("src") != logo) {
+                                isLogoReplaced = true;
+                                currElement.setAttribute("src", logo);
+                            } else {
+                                isLogoReplaced = false;
+                            }
+                        }
+                    }
+                    
+                    if (title) {
+                        for (var ii = 0; ii < titleIds.length; ii++) {
+                            var currElement = response.getElementById(titleIds[ii]);
+                            if (currElement
+                                 && currElement.innerHTML != title) {
+                                isTitleReplaced = true;
+                                currElement.innerHTML = title);
+                            } else {
+                                isTitleReplaced = false;
+                            }
+                        }
+                    }
+                    
+                    if (subtitle) {
+                        for (var ii = 0; ii < subtitleIds.length; ii++) {
+                            var currElement = response.getElementById(subtitleIds[ii]);
+                            if (currElement
+                                 && currElement.innerHTML != subtitle) {
+                                isSubtitleReplaced = true;
+                                currElement.innerHTML = subtitle;
+                            } else {
+                                isSubtitleReplaced = false;
+                            }
+                        }
+                    }
+                    
+                    if (isLogoReplaced
+                         || isTitleReplaced
+                         || isSubtitleReplaced) {
+                        webRequestAsync('/emaileditor/updateContent2', 'ajaxHandler=MktSession&mktReqUid=' + new Date().getTime() + Ext.id(null, ':') + '&emailId=' + Mkt3.DL.dl.compId + '&content=' + new XMLSerializer().serializeToString(response) + '&xsrfId=' + MktSecurity.getXsrfId(), 'POST', "", function (response) {
+                            console.log(response);
+                            window.location.reload();
+                        });
+                    }
+                });
             };
             
             console.log("Marketo Demo App > Editing: Email Variables");
