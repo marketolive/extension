@@ -518,7 +518,9 @@ APP.editAssetVariables = function (assetType, mode, asset) {
                          || isSubtitleReplaced) {
                         APP.webRequest('/emaileditor/updateContent2', 'ajaxHandler=MktSession&mktReqUid=' + new Date().getTime() + Ext.id(null, ':') + '&emailId=' + Mkt3.DL.dl.compId + '&content=' + new XMLSerializer().serializeToString(response) + '&xsrfId=' + MktSecurity.getXsrfId(), 'POST', "", function (response) {
                             console.log(response);
-                            window.location.reload();
+                            window.setTimeout(function () {
+                                window.location.reload();
+                            }, 2500);
                         });
                     }
                 });
