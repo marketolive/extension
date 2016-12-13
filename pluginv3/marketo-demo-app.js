@@ -483,9 +483,10 @@ APP.editAssetVariables = function (assetType, mode, asset) {
                         for (var ii = 0; ii < logoIds.length; ii++) {
                             var currElement = response.getElementById(logoIds[ii]);
                             if (currElement
-                                 && currElement.getAttribute("src") != logo) {
+                                 && currElement.getElementsByTagName("img")[0]
+                                 && currElement.getElementsByTagName("img")[0].getAttribute("src") != logo) {
                                 isLogoReplaced = true;
-                                currElement.setAttribute("src", logo);
+                                currElement.getElementsByTagName("img")[0].setAttribute("src", logo);
                             }
                         }
                     }
