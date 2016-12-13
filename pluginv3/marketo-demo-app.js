@@ -425,7 +425,7 @@ APP.editAssetVariables = function (assetType, mode, asset) {
         } else if (assetType == "email") {
             var httpRegEx = new RegExp("^http", "i"),
             textRegex = new RegExp("^[^#]", "i"),
-            colorRegex = new RegExp("^#[0-9a-f]{3,6}$|^rgb(", "i"),
+            colorRegex = new RegExp("^#[0-9a-f]{3,6}$|^rgb", "i"),
             logoIds = ["heroLogo", "footerLogo", "headerLogo", "logo"],
             heroBgRegex = new RegExp("heroBackground|hero-background|heroBkg|hero-bkg|heroBg|hero-bg", "i"),
             titleIds = ["title", "heroTitle", "mainTitle"],
