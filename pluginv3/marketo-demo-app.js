@@ -466,7 +466,7 @@ APP.editAssetVariables = function (assetType, mode, asset) {
                                  && currElement.className.search("mktoImg") != -1
                                  && currElement.getElementsByTagName("img")[0]
                                  && currElement.getElementsByTagName("img")[0].getAttribute("src") != logo) {
-                                console.log("Marketo Demo App > Replacing: Logo > " + currElement.getElementsByTagName("img")[0].getAttribute("src") + " > " + new XMLSerializer().serializeToString(currElement));
+                                console.log("Marketo Demo App > Replacing: Logo > " + logo);
                                 
                                 isLogoReplaced = true;
                                 currElement.getElementsByTagName("img")[0].setAttribute("src", logo);
@@ -481,7 +481,7 @@ APP.editAssetVariables = function (assetType, mode, asset) {
                                  && currElement.className.search("mktoText") != -1
                                  && currElement.innerHTML != title
                                  && currElement.innerHTML.search(titleMatch) == -1) {
-                                console.log("Marketo Demo App > Replacing: Title > title = " + title + " > " + currElement.innerHTML + " > " + new XMLSerializer().serializeToString(currElement));
+                                console.log("Marketo Demo App > Replacing: Title > " + title);
                                 
                                 isTitleReplaced = true;
                                 currElement.innerHTML = title;
@@ -497,7 +497,7 @@ APP.editAssetVariables = function (assetType, mode, asset) {
                                  && currElement.className.search("mktoText") == -1
                                  && currElement.innerHTML != subtitle
                                  && currElement.innerHTML.search(subtitle) != -1) {
-                                console.log("Marketo Demo App > Replacing: Subtitle > subtitle = " + subtitle + " > " + currElement.innerHTML + " > "  + new XMLSerializer().serializeToString(currElement));
+                                console.log("Marketo Demo App > Replacing: Subtitle > " + subtitle);
                                 
                                 isSubtitleReplaced = true;
                                 currElement.innerHTML = subtitle;
@@ -523,21 +523,21 @@ APP.editAssetVariables = function (assetType, mode, asset) {
                         waitForReloadMsg = new Ext.Window({
                             closable: false,
                             modal: true,
-                            width: 300,
+                            width: 365,
                             height: 150,
                             cls: 'mktModalForm',
-                            title: "Wait for Page to Reload",
-                            html: "Wait until this page reloads automatically.",
+                            title: "Please Wait for Page to Reload",
+                            html: "Saving edits to Logo, Title, & Subtitle.",
                         });
                         
                         waitForLoadMsg = new Ext.Window({
-                            closable: true,
+                            closable: false,
                             modal: true,
-                            width: 390,
+                            width: 365,
                             height: 300,
                             cls: 'mktModalForm',
                             title: "Please Wait for Page to Load",
-                            html: "Wait until this page completely loads to refresh the page in order to save all Custom Company edits. <br><br>To Disable this Feature: <br>Switch the 'Save Edits' toggle off via the MarketoLive extension.",
+                            html: "Saving edits to Hero Background & Button Background Color: <br>Click on the 'Save & Refresh' button after this page completely loads. <br><br>To Disable this Feature: <br>Switch the 'Save Edits' toggle off via the MarketoLive extension.",
                             buttons: [{
                                     text: "Refresh & Save",
                                     iconCls: 'mkiRefresh',
