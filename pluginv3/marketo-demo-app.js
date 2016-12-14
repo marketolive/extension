@@ -548,25 +548,25 @@ APP.editAssetVariables = function (assetType, mode, asset) {
             
             if (mode == "edit") {
                 var isWebRequestSession = window.setInterval(function () {
-                    console.log("Marketo Demo App > Waiting: Web Request Session Data");
-                    if (typeof(Mkt3) !== "undefined"
-                         && Mkt3
-                         && Mkt3.DL
-                         && Mkt3.DL.dl
-                         && Mkt3.DL.dl.compId
-                         && typeof(MktSecurity) !== "undefined"
-                         && MktSecurity
-                         && MktSecurity.getXsrfId()
-                         && typeof(Ext) !== "undefined"
-                         && Ext
-                         && Ext.id(null, ':')) {
-                        console.log("Marketo Demo App > Editing: Email HTML");
-                                
-                        window.clearInterval(isWebRequestSession);
-                        
-                        editHtml();
-                    }
-                };
+                        console.log("Marketo Demo App > Waiting: Web Request Session Data");
+                        if (typeof(Mkt3) !== "undefined"
+                             && Mkt3
+                             && Mkt3.DL
+                             && Mkt3.DL.dl
+                             && Mkt3.DL.dl.compId
+                             && typeof(MktSecurity) !== "undefined"
+                             && MktSecurity
+                             && MktSecurity.getXsrfId()
+                             && typeof(Ext) !== "undefined"
+                             && Ext
+                             && Ext.id(null, ':')) {
+                            console.log("Marketo Demo App > Editing: Email HTML");
+                            
+                            window.clearInterval(isWebRequestSession);
+                            
+                            editHtml();
+                        }
+                    }, 0);
                 
                 if (asset) {
                     editAssetVars(asset);
