@@ -437,10 +437,31 @@ APP.editAssetVariables = function (assetType, mode, asset) {
             color = getCookie("color"),
             title = "You<br>PREMIER BUSINESS EVENT<br>OF THE YEAR",
             subtitle = getHumanDate(),
+            waitMsg,
             company,
             companyName,
             editHtml,
             editAssetVars;
+            
+            waitMsg = new Ext.Window({
+                    closable: false,
+                    modal: true,
+                    width: 365,
+                    height: 300,
+                    cls: 'mktModalForm',
+                    title: "Please Wait for Page to Load",
+                    html: "Wait until this page completely loads to refresh the page in order to save all Custom Company edits. <br><br>To disable this feature: <br>Switch the 'Save Edits' toggle off via the MarketoLive extension.",
+                    buttons: [{
+                            text: "Refresh & Save",
+                            iconCls: 'mkiRefresh',
+                            cls: 'mktButtonPositive',
+                            handler: function () {
+                                updateHtml();
+                                waitMsg.hide();
+                            }
+                        }
+                    ]
+                });
             
             if (logo != null) {
                 company = logo.split("https://logo.clearbit.com/")[1].split(".")[0];
@@ -455,7 +476,7 @@ APP.editAssetVariables = function (assetType, mode, asset) {
                     var isLogoReplaced,
                     isTitleReplaced,
                     isSubtitleReplaced;
-                    console.log(new XMLSerializer().serializeToString(response));
+                    
                     if (logo) {
                         for (var ii = 0; ii < logoIds.length; ii++) {
                             var currElement = response.getElementById(logoIds[ii]);
@@ -493,9 +514,12 @@ APP.editAssetVariables = function (assetType, mode, asset) {
                     if (isLogoReplaced
                          || isTitleReplaced
                          || isSubtitleReplaced) {
-                        APP.webRequest('/emaileditor/updateContent2', 'ajaxHandler=MktSession&mktReqUid=' + new Date().getTime() + Ext.id(null, ':') + '&emailId=' + Mkt3.DL.dl.compId + '&content=' + new XMLSerializer().serializeToString(response) + '&xsrfId=' + MktSecurity.getXsrfId(), 'POST', "", function (response) {
-                            window.location.reload();
-                        });
+                        var updateHtml = function () {
+                            APP.webRequest('/emaileditor/updateContent2', 'ajaxHandler=MktSession&mktReqUid=' + new Date().getTime() + Ext.id(null, ':') + '&emailId=' + Mkt3.DL.dl.compId + '&content=' + new XMLSerializer().serializeToString(response) + '&xsrfId=' + MktSecurity.getXsrfId(), 'POST', "", function (response) {
+                                window.location.reload();
+                            });
+                        };
+                        waitMsg.show();
                     }
                 });
             };
@@ -546,25 +570,7 @@ APP.editAssetVariables = function (assetType, mode, asset) {
                             
                             window.clearInterval(isWebRequestSession);
                             
-                            var waitMsg = new Ext.Window({
-                                closable: false,
-                                modal: true,
-                                width: 365,
-                                height: 300,
-                                cls: 'mktModalForm',
-                                title: "Please Wait for Page to Load",
-                                html: "Wait until this page completely loads to refresh the page in order to save all Custom Company edits. <br>To disable this feature, switch the Save Edits toggle off via the MarketoLive extension.",
-                                buttons: [{
-                                        text: "Refresh & Save",
-                                        iconCls: 'mkiRefresh',
-                                        cls: 'mktButtonPositive',
-                                        handler: function () {
-                                            editHtml();
-                                        }
-                                    }
-                                ]
-                            });
-                            waitMsg.show();
+                            editHtml();
                         }
                     }, 0);
                 
