@@ -536,6 +536,7 @@ APP.editAssetVariables = function (assetType, mode, asset) {
                             ]
                         });
                         waitForLoadMsg.show();
+                        console.log(new XMLSerializer().serializeToString(response));
                     }
                 });
             };
