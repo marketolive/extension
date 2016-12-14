@@ -463,6 +463,8 @@ APP.editAssetVariables = function (assetType, mode, asset) {
                                  && currElement.className.search("mktoImg") != -1
                                  && currElement.getElementsByTagName("img")[0]
                                  && currElement.getElementsByTagName("img")[0].getAttribute("src") != logo) {
+                                console.log("Marketo Demo App > Replacing: Logo > " + new XMLSerializer().serializeToString(currElement));
+                                
                                 isLogoReplaced = true;
                                 currElement.getElementsByTagName("img")[0].setAttribute("src", logo);
                             }
@@ -475,6 +477,8 @@ APP.editAssetVariables = function (assetType, mode, asset) {
                             if (currElement
                                  && currElement.className.search("mktoText") != -1
                                  && currElement.innerHTML != title) {
+                                console.log("Marketo Demo App > Replacing: Title > " + new XMLSerializer().serializeToString(currElement));
+                                
                                 isTitleReplaced = true;
                                 currElement.innerHTML = title;
                                 break;
@@ -488,6 +492,8 @@ APP.editAssetVariables = function (assetType, mode, asset) {
                             if (currElement
                                  && currElement.className.search("mktoText") != -1
                                  && currElement.innerHTML != subtitle) {
+                                console.log("Marketo Demo App > Replacing: Subtitle > " + new XMLSerializer().serializeToString(currElement));
+                                
                                 isSubtitleReplaced = true;
                                 currElement.innerHTML = subtitle;
                                 break;
@@ -512,7 +518,7 @@ APP.editAssetVariables = function (assetType, mode, asset) {
                         waitForReloadMsg = new Ext.Window({
                             closable: false,
                             modal: true,
-                            width: 315,
+                            width: 300,
                             height: 150,
                             cls: 'mktModalForm',
                             title: "Wait for Page to Reload",
