@@ -346,7 +346,7 @@ APP.editAssetVariables = function (assetType, mode, asset) {
             buttonBorderColorRegex = new RegExp("^(heroButtonBorderColor|hero-button-border-color|heroBorderColor|hero-border-color)$", "i"),
             headerBgColor = "headerBgColor",
             formButtonBgColor = "formButtonBgColor",
-            title = "You To Our PREMIER BUSINESS EVENT OF THE YEAR",
+            title = "You To Our Event",
             company,
             companyName,
             editAssetVars;
@@ -435,7 +435,7 @@ APP.editAssetVariables = function (assetType, mode, asset) {
             logo = getCookie("logo"),
             heroBackground = getCookie("heroBackground"),
             color = getCookie("color"),
-            title = "You<br><br>PREMIER BUSINESS EVENT<br>OF THE YEAR",
+            title = "You<br>PREMIER BUSINESS EVENT<br>OF THE YEAR",
             subtitle = getHumanDate();
             company,
             companyName,
@@ -516,12 +516,11 @@ APP.editAssetVariables = function (assetType, mode, asset) {
                     if (isLogoReplaced
                          || isTitleReplaced
                          || isSubtitleReplaced) {
-                        APP.webRequest('/emaileditor/updateContent2', 'ajaxHandler=MktSession&mktReqUid=' + new Date().getTime() + Ext.id(null, ':') + '&emailId=' + Mkt3.DL.dl.compId + '&content=' + new XMLSerializer().serializeToString(response) + '&xsrfId=' + MktSecurity.getXsrfId(), 'POST', "", function (response) {
-                            console.log(response);
-                            window.setTimeout(function () {
+                        window.setTimeout(function () {
+                            APP.webRequest('/emaileditor/updateContent2', 'ajaxHandler=MktSession&mktReqUid=' + new Date().getTime() + Ext.id(null, ':') + '&emailId=' + Mkt3.DL.dl.compId + '&content=' + new XMLSerializer().serializeToString(response) + '&xsrfId=' + MktSecurity.getXsrfId(), 'POST', "", function (response) {
                                 window.location.reload();
-                            }, 2500);
-                        });
+                            });
+                        }, 2500);
                     }
                 });
             };

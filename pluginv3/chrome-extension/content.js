@@ -246,7 +246,7 @@ window.onload = function () {
                 color = getCookie("color"),
                 defaultColor = "rgb(42, 83, 112)",
                 logoMaxHeight = "55",
-                mktoMainText = "You<br><br>PREMIER BUSINESS EVENT<br>OF THE YEAR",
+                mktoMainText = "You<br>PREMIER BUSINESS EVENT<br>OF THE YEAR",
                 company,
                 companyName,
                 editorRepeatReadyCount = desktopRepeatReadyCount = phoneRepeatReadyCount = 0,
