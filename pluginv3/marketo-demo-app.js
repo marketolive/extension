@@ -527,19 +527,19 @@ APP.editAssetVariables = function (assetType, mode, asset) {
                             height: 150,
                             cls: 'mktModalForm',
                             title: "Please Wait for Page to Reload:",
-                            html: "Saving edits to Logo, Title, & Subtitle.",
+                            html: "Saving Edits to Logo, Title, & Subtitle",
                         });
                         
                         waitForLoadMsg = new Ext.Window({
                             closable: false,
                             modal: true,
                             width: 500,
-                            height: 400,
+                            height: 325,
                             cls: 'mktModalForm',
                             title: "Please Wait for Page to Load:",
-                            html: "<u>Saving edits to Hero Background & Button Background Color:</u> <br>Click on the 'Save & Refresh' button after this page completely loads. <br><br><u>To Disable this Feature:</u> <br><br>Switch the 'Save Edits' toggle off via the MarketoLive extension.",
+                            html: "<u>Saving Edits to Hero Background & Button Background Color:</u> <br>Click on the 'Save & Reload' button after this page completely loads. <br><br><u>To Disable This Feature:</u> <br>Clear the selected company via the MarketoLive extension.",
                             buttons: [{
-                                    text: "Refresh & Save",
+                                    text: "Save & Reload",
                                     iconCls: 'mkiRefresh',
                                     cls: 'mktButtonPositive',
                                     handler: function () {
