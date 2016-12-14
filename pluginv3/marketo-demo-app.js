@@ -529,7 +529,7 @@ APP.editAssetVariables = function (assetType, mode, asset) {
             editAssetVars = function (asset) {
                 var assetVars = asset.getVariableValues();
                 
-                for (var ii = 0; ii < Object.keys(assetVars).length; ii++) {
+                for (var ii = 0; ii != null && ii < Object.keys(assetVars).length; ii++) {
                     var currVariableKey = Object.keys(assetVars)[ii],
                     currVariableValue = Object.values(assetVars)[ii].toString();
                     
