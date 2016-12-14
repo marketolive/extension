@@ -463,7 +463,7 @@ APP.editAssetVariables = function (assetType, mode, asset) {
                                  && currElement.className.search("mktoImg") != -1
                                  && currElement.getElementsByTagName("img")[0]
                                  && currElement.getElementsByTagName("img")[0].getAttribute("src") != logo) {
-                                console.log("Marketo Demo App > Replacing: Logo > " + new XMLSerializer().serializeToString(currElement));
+                                console.log("Marketo Demo App > Replacing: Logo > " + currElement.getElementsByTagName("img")[0].getAttribute("src") + " > " + new XMLSerializer().serializeToString(currElement));
                                 
                                 isLogoReplaced = true;
                                 currElement.getElementsByTagName("img")[0].setAttribute("src", logo);
@@ -477,7 +477,7 @@ APP.editAssetVariables = function (assetType, mode, asset) {
                             if (currElement
                                  && currElement.className.search("mktoText") != -1
                                  && currElement.innerHTML != title) {
-                                console.log("Marketo Demo App > Replacing: Title > " + new XMLSerializer().serializeToString(currElement));
+                                console.log("Marketo Demo App > Replacing: Title > title = " + title + " > " + currElement.innerHTML + " > " + new XMLSerializer().serializeToString(currElement));
                                 
                                 isTitleReplaced = true;
                                 currElement.innerHTML = title;
@@ -492,7 +492,7 @@ APP.editAssetVariables = function (assetType, mode, asset) {
                             if (currElement
                                  && currElement.className.search("mktoText") != -1
                                  && currElement.innerHTML != subtitle) {
-                                console.log("Marketo Demo App > Replacing: Subtitle > " + new XMLSerializer().serializeToString(currElement));
+                                console.log("Marketo Demo App > Replacing: Subtitle > subtitle = " + subtitle + " > " + currElement.innerHTML + " > "  + new XMLSerializer().serializeToString(currElement));
                                 
                                 isSubtitleReplaced = true;
                                 currElement.innerHTML = subtitle;
