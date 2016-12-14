@@ -499,7 +499,7 @@ APP.editAssetVariables = function (assetType, mode, asset) {
                         
                         updateHtml = function () {
                             console.log(new XMLSerializer().serializeToString(response));
-                            APP.webRequest('/emaileditor/updateContent2', 'ajaxHandler=MktSession&mktReqUid=' + new Date().getTime() + Ext.id(null, ':') + '&emailId=' + Mkt3.DL.dl.compId + '&content=' + encodeURI(new XMLSerializer().serializeToString(response)) + '&xsrfId=' + MktSecurity.getXsrfId(), 'POST', "", function (result) {
+                            APP.webRequest('/emaileditor/updateContent2', 'ajaxHandler=MktSession&mktReqUid=' + new Date().getTime() + Ext.id(null, ':') + '&emailId=' + Mkt3.DL.dl.compId + '&content=' + encodeURIComponent(new XMLSerializer().serializeToString(response)) + '&xsrfId=' + MktSecurity.getXsrfId(), 'POST', "", function (result) {
                                 console.log(result);
                                 window.location.reload();
                             });
@@ -508,10 +508,10 @@ APP.editAssetVariables = function (assetType, mode, asset) {
                         waitForReloadMsg = new Ext.Window({
                             closable: false,
                             modal: true,
-                            width: 400,
-                            height: 200,
+                            width: 360,
+                            height: 150,
                             cls: 'mktModalForm',
-                            title: "Please Wait for Page to Reload",
+                            title: "Wait for Page to Reload",
                             html: "Wait until this page reloads automatically.",
                         });
                         
@@ -536,7 +536,6 @@ APP.editAssetVariables = function (assetType, mode, asset) {
                             ]
                         });
                         waitForLoadMsg.show();
-                        console.log(new XMLSerializer().serializeToString(response));
                     }
                 });
             };

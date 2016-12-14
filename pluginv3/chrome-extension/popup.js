@@ -274,7 +274,10 @@ window.onload = function () {
         background.removeCookie(companyImageCookieDesigner);
         background.removeCookie(companyImageResCookieMarketoLive);
         background.removeCookie(companyImageResCookieDesigner);
-        background.reloadTabs(background.mktoDesignerMatchPattern);
+        
+        if (saveEditsToggleCookieDesigner == "false") {
+            background.reloadTabs(background.mktoDesignerMatchPattern);
+        }
         setTimeout(function () {
             window.close();
         }, 1100);
