@@ -631,7 +631,7 @@ var isMktPageDemoApp = window.setInterval(function () {
             
             if (currCompFragment
                  && currCompFragment.search(mktoDesignersFragmentMatch) != -1
-                 && currUrlFragment.search(/[0-9]+$/) != -1 {
+                 && currUrlFragment.search(/[0-9]+$/) != -1) {
                 console.log("Marketo Demo App > Location: Designers/Wizards");
                 
                 switch (currCompFragment) {
