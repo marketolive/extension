@@ -455,7 +455,7 @@ APP.editAssetVariables = function (assetType, mode, asset) {
                     var isLogoReplaced,
                     isTitleReplaced,
                     isSubtitleReplaced;
-                    
+                    console.log(new XMLSerializer().serializeToString(response));
                     if (logo) {
                         for (var ii = 0; ii < logoIds.length; ii++) {
                             var currElement = response.getElementById(logoIds[ii]);
@@ -496,8 +496,8 @@ APP.editAssetVariables = function (assetType, mode, asset) {
                         var updateHtml,
                         waitMsg;
                         
-                        updateHtml = function () {
-                            APP.webRequest('/emaileditor/updateContent2', 'ajaxHandler=MktSession&mktReqUid=' + new Date().getTime() + Ext.id(null, ':') + '&emailId=' + Mkt3.DL.dl.compId + '&content=' + new XMLSerializer().serializeToString(response) + '&xsrfId=' + MktSecurity.getXsrfId(), 'POST', "", function (response) {
+                        updateHtml = function (updatedHtml) {
+                            APP.webRequest('/emaileditor/updateContent2', 'ajaxHandler=MktSession&mktReqUid=' + new Date().getTime() + Ext.id(null, ':') + '&emailId=' + Mkt3.DL.dl.compId + '&content=' + new XMLSerializer().serializeToString(updatedHtml) + '&xsrfId=' + MktSecurity.getXsrfId(), 'POST', "", function (result) {
                                 window.location.reload();
                             });
                         };
@@ -515,7 +515,7 @@ APP.editAssetVariables = function (assetType, mode, asset) {
                                     iconCls: 'mkiRefresh',
                                     cls: 'mktButtonPositive',
                                     handler: function () {
-                                        updateHtml();
+                                        updateHtml(response);
                                         waitMsg.hide();
                                     }
                                 }
