@@ -499,7 +499,7 @@ APP.editAssetVariables = function (assetType, mode, asset) {
                         
                         updateHtml = function () {
                             console.log(new XMLSerializer().serializeToString(response));
-                            APP.webRequest('/emaileditor/updateContent2', 'ajaxHandler=MktSession&mktReqUid=' + new Date().getTime() + Ext.id(null, ':') + '&emailId=' + Mkt3.DL.dl.compId + '&content=' + new XMLSerializer().serializeToString(response) + '&xsrfId=' + MktSecurity.getXsrfId(), 'POST', "", function (result) {
+                            APP.webRequest('/emaileditor/updateContent2', 'ajaxHandler=MktSession&mktReqUid=' + new Date().getTime() + Ext.id(null, ':') + '&emailId=' + Mkt3.DL.dl.compId + '&content=' + encodeURI(new XMLSerializer().serializeToString(response)) + '&xsrfId=' + MktSecurity.getXsrfId(), 'POST', "", function (result) {
                                 console.log(result);
                                 //window.location.reload();
                             });
@@ -508,7 +508,7 @@ APP.editAssetVariables = function (assetType, mode, asset) {
                         waitForReloadMsg = new Ext.Window({
                             closable: false,
                             modal: true,
-                            width: 375,
+                            width: 400,
                             height: 200,
                             cls: 'mktModalForm',
                             title: "Please Wait for Page to Reload",
