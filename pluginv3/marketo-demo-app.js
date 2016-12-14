@@ -436,7 +436,7 @@ APP.editAssetVariables = function (assetType, mode, asset) {
             heroBackground = getCookie("heroBackground"),
             color = getCookie("color"),
             title = "You<br>PREMIER BUSINESS EVENT<br>OF THE YEAR",
-            subtitle = getHumanDate();
+            subtitle = getHumanDate(),
             company,
             companyName,
             editHtml,
