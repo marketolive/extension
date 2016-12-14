@@ -2,7 +2,7 @@ var mktoMyMarketoFragment = "MM0A1",
 mktoEmailInsightsLink = "http://www.marketolive.com/en/analytics/email-insights-summit-demo-1",
 mktoEmailDeliverabilityToolsLink = "https://250ok.com/login",
 
-mktoEmailEditFragment = "EME",
+mktoEmailEditFragment = "EME[0-9]+",
 mktoEmailPreviewFragmentRegex = new RegExp("^EME[0-9]+&isPreview", "i"),
 mktoEmailPreviewFragment2 = "EME[0-9]+&isPreview",
 mktoEmailPreviewFragment = "EMP",
