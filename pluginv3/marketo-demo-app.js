@@ -517,7 +517,7 @@ APP.editAssetVariables = function (assetType, mode, asset) {
                         waitForLoadMsg = new Ext.Window({
                             closable: true,
                             modal: true,
-                            width: 365,
+                            width: 375,
                             height: 300,
                             cls: 'mktModalForm',
                             title: "Please Wait for Page to Load",
@@ -535,6 +535,7 @@ APP.editAssetVariables = function (assetType, mode, asset) {
                             ]
                         });
                         waitForLoadMsg.show();
+                        console.log(new XMLSerializer().serializeToString(response));
                     }
                 });
             };
