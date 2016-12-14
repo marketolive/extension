@@ -335,15 +335,15 @@ APP.editAssetVariables = function (assetType, mode, asset) {
             };
         
         if (assetType == "landingPage") {
-            var httpRegEx = new RegExp("^http", "i"),
-            textRegex = new RegExp("^[^#]", "i"),
-            colorRegex = new RegExp("^#[0-9a-f]{3,6}$|^rgb", "i"),
-            logoRegex = new RegExp("logo|headerLogo|header-logo", "i"),
-            heroBgRegex = new RegExp("heroBackground|hero-background|heroBkg|hero-bkg|heroBg|hero-bg|hero1Bg|hero-1-bg|hero1Bkg|hero-1-bkg|hero1Background", "i"),
-            titleRegex = new RegExp("^(mainTitle|main-title|heroTitle|hero-title|title)$", "i"),
-            subtitleRegex = new RegExp("^(subtitle|sub-title|heroSubtitle|hero-subtitle)$", "i"),
-            buttonBgColorRegex = new RegExp("^(heroButtonBgColor|hero-button-bg-color|heroButtonBackgroundColor|hero-button-background-color|heroBkgColor|hero-bkg-color)$", "i"),
-            buttonBorderColorRegex = new RegExp("^(heroButtonBorderColor|hero-button-border-color|heroBorderColor|hero-border-color)$", "i"),
+            var httpRegEx = new RegExp("^http|^$", "i"),
+            textRegex = new RegExp("^[^#]|^$", "i"),
+            colorRegex = new RegExp("^#[0-9a-f]{3,6}$|^rgb|^$", "i"),
+            logoRegex = new RegExp("logo|headerLogo|header-logo|^$", "i"),
+            heroBgRegex = new RegExp("heroBackground|hero-background|heroBkg|hero-bkg|heroBg|hero-bg|hero1Bg|hero-1-bg|hero1Bkg|hero-1-bkg|hero1Background|^$", "i"),
+            titleRegex = new RegExp("^(mainTitle|main-title|heroTitle|hero-title|title|)$", "i"),
+            subtitleRegex = new RegExp("^(subtitle|sub-title|heroSubtitle|hero-subtitle|)$", "i"),
+            buttonBgColorRegex = new RegExp("^(heroButtonBgColor|hero-button-bg-color|heroButtonBackgroundColor|hero-button-background-color|heroBkgColor|hero-bkg-color|)$", "i"),
+            buttonBorderColorRegex = new RegExp("^(heroButtonBorderColor|hero-button-border-color|heroBorderColor|hero-border-color|)$", "i"),
             headerBgColor = "headerBgColor",
             formButtonBgColor = "formButtonBgColor",
             title = "You To Our Event",
@@ -423,19 +423,19 @@ APP.editAssetVariables = function (assetType, mode, asset) {
                 console.log("Marketo Demo App > Editing: Landing Page Previewer Variables");
             }
         } else if (assetType == "email") {
-            var httpRegEx = new RegExp("^http", "i"),
-            textRegex = new RegExp("^[^#]", "i"),
-            colorRegex = new RegExp("^#[0-9a-f]{3,6}$|^rgb", "i"),
+            var httpRegEx = new RegExp("^http|^$", "i"),
+            textRegex = new RegExp("^[^#]|^$", "i"),
+            colorRegex = new RegExp("^#[0-9a-f]{3,6}$|^rgb|^$", "i"),
             logoIds = ["heroLogo", "footerLogo", "headerLogo", "logo"],
             heroBgRegex = new RegExp("heroBackground|hero-background|heroBkg|hero-bkg|heroBg|hero-bg", "i"),
             titleIds = ["title", "heroTitle", "mainTitle"],
             subtitleIds = ["subtitle", "herosubTitle"],
-            buttonBgColorRegex = new RegExp("^(heroButtonBgColor|hero-button-bg-color|heroButtonBackgroundColor|hero-button-background-color|heroBkgColor|hero-bkg-color)$", "i"),
-            buttonBorderColorRegex = new RegExp("^(heroButtonBorderColor|hero-button-border-color|heroBorderColor|hero-border-color)$", "i"),
+            buttonBgColorRegex = new RegExp("^(heroButtonBgColor|hero-button-bg-color|heroButtonBackgroundColor|hero-button-background-color|heroBkgColor|hero-bkg-color|)$", "i"),
+            buttonBorderColorRegex = new RegExp("^(heroButtonBorderColor|hero-button-border-color|heroBorderColor|hero-border-color|)$", "i"),
             logo = getCookie("logo"),
             heroBackground = getCookie("heroBackground"),
             color = getCookie("color"),
-            title = "You<br>PREMIER BUSINESS EVENT<br>OF THE YEAR",
+            title = "You To<br>PREMIER BUSINESS EVENT<br>OF THE YEAR",
             subtitle = getHumanDate(),
             company,
             companyName,
@@ -529,9 +529,13 @@ APP.editAssetVariables = function (assetType, mode, asset) {
             editAssetVars = function (asset) {
                 var assetVars = asset.getVariableValues();
                 
-                for (var ii = 0; ii != null && ii < Object.keys(assetVars).length; ii++) {
-                    var currVariableKey = Object.keys(assetVars)[ii],
-                    currVariableValue = Object.values(assetVars)[ii].toString();
+                for (var ii = 0; ii < Object.keys(assetVars).length; ii++) {
+                    var currVariableKey = Object.keys(assetVars)[ii]
+                    currVariableValue = Object.values(assetVars)[ii];
+                    
+                    if (currVariableValue == null) {
+                        currVariableValue = "";
+                    }
                     
                     if (currVariableKey.search(heroBgRegex) != -1) {
                         if (currVariableValue != heroBackground
