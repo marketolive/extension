@@ -2,7 +2,7 @@ var mktoMyMarketoFragment = "MM0A1",
 mktoEmailInsightsLink = "http://www.marketolive.com/en/analytics/email-insights-summit-demo-1",
 mktoEmailDeliverabilityToolsLink = "https://250ok.com/login",
 
-mktoEmailEditFragment = "EME[0-9]+",
+mktoEmailEditFragment = "EME",
 mktoEmailPreviewFragmentRegex = new RegExp("^EME[0-9]+&isPreview", "i"),
 mktoEmailPreviewFragment2 = "EME[0-9]+&isPreview",
 mktoEmailPreviewFragment = "EMP",
@@ -630,7 +630,8 @@ var isMktPageDemoApp = window.setInterval(function () {
             }
             
             if (currCompFragment
-                 && currCompFragment.search(mktoDesignersFragmentMatch) != -1) {
+                 && currCompFragment.search(mktoDesignersFragmentMatch) != -1
+                 && currUrlFragment.search(/[0-9]+$/) != -1 {
                 console.log("Marketo Demo App > Location: Designers/Wizards");
                 
                 switch (currCompFragment) {
