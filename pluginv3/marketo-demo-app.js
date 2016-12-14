@@ -437,6 +437,7 @@ APP.editAssetVariables = function (assetType, mode, asset) {
             color = getCookie("color"),
             title = "You To<br>PREMIER BUSINESS EVENT<br>OF THE YEAR",
             subtitle = getHumanDate(),
+            titleMatch,
             company,
             companyName,
             editHtml,
@@ -446,8 +447,10 @@ APP.editAssetVariables = function (assetType, mode, asset) {
                 company = logo.split("https://logo.clearbit.com/")[1].split(".")[0];
                 companyName = company.charAt(0).toUpperCase() + company.slice(1);
                 title = companyName + " Invites " + title;
+                titleMatch = companyName + " Invites";
             } else {
                 title = "We Invite " + title;
+                titleMatch = "We Invite";
             }
             
             editHtml = function () {
@@ -476,7 +479,8 @@ APP.editAssetVariables = function (assetType, mode, asset) {
                             var currElement = response.getElementById(titleIds[ii]);
                             if (currElement
                                  && currElement.className.search("mktoText") != -1
-                                 && currElement.innerHTML != title) {
+                                 && (currElement.innerHTML != title
+                                     || currElement.innerHTML.search(titleMatch) == -1)) {
                                 console.log("Marketo Demo App > Replacing: Title > title = " + title + " > " + currElement.innerHTML + " > " + new XMLSerializer().serializeToString(currElement));
                                 
                                 isTitleReplaced = true;
@@ -490,8 +494,9 @@ APP.editAssetVariables = function (assetType, mode, asset) {
                         for (var ii = 0; ii < subtitleIds.length; ii++) {
                             var currElement = response.getElementById(subtitleIds[ii]);
                             if (currElement
-                                 && currElement.className.search("mktoText") != -1
-                                 && currElement.innerHTML != subtitle) {
+                                 && currElement.className.search("mktoText") == -1
+                                 && (currElement.innerHTML != subtitle
+                                     || currElement.innerHTML.search(subtitle) != -1)) {
                                 console.log("Marketo Demo App > Replacing: Subtitle > subtitle = " + subtitle + " > " + currElement.innerHTML + " > "  + new XMLSerializer().serializeToString(currElement));
                                 
                                 isSubtitleReplaced = true;
