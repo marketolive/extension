@@ -455,7 +455,7 @@ APP.editAssetVariables = function (assetType, mode, asset) {
                     var isLogoReplaced,
                     isTitleReplaced,
                     isSubtitleReplaced;
-                    console.log(new XMLSerializer().serializeToString(response));
+                    
                     if (logo) {
                         for (var ii = 0; ii < logoIds.length; ii++) {
                             var currElement = response.getElementById(logoIds[ii]);
@@ -494,15 +494,26 @@ APP.editAssetVariables = function (assetType, mode, asset) {
                          || isTitleReplaced
                          || isSubtitleReplaced) {
                         var updateHtml,
-                        waitMsg;
+                        waitForReloadMsg,
+                        waitForLoadMsg;
                         
-                        updateHtml = function (updatedHtml) {
-                            APP.webRequest('/emaileditor/updateContent2', 'ajaxHandler=MktSession&mktReqUid=' + new Date().getTime() + Ext.id(null, ':') + '&emailId=' + Mkt3.DL.dl.compId + '&content=' + new XMLSerializer().serializeToString(updatedHtml) + '&xsrfId=' + MktSecurity.getXsrfId(), 'POST', "", function (result) {
+                        updateHtml = function () {
+                            APP.webRequest('/emaileditor/updateContent2', 'ajaxHandler=MktSession&mktReqUid=' + new Date().getTime() + Ext.id(null, ':') + '&emailId=' + Mkt3.DL.dl.compId + '&content=' + new XMLSerializer().serializeToString(response) + '&xsrfId=' + MktSecurity.getXsrfId(), 'POST', "", function (result) {
                                 window.location.reload();
                             });
                         };
                         
-                        waitMsg = new Ext.Window({
+                        waitForReloadMsg = new Ext.Window({
+                            closable: false,
+                            modal: true,
+                            width: 365,
+                            height: 150,
+                            cls: 'mktModalForm',
+                            title: "Please Wait for Page to Reload",
+                            html: "Wait until this page reloads automatically.",
+                        });
+                        
+                        waitForLoadMsg = new Ext.Window({
                             closable: false,
                             modal: true,
                             width: 365,
@@ -515,13 +526,15 @@ APP.editAssetVariables = function (assetType, mode, asset) {
                                     iconCls: 'mkiRefresh',
                                     cls: 'mktButtonPositive',
                                     handler: function () {
-                                        updateHtml(response);
-                                        waitMsg.hide();
+                                        updateHtml();
+                                        waitForLoadMsg.hide();
+                                        waitForReloadMsg.show();
                                     }
                                 }
                             ]
                         });
-                        waitMsg.show();
+                        console.log(new XMLSerializer().serializeToString(response));
+                        waitForLoadMsg.show();
                     }
                 });
             };
