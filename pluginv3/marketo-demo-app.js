@@ -501,7 +501,7 @@ APP.editAssetVariables = function (assetType, mode, asset) {
                             console.log(new XMLSerializer().serializeToString(response));
                             APP.webRequest('/emaileditor/updateContent2', 'ajaxHandler=MktSession&mktReqUid=' + new Date().getTime() + Ext.id(null, ':') + '&emailId=' + Mkt3.DL.dl.compId + '&content=' + encodeURI(new XMLSerializer().serializeToString(response)) + '&xsrfId=' + MktSecurity.getXsrfId(), 'POST', "", function (result) {
                                 console.log(result);
-                                //window.location.reload();
+                                window.location.reload();
                             });
                         };
                         
