@@ -523,18 +523,18 @@ APP.editAssetVariables = function (assetType, mode, asset) {
                         waitForReloadMsg = new Ext.Window({
                             closable: false,
                             modal: true,
-                            width: 365,
-                            height: 150,
+                            width: 375,
+                            height: 175,
                             cls: 'mktModalForm',
                             title: "Please Wait for Page to Reload:",
-                            html: "Saving Edits to Logo, Title, & Subtitle",
+                            html: "<u>Saving Edits to Logo, Title, & Subtitle</u>",
                         });
                         
                         waitForLoadMsg = new Ext.Window({
                             closable: false,
                             modal: true,
                             width: 500,
-                            height: 325,
+                            height: 300,
                             cls: 'mktModalForm',
                             title: "Please Wait for Page to Load:",
                             html: "<u>Saving Edits to Hero Background & Button Background Color:</u> <br>Click on the 'Save & Reload' button after this page completely loads. <br><br><u>To Disable This Feature:</u> <br>Clear the selected company via the MarketoLive extension.",
