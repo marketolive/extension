@@ -426,7 +426,7 @@ APP.editAssetVariables = function (assetType, mode, asset) {
             var httpRegEx = new RegExp("^http|^$", "i"),
             textRegex = new RegExp("^[^#]|^$", "i"),
             colorRegex = new RegExp("^#[0-9a-f]{3,6}$|^rgb|^$", "i"),
-            logoIds = ["heroLogo", "footerLogo", "headerLogo", "logo"],
+            logoIds = ["heroLogo", "footerLogo", "headerLogo", "logoFooter", "logo"],
             heroBgRegex = new RegExp("heroBackground|hero-background|heroBkg|hero-bkg|heroBg|hero-bg", "i"),
             titleIds = ["title", "heroTitle", "mainTitle"],
             subtitleIds = ["subtitle", "herosubTitle"],
@@ -460,6 +460,7 @@ APP.editAssetVariables = function (assetType, mode, asset) {
                         for (var ii = 0; ii < logoIds.length; ii++) {
                             var currElement = response.getElementById(logoIds[ii]);
                             if (currElement
+                                 && currElement.className.search("mktoImg") != -1
                                  && currElement.getElementsByTagName("img")[0]
                                  && currElement.getElementsByTagName("img")[0].getAttribute("src") != logo) {
                                 isLogoReplaced = true;
@@ -472,9 +473,11 @@ APP.editAssetVariables = function (assetType, mode, asset) {
                         for (var ii = 0; ii < titleIds.length; ii++) {
                             var currElement = response.getElementById(titleIds[ii]);
                             if (currElement
+                                 && currElement.className.search("mktoText") != -1
                                  && currElement.innerHTML != title) {
                                 isTitleReplaced = true;
                                 currElement.innerHTML = title;
+                                break;
                             }
                         }
                     }
@@ -483,9 +486,11 @@ APP.editAssetVariables = function (assetType, mode, asset) {
                         for (var ii = 0; ii < subtitleIds.length; ii++) {
                             var currElement = response.getElementById(subtitleIds[ii]);
                             if (currElement
+                                 && currElement.className.search("mktoText") != -1
                                  && currElement.innerHTML != subtitle) {
                                 isSubtitleReplaced = true;
                                 currElement.innerHTML = subtitle;
+                                break;
                             }
                         }
                     }
@@ -507,7 +512,7 @@ APP.editAssetVariables = function (assetType, mode, asset) {
                         waitForReloadMsg = new Ext.Window({
                             closable: false,
                             modal: true,
-                            width: 350,
+                            width: 315,
                             height: 150,
                             cls: 'mktModalForm',
                             title: "Wait for Page to Reload",
@@ -517,7 +522,7 @@ APP.editAssetVariables = function (assetType, mode, asset) {
                         waitForLoadMsg = new Ext.Window({
                             closable: true,
                             modal: true,
-                            width: 375,
+                            width: 390,
                             height: 300,
                             cls: 'mktModalForm',
                             title: "Please Wait for Page to Load",
@@ -535,7 +540,6 @@ APP.editAssetVariables = function (assetType, mode, asset) {
                             ]
                         });
                         waitForLoadMsg.show();
-                        console.log(new XMLSerializer().serializeToString(response));
                     }
                 });
             };
