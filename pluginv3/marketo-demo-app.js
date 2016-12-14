@@ -588,6 +588,7 @@ APP.editAssetVariables = function (assetType, mode, asset) {
                                  && Mkt3.app.controllers.get("Mkt3.controller.editor.email2.EmailEditor")
                                  && Mkt3.app.controllers.get("Mkt3.controller.editor.email2.EmailEditor").getEmail()
                                  && Mkt3.app.controllers.get("Mkt3.controller.editor.email2.EmailEditor").getEmail().getVariableValues()
+                                 && Object.keys(Mkt3.app.controllers.get("Mkt3.controller.editor.email2.EmailEditor").getEmail().getVariableValues()).length != 0
                                  && Mkt3.app.controllers.get("Mkt3.controller.editor.email2.EmailEditor").getEmail().setVariableValue) {
                                 console.log("Marketo Demo App > Editing: Email Editor Variables");
                                 
