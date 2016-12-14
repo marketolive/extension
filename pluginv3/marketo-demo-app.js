@@ -455,7 +455,7 @@ APP.editAssetVariables = function (assetType, mode, asset) {
                     var isLogoReplaced,
                     isTitleReplaced,
                     isSubtitleReplaced;
-                    
+                    console.log(new XMLSerializer().serializeToString(response));
                     if (logo) {
                         for (var ii = 0; ii < logoIds.length; ii++) {
                             var currElement = response.getElementById(logoIds[ii]);
@@ -493,25 +493,25 @@ APP.editAssetVariables = function (assetType, mode, asset) {
                     if (isLogoReplaced
                          || isTitleReplaced
                          || isSubtitleReplaced) {
-                        APP.webRequest('/emaileditor/updateContent2', 'ajaxHandler=MktSession&mktReqUid=' + new Date().getTime() + Ext.id(null, ':') + '&emailId=' + Mkt3.DL.dl.compId + '&content=' + new XMLSerializer().serializeToString(response) + '&xsrfId=' + MktSecurity.getXsrfId(), 'POST', "", function (response) {
-                            var waitMsg = new Ext.Window({
-                                closable : false,
-                                modal : true,
-                                width : 365,
-                                height : 300,
-                                cls : 'mktModalForm',
-                                title : "Please Wait for Page to Load",
-                                html : "Wait until this page completely loads to refresh the page in order to save all Custom Company edits.",
-                                buttons : [{
-                                        text : "Refresh & Save",
-                                        iconCls : 'mkiRefresh',
-                                        cls : 'mktButtonPositive',
-                                        handler : function () {
+                        var waitMsg = new Ext.Window({
+                                closable: false,
+                                modal: true,
+                                width: 365,
+                                height: 300,
+                                cls: 'mktModalForm',
+                                title: "Please Wait for Page to Load",
+                                html: "Wait until this page completely loads to refresh the page in order to save all Custom Company edits.",
+                                buttons: [{
+                                        text: "Refresh & Save",
+                                        iconCls: 'mkiRefresh',
+                                        cls: 'mktButtonPositive',
+                                        handler: function () {
                                             window.location.reload();
                                         }
                                     }
                                 ]
                             });
+                        APP.webRequest('/emaileditor/updateContent2', 'ajaxHandler=MktSession&mktReqUid=' + new Date().getTime() + Ext.id(null, ':') + '&emailId=' + Mkt3.DL.dl.compId + '&content=' + new XMLSerializer().serializeToString(response) + '&xsrfId=' + MktSecurity.getXsrfId(), 'POST', "", function (response) {
                             waitMsg.show();
                         });
                     }
