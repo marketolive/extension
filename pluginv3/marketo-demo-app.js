@@ -575,7 +575,8 @@ var isMktPageDemoApp = window.setInterval(function () {
             
             if (typeof(Mkt3) !== "undefined"
                  && Mkt3.DL
-                 && Mkt3.DL.getDlToken()) {
+                 && Mkt3.DL.getDlToken()
+                 && Mkt3.DL.getDlToken() != "") {
                 currUrlFragment = Mkt3.DL.getDlToken();
                 
                 if (Mkt3.DL.dl
@@ -588,7 +589,8 @@ var isMktPageDemoApp = window.setInterval(function () {
                 }
             }
             
-            if (currCompFragment.search(mktoDesignersFragmentMatch) != -1) {
+            if (currCompFragment
+                 && currCompFragment.search(mktoDesignersFragmentMatch) != -1) {
                 console.log("Marketo Demo App > Location: Designers/Wizards");
                 
                 switch (currCompFragment) {
