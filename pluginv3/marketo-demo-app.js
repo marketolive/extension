@@ -498,16 +498,18 @@ APP.editAssetVariables = function (assetType, mode, asset) {
                         waitForLoadMsg;
                         
                         updateHtml = function () {
+                            console.log(new XMLSerializer().serializeToString(response));
                             APP.webRequest('/emaileditor/updateContent2', 'ajaxHandler=MktSession&mktReqUid=' + new Date().getTime() + Ext.id(null, ':') + '&emailId=' + Mkt3.DL.dl.compId + '&content=' + new XMLSerializer().serializeToString(response) + '&xsrfId=' + MktSecurity.getXsrfId(), 'POST', "", function (result) {
-                                window.location.reload();
+                                console.log(result);
+                                //window.location.reload();
                             });
                         };
                         
                         waitForReloadMsg = new Ext.Window({
                             closable: false,
                             modal: true,
-                            width: 365,
-                            height: 150,
+                            width: 375,
+                            height: 200,
                             cls: 'mktModalForm',
                             title: "Please Wait for Page to Reload",
                             html: "Wait until this page reloads automatically.",
@@ -520,7 +522,7 @@ APP.editAssetVariables = function (assetType, mode, asset) {
                             height: 300,
                             cls: 'mktModalForm',
                             title: "Please Wait for Page to Load",
-                            html: "Wait until this page completely loads to refresh the page in order to save all Custom Company edits. <br><br>To disable this feature: <br>Switch the 'Save Edits' toggle off via the MarketoLive extension.",
+                            html: "Wait until this page completely loads to refresh the page in order to save all Custom Company edits. <br><br>To Disable this Feature: <br>Switch the 'Save Edits' toggle off via the MarketoLive extension.",
                             buttons: [{
                                     text: "Refresh & Save",
                                     iconCls: 'mkiRefresh',
@@ -533,7 +535,6 @@ APP.editAssetVariables = function (assetType, mode, asset) {
                                 }
                             ]
                         });
-                        console.log(new XMLSerializer().serializeToString(response));
                         waitForLoadMsg.show();
                     }
                 });
