@@ -523,7 +523,7 @@ APP.editAssetVariables = function (assetType, mode, asset) {
                         waitForReloadMsg = new Ext.Window({
                             closable: false,
                             modal: true,
-                            width: 375,
+                            width: 380,
                             height: 175,
                             cls: 'mktModalForm',
                             title: "Please Wait for Page to Reload:",
