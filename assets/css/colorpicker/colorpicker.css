@@ -17,7 +17,7 @@ html, body{
 }
 .body-container{
   width: 100%;
-  height: 1014px;
+  height: 964px;
   background-color: #f2f2f2;
 }
 .center-image{
@@ -60,7 +60,7 @@ html, body{
 }
 .search-result, .search-result-img, .search-result-text {
   max-width: 363px;
-  max-height: 247px;
+  max-height: 222px;
 }
 .search-result, .search-result-text {
   margin: 0 12px 12px 0;
