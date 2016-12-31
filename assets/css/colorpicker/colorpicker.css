@@ -59,8 +59,8 @@ html, body{
   box-shadow: 1px 1px 1px #505050;
 }
 .search-result, .search-result-img, .search-result-text {
-  max-width: 366px;
-  max-height: 243px;
+  max-width: 363px;
+  max-height: 284px;
 }
 .search-result, .search-result-text {
   margin: 0 12px 12px 0;
