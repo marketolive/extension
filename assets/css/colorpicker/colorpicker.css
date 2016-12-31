@@ -60,7 +60,7 @@ html, body{
 }
 .search-result, .search-result-img, .search-result-text {
   max-width: 363px;
-  max-height: 259px;
+  max-height: 247px;
 }
 .search-result, .search-result-text {
   margin: 0 12px 12px 0;
