@@ -26,8 +26,8 @@ html, body{
   padding-top: 50px;
 }
 .image-size{
-  max-width: 100px;
-  max-height: 100px;
+  max-width: 150px;
+  max-height: 150px;
 }
 .correct-image-options-container{
   width: 100%;
@@ -64,7 +64,7 @@ html, body{
 }
 .search-result, .search-result-img, .search-result-text {
   max-width: 366px;
-  max-height: 268px;
+  max-height: 243px;
 }
 .search-result, .search-result-text {
   margin: 0 12px 12px 0;
