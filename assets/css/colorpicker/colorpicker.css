@@ -25,10 +25,6 @@ html, body{
   text-align: center;
   padding-top: 50px;
 }
-.image-size{
-  max-width: 150px;
-  max-height: 150px;
-}
 .correct-image-options-container{
   width: 100%;
   margin-left:auto;
