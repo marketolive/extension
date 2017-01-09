@@ -510,8 +510,7 @@ APP.editAssetVariables = function (assetType, mode, asset) {
                          || isTitleReplaced
                          || isSubtitleReplaced) {
                         var updateHtml,
-                        waitForReloadMsg,
-                        waitForLoadMsg;
+                        waitForReloadMsg;
                         
                         updateHtml = function () {
                             APP.webRequest('/emaileditor/updateContent2', 'ajaxHandler=MktSession&mktReqUid=' + new Date().getTime() + Ext.id(null, ':') + '&emailId=' + Mkt3.DL.dl.compId + '&content=' + encodeURIComponent(new XMLSerializer().serializeToString(response)) + '&xsrfId=' + MktSecurity.getXsrfId(), 'POST', "", function (result) {
@@ -530,33 +529,26 @@ APP.editAssetVariables = function (assetType, mode, asset) {
                             html: "<u>Saving Edits to Logo, Title, & Subtitle</u>",
                         });
                         
-                        waitForLoadMsg = new Ext.Window({
-                            closable: false,
-                            modal: true,
-                            width: 500,
-                            height: 300,
-                            cls: 'mktModalForm',
-                            title: "Please Wait for Page to Load:",
-                            html: "<u>Saving Edits to Hero Background & Button Background Color:</u> <br>Click on the 'Save & Reload' button after this page completely loads. <br><br><u>To Disable This Feature:</u> <br>Clear the selected company via the MarketoLive extension.",
-                            buttons: [{
-                                    text: "Save & Reload",
-                                    iconCls: 'mkiRefresh',
-                                    cls: 'mktButtonPositive',
-                                    handler: function () {
-                                        updateHtml();
-                                        waitForLoadMsg.hide();
-                                        waitForReloadMsg.show();
-                                    }
-                                }
-                            ]
-                        });
-                        waitForLoadMsg.show();
+                        waitForReloadMsg.show();
+                        updateHtml();
                     }
                 });
             };
             
             editAssetVars = function (asset) {
-                var assetVars = asset.getVariableValues();
+                var assetVars = asset.getVariableValues(),
+                waitForLoadMsg;
+                
+                waitForLoadMsg = new Ext.Window({
+                        closable: false,
+                        modal: true,
+                        width: 500,
+                        height: 300,
+                        cls: 'mktModalForm',
+                        title: "Please Wait for Page to Load:",
+                        html: "<u>Saving Edits to Hero Background & Button Background Color</u> <br><br><u>To Disable This Feature:</u> <br>Clear the selected company via the MarketoLive extension.",
+                    });
+                waitForLoadMsg.show();
                 
                 for (var ii = 0; ii < Object.keys(assetVars).length; ii++) {
                     var currVariableKey = Object.keys(assetVars)[ii]
@@ -583,6 +575,7 @@ APP.editAssetVariables = function (assetType, mode, asset) {
                         }
                     }
                 }
+                waitForLoadMsg.hide();
             };
             
             console.log("Marketo Demo App > Editing: Email Variables");
