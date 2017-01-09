@@ -522,11 +522,11 @@ APP.editAssetVariables = function (assetType, mode, asset) {
                         waitForReloadMsg = new Ext.Window({
                             closable: false,
                             modal: true,
-                            width: 380,
-                            height: 175,
+                            width: 500,
+                            height: 250,
                             cls: 'mktModalForm',
-                            title: "Please Wait for Page to Reload:",
-                            html: "<u>Saving Edits to Logo, Title, & Subtitle</u>",
+                            title: "Please Wait for Page to Reload",
+                            html: "<u>Saving Edits to Logo, Title, & Subtitle</u> <br>Wait for this page to reload automatically.",
                         });
                         
                         waitForReloadMsg.show();
@@ -540,15 +540,14 @@ APP.editAssetVariables = function (assetType, mode, asset) {
                 waitForLoadMsg;
                 
                 waitForLoadMsg = new Ext.Window({
-                        closable: false,
+                        closable: true,
                         modal: true,
                         width: 500,
-                        height: 300,
+                        height: 250,
                         cls: 'mktModalForm',
                         title: "Please Wait for Page to Load:",
-                        html: "<u>Saving Edits to Hero Background & Button Background Color</u> <br><br><u>To Disable This Feature:</u> <br>Clear the selected company via the MarketoLive extension.",
+                        html: "<u>Saving Edits to Hero Background & Button Background Color</u> <br>Wait until this page completely loads before closing. <br><br><u>To Disable This Feature:</u> <br>Clear the selected company via the MarketoLive extension.",
                     });
-                waitForLoadMsg.show();
                 
                 for (var ii = 0; ii < Object.keys(assetVars).length; ii++) {
                     var currVariableKey = Object.keys(assetVars)[ii]
@@ -559,23 +558,28 @@ APP.editAssetVariables = function (assetType, mode, asset) {
                     }
                     
                     if (currVariableKey.search(heroBgRegex) != -1) {
+                        waitForLoadMsg.show();
                         if (currVariableValue != heroBackground
                              && currVariableValue.search(httpRegEx) != -1) {
                             asset.setVariableValue(currVariableKey, heroBackground);
                         }
                     } else if (currVariableKey.search(buttonBgColorRegex) != -1) {
+                        waitForLoadMsg.show();
                         if (currVariableValue != color
                              && currVariableValue.search(colorRegex) != -1) {
                             asset.setVariableValue(currVariableKey, color);
                         }
                     } else if (currVariableKey.search(buttonBorderColorRegex) != -1) {
+                        waitForLoadMsg.show();
                         if (currVariableValue != color
                              && currVariableValue.search(colorRegex) != -1) {
                             asset.setVariableValue(currVariableKey, color);
                         }
                     }
                 }
-                waitForLoadMsg.hide();
+                window.setInterval(function () {
+                    waitForLoadMsg.hide();
+                }, 5000);
             };
             
             console.log("Marketo Demo App > Editing: Email Variables");
