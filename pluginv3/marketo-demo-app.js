@@ -577,9 +577,7 @@ APP.editAssetVariables = function (assetType, mode, asset) {
                         }
                     }
                 }
-                window.setInterval(function () {
-                    waitForLoadMsg.hide();
-                }, 5000);
+                editHtml();
             };
             
             console.log("Marketo Demo App > Editing: Email Variables");
@@ -602,7 +600,7 @@ APP.editAssetVariables = function (assetType, mode, asset) {
                             
                             window.clearInterval(isWebRequestSession);
                             
-                            editHtml();
+                            //editHtml();
                         }
                     }, 0);
                 
