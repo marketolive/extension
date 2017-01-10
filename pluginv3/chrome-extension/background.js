@@ -216,14 +216,9 @@ function reloadTabs(urlMatch) {
  *
  *  @function
  *
- *  @param [Object] webRequest - JSON object that contains the following key/value pairs:
- *      {String} tabId - The ID of the tab which completed the webRequest.
- *      {String} assetType - The type of the asset for this request.
- *      {String} assetView - The mode in which this asset is being viewed (edit/preview).
- *
  **************************************************************************************/
 
-function reloadCompany(webRequest) {
+function reloadCompany() {
     console.log("Loading: Company Logo & Color");
     
     var companyLogoCookieDesigner = {
@@ -277,70 +272,18 @@ function reloadCompany(webRequest) {
                 }
             }
             
-            if (webRequest) {
-                count = 0;
-                message.action = "initialCompany";
-                chrome.tabs.get(webRequest.tabId, function (tab) {
-                    setAssetData(tab);
-                });
-            } else {
-                message.action = "newCompany";
-                chrome.tabs.query(queryInfo, function (tabs) {
-                    for (var ii = 0; ii < tabs.length; ii++) {
-                        setAssetData(tabs[ii]);
-                    }
-                });
-            }
+            message.action = "newCompany";
+            chrome.tabs.query(queryInfo, function (tabs) {
+                for (var ii = 0; ii < tabs.length; ii++) {
+                    setAssetData(tabs[ii]);
+                }
+            });
         } else {
             console.log("NOT Loading: Company Logo & Color as logo is undefined");
         }
     });
 }
 
-/**************************************************************************************
- *
- *  This function registers an event listener for Marketo email designer and previewer
- *  web requests which indicates that either the designer is completely loaded or the
- *  previewer iframes are ready in order to call the reloadCompany function to overlay
- *  the email with the company logo and color.
- *
- *  @Author Brian Fisher
- *
- *  @function
- *
- *  @param {function} - Callback function for the response.
- *
- **************************************************************************************/
-/*
-chrome.webRequest.onCompleted.addListener(function (details) {
-    console.log("webRequest Completed: " + details.url);
-    
-    var webRequest = {
-        "tabId" : details.tabId
-    };
-    
-    if (details.url.search(mktoEmailPreviewWebRequestRegex) != -1) {
-        count++;
-        
-        if (count == 2) {
-            console.log("webRequest Completed: Email Previewer");
-            reloadCompany(webRequest);
-        }
-    } else if (details.url.search(mktoLandingPagePreviewWebRequestRegex) != -1) {
-        count++;
-        
-        if (count == 4) {
-            console.log("webRequest Completed: Landing Page Previewer");
-            reloadCompany(webRequest);
-        }
-    } else {
-        reloadCompany(webRequest);
-    }
-    
-}, {
-    urls : [mktoEmailDesignerWebRequestMatch, mktoEmailPreviewWebRequestMatch, mktoLandingPageDesignerWebRequestMatch, mktoLandingPagePreviewWebRequestMatch]
-});
-*/
 /**************************************************************************************
  *
  *  This function registers an event listener in order to receive the company's logo

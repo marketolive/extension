@@ -275,9 +275,13 @@ window.onload = function () {
         background.removeCookie(companyImageResCookieMarketoLive);
         background.removeCookie(companyImageResCookieDesigner);
         
-        if (saveEditsToggleCookieDesigner == "false") {
-            background.reloadTabs(background.mktoDesignerMatchPattern);
-        }
+        background.getCookie(saveEditsToggleCookieDesigner, function (cookie) {
+            if (cookie != null
+                 && cookie.value == "false") {
+                background.reloadTabs(background.mktoDesignerMatchPattern);
+            }
+        });
+        
         setTimeout(function () {
             window.close();
         }, 1100);

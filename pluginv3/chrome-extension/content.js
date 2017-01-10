@@ -176,8 +176,7 @@ window.onload = function () {
             var getHumanDate,
             overlayEmail,
             overlayLandingPage,
-            addNewCompanyListener,
-            count;
+            addNewCompanyListener;
             
             /**************************************************************************************
              *
@@ -241,6 +240,7 @@ window.onload = function () {
                 mainTitleMktoNameRegex = new RegExp("^main title$|^mainTitle$|^main-title$|^hero title$|^heroTitle$|^hero-title$|^title$", "i"),
                 subTitleMktoNameRegex = new RegExp("^subtitle$|^sub-title$|^hero subtitle$|^heroSubtitle$|^hero-subtitle$", "i"),
                 buttonTextRegex = new RegExp("signup|sign up|call to action|cta|register|more|contribute", "i"),
+                saveEditsToggle = getCookie("saveEditsToggleState"),
                 logo = getCookie("logo"),
                 heroBackground = getCookie("heroBackground"),
                 color = getCookie("color"),
@@ -254,9 +254,10 @@ window.onload = function () {
                 maxRepeatReady = 500,
                 maxPreviewRepeatReady = 3000;
                 
-                if (logo == null
-                     && heroBackground == null
-                     && color == null) {
+                if (saveEditsToggle == "true"
+                     || (logo == null
+                         && heroBackground == null
+                         && color == null)) {
                     return false;
                 }
                 if (logo != null) {
@@ -538,7 +539,6 @@ window.onload = function () {
                                          && isMktoHeaderBgColorReplaced)))
                              || isMktoEmail1Replaced) {
                             clearOverlayVars();
-                            count = 0;
                             return true;
                         }
                     }
@@ -620,7 +620,6 @@ window.onload = function () {
                                 console.log("Content > Overlaying: Email Interval is Cleared");
                                 window.clearInterval(isEmailEditor2);
                                 clearOverlayVars();
-                                count = 0;
                                 return true;
                             }
                         }
@@ -655,6 +654,7 @@ window.onload = function () {
                 mktoRichMainTextDivClassNameRegex = new RegExp("main title|main_title|mainTitle|main-title|title", "i"),
                 mktoRichSubTextDivClassNameRegex = new RegExp("subtitle|sub-title", "i"),
                 buttonTextRegex = new RegExp("signup|sign up|call to action|cta|register|more|contribute|submit", "i"),
+                saveEditsToggle = getCookie("saveEditsToggleState"),
                 logo = getCookie("logo"),
                 heroBackground = getCookie("heroBackground"),
                 color = getCookie("color"),
@@ -669,9 +669,10 @@ window.onload = function () {
                 maxRepeatReady = 500,
                 maxOtherRepeatReady = 2000;
                 
-                if (logo == null
-                     && heroBackground == null
-                     && color == null) {
+                if (saveEditsToggle == "true"
+                     || (logo == null
+                         && heroBackground == null
+                         && color == null)) {
                     return false;
                 }
                 if (logo != null) {
@@ -1158,7 +1159,6 @@ window.onload = function () {
                                 console.log("Content > Overlaying: Landing Page Interval is Cleared");
                                 window.clearInterval(isLandingPageEditor);
                                 clearOverlayVars();
-                                count = 0;
                                 return true;
                             }
                         } else if (action == "preview") {
@@ -1255,7 +1255,6 @@ window.onload = function () {
                                 console.log("Content > Overlaying: Landing Page Interval is Cleared");
                                 window.clearInterval(isLandingPageEditor);
                                 clearOverlayVars();
-                                count = 0;
                                 return true;
                             }
                         }
@@ -1284,43 +1283,10 @@ window.onload = function () {
              **************************************************************************************/
             
             addNewCompanyListener = function () {
-                count = 0;
                 console.log("Content > Adding: New Company Listener");
                 
                 chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
                     switch (message.action) {
-                    case "initialCompany":
-                        count++;
-                        if (count == 1) {
-                            console.log("Content > Capturing: Initial Company");
-                            switch (message.assetType) {
-                            case "email":
-                                if (message.assetView == "edit") {
-                                    console.log("Content > Capturing: Initial Company for Email Designer");
-                                    overlayEmail("edit");
-                                } else if (message.assetView == "preview") {
-                                    console.log("Content > Capturing: Initial Company for Email Previewer");
-                                    overlayEmail("preview");
-                                }
-                                break;
-                            case "landingPage":
-                                if (message.assetView == "edit") {
-                                    console.log("Content > Capturing: Initial Company for Landing Page Designer");
-                                    overlayLandingPage("edit");
-                                } else if (message.assetView == "preview") {
-                                    console.log("Content > Capturing: Initial Company for Landing Page Previewer");
-                                    overlayLandingPage("preview");
-                                }
-                                break;
-                            }
-                        } else if (count == 5) {
-                            if (message.assetType == "landingPage"
-                                 && message.assetView == "preview") {
-                                console.log("Content > Capturing: Initial Company for Landing Page Previewer Again");
-                                overlayLandingPage("preview");
-                            }
-                        }
-                        break;
                     case "newCompany":
                         console.log("Content > Capturing: New Company");
                         switch (message.assetType) {
