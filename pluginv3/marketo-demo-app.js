@@ -582,8 +582,8 @@ APP.editAssetVariables = function (assetType, mode, asset) {
                 }
                 
                 if (waitForLoadMsg.isVisible()) {
-                    Mkt3.app.controllers.get("Mkt3.controller.editor.email2.EmailEditor").reloadIframeContent();
                     window.setInterval(function () {
+                        Mkt3.app.controllers.get("Mkt3.controller.editor.email2.EmailEditor").reloadIframeContent();
                         waitForLoadMsg.hide();
                     }, 7500);
                 }
