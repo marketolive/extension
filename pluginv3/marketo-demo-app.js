@@ -451,7 +451,7 @@ APP.editAssetVariables = function (assetType, mode, asset) {
                     width: 500,
                     height: 250,
                     cls: 'mktModalForm',
-                    title: "Please Wait for Page to Load:",
+                    title: "Please Wait for Page to Load",
                     html: "<u>Saving Edits to Hero Background & Button Background Color</u> <br>Wait until this page completely loads before closing. <br><br><u>To Disable This Feature:</u> <br>Clear the selected company via the MarketoLive extension.",
                 });
             waitForReloadMsg = new Ext.Window({
@@ -461,7 +461,7 @@ APP.editAssetVariables = function (assetType, mode, asset) {
                     height: 250,
                     cls: 'mktModalForm',
                     title: "Please Wait for Page to Reload",
-                    html: "<u>Saving Edits to Logo, Title, & Subtitle</u> <br>Wait for this page to reload automatically.",
+                    html: "<u>Saving Edits to Logo, Title, & Subtitle</u> <br>Wait for this page to reload automatically. <br><br><u>To Disable This Feature:</u> <br>Clear the selected company via the MarketoLive extension.",
                 });
             
             if (logo != null) {
@@ -582,6 +582,7 @@ APP.editAssetVariables = function (assetType, mode, asset) {
                 }
                 
                 if (waitForLoadMsg.isVisible()) {
+                    Mkt3.app.controllers.get("Mkt3.controller.editor.email2.EmailEditor").reloadIframeContent();
                     window.setInterval(function () {
                         waitForLoadMsg.hide();
                     }, 7500);
