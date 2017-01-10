@@ -580,6 +580,12 @@ APP.editAssetVariables = function (assetType, mode, asset) {
                         }
                     }
                 }
+                
+                if (waitForLoadMsg.isVisible()) {
+                    window.setInterval(function () {
+                        waitForLoadMsg.hide();
+                    }, 7500);
+                }
             };
             
             console.log("Marketo Demo App > Editing: Email Variables");
@@ -611,7 +617,8 @@ APP.editAssetVariables = function (assetType, mode, asset) {
                 } else {
                     var isEmailEditorVariables = window.setInterval(function () {
                             console.log("Marketo Demo App > Waiting: Email Editor Variables");
-                            if (typeof(Mkt3) !== "undefined"
+                            if (!waitForReloadMsg.isVisible()
+                                 && typeof(Mkt3) !== "undefined"
                                  && Mkt3
                                  && Mkt3.app
                                  && Mkt3.app.controllers
