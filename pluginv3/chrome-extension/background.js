@@ -311,7 +311,7 @@ function reloadCompany(webRequest) {
  *  @param {function} - Callback function for the response.
  *
  **************************************************************************************/
-
+/*
 chrome.webRequest.onCompleted.addListener(function (details) {
     console.log("webRequest Completed: " + details.url);
     
@@ -340,7 +340,7 @@ chrome.webRequest.onCompleted.addListener(function (details) {
 }, {
     urls : [mktoEmailDesignerWebRequestMatch, mktoEmailPreviewWebRequestMatch, mktoLandingPageDesignerWebRequestMatch, mktoLandingPagePreviewWebRequestMatch]
 });
-
+*/
 /**************************************************************************************
  *
  *  This function registers an event listener in order to receive the company's logo

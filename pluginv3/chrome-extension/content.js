@@ -247,6 +247,7 @@ window.onload = function () {
                 defaultColor = "rgb(42, 83, 112)",
                 logoMaxHeight = "55",
                 mktoMainText = "You<br>PREMIER BUSINESS EVENT<br>OF THE YEAR",
+                mktoSubText = getHumanDate(),
                 company,
                 companyName,
                 editorRepeatReadyCount = desktopRepeatReadyCount = phoneRepeatReadyCount = 0,
@@ -396,7 +397,7 @@ window.onload = function () {
                                 
                                 if (mktoSubtitle) {
                                     console.log("Content > Overlaying: Email 2.0 Company Today's Date in Subtitle for Demo Svcs Template");
-                                    mktoSubtitle.innerHTML = getHumanDate();
+                                    mktoSubtitle.innerHTML = mktoSubText;
                                     isMktoSubTextReplaced = true;
                                 }
                                 
@@ -423,7 +424,7 @@ window.onload = function () {
                                              && currMktoTextMktoName.search(subTitleMktoNameRegex) != -1) {
                                             if (currMktoText.innerHTML) {
                                                 console.log("Content > Overlaying: Email 2.0 Company Today's Date in Subtitle");
-                                                currMktoText.innerHTML = getHumanDate();
+                                                currMktoText.innerHTML = mktoSubText;
                                                 isMktoSubTextReplaced = true;
                                             }
                                         }
@@ -660,6 +661,7 @@ window.onload = function () {
                 defaultColor = "rgb(42, 83, 112)",
                 logoOrigMaxHeight = "55",
                 mktoMainText = "You To Our Event",
+                mktoSubText = getHumanDate(),
                 company,
                 companyName,
                 linearGradient,
@@ -675,7 +677,7 @@ window.onload = function () {
                 if (logo != null) {
                     company = logo.split("https://logo.clearbit.com/")[1].split(".")[0];
                     companyName = company.charAt(0).toUpperCase() + company.slice(1);
-                    mktoMainText = companyName + " Invite " + mktoMainText;
+                    mktoMainText = companyName + " Invites " + mktoMainText;
                 } else {
                     mktoMainText = "We Invite " + mktoMainText;
                 }
@@ -838,7 +840,7 @@ window.onload = function () {
                                 
                                 if (mktoSubtitle) {
                                     console.log("Content > Overlaying: Landing Page Company Today's Date in Subtitle for Demo Svcs Template");
-                                    mktoSubtitle.innerHTML = getHumanDate();
+                                    mktoSubtitle.innerHTML = mktoSubText;
                                     isMktoSubTextReplaced = true;
                                 }
                                 
@@ -868,9 +870,9 @@ window.onload = function () {
                                                 if (!currMktoText.childElementCount) {
                                                     console.log("Content > Overlaying: Guided Landing Page Company Today's Date in Subtitle");
                                                     if (currMktoText.innerHTML) {
-                                                        currMktoText.innerHTML = getHumanDate();
+                                                        currMktoText.innerHTML = mktoSubText;
                                                     } else {
-                                                        currMktoText.parentNode.innerHTML = getHumanDate();
+                                                        currMktoText.parentNode.innerHTML = mktoSubText;
                                                     }
                                                     isMktoSubTextReplaced = true;
                                                 } else if (currMktoText.childNodes
@@ -878,9 +880,9 @@ window.onload = function () {
                                                     if (!currMktoText.childNodes[0].childElementCount) {
                                                         console.log("Content > Overlaying: Guided Landing Page Company Today's Date in Subtitle");
                                                         if (currMktoText.childNodes[0].innerHTML) {
-                                                            currMktoText.childNodes[0].innerHTML = getHumanDate();
+                                                            currMktoText.childNodes[0].innerHTML = mktoSubText;
                                                         } else {
-                                                            currMktoText.innerHTML = getHumanDate();
+                                                            currMktoText.innerHTML = mktoSubText;
                                                         }
                                                         isMktoSubTextReplaced = true;
                                                     } else if (currMktoText.childNodes[0].childNodes
@@ -888,9 +890,9 @@ window.onload = function () {
                                                          && !currMktoText.childNodes[0].childNodes[0].childElementCount) {
                                                         console.log("Content > Overlaying: Guided Landing Page Company Today's Date in Subtitle");
                                                         if (currMktoText.childNodes[0].childNodes[0].innerHTML) {
-                                                            currMktoText.childNodes[0].childNodes[0].innerHTML = getHumanDate();
+                                                            currMktoText.childNodes[0].childNodes[0].innerHTML = mktoSubText;
                                                         } else {
-                                                            currMktoText.childNodes[0].innerHTML = getHumanDate();
+                                                            currMktoText.childNodes[0].innerHTML = mktoSubText;
                                                         }
                                                         isMktoSubTextReplaced = true;
                                                     }
@@ -952,9 +954,9 @@ window.onload = function () {
                                                     if (!currMktoRichText.childElementCount) {
                                                         console.log("Content > Overlaying: Freeform Landing Page Company Today's Date in Subtitle");
                                                         if (currMktoRichText.innerHTML) {
-                                                            currMktoRichText.innerHTML = getHumanDate();
+                                                            currMktoRichText.innerHTML = mktoSubText;
                                                         } else {
-                                                            currMktoRichText.parentNode.innerHTML = getHumanDate();
+                                                            currMktoRichText.parentNode.innerHTML = mktoSubText;
                                                         }
                                                         isMktoSubTextReplaced = true;
                                                     } else if (currMktoRichText.childNodes
@@ -962,9 +964,9 @@ window.onload = function () {
                                                         if (!currMktoRichText.childNodes[0].childElementCount) {
                                                             console.log("Content > Overlaying: Freeform Landing Page Company Today's Date in Subtitle");
                                                             if (currMktoRichText.childNodes[0].innerHTML) {
-                                                                currMktoRichText.childNodes[0].innerHTML = getHumanDate();
+                                                                currMktoRichText.childNodes[0].innerHTML = mktoSubText;
                                                             } else {
-                                                                currMktoRichText.innerHTML = getHumanDate();
+                                                                currMktoRichText.innerHTML = mktoSubText;
                                                             }
                                                             isMktoSubTextReplaced = true;
                                                         } else if (currMktoRichText.childNodes[0].childNodes
@@ -972,9 +974,9 @@ window.onload = function () {
                                                              && !currMktoRichText.childNodes[0].childNodes[0].childElementCount) {
                                                             console.log("Content > Overlaying: Freeform Landing Page Company Today's Date in Subtitle");
                                                             if (currMktoRichText.childNodes[0].childNodes[0].innerHTML) {
-                                                                currMktoRichText.childNodes[0].childNodes[0].innerHTML = getHumanDate();
+                                                                currMktoRichText.childNodes[0].childNodes[0].innerHTML = mktoSubText;
                                                             } else {
-                                                                currMktoRichText.childNodes[0].innerHTML = getHumanDate();
+                                                                currMktoRichText.childNodes[0].innerHTML = mktoSubText;
                                                             }
                                                             isMktoSubTextReplaced = true;
                                                         }
@@ -1082,7 +1084,7 @@ window.onload = function () {
                                 iframeDocument.getElementsByTagName("head")[0].appendChild(formButtonStyle);
                             }
                             mainTitle.innerHTML = mktoMainText;
-                            subTitle.innerHTML = getHumanDate();
+                            subTitle.innerHTML = mktoSubText;
                             isMktoOrigReplaced = isMktoFreeForm = true;
                         }
                         
@@ -1310,8 +1312,6 @@ window.onload = function () {
                                     overlayLandingPage("preview");
                                 }
                                 break;
-                            default:
-                                break;
                             }
                         } else if (count == 5) {
                             if (message.assetType == "landingPage"
@@ -1342,11 +1342,7 @@ window.onload = function () {
                                 overlayLandingPage("preview");
                             }
                             break;
-                        default:
-                            break;
                         }
-                        break;
-                    default:
                         break;
                     }
                 });
