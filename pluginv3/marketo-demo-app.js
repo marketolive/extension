@@ -351,7 +351,7 @@ APP.overlayEmail = function (action) {
     company,
     companyName,
     editorRepeatReadyCount = desktopRepeatReadyCount = phoneRepeatReadyCount = 0,
-    maxRepeatReady = 500,
+    maxRepeatReady = 2000,
     maxPreviewRepeatReady = 3000;
     
     if (saveEditsToggle == "true"
@@ -766,7 +766,7 @@ APP.overlayLandingPage = function (action) {
     companyName,
     linearGradient,
     desktopRepeatReadyCount = phoneRepeatReadyCount = sideBySideDesktopRepeatReadyCount = sideBySidePhoneRepeatReadyCount = 0,
-    maxRepeatReady = 500,
+    maxRepeatReady = 2000,
     maxOtherRepeatReady = 2000;
     
     if (saveEditsToggle == "true"
