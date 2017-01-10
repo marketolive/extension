@@ -455,7 +455,7 @@ APP.editAssetVariables = function (assetType, mode, asset) {
                     html: "<u>Saving Edits to Hero Background & Button Background Color</u> <br>Wait until this page completely loads before closing. <br><br><u>To Disable This Feature:</u> <br>Clear the selected company via the MarketoLive extension.",
                 });
             waitForReloadMsg = new Ext.Window({
-                    closable: false,
+                    closable: true,
                     modal: true,
                     width: 500,
                     height: 250,
@@ -479,10 +479,6 @@ APP.editAssetVariables = function (assetType, mode, asset) {
                     var isLogoReplaced,
                     isTitleReplaced,
                     isSubtitleReplaced;
-                    
-                    if (waitForLoadMsg.isVisible()) {
-                        waitForLoadMsg.hide();
-                    }
                     
                     if (logo) {
                         for (var ii = 0; ii < logoIds.length; ii++) {
@@ -543,6 +539,9 @@ APP.editAssetVariables = function (assetType, mode, asset) {
                             });
                         };
                         
+                        if (waitForLoadMsg.isVisible()) {
+                            waitForLoadMsg.hide();
+                        }
                         waitForReloadMsg.show();
                         updateHtml();
                     }
