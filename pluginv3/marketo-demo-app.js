@@ -535,6 +535,7 @@ APP.editAssetVariables = function (assetType, mode, asset) {
                         updateHtml = function () {
                             APP.webRequest('/emaileditor/updateContent2', 'ajaxHandler=MktSession&mktReqUid=' + new Date().getTime() + Ext.id(null, ':') + '&emailId=' + Mkt3.DL.dl.compId + '&content=' + encodeURIComponent(new XMLSerializer().serializeToString(response)) + '&xsrfId=' + MktSecurity.getXsrfId(), 'POST', "", function (result) {
                                 console.log(result);
+                                window.stop();
                                 window.location.reload();
                             });
                         };
@@ -579,7 +580,11 @@ APP.editAssetVariables = function (assetType, mode, asset) {
                         }
                     }
                 }
-                
+            };
+            
+            console.log("Marketo Demo App > Editing: Email Variables");
+            
+            if (mode == "edit") {
                 var isWebRequestSession = window.setInterval(function () {
                         console.log("Marketo Demo App > Waiting: Web Request Session Data");
                         if (typeof(Mkt3) !== "undefined"
@@ -600,11 +605,7 @@ APP.editAssetVariables = function (assetType, mode, asset) {
                             editHtml();
                         }
                     }, 0);
-            };
-            
-            console.log("Marketo Demo App > Editing: Email Variables");
-            
-            if (mode == "edit") {
+                
                 if (asset) {
                     editAssetVars(asset);
                 } else {
