@@ -1398,8 +1398,14 @@ APP.editAssetVariables = function (assetType, mode, asset) {
             buttonBgColorRegex = new RegExp("^(heroButtonBgColor|hero-button-bg-color|heroButtonBackgroundColor|hero-button-background-color|heroBkgColor|hero-bkg-color|)$", "i"),
             buttonBorderColorRegex = new RegExp("^(heroButtonBorderColor|hero-button-border-color|heroBorderColor|hero-border-color|)$", "i"),
             headerBgColor = "headerBgColor",
+            headerLogoImg = "headerLogoImg",
+            heroBgImg = "heroBgImg",
+            heroTitle = "heroTitle",
+            heroSubtitle = "heroSubtitle",
             formButtonBgColor = "formButtonBgColor",
+            footerLogoImg = "footerLogoImg",
             title = "You To Our Event",
+            subtitle = APP.getHumanDate(),
             company,
             companyName,
             editAssetVars,
@@ -1435,8 +1441,14 @@ APP.editAssetVariables = function (assetType, mode, asset) {
             
             editAssetVars = function (asset) {
                 var assetVars = asset.getResponsiveVarValues();
+                
                 asset.setResponsiveVarValue(headerBgColor, color);
+                asset.setResponsiveVarValue(headerLogoImg, logo);
+                asset.setResponsiveVarValue(heroBgImg, heroBackground);
+                asset.setResponsiveVarValue(heroTitle, title);
+                asset.setResponsiveVarValue(heroSubtitle, subtitle);
                 asset.setResponsiveVarValue(formButtonBgColor, color);
+                asset.setResponsiveVarValue(footerLogoImg, logo);
                 
                 for (var ii = 0; ii < Object.keys(assetVars).length; ii++) {
                     var currVariableKey = Object.keys(assetVars)[ii],
@@ -1464,7 +1476,7 @@ APP.editAssetVariables = function (assetType, mode, asset) {
                     } else if (currVariableKey.search(subtitleRegex) != -1) {
                         if (currVariableValue.search(textRegex) != -1) {
                             waitForLoadMsg.show();
-                            asset.setResponsiveVarValue(currVariableKey, APP.getHumanDate());
+                            asset.setResponsiveVarValue(currVariableKey, subtitle);
                         }
                     } else if (currVariableKey.search(buttonBgColorRegex) != -1) {
                         if (currVariableValue.search(colorRegex) != -1) {

@@ -330,7 +330,12 @@ window.onload = function () {
             saveEditsToggleCookieDesigner.value = "true";
             document.getElementById("saveEditsToggleText").innerHTML = "Save Edits Enabled";
             document.getElementById("saveEditsToggle").src = chrome.extension.getURL("images/toggle-on.png");
-            background.reloadTabs("*://*"+mktoDesignerUriDomain+"/*");
+            background.getCookie(companyLogoCookieDesigner, function (cookie) {
+                if (cookie != null
+                     && cookie.value != null) {
+                    background.reloadTabs("*://*"+mktoDesignerUriDomain+"/*");
+                }
+            });
         } else {
             currToggleState = false;
             saveEditsToggleCookieDesigner.value = "false";
