@@ -1440,13 +1440,22 @@ APP.editAssetVariables = function (assetType, mode, asset) {
             }
             
             editAssetVars = function (asset) {
-                var assetVars = asset.getResponsiveVarValues();
+                waitForLoadMsg.show();
+                
+                var assetVars = asset.getResponsiveVarValues(),
+                newTitle = asset.componentsStore.getAt(asset.componentsStore.findExact("name", "title")).fragmentsStore.data.items[0],
+                newSubtitle = asset.componentsStore.getAt(asset.componentsStore.findExact("name", "subtitle")).fragmentsStore.data.items[0];
+                
+                newTitle.data.content = newTitle.data.body = "<div>" + title + "</div>";
+                newSubtitle.data.content = newSubtitle.data.body = subtitle;
+                Mkt3.controller.editor.predefinedLayoutLandingPage.LPEditorPredefinedLayout.prototype.updateRichTextComponent.call(Mkt3.app.controllers.get("Mkt3.controller.editor.predefinedLayoutLandingPage.LPEditorPredefinedLayout"), newTitle);
+                Mkt3.controller.editor.predefinedLayoutLandingPage.LPEditorPredefinedLayout.prototype.updateRichTextComponent.call(Mkt3.app.controllers.get("Mkt3.controller.editor.predefinedLayoutLandingPage.LPEditorPredefinedLayout"), newSubtitle);
                 
                 asset.setResponsiveVarValue(headerBgColor, color);
                 asset.setResponsiveVarValue(headerLogoImg, logo);
                 asset.setResponsiveVarValue(heroBgImg, heroBackground);
-                asset.setResponsiveVarValue(heroTitle, title);
-                asset.setResponsiveVarValue(heroSubtitle, subtitle);
+                //asset.setResponsiveVarValue(heroTitle, title);
+                //asset.setResponsiveVarValue(heroSubtitle, subtitle);
                 asset.setResponsiveVarValue(formButtonBgColor, color);
                 asset.setResponsiveVarValue(footerLogoImg, logo);
                 
@@ -1493,7 +1502,7 @@ APP.editAssetVariables = function (assetType, mode, asset) {
                 
                 if (waitForLoadMsg.isVisible()) {
                     window.setTimeout(function () {
-                        //Mkt3.app.controllers.get("Mkt3.controller.editor.LandingPage").loadEditorView();
+                        Mkt3.app.controllers.get("Mkt3.controller.editor.LandingPage").loadEditorView();
                         waitForLoadMsg.hide();
                     }, 7500);
                 }
@@ -1513,7 +1522,10 @@ APP.editAssetVariables = function (assetType, mode, asset) {
                                  && Mkt3.app.controllers.get("Mkt3.controller.editor.LandingPage")
                                  && Mkt3.app.controllers.get("Mkt3.controller.editor.LandingPage").getLandingPage()
                                  && Mkt3.app.controllers.get("Mkt3.controller.editor.LandingPage").getLandingPage().getResponsiveVarValues()
-                                 && Mkt3.app.controllers.get("Mkt3.controller.editor.LandingPage").getLandingPage().setResponsiveVarValue) {
+                                 && Mkt3.app.controllers.get("Mkt3.controller.editor.LandingPage").getLandingPage().setResponsiveVarValue
+                                 && Mkt3.app.controllers.get("Mkt3.controller.editor.LandingPage").getLandingPage().componentsStore
+                                 && Mkt3.app.controllers.get("Mkt3.controller.editor.LandingPage").getLandingPage().componentsStore.getAt
+                                 && Mkt3.app.controllers.get("Mkt3.controller.editor.LandingPage").getLandingPage().componentsStore.findExact) {
                                 console.log("Marketo Demo App > Editing: Landing Page Editor Variables");
                                 
                                 window.clearInterval(isLandingPageEditorVariables);
