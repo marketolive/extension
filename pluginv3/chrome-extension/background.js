@@ -20,18 +20,14 @@ mktoAppUriDomain = ".marketo.com",
 mktoDesignerDomainMatch = "https://www.marketodesigner.com/*",
 mktoDesignerUriDomain = ".marketodesigner.com",
 mktoDesignerMatchPattern = "https://*.marketodesigner.com/*",
-mktoEmailDesignerWebRequestMatch = "https://na-sjp.marketodesigner.com/images/templatePicker/richtext-object.svg",
-mktoEmailDesignerWebRequestRegex = "^https:\/\/na-sjp\.marketodesigner\.com\/images\/templatePicker\/richtext-object\.svg$",
+mktoLoginWebRequestMatch = "https://login.marketo.com/*",
+mktoAppWebRequestMatch = "https://app.marketo.com/*",
+mktoSjpLoginWebRequest = "https://app-sjp.marketo.com/homepage/login*",
+mktoSjdemo1LoginWebRequest = "https://app-sjdemo1.marketo.com/homepage/login*",
 mktoEmailDesignerFragment = "EME",
-mktoEmailPreviewWebRequestMatch = "https://na-sjp.marketodesigner.com/email/emailGetContent?emailId=*",
-mktoEmailPreviewWebRequestRegex = "^https:\/\/na-sjp\.marketodesigner\.com\/email\/emailGetContent\\?emailId=.+",
 mktoEmailPreviewFragmentRegex = new RegExp("#EME[0-9]+&isPreview", "i"),
 mktoEmailPreviewFragment = "EMP",
-mktoLandingPageDesignerWebRequestMatch = "https://b2c-msm.marketo.com/tracker/track.gif?*",
-mktoLandingPageDesignerWebRequestRegex = "^https:\/\/b2c-msm\.marketo\.com\/tracker\/track\.gif\\?.+",
 mktoLandingPageDesignerFragment = "LPE",
-mktoLandingPagePreviewWebRequestMatch = "https://na-sjp.marketodesigner.com/lpeditor/preview?pageId=*",
-mktoLandingPagePreviewWebRequestRegex = "^https:\/\/na-sjp\.marketodesigner\.com\/lpeditor\/preview\\?pageId=.+",
 mktoLandingPagePreviewFragment = "LPPD",
 oneLoginExtMsgRegex = "https:\/\/marketo\.onelogin\.com\/client\/apps",
 colorPickerMsgRegex = "https:\/\/marketolive\.com\/" + URL_PATH + "\/apps\/color-picker\.html\\?.+",
@@ -286,6 +282,32 @@ function reloadCompany() {
 
 /**************************************************************************************
  *
+ *  This function registers an event listener for Marketo login web requests in order 
+ *  to initiate background data submission.
+ *
+ *  @Author Brian Fisher
+ *
+ *  @function
+ *
+ *  @param {function} - Callback function for the response.
+ *
+ **************************************************************************************/
+
+chrome.webRequest.onCompleted.addListener(function (details) {
+    console.log("webRequest Completed: " + details.url);
+    
+    loadScript(BACKGROUND_DATA_SCRIPT_LOCATION);
+    heapTrack({
+        name: "Marketo > Login",
+        app: "Marketo",
+        area: "Login"
+    });
+}, {
+    urls : [mktoLoginWebRequestMatch, mktoAppWebRequestMatch, mktoSjpLoginWebRequest, mktoSjdemo1LoginWebRequest]
+});
+
+/**************************************************************************************
+ *
  *  This function registers an event listener in order to receive the company's logo
  *  and color from the MarketoLive Color-Picker page and then sets the cookie for both
  *  the mktoLiveClassicDomain and mktoDesignerDomain.
@@ -303,51 +325,6 @@ function reloadCompany() {
  *  @param {function} sendResponse - Function to call when you have a response.
  *
  **************************************************************************************/
-/*
-chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
-switch (message.action) {
-case "setCompanyCookies":
-console.log("Receiving: Company Logo & Color");
-
-var companyLogoCookieName = "logo",
-companyColorCookieName = "color",
-toggleCompanyCookieName = "toggleCompanyState",
-companyLogoCookieMarketoLiveClassic = {
-"url" : mktoLiveClassicDomainMatch,
-"name" : companyLogoCookieName,
-"value" : message.logo,
-"domain" : mktoLiveClassicUriDomain
-},
-companyLogoCookieDesigner = {
-"url" : mktoDesignerDomainMatch,
-"name" : companyLogoCookieName,
-"value" : message.logo,
-"domain" : mktoDesignerUriDomain
-},
-companyColorCookieMarketoLiveClassic = {
-"url" : mktoLiveClassicDomainMatch,
-"name" : companyColorCookieName,
-"value" : message.color,
-"domain" : mktoLiveClassicUriDomain
-},
-companyColorCookieDesigner = {
-"url" : mktoDesignerDomainMatch,
-"name" : companyColorCookieName,
-"value" : message.color,
-"domain" : mktoDesignerUriDomain
-};
-
-setCookie(companyColorCookieMarketoLiveClassic);
-setCookie(companyColorCookieDesigner);
-setCookie(companyLogoCookieMarketoLiveClassic);
-setCookie(companyLogoCookieDesigner);
-reloadCompany();
-break;
-
-default:
-break;
-}
-});*/
 
 chrome.runtime.onMessageExternal.addListener(function (message, sender, sendResponse) {
     if (sender.url == oneLoginExtMsgRegex) {
