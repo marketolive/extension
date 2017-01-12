@@ -31,7 +31,7 @@ APP = APP || {};
  **************************************************************************************/
 
 APP.getCookie = function (cookieName) {
-    console.log("Marketo App > Getting: Cookie " + cookieName);
+    console.log("Marketo Demo App > Getting: Cookie " + cookieName);
     
     var name = cookieName + '=',
     cookies = document.cookie.split(';'),
@@ -43,13 +43,13 @@ APP.getCookie = function (cookieName) {
             return currCookie.substring(name.length, currCookie.length);
         }
     }
-    console.log("Marketo App > Getting: Cookie " + cookieName + " not found");
+    console.log("Marketo Demo App > Getting: Cookie " + cookieName + " not found");
     return null;
 };
 
 APP.webRequest = function (url, params, method, responseType, callback) {
     var xmlHttp = new XMLHttpRequest();
-    xmlHttp.onreadystatechange = function() { 
+    xmlHttp.onreadystatechange = function () {
         if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
             callback(xmlHttp.response);
     }
@@ -89,8 +89,8 @@ APP.overrideSuperballMenuItems = function () {
             
             if (!menu) {
                 menu = logoEl.menu = Ext4.widget('appNavigationMenu', {
-                        listeners : {
-                            boxready : function (view) {
+                        listeners: {
+                            boxready: function (view) {
                                 var logoRegion = logoEl.getRegion();
                                 
                                 // shift out of the ball way
@@ -102,10 +102,10 @@ APP.overrideSuperballMenuItems = function () {
                                 // prevent layering in front of the logo
                                 menu.setZIndex(logoEl.getStyle('zIndex') - 5);
                             },
-                            beforerender : function (view) {
+                            beforerender: function (view) {
                                 view.addCls(view.componentCls + '-hidden');
                             },
-                            show : function (view) {
+                            show: function (view) {
                                 view.removeCls(view.componentCls + '-hidden');
                                 
                                 logoEl.ignoreNextClick = true;
@@ -115,17 +115,17 @@ APP.overrideSuperballMenuItems = function () {
                                     MktPage.savedState.isUsedSuperMenu = true;
                                     
                                     MktSession.ajaxRequest('user/saveUserPref', {
-                                        serializeParms : {
-                                            key : 'isUsedSuperMenu',
-                                            data : MktPage.savedState.isUsedSuperMenu
+                                        serializeParms: {
+                                            key: 'isUsedSuperMenu',
+                                            data: MktPage.savedState.isUsedSuperMenu
                                         }
                                     });
                                 }
                             },
-                            beforehide : function (view) {
+                            beforehide: function (view) {
                                 view.addCls(view.componentCls + '-hidden');
                             },
-                            hide : function () {
+                            hide: function () {
                                 (function () {
                                     logoEl.ignoreNextClick = false;
                                 }).defer(250);
@@ -1384,8 +1384,8 @@ APP.editAssetVariables = function (assetType, mode, asset) {
     
     if (saveEditsToggle == "true"
          && (logo != null
-            || heroBackground != null
-            || color != null)) {
+             || heroBackground != null
+             || color != null)) {
         
         if (assetType == "landingPage") {
             var httpRegEx = new RegExp("^http|^$", "i"),
@@ -1446,63 +1446,64 @@ APP.editAssetVariables = function (assetType, mode, asset) {
                 isTitleUpdated = isSubtitleUpdated = false;
                 
                 waitForLoadMsg = new Ext.Window({
-                    closable: true,
-                    modal: true,
-                    width: 500,
-                    height: 250,
-                    cls: 'mktModalForm',
-                    title: "Please Wait for Page to Load",
-                    html: "<u>Saving Edits to Logo, Title, Subtitle, Hero Background, and Button Background Color</u> <br>Wait until this page completely loads before closing. <br><br><u>To Disable This Feature:</u> <br>Clear the selected company via the MarketoLive extension.",
-                });
+                        closable: true,
+                        modal: true,
+                        width: 500,
+                        height: 250,
+                        cls: 'mktModalForm',
+                        title: "Please Wait for Page to Load",
+                        html: "<u>Saving Edits</u> <br>Wait until this page completely loads before closing. <br><br><u>To Disable This Feature:</u> <br>Clear the selected company via the MarketoLive extension.",
+                    });
                 waitForLoadMsg.show();
                 
                 isLandingPageEditorComponentStore = window.setInterval(function () {
-                    if (asset.componentsStore
-                         && asset.componentsStore.getAt
-                         && asset.componentsStore.findExact
-                         && Mkt3.controller
-                         && Mkt3.controller.editor
-                         && Mkt3.controller.editor.predefinedLayoutLandingPage
-                         && Mkt3.controller.editor.predefinedLayoutLandingPage.LPEditorPredefinedLayout
-                         && Mkt3.controller.editor.predefinedLayoutLandingPage.LPEditorPredefinedLayout.prototype
-                         && Mkt3.controller.editor.predefinedLayoutLandingPage.LPEditorPredefinedLayout.prototype.updateRichTextComponent) {
-                        if (!isTitleUpdated
-                             && asset.componentsStore.findExact("name", "title")
-                             && asset.componentsStore.getAt(asset.componentsStore.findExact("name", "title"))
-                             && asset.componentsStore.getAt(asset.componentsStore.findExact("name", "title")).fragmentsStore
-                             && asset.componentsStore.getAt(asset.componentsStore.findExact("name", "title")).fragmentsStore.data
-                             && asset.componentsStore.getAt(asset.componentsStore.findExact("name", "title")).fragmentsStore.data.items
-                             && asset.componentsStore.getAt(asset.componentsStore.findExact("name", "title")).fragmentsStore.data.items[0]) {
-                            var newTitle = asset.componentsStore.getAt(asset.componentsStore.findExact("name", "title")).fragmentsStore.data.items[0];
+                        if (asset.componentsStore
+                             && asset.componentsStore.getAt
+                             && asset.componentsStore.findExact
+                             && Mkt3.controller
+                             && Mkt3.controller.editor
+                             && Mkt3.controller.editor.predefinedLayoutLandingPage
+                             && Mkt3.controller.editor.predefinedLayoutLandingPage.LPEditorPredefinedLayout
+                             && Mkt3.controller.editor.predefinedLayoutLandingPage.LPEditorPredefinedLayout.prototype
+                             && Mkt3.controller.editor.predefinedLayoutLandingPage.LPEditorPredefinedLayout.prototype.updateRichTextComponent) {
+                            if (!isTitleUpdated
+                                 && asset.componentsStore.findExact("name", "title")
+                                 && asset.componentsStore.getAt(asset.componentsStore.findExact("name", "title"))
+                                 && asset.componentsStore.getAt(asset.componentsStore.findExact("name", "title")).fragmentsStore
+                                 && asset.componentsStore.getAt(asset.componentsStore.findExact("name", "title")).fragmentsStore.data
+                                 && asset.componentsStore.getAt(asset.componentsStore.findExact("name", "title")).fragmentsStore.data.items
+                                 && asset.componentsStore.getAt(asset.componentsStore.findExact("name", "title")).fragmentsStore.data.items[0]) {
+                                var newTitle = asset.componentsStore.getAt(asset.componentsStore.findExact("name", "title")).fragmentsStore.data.items[0];
+                                
+                                newTitle.data.content = newTitle.data.body = "<div>" + title + "</div>";
+                                Mkt3.controller.editor.predefinedLayoutLandingPage.LPEditorPredefinedLayout.prototype.updateRichTextComponent.call(Mkt3.app.controllers.get("Mkt3.controller.editor.predefinedLayoutLandingPage.LPEditorPredefinedLayout"), newTitle);
+                                isTitleUpdated = true;
+                            }
                             
-                            newTitle.data.content = newTitle.data.body = "<div>" + title + "</div>";
-                            Mkt3.controller.editor.predefinedLayoutLandingPage.LPEditorPredefinedLayout.prototype.updateRichTextComponent.call(Mkt3.app.controllers.get("Mkt3.controller.editor.predefinedLayoutLandingPage.LPEditorPredefinedLayout"), newTitle);
-                            isTitleUpdated = true;
-                        }
-                        
-                        if (!isSubtitleUpdated
-                             && asset.componentsStore.findExact("name", "subtitle")
-                             && asset.componentsStore.getAt(asset.componentsStore.findExact("name", "subtitle"))
-                             && asset.componentsStore.getAt(asset.componentsStore.findExact("name", "subtitle")).fragmentsStore
-                             && asset.componentsStore.getAt(asset.componentsStore.findExact("name", "subtitle")).fragmentsStore.data
-                             && asset.componentsStore.getAt(asset.componentsStore.findExact("name", "subtitle")).fragmentsStore.data.items
-                             && asset.componentsStore.getAt(asset.componentsStore.findExact("name", "subtitle")).fragmentsStore.data.items[0]) {
-                            var newSubtitle = asset.componentsStore.getAt(asset.componentsStore.findExact("name", "subtitle")).fragmentsStore.data.items[0];
+                            if (!isSubtitleUpdated
+                                 && asset.componentsStore.findExact("name", "subtitle")
+                                 && asset.componentsStore.getAt(asset.componentsStore.findExact("name", "subtitle"))
+                                 && asset.componentsStore.getAt(asset.componentsStore.findExact("name", "subtitle")).fragmentsStore
+                                 && asset.componentsStore.getAt(asset.componentsStore.findExact("name", "subtitle")).fragmentsStore.data
+                                 && asset.componentsStore.getAt(asset.componentsStore.findExact("name", "subtitle")).fragmentsStore.data.items
+                                 && asset.componentsStore.getAt(asset.componentsStore.findExact("name", "subtitle")).fragmentsStore.data.items[0]) {
+                                var newSubtitle = asset.componentsStore.getAt(asset.componentsStore.findExact("name", "subtitle")).fragmentsStore.data.items[0];
+                                
+                                newSubtitle.data.content = newSubtitle.data.body = subtitle;
+                                Mkt3.controller.editor.predefinedLayoutLandingPage.LPEditorPredefinedLayout.prototype.updateRichTextComponent.call(Mkt3.app.controllers.get("Mkt3.controller.editor.predefinedLayoutLandingPage.LPEditorPredefinedLayout"), newSubtitle);
+                                isSubtitleUpdated = true;
+                            }
                             
-                            newSubtitle.data.content = newSubtitle.data.body = subtitle;
-                            Mkt3.controller.editor.predefinedLayoutLandingPage.LPEditorPredefinedLayout.prototype.updateRichTextComponent.call(Mkt3.app.controllers.get("Mkt3.controller.editor.predefinedLayoutLandingPage.LPEditorPredefinedLayout"), newSubtitle);
-                            isSubtitleUpdated = true;
+                            if (count > 1000
+                                 || (isSubtitleUpdated
+                                     && isTitleUpdated)) {
+                                console.log("Marketo Demo App > Updated: Landing Page Title & Subtitle: " + count);
+                                window.clearInterval(isLandingPageEditorComponentStore);
+                            }
+                            
+                            count++;
                         }
-                        
-                        if (isSubtitleUpdated
-                             && isTitleUpdated) {
-                            console.log("Marketo Demo App > Updated: Landing Page Title & Subtitle: " + count);
-                            window.clearInterval(isLandingPageEditorComponentStore);
-                        }
-                        
-                        count++;
-                    }
-                }, 0);
+                    }, 0);
                 
                 asset.setResponsiveVarValue(headerBgColor, color);
                 asset.setResponsiveVarValue(headerLogoImg, logo);
@@ -1720,7 +1721,7 @@ APP.editAssetVariables = function (assetType, mode, asset) {
                 
                 for (var ii = 0; ii < Object.keys(assetVars).length; ii++) {
                     var currVariableKey = Object.keys(assetVars)[ii]
-                    currVariableValue = Object.values(assetVars)[ii];
+                        currVariableValue = Object.values(assetVars)[ii];
                     
                     if (currVariableValue == null) {
                         currVariableValue = "";
@@ -1882,31 +1883,31 @@ var isMktPageDemoApp = window.setInterval(function () {
                         APP.editAssetVariables("email", "preview");
                     }
                     break;
-                /*    
-                case mktoPushNotificationEditFragment:
+                    /*
+                    case mktoPushNotificationEditFragment:
                     console.log("Marketo Demo App > Location: Push Notification Editor");
                     
                     APP.editAssetVariables("pushNotification", "edit");
                     break;
                     
-                case mktoMobilePushNotificationPreviewFragment:
+                    case mktoMobilePushNotificationPreviewFragment:
                     console.log("Marketo Demo App > Location: Push Notification Previewer");
                     
                     APP.editAssetVariables("pushNotification", "preview");
                     break;
                     
-                case mktoInAppMessageEditFragment:
+                    case mktoInAppMessageEditFragment:
                     console.log("Marketo Demo App > Location: In-App Message Editor");
                     
                     APP.editAssetVariables("inAppMessage", "edit");
                     break;
                     
-                case mktoInAppMessagePreviewFragment:
+                    case mktoInAppMessagePreviewFragment:
                     console.log("Marketo Demo App > Location: In-App Message Previewer");
                     
                     APP.editAssetVariables("inAppMessage", "preview");
                     break;
-                */
+                     */
                 }
             }
             
@@ -1963,31 +1964,31 @@ var isMktPageDemoApp = window.setInterval(function () {
                                                 APP.editAssetVariables("email", "preview");
                                             }
                                             break;
-                                        /*    
-                                        case mktoPushNotificationEditFragment:
+                                            /*
+                                            case mktoPushNotificationEditFragment:
                                             console.log("Marketo Demo App > Location: Push Notification Editor");
                                             
                                             APP.editAssetVariables("pushNotification", "edit");
                                             break;
                                             
-                                        case mktoMobilePushNotificationPreviewFragment:
+                                            case mktoMobilePushNotificationPreviewFragment:
                                             console.log("Marketo Demo App > Location: Push Notification Previewer");
                                             
                                             APP.editAssetVariables("pushNotification", "preview");
                                             break;
                                             
-                                        case mktoInAppMessageEditFragment:
+                                            case mktoInAppMessageEditFragment:
                                             console.log("Marketo Demo App > Location: In-App Message Editor");
                                             
                                             APP.editAssetVariables("inAppMessage", "edit");
                                             break;
                                             
-                                        case mktoInAppMessagePreviewFragment:
+                                            case mktoInAppMessagePreviewFragment:
                                             console.log("Marketo Demo App > Location: In-App Message Previewer");
                                             
                                             APP.editAssetVariables("inAppMessage", "preview");
                                             break;
-                                        */
+                                             */
                                         }
                                     }
                                 }
