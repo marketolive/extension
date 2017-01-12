@@ -1502,7 +1502,7 @@ APP.editAssetVariables = function (assetType, mode, asset) {
                 
                 if (waitForLoadMsg.isVisible()) {
                     window.setTimeout(function () {
-                        Mkt3.app.controllers.get("Mkt3.controller.editor.LandingPage").loadEditorView();
+                        //Mkt3.app.controllers.get("Mkt3.controller.editor.LandingPage").loadEditorView();
                         waitForLoadMsg.hide();
                     }, 7500);
                 }
