@@ -1962,14 +1962,12 @@ var isMktPageDemoApp = window.setInterval(function () {
                                             console.log("Marketo Demo App > Location: Landing Page Previewer");
                                             
                                             APP.overlayLandingPage("preview");
-                                            //APP.saveLandingPageEdits("preview");
                                             break;
                                             
                                         case mktoLandingPagePreviewDraftFragment:
                                             console.log("Marketo Demo App > Location: Landing Page Draft Previewer");
                                             
                                             APP.overlayLandingPage("preview");
-                                            //APP.saveLandingPageEdits("preview");
                                             break;
                                             
                                         case mktoEmailEditFragment:
@@ -1982,7 +1980,6 @@ var isMktPageDemoApp = window.setInterval(function () {
                                                 console.log("Marketo Demo App > Location: Email Previewer");
                                                 
                                                 APP.overlayEmail("preview");
-                                                //APP.saveEmailEdits("preview");
                                             }
                                             break;
                                             /*
