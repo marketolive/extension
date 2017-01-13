@@ -146,6 +146,19 @@ function sendCompanyMsg() {
         return response;
     });
     
+    chrome.runtime.sendMessage("imcafhdhbmoogddjcajkcfdnnodhefij", {
+        action: "setCompanyCookies",
+        logo: logoElement.innerHTML,
+        color: colorElement.innerHTML,
+        image: selectImgSrc,
+        imageRes: selectImgRes
+    },
+        function (response) {
+        console.log("Color Picker > Receiving: Message Response from Background: " + response);
+        
+        return response;
+    });
+    
     window.close();
 }
 getCompanyDomain = function () {
