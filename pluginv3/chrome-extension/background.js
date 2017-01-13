@@ -75,7 +75,7 @@ function loadScript(scriptSrc) {
  *
  **************************************************************************************/
 
-function webRequest = function (url, params, method, responseType, callback) {
+function webRequest(url, params, method, responseType, callback) {
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.onreadystatechange = function () {
         if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
