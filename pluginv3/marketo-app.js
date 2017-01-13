@@ -176,23 +176,24 @@ APP.getCookie = function (cookieName) {
  *
  *  @function
  *
- *  @param {String} method - The HTTP request method (e.g. GET, POST, PATCH).
  *  @param {String} url - The HTTP request URL.
- *  @param {Boolean} async - The HTTP async flag [OPTIONAL].
- *  @param {String} username - The URL's username [OPTIONAL].
- *  @param {String} password - The URL's password [OPTIONAL].
+ *  @param {String} params - The parameters to pass in the body of the request.
+ *  @param {String} method - The HTTP request method (e.g. GET, POST, PATCH).
+ *  @param {String} responseType - The type of the response (e.g. document, json, text).
+ *  @param {Function} callback - The callback function.
  *
  **************************************************************************************/
 
-APP.webRequest = function (method, url, async, username, password) {
-    var xhr = new XMLHttpRequest();
-    
-    xhr.open(method, url, async, username, password);
-    //xhr.responseType = "document";
-    xhr.send();
-    
-    return xhr.statusText;
-    //return xhr.response;
+APP.webRequest = function (url, params, method, responseType, callback) {
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.onreadystatechange = function () {
+        if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+            callback(xmlHttp.response);
+    }
+    xmlHttp.open(method, url, true); // true for asynchronous
+    xmlHttp.responseType = responseType;
+    xmlHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xmlHttp.send(params);
 };
 
 /**************************************************************************************
@@ -7826,7 +7827,7 @@ APP.resetGoldenLandingPageProps = function () {
         case mktoDefaultDiyLandingPageResponsiveEditFragment:
             console.log("Marketo App > Executing: Resetting Landing Page Responsive Properties/Variables");
             
-            APP.webRequest('POST', 'https://' + mktoDesignerHost + '/data/landingPage/update?context=LPE11822&data=%5B%7B%22id%22%3A11822%2C%22responsiveOptions%22%3A%7B%22variables%22%3A%7B%22gradient1%22%3A%22%232A5370%22%2C%22gradient2%22%3A%22%23F2F2F2%22%2C%22showSection2%22%3Atrue%2C%22showSection3%22%3Atrue%2C%22showSection4%22%3Atrue%2C%22showFooter%22%3Atrue%2C%22showSocialButtons%22%3Atrue%2C%22section4ButtonLabel%22%3A%22Need%20More%20Info%3F%22%2C%22section4ButtonLink%22%3A%22%23%22%2C%22section3LeftButtonLabel%22%3A%22Join%20Us%22%2C%22section4BgColor%22%3A%22%23F2F2F2%22%2C%22footerBgColor%22%3A%22%232A5370%22%2C%22section2BgColor%22%3A%22%23F2F2F2%22%2C%22section3BgColor%22%3A%22%232A5370%22%2C%22section3LeftButtonLink%22%3A%22https%3A%2F%2Fwww.marketo.com%22%2C%22section3RightButtonLabel%22%3A%22Sign%20Up%22%7D%7D%7D%5D&xsrfId=' + MktSecurity.getXsrfId());
+            APP.webRequest('https://' + mktoDesignerHost + '/data/landingPage/update?context=LPE11822&data=%5B%7B%22id%22%3A11822%2C%22responsiveOptions%22%3A%7B%22variables%22%3A%7B%22gradient1%22%3A%22%232A5370%22%2C%22gradient2%22%3A%22%23F2F2F2%22%2C%22showSection2%22%3Atrue%2C%22showSection3%22%3Atrue%2C%22showSection4%22%3Atrue%2C%22showFooter%22%3Atrue%2C%22showSocialButtons%22%3Atrue%2C%22section4ButtonLabel%22%3A%22Need%20More%20Info%3F%22%2C%22section4ButtonLink%22%3A%22%23%22%2C%22section3LeftButtonLabel%22%3A%22Join%20Us%22%2C%22section4BgColor%22%3A%22%23F2F2F2%22%2C%22footerBgColor%22%3A%22%232A5370%22%2C%22section2BgColor%22%3A%22%23F2F2F2%22%2C%22section3BgColor%22%3A%22%232A5370%22%2C%22section3LeftButtonLink%22%3A%22https%3A%2F%2Fwww.marketo.com%22%2C%22section3RightButtonLabel%22%3A%22Sign%20Up%22%7D%7D%7D%5D&xsrfId=' + MktSecurity.getXsrfId(), null, 'POST', "", function (result) {console.log(result);});
             break;
         }
     }
