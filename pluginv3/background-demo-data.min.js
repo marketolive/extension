@@ -517,24 +517,9 @@ getCookie({
     }
 });
 
-function visitPage(visitedPagesCookie) {
-    var tabId;
-    
-    if (visitedPagesCookie
-         && visitedPagesCookie.value
-         && Number.isInteger(parseInt(visitedPagesCookie.value))
-         && parseInt(visitedPagesCookie.value) < webPages.length) {
-        
-        console.log("Visiting Page Index (" + parseInt(visitedPagesCookie.value) + "): " + webPageX.url + "?" + submitParam);
-        webPageX = webPages[parseInt(visitedPagesCookie.value)];
-        visitedPagesCookie.url = visitedPagesCookieMarketoLive.url;
-        visitedPagesCookie.value = parseInt(visitedPagesCookie.value) + 1;
-    } else {
-        console.log("Visiting Initial Page Index (0): " + webPageX.url + "?" + submitParam);
-        webPageX = webPages[0];
-        visitedPagesCookie = visitedPagesCookieMarketoLive;
-        visitedPagesCookie.value = 0;
-    }
+function visitPage(index) {
+    var visitedPagesCookie = visitedPagesCookieMarketoLive,
+    tabId;
     
     if (webPageX.type == landingPageType
          && (webPageX.conversionRate >= 1.0
@@ -558,45 +543,47 @@ function visitPage(visitedPagesCookie) {
         chrome.tabs.remove(tabId);
     }, 10000);
     
+    visitedPagesCookie.value = index;
     setCookie(visitedPagesCookie);
 }
 
-if (webPageX.type == landingPageType) {
-    getCookie({
-        url: mktoAppDomainMatch,
-        name: usernameCookieName
-    }, function (cookie) {
-        if (cookie
-             && cookie.value) {
-            getCookie(visitedPagesCookieMarketoLive, function (cookie) {
-                if (cookie
-                     && cookie.value) {
-                    visitPage(cookie);
-                } else {
-                    visitPage();
-                }
-            });
-        } else {
-            console.log("NOT Visiting: " + webPageX.url + " due to " + usernameCookieName + " cookie is null");
-        }
-    });
-} else if (webPageX.type == webPageType) {
-    getCookie({
-        url: mktoLiveDomainMatch,
-        name: usernameCookieName
-    }, function (cookie) {
-        if (cookie
-             && cookie.value) {
-            getCookie(visitedPagesCookieMarketoLive, function (cookie) {
-                if (cookie
-                     && cookie.value) {
-                    visitPage(cookie);
-                } else {
-                    visitPage();
-                }
-            });
-        } else {
-            console.log("NOT Visiting: " + webPageX.url + " due to " + usernameCookieName + " cookie is null");
-        }
-    });
-}
+getCookie(visitedPagesCookieMarketoLive, function (cookie) {
+    var visitedPagesIndex;
+    if (cookie
+         && cookie.value
+         && Number.isInteger(parseInt(cookie.value))
+         && parseInt(cookie.value) < webPages.length) {
+        console.log("Visiting Page Index (" + parseInt(visitedPagesCookie.value) + "): " + webPageX.url + "?" + submitParam);
+        visitedPagesIndex = parseInt(cookie.value) + 1;
+        webPageX = webPages[visitedPagesIndex];
+    } else {
+        console.log("Visiting Initial Page Index (0): " + webPageX.url + "?" + submitParam);
+        visitedPagesIndex = 0;
+        webPageX = webPages[visitedPagesIndex];
+    }
+    if (webPageX.type == landingPageType) {
+        getCookie({
+            url: mktoAppDomainMatch,
+            name: usernameCookieName
+        }, function (cookie) {
+            if (cookie
+                 && cookie.value) {
+                visitPage(visitedPagesIndex);
+            } else {
+                console.log("NOT Visiting: " + webPageX.url + " due to " + usernameCookieName + " cookie is null");
+            }
+        });
+    } else if (webPageX.type == webPageType) {
+        getCookie({
+            url: mktoLiveDomainMatch,
+            name: usernameCookieName
+        }, function (cookie) {
+            if (cookie
+                 && cookie.value) {
+                visitPage(visitedPagesIndex);
+            } else {
+                console.log("NOT Visiting: " + webPageX.url + " due to " + usernameCookieName + " cookie is null");
+            }
+        });
+    }
+});
