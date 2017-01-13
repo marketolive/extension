@@ -219,415 +219,6 @@ window.onload = function () {
             
             /**************************************************************************************
              *
-             *  This function overlays an email with the user submitted company logo and color.
-             *
-             *  @Author Brian Fisher
-             *
-             *  @function
-             *
-             *  @param {String} action - The mode in which this asset is being viewed (edit/preview).
-             *
-             **************************************************************************************/
-            
-            overlayEmail = function (action) {
-                console.log("Content > Overlaying: Email");
-                
-                var isEmailEditor2,
-                clearOverlayVars,
-                overlay,
-                isMktoHeaderBgColorReplaced = isMktoImgReplaced = isMktoHeroBgReplaced = isMktoTextReplaced = isMktoSubTextReplaced = isMktoButtonReplaced = isMktoEmail1Replaced = editorPrevReady = desktopPrevReady = phonePrevReady = isDesktopPreviewReplaced = isPhonePreviewReplaced = false,
-                logoMktoNameRegex = new RegExp("logo", "i"),
-                mainTitleMktoNameRegex = new RegExp("^main title$|^mainTitle$|^main-title$|^hero title$|^heroTitle$|^hero-title$|^title$", "i"),
-                subTitleMktoNameRegex = new RegExp("^subtitle$|^sub-title$|^hero subtitle$|^heroSubtitle$|^hero-subtitle$", "i"),
-                buttonTextRegex = new RegExp("signup|sign up|call to action|cta|register|more|contribute", "i"),
-                saveEditsToggle = getCookie("saveEditsToggleState"),
-                logo = getCookie("logo"),
-                heroBackground = getCookie("heroBackground"),
-                color = getCookie("color"),
-                defaultColor = "rgb(42, 83, 112)",
-                logoMaxHeight = "55",
-                mktoMainText = "You<br>PREMIER BUSINESS EVENT<br>OF THE YEAR",
-                mktoSubText = getHumanDate(),
-                company,
-                companyName,
-                editorRepeatReadyCount = desktopRepeatReadyCount = phoneRepeatReadyCount = 0,
-                maxRepeatReady = 2000,
-                maxPreviewRepeatReady = 3000;
-                
-                if (saveEditsToggle == "true"
-                     || (logo == null
-                         && heroBackground == null
-                         && color == null)) {
-                    return false;
-                }
-                if (logo != null) {
-                    company = logo.split("https://logo.clearbit.com/")[1].split(".")[0];
-                    companyName = company.charAt(0).toUpperCase() + company.slice(1);
-                    mktoMainText = companyName + " Invites " + mktoMainText;
-                } else {
-                    mktoMainText = "We Invite " + mktoMainText;
-                }
-                
-                clearOverlayVars = function () {
-                    isMktoHeaderBgColorReplaced = isMktoImgReplaced = isMktoHeroBgReplaced = isMktoTextReplaced = isMktoSubTextReplaced = isMktoButtonReplaced = isMktoEmail1Replaced = false;
-                    emailBody = mktoImgs = mktoTexts = mktoButtons = logoSwapCompany = logoSwapContainer = logoSwapCompanyContainer = logoBkg = buttonBkg = null;
-                };
-                
-                overlay = function (emailDocument) {
-                    if (emailDocument) {
-                        var emailBody = emailDocument.getElementsByTagName("body")[0],
-                        logoSwapCompany = emailDocument.getElementById("logo-swap-company"),
-                        logoSwapContainer = emailDocument.getElementById("logo-swap-container"),
-                        logoSwapCompanyContainer = emailDocument.getElementById("logo-swap-company-container"),
-                        logoBkg = emailDocument.getElementById("logo-bkg"),
-                        buttonBkg = emailDocument.getElementById("button-bkg");
-                        
-                        if (emailBody
-                             && emailBody.innerHTML) {
-                            var mktoHeader = emailDocument.getElementsByName("header")[0],
-                            mktoLogo = emailDocument.getElementsByName("logo")[0],
-                            mktoImgs = emailBody.getElementsByClassName("mktoImg"),
-                            mktoHeroBg = emailDocument.getElementsByName("heroBackground")[0],
-                            mktoTds = emailBody.getElementsByTagName("td"),
-                            mktoTitle = emailDocument.getElementsByName("title")[0],
-                            mktoSubtitle = emailDocument.getElementsByName("subtitle")[0],
-                            mktoTexts = emailBody.getElementsByClassName("mktoText"),
-                            mktoButton = emailDocument.getElementsByName("button")[0],
-                            mktoButtons = emailBody.getElementsByClassName("secondary-font button");
-                            
-                            if (!isMktoHeaderBgColorReplaced
-                                 && color
-                                 && mktoHeader) {
-                                
-                                console.log("Content > Overlaying: Email 2.0 Header Background Company Color for Demo Svcs Template");
-                                mktoHeader.style.setProperty("background-color", color);
-                                mktoHeader.setAttribute("bgColor", color);
-                                isMktoHeaderBgColorReplaced = true;
-                            }
-                            
-                            if (!isMktoImgReplaced
-                                 && logo
-                                 && (mktoLogo
-                                       || mktoImgs.length != 0)) {
-                                
-                                if (mktoLogo) {
-                                    console.log("Content > Overlaying: Email 2.0 Company Logo for Demo Svcs Template");
-                                    if (mktoLogo.style.height) {
-                                        mktoLogo.style.setProperty("max-height", mktoLogo.style.height);
-                                        console.log("Content > Overlaying: Email 2.0 Company Logo Max Height = " + mktoLogo.style.height);
-                                    } else {
-                                        mktoLogo.style.setProperty("max-height", mktoLogo.height + "px");
-                                        console.log("Content > Overlaying: Email 2.0 Company Logo Max Height = " + mktoLogo.height);
-                                    }
-                                    mktoLogo.setAttribute("src", logo);
-                                    isMktoImgReplaced = true;
-                                } else {
-                                    for (var ii = 0; ii < mktoImgs.length; ii++) {
-                                        var currMktoImg = mktoImgs[ii],
-                                        currMktoImgMktoName;
-                                        
-                                        if (currMktoImg.getAttribute("mktoname")) {
-                                            currMktoImgMktoName = currMktoImg.getAttribute("mktoname");
-                                        } else if (currMktoImg.getAttribute("id")) {
-                                            currMktoImgMktoName = currMktoImg.getAttribute("id");
-                                        }
-                                        
-                                        if (currMktoImgMktoName
-                                             && currMktoImgMktoName.search(logoMktoNameRegex) != -1) {
-                                            var currMktoImgTag = currMktoImg.getElementsByTagName("img")[0];
-                                            
-                                            if (currMktoImgTag
-                                                 && currMktoImgTag.getAttribute("src")) {
-                                                console.log("Content > Overlaying: Email 2.0 Company Logo");
-                                                if (currMktoImgTag.style.height) {
-                                                    currMktoImgTag.style.setProperty("max-height", currMktoImgTag.style.height);
-                                                    console.log("Content > Overlaying: Email 2.0 Company Logo Max Height = " + currMktoImgTag.style.height);
-                                                } else {
-                                                    currMktoImgTag.style.setProperty("max-height", currMktoImgTag.height + "px");
-                                                    console.log("Content > Overlaying: Email 2.0 Company Logo Max Height = " + currMktoImgTag.height);
-                                                }
-                                                currMktoImgTag.setAttribute("src", logo);
-                                                isMktoImgReplaced = true;
-                                                break;
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                            
-                            if (!isMktoHeroBgReplaced
-                                 && heroBackground
-                                 && (mktoHeroBg
-                                     || mktoTds.length != 0)) {
-                                
-                                if (mktoHeroBg) {
-                                    console.log("Content > Overlaying: Email 2.0 Hero Company Background for Demo Svcs Template");
-                                    mktoHeroBg.style.setProperty("background-image", "url('" + heroBackground + "')");
-                                    mktoHeroBg.setAttribute("background", heroBackground);
-                                    mktoHeroBg.style.setProperty("background-size", "cover");
-                                    isMktoHeroBgReplaced = true;
-                                } else {
-                                    for (var ii = 0; ii < mktoTds.length; ii++) {
-                                        var currMktoTd = mktoTds[ii];
-                                        
-                                        if (currMktoTd
-                                             && currMktoTd.getAttribute("background")) {
-                                            
-                                            console.log("Content > Overlaying: Email 2.0 Hero Company Background");
-                                            currMktoTd.setAttribute("background", heroBackground);
-                                            currMktoTd.style.setProperty("background-image", "url('" + heroBackground + "')");
-                                            currMktoTd.style.setProperty("background-size", "cover");
-                                            isMktoHeroBgReplaced = true;
-                                            break;
-                                        }
-                                    }
-                                }
-                            }
-                            
-                            if ((!isMktoSubTextReplaced
-                                     || !isMktoTextReplaced)
-                                 && (mktoTitle
-                                     || mktoSubtitle
-                                     || mktoTexts.length != 0)) {
-                                
-                                if (mktoTitle) {
-                                    console.log("Content > Overlaying: Email 2.0 Company Name in Title for Demo Svcs Template");
-                                    mktoTitle.innerHTML = mktoMainText;
-                                    isMktoTextReplaced = true;
-                                }
-                                
-                                if (mktoSubtitle) {
-                                    console.log("Content > Overlaying: Email 2.0 Company Today's Date in Subtitle for Demo Svcs Template");
-                                    mktoSubtitle.innerHTML = mktoSubText;
-                                    isMktoSubTextReplaced = true;
-                                }
-                                
-                                if (!mktoSubtitle
-                                     && !mktoTitle) {
-                                    for (var ii = 0; ii < mktoTexts.length; ii++) {
-                                        var currMktoText = mktoTexts[ii],
-                                        currMktoTextMktoName;
-                                        
-                                        if (currMktoText.getAttribute("mktoname")) {
-                                            currMktoTextMktoName = currMktoText.getAttribute("mktoname");
-                                        } else if (currMktoText.getAttribute("id")) {
-                                            currMktoTextMktoName = currMktoText.getAttribute("id");
-                                        }
-                                        
-                                        if (currMktoTextMktoName
-                                             && currMktoTextMktoName.search(mainTitleMktoNameRegex) != -1) {
-                                            if (currMktoText.innerHTML) {
-                                                console.log("Content > Overlaying: Email 2.0 Company Name in Title");
-                                                currMktoText.innerHTML = mktoMainText;
-                                                isMktoTextReplaced = true;
-                                            }
-                                        } else if (currMktoTextMktoName
-                                             && currMktoTextMktoName.search(subTitleMktoNameRegex) != -1) {
-                                            if (currMktoText.innerHTML) {
-                                                console.log("Content > Overlaying: Email 2.0 Company Today's Date in Subtitle");
-                                                currMktoText.innerHTML = mktoSubText;
-                                                isMktoSubTextReplaced = true;
-                                            }
-                                        }
-                                        
-                                        if (isMktoSubTextReplaced
-                                             && isMktoTextReplaced) {
-                                            break;
-                                        }
-                                    }
-                                }
-                            }
-                            
-                            if (!isMktoButtonReplaced
-                                 && color
-                                 && (mktoButton
-                                     || mktoButtons.length != 0)) {
-                                
-                                if (mktoButton) {
-                                  console.log("Content > Overlaying: Email 2.0 Button Company Color for Demo Svcs Template");
-                                    mktoButton.style.setProperty("background-color", color);
-                                    
-                                    if (mktoButton.style.getPropertyValue("border")
-                                         && mktoButton.style.getPropertyValue("border") != "none") {
-                                        
-                                        mktoButton.style.setProperty("border", "1px solid " + color);
-                                    }
-                                    isMktoButtonReplaced = true;
-                                } else {
-                                    for (var ii = 0; ii < mktoButtons.length; ii++) {
-                                        var currMktoButton = mktoButtons[ii];
-                                        
-                                        if (currMktoButton.innerHTML
-                                             && currMktoButton.innerHTML.search(buttonTextRegex) != -1) {
-                                            if (currMktoButton.style
-                                                 && currMktoButton.style.backgroundColor) {
-                                                console.log("Content > Overlaying: Email 2.0 Button Company Color");
-                                                currMktoButton.style.backgroundColor = color;
-                                                
-                                                if (currMktoButton.style.getPropertyValue("border")
-                                                     && currMktoButton.style.getPropertyValue("border") != "none") {
-                                                    
-                                                    currMktoButton.style.setProperty("border", "1px solid " + color);
-                                                }
-                                                isMktoButtonReplaced = true;
-                                                break;
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        
-                        if (logoSwapCompanyContainer
-                             && logoSwapContainer
-                             && logoSwapCompany
-                             && logoBkg) {
-                            console.log("Content > Overlaying: Email 1.0 Company Logo & Color");
-                            if (color) {
-                                logoBkg.style.backgroundColor = color;
-                            }
-                            
-                            if (logo) {
-                                logoSwapCompany.setAttribute("src", logo);
-                            
-                                logoSwapCompany.onload = function () {
-                                    var logoHeightsRatio,
-                                    logoWidth,
-                                    logoNewWidth,
-                                    logoNewHeight,
-                                    logoStyle;
-                                    
-                                    if (logoSwapCompany.naturalHeight
-                                         && logoSwapCompany.naturalHeight > logoMaxHeight) {
-                                        logoHeightsRatio = logoSwapCompany.naturalHeight / logoMaxHeight;
-                                        logoWidth = logoSwapCompany.naturalWidth / logoHeightsRatio;
-                                        logoSwapCompany.width = logoNewWidth = logoWidth;
-                                        logoSwapCompany.height = logoNewHeight = logoMaxHeight;
-                                    } else if (logoSwapCompany.naturalHeight) {
-                                        logoSwapCompany.width = logoNewWidth = logoSwapCompany.naturalWidth;
-                                        logoSwapCompany.height = logoNewHeight = logoSwapCompany.naturalHeight;
-                                    } else {
-                                        logoSwapCompany.width = logoSwapCompany.height = logoNewWidth = logoNewHeight = logoMaxHeight;
-                                    }
-                                    
-                                    if (emailDocument.getElementsByTagName("head")
-                                         && emailDocument.getElementsByTagName("head")[0]) {
-                                        logoStyle = document.createElement("style");
-                                        logoStyle.innerHTML = "#" + logoSwapCompany.id + " {width : " + logoNewWidth + "px !important; height : " + logoNewHeight + "px !important;}";
-                                        emailDocument.getElementsByTagName("head")[0].appendChild(logoStyle);
-                                    }
-                                    console.log("Content > Overlaying: Email 1.0 Company Logo Dimensions = " + logoNewWidth + " x " + logoNewHeight);
-                                }
-                                logoSwapContainer.style.display = "none";
-                                logoSwapCompanyContainer.style.display = "block";
-                            }
-                            
-                            if (buttonBkg
-                                 && color) {
-                                buttonBkg.style.setProperty("background-color", color);
-                            }
-                            isMktoEmail1Replaced = true;
-                        }
-                        
-                        if ((isMktoButtonReplaced
-                                 && isMktoSubTextReplaced
-                                 && isMktoTextReplaced
-                                 && isMktoImgReplaced
-                                 && isMktoHeroBgReplaced
-                                 && (!mktoHeader
-                                     || (mktoHeader
-                                         && isMktoHeaderBgColorReplaced)))
-                             || isMktoEmail1Replaced) {
-                            clearOverlayVars();
-                            return true;
-                        }
-                    }
-                    
-                    return false;
-                };
-                
-                isEmailEditor2 = window.setInterval(function () {
-                        if (action == "edit") {
-                            console.log("Content > Overlaying: Email Designer");
-                            if (document.getElementsByTagName("iframe")[0]
-                                 && document.getElementsByTagName("iframe")[0].contentWindow
-                                 && document.getElementsByTagName("iframe")[0].contentWindow.document
-                                 && document.getElementsByTagName("iframe")[0].contentWindow.document.readyState == "complete") {
-                                if (overlay(document.getElementsByTagName("iframe")[0].contentWindow.document)
-                                     || editorRepeatReadyCount >= maxRepeatReady) {
-                                    
-                                    console.log("Content > Overlayed: Email Designer = " + editorRepeatReadyCount);
-                                    console.log("Content > Overlaying: Email Interval is Cleared");
-                                    window.clearInterval(isEmailEditor2);
-                                    clearOverlayVars();
-                                    return true;
-                                } else if (editorPrevReady) {
-                                    editorRepeatReadyCount++;
-                                } else {
-                                    editorRepeatReadyCount = 1;
-                                }
-                                editorPrevReady = true;
-                            } else {
-                                editorPrevReady = false;
-                            }
-                        } else if (action == "preview") {
-                            console.log("Content > Overlaying: Email Previewer");
-                            
-                            if (!isDesktopPreviewReplaced
-                                 && document.getElementsByTagName("iframe")[2]
-                                 && document.getElementsByTagName("iframe")[2].contentWindow
-                                 && document.getElementsByTagName("iframe")[2].contentWindow.document
-                                 && document.getElementsByTagName("iframe")[2].contentWindow.document.readyState == "complete") {
-                                if (overlay(document.getElementsByTagName("iframe")[2].contentWindow.document)
-                                     || desktopRepeatReadyCount >= maxPreviewRepeatReady) {
-                                    
-                                    console.log("Content > Overlayed: Email Desktop Preview = " + desktopRepeatReadyCount);
-                                    isDesktopPreviewReplaced = true;
-                                    clearOverlayVars();
-                                } else if (desktopPrevReady) {
-                                    desktopRepeatReadyCount++;
-                                } else {
-                                    desktopRepeatReadyCount = 1;
-                                }
-                                desktopPrevReady = true;
-                            } else {
-                                desktopPrevReady = false;
-                            }
-                            
-                            if (!isPhonePreviewReplaced
-                                 && document.getElementsByTagName("iframe")[3]
-                                 && document.getElementsByTagName("iframe")[3].contentWindow
-                                 && document.getElementsByTagName("iframe")[3].contentWindow.document
-                                 && document.getElementsByTagName("iframe")[3].contentWindow.document.readyState == "complete") {
-                                if (overlay(document.getElementsByTagName("iframe")[3].contentWindow.document)
-                                     || phoneRepeatReadyCount >= maxPreviewRepeatReady) {
-                                    
-                                    console.log("Content > Overlayed: Email Phone Preview = " + phoneRepeatReadyCount);
-                                    isPhonePreviewReplaced = true;
-                                    clearOverlayVars();
-                                } else if (phonePrevReady) {
-                                    phoneRepeatReadyCount++;
-                                } else {
-                                    phoneRepeatReadyCount = 1;
-                                }
-                                phonePrevReady = true;
-                            } else {
-                                phonePrevReady = false;
-                            }
-                            
-                            if (isPhonePreviewReplaced
-                                 && isDesktopPreviewReplaced) {
-                                console.log("Content > Overlaying: Email Interval is Cleared");
-                                window.clearInterval(isEmailEditor2);
-                                clearOverlayVars();
-                                return true;
-                            }
-                        }
-                    }, 0);
-            };
-            
-            /**************************************************************************************
-             *
              *  This function overlays a landing page with the user submitted company logo and color.
              *
              *  @Author Brian Fisher
@@ -644,7 +235,7 @@ window.onload = function () {
                 var isLandingPageEditor,
                 clearOverlayVars,
                 overlay,
-                isMktoFreeForm = isMktoBackgroundColorReplaced = isMktoImgReplaced = isMktoHeroBgImgReplaced = isMktoTextReplaced = isMktoSubTextReplaced = isMktoButtonReplaced =  isMktoOrigReplaced = desktopPrevReady = phonePrevReady = sideBySideDesktopPrevReady = sideBySidePhonePrevReady = isDesktopReplaced = isPhoneReplaced = isSideBySideDesktopReplaced = isSideBySidePhoneReplaced = false,
+                isMktoFreeForm = isMktoBackgroundColorReplaced = isMktoImgReplaced = isMktoHeroBgImgReplaced = isMktoTextReplaced = isMktoSubTextReplaced = isMktoButtonReplaced = isMktoOrigReplaced = desktopPrevReady = phonePrevReady = sideBySideDesktopPrevReady = sideBySidePhonePrevReady = isDesktopReplaced = isPhoneReplaced = isSideBySideDesktopReplaced = isSideBySidePhoneReplaced = false,
                 mktoBodyId = "bodyId",
                 mktoFreeFormClassName = "mktoMobileShow",
                 logoRegex = new RegExp("primaryImage|primary_image|primary-image|logo|image_1|image-1|image1", "i"),
@@ -828,10 +419,10 @@ window.onload = function () {
                             
                             if ((!isMktoSubTextReplaced
                                      || !isMktoTextReplaced)
-                                && (mktoTitle
+                                 && (mktoTitle
                                      || mktoSubtitle
                                      || mktoTexts.length != 0)
-                                     || mktoRichTexts.length != 0) {
+                                 || mktoRichTexts.length != 0) {
                                 
                                 if (mktoTitle) {
                                     console.log("Content > Overlaying: Landing Page Company Name in Title for Demo Svcs Template");
@@ -1000,9 +591,9 @@ window.onload = function () {
                                      || mktoButtons.length != 0)) {
                                 
                                 if (mktoButton) {
-                                  console.log("Content > Overlaying: Landing Page Button Company Color for Demo Svcs Template");
-                                  mktoButton.setAttribute("style", currMktoButton.getAttribute("style") + "; background-color: " + color + " !important;");
-                                  //mktoButton.style.setProperty("background-color", color + " !important");
+                                    console.log("Content > Overlaying: Landing Page Button Company Color for Demo Svcs Template");
+                                    mktoButton.setAttribute("style", currMktoButton.getAttribute("style") + "; background-color: " + color + " !important;");
+                                    //mktoButton.style.setProperty("background-color", color + " !important");
                                     
                                     if (mktoButton.style.getPropertyValue("border")
                                          && mktoButton.style.getPropertyValue("border") != "none") {
@@ -1048,7 +639,7 @@ window.onload = function () {
                             console.log("Content > Overlaying: Original Landing Page Company Logo & Color");
                             if (logo) {
                                 logoImg.src = logo;
-                            
+                                
                                 logoImg.onload = function () {
                                     var logoHeightsRatio,
                                     logoWidth,
@@ -1254,6 +845,415 @@ window.onload = function () {
                                  && isDesktopReplaced) {
                                 console.log("Content > Overlaying: Landing Page Interval is Cleared");
                                 window.clearInterval(isLandingPageEditor);
+                                clearOverlayVars();
+                                return true;
+                            }
+                        }
+                    }, 0);
+            };
+            
+            /**************************************************************************************
+             *
+             *  This function overlays an email with the user submitted company logo and color.
+             *
+             *  @Author Brian Fisher
+             *
+             *  @function
+             *
+             *  @param {String} action - The mode in which this asset is being viewed (edit/preview).
+             *
+             **************************************************************************************/
+            
+            overlayEmail = function (action) {
+                console.log("Content > Overlaying: Email");
+                
+                var isEmailEditor2,
+                clearOverlayVars,
+                overlay,
+                isMktoHeaderBgColorReplaced = isMktoImgReplaced = isMktoHeroBgReplaced = isMktoTextReplaced = isMktoSubTextReplaced = isMktoButtonReplaced = isMktoEmail1Replaced = editorPrevReady = desktopPrevReady = phonePrevReady = isDesktopPreviewReplaced = isPhonePreviewReplaced = false,
+                logoMktoNameRegex = new RegExp("logo", "i"),
+                mainTitleMktoNameRegex = new RegExp("^main title$|^mainTitle$|^main-title$|^hero title$|^heroTitle$|^hero-title$|^title$", "i"),
+                subTitleMktoNameRegex = new RegExp("^subtitle$|^sub-title$|^hero subtitle$|^heroSubtitle$|^hero-subtitle$", "i"),
+                buttonTextRegex = new RegExp("signup|sign up|call to action|cta|register|more|contribute", "i"),
+                saveEditsToggle = getCookie("saveEditsToggleState"),
+                logo = getCookie("logo"),
+                heroBackground = getCookie("heroBackground"),
+                color = getCookie("color"),
+                defaultColor = "rgb(42, 83, 112)",
+                logoMaxHeight = "55",
+                mktoMainText = "You<br>PREMIER BUSINESS EVENT<br>OF THE YEAR",
+                mktoSubText = getHumanDate(),
+                company,
+                companyName,
+                editorRepeatReadyCount = desktopRepeatReadyCount = phoneRepeatReadyCount = 0,
+                maxRepeatReady = 2000,
+                maxPreviewRepeatReady = 3000;
+                
+                if (saveEditsToggle == "true"
+                     || (logo == null
+                         && heroBackground == null
+                         && color == null)) {
+                    return false;
+                }
+                if (logo != null) {
+                    company = logo.split("https://logo.clearbit.com/")[1].split(".")[0];
+                    companyName = company.charAt(0).toUpperCase() + company.slice(1);
+                    mktoMainText = companyName + " Invites " + mktoMainText;
+                } else {
+                    mktoMainText = "We Invite " + mktoMainText;
+                }
+                
+                clearOverlayVars = function () {
+                    isMktoHeaderBgColorReplaced = isMktoImgReplaced = isMktoHeroBgReplaced = isMktoTextReplaced = isMktoSubTextReplaced = isMktoButtonReplaced = isMktoEmail1Replaced = false;
+                    emailBody = mktoImgs = mktoTexts = mktoButtons = logoSwapCompany = logoSwapContainer = logoSwapCompanyContainer = logoBkg = buttonBkg = null;
+                };
+                
+                overlay = function (emailDocument) {
+                    if (emailDocument) {
+                        var emailBody = emailDocument.getElementsByTagName("body")[0],
+                        logoSwapCompany = emailDocument.getElementById("logo-swap-company"),
+                        logoSwapContainer = emailDocument.getElementById("logo-swap-container"),
+                        logoSwapCompanyContainer = emailDocument.getElementById("logo-swap-company-container"),
+                        logoBkg = emailDocument.getElementById("logo-bkg"),
+                        buttonBkg = emailDocument.getElementById("button-bkg");
+                        
+                        if (emailBody
+                             && emailBody.innerHTML) {
+                            var mktoHeader = emailDocument.getElementsByName("header")[0],
+                            mktoLogo = emailDocument.getElementsByName("logo")[0],
+                            mktoImgs = emailBody.getElementsByClassName("mktoImg"),
+                            mktoHeroBg = emailDocument.getElementsByName("heroBackground")[0],
+                            mktoTds = emailBody.getElementsByTagName("td"),
+                            mktoTitle = emailDocument.getElementsByName("title")[0],
+                            mktoSubtitle = emailDocument.getElementsByName("subtitle")[0],
+                            mktoTexts = emailBody.getElementsByClassName("mktoText"),
+                            mktoButton = emailDocument.getElementsByName("button")[0],
+                            mktoButtons = emailBody.getElementsByClassName("secondary-font button");
+                            
+                            if (!isMktoHeaderBgColorReplaced
+                                 && color
+                                 && mktoHeader) {
+                                
+                                console.log("Content > Overlaying: Email 2.0 Header Background Company Color for Demo Svcs Template");
+                                mktoHeader.style.setProperty("background-color", color);
+                                mktoHeader.setAttribute("bgColor", color);
+                                isMktoHeaderBgColorReplaced = true;
+                            }
+                            
+                            if (!isMktoImgReplaced
+                                 && logo
+                                 && (mktoLogo
+                                     || mktoImgs.length != 0)) {
+                                
+                                if (mktoLogo) {
+                                    console.log("Content > Overlaying: Email 2.0 Company Logo for Demo Svcs Template");
+                                    if (mktoLogo.style.height) {
+                                        mktoLogo.style.setProperty("max-height", mktoLogo.style.height);
+                                        console.log("Content > Overlaying: Email 2.0 Company Logo Max Height = " + mktoLogo.style.height);
+                                    } else {
+                                        mktoLogo.style.setProperty("max-height", mktoLogo.height + "px");
+                                        console.log("Content > Overlaying: Email 2.0 Company Logo Max Height = " + mktoLogo.height);
+                                    }
+                                    mktoLogo.setAttribute("src", logo);
+                                    isMktoImgReplaced = true;
+                                } else {
+                                    for (var ii = 0; ii < mktoImgs.length; ii++) {
+                                        var currMktoImg = mktoImgs[ii],
+                                        currMktoImgMktoName;
+                                        
+                                        if (currMktoImg.getAttribute("mktoname")) {
+                                            currMktoImgMktoName = currMktoImg.getAttribute("mktoname");
+                                        } else if (currMktoImg.getAttribute("id")) {
+                                            currMktoImgMktoName = currMktoImg.getAttribute("id");
+                                        }
+                                        
+                                        if (currMktoImgMktoName
+                                             && currMktoImgMktoName.search(logoMktoNameRegex) != -1) {
+                                            var currMktoImgTag = currMktoImg.getElementsByTagName("img")[0];
+                                            
+                                            if (currMktoImgTag
+                                                 && currMktoImgTag.getAttribute("src")) {
+                                                console.log("Content > Overlaying: Email 2.0 Company Logo");
+                                                if (currMktoImgTag.style.height) {
+                                                    currMktoImgTag.style.setProperty("max-height", currMktoImgTag.style.height);
+                                                    console.log("Content > Overlaying: Email 2.0 Company Logo Max Height = " + currMktoImgTag.style.height);
+                                                } else {
+                                                    currMktoImgTag.style.setProperty("max-height", currMktoImgTag.height + "px");
+                                                    console.log("Content > Overlaying: Email 2.0 Company Logo Max Height = " + currMktoImgTag.height);
+                                                }
+                                                currMktoImgTag.setAttribute("src", logo);
+                                                isMktoImgReplaced = true;
+                                                break;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            
+                            if (!isMktoHeroBgReplaced
+                                 && heroBackground
+                                 && (mktoHeroBg
+                                     || mktoTds.length != 0)) {
+                                
+                                if (mktoHeroBg) {
+                                    console.log("Content > Overlaying: Email 2.0 Hero Company Background for Demo Svcs Template");
+                                    mktoHeroBg.style.setProperty("background-image", "url('" + heroBackground + "')");
+                                    mktoHeroBg.setAttribute("background", heroBackground);
+                                    mktoHeroBg.style.setProperty("background-size", "cover");
+                                    isMktoHeroBgReplaced = true;
+                                } else {
+                                    for (var ii = 0; ii < mktoTds.length; ii++) {
+                                        var currMktoTd = mktoTds[ii];
+                                        
+                                        if (currMktoTd
+                                             && currMktoTd.getAttribute("background")) {
+                                            
+                                            console.log("Content > Overlaying: Email 2.0 Hero Company Background");
+                                            currMktoTd.setAttribute("background", heroBackground);
+                                            currMktoTd.style.setProperty("background-image", "url('" + heroBackground + "')");
+                                            currMktoTd.style.setProperty("background-size", "cover");
+                                            isMktoHeroBgReplaced = true;
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                            
+                            if ((!isMktoSubTextReplaced
+                                     || !isMktoTextReplaced)
+                                 && (mktoTitle
+                                     || mktoSubtitle
+                                     || mktoTexts.length != 0)) {
+                                
+                                if (mktoTitle) {
+                                    console.log("Content > Overlaying: Email 2.0 Company Name in Title for Demo Svcs Template");
+                                    mktoTitle.innerHTML = mktoMainText;
+                                    isMktoTextReplaced = true;
+                                }
+                                
+                                if (mktoSubtitle) {
+                                    console.log("Content > Overlaying: Email 2.0 Company Today's Date in Subtitle for Demo Svcs Template");
+                                    mktoSubtitle.innerHTML = mktoSubText;
+                                    isMktoSubTextReplaced = true;
+                                }
+                                
+                                if (!mktoSubtitle
+                                     && !mktoTitle) {
+                                    for (var ii = 0; ii < mktoTexts.length; ii++) {
+                                        var currMktoText = mktoTexts[ii],
+                                        currMktoTextMktoName;
+                                        
+                                        if (currMktoText.getAttribute("mktoname")) {
+                                            currMktoTextMktoName = currMktoText.getAttribute("mktoname");
+                                        } else if (currMktoText.getAttribute("id")) {
+                                            currMktoTextMktoName = currMktoText.getAttribute("id");
+                                        }
+                                        
+                                        if (currMktoTextMktoName
+                                             && currMktoTextMktoName.search(mainTitleMktoNameRegex) != -1) {
+                                            if (currMktoText.innerHTML) {
+                                                console.log("Content > Overlaying: Email 2.0 Company Name in Title");
+                                                currMktoText.innerHTML = mktoMainText;
+                                                isMktoTextReplaced = true;
+                                            }
+                                        } else if (currMktoTextMktoName
+                                             && currMktoTextMktoName.search(subTitleMktoNameRegex) != -1) {
+                                            if (currMktoText.innerHTML) {
+                                                console.log("Content > Overlaying: Email 2.0 Company Today's Date in Subtitle");
+                                                currMktoText.innerHTML = mktoSubText;
+                                                isMktoSubTextReplaced = true;
+                                            }
+                                        }
+                                        
+                                        if (isMktoSubTextReplaced
+                                             && isMktoTextReplaced) {
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                            
+                            if (!isMktoButtonReplaced
+                                 && color
+                                 && (mktoButton
+                                     || mktoButtons.length != 0)) {
+                                
+                                if (mktoButton) {
+                                    console.log("Content > Overlaying: Email 2.0 Button Company Color for Demo Svcs Template");
+                                    mktoButton.style.setProperty("background-color", color);
+                                    
+                                    if (mktoButton.style.getPropertyValue("border")
+                                         && mktoButton.style.getPropertyValue("border") != "none") {
+                                        
+                                        mktoButton.style.setProperty("border", "1px solid " + color);
+                                    }
+                                    isMktoButtonReplaced = true;
+                                } else {
+                                    for (var ii = 0; ii < mktoButtons.length; ii++) {
+                                        var currMktoButton = mktoButtons[ii];
+                                        
+                                        if (currMktoButton.innerHTML
+                                             && currMktoButton.innerHTML.search(buttonTextRegex) != -1) {
+                                            if (currMktoButton.style
+                                                 && currMktoButton.style.backgroundColor) {
+                                                console.log("Content > Overlaying: Email 2.0 Button Company Color");
+                                                currMktoButton.style.backgroundColor = color;
+                                                
+                                                if (currMktoButton.style.getPropertyValue("border")
+                                                     && currMktoButton.style.getPropertyValue("border") != "none") {
+                                                    
+                                                    currMktoButton.style.setProperty("border", "1px solid " + color);
+                                                }
+                                                isMktoButtonReplaced = true;
+                                                break;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        
+                        if (logoSwapCompanyContainer
+                             && logoSwapContainer
+                             && logoSwapCompany
+                             && logoBkg) {
+                            console.log("Content > Overlaying: Email 1.0 Company Logo & Color");
+                            if (color) {
+                                logoBkg.style.backgroundColor = color;
+                            }
+                            
+                            if (logo) {
+                                logoSwapCompany.setAttribute("src", logo);
+                                
+                                logoSwapCompany.onload = function () {
+                                    var logoHeightsRatio,
+                                    logoWidth,
+                                    logoNewWidth,
+                                    logoNewHeight,
+                                    logoStyle;
+                                    
+                                    if (logoSwapCompany.naturalHeight
+                                         && logoSwapCompany.naturalHeight > logoMaxHeight) {
+                                        logoHeightsRatio = logoSwapCompany.naturalHeight / logoMaxHeight;
+                                        logoWidth = logoSwapCompany.naturalWidth / logoHeightsRatio;
+                                        logoSwapCompany.width = logoNewWidth = logoWidth;
+                                        logoSwapCompany.height = logoNewHeight = logoMaxHeight;
+                                    } else if (logoSwapCompany.naturalHeight) {
+                                        logoSwapCompany.width = logoNewWidth = logoSwapCompany.naturalWidth;
+                                        logoSwapCompany.height = logoNewHeight = logoSwapCompany.naturalHeight;
+                                    } else {
+                                        logoSwapCompany.width = logoSwapCompany.height = logoNewWidth = logoNewHeight = logoMaxHeight;
+                                    }
+                                    
+                                    if (emailDocument.getElementsByTagName("head")
+                                         && emailDocument.getElementsByTagName("head")[0]) {
+                                        logoStyle = document.createElement("style");
+                                        logoStyle.innerHTML = "#" + logoSwapCompany.id + " {width : " + logoNewWidth + "px !important; height : " + logoNewHeight + "px !important;}";
+                                        emailDocument.getElementsByTagName("head")[0].appendChild(logoStyle);
+                                    }
+                                    console.log("Content > Overlaying: Email 1.0 Company Logo Dimensions = " + logoNewWidth + " x " + logoNewHeight);
+                                }
+                                logoSwapContainer.style.display = "none";
+                                logoSwapCompanyContainer.style.display = "block";
+                            }
+                            
+                            if (buttonBkg
+                                 && color) {
+                                buttonBkg.style.setProperty("background-color", color);
+                            }
+                            isMktoEmail1Replaced = true;
+                        }
+                        
+                        if ((isMktoButtonReplaced
+                                 && isMktoSubTextReplaced
+                                 && isMktoTextReplaced
+                                 && isMktoImgReplaced
+                                 && isMktoHeroBgReplaced
+                                 && (!mktoHeader
+                                     || (mktoHeader
+                                         && isMktoHeaderBgColorReplaced)))
+                             || isMktoEmail1Replaced) {
+                            clearOverlayVars();
+                            return true;
+                        }
+                    }
+                    
+                    return false;
+                };
+                
+                isEmailEditor2 = window.setInterval(function () {
+                        if (action == "edit") {
+                            console.log("Content > Overlaying: Email Designer");
+                            if (document.getElementsByTagName("iframe")[0]
+                                 && document.getElementsByTagName("iframe")[0].contentWindow
+                                 && document.getElementsByTagName("iframe")[0].contentWindow.document
+                                 && document.getElementsByTagName("iframe")[0].contentWindow.document.readyState == "complete") {
+                                if (overlay(document.getElementsByTagName("iframe")[0].contentWindow.document)
+                                     || editorRepeatReadyCount >= maxRepeatReady) {
+                                    
+                                    console.log("Content > Overlayed: Email Designer = " + editorRepeatReadyCount);
+                                    console.log("Content > Overlaying: Email Interval is Cleared");
+                                    window.clearInterval(isEmailEditor2);
+                                    clearOverlayVars();
+                                    return true;
+                                } else if (editorPrevReady) {
+                                    editorRepeatReadyCount++;
+                                } else {
+                                    editorRepeatReadyCount = 1;
+                                }
+                                editorPrevReady = true;
+                            } else {
+                                editorPrevReady = false;
+                            }
+                        } else if (action == "preview") {
+                            console.log("Content > Overlaying: Email Previewer");
+                            
+                            if (!isDesktopPreviewReplaced
+                                 && document.getElementsByTagName("iframe")[2]
+                                 && document.getElementsByTagName("iframe")[2].contentWindow
+                                 && document.getElementsByTagName("iframe")[2].contentWindow.document
+                                 && document.getElementsByTagName("iframe")[2].contentWindow.document.readyState == "complete") {
+                                if (overlay(document.getElementsByTagName("iframe")[2].contentWindow.document)
+                                     || desktopRepeatReadyCount >= maxPreviewRepeatReady) {
+                                    
+                                    console.log("Content > Overlayed: Email Desktop Preview = " + desktopRepeatReadyCount);
+                                    isDesktopPreviewReplaced = true;
+                                    clearOverlayVars();
+                                } else if (desktopPrevReady) {
+                                    desktopRepeatReadyCount++;
+                                } else {
+                                    desktopRepeatReadyCount = 1;
+                                }
+                                desktopPrevReady = true;
+                            } else {
+                                desktopPrevReady = false;
+                            }
+                            
+                            if (!isPhonePreviewReplaced
+                                 && document.getElementsByTagName("iframe")[3]
+                                 && document.getElementsByTagName("iframe")[3].contentWindow
+                                 && document.getElementsByTagName("iframe")[3].contentWindow.document
+                                 && document.getElementsByTagName("iframe")[3].contentWindow.document.readyState == "complete") {
+                                if (overlay(document.getElementsByTagName("iframe")[3].contentWindow.document)
+                                     || phoneRepeatReadyCount >= maxPreviewRepeatReady) {
+                                    
+                                    console.log("Content > Overlayed: Email Phone Preview = " + phoneRepeatReadyCount);
+                                    isPhonePreviewReplaced = true;
+                                    clearOverlayVars();
+                                } else if (phonePrevReady) {
+                                    phoneRepeatReadyCount++;
+                                } else {
+                                    phoneRepeatReadyCount = 1;
+                                }
+                                phonePrevReady = true;
+                            } else {
+                                phonePrevReady = false;
+                            }
+                            
+                            if (isPhonePreviewReplaced
+                                 && isDesktopPreviewReplaced) {
+                                console.log("Content > Overlaying: Email Interval is Cleared");
+                                window.clearInterval(isEmailEditor2);
                                 clearOverlayVars();
                                 return true;
                             }

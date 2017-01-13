@@ -20,10 +20,12 @@ mktoAppUriDomain = ".marketo.com",
 mktoDesignerDomainMatch = "https://www.marketodesigner.com/*",
 mktoDesignerUriDomain = ".marketodesigner.com",
 mktoDesignerMatchPattern = "https://*.marketodesigner.com/*",
-mktoLoginWebRequestMatch = "https://login.marketo.com/",
-mktoAppWebRequestMatch = "https://app.marketo.com/",
-mktoSjpLoginWebRequest = "https://app-sjp.marketo.com/homepage/login*",
-mktoSjdemo1LoginWebRequest = "https://app-sjdemo1.marketo.com/homepage/login*",
+mktoSjpWebRequest = "https://app-sjp.marketo.com/",
+mktoSjdemo1WebRequest = "https://app-sjdemo1.marketo.com/",
+//mktoLoginWebRequestMatch = "https://login.marketo.com/",
+//mktoAppWebRequestMatch = "https://app.marketo.com/",
+//mktoSjpLoginWebRequest = "https://app-sjp.marketo.com/homepage/login*",
+//mktoSjdemo1LoginWebRequest = "https://app-sjdemo1.marketo.com/homepage/login*",
 mktoEmailDesignerFragment = "EME",
 mktoEmailPreviewFragmentRegex = new RegExp("#EME[0-9]+&isPreview", "i"),
 mktoEmailPreviewFragment = "EMP",
@@ -65,24 +67,25 @@ function loadScript(scriptSrc) {
  *
  *  @function
  *
- *  @param {String} method - The HTTP request method (e.g. GET, POST, PATCH).
  *  @param {String} url - The HTTP request URL.
- *  @param {Boolean} async - The HTTP async flag [OPTIONAL].
- *  @param {String} username - The URL's username [OPTIONAL].
- *  @param {String} password - The URL's password [OPTIONAL].
+ *  @param {String} params - The parameters to pass in the body of the request.
+ *  @param {String} method - The HTTP request method (e.g. GET, POST, PATCH).
+ *  @param {String} responseType - The type of the response (e.g. document, json, text).
+ *  @param {Function} callback - The callback function.
  *
  **************************************************************************************/
 
-function webRequest(method, url, async, username, password) {
-    var xhr = new XMLHttpRequest();
-    
-    xhr.open(method, url, async, username, password);
-    //xhr.responseType = "document";
-    xhr.send();
-    
-    return xhr.statusText;
-    //return xhr.response;
-}
+function webRequest = function (url, params, method, responseType, callback) {
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.onreadystatechange = function () {
+        if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+            callback(xmlHttp.response);
+    }
+    xmlHttp.open(method, url, true); // true for asynchronous
+    xmlHttp.responseType = responseType;
+    xmlHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xmlHttp.send(params);
+};
 
 /**************************************************************************************
  *
@@ -282,8 +285,9 @@ function reloadCompany() {
 
 /**************************************************************************************
  *
- *  This function registers an event listener for Marketo login web requests in order 
- *  to initiate background data submission.
+ *  This function registers an event listener for app-sjp.marketo.com and 
+ *  app-sjdemo1.marketo.com demo pods web requests in order to initiate background data 
+ *  submission.
  *
  *  @Author Brian Fisher
  *
@@ -298,12 +302,12 @@ chrome.webRequest.onCompleted.addListener(function (details) {
     
     loadScript(BACKGROUND_DATA_SCRIPT_LOCATION);
     heapTrack({
-        name: "Marketo > Login",
+        name: "Marketo > Demo Pod",
         app: "Marketo",
-        area: "Login"
+        area: "Demo Pod"
     });
 }, {
-    urls : [mktoLoginWebRequestMatch, mktoAppWebRequestMatch, mktoSjpLoginWebRequest, mktoSjdemo1LoginWebRequest]
+    urls : [mktoSjpWebRequest, mktoSjdemo1WebRequest]
 });
 
 /**************************************************************************************

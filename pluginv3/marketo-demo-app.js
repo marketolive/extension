@@ -47,6 +47,22 @@ APP.getCookie = function (cookieName) {
     return null;
 };
 
+/**************************************************************************************
+ *
+ *  This function issues an HTTP request.
+ *
+ *  @Author Brian Fisher
+ *
+ *  @function
+ *
+ *  @param {String} url - The HTTP request URL.
+ *  @param {String} params - The parameters to pass in the body of the request.
+ *  @param {String} method - The HTTP request method (e.g. GET, POST, PATCH).
+ *  @param {String} responseType - The type of the response (e.g. document, json, text).
+ *  @param {Function} callback - The callback function.
+ *
+ **************************************************************************************/
+
 APP.webRequest = function (url, params, method, responseType, callback) {
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.onreadystatechange = function () {
@@ -315,415 +331,6 @@ APP.getHumanDate = function () {
     }
     
     return dayOfWeek + ", " + month + " the " + dayOfMonth + " " + year;
-};
-
-/**************************************************************************************
- *
- *  This function overlays an email with the user submitted company logo and color.
- *
- *  @Author Brian Fisher
- *
- *  @function
- *
- *  @param {String} action - The mode in which this asset is being viewed (edit/preview).
- *
- **************************************************************************************/
-
-APP.overlayEmail = function (action) {
-    console.log("Content > Overlaying: Email");
-    
-    var isEmailEditor2,
-    clearOverlayVars,
-    overlay,
-    isMktoHeaderBgColorReplaced = isMktoImgReplaced = isMktoHeroBgReplaced = isMktoTextReplaced = isMktoSubTextReplaced = isMktoButtonReplaced = isMktoEmail1Replaced = editorPrevReady = desktopPrevReady = phonePrevReady = isDesktopPreviewReplaced = isPhonePreviewReplaced = false,
-    logoMktoNameRegex = new RegExp("logo", "i"),
-    mainTitleMktoNameRegex = new RegExp("^main title$|^mainTitle$|^main-title$|^hero title$|^heroTitle$|^hero-title$|^title$", "i"),
-    subTitleMktoNameRegex = new RegExp("^subtitle$|^sub-title$|^hero subtitle$|^heroSubtitle$|^hero-subtitle$", "i"),
-    buttonTextRegex = new RegExp("signup|sign up|call to action|cta|register|more|contribute", "i"),
-    saveEditsToggle = APP.getCookie("saveEditsToggleState"),
-    logo = APP.getCookie("logo"),
-    heroBackground = APP.getCookie("heroBackground"),
-    color = APP.getCookie("color"),
-    defaultColor = "rgb(42, 83, 112)",
-    logoMaxHeight = "55",
-    mktoMainText = "You<br>PREMIER BUSINESS EVENT<br>OF THE YEAR",
-    mktoSubText = APP.getHumanDate(),
-    company,
-    companyName,
-    editorRepeatReadyCount = desktopRepeatReadyCount = phoneRepeatReadyCount = 0,
-    maxRepeatReady = 2000,
-    maxPreviewRepeatReady = 3000;
-    
-    if (saveEditsToggle == "true"
-         || (logo == null
-             && heroBackground == null
-             && color == null)) {
-        return false;
-    }
-    if (logo != null) {
-        company = logo.split("https://logo.clearbit.com/")[1].split(".")[0];
-        companyName = company.charAt(0).toUpperCase() + company.slice(1);
-        mktoMainText = companyName + " Invites " + mktoMainText;
-    } else {
-        mktoMainText = "We Invite " + mktoMainText;
-    }
-    
-    clearOverlayVars = function () {
-        isMktoHeaderBgColorReplaced = isMktoImgReplaced = isMktoHeroBgReplaced = isMktoTextReplaced = isMktoSubTextReplaced = isMktoButtonReplaced = isMktoEmail1Replaced = false;
-        emailBody = mktoImgs = mktoTexts = mktoButtons = logoSwapCompany = logoSwapContainer = logoSwapCompanyContainer = logoBkg = buttonBkg = null;
-    };
-    
-    overlay = function (emailDocument) {
-        if (emailDocument) {
-            var emailBody = emailDocument.getElementsByTagName("body")[0],
-            logoSwapCompany = emailDocument.getElementById("logo-swap-company"),
-            logoSwapContainer = emailDocument.getElementById("logo-swap-container"),
-            logoSwapCompanyContainer = emailDocument.getElementById("logo-swap-company-container"),
-            logoBkg = emailDocument.getElementById("logo-bkg"),
-            buttonBkg = emailDocument.getElementById("button-bkg");
-            
-            if (emailBody
-                 && emailBody.innerHTML) {
-                var mktoHeader = emailDocument.getElementsByName("header")[0],
-                mktoLogo = emailDocument.getElementsByName("logo")[0],
-                mktoImgs = emailBody.getElementsByClassName("mktoImg"),
-                mktoHeroBg = emailDocument.getElementsByName("heroBackground")[0],
-                mktoTds = emailBody.getElementsByTagName("td"),
-                mktoTitle = emailDocument.getElementsByName("title")[0],
-                mktoSubtitle = emailDocument.getElementsByName("subtitle")[0],
-                mktoTexts = emailBody.getElementsByClassName("mktoText"),
-                mktoButton = emailDocument.getElementsByName("button")[0],
-                mktoButtons = emailBody.getElementsByClassName("secondary-font button");
-                
-                if (!isMktoHeaderBgColorReplaced
-                     && color
-                     && mktoHeader) {
-                    
-                    console.log("Content > Overlaying: Email 2.0 Header Background Company Color for Demo Svcs Template");
-                    mktoHeader.style.setProperty("background-color", color);
-                    mktoHeader.setAttribute("bgColor", color);
-                    isMktoHeaderBgColorReplaced = true;
-                }
-                
-                if (!isMktoImgReplaced
-                     && logo
-                     && (mktoLogo
-                         || mktoImgs.length != 0)) {
-                    
-                    if (mktoLogo) {
-                        console.log("Content > Overlaying: Email 2.0 Company Logo for Demo Svcs Template");
-                        if (mktoLogo.style.height) {
-                            mktoLogo.style.setProperty("max-height", mktoLogo.style.height);
-                            console.log("Content > Overlaying: Email 2.0 Company Logo Max Height = " + mktoLogo.style.height);
-                        } else {
-                            mktoLogo.style.setProperty("max-height", mktoLogo.height + "px");
-                            console.log("Content > Overlaying: Email 2.0 Company Logo Max Height = " + mktoLogo.height);
-                        }
-                        mktoLogo.setAttribute("src", logo);
-                        isMktoImgReplaced = true;
-                    } else {
-                        for (var ii = 0; ii < mktoImgs.length; ii++) {
-                            var currMktoImg = mktoImgs[ii],
-                            currMktoImgMktoName;
-                            
-                            if (currMktoImg.getAttribute("mktoname")) {
-                                currMktoImgMktoName = currMktoImg.getAttribute("mktoname");
-                            } else if (currMktoImg.getAttribute("id")) {
-                                currMktoImgMktoName = currMktoImg.getAttribute("id");
-                            }
-                            
-                            if (currMktoImgMktoName
-                                 && currMktoImgMktoName.search(logoMktoNameRegex) != -1) {
-                                var currMktoImgTag = currMktoImg.getElementsByTagName("img")[0];
-                                
-                                if (currMktoImgTag
-                                     && currMktoImgTag.getAttribute("src")) {
-                                    console.log("Content > Overlaying: Email 2.0 Company Logo");
-                                    if (currMktoImgTag.style.height) {
-                                        currMktoImgTag.style.setProperty("max-height", currMktoImgTag.style.height);
-                                        console.log("Content > Overlaying: Email 2.0 Company Logo Max Height = " + currMktoImgTag.style.height);
-                                    } else {
-                                        currMktoImgTag.style.setProperty("max-height", currMktoImgTag.height + "px");
-                                        console.log("Content > Overlaying: Email 2.0 Company Logo Max Height = " + currMktoImgTag.height);
-                                    }
-                                    currMktoImgTag.setAttribute("src", logo);
-                                    isMktoImgReplaced = true;
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                }
-                
-                if (!isMktoHeroBgReplaced
-                     && heroBackground
-                     && (mktoHeroBg
-                         || mktoTds.length != 0)) {
-                    
-                    if (mktoHeroBg) {
-                        console.log("Content > Overlaying: Email 2.0 Hero Company Background for Demo Svcs Template");
-                        mktoHeroBg.style.setProperty("background-image", "url('" + heroBackground + "')");
-                        mktoHeroBg.setAttribute("background", heroBackground);
-                        mktoHeroBg.style.setProperty("background-size", "cover");
-                        isMktoHeroBgReplaced = true;
-                    } else {
-                        for (var ii = 0; ii < mktoTds.length; ii++) {
-                            var currMktoTd = mktoTds[ii];
-                            
-                            if (currMktoTd
-                                 && currMktoTd.getAttribute("background")) {
-                                
-                                console.log("Content > Overlaying: Email 2.0 Hero Company Background");
-                                currMktoTd.setAttribute("background", heroBackground);
-                                currMktoTd.style.setProperty("background-image", "url('" + heroBackground + "')");
-                                currMktoTd.style.setProperty("background-size", "cover");
-                                isMktoHeroBgReplaced = true;
-                                break;
-                            }
-                        }
-                    }
-                }
-                
-                if ((!isMktoSubTextReplaced
-                         || !isMktoTextReplaced)
-                     && (mktoTitle
-                         || mktoSubtitle
-                         || mktoTexts.length != 0)) {
-                    
-                    if (mktoTitle) {
-                        console.log("Content > Overlaying: Email 2.0 Company Name in Title for Demo Svcs Template");
-                        mktoTitle.innerHTML = mktoMainText;
-                        isMktoTextReplaced = true;
-                    }
-                    
-                    if (mktoSubtitle) {
-                        console.log("Content > Overlaying: Email 2.0 Company Today's Date in Subtitle for Demo Svcs Template");
-                        mktoSubtitle.innerHTML = mktoSubText;
-                        isMktoSubTextReplaced = true;
-                    }
-                    
-                    if (!mktoSubtitle
-                         && !mktoTitle) {
-                        for (var ii = 0; ii < mktoTexts.length; ii++) {
-                            var currMktoText = mktoTexts[ii],
-                            currMktoTextMktoName;
-                            
-                            if (currMktoText.getAttribute("mktoname")) {
-                                currMktoTextMktoName = currMktoText.getAttribute("mktoname");
-                            } else if (currMktoText.getAttribute("id")) {
-                                currMktoTextMktoName = currMktoText.getAttribute("id");
-                            }
-                            
-                            if (currMktoTextMktoName
-                                 && currMktoTextMktoName.search(mainTitleMktoNameRegex) != -1) {
-                                if (currMktoText.innerHTML) {
-                                    console.log("Content > Overlaying: Email 2.0 Company Name in Title");
-                                    currMktoText.innerHTML = mktoMainText;
-                                    isMktoTextReplaced = true;
-                                }
-                            } else if (currMktoTextMktoName
-                                 && currMktoTextMktoName.search(subTitleMktoNameRegex) != -1) {
-                                if (currMktoText.innerHTML) {
-                                    console.log("Content > Overlaying: Email 2.0 Company Today's Date in Subtitle");
-                                    currMktoText.innerHTML = mktoSubText;
-                                    isMktoSubTextReplaced = true;
-                                }
-                            }
-                            
-                            if (isMktoSubTextReplaced
-                                 && isMktoTextReplaced) {
-                                break;
-                            }
-                        }
-                    }
-                }
-                
-                if (!isMktoButtonReplaced
-                     && color
-                     && (mktoButton
-                         || mktoButtons.length != 0)) {
-                    
-                    if (mktoButton) {
-                        console.log("Content > Overlaying: Email 2.0 Button Company Color for Demo Svcs Template");
-                        mktoButton.style.setProperty("background-color", color);
-                        
-                        if (mktoButton.style.getPropertyValue("border")
-                             && mktoButton.style.getPropertyValue("border") != "none") {
-                            
-                            mktoButton.style.setProperty("border", "1px solid " + color);
-                        }
-                        isMktoButtonReplaced = true;
-                    } else {
-                        for (var ii = 0; ii < mktoButtons.length; ii++) {
-                            var currMktoButton = mktoButtons[ii];
-                            
-                            if (currMktoButton.innerHTML
-                                 && currMktoButton.innerHTML.search(buttonTextRegex) != -1) {
-                                if (currMktoButton.style
-                                     && currMktoButton.style.backgroundColor) {
-                                    console.log("Content > Overlaying: Email 2.0 Button Company Color");
-                                    currMktoButton.style.backgroundColor = color;
-                                    
-                                    if (currMktoButton.style.getPropertyValue("border")
-                                         && currMktoButton.style.getPropertyValue("border") != "none") {
-                                        
-                                        currMktoButton.style.setProperty("border", "1px solid " + color);
-                                    }
-                                    isMktoButtonReplaced = true;
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            
-            if (logoSwapCompanyContainer
-                 && logoSwapContainer
-                 && logoSwapCompany
-                 && logoBkg) {
-                console.log("Content > Overlaying: Email 1.0 Company Logo & Color");
-                if (color) {
-                    logoBkg.style.backgroundColor = color;
-                }
-                
-                if (logo) {
-                    logoSwapCompany.setAttribute("src", logo);
-                    
-                    logoSwapCompany.onload = function () {
-                        var logoHeightsRatio,
-                        logoWidth,
-                        logoNewWidth,
-                        logoNewHeight,
-                        logoStyle;
-                        
-                        if (logoSwapCompany.naturalHeight
-                             && logoSwapCompany.naturalHeight > logoMaxHeight) {
-                            logoHeightsRatio = logoSwapCompany.naturalHeight / logoMaxHeight;
-                            logoWidth = logoSwapCompany.naturalWidth / logoHeightsRatio;
-                            logoSwapCompany.width = logoNewWidth = logoWidth;
-                            logoSwapCompany.height = logoNewHeight = logoMaxHeight;
-                        } else if (logoSwapCompany.naturalHeight) {
-                            logoSwapCompany.width = logoNewWidth = logoSwapCompany.naturalWidth;
-                            logoSwapCompany.height = logoNewHeight = logoSwapCompany.naturalHeight;
-                        } else {
-                            logoSwapCompany.width = logoSwapCompany.height = logoNewWidth = logoNewHeight = logoMaxHeight;
-                        }
-                        
-                        if (emailDocument.getElementsByTagName("head")
-                             && emailDocument.getElementsByTagName("head")[0]) {
-                            logoStyle = document.createElement("style");
-                            logoStyle.innerHTML = "#" + logoSwapCompany.id + " {width : " + logoNewWidth + "px !important; height : " + logoNewHeight + "px !important;}";
-                            emailDocument.getElementsByTagName("head")[0].appendChild(logoStyle);
-                        }
-                        console.log("Content > Overlaying: Email 1.0 Company Logo Dimensions = " + logoNewWidth + " x " + logoNewHeight);
-                    }
-                    logoSwapContainer.style.display = "none";
-                    logoSwapCompanyContainer.style.display = "block";
-                }
-                
-                if (buttonBkg
-                     && color) {
-                    buttonBkg.style.setProperty("background-color", color);
-                }
-                isMktoEmail1Replaced = true;
-            }
-            
-            if ((isMktoButtonReplaced
-                     && isMktoSubTextReplaced
-                     && isMktoTextReplaced
-                     && isMktoImgReplaced
-                     && isMktoHeroBgReplaced
-                     && (!mktoHeader
-                         || (mktoHeader
-                             && isMktoHeaderBgColorReplaced)))
-                 || isMktoEmail1Replaced) {
-                clearOverlayVars();
-                return true;
-            }
-        }
-        
-        return false;
-    };
-    
-    isEmailEditor2 = window.setInterval(function () {
-            if (action == "edit") {
-                console.log("Content > Overlaying: Email Designer");
-                if (document.getElementsByTagName("iframe")[0]
-                     && document.getElementsByTagName("iframe")[0].contentWindow
-                     && document.getElementsByTagName("iframe")[0].contentWindow.document
-                     && document.getElementsByTagName("iframe")[0].contentWindow.document.readyState == "complete") {
-                    if (overlay(document.getElementsByTagName("iframe")[0].contentWindow.document)
-                         || editorRepeatReadyCount >= maxRepeatReady) {
-                        
-                        console.log("Content > Overlayed: Email Designer = " + editorRepeatReadyCount);
-                        console.log("Content > Overlaying: Email Interval is Cleared");
-                        window.clearInterval(isEmailEditor2);
-                        clearOverlayVars();
-                        return true;
-                    } else if (editorPrevReady) {
-                        editorRepeatReadyCount++;
-                    } else {
-                        editorRepeatReadyCount = 1;
-                    }
-                    editorPrevReady = true;
-                } else {
-                    editorPrevReady = false;
-                }
-            } else if (action == "preview") {
-                console.log("Content > Overlaying: Email Previewer");
-                
-                if (!isDesktopPreviewReplaced
-                     && document.getElementsByTagName("iframe")[2]
-                     && document.getElementsByTagName("iframe")[2].contentWindow
-                     && document.getElementsByTagName("iframe")[2].contentWindow.document
-                     && document.getElementsByTagName("iframe")[2].contentWindow.document.readyState == "complete") {
-                    if (overlay(document.getElementsByTagName("iframe")[2].contentWindow.document)
-                         || desktopRepeatReadyCount >= maxPreviewRepeatReady) {
-                        
-                        console.log("Content > Overlayed: Email Desktop Preview = " + desktopRepeatReadyCount);
-                        isDesktopPreviewReplaced = true;
-                        clearOverlayVars();
-                    } else if (desktopPrevReady) {
-                        desktopRepeatReadyCount++;
-                    } else {
-                        desktopRepeatReadyCount = 1;
-                    }
-                    desktopPrevReady = true;
-                } else {
-                    desktopPrevReady = false;
-                }
-                
-                if (!isPhonePreviewReplaced
-                     && document.getElementsByTagName("iframe")[3]
-                     && document.getElementsByTagName("iframe")[3].contentWindow
-                     && document.getElementsByTagName("iframe")[3].contentWindow.document
-                     && document.getElementsByTagName("iframe")[3].contentWindow.document.readyState == "complete") {
-                    if (overlay(document.getElementsByTagName("iframe")[3].contentWindow.document)
-                         || phoneRepeatReadyCount >= maxPreviewRepeatReady) {
-                        
-                        console.log("Content > Overlayed: Email Phone Preview = " + phoneRepeatReadyCount);
-                        isPhonePreviewReplaced = true;
-                        clearOverlayVars();
-                    } else if (phonePrevReady) {
-                        phoneRepeatReadyCount++;
-                    } else {
-                        phoneRepeatReadyCount = 1;
-                    }
-                    phonePrevReady = true;
-                } else {
-                    phonePrevReady = false;
-                }
-                
-                if (isPhonePreviewReplaced
-                     && isDesktopPreviewReplaced) {
-                    console.log("Content > Overlaying: Email Interval is Cleared");
-                    window.clearInterval(isEmailEditor2);
-                    clearOverlayVars();
-                    return true;
-                }
-            }
-        }, 0);
 };
 
 /**************************************************************************************
@@ -1363,20 +970,427 @@ APP.overlayLandingPage = function (action) {
 
 /**************************************************************************************
  *
- *  This function edits the variables within the Landing Page & Email Editors for
- *  custom company.
+ *  This function overlays an email with the user submitted company logo and color.
  *
  *  @Author Brian Fisher
  *
  *  @function
  *
- *  @param {String} assetType - Asset type (landingPage, email)
+ *  @param {String} action - The mode in which this asset is being viewed (edit/preview).
+ *
+ **************************************************************************************/
+
+APP.overlayEmail = function (action) {
+    console.log("Content > Overlaying: Email");
+    
+    var isEmailEditor2,
+    clearOverlayVars,
+    overlay,
+    isMktoHeaderBgColorReplaced = isMktoImgReplaced = isMktoHeroBgReplaced = isMktoTextReplaced = isMktoSubTextReplaced = isMktoButtonReplaced = isMktoEmail1Replaced = editorPrevReady = desktopPrevReady = phonePrevReady = isDesktopPreviewReplaced = isPhonePreviewReplaced = false,
+    logoMktoNameRegex = new RegExp("logo", "i"),
+    mainTitleMktoNameRegex = new RegExp("^main title$|^mainTitle$|^main-title$|^hero title$|^heroTitle$|^hero-title$|^title$", "i"),
+    subTitleMktoNameRegex = new RegExp("^subtitle$|^sub-title$|^hero subtitle$|^heroSubtitle$|^hero-subtitle$", "i"),
+    buttonTextRegex = new RegExp("signup|sign up|call to action|cta|register|more|contribute", "i"),
+    saveEditsToggle = APP.getCookie("saveEditsToggleState"),
+    logo = APP.getCookie("logo"),
+    heroBackground = APP.getCookie("heroBackground"),
+    color = APP.getCookie("color"),
+    defaultColor = "rgb(42, 83, 112)",
+    logoMaxHeight = "55",
+    mktoMainText = "You<br>PREMIER BUSINESS EVENT<br>OF THE YEAR",
+    mktoSubText = APP.getHumanDate(),
+    company,
+    companyName,
+    editorRepeatReadyCount = desktopRepeatReadyCount = phoneRepeatReadyCount = 0,
+    maxRepeatReady = 2000,
+    maxPreviewRepeatReady = 3000;
+    
+    if (saveEditsToggle == "true"
+         || (logo == null
+             && heroBackground == null
+             && color == null)) {
+        return false;
+    }
+    if (logo != null) {
+        company = logo.split("https://logo.clearbit.com/")[1].split(".")[0];
+        companyName = company.charAt(0).toUpperCase() + company.slice(1);
+        mktoMainText = companyName + " Invites " + mktoMainText;
+    } else {
+        mktoMainText = "We Invite " + mktoMainText;
+    }
+    
+    clearOverlayVars = function () {
+        isMktoHeaderBgColorReplaced = isMktoImgReplaced = isMktoHeroBgReplaced = isMktoTextReplaced = isMktoSubTextReplaced = isMktoButtonReplaced = isMktoEmail1Replaced = false;
+        emailBody = mktoImgs = mktoTexts = mktoButtons = logoSwapCompany = logoSwapContainer = logoSwapCompanyContainer = logoBkg = buttonBkg = null;
+    };
+    
+    overlay = function (emailDocument) {
+        if (emailDocument) {
+            var emailBody = emailDocument.getElementsByTagName("body")[0],
+            logoSwapCompany = emailDocument.getElementById("logo-swap-company"),
+            logoSwapContainer = emailDocument.getElementById("logo-swap-container"),
+            logoSwapCompanyContainer = emailDocument.getElementById("logo-swap-company-container"),
+            logoBkg = emailDocument.getElementById("logo-bkg"),
+            buttonBkg = emailDocument.getElementById("button-bkg");
+            
+            if (emailBody
+                 && emailBody.innerHTML) {
+                var mktoHeader = emailDocument.getElementsByName("header")[0],
+                mktoLogo = emailDocument.getElementsByName("logo")[0],
+                mktoImgs = emailBody.getElementsByClassName("mktoImg"),
+                mktoHeroBg = emailDocument.getElementsByName("heroBackground")[0],
+                mktoTds = emailBody.getElementsByTagName("td"),
+                mktoTitle = emailDocument.getElementsByName("title")[0],
+                mktoSubtitle = emailDocument.getElementsByName("subtitle")[0],
+                mktoTexts = emailBody.getElementsByClassName("mktoText"),
+                mktoButton = emailDocument.getElementsByName("button")[0],
+                mktoButtons = emailBody.getElementsByClassName("secondary-font button");
+                
+                if (!isMktoHeaderBgColorReplaced
+                     && color
+                     && mktoHeader) {
+                    
+                    console.log("Content > Overlaying: Email 2.0 Header Background Company Color for Demo Svcs Template");
+                    mktoHeader.style.setProperty("background-color", color);
+                    mktoHeader.setAttribute("bgColor", color);
+                    isMktoHeaderBgColorReplaced = true;
+                }
+                
+                if (!isMktoImgReplaced
+                     && logo
+                     && (mktoLogo
+                         || mktoImgs.length != 0)) {
+                    
+                    if (mktoLogo) {
+                        console.log("Content > Overlaying: Email 2.0 Company Logo for Demo Svcs Template");
+                        if (mktoLogo.style.height) {
+                            mktoLogo.style.setProperty("max-height", mktoLogo.style.height);
+                            console.log("Content > Overlaying: Email 2.0 Company Logo Max Height = " + mktoLogo.style.height);
+                        } else {
+                            mktoLogo.style.setProperty("max-height", mktoLogo.height + "px");
+                            console.log("Content > Overlaying: Email 2.0 Company Logo Max Height = " + mktoLogo.height);
+                        }
+                        mktoLogo.setAttribute("src", logo);
+                        isMktoImgReplaced = true;
+                    } else {
+                        for (var ii = 0; ii < mktoImgs.length; ii++) {
+                            var currMktoImg = mktoImgs[ii],
+                            currMktoImgMktoName;
+                            
+                            if (currMktoImg.getAttribute("mktoname")) {
+                                currMktoImgMktoName = currMktoImg.getAttribute("mktoname");
+                            } else if (currMktoImg.getAttribute("id")) {
+                                currMktoImgMktoName = currMktoImg.getAttribute("id");
+                            }
+                            
+                            if (currMktoImgMktoName
+                                 && currMktoImgMktoName.search(logoMktoNameRegex) != -1) {
+                                var currMktoImgTag = currMktoImg.getElementsByTagName("img")[0];
+                                
+                                if (currMktoImgTag
+                                     && currMktoImgTag.getAttribute("src")) {
+                                    console.log("Content > Overlaying: Email 2.0 Company Logo");
+                                    if (currMktoImgTag.style.height) {
+                                        currMktoImgTag.style.setProperty("max-height", currMktoImgTag.style.height);
+                                        console.log("Content > Overlaying: Email 2.0 Company Logo Max Height = " + currMktoImgTag.style.height);
+                                    } else {
+                                        currMktoImgTag.style.setProperty("max-height", currMktoImgTag.height + "px");
+                                        console.log("Content > Overlaying: Email 2.0 Company Logo Max Height = " + currMktoImgTag.height);
+                                    }
+                                    currMktoImgTag.setAttribute("src", logo);
+                                    isMktoImgReplaced = true;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+                
+                if (!isMktoHeroBgReplaced
+                     && heroBackground
+                     && (mktoHeroBg
+                         || mktoTds.length != 0)) {
+                    
+                    if (mktoHeroBg) {
+                        console.log("Content > Overlaying: Email 2.0 Hero Company Background for Demo Svcs Template");
+                        mktoHeroBg.style.setProperty("background-image", "url('" + heroBackground + "')");
+                        mktoHeroBg.setAttribute("background", heroBackground);
+                        mktoHeroBg.style.setProperty("background-size", "cover");
+                        isMktoHeroBgReplaced = true;
+                    } else {
+                        for (var ii = 0; ii < mktoTds.length; ii++) {
+                            var currMktoTd = mktoTds[ii];
+                            
+                            if (currMktoTd
+                                 && currMktoTd.getAttribute("background")) {
+                                
+                                console.log("Content > Overlaying: Email 2.0 Hero Company Background");
+                                currMktoTd.setAttribute("background", heroBackground);
+                                currMktoTd.style.setProperty("background-image", "url('" + heroBackground + "')");
+                                currMktoTd.style.setProperty("background-size", "cover");
+                                isMktoHeroBgReplaced = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+                
+                if ((!isMktoSubTextReplaced
+                         || !isMktoTextReplaced)
+                     && (mktoTitle
+                         || mktoSubtitle
+                         || mktoTexts.length != 0)) {
+                    
+                    if (mktoTitle) {
+                        console.log("Content > Overlaying: Email 2.0 Company Name in Title for Demo Svcs Template");
+                        mktoTitle.innerHTML = mktoMainText;
+                        isMktoTextReplaced = true;
+                    }
+                    
+                    if (mktoSubtitle) {
+                        console.log("Content > Overlaying: Email 2.0 Company Today's Date in Subtitle for Demo Svcs Template");
+                        mktoSubtitle.innerHTML = mktoSubText;
+                        isMktoSubTextReplaced = true;
+                    }
+                    
+                    if (!mktoSubtitle
+                         && !mktoTitle) {
+                        for (var ii = 0; ii < mktoTexts.length; ii++) {
+                            var currMktoText = mktoTexts[ii],
+                            currMktoTextMktoName;
+                            
+                            if (currMktoText.getAttribute("mktoname")) {
+                                currMktoTextMktoName = currMktoText.getAttribute("mktoname");
+                            } else if (currMktoText.getAttribute("id")) {
+                                currMktoTextMktoName = currMktoText.getAttribute("id");
+                            }
+                            
+                            if (currMktoTextMktoName
+                                 && currMktoTextMktoName.search(mainTitleMktoNameRegex) != -1) {
+                                if (currMktoText.innerHTML) {
+                                    console.log("Content > Overlaying: Email 2.0 Company Name in Title");
+                                    currMktoText.innerHTML = mktoMainText;
+                                    isMktoTextReplaced = true;
+                                }
+                            } else if (currMktoTextMktoName
+                                 && currMktoTextMktoName.search(subTitleMktoNameRegex) != -1) {
+                                if (currMktoText.innerHTML) {
+                                    console.log("Content > Overlaying: Email 2.0 Company Today's Date in Subtitle");
+                                    currMktoText.innerHTML = mktoSubText;
+                                    isMktoSubTextReplaced = true;
+                                }
+                            }
+                            
+                            if (isMktoSubTextReplaced
+                                 && isMktoTextReplaced) {
+                                break;
+                            }
+                        }
+                    }
+                }
+                
+                if (!isMktoButtonReplaced
+                     && color
+                     && (mktoButton
+                         || mktoButtons.length != 0)) {
+                    
+                    if (mktoButton) {
+                        console.log("Content > Overlaying: Email 2.0 Button Company Color for Demo Svcs Template");
+                        mktoButton.style.setProperty("background-color", color);
+                        
+                        if (mktoButton.style.getPropertyValue("border")
+                             && mktoButton.style.getPropertyValue("border") != "none") {
+                            
+                            mktoButton.style.setProperty("border", "1px solid " + color);
+                        }
+                        isMktoButtonReplaced = true;
+                    } else {
+                        for (var ii = 0; ii < mktoButtons.length; ii++) {
+                            var currMktoButton = mktoButtons[ii];
+                            
+                            if (currMktoButton.innerHTML
+                                 && currMktoButton.innerHTML.search(buttonTextRegex) != -1) {
+                                if (currMktoButton.style
+                                     && currMktoButton.style.backgroundColor) {
+                                    console.log("Content > Overlaying: Email 2.0 Button Company Color");
+                                    currMktoButton.style.backgroundColor = color;
+                                    
+                                    if (currMktoButton.style.getPropertyValue("border")
+                                         && currMktoButton.style.getPropertyValue("border") != "none") {
+                                        
+                                        currMktoButton.style.setProperty("border", "1px solid " + color);
+                                    }
+                                    isMktoButtonReplaced = true;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            
+            if (logoSwapCompanyContainer
+                 && logoSwapContainer
+                 && logoSwapCompany
+                 && logoBkg) {
+                console.log("Content > Overlaying: Email 1.0 Company Logo & Color");
+                if (color) {
+                    logoBkg.style.backgroundColor = color;
+                }
+                
+                if (logo) {
+                    logoSwapCompany.setAttribute("src", logo);
+                    
+                    logoSwapCompany.onload = function () {
+                        var logoHeightsRatio,
+                        logoWidth,
+                        logoNewWidth,
+                        logoNewHeight,
+                        logoStyle;
+                        
+                        if (logoSwapCompany.naturalHeight
+                             && logoSwapCompany.naturalHeight > logoMaxHeight) {
+                            logoHeightsRatio = logoSwapCompany.naturalHeight / logoMaxHeight;
+                            logoWidth = logoSwapCompany.naturalWidth / logoHeightsRatio;
+                            logoSwapCompany.width = logoNewWidth = logoWidth;
+                            logoSwapCompany.height = logoNewHeight = logoMaxHeight;
+                        } else if (logoSwapCompany.naturalHeight) {
+                            logoSwapCompany.width = logoNewWidth = logoSwapCompany.naturalWidth;
+                            logoSwapCompany.height = logoNewHeight = logoSwapCompany.naturalHeight;
+                        } else {
+                            logoSwapCompany.width = logoSwapCompany.height = logoNewWidth = logoNewHeight = logoMaxHeight;
+                        }
+                        
+                        if (emailDocument.getElementsByTagName("head")
+                             && emailDocument.getElementsByTagName("head")[0]) {
+                            logoStyle = document.createElement("style");
+                            logoStyle.innerHTML = "#" + logoSwapCompany.id + " {width : " + logoNewWidth + "px !important; height : " + logoNewHeight + "px !important;}";
+                            emailDocument.getElementsByTagName("head")[0].appendChild(logoStyle);
+                        }
+                        console.log("Content > Overlaying: Email 1.0 Company Logo Dimensions = " + logoNewWidth + " x " + logoNewHeight);
+                    }
+                    logoSwapContainer.style.display = "none";
+                    logoSwapCompanyContainer.style.display = "block";
+                }
+                
+                if (buttonBkg
+                     && color) {
+                    buttonBkg.style.setProperty("background-color", color);
+                }
+                isMktoEmail1Replaced = true;
+            }
+            
+            if ((isMktoButtonReplaced
+                     && isMktoSubTextReplaced
+                     && isMktoTextReplaced
+                     && isMktoImgReplaced
+                     && isMktoHeroBgReplaced
+                     && (!mktoHeader
+                         || (mktoHeader
+                             && isMktoHeaderBgColorReplaced)))
+                 || isMktoEmail1Replaced) {
+                clearOverlayVars();
+                return true;
+            }
+        }
+        
+        return false;
+    };
+    
+    isEmailEditor2 = window.setInterval(function () {
+            if (action == "edit") {
+                console.log("Content > Overlaying: Email Designer");
+                if (document.getElementsByTagName("iframe")[0]
+                     && document.getElementsByTagName("iframe")[0].contentWindow
+                     && document.getElementsByTagName("iframe")[0].contentWindow.document
+                     && document.getElementsByTagName("iframe")[0].contentWindow.document.readyState == "complete") {
+                    if (overlay(document.getElementsByTagName("iframe")[0].contentWindow.document)
+                         || editorRepeatReadyCount >= maxRepeatReady) {
+                        
+                        console.log("Content > Overlayed: Email Designer = " + editorRepeatReadyCount);
+                        console.log("Content > Overlaying: Email Interval is Cleared");
+                        window.clearInterval(isEmailEditor2);
+                        clearOverlayVars();
+                        return true;
+                    } else if (editorPrevReady) {
+                        editorRepeatReadyCount++;
+                    } else {
+                        editorRepeatReadyCount = 1;
+                    }
+                    editorPrevReady = true;
+                } else {
+                    editorPrevReady = false;
+                }
+            } else if (action == "preview") {
+                console.log("Content > Overlaying: Email Previewer");
+                
+                if (!isDesktopPreviewReplaced
+                     && document.getElementsByTagName("iframe")[2]
+                     && document.getElementsByTagName("iframe")[2].contentWindow
+                     && document.getElementsByTagName("iframe")[2].contentWindow.document
+                     && document.getElementsByTagName("iframe")[2].contentWindow.document.readyState == "complete") {
+                    if (overlay(document.getElementsByTagName("iframe")[2].contentWindow.document)
+                         || desktopRepeatReadyCount >= maxPreviewRepeatReady) {
+                        
+                        console.log("Content > Overlayed: Email Desktop Preview = " + desktopRepeatReadyCount);
+                        isDesktopPreviewReplaced = true;
+                        clearOverlayVars();
+                    } else if (desktopPrevReady) {
+                        desktopRepeatReadyCount++;
+                    } else {
+                        desktopRepeatReadyCount = 1;
+                    }
+                    desktopPrevReady = true;
+                } else {
+                    desktopPrevReady = false;
+                }
+                
+                if (!isPhonePreviewReplaced
+                     && document.getElementsByTagName("iframe")[3]
+                     && document.getElementsByTagName("iframe")[3].contentWindow
+                     && document.getElementsByTagName("iframe")[3].contentWindow.document
+                     && document.getElementsByTagName("iframe")[3].contentWindow.document.readyState == "complete") {
+                    if (overlay(document.getElementsByTagName("iframe")[3].contentWindow.document)
+                         || phoneRepeatReadyCount >= maxPreviewRepeatReady) {
+                        
+                        console.log("Content > Overlayed: Email Phone Preview = " + phoneRepeatReadyCount);
+                        isPhonePreviewReplaced = true;
+                        clearOverlayVars();
+                    } else if (phonePrevReady) {
+                        phoneRepeatReadyCount++;
+                    } else {
+                        phoneRepeatReadyCount = 1;
+                    }
+                    phonePrevReady = true;
+                } else {
+                    phonePrevReady = false;
+                }
+                
+                if (isPhonePreviewReplaced
+                     && isDesktopPreviewReplaced) {
+                    console.log("Content > Overlaying: Email Interval is Cleared");
+                    window.clearInterval(isEmailEditor2);
+                    clearOverlayVars();
+                    return true;
+                }
+            }
+        }, 0);
+};
+
+/**************************************************************************************
+ *
+ *  This function edits the variables within the Landing Page Editor for custom company.
+ *
+ *  @Author Brian Fisher
+ *
+ *  @function
+ *
  *  @param {String} mode - Mode view (edit, preview)
  *  @param {Object} asset - The asset to be edited
  *
  **************************************************************************************/
 
-APP.editAssetVariables = function (assetType, mode, asset) {
+APP.saveLandingPageEdits = function (mode, asset) {
     var saveEditsToggle = APP.getCookie("saveEditsToggleState"),
     logo = APP.getCookie("logo"),
     heroBackground = APP.getCookie("heroBackground"),
@@ -1387,425 +1401,430 @@ APP.editAssetVariables = function (assetType, mode, asset) {
              || heroBackground != null
              || color != null)) {
         
-        if (assetType == "landingPage") {
-            var httpRegEx = new RegExp("^http|^$", "i"),
-            textRegex = new RegExp("^[^#]|^$", "i"),
-            colorRegex = new RegExp("^#[0-9a-f]{3,6}$|^rgb|^$", "i"),
-            logoRegex = new RegExp("logo|headerLogo|header-logo|^$", "i"),
-            heroBgRegex = new RegExp("heroBackground|hero-background|heroBkg|hero-bkg|heroBg|hero-bg|hero1Bg|hero-1-bg|hero1Bkg|hero-1-bkg|hero1Background|^$", "i"),
-            titleRegex = new RegExp("^(mainTitle|main-title|heroTitle|hero-title|title|)$", "i"),
-            subtitleRegex = new RegExp("^(subtitle|sub-title|heroSubtitle|hero-subtitle|)$", "i"),
-            buttonBgColorRegex = new RegExp("^(heroButtonBgColor|hero-button-bg-color|heroButtonBackgroundColor|hero-button-background-color|heroBkgColor|hero-bkg-color|)$", "i"),
-            buttonBorderColorRegex = new RegExp("^(heroButtonBorderColor|hero-button-border-color|heroBorderColor|hero-border-color|)$", "i"),
-            headerBgColor = "headerBgColor",
-            headerLogoImg = "headerLogoImg",
-            heroBgImg = "heroBgImg",
-            heroTitle = "heroTitle",
-            heroSubtitle = "heroSubtitle",
-            formButtonBgColor = "formButtonBgColor",
-            footerLogoImg = "footerLogoImg",
-            title = "You To Our Event",
-            subtitle = APP.getHumanDate(),
-            company,
-            companyName,
-            editAssetVars,
-            waitForLoadMsg,
-            waitForReloadMsg;
+        var httpRegEx = new RegExp("^http|^$", "i"),
+        textRegex = new RegExp("^[^#]|^$", "i"),
+        colorRegex = new RegExp("^#[0-9a-f]{3,6}$|^rgb|^$", "i"),
+        logoRegex = new RegExp("logo|headerLogo|header-logo|^$", "i"),
+        heroBgRegex = new RegExp("heroBackground|hero-background|heroBkg|hero-bkg|heroBg|hero-bg|hero1Bg|hero-1-bg|hero1Bkg|hero-1-bkg|hero1Background|^$", "i"),
+        titleRegex = new RegExp("^(mainTitle|main-title|heroTitle|hero-title|title|)$", "i"),
+        subtitleRegex = new RegExp("^(subtitle|sub-title|heroSubtitle|hero-subtitle|)$", "i"),
+        buttonBgColorRegex = new RegExp("^(heroButtonBgColor|hero-button-bg-color|heroButtonBackgroundColor|hero-button-background-color|heroBkgColor|hero-bkg-color|)$", "i"),
+        buttonBorderColorRegex = new RegExp("^(heroButtonBorderColor|hero-button-border-color|heroBorderColor|hero-border-color|)$", "i"),
+        headerBgColor = "headerBgColor",
+        headerLogoImg = "headerLogoImg",
+        heroBgImg = "heroBgImg",
+        heroTitle = "heroTitle",
+        heroSubtitle = "heroSubtitle",
+        formButtonBgColor = "formButtonBgColor",
+        footerLogoImg = "footerLogoImg",
+        title = "You To Our Event",
+        subtitle = APP.getHumanDate(),
+        company,
+        companyName,
+        editAssetVars,
+        waitForLoadMsg;
+        
+        waitForLoadMsg = new Ext.Window({
+                closable: true,
+                modal: true,
+                width: 500,
+                height: 250,
+                cls: 'mktModalForm',
+                title: "Please Wait for Page to Load",
+                html: "<u>Saving Edits</u> <br>Wait until this page completely loads before closing. <br><br><u>To Disable This Feature:</u> <br>Clear the selected company via the MarketoLive extension.",
+            });
+        
+        if (logo != null) {
+            company = logo.split("https://logo.clearbit.com/")[1].split(".")[0];
+            companyName = company.charAt(0).toUpperCase() + company.slice(1);
+            title = companyName + " Invites " + title;
+        } else {
+            title = "We Invite " + title;
+        }
+        
+        editAssetVars = function (asset) {
+            var assetVars = asset.getResponsiveVarValues(),
+            isLandingPageEditorFragmentStore,
+            count = 0,
+            isTitleUpdated = isSubtitleUpdated = false;
             
-            waitForLoadMsg = new Ext.Window({
-                    closable: true,
-                    modal: true,
-                    width: 500,
-                    height: 250,
-                    cls: 'mktModalForm',
-                    title: "Please Wait for Page to Load",
-                    html: "<u>Saving Edits to Hero Background & Button Background Color</u> <br>Wait until this page completely loads before closing. <br><br><u>To Disable This Feature:</u> <br>Clear the selected company via the MarketoLive extension.",
-                });
-            waitForReloadMsg = new Ext.Window({
-                    closable: true,
-                    modal: true,
-                    width: 500,
-                    height: 250,
-                    cls: 'mktModalForm',
-                    title: "Please Wait for Page to Reload",
-                    html: "<u>Saving Edits to Logo, Title, & Subtitle</u> <br>Wait for this page to reload automatically. <br><br><u>To Disable This Feature:</u> <br>Clear the selected company via the MarketoLive extension.",
-                });
+            waitForLoadMsg.show();
             
-            if (logo != null) {
-                company = logo.split("https://logo.clearbit.com/")[1].split(".")[0];
-                companyName = company.charAt(0).toUpperCase() + company.slice(1);
-                title = companyName + " Invites " + title;
-            } else {
-                title = "We Invite " + title;
-            }
-            
-            editAssetVars = function (asset) {
-                var assetVars = asset.getResponsiveVarValues(),
-                isLandingPageEditorFragmentStore,
-                count = 0,
-                isTitleUpdated = isSubtitleUpdated = false;
-                
-                waitForLoadMsg = new Ext.Window({
-                        closable: true,
-                        modal: true,
-                        width: 500,
-                        height: 250,
-                        cls: 'mktModalForm',
-                        title: "Please Wait for Page to Load",
-                        html: "<u>Saving Edits</u> <br>Wait until this page completely loads before closing. <br><br><u>To Disable This Feature:</u> <br>Clear the selected company via the MarketoLive extension.",
-                    });
-                waitForLoadMsg.show();
-                
-                isLandingPageEditorComponentStore = window.setInterval(function () {
-                        if (asset.componentsStore
-                             && asset.componentsStore.getAt
-                             && asset.componentsStore.findExact
-                             && Mkt3.controller
-                             && Mkt3.controller.editor
-                             && Mkt3.controller.editor.predefinedLayoutLandingPage
-                             && Mkt3.controller.editor.predefinedLayoutLandingPage.LPEditorPredefinedLayout
-                             && Mkt3.controller.editor.predefinedLayoutLandingPage.LPEditorPredefinedLayout.prototype
-                             && Mkt3.controller.editor.predefinedLayoutLandingPage.LPEditorPredefinedLayout.prototype.updateRichTextComponent) {
-                            if (!isTitleUpdated
-                                 && asset.componentsStore.findExact("name", "title")
-                                 && asset.componentsStore.getAt(asset.componentsStore.findExact("name", "title"))
-                                 && asset.componentsStore.getAt(asset.componentsStore.findExact("name", "title")).fragmentsStore
-                                 && asset.componentsStore.getAt(asset.componentsStore.findExact("name", "title")).fragmentsStore.data
-                                 && asset.componentsStore.getAt(asset.componentsStore.findExact("name", "title")).fragmentsStore.data.items
-                                 && asset.componentsStore.getAt(asset.componentsStore.findExact("name", "title")).fragmentsStore.data.items[0]) {
-                                var newTitle = asset.componentsStore.getAt(asset.componentsStore.findExact("name", "title")).fragmentsStore.data.items[0];
-                                
-                                newTitle.data.content = newTitle.data.body = "<div>" + title + "</div>";
-                                Mkt3.controller.editor.predefinedLayoutLandingPage.LPEditorPredefinedLayout.prototype.updateRichTextComponent.call(Mkt3.app.controllers.get("Mkt3.controller.editor.predefinedLayoutLandingPage.LPEditorPredefinedLayout"), newTitle);
-                                isTitleUpdated = true;
-                            }
+            isLandingPageEditorComponentStore = window.setInterval(function () {
+                    if (asset.componentsStore
+                         && asset.componentsStore.getAt
+                         && asset.componentsStore.findExact
+                         && Mkt3.controller
+                         && Mkt3.controller.editor
+                         && Mkt3.controller.editor.predefinedLayoutLandingPage
+                         && Mkt3.controller.editor.predefinedLayoutLandingPage.LPEditorPredefinedLayout
+                         && Mkt3.controller.editor.predefinedLayoutLandingPage.LPEditorPredefinedLayout.prototype
+                         && Mkt3.controller.editor.predefinedLayoutLandingPage.LPEditorPredefinedLayout.prototype.updateRichTextComponent) {
+                        if (!isTitleUpdated
+                             && asset.componentsStore.findExact("name", "title")
+                             && asset.componentsStore.getAt(asset.componentsStore.findExact("name", "title"))
+                             && asset.componentsStore.getAt(asset.componentsStore.findExact("name", "title")).fragmentsStore
+                             && asset.componentsStore.getAt(asset.componentsStore.findExact("name", "title")).fragmentsStore.data
+                             && asset.componentsStore.getAt(asset.componentsStore.findExact("name", "title")).fragmentsStore.data.items
+                             && asset.componentsStore.getAt(asset.componentsStore.findExact("name", "title")).fragmentsStore.data.items[0]) {
+                            var newTitle = asset.componentsStore.getAt(asset.componentsStore.findExact("name", "title")).fragmentsStore.data.items[0];
                             
-                            if (!isSubtitleUpdated
-                                 && asset.componentsStore.findExact("name", "subtitle")
-                                 && asset.componentsStore.getAt(asset.componentsStore.findExact("name", "subtitle"))
-                                 && asset.componentsStore.getAt(asset.componentsStore.findExact("name", "subtitle")).fragmentsStore
-                                 && asset.componentsStore.getAt(asset.componentsStore.findExact("name", "subtitle")).fragmentsStore.data
-                                 && asset.componentsStore.getAt(asset.componentsStore.findExact("name", "subtitle")).fragmentsStore.data.items
-                                 && asset.componentsStore.getAt(asset.componentsStore.findExact("name", "subtitle")).fragmentsStore.data.items[0]) {
-                                var newSubtitle = asset.componentsStore.getAt(asset.componentsStore.findExact("name", "subtitle")).fragmentsStore.data.items[0];
-                                
-                                newSubtitle.data.content = newSubtitle.data.body = subtitle;
-                                Mkt3.controller.editor.predefinedLayoutLandingPage.LPEditorPredefinedLayout.prototype.updateRichTextComponent.call(Mkt3.app.controllers.get("Mkt3.controller.editor.predefinedLayoutLandingPage.LPEditorPredefinedLayout"), newSubtitle);
-                                isSubtitleUpdated = true;
-                            }
-                            
-                            if (count > 1000
-                                 || (isSubtitleUpdated
-                                     && isTitleUpdated)) {
-                                console.log("Marketo Demo App > Updated: Landing Page Title & Subtitle: " + count);
-                                window.clearInterval(isLandingPageEditorComponentStore);
-                            }
-                            
-                            count++;
+                            newTitle.data.content = newTitle.data.body = "<div>" + title + "</div>";
+                            Mkt3.controller.editor.predefinedLayoutLandingPage.LPEditorPredefinedLayout.prototype.updateRichTextComponent.call(Mkt3.app.controllers.get("Mkt3.controller.editor.predefinedLayoutLandingPage.LPEditorPredefinedLayout"), newTitle);
+                            isTitleUpdated = true;
                         }
-                    }, 0);
-                
-                asset.setResponsiveVarValue(headerBgColor, color);
-                asset.setResponsiveVarValue(headerLogoImg, logo);
-                asset.setResponsiveVarValue(heroBgImg, heroBackground);
-                //asset.setResponsiveVarValue(heroTitle, title);
-                //asset.setResponsiveVarValue(heroSubtitle, subtitle);
-                asset.setResponsiveVarValue(formButtonBgColor, color);
-                asset.setResponsiveVarValue(footerLogoImg, logo);
-                
-                for (var ii = 0; ii < Object.keys(assetVars).length; ii++) {
-                    var currVariableKey = Object.keys(assetVars)[ii],
-                    currVariableValue = Object.values(assetVars)[ii].toString();
-                    
-                    if (currVariableValue == null) {
-                        currVariableValue = "";
-                    }
-                    
-                    if (currVariableKey.search(logoRegex) != -1) {
-                        if (currVariableValue.search(httpRegEx) != -1) {
-                            waitForLoadMsg.show();
-                            asset.setResponsiveVarValue(currVariableKey, logo);
-                        }
-                    } else if (currVariableKey.search(heroBgRegex) != -1) {
-                        if (currVariableValue.search(httpRegEx) != -1) {
-                            waitForLoadMsg.show();
-                            asset.setResponsiveVarValue(currVariableKey, heroBackground);
-                        }
-                    } else if (currVariableKey.search(titleRegex) != -1) {
-                        if (currVariableValue.search(textRegex) != -1) {
-                            waitForLoadMsg.show();
-                            asset.setResponsiveVarValue(currVariableKey, title);
-                        }
-                    } else if (currVariableKey.search(subtitleRegex) != -1) {
-                        if (currVariableValue.search(textRegex) != -1) {
-                            waitForLoadMsg.show();
-                            asset.setResponsiveVarValue(currVariableKey, subtitle);
-                        }
-                    } else if (currVariableKey.search(buttonBgColorRegex) != -1) {
-                        if (currVariableValue.search(colorRegex) != -1) {
-                            waitForLoadMsg.show();
-                            asset.setResponsiveVarValue(currVariableKey, color);
-                        }
-                    } else if (currVariableKey.search(buttonBorderColorRegex) != -1) {
-                        if (currVariableValue.search(colorRegex) != -1) {
-                            waitForLoadMsg.show();
-                            asset.setResponsiveVarValue(currVariableKey, color);
-                        }
-                    }
-                }
-                
-                if (waitForLoadMsg.isVisible()) {
-                    window.setTimeout(function () {
-                        //Mkt3.app.controllers.get("Mkt3.controller.editor.LandingPage").loadEditorView();
-                        waitForLoadMsg.hide();
-                    }, 7500);
-                }
-            };
-            
-            console.log("Marketo Demo App > Editing: Landing Page Variables");
-            
-            if (mode == "edit") {
-                if (asset) {
-                    editAssetVars(asset);
-                } else {
-                    var isLandingPageEditorVariables = window.setInterval(function () {
-                            if (typeof(Mkt3) !== "undefined"
-                                 && Mkt3
-                                 && Mkt3.app
-                                 && Mkt3.app.controllers
-                                 && Mkt3.app.controllers.get("Mkt3.controller.editor.LandingPage")
-                                 && Mkt3.app.controllers.get("Mkt3.controller.editor.LandingPage").getLandingPage()
-                                 && Mkt3.app.controllers.get("Mkt3.controller.editor.LandingPage").getLandingPage().getResponsiveVarValues()
-                                 && Mkt3.app.controllers.get("Mkt3.controller.editor.LandingPage").getLandingPage().setResponsiveVarValue
-                                 && Mkt3.app.controllers.get("Mkt3.controller.editor.LandingPage").getLandingPage()) {
-                                console.log("Marketo Demo App > Editing: Landing Page Editor Variables");
-                                
-                                window.clearInterval(isLandingPageEditorVariables);
-                                
-                                editAssetVars(Mkt3.app.controllers.get("Mkt3.controller.editor.LandingPage").getLandingPage());
-                            }
-                        }, 0);
-                }
-            } else if (mode == "preview") {
-                console.log("Marketo Demo App > Editing: Landing Page Previewer Variables");
-            }
-        } else if (assetType == "email") {
-            var httpRegEx = new RegExp("^http|^$", "i"),
-            textRegex = new RegExp("^[^#]|^$", "i"),
-            colorRegex = new RegExp("^#[0-9a-f]{3,6}$|^rgb|^$", "i"),
-            logoIds = ["heroLogo", "footerLogo", "headerLogo", "logoFooter", "logo"],
-            heroBgRegex = new RegExp("heroBackground|hero-background|heroBkg|hero-bkg|heroBg|hero-bg", "i"),
-            titleIds = ["title", "heroTitle", "mainTitle"],
-            subtitleIds = ["subtitle", "herosubTitle"],
-            buttonBgColorRegex = new RegExp("^(heroButtonBgColor|hero-button-bg-color|heroButtonBackgroundColor|hero-button-background-color|heroBkgColor|hero-bkg-color|)$", "i"),
-            buttonBorderColorRegex = new RegExp("^(heroButtonBorderColor|hero-button-border-color|heroBorderColor|hero-border-color|)$", "i"),
-            logo = APP.getCookie("logo"),
-            heroBackground = APP.getCookie("heroBackground"),
-            color = APP.getCookie("color"),
-            title = "You To<br>PREMIER BUSINESS EVENT<br>OF THE YEAR",
-            subtitle = APP.getHumanDate(),
-            titleMatch,
-            company,
-            companyName,
-            editHtml,
-            editAssetVars,
-            waitForLoadMsg,
-            waitForReloadMsg;
-            
-            waitForLoadMsg = new Ext.Window({
-                    closable: true,
-                    modal: true,
-                    width: 500,
-                    height: 250,
-                    cls: 'mktModalForm',
-                    title: "Please Wait for Page to Load",
-                    html: "<u>Saving Edits to Hero Background & Button Background Color</u> <br>Wait until this page completely loads before closing. <br><br><u>To Disable This Feature:</u> <br>Clear the selected company via the MarketoLive extension.",
-                });
-            waitForReloadMsg = new Ext.Window({
-                    closable: true,
-                    modal: true,
-                    width: 500,
-                    height: 250,
-                    cls: 'mktModalForm',
-                    title: "Please Wait for Page to Reload",
-                    html: "<u>Saving Edits to Logo, Title, & Subtitle</u> <br>Wait for this page to reload automatically. <br><br><u>To Disable This Feature:</u> <br>Clear the selected company via the MarketoLive extension.",
-                });
-            
-            if (logo != null) {
-                company = logo.split("https://logo.clearbit.com/")[1].split(".")[0];
-                companyName = company.charAt(0).toUpperCase() + company.slice(1);
-                title = companyName + " Invites " + title;
-                titleMatch = companyName + " Invites";
-            } else {
-                title = "We Invite " + title;
-                titleMatch = "We Invite";
-            }
-            
-            editHtml = function () {
-                APP.webRequest('/emaileditor/downloadHtmlFile2?xsrfId=' + MktSecurity.getXsrfId() + '&emailId=' + Mkt3.DL.dl.compId, null, 'GET', 'document', function (response) {
-                    var isLogoReplaced,
-                    isTitleReplaced,
-                    isSubtitleReplaced;
-                    
-                    if (logo) {
-                        for (var ii = 0; ii < logoIds.length; ii++) {
-                            var currElement = response.getElementById(logoIds[ii]);
-                            if (currElement
-                                 && currElement.className.search("mktoImg") != -1
-                                 && currElement.getElementsByTagName("img")[0]
-                                 && currElement.getElementsByTagName("img")[0].getAttribute("src") != logo) {
-                                console.log("Marketo Demo App > Replacing: Logo > " + logo);
-                                
-                                isLogoReplaced = true;
-                                currElement.getElementsByTagName("img")[0].setAttribute("src", logo);
-                            }
-                        }
-                    }
-                    
-                    if (title) {
-                        for (var ii = 0; ii < titleIds.length; ii++) {
-                            var currElement = response.getElementById(titleIds[ii]);
-                            if (currElement
-                                 && currElement.className.search("mktoText") != -1
-                                 && currElement.innerHTML != title
-                                 && currElement.innerHTML.search(titleMatch) == -1) {
-                                console.log("Marketo Demo App > Replacing: Title > " + title);
-                                
-                                isTitleReplaced = true;
-                                currElement.innerHTML = title;
-                                break;
-                            }
-                        }
-                    }
-                    
-                    if (subtitle) {
-                        for (var ii = 0; ii < subtitleIds.length; ii++) {
-                            var currElement = response.getElementById(subtitleIds[ii]);
-                            if (currElement
-                                 && currElement.className.search("mktoText") == -1
-                                 && currElement.innerHTML != subtitle
-                                 && currElement.innerHTML.search(subtitle) != -1) {
-                                console.log("Marketo Demo App > Replacing: Subtitle > " + subtitle);
-                                
-                                isSubtitleReplaced = true;
-                                currElement.innerHTML = subtitle;
-                                break;
-                            }
-                        }
-                    }
-                    
-                    if (isLogoReplaced
-                         || isTitleReplaced
-                         || isSubtitleReplaced) {
-                        var updateHtml;
                         
-                        updateHtml = function () {
-                            APP.webRequest('/emaileditor/updateContent2', 'ajaxHandler=MktSession&mktReqUid=' + new Date().getTime() + Ext.id(null, ':') + '&emailId=' + Mkt3.DL.dl.compId + '&content=' + encodeURIComponent(new XMLSerializer().serializeToString(response)) + '&xsrfId=' + MktSecurity.getXsrfId(), 'POST', "", function (result) {
-                                console.log(result);
-                                window.stop();
-                                window.location.reload();
-                            });
-                        };
+                        if (!isSubtitleUpdated
+                             && asset.componentsStore.findExact("name", "subtitle")
+                             && asset.componentsStore.getAt(asset.componentsStore.findExact("name", "subtitle"))
+                             && asset.componentsStore.getAt(asset.componentsStore.findExact("name", "subtitle")).fragmentsStore
+                             && asset.componentsStore.getAt(asset.componentsStore.findExact("name", "subtitle")).fragmentsStore.data
+                             && asset.componentsStore.getAt(asset.componentsStore.findExact("name", "subtitle")).fragmentsStore.data.items
+                             && asset.componentsStore.getAt(asset.componentsStore.findExact("name", "subtitle")).fragmentsStore.data.items[0]) {
+                            var newSubtitle = asset.componentsStore.getAt(asset.componentsStore.findExact("name", "subtitle")).fragmentsStore.data.items[0];
+                            
+                            newSubtitle.data.content = newSubtitle.data.body = subtitle;
+                            Mkt3.controller.editor.predefinedLayoutLandingPage.LPEditorPredefinedLayout.prototype.updateRichTextComponent.call(Mkt3.app.controllers.get("Mkt3.controller.editor.predefinedLayoutLandingPage.LPEditorPredefinedLayout"), newSubtitle);
+                            isSubtitleUpdated = true;
+                        }
                         
-                        if (waitForLoadMsg.isVisible()) {
-                            waitForLoadMsg.hide();
+                        if (count > 1000
+                             || (isSubtitleUpdated
+                                 && isTitleUpdated)) {
+                            console.log("Marketo Demo App > Updated: Landing Page Title & Subtitle: " + count);
+                            window.clearInterval(isLandingPageEditorComponentStore);
                         }
-                        waitForReloadMsg.show();
-                        updateHtml();
+                        
+                        count++;
                     }
-                });
-            };
+                }, 0);
             
-            editAssetVars = function (asset) {
-                var assetVars = asset.getVariableValues();
+            asset.setResponsiveVarValue(headerBgColor, color);
+            asset.setResponsiveVarValue(headerLogoImg, logo);
+            asset.setResponsiveVarValue(heroBgImg, heroBackground);
+            //asset.setResponsiveVarValue(heroTitle, title);
+            //asset.setResponsiveVarValue(heroSubtitle, subtitle);
+            asset.setResponsiveVarValue(formButtonBgColor, color);
+            asset.setResponsiveVarValue(footerLogoImg, logo);
+            
+            for (var ii = 0; ii < Object.keys(assetVars).length; ii++) {
+                var currVariableKey = Object.keys(assetVars)[ii],
+                currVariableValue = Object.values(assetVars)[ii].toString();
                 
-                for (var ii = 0; ii < Object.keys(assetVars).length; ii++) {
-                    var currVariableKey = Object.keys(assetVars)[ii]
-                        currVariableValue = Object.values(assetVars)[ii];
-                    
-                    if (currVariableValue == null) {
-                        currVariableValue = "";
-                    }
-                    
-                    if (currVariableKey.search(heroBgRegex) != -1) {
-                        if (currVariableValue != heroBackground
-                             && currVariableValue.search(httpRegEx) != -1) {
-                            waitForLoadMsg.show();
-                            asset.setVariableValue(currVariableKey, heroBackground);
-                        }
-                    } else if (currVariableKey.search(buttonBgColorRegex) != -1) {
-                        if (currVariableValue != color
-                             && currVariableValue.search(colorRegex) != -1) {
-                            waitForLoadMsg.show();
-                            asset.setVariableValue(currVariableKey, color);
-                        }
-                    } else if (currVariableKey.search(buttonBorderColorRegex) != -1) {
-                        if (currVariableValue != color
-                             && currVariableValue.search(colorRegex) != -1) {
-                            waitForLoadMsg.show();
-                            asset.setVariableValue(currVariableKey, color);
-                        }
-                    }
+                if (currVariableValue == null) {
+                    currVariableValue = "";
                 }
                 
-                if (waitForLoadMsg.isVisible()) {
-                    window.setTimeout(function () {
-                        Mkt3.app.controllers.get("Mkt3.controller.editor.email2.EmailEditor").reloadIframeContent();
-                        waitForLoadMsg.hide();
-                    }, 7500);
+                if (currVariableKey.search(logoRegex) != -1) {
+                    if (currVariableValue.search(httpRegEx) != -1) {
+                        waitForLoadMsg.show();
+                        asset.setResponsiveVarValue(currVariableKey, logo);
+                    }
+                } else if (currVariableKey.search(heroBgRegex) != -1) {
+                    if (currVariableValue.search(httpRegEx) != -1) {
+                        waitForLoadMsg.show();
+                        asset.setResponsiveVarValue(currVariableKey, heroBackground);
+                    }
+                } else if (currVariableKey.search(titleRegex) != -1) {
+                    if (currVariableValue.search(textRegex) != -1) {
+                        waitForLoadMsg.show();
+                        asset.setResponsiveVarValue(currVariableKey, title);
+                    }
+                } else if (currVariableKey.search(subtitleRegex) != -1) {
+                    if (currVariableValue.search(textRegex) != -1) {
+                        waitForLoadMsg.show();
+                        asset.setResponsiveVarValue(currVariableKey, subtitle);
+                    }
+                } else if (currVariableKey.search(buttonBgColorRegex) != -1) {
+                    if (currVariableValue.search(colorRegex) != -1) {
+                        waitForLoadMsg.show();
+                        asset.setResponsiveVarValue(currVariableKey, color);
+                    }
+                } else if (currVariableKey.search(buttonBorderColorRegex) != -1) {
+                    if (currVariableValue.search(colorRegex) != -1) {
+                        waitForLoadMsg.show();
+                        asset.setResponsiveVarValue(currVariableKey, color);
+                    }
                 }
-            };
+            }
             
-            console.log("Marketo Demo App > Editing: Email Variables");
-            
-            if (mode == "edit") {
-                var isWebRequestSession = window.setInterval(function () {
-                        console.log("Marketo Demo App > Waiting: Web Request Session Data");
+            if (waitForLoadMsg.isVisible()) {
+                window.setTimeout(function () {
+                    //Mkt3.app.controllers.get("Mkt3.controller.editor.LandingPage").loadEditorView();
+                    waitForLoadMsg.hide();
+                }, 7500);
+            }
+        };
+        
+        console.log("Marketo Demo App > Editing: Landing Page Variables");
+        
+        if (mode == "edit") {
+            if (asset) {
+                editAssetVars(asset);
+            } else {
+                var isLandingPageEditorVariables = window.setInterval(function () {
                         if (typeof(Mkt3) !== "undefined"
                              && Mkt3
-                             && Mkt3.DL
-                             && Mkt3.DL.dl
-                             && Mkt3.DL.dl.compId
-                             && typeof(MktSecurity) !== "undefined"
-                             && MktSecurity
-                             && MktSecurity.getXsrfId()
-                             && typeof(Ext) !== "undefined"
-                             && Ext
-                             && Ext.id(null, ':')) {
-                            console.log("Marketo Demo App > Editing: Email HTML");
+                             && Mkt3.app
+                             && Mkt3.app.controllers
+                             && Mkt3.app.controllers.get("Mkt3.controller.editor.LandingPage")
+                             && Mkt3.app.controllers.get("Mkt3.controller.editor.LandingPage").getLandingPage()
+                             && Mkt3.app.controllers.get("Mkt3.controller.editor.LandingPage").getLandingPage().getResponsiveVarValues()
+                             && Mkt3.app.controllers.get("Mkt3.controller.editor.LandingPage").getLandingPage().setResponsiveVarValue
+                             && Mkt3.app.controllers.get("Mkt3.controller.editor.LandingPage").getLandingPage()) {
+                            console.log("Marketo Demo App > Editing: Landing Page Editor Variables");
                             
-                            window.clearInterval(isWebRequestSession);
+                            window.clearInterval(isLandingPageEditorVariables);
                             
-                            editHtml();
+                            editAssetVars(Mkt3.app.controllers.get("Mkt3.controller.editor.LandingPage").getLandingPage());
                         }
                     }, 0);
-                
-                if (asset) {
-                    editAssetVars(asset);
-                } else {
-                    var isEmailEditorVariables = window.setInterval(function () {
-                            console.log("Marketo Demo App > Waiting: Email Editor Variables");
-                            if (!waitForReloadMsg.isVisible()
-                                 && typeof(Mkt3) !== "undefined"
-                                 && Mkt3
-                                 && Mkt3.app
-                                 && Mkt3.app.controllers
-                                 && Mkt3.app.controllers.get("Mkt3.controller.editor.email2.EmailEditor")
-                                 && Mkt3.app.controllers.get("Mkt3.controller.editor.email2.EmailEditor").getEmail()
-                                 && Mkt3.app.controllers.get("Mkt3.controller.editor.email2.EmailEditor").getEmail().getVariableValues()
-                                 && Object.keys(Mkt3.app.controllers.get("Mkt3.controller.editor.email2.EmailEditor").getEmail().getVariableValues()).length != 0
-                                 && Mkt3.app.controllers.get("Mkt3.controller.editor.email2.EmailEditor").getEmail().setVariableValue) {
-                                console.log("Marketo Demo App > Editing: Email Editor Variables");
-                                
-                                window.clearInterval(isEmailEditorVariables);
-                                
-                                editAssetVars(Mkt3.app.controllers.get("Mkt3.controller.editor.email2.EmailEditor").getEmail());
-                            }
-                        }, 0);
-                }
-            } else if (mode == "preview") {
-                console.log("Marketo Demo App > Editing: Email Previewer Variables");
             }
+        } else if (mode == "preview") {
+            console.log("Marketo Demo App > Editing: Landing Page Previewer Variables");
+        }
+    }
+};
+
+/**************************************************************************************
+ *
+ *  This function edits the variables within the Email Editor for custom company.
+ *
+ *  @Author Brian Fisher
+ *
+ *  @function
+ *
+ *  @param {String} mode - Mode view (edit, preview)
+ *  @param {Object} asset - The asset to be edited
+ *
+ **************************************************************************************/
+
+APP.saveEmailEdits = function (mode, asset) {
+    var saveEditsToggle = APP.getCookie("saveEditsToggleState"),
+    logo = APP.getCookie("logo"),
+    heroBackground = APP.getCookie("heroBackground"),
+    color = APP.getCookie("color");
+    
+    if (saveEditsToggle == "true"
+         && (logo != null
+             || heroBackground != null
+             || color != null)) {
+        
+        var httpRegEx = new RegExp("^http|^$", "i"),
+        textRegex = new RegExp("^[^#]|^$", "i"),
+        colorRegex = new RegExp("^#[0-9a-f]{3,6}$|^rgb|^$", "i"),
+        logoIds = ["heroLogo", "footerLogo", "headerLogo", "logoFooter", "logo"],
+        heroBgRegex = new RegExp("heroBackground|hero-background|heroBkg|hero-bkg|heroBg|hero-bg", "i"),
+        titleIds = ["title", "heroTitle", "mainTitle"],
+        subtitleIds = ["subtitle", "herosubTitle"],
+        buttonBgColorRegex = new RegExp("^(heroButtonBgColor|hero-button-bg-color|heroButtonBackgroundColor|hero-button-background-color|heroBkgColor|hero-bkg-color|)$", "i"),
+        buttonBorderColorRegex = new RegExp("^(heroButtonBorderColor|hero-button-border-color|heroBorderColor|hero-border-color|)$", "i"),
+        logo = APP.getCookie("logo"),
+        heroBackground = APP.getCookie("heroBackground"),
+        color = APP.getCookie("color"),
+        title = "You To<br>PREMIER BUSINESS EVENT<br>OF THE YEAR",
+        subtitle = APP.getHumanDate(),
+        titleMatch,
+        company,
+        companyName,
+        editHtml,
+        editAssetVars,
+        waitForLoadMsg,
+        waitForReloadMsg;
+        
+        waitForLoadMsg = new Ext.Window({
+                closable: true,
+                modal: true,
+                width: 500,
+                height: 250,
+                cls: 'mktModalForm',
+                title: "Please Wait for Page to Load",
+                html: "<u>Saving Edits to Hero Background & Button Background Color</u> <br>Wait until this page completely loads before closing. <br><br><u>To Disable This Feature:</u> <br>Clear the selected company via the MarketoLive extension.",
+            });
+        waitForReloadMsg = new Ext.Window({
+                closable: true,
+                modal: true,
+                width: 500,
+                height: 250,
+                cls: 'mktModalForm',
+                title: "Please Wait for Page to Reload",
+                html: "<u>Saving Edits to Logo, Title, & Subtitle</u> <br>Wait for this page to reload automatically. <br><br><u>To Disable This Feature:</u> <br>Clear the selected company via the MarketoLive extension.",
+            });
+        
+        if (logo != null) {
+            company = logo.split("https://logo.clearbit.com/")[1].split(".")[0];
+            companyName = company.charAt(0).toUpperCase() + company.slice(1);
+            title = companyName + " Invites " + title;
+            titleMatch = companyName + " Invites";
+        } else {
+            title = "We Invite " + title;
+            titleMatch = "We Invite";
+        }
+        
+        editHtml = function () {
+            APP.webRequest('/emaileditor/downloadHtmlFile2?xsrfId=' + MktSecurity.getXsrfId() + '&emailId=' + Mkt3.DL.dl.compId, null, 'GET', 'document', function (response) {
+                var isLogoReplaced,
+                isTitleReplaced,
+                isSubtitleReplaced;
+                
+                if (logo) {
+                    for (var ii = 0; ii < logoIds.length; ii++) {
+                        var currElement = response.getElementById(logoIds[ii]);
+                        if (currElement
+                             && currElement.className.search("mktoImg") != -1
+                             && currElement.getElementsByTagName("img")[0]
+                             && currElement.getElementsByTagName("img")[0].getAttribute("src") != logo) {
+                            console.log("Marketo Demo App > Replacing: Logo > " + logo);
+                            
+                            isLogoReplaced = true;
+                            currElement.getElementsByTagName("img")[0].setAttribute("src", logo);
+                        }
+                    }
+                }
+                
+                if (title) {
+                    for (var ii = 0; ii < titleIds.length; ii++) {
+                        var currElement = response.getElementById(titleIds[ii]);
+                        if (currElement
+                             && currElement.className.search("mktoText") != -1
+                             && currElement.innerHTML != title
+                             && currElement.innerHTML.search(titleMatch) == -1) {
+                            console.log("Marketo Demo App > Replacing: Title > " + title);
+                            
+                            isTitleReplaced = true;
+                            currElement.innerHTML = title;
+                            break;
+                        }
+                    }
+                }
+                
+                if (subtitle) {
+                    for (var ii = 0; ii < subtitleIds.length; ii++) {
+                        var currElement = response.getElementById(subtitleIds[ii]);
+                        if (currElement
+                             && currElement.className.search("mktoText") == -1
+                             && currElement.innerHTML != subtitle
+                             && currElement.innerHTML.search(subtitle) != -1) {
+                            console.log("Marketo Demo App > Replacing: Subtitle > " + subtitle);
+                            
+                            isSubtitleReplaced = true;
+                            currElement.innerHTML = subtitle;
+                            break;
+                        }
+                    }
+                }
+                
+                if (isLogoReplaced
+                     || isTitleReplaced
+                     || isSubtitleReplaced) {
+                    var updateHtml;
+                    
+                    updateHtml = function () {
+                        APP.webRequest('/emaileditor/updateContent2', 'ajaxHandler=MktSession&mktReqUid=' + new Date().getTime() + Ext.id(null, ':') + '&emailId=' + Mkt3.DL.dl.compId + '&content=' + encodeURIComponent(new XMLSerializer().serializeToString(response)) + '&xsrfId=' + MktSecurity.getXsrfId(), 'POST', "", function (result) {
+                            console.log(result);
+                            window.stop();
+                            window.location.reload();
+                        });
+                    };
+                    
+                    if (waitForLoadMsg.isVisible()) {
+                        waitForLoadMsg.hide();
+                    }
+                    waitForReloadMsg.show();
+                    updateHtml();
+                }
+            });
+        };
+        
+        editAssetVars = function (asset) {
+            var assetVars = asset.getVariableValues();
+            
+            for (var ii = 0; ii < Object.keys(assetVars).length; ii++) {
+                var currVariableKey = Object.keys(assetVars)[ii]
+                    currVariableValue = Object.values(assetVars)[ii];
+                
+                if (currVariableValue == null) {
+                    currVariableValue = "";
+                }
+                
+                if (currVariableKey.search(heroBgRegex) != -1) {
+                    if (currVariableValue != heroBackground
+                         && currVariableValue.search(httpRegEx) != -1) {
+                        waitForLoadMsg.show();
+                        asset.setVariableValue(currVariableKey, heroBackground);
+                    }
+                } else if (currVariableKey.search(buttonBgColorRegex) != -1) {
+                    if (currVariableValue != color
+                         && currVariableValue.search(colorRegex) != -1) {
+                        waitForLoadMsg.show();
+                        asset.setVariableValue(currVariableKey, color);
+                    }
+                } else if (currVariableKey.search(buttonBorderColorRegex) != -1) {
+                    if (currVariableValue != color
+                         && currVariableValue.search(colorRegex) != -1) {
+                        waitForLoadMsg.show();
+                        asset.setVariableValue(currVariableKey, color);
+                    }
+                }
+            }
+            
+            if (waitForLoadMsg.isVisible()) {
+                window.setTimeout(function () {
+                    Mkt3.app.controllers.get("Mkt3.controller.editor.email2.EmailEditor").reloadIframeContent();
+                    waitForLoadMsg.hide();
+                }, 7500);
+            }
+        };
+        
+        console.log("Marketo Demo App > Editing: Email Variables");
+        
+        if (mode == "edit") {
+            var isWebRequestSession = window.setInterval(function () {
+                    console.log("Marketo Demo App > Waiting: Web Request Session Data");
+                    if (typeof(Mkt3) !== "undefined"
+                         && Mkt3
+                         && Mkt3.DL
+                         && Mkt3.DL.dl
+                         && Mkt3.DL.dl.compId
+                         && typeof(MktSecurity) !== "undefined"
+                         && MktSecurity
+                         && MktSecurity.getXsrfId()
+                         && typeof(Ext) !== "undefined"
+                         && Ext
+                         && Ext.id(null, ':')) {
+                        console.log("Marketo Demo App > Editing: Email HTML");
+                        
+                        window.clearInterval(isWebRequestSession);
+                        
+                        editHtml();
+                    }
+                }, 0);
+            
+            if (asset) {
+                editAssetVars(asset);
+            } else {
+                var isEmailEditorVariables = window.setInterval(function () {
+                        console.log("Marketo Demo App > Waiting: Email Editor Variables");
+                        if (!waitForReloadMsg.isVisible()
+                             && typeof(Mkt3) !== "undefined"
+                             && Mkt3
+                             && Mkt3.app
+                             && Mkt3.app.controllers
+                             && Mkt3.app.controllers.get("Mkt3.controller.editor.email2.EmailEditor")
+                             && Mkt3.app.controllers.get("Mkt3.controller.editor.email2.EmailEditor").getEmail()
+                             && Mkt3.app.controllers.get("Mkt3.controller.editor.email2.EmailEditor").getEmail().getVariableValues()
+                             && Object.keys(Mkt3.app.controllers.get("Mkt3.controller.editor.email2.EmailEditor").getEmail().getVariableValues()).length != 0
+                             && Mkt3.app.controllers.get("Mkt3.controller.editor.email2.EmailEditor").getEmail().setVariableValue) {
+                            console.log("Marketo Demo App > Editing: Email Editor Variables");
+                            
+                            window.clearInterval(isEmailEditorVariables);
+                            
+                            editAssetVars(Mkt3.app.controllers.get("Mkt3.controller.editor.email2.EmailEditor").getEmail());
+                        }
+                    }, 0);
+            }
+        } else if (mode == "preview") {
+            console.log("Marketo Demo App > Editing: Email Previewer Variables");
         }
     }
 };
@@ -1853,21 +1872,19 @@ var isMktPageDemoApp = window.setInterval(function () {
                     console.log("Marketo Demo App > Location: Landing Page Editor");
                     
                     APP.overlayLandingPage("edit");
-                    APP.editAssetVariables("landingPage", "edit");
+                    APP.saveLandingPageEdits("edit");
                     break;
                     
                 case mktoLandingPagePreviewFragment:
                     console.log("Marketo Demo App > Location: Landing Page Previewer");
                     
                     APP.overlayLandingPage("preview");
-                    APP.editAssetVariables("landingPage", "preview");
                     break;
                     
                 case mktoLandingPagePreviewDraftFragment:
                     console.log("Marketo Demo App > Location: Landing Page Draft Previewer");
                     
                     APP.overlayLandingPage("preview");
-                    APP.editAssetVariables("landingPage", "preview");
                     break;
                     
                 case mktoEmailEditFragment:
@@ -1875,37 +1892,36 @@ var isMktPageDemoApp = window.setInterval(function () {
                         console.log("Marketo Demo App > Location: Email Editor");
                         
                         APP.overlayEmail("edit");
-                        APP.editAssetVariables("email", "edit");
+                        APP.saveEmailEdits("edit");
                     } else {
                         console.log("Marketo Demo App > Location: Email Previewer");
                         
                         APP.overlayEmail("preview");
-                        APP.editAssetVariables("email", "preview");
                     }
                     break;
                     /*
                     case mktoPushNotificationEditFragment:
                     console.log("Marketo Demo App > Location: Push Notification Editor");
                     
-                    APP.editAssetVariables("pushNotification", "edit");
+                    APP.savePushNotificationEdits("edit");
                     break;
                     
                     case mktoMobilePushNotificationPreviewFragment:
                     console.log("Marketo Demo App > Location: Push Notification Previewer");
                     
-                    APP.editAssetVariables("pushNotification", "preview");
+                    APP.savePushNotificationEdits("preview");
                     break;
                     
                     case mktoInAppMessageEditFragment:
                     console.log("Marketo Demo App > Location: In-App Message Editor");
                     
-                    APP.editAssetVariables("inAppMessage", "edit");
+                    APP.saveInAppMessageEdits("edit");
                     break;
                     
                     case mktoInAppMessagePreviewFragment:
                     console.log("Marketo Demo App > Location: In-App Message Previewer");
                     
-                    APP.editAssetVariables("inAppMessage", "preview");
+                    APP.saveInAppMessageEdits("preview");
                     break;
                      */
                 }
@@ -1938,55 +1954,60 @@ var isMktPageDemoApp = window.setInterval(function () {
                                         case mktoLandingPageEditFragment:
                                             console.log("Marketo Demo App > Location: Landing Page Editor");
                                             
-                                            APP.editAssetVariables("landingPage", "edit");
+                                            APP.overlayLandingPage("edit");
+                                            APP.saveLandingPageEdits("edit");
                                             break;
                                             
                                         case mktoLandingPagePreviewFragment:
                                             console.log("Marketo Demo App > Location: Landing Page Previewer");
                                             
-                                            APP.editAssetVariables("landingPage", "preview");
+                                            APP.overlayLandingPage("preview");
+                                            //APP.saveLandingPageEdits("preview");
                                             break;
                                             
                                         case mktoLandingPagePreviewDraftFragment:
                                             console.log("Marketo Demo App > Location: Landing Page Draft Previewer");
                                             
-                                            APP.editAssetVariables("landingPage", "preview");
+                                            APP.overlayLandingPage("preview");
+                                            //APP.saveLandingPageEdits("preview");
                                             break;
                                             
                                         case mktoEmailEditFragment:
                                             if (currUrlFragment.search(mktoEmailPreviewFragmentRegex) == -1) {
                                                 console.log("Marketo Demo App > Location: Email Editor");
                                                 
-                                                APP.editAssetVariables("email", "edit");
+                                                APP.overlayEmail("edit");
+                                                APP.saveEmailEdits("edit");
                                             } else {
                                                 console.log("Marketo Demo App > Location: Email Previewer");
                                                 
-                                                APP.editAssetVariables("email", "preview");
+                                                APP.overlayEmail("preview");
+                                                //APP.saveEmailEdits("preview");
                                             }
                                             break;
                                             /*
                                             case mktoPushNotificationEditFragment:
                                             console.log("Marketo Demo App > Location: Push Notification Editor");
                                             
-                                            APP.editAssetVariables("pushNotification", "edit");
+                                            APP.savePushNotificationEdits("edit");
                                             break;
                                             
                                             case mktoMobilePushNotificationPreviewFragment:
                                             console.log("Marketo Demo App > Location: Push Notification Previewer");
                                             
-                                            APP.editAssetVariables("pushNotification", "preview");
+                                            APP.savePushNotificationEdits("preview");
                                             break;
                                             
                                             case mktoInAppMessageEditFragment:
                                             console.log("Marketo Demo App > Location: In-App Message Editor");
                                             
-                                            APP.editAssetVariables("inAppMessage", "edit");
+                                            APP.saveInAppMessageEdits("edit");
                                             break;
                                             
                                             case mktoInAppMessagePreviewFragment:
                                             console.log("Marketo Demo App > Location: In-App Message Previewer");
                                             
-                                            APP.editAssetVariables("inAppMessage", "preview");
+                                            APP.saveInAppMessageEdits("preview");
                                             break;
                                              */
                                         }
