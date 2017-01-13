@@ -237,6 +237,7 @@ img.onload = function () {
     colorOption1 = document.getElementById("color-option-1"),
     colorOption2 = document.getElementById("color-option-2"),
     colorOption3 = document.getElementById("color-option-3"),
+    colorOption4 = document.getElementById("color-option-4"),
     correct = document.getElementById("correct"),
     incorrect = document.getElementById("incorrect");
     
@@ -245,13 +246,14 @@ img.onload = function () {
     colorOption1.style.backgroundColor = "rgb(" + colorSet[0][0] + ", " + colorSet[0][1] + ", " + colorSet[0][2] + ")";
     colorOption2.style.backgroundColor = "rgb(" + colorSet[1][0] + ", " + colorSet[1][1] + ", " + colorSet[1][2] + ")";
     colorOption3.style.backgroundColor = "rgb(" + colorSet[2][0] + ", " + colorSet[2][1] + ", " + colorSet[2][2] + ")";
+    colorOption4.style.backgroundColor = "rgb(255, 255, 255)";
     console.log("Color Picker > Company Logo: " + img.src);
     logoElement.innerHTML = img.src;
     if (img.src == logo) {
         colorElement.innerHTML = null;
     }
     
-    colorOption1.onclick = colorOption2.onclick = colorOption3.onclick = function () {
+    colorOption1.onclick = colorOption2.onclick = colorOption3.onclick = colorOption4.onclick = function () {
         var colorOptions = document.getElementsByClassName("color-option");
         if (!this.isSelected) {
             this.isSelected = true;
@@ -284,6 +286,10 @@ img.onload = function () {
     
     case colorOption3.style.backgroundColor:
         colorOption3.click();
+        break;
+    
+    case colorOption4.style.backgroundColor:
+        colorOption4.click();
         break;
     }
     
