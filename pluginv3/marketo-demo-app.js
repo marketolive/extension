@@ -1617,6 +1617,7 @@ APP.saveEmailEdits = function (mode, asset) {
         heroBgRegex = new RegExp("heroBackground|hero-background|heroBkg|hero-bkg|heroBg|hero-bg", "i"),
         titleIds = ["title", "heroTitle", "mainTitle"],
         subtitleIds = ["subtitle", "herosubTitle"],
+        headerBgColorRegex = new RegExp("^(headerBgColor|header-bg-color|headerBackgroundColor|header-background-color|headerBkgColor|header-bkg-color|)$", "i"),
         buttonBgColorRegex = new RegExp("^(heroButtonBgColor|hero-button-bg-color|heroButtonBackgroundColor|hero-button-background-color|heroBkgColor|hero-bkg-color|)$", "i"),
         buttonBorderColorRegex = new RegExp("^(heroButtonBorderColor|hero-button-border-color|heroBorderColor|hero-border-color|)$", "i"),
         logo = APP.getCookie("logo"),
@@ -1752,6 +1753,12 @@ APP.saveEmailEdits = function (mode, asset) {
                          && currVariableValue.search(httpRegEx) != -1) {
                         waitForLoadMsg.show();
                         asset.setVariableValue(currVariableKey, heroBackground);
+                    }
+                } else if (currVariableKey.search(headerBgColorRegex) != -1) {
+                    if (currVariableValue != color
+                         && currVariableValue.search(colorRegex) != -1) {
+                        waitForLoadMsg.show();
+                        asset.setVariableValue(currVariableKey, color);
                     }
                 } else if (currVariableKey.search(buttonBgColorRegex) != -1) {
                     if (currVariableValue != color
