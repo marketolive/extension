@@ -267,7 +267,6 @@ mobileNumberConversionRate = 0.25,
 phoneNumberConversionRate = 0.5,
 usNumberRate = 0.75,
 webPageX,
-webPageXvisitationRate,
 companyX,
 cookieExpiresInDays = 365,
 jobTitleCookieName = "attrib_job_title",
@@ -548,7 +547,8 @@ function visitPage(index) {
 }
 
 getCookie(visitedPagesCookieMarketoLive, function (cookie) {
-    console.log("TESTING");
+    console.log("visitedPagesCookieMarketoLive = " + visitedPagesCookieMarketoLive);
+    console.log("cookie = " + cookie);
     var visitedPagesIndex;
     if (cookie
          && cookie.value
