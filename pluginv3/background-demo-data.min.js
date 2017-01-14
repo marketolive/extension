@@ -533,7 +533,7 @@ function visitPage(index) {
         chrome.tabs.remove(tabId);
     }, 10000);
     
-    visitedPagesCookie.value = index;
+    visitedPagesCookie.value = index.toString();
     setCookie(visitedPagesCookie);
 }
 
