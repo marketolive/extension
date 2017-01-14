@@ -562,6 +562,7 @@ getCookie(visitedPagesCookieMarketoLive, function (cookie) {
         visitedPagesIndex = 0;
         webPageX = webPages[visitedPagesIndex];
     }
+    console.log("TESTING 2");
     if (webPageX.type == landingPageType) {
         getCookie({
             url: mktoAppDomainMatch,
