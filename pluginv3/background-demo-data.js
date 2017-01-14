@@ -520,15 +520,6 @@ function visitPage(index) {
     var visitedPagesCookie = visitedPagesCookieMarketoLive,
     tabId;
     
-    if (webPageX.type == landingPageType
-         && (webPageX.conversionRate >= 1.0
-             || (Math.random()) <= webPageX.conversionRate)) {
-        
-        submitParam = "submit=true";
-    } else {
-        submitParam = "submit=false";
-    }
-    
     chrome.tabs.create({
         url: webPageX.url + "?" + submitParam,
         active: false,
@@ -547,22 +538,17 @@ function visitPage(index) {
 }
 
 getCookie(visitedPagesCookieMarketoLive, function (cookie) {
-    console.log("visitedPagesCookieMarketoLive = " + visitedPagesCookieMarketoLive);
-    console.log("cookie = " + cookie);
     var visitedPagesIndex;
     if (cookie
          && cookie.value
          && Number.isInteger(parseInt(cookie.value))
          && parseInt(cookie.value) < webPages.length) {
-        console.log("Visiting Page Index (" + parseInt(visitedPagesCookie.value) + "): " + webPageX.url + "?" + submitParam);
         visitedPagesIndex = parseInt(cookie.value) + 1;
         webPageX = webPages[visitedPagesIndex];
     } else {
-        console.log("Visiting Initial Page Index (0): " + webPageX.url + "?" + submitParam);
         visitedPagesIndex = 0;
         webPageX = webPages[visitedPagesIndex];
     }
-    console.log("TESTING 2");
     if (webPageX.type == landingPageType) {
         getCookie({
             url: mktoAppDomainMatch,
@@ -570,6 +556,13 @@ getCookie(visitedPagesCookieMarketoLive, function (cookie) {
         }, function (cookie) {
             if (cookie
                  && cookie.value) {
+                if (webPageX.conversionRate >= 1.0
+                     || (Math.random()) <= webPageX.conversionRate) {
+                    submitParam = "submit=true";
+                } else {
+                    submitParam = "submit=false";
+                }
+                console.log("Visiting Page Index (" + parseInt(visitedPagesCookie.value) + "): " + webPageX.url + "?" + submitParam);
                 visitPage(visitedPagesIndex);
             } else {
                 console.log("NOT Visiting: " + webPageX.url + " due to " + usernameCookieName + " cookie is null");
@@ -582,6 +575,7 @@ getCookie(visitedPagesCookieMarketoLive, function (cookie) {
         }, function (cookie) {
             if (cookie
                  && cookie.value) {
+                console.log("Visiting Page Index (" + parseInt(visitedPagesCookie.value) + "): " + webPageX.url);
                 visitPage(visitedPagesIndex);
             } else {
                 console.log("NOT Visiting: " + webPageX.url + " due to " + usernameCookieName + " cookie is null");
