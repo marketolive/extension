@@ -548,6 +548,7 @@ function visitPage(index) {
 }
 
 getCookie(visitedPagesCookieMarketoLive, function (cookie) {
+    console.log("TESTING");
     var visitedPagesIndex;
     if (cookie
          && cookie.value
