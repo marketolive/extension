@@ -305,7 +305,7 @@ APP.overrideHomeTiles = function () {
  **************************************************************************************/
 
 APP.getHumanDate = function () {
-    console.log("Content > Getting: Today's Date");
+    console.log("Marketo Demo App > Getting: Today's Date");
     
     var dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
     monthNames = ["JAN", "FEB", "MAR", "APR", "MAY", "JUNE", "JULY", "AUG", "SEPT", "OCT", "NOV", "DEC"],
@@ -346,7 +346,7 @@ APP.getHumanDate = function () {
  **************************************************************************************/
 
 APP.overlayLandingPage = function (action) {
-    console.log("Content > Overlaying: Landing Page");
+    console.log("Marketo Demo App > Overlaying: Landing Page");
     
     var isLandingPageEditor,
     clearOverlayVars,
@@ -428,7 +428,7 @@ APP.overlayLandingPage = function (action) {
                      && color
                      && mktoHeader) {
                     
-                    console.log("Content > Overlaying: Landing Page Header Background Company Color for Demo Svcs Template");
+                    console.log("Marketo Demo App > Overlaying: Landing Page Header Background Company Color for Demo Svcs Template");
                     mktoHeader.setAttribute("style", mktoHeader.getAttribute("style") + "; background: " + linearGradient + ";");
                     //mktoHeader.style.setProperty("background", linearGradient);
                     isMktoBackgroundColorReplaced = true;
@@ -442,11 +442,11 @@ APP.overlayLandingPage = function (action) {
                      && iframeBody.getElementsByTagName("div")[0]
                      && iframeBody.getElementsByTagName("div")[0].style) {
                     if (iframeBody.className.search(mktoFreeFormClassName) != -1) {
-                        console.log("Content > Overlaying: Freeform Landing Page Background Company Color");
+                        console.log("Marketo Demo App > Overlaying: Freeform Landing Page Background Company Color");
                         iframeBody.getElementsByTagName("div")[0].style.backgroundColor = color + " !important";
                         isMktoBackgroundColorReplaced = isMktoFreeForm = true;
                     } else {
-                        console.log("Content > Overlaying: Guided Landing Page Background Company Color");
+                        console.log("Marketo Demo App > Overlaying: Guided Landing Page Background Company Color");
                         iframeBody.getElementsByTagName("div")[0].style.background = linearGradient;
                         isMktoBackgroundColorReplaced = true;
                         isMktoFreeForm = false;
@@ -460,13 +460,13 @@ APP.overlayLandingPage = function (action) {
                          || mktoImgs.length != 0)) {
                     
                     if (mktoLogo) {
-                        console.log("Content > Overlaying: Landing Page Company Logo for Demo Svcs Template");
+                        console.log("Marketo Demo App > Overlaying: Landing Page Company Logo for Demo Svcs Template");
                         if (mktoLogo.style.height) {
                             mktoLogo.style.setProperty("max-height", mktoLogo.style.height);
-                            console.log("Content > Overlaying: Landing Page Company Logo Max Height = " + mktoLogo.style.height);
+                            console.log("Marketo Demo App > Overlaying: Landing Page Company Logo Max Height = " + mktoLogo.style.height);
                         } else {
                             mktoLogo.style.setProperty("max-height", mktoLogo.height + "px");
-                            console.log("Content > Overlaying: Landing Page Company Logo Max Height = " + mktoLogo.height);
+                            console.log("Marketo Demo App > Overlaying: Landing Page Company Logo Max Height = " + mktoLogo.height);
                         }
                         mktoLogo.setAttribute("src", logo);
                         isMktoImgReplaced = true;
@@ -479,7 +479,7 @@ APP.overlayLandingPage = function (action) {
                                  && currMktoImg.parentNode
                                  && currMktoImg.parentNode.tagName == "DIV"
                                  && currMktoImg.parentNode.id.search(logoRegex) != -1) {
-                                console.log("Content > Overlaying: Guided Landing Page Company Logo");
+                                console.log("Marketo Demo App > Overlaying: Guided Landing Page Company Logo");
                                 currMktoImg.setAttribute("src", logo);
                                 isMktoImgReplaced = true;
                                 break;
@@ -489,13 +489,13 @@ APP.overlayLandingPage = function (action) {
                                  && currMktoImg.parentNode.tagName == "SPAN"
                                  && currMktoImg.parentNode.parentNode
                                  && currMktoImg.parentNode.parentNode.className.search(logoRegex) != -1) {
-                                console.log("Content > Overlaying: Freeform Landing Page Company Logo");
+                                console.log("Marketo Demo App > Overlaying: Freeform Landing Page Company Logo");
                                 if (currMktoImg.style.height) {
                                     currMktoImg.style.setProperty("max-height", currMktoImg.style.height);
-                                    console.log("Content > Overlaying: Freeform Landing Page Company Logo Max Height = " + currMktoImg.style.height);
+                                    console.log("Marketo Demo App > Overlaying: Freeform Landing Page Company Logo Max Height = " + currMktoImg.style.height);
                                 } else {
                                     currMktoImg.style.setProperty("max-height", currMktoImg.height + "px");
-                                    console.log("Content > Overlaying: Freeform Landing Page Company Logo Max Height = " + currMktoImg.height);
+                                    console.log("Marketo Demo App > Overlaying: Freeform Landing Page Company Logo Max Height = " + currMktoImg.height);
                                 }
                                 currMktoImg.setAttribute("src", logo);
                                 isMktoImgReplaced = true;
@@ -513,7 +513,7 @@ APP.overlayLandingPage = function (action) {
                     if (mktoHeroBg
                          && mktoHeroBg.getAttribute("src")) {
                         
-                        console.log("Content > Overlaying: Guided Landing Page Hero Company Background for Demo Svcs Template");
+                        console.log("Marketo Demo App > Overlaying: Guided Landing Page Hero Company Background for Demo Svcs Template");
                         mktoHeroBg.setAttribute("src", heroBackground);
                         isMktoHeroBgImgReplaced = true;
                     } else {
@@ -524,7 +524,7 @@ APP.overlayLandingPage = function (action) {
                                  && currMktoImg.getAttribute("id")
                                  && currMktoImg.getAttribute("id").search(heroBgImgIdRegex) != -1) {
                                 
-                                console.log("Content > Overlaying: Guided Landing Page Hero Company Background");
+                                console.log("Marketo Demo App > Overlaying: Guided Landing Page Hero Company Background");
                                 currMktoImg.setAttribute("src", heroBackground);
                                 isMktoHeroBgImgReplaced = true;
                                 break;
@@ -541,13 +541,13 @@ APP.overlayLandingPage = function (action) {
                      || mktoRichTexts.length != 0) {
                     
                     if (mktoTitle) {
-                        console.log("Content > Overlaying: Landing Page Company Name in Title for Demo Svcs Template");
+                        console.log("Marketo Demo App > Overlaying: Landing Page Company Name in Title for Demo Svcs Template");
                         mktoTitle.innerHTML = mktoMainText;
                         isMktoTextReplaced = true;
                     }
                     
                     if (mktoSubtitle) {
-                        console.log("Content > Overlaying: Landing Page Company Today's Date in Subtitle for Demo Svcs Template");
+                        console.log("Marketo Demo App > Overlaying: Landing Page Company Today's Date in Subtitle for Demo Svcs Template");
                         mktoSubtitle.innerHTML = mktoSubText;
                         isMktoSubTextReplaced = true;
                     }
@@ -565,7 +565,7 @@ APP.overlayLandingPage = function (action) {
                                      && currMktoText.childNodes[0]
                                      && currMktoText.childNodes[0].innerHTML
                                      && currMktoText.id.search(mktoMainTextDivIdRegex) != -1) {
-                                    console.log("Content > Overlaying: Guided Landing Page Company Name in Title");
+                                    console.log("Marketo Demo App > Overlaying: Guided Landing Page Company Name in Title");
                                     currMktoText.childNodes[0].innerHTML = mktoMainText;
                                     isMktoTextReplaced = true;
                                 }
@@ -576,7 +576,7 @@ APP.overlayLandingPage = function (action) {
                                      && currMktoText.childElementCount != null
                                      && currMktoText.id.search(mktoSubTextDivIdRegex) != -1) {
                                     if (!currMktoText.childElementCount) {
-                                        console.log("Content > Overlaying: Guided Landing Page Company Today's Date in Subtitle");
+                                        console.log("Marketo Demo App > Overlaying: Guided Landing Page Company Today's Date in Subtitle");
                                         if (currMktoText.innerHTML) {
                                             currMktoText.innerHTML = mktoSubText;
                                         } else {
@@ -586,7 +586,7 @@ APP.overlayLandingPage = function (action) {
                                     } else if (currMktoText.childNodes
                                          && currMktoText.childNodes[0]) {
                                         if (!currMktoText.childNodes[0].childElementCount) {
-                                            console.log("Content > Overlaying: Guided Landing Page Company Today's Date in Subtitle");
+                                            console.log("Marketo Demo App > Overlaying: Guided Landing Page Company Today's Date in Subtitle");
                                             if (currMktoText.childNodes[0].innerHTML) {
                                                 currMktoText.childNodes[0].innerHTML = mktoSubText;
                                             } else {
@@ -596,7 +596,7 @@ APP.overlayLandingPage = function (action) {
                                         } else if (currMktoText.childNodes[0].childNodes
                                              && currMktoText.childNodes[0].childNodes[0]
                                              && !currMktoText.childNodes[0].childNodes[0].childElementCount) {
-                                            console.log("Content > Overlaying: Guided Landing Page Company Today's Date in Subtitle");
+                                            console.log("Marketo Demo App > Overlaying: Guided Landing Page Company Today's Date in Subtitle");
                                             if (currMktoText.childNodes[0].childNodes[0].innerHTML) {
                                                 currMktoText.childNodes[0].childNodes[0].innerHTML = mktoSubText;
                                             } else {
@@ -626,7 +626,7 @@ APP.overlayLandingPage = function (action) {
                                     if (!isMktoTextReplaced
                                          && currMktoRichText.parentNode.className.search(mktoRichMainTextDivClassNameRegex) != -1) {
                                         if (!currMktoRichText.childElementCount) {
-                                            console.log("Content > Overlaying: Freeform Landing Page Company Name in Title");
+                                            console.log("Marketo Demo App > Overlaying: Freeform Landing Page Company Name in Title");
                                             if (currMktoRichText.innerHTML) {
                                                 currMktoRichText.innerHTML = mktoMainText;
                                             } else {
@@ -636,7 +636,7 @@ APP.overlayLandingPage = function (action) {
                                         } else if (currMktoRichText.childNodes
                                              && currMktoRichText.childNodes[0]) {
                                             if (!currMktoRichText.childNodes[0].childElementCount) {
-                                                console.log("Content > Overlaying: Freeform Landing Page Company Name in Title");
+                                                console.log("Marketo Demo App > Overlaying: Freeform Landing Page Company Name in Title");
                                                 if (currMktoRichText.childNodes[0].innerHTML) {
                                                     currMktoRichText.childNodes[0].innerHTML = mktoMainText;
                                                 } else {
@@ -646,7 +646,7 @@ APP.overlayLandingPage = function (action) {
                                             } else if (currMktoRichText.childNodes[0].childNodes
                                                  && currMktoRichText.childNodes[0].childNodes[0]
                                                  && !currMktoRichText.childNodes[0].childNodes[0].childElementCount) {
-                                                console.log("Content > Overlaying: Freeform Landing Page Company Name in Title");
+                                                console.log("Marketo Demo App > Overlaying: Freeform Landing Page Company Name in Title");
                                                 if (currMktoRichText.childNodes[0].childNodes[0].innerHTML) {
                                                     currMktoRichText.childNodes[0].childNodes[0].innerHTML = mktoMainText;
                                                 } else {
@@ -660,7 +660,7 @@ APP.overlayLandingPage = function (action) {
                                     if (!isMktoSubTextReplaced
                                          && currMktoRichText.parentNode.className.search(mktoRichSubTextDivClassNameRegex) != -1) {
                                         if (!currMktoRichText.childElementCount) {
-                                            console.log("Content > Overlaying: Freeform Landing Page Company Today's Date in Subtitle");
+                                            console.log("Marketo Demo App > Overlaying: Freeform Landing Page Company Today's Date in Subtitle");
                                             if (currMktoRichText.innerHTML) {
                                                 currMktoRichText.innerHTML = mktoSubText;
                                             } else {
@@ -670,7 +670,7 @@ APP.overlayLandingPage = function (action) {
                                         } else if (currMktoRichText.childNodes
                                              && currMktoRichText.childNodes[0]) {
                                             if (!currMktoRichText.childNodes[0].childElementCount) {
-                                                console.log("Content > Overlaying: Freeform Landing Page Company Today's Date in Subtitle");
+                                                console.log("Marketo Demo App > Overlaying: Freeform Landing Page Company Today's Date in Subtitle");
                                                 if (currMktoRichText.childNodes[0].innerHTML) {
                                                     currMktoRichText.childNodes[0].innerHTML = mktoSubText;
                                                 } else {
@@ -680,7 +680,7 @@ APP.overlayLandingPage = function (action) {
                                             } else if (currMktoRichText.childNodes[0].childNodes
                                                  && currMktoRichText.childNodes[0].childNodes[0]
                                                  && !currMktoRichText.childNodes[0].childNodes[0].childElementCount) {
-                                                console.log("Content > Overlaying: Freeform Landing Page Company Today's Date in Subtitle");
+                                                console.log("Marketo Demo App > Overlaying: Freeform Landing Page Company Today's Date in Subtitle");
                                                 if (currMktoRichText.childNodes[0].childNodes[0].innerHTML) {
                                                     currMktoRichText.childNodes[0].childNodes[0].innerHTML = mktoSubText;
                                                 } else {
@@ -707,7 +707,7 @@ APP.overlayLandingPage = function (action) {
                          || mktoButtons.length != 0)) {
                     
                     if (mktoButton) {
-                        console.log("Content > Overlaying: Landing Page Button Company Color for Demo Svcs Template");
+                        console.log("Marketo Demo App > Overlaying: Landing Page Button Company Color for Demo Svcs Template");
                         mktoButton.setAttribute("style", currMktoButton.getAttribute("style") + "; background-color: " + color + " !important;");
                         //mktoButton.style.setProperty("background-color", color + " !important");
                         
@@ -727,7 +727,7 @@ APP.overlayLandingPage = function (action) {
                                  && currMktoButton.style.backgroundColor != null
                                  && currMktoButton.innerHTML
                                  && currMktoButton.innerHTML.search(buttonTextRegex) != -1) {
-                                console.log("Content > Overlaying: Landing Page Button Company Color");
+                                console.log("Marketo Demo App > Overlaying: Landing Page Button Company Color");
                                 currMktoButton.setAttribute("style", currMktoButton.getAttribute("style") + "; background-color: " + color + " !important;");
                                 //currMktoButton.style.backgroundColor = currMktoButton.style.background = color + " !important";
                                 
@@ -752,7 +752,7 @@ APP.overlayLandingPage = function (action) {
                  && bannerBackground.style
                  && mainTitle
                  && subTitle) {
-                console.log("Content > Overlaying: Original Landing Page Company Logo & Color");
+                console.log("Marketo Demo App > Overlaying: Original Landing Page Company Logo & Color");
                 if (logo) {
                     logoImg.src = logo;
                     
@@ -782,7 +782,7 @@ APP.overlayLandingPage = function (action) {
                             logoStyle.innerHTML = "#" + logoImg.id + " {width : " + logoNewWidth + "px !important; height : " + logoNewHeight + "px !important;}";
                             iframeDocument.getElementsByTagName("head")[0].appendChild(logoStyle);
                         }
-                        console.log("Content > Overlaying: Original Landing Page Company Logo Dimensions = " + logoNewWidth + " x " + logoNewHeight);
+                        console.log("Marketo Demo App > Overlaying: Original Landing Page Company Logo Dimensions = " + logoNewWidth + " x " + logoNewHeight);
                     };
                 }
                 
@@ -812,7 +812,7 @@ APP.overlayLandingPage = function (action) {
     
     isLandingPageEditor = window.setInterval(function () {
             if (action == "edit") {
-                console.log("Content > Overlaying: Landing Page Designer");
+                console.log("Marketo Demo App > Overlaying: Landing Page Designer");
                 
                 if (document.getElementsByTagName("iframe")[0]
                      && document.getElementsByTagName("iframe")[0].contentWindow
@@ -821,7 +821,7 @@ APP.overlayLandingPage = function (action) {
                     if (overlay(document.getElementsByTagName("iframe")[0].contentWindow.document)
                          || desktopRepeatReadyCount >= maxRepeatReady) {
                         
-                        console.log("Content > Overlayed: Landing Page Desktop Designer = " + desktopRepeatReadyCount);
+                        console.log("Marketo Demo App > Overlayed: Landing Page Desktop Designer = " + desktopRepeatReadyCount);
                         isDesktopReplaced = true;
                         clearOverlayVars();
                     } else if (desktopPrevReady) {
@@ -843,7 +843,7 @@ APP.overlayLandingPage = function (action) {
                     if (overlay(document.getElementsByTagName("iframe")[1].contentWindow.document)
                          || phoneRepeatReadyCount >= maxRepeatReady) {
                         
-                        console.log("Content > Overlayed: Freeform Landing Page Phone Designer = " + phoneRepeatReadyCount);
+                        console.log("Marketo Demo App > Overlayed: Freeform Landing Page Phone Designer = " + phoneRepeatReadyCount);
                         isPhoneReplaced = true;
                         clearOverlayVars();
                     } else if (phonePrevReady) {
@@ -863,13 +863,13 @@ APP.overlayLandingPage = function (action) {
                          && isPhoneReplaced
                          && isDesktopReplaced)) {
                     
-                    console.log("Content > Overlaying: Landing Page Interval is Cleared");
+                    console.log("Marketo Demo App > Overlaying: Landing Page Interval is Cleared");
                     window.clearInterval(isLandingPageEditor);
                     clearOverlayVars();
                     return true;
                 }
             } else if (action == "preview") {
-                console.log("Content > Overlaying: Landing Page Previewer");
+                console.log("Marketo Demo App > Overlaying: Landing Page Previewer");
                 
                 if (!isDesktopReplaced
                      && document.getElementsByTagName("iframe")[2]
@@ -879,7 +879,7 @@ APP.overlayLandingPage = function (action) {
                     if (overlay(document.getElementsByTagName("iframe")[2].contentWindow.document)
                          || desktopRepeatReadyCount >= maxRepeatReady) {
                         
-                        console.log("Content > Overlayed: Landing Page Desktop Preview = " + desktopRepeatReadyCount);
+                        console.log("Marketo Demo App > Overlayed: Landing Page Desktop Preview = " + desktopRepeatReadyCount);
                         isDesktopReplaced = true;
                         clearOverlayVars();
                     } else if (desktopPrevReady) {
@@ -900,7 +900,7 @@ APP.overlayLandingPage = function (action) {
                     if (overlay(document.getElementsByTagName("iframe")[3].contentWindow.document)
                          || phoneRepeatReadyCount >= maxOtherRepeatReady) {
                         
-                        console.log("Content > Overlayed: Landing Page Phone Preview = " + phoneRepeatReadyCount);
+                        console.log("Marketo Demo App > Overlayed: Landing Page Phone Preview = " + phoneRepeatReadyCount);
                         isPhoneReplaced = true;
                         clearOverlayVars();
                     } else if (phonePrevReady) {
@@ -921,7 +921,7 @@ APP.overlayLandingPage = function (action) {
                     if (overlay(document.getElementsByTagName("iframe")[0].contentWindow.document)
                          || sideBySideDesktopRepeatReadyCount >= maxOtherRepeatReady) {
                         
-                        console.log("Content > Overlayed: Landing Page Side by Side Desktop Preview = " + sideBySideDesktopRepeatReadyCount);
+                        console.log("Marketo Demo App > Overlayed: Landing Page Side by Side Desktop Preview = " + sideBySideDesktopRepeatReadyCount);
                         isSideBySideDesktopReplaced = true;
                         clearOverlayVars();
                     } else if (sideBySideDesktopPrevReady) {
@@ -942,7 +942,7 @@ APP.overlayLandingPage = function (action) {
                     if (overlay(document.getElementsByTagName("iframe")[1].contentWindow.document)
                          || sideBySidePhoneRepeatReadyCount >= maxOtherRepeatReady) {
                         
-                        console.log("Content > Overlayed: Landing Page Side by Side Phone Preview = " + sideBySidePhoneRepeatReadyCount);
+                        console.log("Marketo Demo App > Overlayed: Landing Page Side by Side Phone Preview = " + sideBySidePhoneRepeatReadyCount);
                         isSideBySidePhoneReplaced = true;
                         clearOverlayVars();
                     } else if (sideBySidePhonePrevReady) {
@@ -959,7 +959,7 @@ APP.overlayLandingPage = function (action) {
                      && isSideBySideDesktopReplaced
                      && isPhoneReplaced
                      && isDesktopReplaced) {
-                    console.log("Content > Overlaying: Landing Page Interval is Cleared");
+                    console.log("Marketo Demo App > Overlaying: Landing Page Interval is Cleared");
                     window.clearInterval(isLandingPageEditor);
                     clearOverlayVars();
                     return true;
@@ -981,7 +981,7 @@ APP.overlayLandingPage = function (action) {
  **************************************************************************************/
 
 APP.overlayEmail = function (action) {
-    console.log("Content > Overlaying: Email");
+    console.log("Marketo Demo App > Overlaying: Email");
     
     var isEmailEditor2,
     clearOverlayVars,
@@ -1050,7 +1050,7 @@ APP.overlayEmail = function (action) {
                      && color
                      && mktoHeader) {
                     
-                    console.log("Content > Overlaying: Email 2.0 Header Background Company Color for Demo Svcs Template");
+                    console.log("Marketo Demo App > Overlaying: Email 2.0 Header Background Company Color for Demo Svcs Template");
                     mktoHeader.style.setProperty("background-color", color);
                     mktoHeader.setAttribute("bgColor", color);
                     isMktoHeaderBgColorReplaced = true;
@@ -1062,13 +1062,13 @@ APP.overlayEmail = function (action) {
                          || mktoImgs.length != 0)) {
                     
                     if (mktoLogo) {
-                        console.log("Content > Overlaying: Email 2.0 Company Logo for Demo Svcs Template");
+                        console.log("Marketo Demo App > Overlaying: Email 2.0 Company Logo for Demo Svcs Template");
                         if (mktoLogo.style.height) {
                             mktoLogo.style.setProperty("max-height", mktoLogo.style.height);
-                            console.log("Content > Overlaying: Email 2.0 Company Logo Max Height = " + mktoLogo.style.height);
+                            console.log("Marketo Demo App > Overlaying: Email 2.0 Company Logo Max Height = " + mktoLogo.style.height);
                         } else {
                             mktoLogo.style.setProperty("max-height", mktoLogo.height + "px");
-                            console.log("Content > Overlaying: Email 2.0 Company Logo Max Height = " + mktoLogo.height);
+                            console.log("Marketo Demo App > Overlaying: Email 2.0 Company Logo Max Height = " + mktoLogo.height);
                         }
                         mktoLogo.setAttribute("src", logo);
                         isMktoImgReplaced = true;
@@ -1089,13 +1089,13 @@ APP.overlayEmail = function (action) {
                                 
                                 if (currMktoImgTag
                                      && currMktoImgTag.getAttribute("src")) {
-                                    console.log("Content > Overlaying: Email 2.0 Company Logo");
+                                    console.log("Marketo Demo App > Overlaying: Email 2.0 Company Logo");
                                     if (currMktoImgTag.style.height) {
                                         currMktoImgTag.style.setProperty("max-height", currMktoImgTag.style.height);
-                                        console.log("Content > Overlaying: Email 2.0 Company Logo Max Height = " + currMktoImgTag.style.height);
+                                        console.log("Marketo Demo App > Overlaying: Email 2.0 Company Logo Max Height = " + currMktoImgTag.style.height);
                                     } else {
                                         currMktoImgTag.style.setProperty("max-height", currMktoImgTag.height + "px");
-                                        console.log("Content > Overlaying: Email 2.0 Company Logo Max Height = " + currMktoImgTag.height);
+                                        console.log("Marketo Demo App > Overlaying: Email 2.0 Company Logo Max Height = " + currMktoImgTag.height);
                                     }
                                     currMktoImgTag.setAttribute("src", logo);
                                     isMktoImgReplaced = true;
@@ -1112,7 +1112,7 @@ APP.overlayEmail = function (action) {
                          || mktoTds.length != 0)) {
                     
                     if (mktoHeroBg) {
-                        console.log("Content > Overlaying: Email 2.0 Hero Company Background for Demo Svcs Template");
+                        console.log("Marketo Demo App > Overlaying: Email 2.0 Hero Company Background for Demo Svcs Template");
                         mktoHeroBg.style.setProperty("background-image", "url('" + heroBackground + "')");
                         mktoHeroBg.setAttribute("background", heroBackground);
                         mktoHeroBg.style.setProperty("background-size", "cover");
@@ -1124,7 +1124,7 @@ APP.overlayEmail = function (action) {
                             if (currMktoTd
                                  && currMktoTd.getAttribute("background")) {
                                 
-                                console.log("Content > Overlaying: Email 2.0 Hero Company Background");
+                                console.log("Marketo Demo App > Overlaying: Email 2.0 Hero Company Background");
                                 currMktoTd.setAttribute("background", heroBackground);
                                 currMktoTd.style.setProperty("background-image", "url('" + heroBackground + "')");
                                 currMktoTd.style.setProperty("background-size", "cover");
@@ -1142,13 +1142,13 @@ APP.overlayEmail = function (action) {
                          || mktoTexts.length != 0)) {
                     
                     if (mktoTitle) {
-                        console.log("Content > Overlaying: Email 2.0 Company Name in Title for Demo Svcs Template");
+                        console.log("Marketo Demo App > Overlaying: Email 2.0 Company Name in Title for Demo Svcs Template");
                         mktoTitle.innerHTML = mktoMainText;
                         isMktoTextReplaced = true;
                     }
                     
                     if (mktoSubtitle) {
-                        console.log("Content > Overlaying: Email 2.0 Company Today's Date in Subtitle for Demo Svcs Template");
+                        console.log("Marketo Demo App > Overlaying: Email 2.0 Company Today's Date in Subtitle for Demo Svcs Template");
                         mktoSubtitle.innerHTML = mktoSubText;
                         isMktoSubTextReplaced = true;
                     }
@@ -1168,14 +1168,14 @@ APP.overlayEmail = function (action) {
                             if (currMktoTextMktoName
                                  && currMktoTextMktoName.search(mainTitleMktoNameRegex) != -1) {
                                 if (currMktoText.innerHTML) {
-                                    console.log("Content > Overlaying: Email 2.0 Company Name in Title");
+                                    console.log("Marketo Demo App > Overlaying: Email 2.0 Company Name in Title");
                                     currMktoText.innerHTML = mktoMainText;
                                     isMktoTextReplaced = true;
                                 }
                             } else if (currMktoTextMktoName
                                  && currMktoTextMktoName.search(subTitleMktoNameRegex) != -1) {
                                 if (currMktoText.innerHTML) {
-                                    console.log("Content > Overlaying: Email 2.0 Company Today's Date in Subtitle");
+                                    console.log("Marketo Demo App > Overlaying: Email 2.0 Company Today's Date in Subtitle");
                                     currMktoText.innerHTML = mktoSubText;
                                     isMktoSubTextReplaced = true;
                                 }
@@ -1195,7 +1195,7 @@ APP.overlayEmail = function (action) {
                          || mktoButtons.length != 0)) {
                     
                     if (mktoButton) {
-                        console.log("Content > Overlaying: Email 2.0 Button Company Color for Demo Svcs Template");
+                        console.log("Marketo Demo App > Overlaying: Email 2.0 Button Company Color for Demo Svcs Template");
                         mktoButton.style.setProperty("background-color", color);
                         
                         if (mktoButton.style.getPropertyValue("border")
@@ -1212,7 +1212,7 @@ APP.overlayEmail = function (action) {
                                  && currMktoButton.innerHTML.search(buttonTextRegex) != -1) {
                                 if (currMktoButton.style
                                      && currMktoButton.style.backgroundColor) {
-                                    console.log("Content > Overlaying: Email 2.0 Button Company Color");
+                                    console.log("Marketo Demo App > Overlaying: Email 2.0 Button Company Color");
                                     currMktoButton.style.backgroundColor = color;
                                     
                                     if (currMktoButton.style.getPropertyValue("border")
@@ -1233,7 +1233,7 @@ APP.overlayEmail = function (action) {
                  && logoSwapContainer
                  && logoSwapCompany
                  && logoBkg) {
-                console.log("Content > Overlaying: Email 1.0 Company Logo & Color");
+                console.log("Marketo Demo App > Overlaying: Email 1.0 Company Logo & Color");
                 if (color) {
                     logoBkg.style.backgroundColor = color;
                 }
@@ -1267,7 +1267,7 @@ APP.overlayEmail = function (action) {
                             logoStyle.innerHTML = "#" + logoSwapCompany.id + " {width : " + logoNewWidth + "px !important; height : " + logoNewHeight + "px !important;}";
                             emailDocument.getElementsByTagName("head")[0].appendChild(logoStyle);
                         }
-                        console.log("Content > Overlaying: Email 1.0 Company Logo Dimensions = " + logoNewWidth + " x " + logoNewHeight);
+                        console.log("Marketo Demo App > Overlaying: Email 1.0 Company Logo Dimensions = " + logoNewWidth + " x " + logoNewHeight);
                     }
                     logoSwapContainer.style.display = "none";
                     logoSwapCompanyContainer.style.display = "block";
@@ -1299,7 +1299,7 @@ APP.overlayEmail = function (action) {
     
     isEmailEditor2 = window.setInterval(function () {
             if (action == "edit") {
-                console.log("Content > Overlaying: Email Designer");
+                console.log("Marketo Demo App > Overlaying: Email Designer");
                 if (document.getElementsByTagName("iframe")[0]
                      && document.getElementsByTagName("iframe")[0].contentWindow
                      && document.getElementsByTagName("iframe")[0].contentWindow.document
@@ -1307,8 +1307,8 @@ APP.overlayEmail = function (action) {
                     if (overlay(document.getElementsByTagName("iframe")[0].contentWindow.document)
                          || editorRepeatReadyCount >= maxRepeatReady) {
                         
-                        console.log("Content > Overlayed: Email Designer = " + editorRepeatReadyCount);
-                        console.log("Content > Overlaying: Email Interval is Cleared");
+                        console.log("Marketo Demo App > Overlayed: Email Designer = " + editorRepeatReadyCount);
+                        console.log("Marketo Demo App > Overlaying: Email Interval is Cleared");
                         window.clearInterval(isEmailEditor2);
                         clearOverlayVars();
                         return true;
@@ -1322,7 +1322,7 @@ APP.overlayEmail = function (action) {
                     editorPrevReady = false;
                 }
             } else if (action == "preview") {
-                console.log("Content > Overlaying: Email Previewer");
+                console.log("Marketo Demo App > Overlaying: Email Previewer");
                 
                 if (!isDesktopPreviewReplaced
                      && document.getElementsByTagName("iframe")[2]
@@ -1332,7 +1332,7 @@ APP.overlayEmail = function (action) {
                     if (overlay(document.getElementsByTagName("iframe")[2].contentWindow.document)
                          || desktopRepeatReadyCount >= maxPreviewRepeatReady) {
                         
-                        console.log("Content > Overlayed: Email Desktop Preview = " + desktopRepeatReadyCount);
+                        console.log("Marketo Demo App > Overlayed: Email Desktop Preview = " + desktopRepeatReadyCount);
                         isDesktopPreviewReplaced = true;
                         clearOverlayVars();
                     } else if (desktopPrevReady) {
@@ -1353,7 +1353,7 @@ APP.overlayEmail = function (action) {
                     if (overlay(document.getElementsByTagName("iframe")[3].contentWindow.document)
                          || phoneRepeatReadyCount >= maxPreviewRepeatReady) {
                         
-                        console.log("Content > Overlayed: Email Phone Preview = " + phoneRepeatReadyCount);
+                        console.log("Marketo Demo App > Overlayed: Email Phone Preview = " + phoneRepeatReadyCount);
                         isPhonePreviewReplaced = true;
                         clearOverlayVars();
                     } else if (phonePrevReady) {
@@ -1368,7 +1368,7 @@ APP.overlayEmail = function (action) {
                 
                 if (isPhonePreviewReplaced
                      && isDesktopPreviewReplaced) {
-                    console.log("Content > Overlaying: Email Interval is Cleared");
+                    console.log("Marketo Demo App > Overlaying: Email Interval is Cleared");
                     window.clearInterval(isEmailEditor2);
                     clearOverlayVars();
                     return true;
@@ -1777,7 +1777,7 @@ APP.saveEmailEdits = function (mode, asset) {
             
             if (waitForLoadMsg.isVisible()) {
                 window.setTimeout(function () {
-                    Mkt3.app.controllers.get("Mkt3.controller.editor.email2.EmailEditor").reloadIframeContent();
+                    Mkt3.app.controllers.get("Mkt3.controller.editor.email2.EmailEditor").reloadEmail();
                     waitForLoadMsg.hide();
                 }, 7500);
             }
