@@ -598,7 +598,7 @@ chrome.runtime.onMessageExternal.addListener(function (message, sender, sendResp
 
 chrome.runtime.onUpdateAvailable.addListener(function (details) {
     chrome.tabs.create({
-        url : "https://docs.google.com/document/d/1w87HqvlDXwDHFyavRzDEIHzaIOVTYsTR9a_tn6ZpWpk/edit?usp=sharing",
+        url : "http://www.marketolive.com/en/update/plugin-update",
         active : true,
         selected : true
     });
