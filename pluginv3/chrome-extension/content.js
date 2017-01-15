@@ -25,6 +25,7 @@ grayOutCompletedStories;
  *  @function
  *
  *  @param {String} scriptSrc - The URL of the desired script.
+ *  @param {String} onLoad - The onload function to be set.
  *
  **************************************************************************************/
 
@@ -92,6 +93,7 @@ getCookie = function (cookieName) {
     console.log("Content > Getting: Cookie " + cookieName + " not found");
     return null;
 };
+
 /*
 sendBackgroundMsg = function(message) {
 var result = chrome.runtime.sendMessage(message, function(response) {
@@ -174,8 +176,7 @@ window.onload = function () {
             var getHumanDate,
             overlayEmail,
             overlayLandingPage,
-            addNewCompanyListener,
-            count;
+            addNewCompanyListener;
             
             /**************************************************************************************
              *
@@ -218,319 +219,6 @@ window.onload = function () {
             
             /**************************************************************************************
              *
-             *  This function overlays an email with the user submitted company logo and color.
-             *
-             *  @Author Brian Fisher
-             *
-             *  @function
-             *
-             *  @param {String} action - The mode in which this asset is being viewed (edit/preview).
-             *
-             **************************************************************************************/
-            
-            overlayEmail = function (action) {
-                console.log("Content > Overlaying: Email");
-                
-                var isEmailEditor2,
-                clearOverlayVars,
-                overlay,
-                isMktoImgReplaced = isMktoTextReplaced = isMktoSubTextReplaced = isMktoButtonReplaced = isMktoEmail1Replaced = editorPrevReady = desktopPrevReady = phonePrevReady = isDesktopPreviewReplaced = isPhonePreviewReplaced = false,
-                logoMktoNameRegex = new RegExp("logo", "i"),
-                mainTitleMktoNameRegex = new RegExp("^main title$|^mainTitle$|^main-title$|^title$", "i"),
-                subTitleMktoNameRegex = new RegExp("^subtitle$|^sub-title$", "i"),
-                buttonTextRegex = new RegExp("signup|sign up|call to action|cta", "i"),
-                logo = getCookie("logo"),
-                color = getCookie("color"),
-                defaultColor = "rgb(42, 83, 112)",
-                logoMaxHeight = "55",
-                company,
-                companyName,
-                editorRepeatReadyCount = desktopRepeatReadyCount = phoneRepeatReadyCount = 0,
-                maxRepeatReady = 500,
-                maxPreviewRepeatReady = 3000;
-                
-                if (logo == null) {
-                    return false;
-                } else {
-                    company = logo.split("https://logo.clearbit.com/")[1].split(".")[0];
-                    companyName = company.charAt(0).toUpperCase() + company.slice(1);
-                }
-                
-                if (color == null) {
-                    color = defaultColor;
-                }
-                
-                clearOverlayVars = function () {
-                    isMktoImgReplaced = isMktoTextReplaced = isMktoSubTextReplaced = isMktoButtonReplaced = isMktoEmail1Replaced = false;
-                    emailBody = mktoImgs = mktoTexts = mktoButtons = logoSwapCompany = logoSwapContainer = logoSwapCompanyContainer = logoBkg = buttonBkg = null;
-                };
-                
-                overlay = function (emailDocument) {
-                    if (emailDocument) {
-                        var emailBody = emailDocument.getElementsByTagName("body")[0],
-                        logoSwapCompany = emailDocument.getElementById("logo-swap-company"),
-                        logoSwapContainer = emailDocument.getElementById("logo-swap-container"),
-                        logoSwapCompanyContainer = emailDocument.getElementById("logo-swap-company-container"),
-                        logoBkg = emailDocument.getElementById("logo-bkg"),
-                        buttonBkg = emailDocument.getElementById("button-bkg");
-                        
-                        if (emailBody
-                             && emailBody.innerHTML) {
-                            var mktoImgs = emailBody.getElementsByClassName("mktoImg"),
-                            mktoTexts = emailBody.getElementsByClassName("mktoText"),
-                            mktoButtons = emailBody.getElementsByClassName("secondary-font button");
-                            
-                            if (!isMktoImgReplaced
-                                 && mktoImgs.length != 0) {
-                                var ii,
-                                currMktoImg,
-                                currMktoImgMktoName,
-                                currMktoImgTag;
-                                
-                                for (ii = 0; ii < mktoImgs.length; ii++) {
-                                    currMktoImg = mktoImgs[ii];
-                                    
-                                    if (currMktoImg.getAttribute("mktoname")) {
-                                        currMktoImgMktoName = currMktoImg.getAttribute("mktoname");
-                                    } else if (currMktoImg.getAttribute("id")) {
-                                        currMktoImgMktoName = currMktoImg.getAttribute("id");
-                                    }
-                                    
-                                    if (currMktoImgMktoName
-                                         && currMktoImgMktoName.search(logoMktoNameRegex) != -1) {
-                                        currMktoImgTag = currMktoImg.getElementsByTagName("img")[0];
-                                        
-                                        if (currMktoImgTag
-                                             && currMktoImgTag.src) {
-                                            console.log("Content > Overlaying: Email 2.0 Company Logo");
-                                            currMktoImgTag.setAttribute("src", logo);
-                                            currMktoImgTag.onload = function () {
-                                                var logoHeightsRatio,
-                                                logoWidth;
-                                                
-                                                if (currMktoImgTag.naturalHeight
-                                                     && currMktoImgTag.naturalHeight > logoMaxHeight) {
-                                                    logoHeightsRatio = currMktoImgTag.naturalHeight / logoMaxHeight,
-                                                    logoWidth = currMktoImgTag.naturalWidth / logoHeightsRatio;
-                                                    currMktoImgTag.width = logoWidth;
-                                                    currMktoImgTag.height = logoMaxHeight;
-                                                } else if (currMktoImgTag.naturalHeight) {
-                                                    currMktoImgTag.width = currMktoImgTag.naturalWidth;
-                                                    currMktoImgTag.height = currMktoImgTag.naturalHeight;
-                                                } else {
-                                                    currMktoImgTag.width = currMktoImgTag.height = logoMaxHeight;
-                                                }
-                                                console.log("Content > Overlaying: Email 2.0 Company Logo Dimensions = " + currMktoImgTag.width + " x " + currMktoImgTag.height);
-                                            }
-                                            isMktoImgReplaced = true;
-                                            break;
-                                        }
-                                    }
-                                }
-                            }
-                            
-                            if ((!isMktoSubTextReplaced
-                                     || !isMktoTextReplaced)
-                                 && mktoTexts.length != 0) {
-                                var ii,
-                                currMktoText,
-                                currMktoTextMktoName;
-                                
-                                for (ii = 0; ii < mktoTexts.length; ii++) {
-                                    currMktoText = mktoTexts[ii];
-                                    
-                                    if (currMktoText.getAttribute("mktoname")) {
-                                        currMktoTextMktoName = currMktoText.getAttribute("mktoname");
-                                    } else if (currMktoText.getAttribute("id")) {
-                                        currMktoTextMktoName = currMktoText.getAttribute("id");
-                                    }
-                                    
-                                    if (currMktoTextMktoName
-                                         && currMktoTextMktoName.search(mainTitleMktoNameRegex) != -1) {
-                                        if (currMktoText.innerHTML) {
-                                            console.log("Content > Overlaying: Email 2.0 Company Name");
-                                            currMktoText.innerHTML = companyName + " Invites You<br><br>PREMIER BUSINESS EVENT<br>OF THE YEAR";
-                                            isMktoTextReplaced = true;
-                                        }
-                                    } else if (currMktoTextMktoName
-                                         && currMktoTextMktoName.search(subTitleMktoNameRegex) != -1) {
-                                        if (currMktoText.innerHTML) {
-                                            console.log("Content > Overlaying: Email 2.0 Today's Date");
-                                            currMktoText.innerHTML = getHumanDate();
-                                            isMktoSubTextReplaced = true;
-                                        }
-                                    }
-                                    
-                                    if (isMktoSubTextReplaced
-                                         && isMktoTextReplaced) {
-                                        break;
-                                    }
-                                }
-                            }
-                            
-                            if (!isMktoButtonReplaced
-                                 && mktoButtons.length != 0) {
-                                var ii,
-                                currMktoButton;
-                                
-                                for (ii = 0; ii < mktoButtons.length; ii++) {
-                                    currMktoButton = mktoButtons[ii];
-                                    
-                                    if (currMktoButton.innerHTML
-                                         && currMktoButton.innerHTML.search(buttonTextRegex) != -1) {
-                                        if (currMktoButton.style
-                                             && currMktoButton.style.backgroundColor) {
-                                            console.log("Content > Overlaying: Email 2.0 Company Color");
-                                            currMktoButton.style.backgroundColor = color;
-                                            isMktoButtonReplaced = true;
-                                            break;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        
-                        if (logoSwapCompanyContainer
-                             && logoSwapContainer
-                             && logoSwapCompany
-                             && logoBkg) {
-                            console.log("Content > Overlaying: Email 1.0 Company Logo & Color");
-                            logoBkg.style.backgroundColor = color;
-                            logoSwapCompany.setAttribute("src", logo);
-                            logoSwapCompany.onload = function () {
-                                var logoHeightsRatio,
-                                logoWidth,
-                                logoNewWidth,
-                                logoNewHeight,
-                                logoStyle;
-                                
-                                if (logoSwapCompany.naturalHeight
-                                     && logoSwapCompany.naturalHeight > logoMaxHeight) {
-                                    logoHeightsRatio = logoSwapCompany.naturalHeight / logoMaxHeight;
-                                    logoWidth = logoSwapCompany.naturalWidth / logoHeightsRatio;
-                                    logoSwapCompany.width = logoNewWidth = logoWidth;
-                                    logoSwapCompany.height = logoNewHeight = logoMaxHeight;
-                                } else if (logoSwapCompany.naturalHeight) {
-                                    logoSwapCompany.width = logoNewWidth = logoSwapCompany.naturalWidth;
-                                    logoSwapCompany.height = logoNewHeight = logoSwapCompany.naturalHeight;
-                                } else {
-                                    logoSwapCompany.width = logoSwapCompany.height = logoNewWidth = logoNewHeight = logoMaxHeight;
-                                }
-                                
-                                if (emailDocument.getElementsByTagName("head")
-                                     && emailDocument.getElementsByTagName("head")[0]) {
-                                    logoStyle = document.createElement("style");
-                                    logoStyle.innerHTML = "#" + logoSwapCompany.id + " {width : " + logoNewWidth + "px !important; height : " + logoNewHeight + "px !important;}";
-                                    emailDocument.getElementsByTagName("head")[0].appendChild(logoStyle);
-                                }
-                                console.log("Content > Overlaying: Email 1.0 Company Logo Dimensions = " + logoNewWidth + " x " + logoNewHeight);
-                            }
-                            logoSwapContainer.style.display = "none";
-                            logoSwapCompanyContainer.style.display = "block";
-                            
-                            if (buttonBkg) {
-                                buttonBkg.style.backgroundColor = color;
-                            }
-                            isMktoEmail1Replaced = true;
-                        }
-                        
-                        if ((isMktoButtonReplaced
-                                 && isMktoSubTextReplaced
-                                 && isMktoTextReplaced
-                                 && isMktoImgReplaced)
-                             || isMktoEmail1Replaced) {
-                            clearOverlayVars();
-                            count = 0;
-                            return true;
-                        }
-                    }
-                    
-                    return false;
-                };
-                
-                isEmailEditor2 = window.setInterval(function () {
-                        if (action == "edit") {
-                            console.log("Content > Overlaying: Email Designer");
-                            if (document.getElementsByTagName("iframe")[0]
-                                 && document.getElementsByTagName("iframe")[0].contentWindow
-                                 && document.getElementsByTagName("iframe")[0].contentWindow.document
-                                 && document.getElementsByTagName("iframe")[0].contentWindow.document.readyState == "complete") {
-                                if (overlay(document.getElementsByTagName("iframe")[0].contentWindow.document)
-                                     || editorRepeatReadyCount >= maxRepeatReady) {
-                                    
-                                    console.log("Content > Overlayed: Email Designer = " + editorRepeatReadyCount);
-                                    console.log("Content > Overlaying: Email Interval is Cleared");
-                                    window.clearInterval(isEmailEditor2);
-                                    clearOverlayVars();
-                                    return true;
-                                } else if (editorPrevReady) {
-                                    editorRepeatReadyCount++;
-                                } else {
-                                    editorRepeatReadyCount = 1;
-                                }
-                                editorPrevReady = true;
-                            } else {
-                                editorPrevReady = false;
-                            }
-                        } else if (action == "preview") {
-                            console.log("Content > Overlaying: Email Previewer");
-                            
-                            if (!isDesktopPreviewReplaced
-                                 && document.getElementsByTagName("iframe")[2]
-                                 && document.getElementsByTagName("iframe")[2].contentWindow
-                                 && document.getElementsByTagName("iframe")[2].contentWindow.document
-                                 && document.getElementsByTagName("iframe")[2].contentWindow.document.readyState == "complete") {
-                                if (overlay(document.getElementsByTagName("iframe")[2].contentWindow.document)
-                                     || desktopRepeatReadyCount >= maxPreviewRepeatReady) {
-                                    
-                                    console.log("Content > Overlayed: Email Desktop Preview = " + desktopRepeatReadyCount);
-                                    isDesktopPreviewReplaced = true;
-                                    clearOverlayVars();
-                                } else if (desktopPrevReady) {
-                                    desktopRepeatReadyCount++;
-                                } else {
-                                    desktopRepeatReadyCount = 1;
-                                }
-                                desktopPrevReady = true;
-                            } else {
-                                desktopPrevReady = false;
-                            }
-                            
-                            if (!isPhonePreviewReplaced
-                                 && document.getElementsByTagName("iframe")[3]
-                                 && document.getElementsByTagName("iframe")[3].contentWindow
-                                 && document.getElementsByTagName("iframe")[3].contentWindow.document
-                                 && document.getElementsByTagName("iframe")[3].contentWindow.document.readyState == "complete") {
-                                if (overlay(document.getElementsByTagName("iframe")[3].contentWindow.document)
-                                     || phoneRepeatReadyCount >= maxPreviewRepeatReady) {
-                                    
-                                    console.log("Content > Overlayed: Email Phone Preview = " + phoneRepeatReadyCount);
-                                    isPhonePreviewReplaced = true;
-                                    clearOverlayVars();
-                                } else if (phonePrevReady) {
-                                    phoneRepeatReadyCount++;
-                                } else {
-                                    phoneRepeatReadyCount = 1;
-                                }
-                                phonePrevReady = true;
-                            } else {
-                                phonePrevReady = false;
-                            }
-                            
-                            if (isPhonePreviewReplaced
-                                 && isDesktopPreviewReplaced) {
-                                console.log("Content > Overlaying: Email Interval is Cleared");
-                                window.clearInterval(isEmailEditor2);
-                                clearOverlayVars();
-                                count = 0;
-                                return true;
-                            }
-                        }
-                    }, 0);
-            };
-            
-            /**************************************************************************************
-             *
              *  This function overlays a landing page with the user submitted company logo and color.
              *
              *  @Author Brian Fisher
@@ -547,45 +235,54 @@ window.onload = function () {
                 var isLandingPageEditor,
                 clearOverlayVars,
                 overlay,
-                isMktoFreeForm = isMktoImgReplaced = isMktoTextReplaced = isMktoSubTextReplaced = isMktoButtonReplaced = isMktoBackgroundColorReplaced = isMktoOrigReplaced = desktopPrevReady = phonePrevReady = sideBySideDesktopPrevReady = sideBySidePhonePrevReady = isDesktopReplaced = isPhoneReplaced = isSideBySideDesktopReplaced = isSideBySidePhoneReplaced = false,
+                isMktoFreeForm = isMktoBackgroundColorReplaced = isMktoImgReplaced = isMktoHeroBgImgReplaced = isMktoTextReplaced = isMktoSubTextReplaced = isMktoButtonReplaced = isMktoOrigReplaced = desktopPrevReady = phonePrevReady = sideBySideDesktopPrevReady = sideBySidePhonePrevReady = isDesktopReplaced = isPhoneReplaced = isSideBySideDesktopReplaced = isSideBySidePhoneReplaced = false,
                 mktoBodyId = "bodyId",
                 mktoFreeFormClassName = "mktoMobileShow",
                 logoRegex = new RegExp("primaryImage|primary_image|primary-image|logo|image_1|image-1|image1", "i"),
-                mktoMainTextDivIdRegex = new RegExp("^primaryBodyHeader$|^heroHeader$|^mainTitle$|^main-title$|^title$", "i"),
-                mktoSubTextDivIdRegex = new RegExp("^section2Header$|^heroHeader2$|^subtitle$|^sub-title$", "i"),
+                heroBgImgIdRegex = new RegExp("hero", "i"),
+                mktoMainTextDivIdRegex = new RegExp("^primaryBodyHeader$|^heroHeader$|^mainTitle$|^main-title$|^hero title$|^heroTitle$|^hero-title$|^title$", "i"),
+                mktoSubTextDivIdRegex = new RegExp("^section2Header$|^heroHeader2$|^subtitle$|^sub-title$|^hero subtitle$|^heroSubtitle$|^hero-subtitle$", "i"),
                 mktoRichMainTextDivClassNameRegex = new RegExp("main title|main_title|mainTitle|main-title|title", "i"),
                 mktoRichSubTextDivClassNameRegex = new RegExp("subtitle|sub-title", "i"),
-                buttonTextRegex = new RegExp("signup|sign up|call to action|cta|submit", "i"),
+                buttonTextRegex = new RegExp("signup|sign up|call to action|cta|register|more|contribute|submit", "i"),
+                saveEditsToggle = getCookie("saveEditsToggleState"),
                 logo = getCookie("logo"),
+                heroBackground = getCookie("heroBackground"),
                 color = getCookie("color"),
                 defaultColor = "rgb(42, 83, 112)",
-                logoFreeFormMaxHeight = "100",
                 logoOrigMaxHeight = "55",
+                mktoMainText = "You To Our Event",
+                mktoSubText = getHumanDate(),
                 company,
                 companyName,
-                mktoMainText,
-                mktoSubText,
                 linearGradient,
                 desktopRepeatReadyCount = phoneRepeatReadyCount = sideBySideDesktopRepeatReadyCount = sideBySidePhoneRepeatReadyCount = 0,
-                maxRepeatReady = 500,
+                maxRepeatReady = 2000,
                 maxOtherRepeatReady = 2000;
                 
-                if (logo == null) {
+                if (saveEditsToggle == "true"
+                     || (logo == null
+                         && heroBackground == null
+                         && color == null)) {
                     return false;
-                } else {
+                }
+                if (logo != null) {
                     company = logo.split("https://logo.clearbit.com/")[1].split(".")[0];
                     companyName = company.charAt(0).toUpperCase() + company.slice(1);
+                    mktoMainText = companyName + " Invites " + mktoMainText;
+                } else {
+                    mktoMainText = "We Invite " + mktoMainText;
                 }
-                mktoMainText = companyName + " Invites You To Our Event";
-                mktoSubText = getHumanDate();
                 
-                if (color == null) {
-                    color = defaultColor;
+                if (color) {
+                    var formButtonStyle = document.createElement("style");
+                    formButtonStyle.type = "text/css";
+                    formButtonStyle.innerHTML = ".mktoButton { background-image: none !important; border-radius: 0 !important; border: none !important; background-color: " + color + " !important; }";
+                    linearGradient = "linear-gradient(to bottom, " + color + ", rgb(242, 242, 242)) !important";
                 }
-                linearGradient = "linear-gradient(to bottom, " + color + ", rgb(242, 242, 242))";
                 
                 clearOverlayVars = function () {
-                    isMktoImgReplaced = isMktoTextReplaced = isMktoSubTextReplaced = isMktoButtonReplaced = isMktoBackgroundColorReplaced = isMktoOrigReplaced = false;
+                    isMktoBackgroundColorReplaced = isMktoImgReplaced = isMktoHeroBgImgReplaced = isMktoTextReplaced = isMktoSubTextReplaced = isMktoButtonReplaced = isMktoOrigReplaced = false;
                     iframeBody = logoImg = textBackground = bannerBackground = mainTitle = subTitle = mktoImgs = mktoTexts = mktoRichTexts = mktoButtons = null;
                 };
                 
@@ -600,12 +297,28 @@ window.onload = function () {
                         
                         if (iframeBody
                              && iframeBody.innerHTML) {
-                            var mktoImgs = iframeBody.getElementsByClassName("lpimg"),
+                            var mktoHeader = iframeDocument.getElementsByName("header")[0],
+                            mktoLogo = iframeDocument.getElementsByName("logo")[0],
+                            mktoImgs = iframeBody.getElementsByClassName("lpimg"),
+                            mktoHeroBg = iframeDocument.getElementsByName("heroBackground")[0],
+                            mktoTitle = iframeDocument.getElementsByName("title")[0],
+                            mktoSubtitle = iframeDocument.getElementsByName("subtitle")[0],
                             mktoTexts = iframeBody.getElementsByClassName("mktoText"),
                             mktoRichTexts = iframeBody.getElementsByClassName("richTextSpan"),
+                            mktoButton = iframeDocument.getElementsByName("button")[0],
                             mktoButtons = iframeBody.getElementsByTagName("button");
                             
                             if (!isMktoBackgroundColorReplaced
+                                 && color
+                                 && mktoHeader) {
+                                
+                                console.log("Content > Overlaying: Landing Page Header Background Company Color for Demo Svcs Template");
+                                mktoHeader.setAttribute("style", mktoHeader.getAttribute("style") + "; background: " + linearGradient + ";");
+                                //mktoHeader.style.setProperty("background", linearGradient);
+                                isMktoBackgroundColorReplaced = true;
+                                isMktoFreeForm = false;
+                            } else if (!isMktoBackgroundColorReplaced
+                                 && color
                                  && !bannerBackground
                                  && iframeBody.id == mktoBodyId
                                  && iframeBody.className != null
@@ -613,247 +326,304 @@ window.onload = function () {
                                  && iframeBody.getElementsByTagName("div")[0]
                                  && iframeBody.getElementsByTagName("div")[0].style) {
                                 if (iframeBody.className.search(mktoFreeFormClassName) != -1) {
-                                    console.log("Content > Overlaying: Freeform Landing Page Company Background Color");
-                                    iframeBody.getElementsByTagName("div")[0].style.backgroundColor = color;
+                                    console.log("Content > Overlaying: Freeform Landing Page Background Company Color");
+                                    iframeBody.getElementsByTagName("div")[0].style.backgroundColor = color + " !important";
                                     isMktoBackgroundColorReplaced = isMktoFreeForm = true;
                                 } else {
-                                    console.log("Content > Overlaying: Guided Landing Page Company Background Color");
+                                    console.log("Content > Overlaying: Guided Landing Page Background Company Color");
                                     iframeBody.getElementsByTagName("div")[0].style.background = linearGradient;
                                     isMktoBackgroundColorReplaced = true;
                                     isMktoFreeForm = false;
                                 }
+                                iframeDocument.getElementsByTagName("head")[0].appendChild(formButtonStyle);
                             }
                             
                             if (!isMktoImgReplaced
-                                 && mktoImgs.length != 0) {
-                                var ii,
-                                currMktoImg;
+                                 && logo
+                                 && (mktoLogo
+                                     || mktoImgs.length != 0)) {
                                 
-                                for (ii = 0; ii < mktoImgs.length; ii++) {
-                                    currMktoImg = mktoImgs[ii];
-                                    
-                                    if (currMktoImg
-                                         && currMktoImg.src
-                                         && currMktoImg.parentNode
-                                         && currMktoImg.parentNode.tagName == "DIV"
-                                         && currMktoImg.parentNode.id.search(logoRegex) != -1) {
-                                        console.log("Content > Overlaying: Guided Landing Page Company Logo");
-                                        currMktoImg.setAttribute("src", logo);
-                                        isMktoImgReplaced = true;
-                                        break;
-                                    } else if (currMktoImg
-                                         && currMktoImg.src
-                                         && currMktoImg.parentNode
-                                         && currMktoImg.parentNode.tagName == "SPAN"
-                                         && currMktoImg.parentNode.parentNode
-                                         && currMktoImg.parentNode.parentNode.className.search(logoRegex) != -1) {
-                                        console.log("Content > Overlaying: Freeform Landing Page Company Logo");
-                                        currMktoImg.setAttribute("src", logo);
-                                        currMktoImg.onload = function () {
-                                            var logoHeightsRatio,
-                                            logoWidth,
-                                            logoNewWidth,
-                                            logoNewHeight,
-                                            logoStyle;
-                                            
-                                            if (currMktoImg.naturalHeight
-                                                 && currMktoImg.naturalHeight > logoFreeFormMaxHeight) {
-                                                logoHeightsRatio = currMktoImg.naturalHeight / logoFreeFormMaxHeight,
-                                                logoWidth = currMktoImg.naturalWidth / logoHeightsRatio;
-                                                currMktoImg.width = logoNewWidth = logoWidth;
-                                                currMktoImg.height = logoNewHeight = logoFreeFormMaxHeight;
-                                            } else if (currMktoImg.naturalHeight) {
-                                                currMktoImg.width = logoNewWidth = currMktoImg.naturalWidth;
-                                                currMktoImg.height = logoNewHeight = currMktoImg.naturalHeight;
+                                if (mktoLogo) {
+                                    console.log("Content > Overlaying: Landing Page Company Logo for Demo Svcs Template");
+                                    if (mktoLogo.style.height) {
+                                        mktoLogo.style.setProperty("max-height", mktoLogo.style.height);
+                                        console.log("Content > Overlaying: Landing Page Company Logo Max Height = " + mktoLogo.style.height);
+                                    } else {
+                                        mktoLogo.style.setProperty("max-height", mktoLogo.height + "px");
+                                        console.log("Content > Overlaying: Landing Page Company Logo Max Height = " + mktoLogo.height);
+                                    }
+                                    mktoLogo.setAttribute("src", logo);
+                                    isMktoImgReplaced = true;
+                                } else {
+                                    for (var ii = 0; ii < mktoImgs.length; ii++) {
+                                        var currMktoImg = mktoImgs[ii];
+                                        
+                                        if (currMktoImg
+                                             && currMktoImg.src
+                                             && currMktoImg.parentNode
+                                             && currMktoImg.parentNode.tagName == "DIV"
+                                             && currMktoImg.parentNode.id.search(logoRegex) != -1) {
+                                            console.log("Content > Overlaying: Guided Landing Page Company Logo");
+                                            currMktoImg.setAttribute("src", logo);
+                                            isMktoImgReplaced = true;
+                                            break;
+                                        } else if (currMktoImg
+                                             && currMktoImg.src
+                                             && currMktoImg.parentNode
+                                             && currMktoImg.parentNode.tagName == "SPAN"
+                                             && currMktoImg.parentNode.parentNode
+                                             && currMktoImg.parentNode.parentNode.className.search(logoRegex) != -1) {
+                                            console.log("Content > Overlaying: Freeform Landing Page Company Logo");
+                                            if (currMktoImg.style.height) {
+                                                currMktoImg.style.setProperty("max-height", currMktoImg.style.height);
+                                                console.log("Content > Overlaying: Freeform Landing Page Company Logo Max Height = " + currMktoImg.style.height);
                                             } else {
-                                                currMktoImg.width = currMktoImg.height = logoNewWidth = logoNewHeight = logoFreeFormMaxHeight;
+                                                currMktoImg.style.setProperty("max-height", currMktoImg.height + "px");
+                                                console.log("Content > Overlaying: Freeform Landing Page Company Logo Max Height = " + currMktoImg.height);
                                             }
-                                            
-                                            if (iframeDocument.getElementsByTagName("head")
-                                                 && iframeDocument.getElementsByTagName("head")[0]) {
-                                                logoStyle = document.createElement("style");
-                                                logoStyle.innerHTML = currMktoImg.parentNode.parentNode.tagName + "#" + currMktoImg.parentNode.parentNode.id + " img.lpimg {width : " + logoNewWidth + "px !important; height : " + logoNewHeight + "px !important;}";
-                                                iframeDocument.getElementsByTagName("head")[0].appendChild(logoStyle);
-                                            }
-                                            console.log("Content > Overlaying: Freeform Landing Page Company Logo Dimensions = " + logoNewWidth + " x " + logoNewHeight);
+                                            currMktoImg.setAttribute("src", logo);
+                                            isMktoImgReplaced = true;
+                                            break;
                                         }
-                                        isMktoImgReplaced = true;
-                                        break;
+                                    }
+                                }
+                            }
+                            
+                            if (!isMktoHeroBgImgReplaced
+                                 && heroBackground
+                                 && (mktoHeroBg
+                                     || mktoImgs.length != 0)) {
+                                
+                                if (mktoHeroBg
+                                     && mktoHeroBg.getAttribute("src")) {
+                                    
+                                    console.log("Content > Overlaying: Guided Landing Page Hero Company Background for Demo Svcs Template");
+                                    mktoHeroBg.setAttribute("src", heroBackground);
+                                    isMktoHeroBgImgReplaced = true;
+                                } else {
+                                    for (var ii = 0; ii < mktoImgs.length; ii++) {
+                                        var currMktoImg = mktoImgs[ii];
+                                        
+                                        if (currMktoImg.getAttribute("src")
+                                             && currMktoImg.getAttribute("id")
+                                             && currMktoImg.getAttribute("id").search(heroBgImgIdRegex) != -1) {
+                                            
+                                            console.log("Content > Overlaying: Guided Landing Page Hero Company Background");
+                                            currMktoImg.setAttribute("src", heroBackground);
+                                            isMktoHeroBgImgReplaced = true;
+                                            break;
+                                        }
                                     }
                                 }
                             }
                             
                             if ((!isMktoSubTextReplaced
                                      || !isMktoTextReplaced)
-                                 && mktoTexts.length != 0) {
-                                var ii,
-                                currMktoText;
+                                 && (mktoTitle
+                                     || mktoSubtitle
+                                     || mktoTexts.length != 0)
+                                 || mktoRichTexts.length != 0) {
                                 
-                                for (ii = 0; ii < mktoTexts.length; ii++) {
-                                    currMktoText = mktoTexts[ii];
-                                    
-                                    if (!isMktoTextReplaced
-                                         && currMktoText
-                                         && currMktoText.childNodes
-                                         && currMktoText.childNodes[0]
-                                         && currMktoText.childNodes[0].innerHTML
-                                         && currMktoText.id.search(mktoMainTextDivIdRegex) != -1) {
-                                        console.log("Content > Overlaying: Guided Landing Page Company Name");
-                                        currMktoText.childNodes[0].innerHTML = mktoMainText;
-                                        isMktoTextReplaced = true;
-                                    }
-                                    
-                                    if (!isMktoSubTextReplaced
-                                         && currMktoText
-                                         && currMktoText.innerHTML
-                                         && currMktoText.childElementCount != null
-                                         && currMktoText.id.search(mktoSubTextDivIdRegex) != -1) {
-                                        if (!currMktoText.childElementCount) {
-                                            console.log("Content > Overlaying: Guided Landing Page Today's Date");
-                                            if (currMktoText.innerHTML) {
-                                                currMktoText.innerHTML = mktoSubText;
-                                            } else {
-                                                currMktoText.parentNode.innerHTML = mktoSubText;
-                                            }
-                                            isMktoSubTextReplaced = true;
-                                        } else if (currMktoText.childNodes
-                                             && currMktoText.childNodes[0]) {
-                                            if (!currMktoText.childNodes[0].childElementCount) {
-                                                console.log("Content > Overlaying: Guided Landing Page Today's Date");
-                                                if (currMktoText.childNodes[0].innerHTML) {
-                                                    currMktoText.childNodes[0].innerHTML = mktoSubText;
-                                                } else {
-                                                    currMktoText.innerHTML = mktoSubText;
-                                                }
-                                                isMktoSubTextReplaced = true;
-                                            } else if (currMktoText.childNodes[0].childNodes
-                                                 && currMktoText.childNodes[0].childNodes[0]
-                                                 && !currMktoText.childNodes[0].childNodes[0].childElementCount) {
-                                                console.log("Content > Overlaying: Guided Landing Page Today's Date");
-                                                if (currMktoText.childNodes[0].childNodes[0].innerHTML) {
-                                                    currMktoText.childNodes[0].childNodes[0].innerHTML = mktoSubText;
-                                                } else {
-                                                    currMktoText.childNodes[0].innerHTML = mktoSubText;
-                                                }
-                                                isMktoSubTextReplaced = true;
-                                            }
-                                        }
-                                    }
-                                    
-                                    if (isMktoSubTextReplaced
-                                         && isMktoTextReplaced) {
-                                        break;
-                                    }
+                                if (mktoTitle) {
+                                    console.log("Content > Overlaying: Landing Page Company Name in Title for Demo Svcs Template");
+                                    mktoTitle.innerHTML = mktoMainText;
+                                    isMktoTextReplaced = true;
                                 }
-                            }
-                            
-                            if ((!isMktoSubTextReplaced
-                                     || !isMktoTextReplaced)
-                                 && mktoRichTexts.length != 0) {
-                                var ii,
-                                currMktoRichText;
                                 
-                                for (ii = 0; ii < mktoRichTexts.length; ii++) {
-                                    currMktoRichText = mktoRichTexts[ii];
+                                if (mktoSubtitle) {
+                                    console.log("Content > Overlaying: Landing Page Company Today's Date in Subtitle for Demo Svcs Template");
+                                    mktoSubtitle.innerHTML = mktoSubText;
+                                    isMktoSubTextReplaced = true;
+                                }
+                                
+                                if (!mktoSubtitle
+                                     && !mktoTitle) {
                                     
-                                    if (currMktoRichText
-                                         && currMktoRichText.innerHTML
-                                         && currMktoRichText.childElementCount != null
-                                         && currMktoRichText.parentNode
-                                         && currMktoRichText.parentNode.tagName == "DIV") {
-                                        if (!isMktoTextReplaced
-                                             && currMktoRichText.parentNode.className.search(mktoRichMainTextDivClassNameRegex) != -1) {
-                                            console.log("Content > Overlaying: Freeform Landing Page Main Text");
-                                            if (!currMktoRichText.childElementCount) {
-                                                console.log("Content > Overlaying: Freeform Landing Page Company Name");
-                                                if (currMktoRichText.innerHTML) {
-                                                    currMktoRichText.innerHTML = mktoMainText;
-                                                } else {
-                                                    currMktoRichText.parentNode.innerHTML = mktoMainText;
-                                                }
+                                    if (mktoTexts.length != 0) {
+                                        for (var ii = 0; ii < mktoTexts.length; ii++) {
+                                            var currMktoText = mktoTexts[ii];
+                                            
+                                            if (!isMktoTextReplaced
+                                                 && currMktoText
+                                                 && currMktoText.childNodes
+                                                 && currMktoText.childNodes[0]
+                                                 && currMktoText.childNodes[0].innerHTML
+                                                 && currMktoText.id.search(mktoMainTextDivIdRegex) != -1) {
+                                                console.log("Content > Overlaying: Guided Landing Page Company Name in Title");
+                                                currMktoText.childNodes[0].innerHTML = mktoMainText;
                                                 isMktoTextReplaced = true;
-                                            } else if (currMktoRichText.childNodes
-                                                 && currMktoRichText.childNodes[0]) {
-                                                if (!currMktoRichText.childNodes[0].childElementCount) {
-                                                    console.log("Content > Overlaying: Freeform Landing Page Company Name");
-                                                    if (currMktoRichText.childNodes[0].innerHTML) {
-                                                        currMktoRichText.childNodes[0].innerHTML = mktoMainText;
+                                            }
+                                            
+                                            if (!isMktoSubTextReplaced
+                                                 && currMktoText
+                                                 && currMktoText.innerHTML
+                                                 && currMktoText.childElementCount != null
+                                                 && currMktoText.id.search(mktoSubTextDivIdRegex) != -1) {
+                                                if (!currMktoText.childElementCount) {
+                                                    console.log("Content > Overlaying: Guided Landing Page Company Today's Date in Subtitle");
+                                                    if (currMktoText.innerHTML) {
+                                                        currMktoText.innerHTML = mktoSubText;
                                                     } else {
-                                                        currMktoRichText.innerHTML = mktoMainText;
+                                                        currMktoText.parentNode.innerHTML = mktoSubText;
                                                     }
-                                                    isMktoTextReplaced = true;
-                                                } else if (currMktoRichText.childNodes[0].childNodes
-                                                     && currMktoRichText.childNodes[0].childNodes[0]
-                                                     && !currMktoRichText.childNodes[0].childNodes[0].childElementCount) {
-                                                    console.log("Content > Overlaying: Freeform Landing Page Company Name");
-                                                    if (currMktoRichText.childNodes[0].childNodes[0].innerHTML) {
-                                                        currMktoRichText.childNodes[0].childNodes[0].innerHTML = mktoMainText;
-                                                    } else {
-                                                        currMktoRichText.childNodes[0].innerHTML = mktoMainText;
+                                                    isMktoSubTextReplaced = true;
+                                                } else if (currMktoText.childNodes
+                                                     && currMktoText.childNodes[0]) {
+                                                    if (!currMktoText.childNodes[0].childElementCount) {
+                                                        console.log("Content > Overlaying: Guided Landing Page Company Today's Date in Subtitle");
+                                                        if (currMktoText.childNodes[0].innerHTML) {
+                                                            currMktoText.childNodes[0].innerHTML = mktoSubText;
+                                                        } else {
+                                                            currMktoText.innerHTML = mktoSubText;
+                                                        }
+                                                        isMktoSubTextReplaced = true;
+                                                    } else if (currMktoText.childNodes[0].childNodes
+                                                         && currMktoText.childNodes[0].childNodes[0]
+                                                         && !currMktoText.childNodes[0].childNodes[0].childElementCount) {
+                                                        console.log("Content > Overlaying: Guided Landing Page Company Today's Date in Subtitle");
+                                                        if (currMktoText.childNodes[0].childNodes[0].innerHTML) {
+                                                            currMktoText.childNodes[0].childNodes[0].innerHTML = mktoSubText;
+                                                        } else {
+                                                            currMktoText.childNodes[0].innerHTML = mktoSubText;
+                                                        }
+                                                        isMktoSubTextReplaced = true;
                                                     }
-                                                    isMktoTextReplaced = true;
                                                 }
                                             }
-                                        }
-                                        if (!isMktoSubTextReplaced
-                                             && currMktoRichText.parentNode.className.search(mktoRichSubTextDivClassNameRegex) != -1) {
-                                            if (!currMktoRichText.childElementCount) {
-                                                console.log("Content > Overlaying: Freeform Landing Page Today's Date");
-                                                if (currMktoRichText.innerHTML) {
-                                                    currMktoRichText.innerHTML = mktoSubText;
-                                                } else {
-                                                    currMktoRichText.parentNode.innerHTML = mktoSubText;
-                                                }
-                                                isMktoSubTextReplaced = true;
-                                            } else if (currMktoRichText.childNodes
-                                                 && currMktoRichText.childNodes[0]) {
-                                                if (!currMktoRichText.childNodes[0].childElementCount) {
-                                                    console.log("Content > Overlaying: Freeform Landing Page Today's Date");
-                                                    if (currMktoRichText.childNodes[0].innerHTML) {
-                                                        currMktoRichText.childNodes[0].innerHTML = mktoSubText;
-                                                    } else {
-                                                        currMktoRichText.innerHTML = mktoSubText;
-                                                    }
-                                                    isMktoSubTextReplaced = true;
-                                                } else if (currMktoRichText.childNodes[0].childNodes
-                                                     && currMktoRichText.childNodes[0].childNodes[0]
-                                                     && !currMktoRichText.childNodes[0].childNodes[0].childElementCount) {
-                                                    console.log("Content > Overlaying: Freeform Landing Page Today's Date");
-                                                    if (currMktoRichText.childNodes[0].childNodes[0].innerHTML) {
-                                                        currMktoRichText.childNodes[0].childNodes[0].innerHTML = mktoSubText;
-                                                    } else {
-                                                        currMktoRichText.childNodes[0].innerHTML = mktoSubText;
-                                                    }
-                                                    isMktoSubTextReplaced = true;
-                                                }
+                                            
+                                            if (isMktoSubTextReplaced
+                                                 && isMktoTextReplaced) {
+                                                break;
                                             }
                                         }
                                     }
                                     
-                                    if (isMktoSubTextReplaced
-                                         && isMktoTextReplaced) {
-                                        break;
+                                    if (mktoRichTexts.length != 0) {
+                                        for (var ii = 0; ii < mktoRichTexts.length; ii++) {
+                                            var currMktoRichText = mktoRichTexts[ii];
+                                            
+                                            if (currMktoRichText
+                                                 && currMktoRichText.innerHTML
+                                                 && currMktoRichText.childElementCount != null
+                                                 && currMktoRichText.parentNode
+                                                 && currMktoRichText.parentNode.tagName == "DIV") {
+                                                if (!isMktoTextReplaced
+                                                     && currMktoRichText.parentNode.className.search(mktoRichMainTextDivClassNameRegex) != -1) {
+                                                    if (!currMktoRichText.childElementCount) {
+                                                        console.log("Content > Overlaying: Freeform Landing Page Company Name in Title");
+                                                        if (currMktoRichText.innerHTML) {
+                                                            currMktoRichText.innerHTML = mktoMainText;
+                                                        } else {
+                                                            currMktoRichText.parentNode.innerHTML = mktoMainText;
+                                                        }
+                                                        isMktoTextReplaced = true;
+                                                    } else if (currMktoRichText.childNodes
+                                                         && currMktoRichText.childNodes[0]) {
+                                                        if (!currMktoRichText.childNodes[0].childElementCount) {
+                                                            console.log("Content > Overlaying: Freeform Landing Page Company Name in Title");
+                                                            if (currMktoRichText.childNodes[0].innerHTML) {
+                                                                currMktoRichText.childNodes[0].innerHTML = mktoMainText;
+                                                            } else {
+                                                                currMktoRichText.innerHTML = mktoMainText;
+                                                            }
+                                                            isMktoTextReplaced = true;
+                                                        } else if (currMktoRichText.childNodes[0].childNodes
+                                                             && currMktoRichText.childNodes[0].childNodes[0]
+                                                             && !currMktoRichText.childNodes[0].childNodes[0].childElementCount) {
+                                                            console.log("Content > Overlaying: Freeform Landing Page Company Name in Title");
+                                                            if (currMktoRichText.childNodes[0].childNodes[0].innerHTML) {
+                                                                currMktoRichText.childNodes[0].childNodes[0].innerHTML = mktoMainText;
+                                                            } else {
+                                                                currMktoRichText.childNodes[0].innerHTML = mktoMainText;
+                                                            }
+                                                            isMktoTextReplaced = true;
+                                                        }
+                                                    }
+                                                }
+                                                
+                                                if (!isMktoSubTextReplaced
+                                                     && currMktoRichText.parentNode.className.search(mktoRichSubTextDivClassNameRegex) != -1) {
+                                                    if (!currMktoRichText.childElementCount) {
+                                                        console.log("Content > Overlaying: Freeform Landing Page Company Today's Date in Subtitle");
+                                                        if (currMktoRichText.innerHTML) {
+                                                            currMktoRichText.innerHTML = mktoSubText;
+                                                        } else {
+                                                            currMktoRichText.parentNode.innerHTML = mktoSubText;
+                                                        }
+                                                        isMktoSubTextReplaced = true;
+                                                    } else if (currMktoRichText.childNodes
+                                                         && currMktoRichText.childNodes[0]) {
+                                                        if (!currMktoRichText.childNodes[0].childElementCount) {
+                                                            console.log("Content > Overlaying: Freeform Landing Page Company Today's Date in Subtitle");
+                                                            if (currMktoRichText.childNodes[0].innerHTML) {
+                                                                currMktoRichText.childNodes[0].innerHTML = mktoSubText;
+                                                            } else {
+                                                                currMktoRichText.innerHTML = mktoSubText;
+                                                            }
+                                                            isMktoSubTextReplaced = true;
+                                                        } else if (currMktoRichText.childNodes[0].childNodes
+                                                             && currMktoRichText.childNodes[0].childNodes[0]
+                                                             && !currMktoRichText.childNodes[0].childNodes[0].childElementCount) {
+                                                            console.log("Content > Overlaying: Freeform Landing Page Company Today's Date in Subtitle");
+                                                            if (currMktoRichText.childNodes[0].childNodes[0].innerHTML) {
+                                                                currMktoRichText.childNodes[0].childNodes[0].innerHTML = mktoSubText;
+                                                            } else {
+                                                                currMktoRichText.childNodes[0].innerHTML = mktoSubText;
+                                                            }
+                                                            isMktoSubTextReplaced = true;
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                            
+                                            if (isMktoSubTextReplaced
+                                                 && isMktoTextReplaced) {
+                                                break;
+                                            }
+                                        }
                                     }
                                 }
                             }
                             
                             if (!isMktoButtonReplaced
-                                 && mktoButtons.length != 0) {
-                                var ii,
-                                currMktoButton;
+                                 && color
+                                 && (mktoButton
+                                     || mktoButtons.length != 0)) {
                                 
-                                for (ii = 0; ii < mktoButtons.length; ii++) {
-                                    currMktoButton = mktoButtons[ii];
+                                if (mktoButton) {
+                                    console.log("Content > Overlaying: Landing Page Button Company Color for Demo Svcs Template");
+                                    mktoButton.setAttribute("style", currMktoButton.getAttribute("style") + "; background-color: " + color + " !important;");
+                                    //mktoButton.style.setProperty("background-color", color + " !important");
                                     
-                                    if (currMktoButton
-                                         && currMktoButton.style
-                                         && currMktoButton.style.backgroundColor != null
-                                         && currMktoButton.innerHTML
-                                         && currMktoButton.innerHTML.search(buttonTextRegex) != -1) {
-                                        console.log("Content > Overlaying: Landing Page Company Button Color");
-                                        currMktoButton.style.backgroundColor = currMktoButton.style.background = color;
-                                        isMktoButtonReplaced = true;
-                                        break;
+                                    if (mktoButton.style.getPropertyValue("border")
+                                         && mktoButton.style.getPropertyValue("border") != "none") {
+                                        
+                                        mktoButton.setAttribute("style", currMktoButton.getAttribute("style") + "; border: 1px solid " + color + " !important;");
+                                        //mktoButton.style.setProperty("border", "1px solid " + color + " !important");
+                                    }
+                                    isMktoButtonReplaced = true;
+                                } else {
+                                    for (var ii = 0; ii < mktoButtons.length; ii++) {
+                                        var currMktoButton = mktoButtons[ii];
+                                        
+                                        if (currMktoButton
+                                             && currMktoButton.style
+                                             && currMktoButton.style.backgroundColor != null
+                                             && currMktoButton.innerHTML
+                                             && currMktoButton.innerHTML.search(buttonTextRegex) != -1) {
+                                            console.log("Content > Overlaying: Landing Page Button Company Color");
+                                            currMktoButton.setAttribute("style", currMktoButton.getAttribute("style") + "; background-color: " + color + " !important;");
+                                            //currMktoButton.style.backgroundColor = currMktoButton.style.background = color + " !important";
+                                            
+                                            if (currMktoButton.style.getPropertyValue("border")
+                                                 && currMktoButton.style.getPropertyValue("border") != "none") {
+                                                
+                                                currMktoButton.setAttribute("style", currMktoButton.getAttribute("style") + "; border: 1px solid " + color + " !important;");
+                                                //currMktoButton.style.setProperty("border", "1px solid " + color + " !important");
+                                            }
+                                            isMktoButtonReplaced = true;
+                                            break;
+                                        }
                                     }
                                 }
                             }
@@ -867,37 +637,44 @@ window.onload = function () {
                              && mainTitle
                              && subTitle) {
                             console.log("Content > Overlaying: Original Landing Page Company Logo & Color");
-                            logoImg.src = logo;
-                            logoImg.onload = function () {
-                                var logoHeightsRatio,
-                                logoWidth,
-                                logoNewWidth,
-                                logoNewHeight,
-                                logoStyle;
+                            if (logo) {
+                                logoImg.src = logo;
                                 
-                                if (logoImg.naturalHeight
-                                     && logoImg.naturalHeight > logoOrigMaxHeight) {
-                                    logoHeightsRatio = logoImg.naturalHeight / logoOrigMaxHeight,
-                                    logoWidth = logoImg.naturalWidth / logoHeightsRatio;
-                                    logoImg.width = logoImg.style.width = logoNewWidth = logoWidth;
-                                    logoImg.height = logoImg.style.height = logoNewHeight = logoOrigMaxHeight;
-                                } else if (logoImg.naturalHeight) {
-                                    logoImg.width = logoImg.style.width = logoNewWidth = logoImg.naturalWidth;
-                                    logoImg.height = logoImg.style.height = logoNewHeight = logoImg.naturalHeight;
-                                } else {
-                                    logoImg.width = logoImg.height = logoImg.style.width = logoImg.style.height = logoNewWidth = logoNewHeight = logoOrigMaxHeight;
-                                }
-                                
-                                if (iframeDocument.getElementsByTagName("head")
-                                     && iframeDocument.getElementsByTagName("head")[0]) {
-                                    logoStyle = document.createElement("style");
-                                    logoStyle.innerHTML = "#" + logoImg.id + " {width : " + logoNewWidth + "px !important; height : " + logoNewHeight + "px !important;}";
-                                    iframeDocument.getElementsByTagName("head")[0].appendChild(logoStyle);
-                                }
-                                console.log("Content > Overlaying: Original Landing Page Company Logo Dimensions = " + logoNewWidth + " x " + logoNewHeight);
-                            };
-                            textBackground.style.backgroundColor = color;
-                            bannerBackground.style.backgroundColor = color;
+                                logoImg.onload = function () {
+                                    var logoHeightsRatio,
+                                    logoWidth,
+                                    logoNewWidth,
+                                    logoNewHeight,
+                                    logoStyle;
+                                    
+                                    if (logoImg.naturalHeight
+                                         && logoImg.naturalHeight > logoOrigMaxHeight) {
+                                        logoHeightsRatio = logoImg.naturalHeight / logoOrigMaxHeight;
+                                        logoWidth = logoImg.naturalWidth / logoHeightsRatio;
+                                        logoImg.width = logoImg.style.width = logoNewWidth = logoWidth;
+                                        logoImg.height = logoImg.style.height = logoNewHeight = logoOrigMaxHeight;
+                                    } else if (logoImg.naturalHeight) {
+                                        logoImg.width = logoImg.style.width = logoNewWidth = logoImg.naturalWidth;
+                                        logoImg.height = logoImg.style.height = logoNewHeight = logoImg.naturalHeight;
+                                    } else {
+                                        logoImg.width = logoImg.height = logoImg.style.width = logoImg.style.height = logoNewWidth = logoNewHeight = logoOrigMaxHeight;
+                                    }
+                                    
+                                    if (iframeDocument.getElementsByTagName("head")
+                                         && iframeDocument.getElementsByTagName("head")[0]) {
+                                        logoStyle = document.createElement("style");
+                                        logoStyle.innerHTML = "#" + logoImg.id + " {width : " + logoNewWidth + "px !important; height : " + logoNewHeight + "px !important;}";
+                                        iframeDocument.getElementsByTagName("head")[0].appendChild(logoStyle);
+                                    }
+                                    console.log("Content > Overlaying: Original Landing Page Company Logo Dimensions = " + logoNewWidth + " x " + logoNewHeight);
+                                };
+                            }
+                            
+                            if (color) {
+                                textBackground.style.backgroundColor = color;
+                                bannerBackground.style.backgroundColor = color;
+                                iframeDocument.getElementsByTagName("head")[0].appendChild(formButtonStyle);
+                            }
                             mainTitle.innerHTML = mktoMainText;
                             subTitle.innerHTML = mktoSubText;
                             isMktoOrigReplaced = isMktoFreeForm = true;
@@ -906,6 +683,7 @@ window.onload = function () {
                         if ((isMktoButtonReplaced
                                  && isMktoSubTextReplaced
                                  && isMktoTextReplaced
+                                 && isMktoHeroBgImgReplaced
                                  && isMktoImgReplaced
                                  && isMktoBackgroundColorReplaced)
                              || isMktoOrigReplaced) {
@@ -972,7 +750,6 @@ window.onload = function () {
                                 console.log("Content > Overlaying: Landing Page Interval is Cleared");
                                 window.clearInterval(isLandingPageEditor);
                                 clearOverlayVars();
-                                count = 0;
                                 return true;
                             }
                         } else if (action == "preview") {
@@ -1069,7 +846,415 @@ window.onload = function () {
                                 console.log("Content > Overlaying: Landing Page Interval is Cleared");
                                 window.clearInterval(isLandingPageEditor);
                                 clearOverlayVars();
-                                count = 0;
+                                return true;
+                            }
+                        }
+                    }, 0);
+            };
+            
+            /**************************************************************************************
+             *
+             *  This function overlays an email with the user submitted company logo and color.
+             *
+             *  @Author Brian Fisher
+             *
+             *  @function
+             *
+             *  @param {String} action - The mode in which this asset is being viewed (edit/preview).
+             *
+             **************************************************************************************/
+            
+            overlayEmail = function (action) {
+                console.log("Content > Overlaying: Email");
+                
+                var isEmailEditor2,
+                clearOverlayVars,
+                overlay,
+                isMktoHeaderBgColorReplaced = isMktoImgReplaced = isMktoHeroBgReplaced = isMktoTextReplaced = isMktoSubTextReplaced = isMktoButtonReplaced = isMktoEmail1Replaced = editorPrevReady = desktopPrevReady = phonePrevReady = isDesktopPreviewReplaced = isPhonePreviewReplaced = false,
+                logoMktoNameRegex = new RegExp("logo", "i"),
+                mainTitleMktoNameRegex = new RegExp("^main title$|^mainTitle$|^main-title$|^hero title$|^heroTitle$|^hero-title$|^title$", "i"),
+                subTitleMktoNameRegex = new RegExp("^subtitle$|^sub-title$|^hero subtitle$|^heroSubtitle$|^hero-subtitle$", "i"),
+                buttonTextRegex = new RegExp("signup|sign up|call to action|cta|register|more|contribute", "i"),
+                saveEditsToggle = getCookie("saveEditsToggleState"),
+                logo = getCookie("logo"),
+                heroBackground = getCookie("heroBackground"),
+                color = getCookie("color"),
+                defaultColor = "rgb(42, 83, 112)",
+                logoMaxHeight = "55",
+                mktoMainText = "You<br>PREMIER BUSINESS EVENT<br>OF THE YEAR",
+                mktoSubText = getHumanDate(),
+                company,
+                companyName,
+                editorRepeatReadyCount = desktopRepeatReadyCount = phoneRepeatReadyCount = 0,
+                maxRepeatReady = 2000,
+                maxPreviewRepeatReady = 3000;
+                
+                if (saveEditsToggle == "true"
+                     || (logo == null
+                         && heroBackground == null
+                         && color == null)) {
+                    return false;
+                }
+                if (logo != null) {
+                    company = logo.split("https://logo.clearbit.com/")[1].split(".")[0];
+                    companyName = company.charAt(0).toUpperCase() + company.slice(1);
+                    mktoMainText = companyName + " Invites " + mktoMainText;
+                } else {
+                    mktoMainText = "We Invite " + mktoMainText;
+                }
+                
+                clearOverlayVars = function () {
+                    isMktoHeaderBgColorReplaced = isMktoImgReplaced = isMktoHeroBgReplaced = isMktoTextReplaced = isMktoSubTextReplaced = isMktoButtonReplaced = isMktoEmail1Replaced = false;
+                    emailBody = mktoImgs = mktoTexts = mktoButtons = logoSwapCompany = logoSwapContainer = logoSwapCompanyContainer = logoBkg = buttonBkg = null;
+                };
+                
+                overlay = function (emailDocument) {
+                    if (emailDocument) {
+                        var emailBody = emailDocument.getElementsByTagName("body")[0],
+                        logoSwapCompany = emailDocument.getElementById("logo-swap-company"),
+                        logoSwapContainer = emailDocument.getElementById("logo-swap-container"),
+                        logoSwapCompanyContainer = emailDocument.getElementById("logo-swap-company-container"),
+                        logoBkg = emailDocument.getElementById("logo-bkg"),
+                        buttonBkg = emailDocument.getElementById("button-bkg");
+                        
+                        if (emailBody
+                             && emailBody.innerHTML) {
+                            var mktoHeader = emailDocument.getElementsByName("header")[0],
+                            mktoLogo = emailDocument.getElementsByName("logo")[0],
+                            mktoImgs = emailBody.getElementsByClassName("mktoImg"),
+                            mktoHeroBg = emailDocument.getElementsByName("heroBackground")[0],
+                            mktoTds = emailBody.getElementsByTagName("td"),
+                            mktoTitle = emailDocument.getElementsByName("title")[0],
+                            mktoSubtitle = emailDocument.getElementsByName("subtitle")[0],
+                            mktoTexts = emailBody.getElementsByClassName("mktoText"),
+                            mktoButton = emailDocument.getElementsByName("button")[0],
+                            mktoButtons = emailBody.getElementsByClassName("secondary-font button");
+                            
+                            if (!isMktoHeaderBgColorReplaced
+                                 && color
+                                 && mktoHeader) {
+                                
+                                console.log("Content > Overlaying: Email 2.0 Header Background Company Color for Demo Svcs Template");
+                                mktoHeader.style.setProperty("background-color", color);
+                                mktoHeader.setAttribute("bgColor", color);
+                                isMktoHeaderBgColorReplaced = true;
+                            }
+                            
+                            if (!isMktoImgReplaced
+                                 && logo
+                                 && (mktoLogo
+                                     || mktoImgs.length != 0)) {
+                                
+                                if (mktoLogo) {
+                                    console.log("Content > Overlaying: Email 2.0 Company Logo for Demo Svcs Template");
+                                    if (mktoLogo.style.height) {
+                                        mktoLogo.style.setProperty("max-height", mktoLogo.style.height);
+                                        console.log("Content > Overlaying: Email 2.0 Company Logo Max Height = " + mktoLogo.style.height);
+                                    } else {
+                                        mktoLogo.style.setProperty("max-height", mktoLogo.height + "px");
+                                        console.log("Content > Overlaying: Email 2.0 Company Logo Max Height = " + mktoLogo.height);
+                                    }
+                                    mktoLogo.setAttribute("src", logo);
+                                    isMktoImgReplaced = true;
+                                } else {
+                                    for (var ii = 0; ii < mktoImgs.length; ii++) {
+                                        var currMktoImg = mktoImgs[ii],
+                                        currMktoImgMktoName;
+                                        
+                                        if (currMktoImg.getAttribute("mktoname")) {
+                                            currMktoImgMktoName = currMktoImg.getAttribute("mktoname");
+                                        } else if (currMktoImg.getAttribute("id")) {
+                                            currMktoImgMktoName = currMktoImg.getAttribute("id");
+                                        }
+                                        
+                                        if (currMktoImgMktoName
+                                             && currMktoImgMktoName.search(logoMktoNameRegex) != -1) {
+                                            var currMktoImgTag = currMktoImg.getElementsByTagName("img")[0];
+                                            
+                                            if (currMktoImgTag
+                                                 && currMktoImgTag.getAttribute("src")) {
+                                                console.log("Content > Overlaying: Email 2.0 Company Logo");
+                                                if (currMktoImgTag.style.height) {
+                                                    currMktoImgTag.style.setProperty("max-height", currMktoImgTag.style.height);
+                                                    console.log("Content > Overlaying: Email 2.0 Company Logo Max Height = " + currMktoImgTag.style.height);
+                                                } else {
+                                                    currMktoImgTag.style.setProperty("max-height", currMktoImgTag.height + "px");
+                                                    console.log("Content > Overlaying: Email 2.0 Company Logo Max Height = " + currMktoImgTag.height);
+                                                }
+                                                currMktoImgTag.setAttribute("src", logo);
+                                                isMktoImgReplaced = true;
+                                                break;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            
+                            if (!isMktoHeroBgReplaced
+                                 && heroBackground
+                                 && (mktoHeroBg
+                                     || mktoTds.length != 0)) {
+                                
+                                if (mktoHeroBg) {
+                                    console.log("Content > Overlaying: Email 2.0 Hero Company Background for Demo Svcs Template");
+                                    mktoHeroBg.style.setProperty("background-image", "url('" + heroBackground + "')");
+                                    mktoHeroBg.setAttribute("background", heroBackground);
+                                    mktoHeroBg.style.setProperty("background-size", "cover");
+                                    isMktoHeroBgReplaced = true;
+                                } else {
+                                    for (var ii = 0; ii < mktoTds.length; ii++) {
+                                        var currMktoTd = mktoTds[ii];
+                                        
+                                        if (currMktoTd
+                                             && currMktoTd.getAttribute("background")) {
+                                            
+                                            console.log("Content > Overlaying: Email 2.0 Hero Company Background");
+                                            currMktoTd.setAttribute("background", heroBackground);
+                                            currMktoTd.style.setProperty("background-image", "url('" + heroBackground + "')");
+                                            currMktoTd.style.setProperty("background-size", "cover");
+                                            isMktoHeroBgReplaced = true;
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                            
+                            if ((!isMktoSubTextReplaced
+                                     || !isMktoTextReplaced)
+                                 && (mktoTitle
+                                     || mktoSubtitle
+                                     || mktoTexts.length != 0)) {
+                                
+                                if (mktoTitle) {
+                                    console.log("Content > Overlaying: Email 2.0 Company Name in Title for Demo Svcs Template");
+                                    mktoTitle.innerHTML = mktoMainText;
+                                    isMktoTextReplaced = true;
+                                }
+                                
+                                if (mktoSubtitle) {
+                                    console.log("Content > Overlaying: Email 2.0 Company Today's Date in Subtitle for Demo Svcs Template");
+                                    mktoSubtitle.innerHTML = mktoSubText;
+                                    isMktoSubTextReplaced = true;
+                                }
+                                
+                                if (!mktoSubtitle
+                                     && !mktoTitle) {
+                                    for (var ii = 0; ii < mktoTexts.length; ii++) {
+                                        var currMktoText = mktoTexts[ii],
+                                        currMktoTextMktoName;
+                                        
+                                        if (currMktoText.getAttribute("mktoname")) {
+                                            currMktoTextMktoName = currMktoText.getAttribute("mktoname");
+                                        } else if (currMktoText.getAttribute("id")) {
+                                            currMktoTextMktoName = currMktoText.getAttribute("id");
+                                        }
+                                        
+                                        if (currMktoTextMktoName
+                                             && currMktoTextMktoName.search(mainTitleMktoNameRegex) != -1) {
+                                            if (currMktoText.innerHTML) {
+                                                console.log("Content > Overlaying: Email 2.0 Company Name in Title");
+                                                currMktoText.innerHTML = mktoMainText;
+                                                isMktoTextReplaced = true;
+                                            }
+                                        } else if (currMktoTextMktoName
+                                             && currMktoTextMktoName.search(subTitleMktoNameRegex) != -1) {
+                                            if (currMktoText.innerHTML) {
+                                                console.log("Content > Overlaying: Email 2.0 Company Today's Date in Subtitle");
+                                                currMktoText.innerHTML = mktoSubText;
+                                                isMktoSubTextReplaced = true;
+                                            }
+                                        }
+                                        
+                                        if (isMktoSubTextReplaced
+                                             && isMktoTextReplaced) {
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                            
+                            if (!isMktoButtonReplaced
+                                 && color
+                                 && (mktoButton
+                                     || mktoButtons.length != 0)) {
+                                
+                                if (mktoButton) {
+                                    console.log("Content > Overlaying: Email 2.0 Button Company Color for Demo Svcs Template");
+                                    mktoButton.style.setProperty("background-color", color);
+                                    
+                                    if (mktoButton.style.getPropertyValue("border")
+                                         && mktoButton.style.getPropertyValue("border") != "none") {
+                                        
+                                        mktoButton.style.setProperty("border", "1px solid " + color);
+                                    }
+                                    isMktoButtonReplaced = true;
+                                } else {
+                                    for (var ii = 0; ii < mktoButtons.length; ii++) {
+                                        var currMktoButton = mktoButtons[ii];
+                                        
+                                        if (currMktoButton.innerHTML
+                                             && currMktoButton.innerHTML.search(buttonTextRegex) != -1) {
+                                            if (currMktoButton.style
+                                                 && currMktoButton.style.backgroundColor) {
+                                                console.log("Content > Overlaying: Email 2.0 Button Company Color");
+                                                currMktoButton.style.backgroundColor = color;
+                                                
+                                                if (currMktoButton.style.getPropertyValue("border")
+                                                     && currMktoButton.style.getPropertyValue("border") != "none") {
+                                                    
+                                                    currMktoButton.style.setProperty("border", "1px solid " + color);
+                                                }
+                                                isMktoButtonReplaced = true;
+                                                break;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        
+                        if (logoSwapCompanyContainer
+                             && logoSwapContainer
+                             && logoSwapCompany
+                             && logoBkg) {
+                            console.log("Content > Overlaying: Email 1.0 Company Logo & Color");
+                            if (color) {
+                                logoBkg.style.backgroundColor = color;
+                            }
+                            
+                            if (logo) {
+                                logoSwapCompany.setAttribute("src", logo);
+                                
+                                logoSwapCompany.onload = function () {
+                                    var logoHeightsRatio,
+                                    logoWidth,
+                                    logoNewWidth,
+                                    logoNewHeight,
+                                    logoStyle;
+                                    
+                                    if (logoSwapCompany.naturalHeight
+                                         && logoSwapCompany.naturalHeight > logoMaxHeight) {
+                                        logoHeightsRatio = logoSwapCompany.naturalHeight / logoMaxHeight;
+                                        logoWidth = logoSwapCompany.naturalWidth / logoHeightsRatio;
+                                        logoSwapCompany.width = logoNewWidth = logoWidth;
+                                        logoSwapCompany.height = logoNewHeight = logoMaxHeight;
+                                    } else if (logoSwapCompany.naturalHeight) {
+                                        logoSwapCompany.width = logoNewWidth = logoSwapCompany.naturalWidth;
+                                        logoSwapCompany.height = logoNewHeight = logoSwapCompany.naturalHeight;
+                                    } else {
+                                        logoSwapCompany.width = logoSwapCompany.height = logoNewWidth = logoNewHeight = logoMaxHeight;
+                                    }
+                                    
+                                    if (emailDocument.getElementsByTagName("head")
+                                         && emailDocument.getElementsByTagName("head")[0]) {
+                                        logoStyle = document.createElement("style");
+                                        logoStyle.innerHTML = "#" + logoSwapCompany.id + " {width : " + logoNewWidth + "px !important; height : " + logoNewHeight + "px !important;}";
+                                        emailDocument.getElementsByTagName("head")[0].appendChild(logoStyle);
+                                    }
+                                    console.log("Content > Overlaying: Email 1.0 Company Logo Dimensions = " + logoNewWidth + " x " + logoNewHeight);
+                                }
+                                logoSwapContainer.style.display = "none";
+                                logoSwapCompanyContainer.style.display = "block";
+                            }
+                            
+                            if (buttonBkg
+                                 && color) {
+                                buttonBkg.style.setProperty("background-color", color);
+                            }
+                            isMktoEmail1Replaced = true;
+                        }
+                        
+                        if ((isMktoButtonReplaced
+                                 && isMktoSubTextReplaced
+                                 && isMktoTextReplaced
+                                 && isMktoImgReplaced
+                                 && isMktoHeroBgReplaced
+                                 && (!mktoHeader
+                                     || (mktoHeader
+                                         && isMktoHeaderBgColorReplaced)))
+                             || isMktoEmail1Replaced) {
+                            clearOverlayVars();
+                            return true;
+                        }
+                    }
+                    
+                    return false;
+                };
+                
+                isEmailEditor2 = window.setInterval(function () {
+                        if (action == "edit") {
+                            console.log("Content > Overlaying: Email Designer");
+                            if (document.getElementsByTagName("iframe")[0]
+                                 && document.getElementsByTagName("iframe")[0].contentWindow
+                                 && document.getElementsByTagName("iframe")[0].contentWindow.document
+                                 && document.getElementsByTagName("iframe")[0].contentWindow.document.readyState == "complete") {
+                                if (overlay(document.getElementsByTagName("iframe")[0].contentWindow.document)
+                                     || editorRepeatReadyCount >= maxRepeatReady) {
+                                    
+                                    console.log("Content > Overlayed: Email Designer = " + editorRepeatReadyCount);
+                                    console.log("Content > Overlaying: Email Interval is Cleared");
+                                    window.clearInterval(isEmailEditor2);
+                                    clearOverlayVars();
+                                    return true;
+                                } else if (editorPrevReady) {
+                                    editorRepeatReadyCount++;
+                                } else {
+                                    editorRepeatReadyCount = 1;
+                                }
+                                editorPrevReady = true;
+                            } else {
+                                editorPrevReady = false;
+                            }
+                        } else if (action == "preview") {
+                            console.log("Content > Overlaying: Email Previewer");
+                            
+                            if (!isDesktopPreviewReplaced
+                                 && document.getElementsByTagName("iframe")[2]
+                                 && document.getElementsByTagName("iframe")[2].contentWindow
+                                 && document.getElementsByTagName("iframe")[2].contentWindow.document
+                                 && document.getElementsByTagName("iframe")[2].contentWindow.document.readyState == "complete") {
+                                if (overlay(document.getElementsByTagName("iframe")[2].contentWindow.document)
+                                     || desktopRepeatReadyCount >= maxPreviewRepeatReady) {
+                                    
+                                    console.log("Content > Overlayed: Email Desktop Preview = " + desktopRepeatReadyCount);
+                                    isDesktopPreviewReplaced = true;
+                                    clearOverlayVars();
+                                } else if (desktopPrevReady) {
+                                    desktopRepeatReadyCount++;
+                                } else {
+                                    desktopRepeatReadyCount = 1;
+                                }
+                                desktopPrevReady = true;
+                            } else {
+                                desktopPrevReady = false;
+                            }
+                            
+                            if (!isPhonePreviewReplaced
+                                 && document.getElementsByTagName("iframe")[3]
+                                 && document.getElementsByTagName("iframe")[3].contentWindow
+                                 && document.getElementsByTagName("iframe")[3].contentWindow.document
+                                 && document.getElementsByTagName("iframe")[3].contentWindow.document.readyState == "complete") {
+                                if (overlay(document.getElementsByTagName("iframe")[3].contentWindow.document)
+                                     || phoneRepeatReadyCount >= maxPreviewRepeatReady) {
+                                    
+                                    console.log("Content > Overlayed: Email Phone Preview = " + phoneRepeatReadyCount);
+                                    isPhonePreviewReplaced = true;
+                                    clearOverlayVars();
+                                } else if (phonePrevReady) {
+                                    phoneRepeatReadyCount++;
+                                } else {
+                                    phoneRepeatReadyCount = 1;
+                                }
+                                phonePrevReady = true;
+                            } else {
+                                phonePrevReady = false;
+                            }
+                            
+                            if (isPhonePreviewReplaced
+                                 && isDesktopPreviewReplaced) {
+                                console.log("Content > Overlaying: Email Interval is Cleared");
+                                window.clearInterval(isEmailEditor2);
+                                clearOverlayVars();
                                 return true;
                             }
                         }
@@ -1098,45 +1283,10 @@ window.onload = function () {
              **************************************************************************************/
             
             addNewCompanyListener = function () {
-                count = 0;
                 console.log("Content > Adding: New Company Listener");
                 
                 chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
                     switch (message.action) {
-                    case "initialCompany":
-                        count++;
-                        if (count == 1) {
-                            console.log("Content > Capturing: Initial Company");
-                            switch (message.assetType) {
-                            case "email":
-                                if (message.assetView == "edit") {
-                                    console.log("Content > Capturing: Initial Company for Email Designer");
-                                    overlayEmail("edit");
-                                } else if (message.assetView == "preview") {
-                                    console.log("Content > Capturing: Initial Company for Email Previewer");
-                                    overlayEmail("preview");
-                                }
-                                break;
-                            case "landingPage":
-                                if (message.assetView == "edit") {
-                                    console.log("Content > Capturing: Initial Company for Landing Page Designer");
-                                    overlayLandingPage("edit");
-                                } else if (message.assetView == "preview") {
-                                    console.log("Content > Capturing: Initial Company for Landing Page Previewer");
-                                    overlayLandingPage("preview");
-                                }
-                                break;
-                            default:
-                                break;
-                            }
-                        } else if (count == 5) {
-                            if (message.assetType == "landingPage"
-                                 && message.assetView == "preview") {
-                                console.log("Content > Capturing: Initial Company for Landing Page Previewer Again");
-                                overlayLandingPage("preview");
-                            }
-                        }
-                        break;
                     case "newCompany":
                         console.log("Content > Capturing: New Company");
                         switch (message.assetType) {
@@ -1158,11 +1308,7 @@ window.onload = function () {
                                 overlayLandingPage("preview");
                             }
                             break;
-                        default:
-                            break;
                         }
-                        break;
-                    default:
                         break;
                     }
                 });

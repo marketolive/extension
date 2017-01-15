@@ -4,8 +4,9 @@ MARKETO_DEMO_APP_SCRIPT_LOCATION = "https://marketolive.com/" + URL_PATH + "/plu
 POD_SCRIPT_LOCATION = "https://marketolive.com/" + URL_PATH + "/pluginv3/pods.min.js",
 DASHBOARD_SCRIPT_LOCATION = "https://marketolive.com/" + URL_PATH + "/pluginv3/dashboards/remote-data.min.js",
 HEAP_ANALYTICS_SCRIPT_LOCATION = "https://marketolive.com/" + URL_PATH + "/pluginv3/heap-analytics.min.js",
-disableDemoPluginCheck,
+//disableDemoPluginCheck,
 loadScript,
+getCookie,
 isMktoPageGlobal;
 
 /**************************************************************************************
@@ -24,14 +25,14 @@ isMktoPageGlobal;
  **************************************************************************************/
 /*
 disableDemoPluginCheck = function () {
-    console.log("Marketo Global App > Disabling: Demo Plugin Check");
-    
-    window.mkto_live_plugin_state = true;
-    
-    if (MktPage
-         && MktPage.validateDemoPlugin) {
-        MktPage.validateDemoPlugin = function () {};
-    }
+console.log("Marketo Global App > Disabling: Demo Plugin Check");
+
+window.mkto_live_plugin_state = true;
+
+if (MktPage
+&& MktPage.validateDemoPlugin) {
+MktPage.validateDemoPlugin = function () {};
+}
 };*/
 
 /**************************************************************************************
@@ -109,7 +110,7 @@ isMktoPageGlobal = window.setInterval(function () {
             if (accountString.search(mktoAccountStringsMatch) != -1) {
                 console.log("Marketo Global App > Location: MarketoLive Instance");
                 
-//                disableDemoPluginCheck();
+                //                disableDemoPluginCheck();
                 loadScript(MARKETO_LIVE_APP_SCRIPT_LOCATION);
                 
                 if (accountString.search(mktoAccountStringsMatch106) != -1) {

@@ -1,4 +1,7 @@
 var mktoLiveLandingPageHost = "na-sjdemo1.marketo.com",
+mktoLiveDevLandingPageDomain = "pages-dev.marketolive.com",
+mktoLiveProdLandingPageDomain = "pages.marketolive.com",
+mktoLiveLandingPageDomain = mktoLiveDevLandingPageDomain,
 mktoLiveDevMunchkinId = "685-BTN-772",
 mktoLiveProdMunchkinId = "185-NGX-811",
 mktoLiveMunchkinId = mktoLiveDevMunchkinId,
@@ -7,153 +10,141 @@ mktoLiveProdHost = "www.marketolive.com",
 mktoLiveHost = mktoLiveProdHost,
 landingPageType = "landing",
 webPageType = "web",
-signUpPages = [0, 1, 2],
-webPages = {
-    0 : {
-        name : "signup",
-        type : landingPageType,
-        url : "http://" + mktoLiveLandingPageHost + "/lp/" + mktoLiveMunchkinId + "/Lead-Capture_Landing-Page.html",
-        dependentOn : [],
-        visitationRate : 0.5,
-        conversionRate : 0.5
-    },
-    1 : {
-        name : "signup",
-        type : landingPageType,
-        url : "http://" + mktoLiveLandingPageHost + "/lp/" + mktoLiveMunchkinId + "/Newsletter_Signup.html",
-        dependentOn : [],
-        visitationRate : 0.5,
-        conversionRate : 0.5
-    },
-    2 : {
-        name : "signup",
-        type : landingPageType,
-        url : "http://" + mktoLiveLandingPageHost + "/lp/" + mktoLiveMunchkinId + "/Blog-Post_Signup.html",
-        dependentOn : [],
-        visitationRate : 0.5,
-        conversionRate : 0.5
-    },
-    3 : {
-        name : "preferenceCenter",
-        type : landingPageType,
-        url : "http://" + mktoLiveLandingPageHost + "/lp/" + mktoLiveMunchkinId + "/Subscription-Management_Preference-Center.html",
-        dependentOn : ["signup"],
-        visitationRate : 0.05,
-        conversionRate : 0.5
-    },
-    4 : {
-        name : "notYouPreferenceCenter",
-        type : landingPageType,
-        url : "http://" + mktoLiveLandingPageHost + "/lp/" + mktoLiveMunchkinId + "/Subscription-Management_Not-You-Preference-Center.html",
-        dependentOn : ["signup"],
-        visitationRate : 0.01,
-        conversionRate : 0.5
-    },
-    5 : {
-        name : "webinarRegistration",
-        type : landingPageType,
-        url : "http://" + mktoLiveLandingPageHost + "/lp/" + mktoLiveMunchkinId + "/Webinar_Registration.html",
-        dependentOn : ["signup"],
-        visitationRate : 0.10,
-        conversionRate : 0.5
-    },
-    6 : {
-        name : "webinarCheckIn",
-        type : landingPageType,
-        url : "http://" + mktoLiveLandingPageHost + "/lp/" + mktoLiveMunchkinId + "/Webinar_CheckIn.html",
-        dependentOn : ["signup", "webinarRegistration"],
-        visitationRate : 0.80,
-        conversionRate : 0.5
-    },
-    7 : {
-        name : "liveEventRegistration",
-        type : landingPageType,
-        url : "http://" + mktoLiveLandingPageHost + "/lp/" + mktoLiveMunchkinId + "/Live-Event_Registration-Page.html",
-        dependentOn : ["signup"],
-        visitationRate : 0.10,
-        conversionRate : 0.5
-    },
-    8 : {
-        name : "liveEventCheckIn",
-        type : landingPageType,
-        url : "http://" + mktoLiveLandingPageHost + "/lp/" + mktoLiveMunchkinId + "/Live-Event_Check-In.html",
-        dependentOn : ["signup", "liveEventRegistration"],
-        visitationRate : 0.80,
-        conversionRate : 0.5
-    },
-    9 : {
-        name : "rewardsSignup",
-        type : landingPageType,
-        url : "http://" + mktoLiveLandingPageHost + "/lp/" + mktoLiveMunchkinId + "/Rewards-for-Champions_Rewards-Page.html",
-        dependentOn : ["signup"],
-        visitationRate : 0.05,
-        conversionRate : 0.5
-    },
-    10 : {
-        name : "whyUs",
-        type : webPageType,
-        url : "http://" + mktoLiveHost + "/info/why-us",
-        dependentOn : [],
-        visitationRate : 0.33,
-        conversionRate : 0.5
-    },
-    11 : {
-        name : "integrations",
-        type : webPageType,
-        url : "http://" + mktoLiveHost + "/info/integrations",
-        dependentOn : [],
-        visitationRate : 0.50,
-        conversionRate : 0.5
-    },
-    12 : {
-        name : "contactUs",
-        type : webPageType,
-        url : "http://" + mktoLiveHost + "/info/contact-us",
-        dependentOn : [],
-        visitationRate : 0.05,
-        conversionRate : 0.5
-    },
-    13 : {
-        name : "community",
-        type : webPageType,
-        url : "http://" + mktoLiveHost + "/info/community",
-        dependentOn : ["signup", "rewardsSignup"],
-        visitationRate : 0.03,
-        conversionRate : 0.5
-    },
-    14 : {
-        name : "liveEvent",
-        type : webPageType,
-        url : "http://" + mktoLiveHost + "/info/live-event",
-        dependentOn : ["signup", "liveEventRegistration"],
-        visitationRate : 0.50,
-        conversionRate : 0.5
-    },
-    15 : {
-        name : "webinar",
-        type : webPageType,
-        url : "http://" + mktoLiveHost + "/info/webinar",
-        dependentOn : ["signup", "webinarRegistration"],
-        visitationRate : 0.50,
-        conversionRate : 0.5
-    },
-    16 : {
-        name : "products",
-        type : webPageType,
-        url : "http://" + mktoLiveHost + "/info/products",
-        dependentOn : [],
-        visitationRate : 0.75,
-        conversionRate : 0.5
-    },
-    17 : {
-        name : "pricing",
-        type : webPageType,
-        url : "http://" + mktoLiveHost + "/info/pricing",
-        dependentOn : [],
-        visitationRate : 0.80,
-        conversionRate : 0.5
+webPages = [{
+        type: landingPageType,
+        url: "http://" + mktoLiveLandingPageDomain + "/lp/" + mktoLiveMunchkinId + "/contact-us.html",
+        conversionRate: 0.5
+    }, {
+        type: landingPageType,
+        url: "http://" + mktoLiveLandingPageDomain + "/lp/" + mktoLiveMunchkinId + "/turner-contact-us.html",
+        conversionRate: 0.5
+    }, {
+        type: webPageType,
+        url: "http://" + mktoLiveHost + "/info/contact-us",
+        conversionRate: 0.5
+    }, {
+        type: landingPageType,
+        url: "http://" + mktoLiveLandingPageDomain + "/lp/" + mktoLiveMunchkinId + "/monthly-digest-signup.html",
+        conversionRate: 0.5
+    }, {
+        type: landingPageType,
+        url: "http://" + mktoLiveLandingPageDomain + "/lp/" + mktoLiveMunchkinId + "/turner-monthly-digest-signup.html",
+        conversionRate: 0.5
+    }, {
+        type: webPageType,
+        url: "http://" + mktoLiveHost + "/info/why-us",
+        conversionRate: 0.5
+    }, {
+        type: landingPageType,
+        url: "http://" + mktoLiveLandingPageDomain + "/lp/" + mktoLiveMunchkinId + "/blog-signup.html",
+        conversionRate: 0.5
+    }, {
+        type: landingPageType,
+        url: "http://" + mktoLiveLandingPageDomain + "/lp/" + mktoLiveMunchkinId + "/cloud-storage-blog-signup.html",
+        conversionRate: 0.5
+    }, {
+        type: webPageType,
+        url: "http://" + mktoLiveHost + "/info/products",
+        conversionRate: 0.5
+    }, {
+        type: landingPageType,
+        url: "http://" + mktoLiveLandingPageDomain + "/lp/" + mktoLiveMunchkinId + "/whitepaper-download.html",
+        conversionRate: 0.5
+    }, {
+        type: landingPageType,
+        url: "http://" + mktoLiveLandingPageDomain + "/lp/" + mktoLiveMunchkinId + "/cloud-backup-whitepaper-download.html",
+        conversionRate: 0.5
+    }, {
+        type: webPageType,
+        url: "http://" + mktoLiveHost + "/info/integrations",
+        conversionRate: 0.5
+    }, {
+        type: landingPageType,
+        url: "http://" + mktoLiveLandingPageDomain + "/lp/" + mktoLiveMunchkinId + "/best-practices-webinar-registration.html",
+        conversionRate: 0.5
+    }, {
+        type: landingPageType,
+        url: "http://" + mktoLiveLandingPageDomain + "/lp/" + mktoLiveMunchkinId + "/cloud-management-demo-registration.html",
+        conversionRate: 0.5
+    }, {
+        type: webPageType,
+        url: "http://" + mktoLiveHost + "/info/webinar",
+        conversionRate: 0.5
+    }, {
+        type: landingPageType,
+        url: "http://" + mktoLiveLandingPageDomain + "/lp/" + mktoLiveMunchkinId + "/best-practices-webinar-check-in.html",
+        conversionRate: 0.5
+    }, {
+        type: landingPageType,
+        url: "http://" + mktoLiveLandingPageDomain + "/lp/" + mktoLiveMunchkinId + "/cloud-management-demo-check-in.html",
+        conversionRate: 0.5
+    }, {
+        type: webPageType,
+        url: "http://" + mktoLiveHost + "/info/pricing",
+        conversionRate: 0.5
+    }, {
+        type: landingPageType,
+        url: "http://" + mktoLiveLandingPageDomain + "/lp/" + mktoLiveMunchkinId + "/roadshow-event-registration.html",
+        conversionRate: 0.5
+    }, {
+        type: landingPageType,
+        url: "http://" + mktoLiveLandingPageDomain + "/lp/" + mktoLiveMunchkinId + "/cloud-storage-launch-registration.html",
+        conversionRate: 0.5
+    }, {
+        type: webPageType,
+        url: "http://" + mktoLiveHost + "/info/live-event",
+        conversionRate: 0.5
+    }, {
+        type: landingPageType,
+        url: "http://" + mktoLiveLandingPageDomain + "/lp/" + mktoLiveMunchkinId + "/roadshow-event-check-in.html",
+        conversionRate: 0.5
+    }, {
+        type: landingPageType,
+        url: "http://" + mktoLiveLandingPageDomain + "/lp/" + mktoLiveMunchkinId + "/cloud-storage-launch-check-in.html",
+        conversionRate: 0.5
+    }, {
+        type: landingPageType,
+        url: "http://" + mktoLiveLandingPageDomain + "/lp/" + mktoLiveMunchkinId + "/data-compliance-demo-registration.html",
+        conversionRate: 0.5
+    }, {
+        type: webPageType,
+        url: "http://" + mktoLiveHost + "/info/webinar",
+        conversionRate: 0.5
+    }, {
+        type: landingPageType,
+        url: "http://" + mktoLiveLandingPageDomain + "/lp/" + mktoLiveMunchkinId + "/data-compliance-demo-check-in.html",
+        conversionRate: 0.5
+    }, {
+        type: landingPageType,
+        url: "http://" + mktoLiveLandingPageDomain + "/lp/" + mktoLiveMunchkinId + "/data-protection-webinar-registration.html",
+        conversionRate: 0.5
+    }, {
+        type: webPageType,
+        url: "http://" + mktoLiveHost + "/info/webinar",
+        conversionRate: 0.5
+    }, {
+        type: landingPageType,
+        url: "http://" + mktoLiveLandingPageDomain + "/lp/" + mktoLiveMunchkinId + "/data-protection-webinar-check-in.html",
+        conversionRate: 0.5
+    }, {
+        type: landingPageType,
+        url: "http://" + mktoLiveLandingPageDomain + "/lp/" + mktoLiveMunchkinId + "/champions-on-demand-signup.html",
+        dependentOn: ["signup"],
+        conversionRate: 0.5
+    }, {
+        type: webPageType,
+        url: "http://" + mktoLiveHost + "/info/community",
+        conversionRate: 0.5
+    }, {
+        type: landingPageType,
+        url: "http://" + mktoLiveLandingPageDomain + "/lp/" + mktoLiveMunchkinId + "/preference-center.html",
+        conversionRate: 0.5
+    }, {
+        type: landingPageType,
+        url: "http://" + mktoLiveLandingPageDomain + "/lp/" + mktoLiveMunchkinId + "/not-you-preference-center.html",
+        conversionRate: 0.5
     }
-},
+],
 jobTitles = [
     "Account Director",
     "Account Executive",
@@ -276,7 +267,6 @@ mobileNumberConversionRate = 0.25,
 phoneNumberConversionRate = 0.5,
 usNumberRate = 0.75,
 webPageX,
-webPageXvisitationRate,
 companyX,
 cookieExpiresInDays = 365,
 jobTitleCookieName = "attrib_job_title",
@@ -287,10 +277,10 @@ mobileNumberCookieName = "attrib_mobile_number",
 phoneNumberCookieName = "attrib_phone_number",
 usernameCookieName = "onelogin_username",
 visitedPagesCookieMarketoLive = {
-    url : mktoLiveDomainMatch,
-    domain : mktoLiveUriDomain,
-    name : "visitedPages",
-    expiresInDays : cookieExpiresInDays
+    url: mktoLiveDomainMatch,
+    domain: mktoLiveUriDomain,
+    name: "visitedPages",
+    expiresInDays: cookieExpiresInDays
 };
 
 /**************************************************************************************
@@ -300,48 +290,45 @@ visitedPagesCookieMarketoLive = {
  **************************************************************************************/
 
 console.log("Selecting: Web Page to Visit & Lead Attributes for Form Fill");
-
-webPageX = webPages[Math.floor((Math.random() * Object.keys(webPages).length))];
-webPageXvisitationRate = webPageX.visitationRate * Object.keys(webPages).length;
-companyX = companies[Math.floor((Math.random() * companies.length))];
+companyX = companies[Math.floor(Math.random() * companies.length)];
 
 getCookie({
-    url : mktoAppDomainMatch,
-    name : jobTitleCookieName
+    url: mktoAppDomainMatch,
+    name: jobTitleCookieName
 }, function (cookie) {
     if (!cookie
          || !cookie.value) {
         console.log("Initializing: " + jobTitleCookieName + " Cookie");
         
-        var jobTitleX = jobTitles[Math.floor((Math.random() * jobTitles.length))];
+        var jobTitleX = jobTitles[Math.floor(Math.random() * jobTitles.length)];
         
         setCookie({
-            url : mktoLiveDomainMatch,
-            domain : mktoLiveUriDomain,
-            name : jobTitleCookieName,
-            value : jobTitleX,
-            expiresInDays : cookieExpiresInDays
+            url: mktoLiveDomainMatch,
+            domain: mktoLiveUriDomain,
+            name: jobTitleCookieName,
+            value: jobTitleX,
+            expiresInDays: cookieExpiresInDays
         });
         setCookie({
-            url : mktoLiveClassicDomainMatch,
-            domain : mktoLiveClassicUriDomain,
-            name : jobTitleCookieName,
-            value : jobTitleX,
-            expiresInDays : cookieExpiresInDays
+            url: mktoLiveClassicDomainMatch,
+            domain: mktoLiveClassicUriDomain,
+            name: jobTitleCookieName,
+            value: jobTitleX,
+            expiresInDays: cookieExpiresInDays
         });
         setCookie({
-            url : mktoAppDomainMatch,
-            domain : mktoAppUriDomain,
-            name : jobTitleCookieName,
-            value : jobTitleX,
-            expiresInDays : cookieExpiresInDays
+            url: mktoAppDomainMatch,
+            domain: mktoAppUriDomain,
+            name: jobTitleCookieName,
+            value: jobTitleX,
+            expiresInDays: cookieExpiresInDays
         });
     }
 });
 
 getCookie({
-    url : mktoAppDomainMatch,
-    name : companyNameCookieName
+    url: mktoAppDomainMatch,
+    name: companyNameCookieName
 }, function (cookie) {
     if (!cookie
          || !cookie.value) {
@@ -350,32 +337,32 @@ getCookie({
         var companyName = companyX[0];
         
         setCookie({
-            url : mktoLiveDomainMatch,
-            domain : mktoLiveUriDomain,
-            name : companyNameCookieName,
-            value : companyName,
-            expiresInDays : cookieExpiresInDays
+            url: mktoLiveDomainMatch,
+            domain: mktoLiveUriDomain,
+            name: companyNameCookieName,
+            value: companyName,
+            expiresInDays: cookieExpiresInDays
         });
         setCookie({
-            url : mktoLiveClassicDomainMatch,
-            domain : mktoLiveClassicUriDomain,
-            name : companyNameCookieName,
-            value : companyName,
-            expiresInDays : cookieExpiresInDays
+            url: mktoLiveClassicDomainMatch,
+            domain: mktoLiveClassicUriDomain,
+            name: companyNameCookieName,
+            value: companyName,
+            expiresInDays: cookieExpiresInDays
         });
         setCookie({
-            url : mktoAppDomainMatch,
-            domain : mktoAppUriDomain,
-            name : companyNameCookieName,
-            value : companyName,
-            expiresInDays : cookieExpiresInDays
+            url: mktoAppDomainMatch,
+            domain: mktoAppUriDomain,
+            name: companyNameCookieName,
+            value: companyName,
+            expiresInDays: cookieExpiresInDays
         });
     }
 });
 
 getCookie({
-    url : mktoAppDomainMatch,
-    name : industryCookieName
+    url: mktoAppDomainMatch,
+    name: industryCookieName
 }, function (cookie) {
     if (!cookie
          || !cookie.value) {
@@ -384,66 +371,66 @@ getCookie({
         var industry = companyX[1];
         
         setCookie({
-            url : mktoLiveDomainMatch,
-            domain : mktoLiveUriDomain,
-            name : industryCookieName,
-            value : industry,
-            expiresInDays : cookieExpiresInDays
+            url: mktoLiveDomainMatch,
+            domain: mktoLiveUriDomain,
+            name: industryCookieName,
+            value: industry,
+            expiresInDays: cookieExpiresInDays
         });
         setCookie({
-            url : mktoLiveClassicDomainMatch,
-            domain : mktoLiveClassicUriDomain,
-            name : industryCookieName,
-            value : industry,
-            expiresInDays : cookieExpiresInDays
+            url: mktoLiveClassicDomainMatch,
+            domain: mktoLiveClassicUriDomain,
+            name: industryCookieName,
+            value: industry,
+            expiresInDays: cookieExpiresInDays
         });
         setCookie({
-            url : mktoAppDomainMatch,
-            domain : mktoAppUriDomain,
-            name : industryCookieName,
-            value : industry,
-            expiresInDays : cookieExpiresInDays
+            url: mktoAppDomainMatch,
+            domain: mktoAppUriDomain,
+            name: industryCookieName,
+            value: industry,
+            expiresInDays: cookieExpiresInDays
         });
     }
 });
 
 getCookie({
-    url : mktoAppDomainMatch,
-    name : leadSourceCookieName
+    url: mktoAppDomainMatch,
+    name: leadSourceCookieName
 }, function (cookie) {
     if (!cookie
          || !cookie.value) {
         console.log("Initializing: " + leadSourceCookieName + " Cookie");
         
-        var leadSourceX = leadSources[Math.floor((Math.random() * leadSources.length))];
+        var leadSourceX = leadSources[Math.floor(Math.random() * leadSources.length)];
         
         setCookie({
-            url : mktoLiveDomainMatch,
-            domain : mktoLiveUriDomain,
-            name : leadSourceCookieName,
-            value : leadSourceX,
-            expiresInDays : cookieExpiresInDays
+            url: mktoLiveDomainMatch,
+            domain: mktoLiveUriDomain,
+            name: leadSourceCookieName,
+            value: leadSourceX,
+            expiresInDays: cookieExpiresInDays
         });
         setCookie({
-            url : mktoLiveClassicDomainMatch,
-            domain : mktoLiveClassicUriDomain,
-            name : leadSourceCookieName,
-            value : leadSourceX,
-            expiresInDays : cookieExpiresInDays
+            url: mktoLiveClassicDomainMatch,
+            domain: mktoLiveClassicUriDomain,
+            name: leadSourceCookieName,
+            value: leadSourceX,
+            expiresInDays: cookieExpiresInDays
         });
         setCookie({
-            url : mktoAppDomainMatch,
-            domain : mktoAppUriDomain,
-            name : leadSourceCookieName,
-            value : leadSourceX,
-            expiresInDays : cookieExpiresInDays
+            url: mktoAppDomainMatch,
+            domain: mktoAppUriDomain,
+            name: leadSourceCookieName,
+            value: leadSourceX,
+            expiresInDays: cookieExpiresInDays
         });
     }
 });
 
 getCookie({
-    url : mktoAppDomainMatch,
-    name : mobileNumberCookieName
+    url: mktoAppDomainMatch,
+    name: mobileNumberCookieName
 }, function (cookie) {
     if (!cookie
          || !cookie.value) {
@@ -453,31 +440,31 @@ getCookie({
             
             var mobileNumberX;
             if ((Math.random()) <= usNumberRate) {
-                mobileNumberX = "+1-" + usAreaCodes[Math.floor((Math.random() * usAreaCodes.length))] + "-555-" + Math.floor((Math.random() * 10)) + Math.floor((Math.random() * 10)) + Math.floor((Math.random() * 10)) + Math.floor((Math.random() * 10));
+                mobileNumberX = "+1-" + usAreaCodes[Math.floor(Math.random() * usAreaCodes.length)] + "-555-" + Math.floor(Math.random() * 10) + Math.floor(Math.random() * 10) + Math.floor(Math.random() * 10) + Math.floor(Math.random() * 10);
             } else {
-                mobileNumberX = mobileNumbers[Math.floor((Math.random() * mobileNumbers.length))];
+                mobileNumberX = mobileNumbers[Math.floor(Math.random() * mobileNumbers.length)];
             }
             
             setCookie({
-                url : mktoLiveDomainMatch,
-                domain : mktoLiveUriDomain,
-                name : mobileNumberCookieName,
-                value : mobileNumberX,
-                expiresInDays : cookieExpiresInDays
+                url: mktoLiveDomainMatch,
+                domain: mktoLiveUriDomain,
+                name: mobileNumberCookieName,
+                value: mobileNumberX,
+                expiresInDays: cookieExpiresInDays
             });
             setCookie({
-                url : mktoLiveClassicDomainMatch,
-                domain : mktoLiveClassicUriDomain,
-                name : mobileNumberCookieName,
-                value : mobileNumberX,
-                expiresInDays : cookieExpiresInDays
+                url: mktoLiveClassicDomainMatch,
+                domain: mktoLiveClassicUriDomain,
+                name: mobileNumberCookieName,
+                value: mobileNumberX,
+                expiresInDays: cookieExpiresInDays
             });
             setCookie({
-                url : mktoAppDomainMatch,
-                domain : mktoAppUriDomain,
-                name : mobileNumberCookieName,
-                value : mobileNumberX,
-                expiresInDays : cookieExpiresInDays
+                url: mktoAppDomainMatch,
+                domain: mktoAppUriDomain,
+                name: mobileNumberCookieName,
+                value: mobileNumberX,
+                expiresInDays: cookieExpiresInDays
             });
         } else {
             console.log("NOT Initializing: " + mobileNumberCookieName + " Cookie due to conversion rate " + mobileNumberConversionRate);
@@ -486,8 +473,8 @@ getCookie({
 });
 
 getCookie({
-    url : mktoAppDomainMatch,
-    name : phoneNumberCookieName
+    url: mktoAppDomainMatch,
+    name: phoneNumberCookieName
 }, function (cookie) {
     if (!cookie
          || !cookie.value) {
@@ -497,31 +484,31 @@ getCookie({
             
             var phoneNumberX;
             if ((Math.random()) <= usNumberRate) {
-                phoneNumberX = "+1-" + usAreaCodes[Math.floor((Math.random() * usAreaCodes.length))] + "-555-" + Math.floor((Math.random() * 10)) + Math.floor((Math.random() * 10)) + Math.floor((Math.random() * 10)) + Math.floor((Math.random() * 10));
+                phoneNumberX = "+1-" + usAreaCodes[Math.floor(Math.random() * usAreaCodes.length)] + "-555-" + Math.floor(Math.random() * 10) + Math.floor(Math.random() * 10) + Math.floor(Math.random() * 10) + Math.floor(Math.random() * 10);
             } else {
-                phoneNumberX = phoneNumbers[Math.floor((Math.random() * phoneNumbers.length))];
+                phoneNumberX = phoneNumbers[Math.floor(Math.random() * phoneNumbers.length)];
             }
             
             setCookie({
-                url : mktoLiveDomainMatch,
-                domain : mktoLiveUriDomain,
-                name : phoneNumberCookieName,
-                value : phoneNumberX,
-                expiresInDays : cookieExpiresInDays
+                url: mktoLiveDomainMatch,
+                domain: mktoLiveUriDomain,
+                name: phoneNumberCookieName,
+                value: phoneNumberX,
+                expiresInDays: cookieExpiresInDays
             });
             setCookie({
-                url : mktoLiveClassicDomainMatch,
-                domain : mktoLiveClassicUriDomain,
-                name : phoneNumberCookieName,
-                value : phoneNumberX,
-                expiresInDays : cookieExpiresInDays
+                url: mktoLiveClassicDomainMatch,
+                domain: mktoLiveClassicUriDomain,
+                name: phoneNumberCookieName,
+                value: phoneNumberX,
+                expiresInDays: cookieExpiresInDays
             });
             setCookie({
-                url : mktoAppDomainMatch,
-                domain : mktoAppUriDomain,
-                name : phoneNumberCookieName,
-                value : phoneNumberX,
-                expiresInDays : cookieExpiresInDays
+                url: mktoAppDomainMatch,
+                domain: mktoAppUriDomain,
+                name: phoneNumberCookieName,
+                value: phoneNumberX,
+                expiresInDays: cookieExpiresInDays
             });
         } else {
             console.log("NOT Initializing: " + phoneNumberCookieName + " Cookie due to conversion rate " + phoneNumberConversionRate);
@@ -529,23 +516,15 @@ getCookie({
     }
 });
 
-function visitPage(visitedPagesCookie, visitType) {
-    var tabId;
-    
-    if (webPageX.type == landingPageType
-         && (webPageX.conversionRate >= 1.0
-             || (Math.random()) <= webPageX.conversionRate)) {
-        
-        submitParam = "submit=true";
-    } else {
-        submitParam = "submit=false";
-    }
+function visitPage(index) {
+    var visitedPagesCookie = visitedPagesCookieMarketoLive,
+    tabId;
     
     chrome.tabs.create({
-        url : webPageX.url + "?" + submitParam,
-        active : false,
-        selected : false,
-        pinned : true
+        url: webPageX.url + "?" + submitParam,
+        active: false,
+        selected: false,
+        pinned: true
     }, function (tab) {
         tabId = tab.id;
     });
@@ -554,95 +533,53 @@ function visitPage(visitedPagesCookie, visitType) {
         chrome.tabs.remove(tabId);
     }, 10000);
     
-    if (visitType == "initial") {
-        console.log("Visited Initial Page: " + webPageX.url + "?" + submitParam);
-        visitedPagesCookie = visitedPagesCookieMarketoLive;
-        visitedPagesCookie.value = webPageX.name;
-    } else {
-        console.log("Visited: " + webPageX.url + "?" + submitParam);
-        visitedPagesCookie.url = visitedPagesCookieMarketoLive.url;
-        visitedPagesCookie.value = visitedPagesCookie.value + ", " + webPageX.name;
-    }
+    visitedPagesCookie.value = index.toString();
     setCookie(visitedPagesCookie);
 }
 
-function determineVisit(visitedPagesCookie) {
-    if (visitedPagesCookie
-         && visitedPagesCookie.value) {
-        var submitParam;
-        
-        if (webPageXvisitationRate >= 1.0
-             || (Math.random()) <= webPageXvisitationRate) {
-            var proceed = false;
-            
-            if (webPageX.dependentOn.length > 0) {
-                for (var ii = 0; ii < webPageX.dependentOn.length; ii++) {
-                    if (visitedPagesCookie.value.search("(, )\?" + webPageX.dependentOn[ii] + "(,)\?") != -1) {
-                        proceed = true;
-                    } else {
-                        proceed = false;
-                        break;
-                    }
-                }
-            } else {
-                proceed = true;
-            }
-            
-            if (proceed) {
-                visitPage(visitedPagesCookie, "append");
-            } else {
-                console.log("NOT Visiting: " + webPageX.url + " due to dependencies not being met (" + webPageX.dependentOn.toString() + ")");
-            }
-        } else {
-            console.log("NOT Visiting: " + webPageX.url + " due to web page visitation rate (" + webPageXvisitationRate + ")");
-        }
+getCookie(visitedPagesCookieMarketoLive, function (cookie) {
+    var visitedPagesIndex;
+    if (cookie
+         && cookie.value
+         && Number.isInteger(parseInt(cookie.value))
+         && parseInt(cookie.value) < webPages.length) {
+        visitedPagesIndex = parseInt(cookie.value) + 1;
+        webPageX = webPages[visitedPagesIndex];
     } else {
-        webPageX = webPages[signUpPages[Math.floor((Math.random()) * signUpPages.length)]];
-        
-        if ((Math.random()) <= webPageX.visitationRate) {
-            visitPage(null, "initial");
-        } else {
-            console.log("NOT Visiting: " + webPageX.url + " due to web page visitation rate (" + webPageX.visitationRate + ")");
-        }
+        visitedPagesIndex = 0;
+        webPageX = webPages[visitedPagesIndex];
     }
-}
-
-if (webPageX.type == landingPageType) {
-    getCookie({
-        url : mktoAppDomainMatch,
-        name : usernameCookieName
-    }, function (cookie) {
-        if (cookie
-             && cookie.value) {
-            getCookie(visitedPagesCookieMarketoLive, function (cookie) {
-                if (cookie
-                     && cookie.value) {
-                    determineVisit(cookie);
+    if (webPageX.type == landingPageType) {
+        getCookie({
+            url: mktoAppDomainMatch,
+            name: usernameCookieName
+        }, function (cookie) {
+            if (cookie
+                 && cookie.value) {
+                if (webPageX.conversionRate >= 1.0
+                     || (Math.random()) <= webPageX.conversionRate) {
+                    submitParam = "submit=true";
                 } else {
-                    determineVisit();
+                    submitParam = "submit=false";
                 }
-            });
-        } else {
-            console.log("NOT Visiting: " + webPageX.url + " due to " + usernameCookieName + " cookie is null");
-        }
-    });
-} else if (webPageX.type == webPageType) {
-    getCookie({
-        url : mktoLiveDomainMatch,
-        name : usernameCookieName
-    }, function (cookie) {
-        if (cookie
-             && cookie.value) {
-            getCookie(visitedPagesCookieMarketoLive, function (cookie) {
-                if (cookie
-                     && cookie.value) {
-                    determineVisit(cookie);
-                } else {
-                    determineVisit();
-                }
-            });
-        } else {
-            console.log("NOT Visiting: " + webPageX.url + " due to " + usernameCookieName + " cookie is null");
-        }
-    });
-}
+                console.log("Visiting Page Index (" + visitedPagesIndex + "): " + webPageX.url + "?" + submitParam);
+                visitPage(visitedPagesIndex);
+            } else {
+                console.log("NOT Visiting: " + webPageX.url + " due to " + usernameCookieName + " cookie is null");
+            }
+        });
+    } else if (webPageX.type == webPageType) {
+        getCookie({
+            url: mktoLiveDomainMatch,
+            name: usernameCookieName
+        }, function (cookie) {
+            if (cookie
+                 && cookie.value) {
+                console.log("Visiting Page Index (" + visitedPagesIndex + "): " + webPageX.url);
+                visitPage(visitedPagesIndex);
+            } else {
+                console.log("NOT Visiting: " + webPageX.url + " due to " + usernameCookieName + " cookie is null");
+            }
+        });
+    }
+});

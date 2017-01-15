@@ -98,8 +98,38 @@
     <div class="body-container">
         <div id="first" class="center-image">
             <div id="company-image-title" style="font-size: 50px; font-weight: 200; text-transform: uppercase; color: #505050;"> Company Image </div>
-            <canvas id="image" width="200" height="200"></canvas>
-            <!--<img id = "image" class = "image-size" src = "https://marketolive.com/m2_update/assets/img/marketoball.png">-->
+            <canvas id="image" width="150" height="150"></canvas>
+            <div class="correct-image-options-container">
+                <div class="correct-image-options-inner-container">
+                    <div id="color-option-1" class="color-option" style="background-color: rgb(90, 84, 164);"></div>
+                    <div id="color-option-2" class="color-option" style="background-color: rgb(90, 84, 164);"></div>
+                    <div id="color-option-3" class="color-option" style="background-color: rgb(90, 84, 164);"></div>
+                    <div id="color-option-4" class="color-option" style="background-color: rgb(90, 84, 164);"></div>
+                </div>
+            </div>
+            <div class="correct-image-options-container" style="padding: 12px 0px;">
+                <div class="correct-image-options-inner-container">
+                    <button id="prevButton" value="Previous" type="submit">
+                        <span style="display: inline-block; fill: #fff; vertical-align: middle;">
+                            < Prev
+                        </span>
+                    </button>
+                    <input id="searchBox" type="text" placeholder="Search for a Hero Image">
+                    <button id="searchButton" value="Search" type="submit">
+                        <span style="display: inline-block; fill: #fff; height: 24px; line-height: 24px; position: relative; width: 24px; vertical-align: middle;">
+                            <svg focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path>
+                            </svg>
+                        </span>
+                    </button>
+                    <button id="nextButton" value="Next" type="submit">
+                        <span style="display: inline-block; fill: #fff; vertical-align: middle;">
+                            > Next
+                        </span>
+                    </button>
+                </div>
+            </div>
+            <div id="searchResults" style="padding: 10px;"></div>
             <div class="correct-image-options-container">
                 <div class="correct-image-options-inner-container">
                     <div id="correct" class="correct-image-option">
@@ -114,6 +144,11 @@
         <div id="second" class="center-image">
             <div id="second-correct" style="font-size: 30px; padding: 0 20%; font-weight: 200; text-transform: uppercase; color: #505050;"> Great! It'll be used throughout the demo along with its color scheme! </div>
             <div id="second-incorrect" style="font-size: 30px; padding: 0 20%; font-weight: 200; text-transform: uppercase; color: #505050;"> Hmm..Retype the URL of the company in the plug-in drop-down. Don't add the 'www.' and make sure to have '.com' at the end! (Ex. Facebook.com)</div>
+        </div>
+        <div style="width: 108px; height: 41px;>
+            <a href="https://heapanalytics.com/?utm_source=badge">
+                <img style="width:108px;height:41px" src="//heapanalytics.com/img/badge.png" alt="Heap | Mobile and Web Analytics" />
+            </a>
         </div>
     </div>
     <p id="cookie-color" style="display:none"></p>
@@ -157,5 +192,4 @@
     </script>
     <script src="../pluginv3/pods.min.js"></script>
     <script src="../pluginv3/marketo-live.min.js"></script>
-    <a href="https://heapanalytics.com/?utm_source=badge"><img style="width:108px;height:41px" src="//heapanalytics.com/img/badge.png" alt="Heap | Mobile and Web Analytics" /></a>
 </footer>

@@ -1,4 +1,4 @@
-var HEAP_ANALYTICS_SCRIPT_LOCATION = "http://classic.marketolive.com/assets/js/global/heap-analytics.js",
+var HEAP_ANALYTICS_SCRIPT_LOCATION = "https://marketolive.com/assets/js/global/heap-analytics.js",
 loadScript;
 
 /**************************************************************************************
@@ -14,7 +14,7 @@ loadScript;
  **************************************************************************************/
 
 loadScript = function (scriptSrc) {
-    console.log("Content > Loading: Script: " + scriptSrc);
+    console.log("Loading: Script: " + scriptSrc);
     
     var scriptElement = document.createElement("script");
     scriptElement.async = true;
