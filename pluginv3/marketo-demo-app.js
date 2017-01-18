@@ -1724,7 +1724,7 @@ APP.saveEmailEdits = function (mode, asset) {
                         APP.webRequest('/emaileditor/updateContent2', 'ajaxHandler=MktSession&mktReqUid=' + new Date().getTime() + Ext.id(null, ':') + '&emailId=' + Mkt3.DL.dl.compId + '&content=' + encodeURIComponent(new XMLSerializer().serializeToString(response)) + '&xsrfId=' + MktSecurity.getXsrfId(), 'POST', "", function (result) {
                             console.log(result);
                             window.stop();
-                            window.location.reload();
+                            window.setTimeout(function () {window.location.reload();}, 2000);
                         });
                     };
                     
