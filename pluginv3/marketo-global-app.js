@@ -103,8 +103,11 @@ isMktoPageGlobal = window.setInterval(function () {
             var accountString = MktPage.savedState.custPrefix,
             mktoDemoAccountMatch = "^scdynamics1$|^mktodemoaccount",
             mktoAccountStringQe = "globalsales",
-            mktoAccountStringsMatch106 = "^mktodemoaccount106$|^mktodemoaccount106d$|^",
-            mktoAccountStringsMatch = "^mktodemoaccount106$|^mktodemoaccount106d$|^" + mktoAccountStringQe + "$",
+            mktoAccountStringsMatch106 = "^mktodemoaccount106$|^mktodemoaccount106d$",
+            mktoAccountStringsMatch = mktoAccountStringsMatch106 + "|^" + mktoAccountStringQe + "$",
+            mktoAppDomain = "^https:\/\/app-[a-z0-9]+\.marketo\.com",
+            mktoDesignerDomain = "^https:\/\/[a-z0-9]+-[a-z0-9]+\.marketodesigner\.com",
+            mktoWizardDomain = mktoAppDomain + "/m#",
             currentUrl = window.location.href;
             
             if (accountString.search(mktoAccountStringsMatch) != -1) {
@@ -117,10 +120,6 @@ isMktoPageGlobal = window.setInterval(function () {
                     loadScript(HEAP_ANALYTICS_SCRIPT_LOCATION);
                 }
                 
-                var mktoAppDomain = "^https:\/\/app-[a-z0-9]+\.marketo\.com",
-                mktoDesignerDomain = "^https:\/\/[a-z0-9]+-[a-z0-9]+\.marketodesigner\.com",
-                mktoWizardDomain = mktoAppDomain + "/m#";
-                
                 if (currentUrl.search(mktoWizardDomain) == -1
                      && currentUrl.search(mktoDesignerDomain) == -1) {
                     loadScript(POD_SCRIPT_LOCATION);
@@ -130,7 +129,11 @@ isMktoPageGlobal = window.setInterval(function () {
                 console.log("Marketo Global App > Location: Marketo Demo Instance");
                 
                 loadScript(MARKETO_DEMO_APP_SCRIPT_LOCATION);
-                loadScript(DASHBOARD_SCRIPT_LOCATION);
+                
+                if (currentUrl.search(mktoWizardDomain) == -1
+                     && currentUrl.search(mktoDesignerDomain) == -1) {
+                    loadScript(DASHBOARD_SCRIPT_LOCATION);
+                }
             } else if (getCookie("toggleState") == "false") {
                 console.log("Marketo Global App > toggleState = false");
                 

@@ -1724,7 +1724,9 @@ APP.saveEmailEdits = function (mode, asset) {
                         APP.webRequest('/emaileditor/updateContent2', 'ajaxHandler=MktSession&mktReqUid=' + new Date().getTime() + Ext.id(null, ':') + '&emailId=' + Mkt3.DL.dl.compId + '&content=' + encodeURIComponent(new XMLSerializer().serializeToString(response)) + '&xsrfId=' + MktSecurity.getXsrfId(), 'POST', "", function (result) {
                             console.log(result);
                             window.stop();
-                            window.setTimeout(function () {window.location.reload();}, 2000);
+                            window.setTimeout(function () {
+                                window.location.reload();
+                            }, 2000);
                         });
                     };
                     
@@ -1846,17 +1848,17 @@ var isMktPageDemoApp = window.setInterval(function () {
         if (typeof(MktPage) !== "undefined") {
             console.log("Marketo Demo App > Location: Marketo Page");
             
-            window.clearInterval(isMktPageDemoApp);
-            
             var currUrlFragment,
             currCompFragment;
             
-            APP.overrideSuperballMenuItems();
-            
             if (typeof(Mkt3) !== "undefined"
+                 && Mkt3
                  && Mkt3.DL
                  && Mkt3.DL.getDlToken()
                  && Mkt3.DL.getDlToken() != "") {
+                
+                window.clearInterval(isMktPageDemoApp);
+                
                 currUrlFragment = Mkt3.DL.getDlToken();
                 
                 if (Mkt3.DL.dl
@@ -2021,5 +2023,6 @@ var isMktPageDemoApp = window.setInterval(function () {
                         }
                     }, 0);
             };
+            APP.overrideSuperballMenuItems();
         }
     }, 0);
