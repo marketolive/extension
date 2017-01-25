@@ -8,7 +8,13 @@ mktoLoginDomain = "^https:\/\/login\.marketo\.com|^https:\/\/app\.marketo\.com",
 mktoLoginPathName = "/homepage/login",
 mktoDesignerDomain = "^https:\/\/[a-z0-9]+-[a-z0-9]+\.marketodesigner\.com",
 mktoWizardDomain = mktoAppDomain + "/m#",
+
+mktoLiveDevLandingPageDomain = "^http:\/\/pages-dev\.marketolive\.com",
+mktoLiveProdLandingPageDomain = "^http:\/\/pages\.marketolive\.com",
+mktoLiveLandingPageDomain = mktoLiveDevLandingPageDomain,
 mktoLandingPageDomain = "^http:\/\/[^\.]+\.marketo\.com\/lp\/[0-9]{3}-[a-zA-Z]{3}-[0-9]{3}\/.*",
+mktoGlobalLandingPageDomain = "(" + mktoLiveLandingPageDomain + "|" + mktoLandingPageDomain + ")",
+
 loadScript,
 getCookie,
 setCookie,
@@ -1385,7 +1391,7 @@ window.onload = function () {
                 Analyzer.prototype.showAnalyzer();
             }
         }
-    } else if (currentUrl.search(mktoLandingPageDomain) != -1) {
+    } else if (currentUrl.search(mktoGlobalLandingPageDomain) != -1) {
         console.log("Content > Location: Global Landing Page");
         
         loadScript(GLOBAL_LANDING_PAGE_SCRIPT_LOCATION);

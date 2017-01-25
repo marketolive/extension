@@ -14,7 +14,9 @@
         "run_at": "document_end",
         "matches": [
             "*://*.marketo.com/*",
-            "*://*.marketodesigner.com/*"
+            "*://*.marketodesigner.com/*",
+            "*://pages-dev.marketolive.com/*",
+            "*://pages.marketolive.com/*"
         ]
     }, {
         "all_frames": false,
