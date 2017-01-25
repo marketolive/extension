@@ -638,7 +638,7 @@ getCookie(visitedPagesCookieMarketoLive, function (cookie) {
                 } else {
                     submitParams = "submit=false";
                 }
-                console.log("Visiting Page Index (" + visitedPagesIndex + "): " + webPageX.url + "?" + submitParams + "&utmTerm=" + );
+                console.log("Visiting Page Index (" + visitedPagesIndex + "): " + webPageX.url + "?" + submitParams);
                 visitPage(visitedPagesIndex);
             } else {
                 console.log("NOT Visiting: " + webPageX.url + " due to " + usernameCookieName + " cookie is null");
