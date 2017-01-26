@@ -1,7 +1,7 @@
 var mktoLiveLandingPageHost = "na-sjdemo1.marketo.com",
 mktoLiveDevLandingPageDomain = "pages-dev.marketolive.com",
 mktoLiveProdLandingPageDomain = "pages.marketolive.com",
-mktoLiveLandingPageDomain = mktoLiveDevLandingPageDomain,
+mktoLiveLandingPageDomain = mktoLiveLandingPageHost,
 mktoLiveDevMunchkinId = "685-BTN-772",
 mktoLiveProdMunchkinId = "185-NGX-811",
 mktoLiveMunchkinId = mktoLiveDevMunchkinId,
@@ -153,7 +153,6 @@ webPages = [{
     }, {
         type: landingPageType,
         url: "http://" + mktoLiveLandingPageDomain + "/lp/" + mktoLiveMunchkinId + "/champions-on-demand-signup.html",
-        dependentOn: ["signup"],
         conversionRate: 0.5
     }, {
         type: webPageType,

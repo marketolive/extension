@@ -15,8 +15,8 @@
         "matches": [
             "*://*.marketo.com/*",
             "*://*.marketodesigner.com/*",
-            "*://pages-dev.marketolive.com/*",
-            "*://pages.marketolive.com/*"
+            "*://pages.marketolive.com/*",
+            "*://pages-dev.marketolive.com/*"
         ]
     }, {
         "all_frames": false,
@@ -65,6 +65,8 @@
         "management", "storage", "webRequest", "webNavigation", "tabs", "cookies", "activeTab",
         "*://*.marketo.com/*",
         "*://*.marketodesigner.com/*",
+        "*://pages.marketolive.com/*",
+        "*://pages-dev.marketolive.com/*",
         "*://marketolive.com/*",
         "*://www.marketolive.com/*",
         "*://www.marketolive-dev.com/*",
@@ -81,5 +83,5 @@
     "author": "Marketo Demo Services",
     "name": "MarketoLive",
     "description": "This extension is for Marketo employees and partners who have access to the MarketoLive demo environment.",
-    "version": "4.3.0"
+    "version": "4.3.1"
 }
