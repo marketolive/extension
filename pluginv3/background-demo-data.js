@@ -630,8 +630,8 @@ getCookie(visitedPagesCookieMarketoLive, function (cookie) {
         webPageX = webPages[visitedPagesIndex];
     } else {
         var acquirePages = [];
-        for (var ii; ii < webPageX.length; ii++) {
-            if (webPageX[ii].acquire) {
+        for (var ii; ii < webPages.length; ii++) {
+            if (webPages[ii].acquire) {
                 acquirePages.push(ii);
             }
         }
