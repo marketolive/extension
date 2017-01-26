@@ -11,18 +11,22 @@ mktoLiveHost = mktoLiveProdHost,
 landingPageType = "landing",
 webPageType = "web",
 webPages = [{
+        acquire: true,
         type: landingPageType,
         url: "http://" + mktoLiveLandingPageDomain + "/lp/" + mktoLiveMunchkinId + "/google-adwords-acquire.html",
         conversionRate: 0.5
     }, {
+        acquire: true,
         type: landingPageType,
         url: "http://" + mktoLiveLandingPageDomain + "/lp/" + mktoLiveMunchkinId + "/contact-us.html",
         conversionRate: 0.5
     }, {
+        acquire: true,
         type: landingPageType,
         url: "http://" + mktoLiveLandingPageDomain + "/lp/" + mktoLiveMunchkinId + "/google-display-ads-acquire.html",
         conversionRate: 0.5
     }, {
+        acquire: true,
         type: landingPageType,
         url: "http://" + mktoLiveLandingPageDomain + "/lp/" + mktoLiveMunchkinId + "/turner-contact-us.html",
         conversionRate: 0.5
@@ -31,18 +35,22 @@ webPages = [{
         url: "http://" + mktoLiveHost + "/info/contact-us",
         conversionRate: 0.5
     }, {
+        acquire: true,
         type: landingPageType,
         url: "http://" + mktoLiveLandingPageDomain + "/lp/" + mktoLiveMunchkinId + "/facebook-lead-ads-acquire.html",
         conversionRate: 0.5
     }, {
+        acquire: true,
         type: landingPageType,
         url: "http://" + mktoLiveLandingPageDomain + "/lp/" + mktoLiveMunchkinId + "/monthly-digest-signup.html",
         conversionRate: 0.5
     }, {
+        acquire: true,
         type: landingPageType,
         url: "http://" + mktoLiveLandingPageDomain + "/lp/" + mktoLiveMunchkinId + "/facebook-news-feed-ads-acquire.html",
         conversionRate: 0.5
     }, {
+        acquire: true,
         type: landingPageType,
         url: "http://" + mktoLiveLandingPageDomain + "/lp/" + mktoLiveMunchkinId + "/turner-monthly-digest-signup.html",
         conversionRate: 0.5
@@ -51,18 +59,22 @@ webPages = [{
         url: "http://" + mktoLiveHost + "/info/why-us",
         conversionRate: 0.5
     }, {
+        acquire: true,
         type: landingPageType,
         url: "http://" + mktoLiveLandingPageDomain + "/lp/" + mktoLiveMunchkinId + "/linkedin-lead-ads-acquire.html",
         conversionRate: 0.5
     }, {
+        acquire: true,
         type: landingPageType,
         url: "http://" + mktoLiveLandingPageDomain + "/lp/" + mktoLiveMunchkinId + "/blog-signup.html",
         conversionRate: 0.5
     }, {
+        acquire: true,
         type: landingPageType,
         url: "http://" + mktoLiveLandingPageDomain + "/lp/" + mktoLiveMunchkinId + "/demand-side-platform-acquire.html",
         conversionRate: 0.5
     }, {
+        acquire: true,
         type: landingPageType,
         url: "http://" + mktoLiveLandingPageDomain + "/lp/" + mktoLiveMunchkinId + "/cloud-storage-blog-signup.html",
         conversionRate: 0.5
@@ -71,10 +83,12 @@ webPages = [{
         url: "http://" + mktoLiveHost + "/info/products",
         conversionRate: 0.5
     }, {
+        acquire: true,
         type: landingPageType,
         url: "http://" + mktoLiveLandingPageDomain + "/lp/" + mktoLiveMunchkinId + "/whitepaper-download.html",
         conversionRate: 0.5
     }, {
+        acquire: true,
         type: landingPageType,
         url: "http://" + mktoLiveLandingPageDomain + "/lp/" + mktoLiveMunchkinId + "/cloud-backup-whitepaper-download.html",
         conversionRate: 0.5
@@ -615,7 +629,13 @@ getCookie(visitedPagesCookieMarketoLive, function (cookie) {
         visitedPagesIndex = parseInt(cookie.value) + 1;
         webPageX = webPages[visitedPagesIndex];
     } else {
-        visitedPagesIndex = 0;
+        var acquirePages = [];
+        for (var ii; ii < webPageX.length; ii++) {
+            if (webPageX[ii].acquire) {
+                acquirePages.push(ii);
+            }
+        }
+        visitedPagesIndex = acquirePages[Math.floor(Math.random() * acquirePages.length)];
         webPageX = webPages[visitedPagesIndex];
     }
     if (webPageX.type == landingPageType) {
