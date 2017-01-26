@@ -4,8 +4,12 @@ currentUrl = document.location.href,
 mktoLiveLandingPageHostsMatch = "na-sjdemo1.marketo.com",
 mktoLiveDevMunchkinId = "685-BTN-772",
 mktoLiveProdMunchkinId = "185-NGX-811",
+
+mktoLiveDevLandingPageDomain = "^http:\/\/pages-dev\.marketolive\.com",
+mktoLiveProdLandingPageDomain = "^http:\/\/pages\.marketolive\.com",
 mktoLiveMunchkinIdsMatch = "(" + mktoLiveDevMunchkinId + "|" + mktoLiveProdMunchkinId + ")",
-mktoLiveLandingPageDomainMatch = "^http:\/\/" + mktoLiveLandingPageHostsMatch + "\/lp\/" + mktoLiveMunchkinIdsMatch + "\/.*",
+mktoLiveLandingPageDomainMatch = "(" + mktoLiveDevLandingPageDomain + "|" + mktoLiveProdLandingPageDomain + "|^http:\/\/" + mktoLiveLandingPageHostsMatch + "\/lp\/" + mktoLiveMunchkinIdsMatch + "\/.*)",
+
 loadScript;
 
 /**************************************************************************************
