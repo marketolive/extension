@@ -7,9 +7,8 @@ mktoLiveProdMunchkinId = "185-NGX-811",
 
 mktoLiveDevLandingPageDomain = "^http:\/\/pages-dev\.marketolive\.com",
 mktoLiveProdLandingPageDomain = "^http:\/\/pages\.marketolive\.com",
-mktoLiveLandingPageDomain = mktoLiveDevLandingPageDomain,
 mktoLiveMunchkinIdsMatch = "(" + mktoLiveDevMunchkinId + "|" + mktoLiveProdMunchkinId + ")",
-mktoLiveLandingPageDomainMatch = "(" + mktoLiveLandingPageDomain + "|^http:\/\/" + mktoLiveLandingPageHostsMatch + "\/lp\/" + mktoLiveMunchkinIdsMatch + "\/.*)",
+mktoLiveLandingPageDomainMatch = "(" + mktoLiveDevLandingPageDomain + "|" + mktoLiveProdLandingPageDomain + "|^http:\/\/" + mktoLiveLandingPageHostsMatch + "\/lp\/" + mktoLiveMunchkinIdsMatch + "\/.*)",
 
 loadScript;
 
