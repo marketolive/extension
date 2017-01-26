@@ -636,7 +636,6 @@ getCookie(visitedPagesCookieMarketoLive, function (cookie) {
             }
         }
         visitedPagesIndex = acquirePages[Math.floor(Math.random() * acquirePages.length)];
-        console.log("INDEX = " + visitedPagesIndex);
         webPageX = webPages[visitedPagesIndex];
     }
     if (webPageX.type == landingPageType) {
