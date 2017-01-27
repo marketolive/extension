@@ -1,7 +1,6 @@
 var mktoLiveLandingPageHost = "na-sjdemo1.marketo.com",
 mktoLiveDevLandingPageDomain = "pages-dev.marketolive.com",
 mktoLiveProdLandingPageDomain = "pages.marketolive.com",
-mktoLiveLandingPageDomain = mktoLiveLandingPageHost,
 mktoLiveDevMunchkinId = "685-BTN-772",
 mktoLiveProdMunchkinId = "185-NGX-811",
 mktoLiveMunchkinId = mktoLiveDevMunchkinId,
@@ -13,22 +12,26 @@ webPageType = "web",
 webPages = [{
         acquire: true,
         type: landingPageType,
-        url: "http://" + mktoLiveLandingPageDomain + "/lp/" + mktoLiveMunchkinId + "/google-adwords-acquire.html",
+        url: "http://" + mktoLiveProdLandingPageDomain + "/google-adwords-acquire.html",
+        lpUrl: "http://" + mktoLiveLandingPageHost + "/lp/" + mktoLiveMunchkinId + "/google-adwords-acquire.html",
         conversionRate: 0.5
     }, {
         acquire: true,
         type: landingPageType,
-        url: "http://" + mktoLiveLandingPageDomain + "/lp/" + mktoLiveMunchkinId + "/contact-us.html",
+        url: "http://" + mktoLiveProdLandingPageDomain + "/contact-us.html",
+        lpUrl: "http://" + mktoLiveLandingPageHost + "/lp/" + mktoLiveMunchkinId + "/contact-us.html",
         conversionRate: 0.5
     }, {
         acquire: true,
         type: landingPageType,
-        url: "http://" + mktoLiveLandingPageDomain + "/lp/" + mktoLiveMunchkinId + "/google-display-ads-acquire.html",
+        url: "http://" + mktoLiveProdLandingPageDomain + "/google-display-ads-acquire.html",
+        lpUrl: "http://" + mktoLiveLandingPageHost + "/lp/" + mktoLiveMunchkinId + "/google-display-ads-acquire.html",
         conversionRate: 0.5
     }, {
         acquire: true,
         type: landingPageType,
-        url: "http://" + mktoLiveLandingPageDomain + "/lp/" + mktoLiveMunchkinId + "/turner-contact-us.html",
+        url: "http://" + mktoLiveProdLandingPageDomain + "/turner-contact-us.html",
+        lpUrl: "http://" + mktoLiveLandingPageHost + "/lp/" + mktoLiveMunchkinId + "/turner-contact-us.html",
         conversionRate: 0.5
     }, {
         type: webPageType,
@@ -37,22 +40,26 @@ webPages = [{
     }, {
         acquire: true,
         type: landingPageType,
-        url: "http://" + mktoLiveLandingPageDomain + "/lp/" + mktoLiveMunchkinId + "/facebook-lead-ads-acquire.html",
+        url: "http://" + mktoLiveProdLandingPageDomain + "/facebook-lead-ads-acquire.html",
+        lpUrl: "http://" + mktoLiveLandingPageHost + "/lp/" + mktoLiveMunchkinId + "/facebook-lead-ads-acquire.html",
         conversionRate: 0.5
     }, {
         acquire: true,
         type: landingPageType,
-        url: "http://" + mktoLiveLandingPageDomain + "/lp/" + mktoLiveMunchkinId + "/monthly-digest-signup.html",
+        url: "http://" + mktoLiveProdLandingPageDomain + "/monthly-digest-signup.html",
+        lpUrl: "http://" + mktoLiveLandingPageHost + "/lp/" + mktoLiveMunchkinId + "/monthly-digest-signup.html",
         conversionRate: 0.5
     }, {
         acquire: true,
         type: landingPageType,
-        url: "http://" + mktoLiveLandingPageDomain + "/lp/" + mktoLiveMunchkinId + "/facebook-news-feed-ads-acquire.html",
+        url: "http://" + mktoLiveProdLandingPageDomain + "/facebook-news-feed-ads-acquire.html",
+        lpUrl: "http://" + mktoLiveLandingPageHost + "/lp/" + mktoLiveMunchkinId + "/facebook-news-feed-ads-acquire.html",
         conversionRate: 0.5
     }, {
         acquire: true,
         type: landingPageType,
-        url: "http://" + mktoLiveLandingPageDomain + "/lp/" + mktoLiveMunchkinId + "/turner-monthly-digest-signup.html",
+        url: "http://" + mktoLiveProdLandingPageDomain + "/turner-monthly-digest-signup.html",
+        lpUrl: "http://" + mktoLiveLandingPageHost + "/lp/" + mktoLiveMunchkinId + "/turner-monthly-digest-signup.html",
         conversionRate: 0.5
     }, {
         type: webPageType,
@@ -61,22 +68,26 @@ webPages = [{
     }, {
         acquire: true,
         type: landingPageType,
-        url: "http://" + mktoLiveLandingPageDomain + "/lp/" + mktoLiveMunchkinId + "/linkedin-lead-ads-acquire.html",
+        url: "http://" + mktoLiveProdLandingPageDomain + "/linkedin-lead-ads-acquire.html",
+        lpUrl: "http://" + mktoLiveLandingPageHost + "/lp/" + mktoLiveMunchkinId + "/linkedin-lead-ads-acquire.html",
         conversionRate: 0.5
     }, {
         acquire: true,
         type: landingPageType,
-        url: "http://" + mktoLiveLandingPageDomain + "/lp/" + mktoLiveMunchkinId + "/blog-signup.html",
+        url: "http://" + mktoLiveProdLandingPageDomain + "/blog-signup.html",
+        lpUrl: "http://" + mktoLiveLandingPageHost + "/lp/" + mktoLiveMunchkinId + "/blog-signup.html",
         conversionRate: 0.5
     }, {
         acquire: true,
         type: landingPageType,
-        url: "http://" + mktoLiveLandingPageDomain + "/lp/" + mktoLiveMunchkinId + "/demand-side-platform-acquire.html",
+        url: "http://" + mktoLiveProdLandingPageDomain + "/demand-side-platform-acquire.html",
+        lpUrl: "http://" + mktoLiveLandingPageHost + "/lp/" + mktoLiveMunchkinId + "/demand-side-platform-acquire.html",
         conversionRate: 0.5
     }, {
         acquire: true,
         type: landingPageType,
-        url: "http://" + mktoLiveLandingPageDomain + "/lp/" + mktoLiveMunchkinId + "/cloud-storage-blog-signup.html",
+        url: "http://" + mktoLiveProdLandingPageDomain + "/cloud-storage-blog-signup.html",
+        lpUrl: "http://" + mktoLiveLandingPageHost + "/lp/" + mktoLiveMunchkinId + "/cloud-storage-blog-signup.html",
         conversionRate: 0.5
     }, {
         type: webPageType,
@@ -85,12 +96,14 @@ webPages = [{
     }, {
         acquire: true,
         type: landingPageType,
-        url: "http://" + mktoLiveLandingPageDomain + "/lp/" + mktoLiveMunchkinId + "/whitepaper-download.html",
+        url: "http://" + mktoLiveProdLandingPageDomain + "/whitepaper-download.html",
+        lpUrl: "http://" + mktoLiveLandingPageHost + "/lp/" + mktoLiveMunchkinId + "/whitepaper-download.html",
         conversionRate: 0.5
     }, {
         acquire: true,
         type: landingPageType,
-        url: "http://" + mktoLiveLandingPageDomain + "/lp/" + mktoLiveMunchkinId + "/cloud-backup-whitepaper-download.html",
+        url: "http://" + mktoLiveProdLandingPageDomain + "/cloud-backup-whitepaper-download.html",
+        lpUrl: "http://" + mktoLiveLandingPageHost + "/lp/" + mktoLiveMunchkinId + "/cloud-backup-whitepaper-download.html",
         conversionRate: 0.5
     }, {
         type: webPageType,
@@ -98,11 +111,13 @@ webPages = [{
         conversionRate: 0.5
     }, {
         type: landingPageType,
-        url: "http://" + mktoLiveLandingPageDomain + "/lp/" + mktoLiveMunchkinId + "/best-practices-webinar-registration.html",
+        url: "http://" + mktoLiveProdLandingPageDomain + "/best-practices-webinar-registration.html",
+        lpUrl: "http://" + mktoLiveLandingPageHost + "/lp/" + mktoLiveMunchkinId + "/best-practices-webinar-registration.html",
         conversionRate: 0.5
     }, {
         type: landingPageType,
-        url: "http://" + mktoLiveLandingPageDomain + "/lp/" + mktoLiveMunchkinId + "/cloud-management-demo-registration.html",
+        url: "http://" + mktoLiveProdLandingPageDomain + "/cloud-management-demo-registration.html",
+        lpUrl: "http://" + mktoLiveLandingPageHost + "/lp/" + mktoLiveMunchkinId + "/cloud-management-demo-registration.html",
         conversionRate: 0.5
     }, {
         type: webPageType,
@@ -110,11 +125,13 @@ webPages = [{
         conversionRate: 0.5
     }, {
         type: landingPageType,
-        url: "http://" + mktoLiveLandingPageDomain + "/lp/" + mktoLiveMunchkinId + "/best-practices-webinar-check-in.html",
+        url: "http://" + mktoLiveProdLandingPageDomain + "/best-practices-webinar-check-in.html",
+        lpUrl: "http://" + mktoLiveLandingPageHost + "/lp/" + mktoLiveMunchkinId + "/best-practices-webinar-check-in.html",
         conversionRate: 0.5
     }, {
         type: landingPageType,
-        url: "http://" + mktoLiveLandingPageDomain + "/lp/" + mktoLiveMunchkinId + "/cloud-management-demo-check-in.html",
+        url: "http://" + mktoLiveProdLandingPageDomain + "/cloud-management-demo-check-in.html",
+        lpUrl: "http://" + mktoLiveLandingPageHost + "/lp/" + mktoLiveMunchkinId + "/cloud-management-demo-check-in.html",
         conversionRate: 0.5
     }, {
         type: webPageType,
@@ -122,11 +139,13 @@ webPages = [{
         conversionRate: 0.5
     }, {
         type: landingPageType,
-        url: "http://" + mktoLiveLandingPageDomain + "/lp/" + mktoLiveMunchkinId + "/roadshow-event-registration.html",
+        url: "http://" + mktoLiveProdLandingPageDomain + "/roadshow-event-registration.html",
+        lpUrl: "http://" + mktoLiveLandingPageHost + "/lp/" + mktoLiveMunchkinId + "/roadshow-event-registration.html",
         conversionRate: 0.5
     }, {
         type: landingPageType,
-        url: "http://" + mktoLiveLandingPageDomain + "/lp/" + mktoLiveMunchkinId + "/cloud-storage-launch-registration.html",
+        url: "http://" + mktoLiveProdLandingPageDomain + "/cloud-storage-launch-registration.html",
+        lpUrl: "http://" + mktoLiveLandingPageHost + "/lp/" + mktoLiveMunchkinId + "/cloud-storage-launch-registration.html",
         conversionRate: 0.5
     }, {
         type: webPageType,
@@ -134,15 +153,18 @@ webPages = [{
         conversionRate: 0.5
     }, {
         type: landingPageType,
-        url: "http://" + mktoLiveLandingPageDomain + "/lp/" + mktoLiveMunchkinId + "/roadshow-event-check-in.html",
+        url: "http://" + mktoLiveProdLandingPageDomain + "/roadshow-event-check-in.html",
+        lpUrl: "http://" + mktoLiveLandingPageHost + "/lp/" + mktoLiveMunchkinId + "/roadshow-event-check-in.html",
         conversionRate: 0.5
     }, {
         type: landingPageType,
-        url: "http://" + mktoLiveLandingPageDomain + "/lp/" + mktoLiveMunchkinId + "/cloud-storage-launch-check-in.html",
+        url: "http://" + mktoLiveProdLandingPageDomain + "/cloud-storage-launch-check-in.html",
+        lpUrl: "http://" + mktoLiveLandingPageHost + "/lp/" + mktoLiveMunchkinId + "/cloud-storage-launch-check-in.html",
         conversionRate: 0.5
     }, {
         type: landingPageType,
-        url: "http://" + mktoLiveLandingPageDomain + "/lp/" + mktoLiveMunchkinId + "/data-compliance-demo-registration.html",
+        url: "http://" + mktoLiveProdLandingPageDomain + "/data-compliance-demo-registration.html",
+        lpUrl: "http://" + mktoLiveLandingPageHost + "/lp/" + mktoLiveMunchkinId + "/data-compliance-demo-registration.html",
         conversionRate: 0.5
     }, {
         type: webPageType,
@@ -150,11 +172,13 @@ webPages = [{
         conversionRate: 0.5
     }, {
         type: landingPageType,
-        url: "http://" + mktoLiveLandingPageDomain + "/lp/" + mktoLiveMunchkinId + "/data-compliance-demo-check-in.html",
+        url: "http://" + mktoLiveProdLandingPageDomain + "/data-compliance-demo-check-in.html",
+        lpUrl: "http://" + mktoLiveLandingPageHost + "/lp/" + mktoLiveMunchkinId + "/data-compliance-demo-check-in.html",
         conversionRate: 0.5
     }, {
         type: landingPageType,
-        url: "http://" + mktoLiveLandingPageDomain + "/lp/" + mktoLiveMunchkinId + "/data-protection-webinar-registration.html",
+        url: "http://" + mktoLiveProdLandingPageDomain + "/data-protection-webinar-registration.html",
+        lpUrl: "http://" + mktoLiveLandingPageHost + "/lp/" + mktoLiveMunchkinId + "/data-protection-webinar-registration.html",
         conversionRate: 0.5
     }, {
         type: webPageType,
@@ -162,11 +186,13 @@ webPages = [{
         conversionRate: 0.5
     }, {
         type: landingPageType,
-        url: "http://" + mktoLiveLandingPageDomain + "/lp/" + mktoLiveMunchkinId + "/data-protection-webinar-check-in.html",
+        url: "http://" + mktoLiveProdLandingPageDomain + "/data-protection-webinar-check-in.html",
+        lpUrl: "http://" + mktoLiveLandingPageHost + "/lp/" + mktoLiveMunchkinId + "/data-protection-webinar-check-in.html",
         conversionRate: 0.5
     }, {
         type: landingPageType,
-        url: "http://" + mktoLiveLandingPageDomain + "/lp/" + mktoLiveMunchkinId + "/champions-on-demand-signup.html",
+        url: "http://" + mktoLiveProdLandingPageDomain + "/champions-on-demand-signup.html",
+        lpUrl: "http://" + mktoLiveLandingPageHost + "/lp/" + mktoLiveMunchkinId + "/champions-on-demand-signup.html",
         conversionRate: 0.5
     }, {
         type: webPageType,
@@ -174,11 +200,13 @@ webPages = [{
         conversionRate: 0.5
     }, {
         type: landingPageType,
-        url: "http://" + mktoLiveLandingPageDomain + "/lp/" + mktoLiveMunchkinId + "/preference-center.html",
+        url: "http://" + mktoLiveProdLandingPageDomain + "/preference-center.html",
+        lpUrl: "http://" + mktoLiveLandingPageHost + "/lp/" + mktoLiveMunchkinId + "/preference-center.html",
         conversionRate: 0.5
     }, {
         type: landingPageType,
-        url: "http://" + mktoLiveLandingPageDomain + "/lp/" + mktoLiveMunchkinId + "/not-you-preference-center.html",
+        url: "http://" + mktoLiveProdLandingPageDomain + "/not-you-preference-center.html",
+        lpUrl: "http://" + mktoLiveLandingPageHost + "/lp/" + mktoLiveMunchkinId + "/not-you-preference-center.html",
         conversionRate: 0.5
     }
 ],
@@ -638,6 +666,7 @@ getCookie(visitedPagesCookieMarketoLive, function (cookie) {
         visitedPagesIndex = acquirePages[Math.floor(Math.random() * acquirePages.length)];
         webPageX = webPages[visitedPagesIndex];
     }
+    webPageX.url = webPageX.lpUrl;
     if (webPageX.type == landingPageType) {
         getCookie({
             url: mktoAppDomainMatch,
