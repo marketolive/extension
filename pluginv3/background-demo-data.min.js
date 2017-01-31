@@ -298,7 +298,7 @@ companies = [
     ["Rainmaker Investments", "Financial Services"],
     ["Scale.io", "Technology"],
     ["Travel4Life", "Travel & Leisure"],
-    ["Turner Technologies", "Technology"],
+    ["Turing Technologies", "Technology"],
     ["University of Marketing", "Higher Education"],
     ["Utah Instruments", "Manufacturing"]
 ],
