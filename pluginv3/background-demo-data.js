@@ -316,8 +316,7 @@ leadSources = [
     "Webinar",
     "Website"
 ],
-utm = [
-    {
+utm = [{
         "terms": [
             "marketo",
             "marketo demo",
@@ -348,8 +347,7 @@ utm = [
             "Marketing Analytics",
             "Predictive Content"
         ]
-    },
-    {
+    }, {
         "terms": [
             "turner tech",
             "turner demo",
