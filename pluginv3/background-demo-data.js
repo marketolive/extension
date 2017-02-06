@@ -670,7 +670,7 @@ function visitPage(index) {
     
     visitedPagesCookie.value = index.toString();
     setCookie(visitedPagesCookie);
-    console.log("Visited Page Index (" + visitedPagesIndex + "): " + url);
+    console.log("Visited Page Index (" + index + "): " + url);
 }
 
 getCookie(visitedPagesCookieMarketoLive, function (cookie) {
