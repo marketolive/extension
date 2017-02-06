@@ -646,10 +646,17 @@ getCookie({
 
 function visitPage(index) {
     var visitedPagesCookie = visitedPagesCookieMarketoLive,
+    url,
     tabId;
     
+    if (submitParams) {
+        url = webPageX.url + "?" + submitParams;
+    } else {
+        url = webPageX.url;
+    }
+    
     chrome.tabs.create({
-        url: webPageX.url + "?" + submitParams,
+        url: url,
         active: false,
         selected: false,
         pinned: true
@@ -667,6 +674,7 @@ function visitPage(index) {
 
 getCookie(visitedPagesCookieMarketoLive, function (cookie) {
     var visitedPagesIndex;
+    
     if (cookie
          && cookie.value
          && Number.isInteger(parseInt(cookie.value))
@@ -683,9 +691,11 @@ getCookie(visitedPagesCookieMarketoLive, function (cookie) {
         visitedPagesIndex = acquirePages[Math.floor(Math.random() * acquirePages.length)];
         webPageX = webPages[visitedPagesIndex];
     }
+    
     if (webPageX.lpUrl) {
         webPageX.url = webPageX.lpUrl;
     }
+    
     if (webPageX.type == landingPageType) {
         getCookie({
             url: mktoAppDomainMatch,
