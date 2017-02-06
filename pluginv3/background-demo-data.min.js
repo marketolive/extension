@@ -670,6 +670,7 @@ function visitPage(index) {
     
     visitedPagesCookie.value = index.toString();
     setCookie(visitedPagesCookie);
+    console.log("Visited Page Index (" + visitedPagesIndex + "): " + url);
 }
 
 getCookie(visitedPagesCookieMarketoLive, function (cookie) {
@@ -716,7 +717,6 @@ getCookie(visitedPagesCookieMarketoLive, function (cookie) {
                 } else {
                     submitParams = "submit=false";
                 }
-                console.log("Visiting Page Index (" + visitedPagesIndex + "): " + webPageX.url + "?" + submitParams);
                 visitPage(visitedPagesIndex);
             } else {
                 console.log("NOT Visiting: " + webPageX.url + " due to " + usernameCookieName + " cookie is null");
@@ -729,7 +729,6 @@ getCookie(visitedPagesCookieMarketoLive, function (cookie) {
         }, function (cookie) {
             if (cookie
                  && cookie.value) {
-                console.log("Visiting Page Index (" + visitedPagesIndex + "): " + webPageX.url);
                 visitPage(visitedPagesIndex);
             } else {
                 console.log("NOT Visiting: " + webPageX.url + " due to " + usernameCookieName + " cookie is null");
