@@ -1,10 +1,10 @@
 var mktoLiveLandingPageHost = "na-sjdemo1.marketo.com",
 mktoLiveDevLandingPageDomain = "pages-dev.marketolive.com",
 mktoLiveProdLandingPageDomain = "pages.marketolive.com",
-mktoLiveLandingPageDomain = mktoLiveDevLandingPageDomain,
+mktoLiveLandingPageDomain = mktoLiveProdLandingPageDomain,
 mktoLiveDevMunchkinId = "685-BTN-772",
 mktoLiveProdMunchkinId = "185-NGX-811",
-mktoLiveMunchkinId = mktoLiveDevMunchkinId,
+mktoLiveMunchkinId = mktoLiveProdMunchkinId,
 mktoLiveDevHost = "www.marketolive-dev.com",
 mktoLiveProdHost = "www.marketolive.com",
 mktoLiveHost = mktoLiveProdHost,
@@ -719,11 +719,11 @@ getCookie(visitedPagesCookieMarketoLive, function (cookie) {
         visitedPagesIndex = acquirePages[Math.floor(Math.random() * acquirePages.length)];
         webPageX = webPages[visitedPagesIndex];
     }
-    
+    /*
     if (webPageX.lpUrl) {
         webPageX.url = webPageX.lpUrl;
     }
-    
+    */
     if (webPageX.type == landingPageType) {
         getCookie({
             url: mktoAppDomainMatch,
