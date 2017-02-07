@@ -8,8 +8,12 @@ mktoLiveMunchkinId = mktoLiveDevMunchkinId,
 mktoLiveDevHost = "www.marketolive-dev.com",
 mktoLiveProdHost = "www.marketolive.com",
 mktoLiveHost = mktoLiveProdHost,
+mktoVerticalsDevHost = "verticals-dev.marketolive.com",
+mktoVerticalsProdHost = "verticals.marketolive.com",
+mktoVerticalsHost = mktoVerticalsProdHost,
 landingPageType = "landing",
 webPageType = "web",
+verticalsPageType = "verticals",
 webPages = [{
         acquire: true,
         type: landingPageType,
@@ -36,8 +40,11 @@ webPages = [{
         conversionRate: 0.5
     }, {
         type: webPageType,
-        url: "http://" + mktoLiveHost + "/info/contact-us",
-        conversionRate: 0.5
+        url: "http://" + mktoLiveHost + "/info/contact-us"
+    }, {
+        type: verticalsPageType,
+        url: "http://" + mktoVerticalsHost + "/predictive-content",
+        clickRate: 1.0
     }, {
         acquire: true,
         type: landingPageType,
@@ -64,8 +71,11 @@ webPages = [{
         conversionRate: 0.5
     }, {
         type: webPageType,
-        url: "http://" + mktoLiveHost + "/info/why-us",
-        conversionRate: 0.5
+        url: "http://" + mktoLiveHost + "/info/why-us"
+    }, {
+        type: verticalsPageType,
+        url: "http://" + mktoVerticalsHost + "/predictive-content",
+        clickRate: 1.0
     }, {
         acquire: true,
         type: landingPageType,
@@ -92,8 +102,11 @@ webPages = [{
         conversionRate: 0.5
     }, {
         type: webPageType,
-        url: "http://" + mktoLiveHost + "/info/products",
-        conversionRate: 0.5
+        url: "http://" + mktoLiveHost + "/info/products"
+    }, {
+        type: verticalsPageType,
+        url: "http://" + mktoVerticalsHost + "/predictive-content",
+        clickRate: 1.0
     }, {
         acquire: true,
         type: landingPageType,
@@ -108,8 +121,11 @@ webPages = [{
         conversionRate: 0.5
     }, {
         type: webPageType,
-        url: "http://" + mktoLiveHost + "/info/integrations",
-        conversionRate: 0.5
+        url: "http://" + mktoLiveHost + "/info/integrations"
+    }, {
+        type: verticalsPageType,
+        url: "http://" + mktoVerticalsHost + "/predictive-content",
+        clickRate: 1.0
     }, {
         type: landingPageType,
         url: "http://" + mktoLiveLandingPageDomain + "/best-practices-webinar-registration.html",
@@ -122,8 +138,11 @@ webPages = [{
         conversionRate: 0.5
     }, {
         type: webPageType,
-        url: "http://" + mktoLiveHost + "/info/webinar",
-        conversionRate: 0.5
+        url: "http://" + mktoLiveHost + "/info/webinar"
+    }, {
+        type: verticalsPageType,
+        url: "http://" + mktoVerticalsHost + "/predictive-content",
+        clickRate: 1.0
     }, {
         type: landingPageType,
         url: "http://" + mktoLiveLandingPageDomain + "/best-practices-webinar-check-in.html",
@@ -136,8 +155,11 @@ webPages = [{
         conversionRate: 0.5
     }, {
         type: webPageType,
-        url: "http://" + mktoLiveHost + "/info/pricing",
-        conversionRate: 0.5
+        url: "http://" + mktoLiveHost + "/info/pricing"
+    }, {
+        type: verticalsPageType,
+        url: "http://" + mktoVerticalsHost + "/predictive-content",
+        clickRate: 1.0
     }, {
         type: landingPageType,
         url: "http://" + mktoLiveLandingPageDomain + "/roadshow-event-registration.html",
@@ -150,8 +172,11 @@ webPages = [{
         conversionRate: 0.5
     }, {
         type: webPageType,
-        url: "http://" + mktoLiveHost + "/info/live-event",
-        conversionRate: 0.5
+        url: "http://" + mktoLiveHost + "/info/live-event"
+    }, {
+        type: verticalsPageType,
+        url: "http://" + mktoVerticalsHost + "/predictive-content",
+        clickRate: 1.0
     }, {
         type: landingPageType,
         url: "http://" + mktoLiveLandingPageDomain + "/roadshow-event-check-in.html",
@@ -169,8 +194,7 @@ webPages = [{
         conversionRate: 0.5
     }, {
         type: webPageType,
-        url: "http://" + mktoLiveHost + "/info/webinar",
-        conversionRate: 0.5
+        url: "http://" + mktoLiveHost + "/info/webinar"
     }, {
         type: landingPageType,
         url: "http://" + mktoLiveLandingPageDomain + "/data-compliance-demo-check-in.html",
@@ -183,8 +207,7 @@ webPages = [{
         conversionRate: 0.5
     }, {
         type: webPageType,
-        url: "http://" + mktoLiveHost + "/info/webinar",
-        conversionRate: 0.5
+        url: "http://" + mktoLiveHost + "/info/webinar"
     }, {
         type: landingPageType,
         url: "http://" + mktoLiveLandingPageDomain + "/data-protection-webinar-check-in.html",
@@ -197,8 +220,7 @@ webPages = [{
         conversionRate: 0.5
     }, {
         type: webPageType,
-        url: "http://" + mktoLiveHost + "/info/community",
-        conversionRate: 0.5
+        url: "http://" + mktoLiveHost + "/info/community"
     }, {
         type: landingPageType,
         url: "http://" + mktoLiveLandingPageDomain + "/preference-center.html",
@@ -395,7 +417,7 @@ phoneNumberConversionRate = 0.5,
 usNumberRate = 0.75,
 webPageX,
 companyX,
-submitParams,
+params,
 cookieExpiresInDays = 365,
 jobTitleCookieName = "attrib_job_title",
 companyNameCookieName = "attrib_company_name",
@@ -649,8 +671,8 @@ function visitPage(index) {
     url,
     tabId;
     
-    if (submitParams) {
-        url = webPageX.url + "?" + submitParams;
+    if (params) {
+        url = webPageX.url + "?" + params;
     } else {
         url = webPageX.url;
     }
@@ -678,12 +700,17 @@ getCookie(visitedPagesCookieMarketoLive, function (cookie) {
     
     if (cookie
          && cookie.value
-         && Number.isInteger(parseInt(cookie.value))
-         && parseInt(cookie.value) < webPages.length) {
-        visitedPagesIndex = parseInt(cookie.value) + 1;
-        webPageX = webPages[visitedPagesIndex];
+         && Number.isInteger(parseInt(cookie.value))) {
+        if (parseInt(cookie.value) < webPages.length) {
+            visitedPagesIndex = parseInt(cookie.value) + 1;
+            webPageX = webPages[visitedPagesIndex];
+        } else {
+            visitedPagesIndex = 0;
+            webPageX = webPages[visitedPagesIndex];
+        }
     } else {
         var acquirePages = [];
+        
         for (var ii = 0; ii < webPages.length; ii++) {
             if (webPages[ii].acquire) {
                 acquirePages.push(ii);
@@ -706,16 +733,16 @@ getCookie(visitedPagesCookieMarketoLive, function (cookie) {
                  && cookie.value) {
                 if (webPageX.conversionRate >= 1.0
                      || (Math.random()) <= webPageX.conversionRate) {
-                    submitParams = "submit=true";
+                    params = "submit=true";
                     if (webPageX.url.search(/-acquire\.html$/) != -1) {
                         var utmIndex = Math.floor(Math.random() * utm.length),
                         utmTermX = utm[utmIndex].terms[Math.floor(Math.random() * utm[utmIndex].terms.length)],
                         utmMediumX = utmMediums[Math.floor(Math.random() * utmMediums.length)],
                         utmCampaignX = utm[utmIndex].campaigns[Math.floor(Math.random() * utm[utmIndex].campaigns.length)];
-                        submitParams = submitParams + "&utmTerm=" + encodeURIComponent(utmTermX) + "&utmMedium=" + encodeURIComponent(utmMediumX) + "&utmCampaign=" + encodeURIComponent(utmCampaignX);
+                        params = params + "&utmTerm=" + encodeURIComponent(utmTermX) + "&utmMedium=" + encodeURIComponent(utmMediumX) + "&utmCampaign=" + encodeURIComponent(utmCampaignX);
                     }
                 } else {
-                    submitParams = "submit=false";
+                    params = "submit=false";
                 }
                 visitPage(visitedPagesIndex);
             } else {
@@ -729,6 +756,24 @@ getCookie(visitedPagesCookieMarketoLive, function (cookie) {
         }, function (cookie) {
             if (cookie
                  && cookie.value) {
+                visitPage(visitedPagesIndex);
+            } else {
+                console.log("NOT Visiting: " + webPageX.url + " due to " + usernameCookieName + " cookie is null");
+            }
+        });
+    } else if (webPageX.type == verticalsPageType) {
+        getCookie({
+            url: mktoLiveDomainMatch,
+            name: usernameCookieName
+        }, function (cookie) {
+            if (cookie
+                 && cookie.value) {
+                if (webPageX.clickRate >= 1.0
+                     || (Math.random()) <= webPageX.clickRate) {
+                    params = "click=true";
+                } else {
+                    params = "click=false";
+                }
                 visitPage(visitedPagesIndex);
             } else {
                 console.log("NOT Visiting: " + webPageX.url + " due to " + usernameCookieName + " cookie is null");
