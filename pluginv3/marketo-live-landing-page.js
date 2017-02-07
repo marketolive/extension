@@ -26,20 +26,23 @@ var isMktoForm = window.setInterval(function () {
                 function getUrlParam(param) {
                     console.log("Landing Page > Getting: URL Parameter: " + param);
                     
-                    var params = window.location.href.split("?")[1].split("&"),
-                    paramPair,
-                    paramName,
-                    paramValue,
-                    ii;
+                    var paramString = window.location.href.split("?")[1];
                     
-                    for (ii = 0; ii < params.length; ii++) {
-                        paramPair = params[ii].split("=");
-                        paramName = paramPair[0];
-                        paramValue = paramPair[1];
+                    if (paramString) {
+                        var params = paramString.split("&"),
+                        paramPair,
+                        paramName,
+                        paramValue;
                         
-                        if (paramName == param) {
-                            console.log("Landing Page > URL Parameter: " + paramName + " = " + paramValue);
-                            return paramValue;
+                        for (var ii = 0; ii < params.length; ii++) {
+                            paramPair = params[ii].split("=");
+                            paramName = paramPair[0];
+                            paramValue = paramPair[1];
+                            
+                            if (paramName == param) {
+                                console.log("Landing Page > URL Parameter: " + paramName + " = " + paramValue);
+                                return paramValue;
+                            }
                         }
                     }
                     return false;
@@ -83,7 +86,7 @@ var isMktoForm = window.setInterval(function () {
                         
                         if (userId != null) {
                             form.vals({
-                                Email : email
+                                Email: email
                             });
                         } else {
                             window.close();
@@ -96,7 +99,7 @@ var isMktoForm = window.setInterval(function () {
                         
                         if (firstName != null) {
                             form.vals({
-                                FirstName : firstName
+                                FirstName: firstName
                             });
                         }
                     }
@@ -106,7 +109,7 @@ var isMktoForm = window.setInterval(function () {
                         
                         if (lastName != null) {
                             form.vals({
-                                LastName : lastName
+                                LastName: lastName
                             });
                         }
                     }
@@ -116,7 +119,7 @@ var isMktoForm = window.setInterval(function () {
                         
                         if (jobTitle != null) {
                             form.vals({
-                                Title : jobTitle
+                                Title: jobTitle
                             });
                         }
                     }
@@ -126,7 +129,7 @@ var isMktoForm = window.setInterval(function () {
                         
                         if (company != null) {
                             form.vals({
-                                Company : company
+                                Company: company
                             });
                         }
                     }
@@ -136,7 +139,7 @@ var isMktoForm = window.setInterval(function () {
                         
                         if (industry != null) {
                             form.vals({
-                                Industry : industry
+                                Industry: industry
                             });
                         }
                     }
@@ -146,7 +149,7 @@ var isMktoForm = window.setInterval(function () {
                         
                         if (leadSource != null) {
                             form.vals({
-                                LeadSource : leadSource
+                                LeadSource: leadSource
                             });
                         }
                     }
@@ -156,7 +159,7 @@ var isMktoForm = window.setInterval(function () {
                         
                         if (mobileNumber != null) {
                             form.vals({
-                                MobilePhone : mobileNumber
+                                MobilePhone: mobileNumber
                             });
                         }
                     }
@@ -166,7 +169,7 @@ var isMktoForm = window.setInterval(function () {
                         
                         if (phoneNumber != null) {
                             form.vals({
-                                Phone : phoneNumber
+                                Phone: phoneNumber
                             });
                         }
                     }
@@ -179,7 +182,7 @@ var isMktoForm = window.setInterval(function () {
                         }
                         
                         form.vals({
-                            Subscribed_to_Newsletter__c : answer
+                            Subscribed_to_Newsletter__c: answer
                         });
                     }
                     
@@ -191,7 +194,7 @@ var isMktoForm = window.setInterval(function () {
                         }
                         
                         form.vals({
-                            Subscribed_to_Blog_Posts__c : answer
+                            Subscribed_to_Blog_Posts__c: answer
                         });
                     }
                     
@@ -203,7 +206,7 @@ var isMktoForm = window.setInterval(function () {
                         }
                         
                         form.vals({
-                            Subscribed_to_Event_Invitations__c : answer
+                            Subscribed_to_Event_Invitations__c: answer
                         });
                     }
                     
@@ -215,7 +218,7 @@ var isMktoForm = window.setInterval(function () {
                         }
                         
                         form.vals({
-                            Subscribed_to_Webinar_Invitations__c : answer
+                            Subscribed_to_Webinar_Invitations__c: answer
                         });
                     }
                     
@@ -227,7 +230,7 @@ var isMktoForm = window.setInterval(function () {
                         }
                         
                         form.vals({
-                            Subscribed_to_App_Messages__c : answer
+                            Subscribed_to_App_Messages__c: answer
                         });
                     }
                     
@@ -239,7 +242,7 @@ var isMktoForm = window.setInterval(function () {
                         }
                         
                         form.vals({
-                            Subscribed_to_SMS__c : answer
+                            Subscribed_to_SMS__c: answer
                         });
                     }
                     
@@ -251,7 +254,7 @@ var isMktoForm = window.setInterval(function () {
                         }
                         
                         form.vals({
-                            Unsubscribed_from_All__c : answer
+                            Unsubscribed_from_All__c: answer
                         });
                     }
                     
@@ -268,7 +271,7 @@ var isMktoForm = window.setInterval(function () {
                                 }
                             }, 0);
                     }
-                
+                    
                 } else if (submitParamVal == "false") {
                     var isMunchkinInit = window.setInterval(function () {
                             if (typeof(Munchkin.init) !== "undefined") {
