@@ -149,8 +149,8 @@ webPages = [{
         conversionRate: 0.5
     }, {
         type: landingPageType,
-        url: "http://" + mktoLiveLandingPageDomain + "/cloud-management-demo-registration.html",
-        lpUrl: "http://" + mktoLiveLandingPageHost + "/lp/" + mktoLiveMunchkinId + "/cloud-management-demo-registration.html",
+        url: "http://" + mktoLiveLandingPageDomain + "/cloud-storage-demo-registration.html",
+        lpUrl: "http://" + mktoLiveLandingPageHost + "/lp/" + mktoLiveMunchkinId + "/cloud-storage-demo-registration.html",
         conversionRate: 0.5
     }, {
         type: webPageType,
@@ -170,8 +170,8 @@ webPages = [{
         conversionRate: 0.5
     }, {
         type: landingPageType,
-        url: "http://" + mktoLiveLandingPageDomain + "/cloud-management-demo-check-in.html",
-        lpUrl: "http://" + mktoLiveLandingPageHost + "/lp/" + mktoLiveMunchkinId + "/cloud-management-demo-check-in.html",
+        url: "http://" + mktoLiveLandingPageDomain + "/cloud-storage-demo-check-in.html",
+        lpUrl: "http://" + mktoLiveLandingPageHost + "/lp/" + mktoLiveMunchkinId + "/cloud-storage-demo-check-in.html",
         conversionRate: 0.5
     }, {
         type: webPageType,
@@ -191,8 +191,8 @@ webPages = [{
         conversionRate: 0.5
     }, {
         type: landingPageType,
-        url: "http://" + mktoLiveLandingPageDomain + "/cloud-storage-launch-registration.html",
-        lpUrl: "http://" + mktoLiveLandingPageHost + "/lp/" + mktoLiveMunchkinId + "/cloud-storage-launch-registration.html",
+        url: "http://" + mktoLiveLandingPageDomain + "/cloud-nation-summit-registration.html",
+        lpUrl: "http://" + mktoLiveLandingPageHost + "/lp/" + mktoLiveMunchkinId + "/cloud-nation-summit-registration.html",
         conversionRate: 0.5
     }, {
         type: webPageType,
@@ -212,8 +212,8 @@ webPages = [{
         conversionRate: 0.5
     }, {
         type: landingPageType,
-        url: "http://" + mktoLiveLandingPageDomain + "/cloud-storage-launch-check-in.html",
-        lpUrl: "http://" + mktoLiveLandingPageHost + "/lp/" + mktoLiveMunchkinId + "/cloud-storage-launch-check-in.html",
+        url: "http://" + mktoLiveLandingPageDomain + "/cloud-nation-summit-check-in.html",
+        lpUrl: "http://" + mktoLiveLandingPageHost + "/lp/" + mktoLiveMunchkinId + "/cloud-nation-summit-check-in.html",
         conversionRate: 0.5
     }, {
         type: landingPageType,
