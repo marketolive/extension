@@ -46,6 +46,10 @@ webPages = [{
         url: "http://" + mktoVerticalsHost + "/predictive-content",
         clickRate: 1.0
     }, {
+        type: verticalsPageType,
+        url: "http://" + mktoVerticalsHost + "/predictive-content-106",
+        clickRate: 1.0
+    }, {
         acquire: true,
         type: landingPageType,
         url: "http://" + mktoLiveLandingPageDomain + "/facebook-lead-ads-acquire.html",
@@ -75,6 +79,10 @@ webPages = [{
     }, {
         type: verticalsPageType,
         url: "http://" + mktoVerticalsHost + "/predictive-content",
+        clickRate: 1.0
+    }, {
+        type: verticalsPageType,
+        url: "http://" + mktoVerticalsHost + "/predictive-content-106",
         clickRate: 1.0
     }, {
         acquire: true,
@@ -108,6 +116,10 @@ webPages = [{
         url: "http://" + mktoVerticalsHost + "/predictive-content",
         clickRate: 1.0
     }, {
+        type: verticalsPageType,
+        url: "http://" + mktoVerticalsHost + "/predictive-content-106",
+        clickRate: 1.0
+    }, {
         acquire: true,
         type: landingPageType,
         url: "http://" + mktoLiveLandingPageDomain + "/whitepaper-download.html",
@@ -127,6 +139,10 @@ webPages = [{
         url: "http://" + mktoVerticalsHost + "/predictive-content",
         clickRate: 1.0
     }, {
+        type: verticalsPageType,
+        url: "http://" + mktoVerticalsHost + "/predictive-content-106",
+        clickRate: 1.0
+    }, {
         type: landingPageType,
         url: "http://" + mktoLiveLandingPageDomain + "/best-practices-webinar-registration.html",
         lpUrl: "http://" + mktoLiveLandingPageHost + "/lp/" + mktoLiveMunchkinId + "/best-practices-webinar-registration.html",
@@ -142,6 +158,10 @@ webPages = [{
     }, {
         type: verticalsPageType,
         url: "http://" + mktoVerticalsHost + "/predictive-content",
+        clickRate: 1.0
+    }, {
+        type: verticalsPageType,
+        url: "http://" + mktoVerticalsHost + "/predictive-content-106",
         clickRate: 1.0
     }, {
         type: landingPageType,
@@ -161,6 +181,10 @@ webPages = [{
         url: "http://" + mktoVerticalsHost + "/predictive-content",
         clickRate: 1.0
     }, {
+        type: verticalsPageType,
+        url: "http://" + mktoVerticalsHost + "/predictive-content-106",
+        clickRate: 1.0
+    }, {
         type: landingPageType,
         url: "http://" + mktoLiveLandingPageDomain + "/roadshow-event-registration.html",
         lpUrl: "http://" + mktoLiveLandingPageHost + "/lp/" + mktoLiveMunchkinId + "/roadshow-event-registration.html",
@@ -176,6 +200,10 @@ webPages = [{
     }, {
         type: verticalsPageType,
         url: "http://" + mktoVerticalsHost + "/predictive-content",
+        clickRate: 1.0
+    }, {
+        type: verticalsPageType,
+        url: "http://" + mktoVerticalsHost + "/predictive-content-106",
         clickRate: 1.0
     }, {
         type: landingPageType,
@@ -552,7 +580,24 @@ getCookie({
          || !cookie.value) {
         console.log("Initializing: " + leadSourceCookieName + " Cookie");
         
-        var leadSourceX = leadSources[Math.floor(Math.random() * leadSources.length)];
+        var monthIndex = new Date().getMonth();
+        
+        if (Math.random() <= 0.25
+             && monthIndex < leadSources.length) {
+            leadSourceX = leadSources[monthIndex];
+        } else {
+            var index = Math.floor(Math.random() * leadSources.length);
+            
+            if (index == monthIndex
+                 && index + 1 < leadSources.length) {
+                index += 1;
+            } else if (index == monthIndex
+                 && index + 1 >= leadSources.length) {
+                index = 0;
+            }
+            
+            leadSourceX = leadSources[index];
+        }
         
         setCookie({
             url: mktoLiveDomainMatch,
@@ -721,9 +766,9 @@ getCookie(visitedPagesCookieMarketoLive, function (cookie) {
     }
     /*
     if (webPageX.lpUrl) {
-        webPageX.url = webPageX.lpUrl;
+    webPageX.url = webPageX.lpUrl;
     }
-    */
+     */
     if (webPageX.type == landingPageType) {
         getCookie({
             url: mktoAppDomainMatch,
