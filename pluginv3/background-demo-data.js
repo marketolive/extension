@@ -50,6 +50,10 @@ webPages = [{
         url: "http://" + mktoVerticalsHost + "/predictive-content-106",
         clickRate: 1.0
     }, {
+        type: verticalsPageType,
+        url: "http://" + mktoVerticalsHost + "/predictive-content-106d",
+        clickRate: 1.0
+    }, {
         acquire: true,
         type: landingPageType,
         url: "http://" + mktoLiveLandingPageDomain + "/facebook-lead-ads-acquire.html",
@@ -85,6 +89,10 @@ webPages = [{
         url: "http://" + mktoVerticalsHost + "/predictive-content-106",
         clickRate: 1.0
     }, {
+        type: verticalsPageType,
+        url: "http://" + mktoVerticalsHost + "/predictive-content-106d",
+        clickRate: 1.0
+    }, {
         acquire: true,
         type: landingPageType,
         url: "http://" + mktoLiveLandingPageDomain + "/linkedin-lead-ads-acquire.html",
@@ -118,6 +126,10 @@ webPages = [{
     }, {
         type: verticalsPageType,
         url: "http://" + mktoVerticalsHost + "/predictive-content-106",
+        clickRate: 1.0
+    }, {
+        type: verticalsPageType,
+        url: "http://" + mktoVerticalsHost + "/predictive-content-106d",
         clickRate: 1.0
     }, {
         acquire: true,
