@@ -758,7 +758,7 @@ getCookie(visitedPagesCookieMarketoLive, function (cookie) {
     if (cookie
          && cookie.value
          && Number.isInteger(parseInt(cookie.value))) {
-        if (parseInt(cookie.value) < webPages.length) {
+        if (parseInt(cookie.value) + 1 < webPages.length) {
             visitedPagesIndex = parseInt(cookie.value) + 1;
             webPageX = webPages[visitedPagesIndex];
         } else {
