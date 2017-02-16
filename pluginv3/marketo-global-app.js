@@ -101,7 +101,7 @@ isMktoPageGlobal = window.setInterval(function () {
             window.clearInterval(isMktoPageGlobal);
             
             var accountString = MktPage.savedState.custPrefix,
-            mktoDemoAccountMatch = "^scdynamics1$|^mktodemoaccount",
+            mktoDemoAccountMatch = "^scdynamics1$|^mktodemoaccount3[0-9][0-9]$",
             mktoAccountStringQe = "globalsales",
             mktoAccountStringsMatch106 = "^mktodemoaccount106$|^mktodemoaccount106d$",
             mktoAccountStringsMatch = mktoAccountStringsMatch106 + "|^" + mktoAccountStringQe + "$",
