@@ -832,8 +832,15 @@ APP.applyMassClone = function () {
                                         }, 0);
                                 });
                                 massCloneForm.show();
-                                massCloneForm.items.last().setText("Programs that have a folder depth greater than 1 will not be cloned.");
+                                massCloneForm.items.last().setText("Programs that have a folder depth greater than 1 will not be cloned.<br><br>This will execute the following cloning actions:<br>&nbsp;&nbsp; - Folders<br>&nbsp;&nbsp; - Programs<br>&nbsp;&nbsp; - A Program's first Period Cost amount for the next 24 months<br>&nbsp;&nbsp; - Stream Cadences<br>&nbsp;&nbsp; - Activation state of trigger Smart Campaigns<br>&nbsp;&nbsp; - Recurring schedule of batch Smart Campaigns<br>&nbsp;&nbsp; - Sets the asset filter for contained reports to the destination folder");
                                 massCloneForm.items.last().setVisible(true);
+                                
+                                Sets Period Costs for the next 24 months using the source Program's first Cost
+ *    Sets the Vertical Tag using the name of the destination folder
+ *    Clones the Stream Cadences using the source Nurture Program
+ *    Clones the activation state of trigger Smart Campaigns
+ *    Clones the recurring schedule of batch Smart Campaigns
+ *    Sets the asset filter for cloned reports to the destination folder
                             }
                         }, 0);
                 });
