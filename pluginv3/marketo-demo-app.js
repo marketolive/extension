@@ -516,8 +516,6 @@ APP.applyMassClone = function () {
                                  && massCloneForm.setHeight) {
                                 window.clearInterval(isCloneVerticalForm);
                                 
-                                massCloneForm.setWidth(520);
-                                massCloneForm.setHeight(450);
                                 massCloneForm.setTitle("Mass Clone");
                                 massCloneForm.buttons[1].setText("Clone");
                                 massCloneForm.buttons[1].currNode = massCloneForm.currNode;
@@ -836,7 +834,9 @@ APP.applyMassClone = function () {
                                         }, 0);
                                 });
                                 massCloneForm.show();
-                                massCloneForm.items.last().setText("Programs that have a folder depth greater than 1 will not be cloned.<br><br><ins>This will execute the following cloning actions<ins><br>&nbsp;&nbsp; - Folders<br>&nbsp;&nbsp; - Programs<br>&nbsp;&nbsp; - A Program's first Period Cost amount for the next 24 months<br>&nbsp;&nbsp; - Stream Cadences<br>&nbsp;&nbsp; - Activation state of trigger Smart Campaigns<br>&nbsp;&nbsp; - Recurring schedule of batch Smart Campaigns<br>&nbsp;&nbsp; - Sets the asset filter for contained reports to the destination folder");
+                                massCloneForm.setWidth(530);
+                                massCloneForm.setHeight(450);
+                                massCloneForm.items.last().setText("Programs that have a folder depth greater than 1 will not be cloned.<br><br><ins>This will execute the following cloning actions</ins><br>&nbsp;&nbsp; - Folders<br>&nbsp;&nbsp; - Programs<br>&nbsp;&nbsp; - A Program's first Period Cost amount for the next 24 months<br>&nbsp;&nbsp; - Stream Cadences<br>&nbsp;&nbsp; - Activation state of trigger Smart Campaigns<br>&nbsp;&nbsp; - Recurring schedule of batch Smart Campaigns<br>&nbsp;&nbsp; - Sets the asset filter for contained reports to the destination folder");
                                 massCloneForm.items.last().setVisible(true);
                             }
                         }, 0);
