@@ -529,11 +529,11 @@ APP.applyMassClone = function () {
                                 var waitMsg = new Ext.Window({
                                         closable: true,
                                         modal: false,
-                                        width: 350,
+                                        width: 325,
                                         height: 150,
                                         cls: 'mktModalForm',
                                         title: 'Please Wait',
-                                        html: 'Mass Cloning ' + massCloneForm.currNode.text + 'Folder ...'
+                                        html: 'Mass Cloning: ' + massCloneForm.currNode.text + ' Folder ...'
                                     }),
                                 cloneToFolderId = massCloneForm.find("fieldLabel", "Clone To")[0].getValue(),
                                 cloneToVerticalName = massCloneForm.find("fieldLabel", "Program Affix")[0].getValue(),
@@ -565,7 +565,7 @@ APP.applyMassClone = function () {
                                                     getScheduleResponse,
                                                     currOrigProgramTreeNode;
                                                     
-                                                    webRequest('/explorer/createProgramFolder', 'ajaxHandler=MktSession&mktReqUid=' + new Date().getTime() + Ext.id(null, ':') + '&text=' + newFolderName + '&parentId=' + cloneToFolderId + '&tempNodeId=ext-' + cloneToFolderId + '&xsrfId=' + MktSecurity.getXsrfId(), 'POST', false, "", function (response) {
+                                                    APP.webRequest('/explorer/createProgramFolder', 'ajaxHandler=MktSession&mktReqUid=' + new Date().getTime() + Ext.id(null, ':') + '&text=' + newFolderName + '&parentId=' + cloneToFolderId + '&tempNodeId=ext-' + cloneToFolderId + '&xsrfId=' + MktSecurity.getXsrfId(), 'POST', false, "", function (response) {
                                                         console.log(response);
                                                         createFolderResponse = JSON.parse(response);
                                                     });
@@ -603,14 +603,14 @@ APP.applyMassClone = function () {
                                                                 break;
                                                             }
                                                             
-                                                            webRequest('/marketingEvent/createMarketingProgramSubmit', 'ajaxHandler=MktSession&mktReqUid=' + new Date().getTime() + Ext.id(null, ':') + '&name=' + newProgramName + '&description=' + '&parentFolderId=' + createFolderResponse.JSONResults.actions[0].parameters[0][0].id + '&cloneFromId=' + currOrigProgramTreeNode.compId + '&type=' + newProgramType + '&xsrfId=' + MktSecurity.getXsrfId(), 'POST', false, "", function (response) {
+                                                            APP.webRequest('/marketingEvent/createMarketingProgramSubmit', 'ajaxHandler=MktSession&mktReqUid=' + new Date().getTime() + Ext.id(null, ':') + '&name=' + newProgramName + '&description=' + '&parentFolderId=' + createFolderResponse.JSONResults.actions[0].parameters[0][0].id + '&cloneFromId=' + currOrigProgramTreeNode.compId + '&type=' + newProgramType + '&xsrfId=' + MktSecurity.getXsrfId(), 'POST', false, "", function (response) {
                                                                 console.log(response);
                                                                 cloneProgramResponse = JSON.parse(response);
                                                                 //cloneProgramResponse = JSON.parse(response.match(/{\"JSONResults\":.*}/)[0]);
                                                             });
                                                             
                                                             if (cloneProgramResponse.JSONResults.appvars.result == "Success") {
-                                                                webRequest('/marketingEvent/getProgramSettingsData', '&start=0' + '&query=' + '&compId=' + currOrigProgramTreeNode.compId + '&compType=' + currOrigProgramTreeNode.compType + '&xsrfId=' + MktSecurity.getXsrfId(), 'POST', false, "", function (response) {
+                                                                APP.webRequest('/marketingEvent/getProgramSettingsData', '&start=0' + '&query=' + '&compId=' + currOrigProgramTreeNode.compId + '&compType=' + currOrigProgramTreeNode.compType + '&xsrfId=' + MktSecurity.getXsrfId(), 'POST', false, "", function (response) {
                                                                     console.log(response);
                                                                     getOrigProgramSettingsResponse = JSON.parse(response);
                                                                 });
@@ -631,7 +631,7 @@ APP.applyMassClone = function () {
                                                                         currMonth += 1;
                                                                         costAmount = parseInt(getOrigProgramSettingsResponse.data[0].summaryData.amount) + Math.floor(Math.random() * 100);
                                                                         
-                                                                        webRequest('/marketingEvent/setCostSubmit', 'ajaxHandler=MktSession&mktReqUid=' + new Date().getTime() + Ext.id(null, ':') + '&compId=' + cloneProgramResponse.JSONResults.actions[0].parameters[0][0].compId + '&costId=' + '&type=period' + '&startDate=' + costDate + '&amount=' + costAmount.toString() + '&description=' + '&xsrfId=' + MktSecurity.getXsrfId(), 'POST', false, "", function (response) {
+                                                                        APP.webRequest('/marketingEvent/setCostSubmit', 'ajaxHandler=MktSession&mktReqUid=' + new Date().getTime() + Ext.id(null, ':') + '&compId=' + cloneProgramResponse.JSONResults.actions[0].parameters[0][0].compId + '&costId=' + '&type=period' + '&startDate=' + costDate + '&amount=' + costAmount.toString() + '&description=' + '&xsrfId=' + MktSecurity.getXsrfId(), 'POST', false, "", function (response) {
                                                                             console.log(response);
                                                                         });
                                                                     }
@@ -639,7 +639,7 @@ APP.applyMassClone = function () {
                                                                     console.log("Get Program Settings Failed");
                                                                 }
                                                                 
-                                                                webRequest('/marketingEvent/getProgramSettingsData', '&start=0' + '&query=' + '&compId=' + cloneProgramResponse.JSONResults.actions[0].parameters[0][0].compId + '&compType=' + cloneProgramResponse.JSONResults.actions[0].parameters[0][0].compType + '&xsrfId=' + MktSecurity.getXsrfId(), 'POST', false, "", function (response) {
+                                                                APP.webRequest('/marketingEvent/getProgramSettingsData', '&start=0' + '&query=' + '&compId=' + cloneProgramResponse.JSONResults.actions[0].parameters[0][0].compId + '&compType=' + cloneProgramResponse.JSONResults.actions[0].parameters[0][0].compType + '&xsrfId=' + MktSecurity.getXsrfId(), 'POST', false, "", function (response) {
                                                                     console.log(response);
                                                                     getNewProgramSettingsResponse = JSON.parse(response);
                                                                 });
@@ -664,7 +664,7 @@ APP.applyMassClone = function () {
                                                                     }
                                                                     
                                                                     if (verticalTagData) {
-                                                                        webRequest('/marketingEvent/setProgramDescriptorSubmit', 'ajaxHandler=MktSession&mktReqUid=' + new Date().getTime() + Ext.id(null, ':') + '&compId=' + cloneProgramResponse.JSONResults.actions[0].parameters[0][0].compId + '&_json=' + verticalTagData + '&xsrfId=' + MktSecurity.getXsrfId(), 'POST', false, "", function (response) {
+                                                                        APP.webRequest('/marketingEvent/setProgramDescriptorSubmit', 'ajaxHandler=MktSession&mktReqUid=' + new Date().getTime() + Ext.id(null, ':') + '&compId=' + cloneProgramResponse.JSONResults.actions[0].parameters[0][0].compId + '&_json=' + verticalTagData + '&xsrfId=' + MktSecurity.getXsrfId(), 'POST', false, "", function (response) {
                                                                             console.log(response);
                                                                         });
                                                                     }
@@ -675,12 +675,12 @@ APP.applyMassClone = function () {
                                                                     newProgramFilter = encodeURIComponent('[{"property":"id","value":' + cloneProgramResponse.JSONResults.actions[0].parameters[0][0].compId + '}]'),
                                                                     fields = encodeURIComponent('["+tracks"]');
                                                                     
-                                                                    webRequest('/data/nurture/retrieve', 'filter=' + origProgramFilter + '&fields=' + fields + '&xsrfId=' + MktSecurity.getXsrfId(), 'POST', false, "", function (response) {
+                                                                    APP.webRequest('/data/nurture/retrieve', 'filter=' + origProgramFilter + '&fields=' + fields + '&xsrfId=' + MktSecurity.getXsrfId(), 'POST', false, "", function (response) {
                                                                         console.log(response);
                                                                         getOrigNurtureCadenceResponse = JSON.parse(response);
                                                                     });
                                                                     
-                                                                    webRequest('/data/nurture/retrieve', 'filter=' + newProgramFilter + '&fields=' + fields + '&xsrfId=' + MktSecurity.getXsrfId(), 'POST', false, "", function (response) {
+                                                                    APP.webRequest('/data/nurture/retrieve', 'filter=' + newProgramFilter + '&fields=' + fields + '&xsrfId=' + MktSecurity.getXsrfId(), 'POST', false, "", function (response) {
                                                                         console.log(response);
                                                                         getNewNurtureCadenceResponse = JSON.parse(response);
                                                                     });
@@ -704,19 +704,19 @@ APP.applyMassClone = function () {
                                                                         streamCadences += ']';
                                                                         streamCadences = streamCadences.replace(/\"null\"/g, 'null');
                                                                         
-                                                                        webRequest('/data/nurtureTrack/update', 'data=' + encodeURIComponent(streamCadences) + '&xsrfId=' + MktSecurity.getXsrfId(), 'POST', false, "", function (response) {
+                                                                        APP.webRequest('/data/nurtureTrack/update', 'data=' + encodeURIComponent(streamCadences) + '&xsrfId=' + MktSecurity.getXsrfId(), 'POST', false, "", function (response) {
                                                                             console.log(response);
                                                                             getNurtureCadenceResponse = JSON.parse(response);
                                                                         });
                                                                     }
                                                                 }
                                                                 
-                                                                webRequest('/marketingEvent/getLocalAssetDetails', 'ajaxHandler=MktSession&mktReqUid=' + new Date().getTime() + Ext.id(null, ':') + '&compId=' + currOrigProgramTreeNode.compId + '&xsrfId=' + MktSecurity.getXsrfId(), 'POST', false, "", function (response) {
+                                                                APP.webRequest('/marketingEvent/getLocalAssetDetails', 'ajaxHandler=MktSession&mktReqUid=' + new Date().getTime() + Ext.id(null, ':') + '&compId=' + currOrigProgramTreeNode.compId + '&xsrfId=' + MktSecurity.getXsrfId(), 'POST', false, "", function (response) {
                                                                     console.log(response);
                                                                     getOrigLocalAssetDetailsResponse = JSON.parse(response);
                                                                 });
                                                                 
-                                                                webRequest('/marketingEvent/getLocalAssetDetails', 'ajaxHandler=MktSession&mktReqUid=' + new Date().getTime() + Ext.id(null, ':') + '&compId=' + cloneProgramResponse.JSONResults.actions[0].parameters[0][0].compId + '&xsrfId=' + MktSecurity.getXsrfId(), 'POST', false, "", function (response) {
+                                                                APP.webRequest('/marketingEvent/getLocalAssetDetails', 'ajaxHandler=MktSession&mktReqUid=' + new Date().getTime() + Ext.id(null, ':') + '&compId=' + cloneProgramResponse.JSONResults.actions[0].parameters[0][0].compId + '&xsrfId=' + MktSecurity.getXsrfId(), 'POST', false, "", function (response) {
                                                                     console.log(response);
                                                                     getNewLocalAssetDetailsResponse = JSON.parse(response);
                                                                 });
@@ -743,12 +743,12 @@ APP.applyMassClone = function () {
                                                                                  && currOrigProgramSmartCampaign.name == currNewProgramSmartCampaign.name) {
                                                                                 
                                                                                 if (currOrigProgramSmartCampaign.status == 7) {
-                                                                                    webRequest('/smartcampaigns/toggleActiveStatus', 'ajaxHandler=MktSession&mktReqUid=' + new Date().getTime() + Ext.id(null, ':') + '&smartCampaignId=' + currNewProgramSmartCampaign.compId + '&xsrfId=' + MktSecurity.getXsrfId(), 'POST', false, "", function (result) {
+                                                                                    APP.webRequest('/smartcampaigns/toggleActiveStatus', 'ajaxHandler=MktSession&mktReqUid=' + new Date().getTime() + Ext.id(null, ':') + '&smartCampaignId=' + currNewProgramSmartCampaign.compId + '&xsrfId=' + MktSecurity.getXsrfId(), 'POST', false, "", function (result) {
                                                                                         console.log(result);
                                                                                     });
                                                                                 } else if (currOrigProgramSmartCampaign.status == 3
                                                                                      || currOrigProgramSmartCampaign.status == 5) {
-                                                                                    webRequest('/smartcampaigns/editScheduleRS', 'ajaxHandler=MktSession&mktReqUid=' + new Date().getTime() + Ext.id(null, ':') + '&isRequest=1' + '&smartCampaignId=' + currOrigProgramSmartCampaign.compId + '&xsrfId=' + MktSecurity.getXsrfId(), 'POST', false, "", function (response) {
+                                                                                    APP.webRequest('/smartcampaigns/editScheduleRS', 'ajaxHandler=MktSession&mktReqUid=' + new Date().getTime() + Ext.id(null, ':') + '&isRequest=1' + '&smartCampaignId=' + currOrigProgramSmartCampaign.compId + '&xsrfId=' + MktSecurity.getXsrfId(), 'POST', false, "", function (response) {
                                                                                         console.log(response);
                                                                                         if (response.match(/MktPage\.appVars\.scheduleData = {([^=]|\n|\\n)*}/)[0]) {
                                                                                             getScheduleResponse = JSON.parse(response.match(/MktPage\.appVars\.scheduleData = {([^=]|\n|\\n)*}/)[0].replace(/MktPage\.appVars\.scheduleData = {/, '{').replace(/\'/g, '"').replace(/\\n */g, '"').replace(/: +/g, '": ').replace(/\"\/\/[^\"]+\"/g, '"').replace(/\"}$/, '}'));
@@ -759,7 +759,7 @@ APP.applyMassClone = function () {
                                                                                         var startAtDate = new Date(Date.parse(getScheduleResponse.start_at)),
                                                                                         startAt = startAtDate.getFullYear() + "-" + parseInt(startAtDate.getMonth() + 1) + "-" + startAtDate.getDate() + " " + startAtDate.getHours() + ":" + startAtDate.getMinutes() + ":" + startAtDate.getSeconds();
                                                                                         
-                                                                                        webRequest('/smartcampaigns/recurCampSchedule', 'ajaxHandler=MktSession&mktReqUid=' + new Date().getTime() + Ext.id(null, ':') + '&smartCampaignId=' + currNewProgramSmartCampaign.compId + '&recurrence_type=' + getScheduleResponse.recurrence_type + '&every_n_unit=' + getScheduleResponse.every_n_unit + '&start_at=' + startAt + '&end_at=' + '&every_weekday=' + getScheduleResponse.every_weekday + '&week_mask=' + getScheduleResponse.week_mask + '&recurDay_of_month=' + getScheduleResponse.recurDay_of_month + '&recurMonth_day_type=' + getScheduleResponse.recurMonth_day_type + '&recurMonth_week_type=' + getScheduleResponse.recurMonth_week_type + '&xsrfId=' + MktSecurity.getXsrfId(), 'POST', false, "", function (result) {
+                                                                                        APP.webRequest('/smartcampaigns/recurCampSchedule', 'ajaxHandler=MktSession&mktReqUid=' + new Date().getTime() + Ext.id(null, ':') + '&smartCampaignId=' + currNewProgramSmartCampaign.compId + '&recurrence_type=' + getScheduleResponse.recurrence_type + '&every_n_unit=' + getScheduleResponse.every_n_unit + '&start_at=' + startAt + '&end_at=' + '&every_weekday=' + getScheduleResponse.every_weekday + '&week_mask=' + getScheduleResponse.week_mask + '&recurDay_of_month=' + getScheduleResponse.recurDay_of_month + '&recurMonth_day_type=' + getScheduleResponse.recurMonth_day_type + '&recurMonth_week_type=' + getScheduleResponse.recurMonth_week_type + '&xsrfId=' + MktSecurity.getXsrfId(), 'POST', false, "", function (result) {
                                                                                             console.log(result);
                                                                                         });
                                                                                     }
@@ -808,7 +808,7 @@ APP.applyMassClone = function () {
                                                                                     break;
                                                                                 }
                                                                                 
-                                                                                webRequest('/analytics/applyComponentFilter', 'ajaxHandler=MktSession&mktReqUid=' + new Date().getTime() + Ext.id(null, ':') + '&nodeIds=' + selectedNodes + '&filterType=' + reportFilterType + '&reportId=' + reportId + '&xsrfId=' + MktSecurity.getXsrfId(), 'POST', false, "", function (response) {
+                                                                                APP.webRequest('/analytics/applyComponentFilter', 'ajaxHandler=MktSession&mktReqUid=' + new Date().getTime() + Ext.id(null, ':') + '&nodeIds=' + selectedNodes + '&filterType=' + reportFilterType + '&reportId=' + reportId + '&xsrfId=' + MktSecurity.getXsrfId(), 'POST', false, "", function (response) {
                                                                                     console.log(response);
                                                                                 });
                                                                             }
