@@ -537,7 +537,7 @@ APP.applyMassClone = function () {
                                             height: 225,
                                             cls: 'mktModalForm',
                                             title: 'Please Wait',
-                                            html: '<b><ins>Mass Cloning the ' + massCloneForm.currNode.text + ' folder ...</ins></b><br><br>This may take several minutes depending on the quantity of programs and assets contained therein.'
+                                            html: '<b><ins>Mass Cloning:  ' + massCloneForm.currNode.text + ' ...</ins></b><br><br>This may take several minutes depending on the quantity of programs and assets contained therein.'
                                         }),
                                     cloneToFolderId = massCloneForm.find("fieldLabel", "Clone To")[0].getValue(),
                                     cloneToAffix = massCloneForm.find("fieldLabel", "Program Affix")[0].getValue(),
@@ -625,7 +625,11 @@ APP.applyMassClone = function () {
                                                                         getOrigProgramSettingsResponse = JSON.parse(response);
                                                                     });
                                                                     
-                                                                    if (getOrigProgramSettingsResponse.success) {
+                                                                    if (getOrigProgramSettingsResponse.success
+                                                                         && getOrigProgramSettingsResponse.data
+                                                                         && getOrigProgramSettingsResponse.data[0]
+                                                                         && getOrigProgramSettingsResponse.data[0].summaryData
+                                                                         && getOrigProgramSettingsResponse.data[0].summaryData.amount) {
                                                                         var currYear = new Date().getFullYear(),
                                                                         currMonth = new Date().getMonth() + 1,
                                                                         costAmount;
