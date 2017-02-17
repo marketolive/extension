@@ -511,9 +511,13 @@ APP.applyMassClone = function () {
                                  && massCloneForm.find("fieldLabel", "Name")[0]
                                  && massCloneForm.find("fieldLabel", "Name")[0].fieldLabel
                                  && massCloneForm.items.last().setText
-                                 && massCloneForm.items.last().setVisible) {
+                                 && massCloneForm.items.last().setVisible
+                                 && massCloneForm.setWidth
+                                 && massCloneForm.setHeight) {
                                 window.clearInterval(isCloneVerticalForm);
                                 
+                                massCloneForm.setWidth(520);
+                                massCloneForm.setHeight(450);
                                 massCloneForm.setTitle("Mass Clone");
                                 massCloneForm.buttons[1].setText("Clone");
                                 massCloneForm.buttons[1].currNode = massCloneForm.currNode;
@@ -530,12 +534,12 @@ APP.applyMassClone = function () {
                                 massCloneForm.buttons[1].setHandler(function () {
                                     var waitMsg = new Ext.Window({
                                             closable: true,
-                                            modal: false,
-                                            width: 350,
-                                            height: 150,
+                                            modal: true,
+                                            width: 520,
+                                            height: 225,
                                             cls: 'mktModalForm',
                                             title: 'Please Wait',
-                                            html: 'Mass Cloning: ' + massCloneForm.currNode.text + ' Folder ...'
+                                            html: '<b><ins>Mass Cloning the ' + massCloneForm.currNode.text + ' folder ...</ins></b><br><br>This may take several minutes depending on the quantity of programs and assets contained therein.'
                                         }),
                                     cloneToFolderId = massCloneForm.find("fieldLabel", "Clone To")[0].getValue(),
                                     cloneToVerticalName = massCloneForm.find("fieldLabel", "Program Affix")[0].getValue(),
@@ -832,7 +836,7 @@ APP.applyMassClone = function () {
                                         }, 0);
                                 });
                                 massCloneForm.show();
-                                massCloneForm.items.last().setText("Programs that have a folder depth greater than 1 will not be cloned.<br><br>This will execute the following cloning actions:<br>&nbsp;&nbsp; - Folders<br>&nbsp;&nbsp; - Programs<br>&nbsp;&nbsp; - A Program's first Period Cost amount for the next 24 months<br>&nbsp;&nbsp; - Stream Cadences<br>&nbsp;&nbsp; - Activation state of trigger Smart Campaigns<br>&nbsp;&nbsp; - Recurring schedule of batch Smart Campaigns<br>&nbsp;&nbsp; - Sets the asset filter for contained reports to the destination folder");
+                                massCloneForm.items.last().setText("Programs that have a folder depth greater than 1 will not be cloned.<br><br><ins>This will execute the following cloning actions<ins><br>&nbsp;&nbsp; - Folders<br>&nbsp;&nbsp; - Programs<br>&nbsp;&nbsp; - A Program's first Period Cost amount for the next 24 months<br>&nbsp;&nbsp; - Stream Cadences<br>&nbsp;&nbsp; - Activation state of trigger Smart Campaigns<br>&nbsp;&nbsp; - Recurring schedule of batch Smart Campaigns<br>&nbsp;&nbsp; - Sets the asset filter for contained reports to the destination folder");
                                 massCloneForm.items.last().setVisible(true);
                             }
                         }, 0);
