@@ -540,7 +540,7 @@ APP.applyMassClone = function () {
                                             html: '<b><ins>Mass Cloning the ' + massCloneForm.currNode.text + ' folder ...</ins></b><br><br>This may take several minutes depending on the quantity of programs and assets contained therein.'
                                         }),
                                     cloneToFolderId = massCloneForm.find("fieldLabel", "Clone To")[0].getValue(),
-                                    cloneToVerticalName = massCloneForm.find("fieldLabel", "Program Affix")[0].getValue(),
+                                    cloneToAffix = massCloneForm.find("fieldLabel", "Program Affix")[0].getValue(),
                                     cloneToTreeNode = MktExplorer.getNodeById(cloneToFolderId),
                                     _this = this,
                                     waitMsgShow,
@@ -557,7 +557,7 @@ APP.applyMassClone = function () {
                                                     currTreeNode = _this.currNode.attributes.children[ii];
                                                     
                                                     if (currTreeNode.compType == "Marketing Folder") {
-                                                        var newFolderName = currTreeNode.text.replace(/\([^\)]*\)$/, "(" + cloneToVerticalName + ")"),
+                                                        var newFolderName,
                                                         createFolderResponse,
                                                         cloneProgramResponse,
                                                         getOrigProgramSettingsResponse,
@@ -568,6 +568,12 @@ APP.applyMassClone = function () {
                                                         getNewLocalAssetDetailsResponse,
                                                         getScheduleResponse,
                                                         currOrigProgramTreeNode;
+                                                        
+                                                        if (currTreeNode.text.search(/\([^\)]*\)$/) != -1) {
+                                                            newFolderName = currTreeNode.text.replace(/\([^\)]*\)$/, "(" + cloneToAffix + ")");
+                                                        } else {
+                                                            newFolderName = currTreeNode.text + " (" + cloneToAffix + ")";
+                                                        }
                                                         
                                                         APP.webRequest('/explorer/createProgramFolder', 'ajaxHandler=MktSession&mktReqUid=' + new Date().getTime() + Ext.id(null, ':') + '&text=' + newFolderName + '&parentId=' + cloneToFolderId + '&tempNodeId=ext-' + cloneToFolderId + '&xsrfId=' + MktSecurity.getXsrfId(), 'POST', false, "", function (response) {
                                                             console.log(response);
@@ -581,9 +587,9 @@ APP.applyMassClone = function () {
                                                                 currOrigProgramTreeNode = currTreeNode.children[jj];
                                                                 
                                                                 if (currOrigProgramTreeNode.text.search(/\([^\)]*\)$/) != -1) {
-                                                                    newProgramName = currOrigProgramTreeNode.text.replace(/\([^\)]*\)$/, "(" + cloneToVerticalName + ")");
+                                                                    newProgramName = currOrigProgramTreeNode.text.replace(/\([^\)]*\)$/, "(" + cloneToAffix + ")");
                                                                 } else {
-                                                                    newProgramName = currOrigProgramTreeNode.text + " (" + cloneToVerticalName + ")";
+                                                                    newProgramName = currOrigProgramTreeNode.text + " (" + cloneToAffix + ")";
                                                                 }
                                                                 
                                                                 switch (currOrigProgramTreeNode.compType) {
@@ -834,7 +840,7 @@ APP.applyMassClone = function () {
                                         }, 0);
                                 });
                                 massCloneForm.show();
-                                massCloneForm.setWidth(530);
+                                massCloneForm.setWidth(550);
                                 massCloneForm.setHeight(450);
                                 massCloneForm.items.last().setText("Programs that have a folder depth greater than 1 will not be cloned.<br><br><ins>This will execute the following cloning actions</ins><br>&nbsp;&nbsp; - Folders<br>&nbsp;&nbsp; - Programs<br>&nbsp;&nbsp; - A Program's first Period Cost amount for the next 24 months<br>&nbsp;&nbsp; - Stream Cadences<br>&nbsp;&nbsp; - Activation state of trigger Smart Campaigns<br>&nbsp;&nbsp; - Recurring schedule of batch Smart Campaigns<br>&nbsp;&nbsp; - Sets the asset filter for contained reports to the destination folder");
                                 massCloneForm.items.last().setVisible(true);
