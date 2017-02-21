@@ -644,7 +644,7 @@ APP.setProgramTag = function (origProgramSettingsData, newProgramCompId, tagName
         currSetting = origProgramSettingsData[ii];
         
         if (currSetting.summaryData.name == tagName) {
-            tagData = encodeURIComponent('{"programId":' + cloneProgramResponse.JSONResults.actions[0].parameters[0][0].compId + ',"programDescriptorId":' + parseInt(currSetting.id.replace(/^PD-/, '')) + ',"descriptorId":' + currSetting.descriptorId + ',"descriptorValue":"' + tagValue + '"}');
+            tagData = encodeURIComponent('{"programId":' + newProgramCompId + ',"programDescriptorId":' + parseInt(currSetting.id.replace(/^PD-/, '')) + ',"descriptorId":' + currSetting.descriptorId + ',"descriptorValue":"' + tagValue + '"}');
             break;
         }
     }
