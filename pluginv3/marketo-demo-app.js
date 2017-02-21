@@ -1091,50 +1091,51 @@ APP.applyMassClone = function () {
                                                             cloneFolderResponse = APP.cloneFolder(currTreeNode.text, cloneToAffix, cloneToFolderId);
                                                             
                                                             if (cloneFolderResponse) {
-                                                                var currFolderTreeNode,
-                                                                currOrigProgramTreeNode;
-                                                                
                                                                 for (var jj = 0; currTreeNode.children && jj < currTreeNode.children.length; jj++) {
                                                                     if (currTreeNode.children[jj].compType == "Marketing Folder") {
                                                                         // Mass Clone @ Folder with Folder depth of 2
-                                                                        currFolderTreeNode = currTreeNode.children[jj];
+                                                                        var currFolderTreeNode = currTreeNode.children[jj];
                                                                         
                                                                         cloneFolderResponse = APP.cloneFolder(currFolderTreeNode.text, cloneToAffix, currFolderTreeNode.id);
                                                                         
                                                                         if (cloneFolderResponse) {
-                                                                            currOrigProgramTreeNode = currTreeNode.children[jj];
+                                                                            var currOrigProgramTreeNode;
                                                                             
-                                                                            cloneProgramResponse = APP.cloneProgram(cloneToAffix, cloneFolderResponse.JSONResults.actions[0].parameters[0][0].id, currOrigProgramTreeNode);
-                                                                            
-                                                                            if (cloneProgramResponse) {
-                                                                                getOrigProgramSettingsResponse = APP.getProgramSettings(currOrigProgramTreeNode);
+                                                                            for (var kk = 0; currFolderTreeNode.children && kk < currFolderTreeNode.children.length; kk++) {
+                                                                                currOrigProgramTreeNode = currFolderTreeNode.children[kk];
                                                                                 
-                                                                                if (getOrigProgramSettingsResponse
-                                                                                     && getOrigProgramSettingsResponse.data
-                                                                                     && (inheritPeriodCost
-                                                                                         || numOfPeriodCostMonths > 0)) {
-                                                                                    APP.clonePeriodCost(getOrigProgramSettingsResponse.data, cloneProgramResponse.JSONResults.actions[0].parameters[0][0].compId, numOfPeriodCostMonths, parseInt(periodCostOffset), inheritPeriodCost);
+                                                                                cloneProgramResponse = APP.cloneProgram(cloneToAffix, cloneFolderResponse.JSONResults.actions[0].parameters[0][0].id, currOrigProgramTreeNode);
+                                                                                
+                                                                                if (cloneProgramResponse) {
+                                                                                    getOrigProgramSettingsResponse = APP.getProgramSettings(currOrigProgramTreeNode);
+                                                                                    
+                                                                                    if (getOrigProgramSettingsResponse
+                                                                                         && getOrigProgramSettingsResponse.data
+                                                                                         && (inheritPeriodCost
+                                                                                             || numOfPeriodCostMonths > 0)) {
+                                                                                        APP.clonePeriodCost(getOrigProgramSettingsResponse.data, cloneProgramResponse.JSONResults.actions[0].parameters[0][0].compId, numOfPeriodCostMonths, parseInt(periodCostOffset), inheritPeriodCost);
+                                                                                    }
+                                                                                    
+                                                                                    getNewProgramSettingsResponse = APP.getProgramSettings({
+                                                                                            "compId": cloneProgramResponse.JSONResults.actions[0].parameters[0][0].compId,
+                                                                                            "compType": cloneProgramResponse.JSONResults.actions[0].parameters[0][0].compType
+                                                                                        });
+                                                                                    
+                                                                                    if (getNewProgramSettingsResponse
+                                                                                         && getNewProgramSettingsResponse.data
+                                                                                         && tagName
+                                                                                         && tagValue) {
+                                                                                        APP.setProgramTag(getNewProgramSettingsResponse.data, cloneProgramResponse.JSONResults.actions[0].parameters[0][0].compId, tagName, tagValue);
+                                                                                    }
+                                                                                    
+                                                                                    if (cloneProgramResponse.JSONResults.actions[0].parameters[0][0].compType == "Nurture Program") {
+                                                                                        APP.cloneNurtureCadence(currOrigProgramTreeNode.compId, cloneProgramResponse.JSONResults.actions[0].parameters[0][0].compId);
+                                                                                    }
+                                                                                    
+                                                                                    getNewProgramAssetDetailsResponse = APP.cloneSmartCampaignState(currOrigProgramTreeNode.compId, cloneProgramResponse.JSONResults.actions[0].parameters[0][0].compId, scForceActivate);
+                                                                                    
+                                                                                    APP.setProgramReportFilter(getNewProgramAssetDetailsResponse, cloneToFolderId);
                                                                                 }
-                                                                                
-                                                                                getNewProgramSettingsResponse = APP.getProgramSettings({
-                                                                                        "compId": cloneProgramResponse.JSONResults.actions[0].parameters[0][0].compId,
-                                                                                        "compType": cloneProgramResponse.JSONResults.actions[0].parameters[0][0].compType
-                                                                                    });
-                                                                                
-                                                                                if (getNewProgramSettingsResponse
-                                                                                     && getNewProgramSettingsResponse.data
-                                                                                     && tagName
-                                                                                     && tagValue) {
-                                                                                    APP.setProgramTag(getNewProgramSettingsResponse.data, cloneProgramResponse.JSONResults.actions[0].parameters[0][0].compId, tagName, tagValue);
-                                                                                }
-                                                                                
-                                                                                if (cloneProgramResponse.JSONResults.actions[0].parameters[0][0].compType == "Nurture Program") {
-                                                                                    APP.cloneNurtureCadence(currOrigProgramTreeNode.compId, cloneProgramResponse.JSONResults.actions[0].parameters[0][0].compId);
-                                                                                }
-                                                                                
-                                                                                getNewProgramAssetDetailsResponse = APP.cloneSmartCampaignState(currOrigProgramTreeNode.compId, cloneProgramResponse.JSONResults.actions[0].parameters[0][0].compId, scForceActivate);
-                                                                                
-                                                                                APP.setProgramReportFilter(getNewProgramAssetDetailsResponse, cloneToFolderId);
                                                                             }
                                                                         }
                                                                     } else {
@@ -1178,37 +1179,43 @@ APP.applyMassClone = function () {
                                                             }
                                                         } else {
                                                             // Mass Clone @ Folder with Program children
-                                                            cloneProgramResponse = APP.cloneProgram(cloneToAffix, cloneToFolderId, currOrigProgramTreeNode);
+                                                            var currOrigProgramTreeNode;
                                                             
-                                                            if (cloneProgramResponse) {
-                                                                getOrigProgramSettingsResponse = APP.getProgramSettings(currOrigProgramTreeNode);
+                                                            for (var jj = 0; currTreeNode.children && jj < currTreeNode.children.length; jj++) {
+                                                                currOrigProgramTreeNode = currTreeNode.children[jj];
                                                                 
-                                                                if (getOrigProgramSettingsResponse
-                                                                     && getOrigProgramSettingsResponse.data
-                                                                     && (inheritPeriodCost
-                                                                         || numOfPeriodCostMonths > 0)) {
-                                                                    APP.clonePeriodCost(getOrigProgramSettingsResponse.data, cloneProgramResponse.JSONResults.actions[0].parameters[0][0].compId, numOfPeriodCostMonths, parseInt(periodCostOffset), inheritPeriodCost);
+                                                                cloneProgramResponse = APP.cloneProgram(cloneToAffix, cloneToFolderId, currOrigProgramTreeNode);
+                                                                
+                                                                if (cloneProgramResponse) {
+                                                                    getOrigProgramSettingsResponse = APP.getProgramSettings(currOrigProgramTreeNode);
+                                                                    
+                                                                    if (getOrigProgramSettingsResponse
+                                                                         && getOrigProgramSettingsResponse.data
+                                                                         && (inheritPeriodCost
+                                                                             || numOfPeriodCostMonths > 0)) {
+                                                                        APP.clonePeriodCost(getOrigProgramSettingsResponse.data, cloneProgramResponse.JSONResults.actions[0].parameters[0][0].compId, numOfPeriodCostMonths, parseInt(periodCostOffset), inheritPeriodCost);
+                                                                    }
+                                                                    
+                                                                    getNewProgramSettingsResponse = APP.getProgramSettings({
+                                                                            "compId": cloneProgramResponse.JSONResults.actions[0].parameters[0][0].compId,
+                                                                            "compType": cloneProgramResponse.JSONResults.actions[0].parameters[0][0].compType
+                                                                        });
+                                                                    
+                                                                    if (getNewProgramSettingsResponse
+                                                                         && getNewProgramSettingsResponse.data
+                                                                         && tagName
+                                                                         && tagValue) {
+                                                                        APP.setProgramTag(getNewProgramSettingsResponse.data, cloneProgramResponse.JSONResults.actions[0].parameters[0][0].compId, tagName, tagValue);
+                                                                    }
+                                                                    
+                                                                    if (cloneProgramResponse.JSONResults.actions[0].parameters[0][0].compType == "Nurture Program") {
+                                                                        APP.cloneNurtureCadence(currOrigProgramTreeNode.compId, cloneProgramResponse.JSONResults.actions[0].parameters[0][0].compId);
+                                                                    }
+                                                                    
+                                                                    getNewProgramAssetDetailsResponse = APP.cloneSmartCampaignState(currOrigProgramTreeNode.compId, cloneProgramResponse.JSONResults.actions[0].parameters[0][0].compId, scForceActivate);
+                                                                    
+                                                                    APP.setProgramReportFilter(getNewProgramAssetDetailsResponse, cloneToFolderId);
                                                                 }
-                                                                
-                                                                getNewProgramSettingsResponse = APP.getProgramSettings({
-                                                                        "compId": cloneProgramResponse.JSONResults.actions[0].parameters[0][0].compId,
-                                                                        "compType": cloneProgramResponse.JSONResults.actions[0].parameters[0][0].compType
-                                                                    });
-                                                                
-                                                                if (getNewProgramSettingsResponse
-                                                                     && getNewProgramSettingsResponse.data
-                                                                     && tagName
-                                                                     && tagValue) {
-                                                                    APP.setProgramTag(getNewProgramSettingsResponse.data, cloneProgramResponse.JSONResults.actions[0].parameters[0][0].compId, tagName, tagValue);
-                                                                }
-                                                                
-                                                                if (cloneProgramResponse.JSONResults.actions[0].parameters[0][0].compType == "Nurture Program") {
-                                                                    APP.cloneNurtureCadence(currOrigProgramTreeNode.compId, cloneProgramResponse.JSONResults.actions[0].parameters[0][0].compId);
-                                                                }
-                                                                
-                                                                getNewProgramAssetDetailsResponse = APP.cloneSmartCampaignState(currOrigProgramTreeNode.compId, cloneProgramResponse.JSONResults.actions[0].parameters[0][0].compId, scForceActivate);
-                                                                
-                                                                APP.setProgramReportFilter(getNewProgramAssetDetailsResponse, cloneToFolderId);
                                                             }
                                                         }
                                                     }
