@@ -1026,7 +1026,7 @@ APP.applyMassClone = function () {
                                             height: 225,
                                             cls: 'mktModalForm',
                                             title: 'Please Wait ...',
-                                            html: '<b>Mass Cloning:</b>  ' + massCloneForm.currNode.text + '<br><br>This may take several minutes depending on the quantity of programs and assets contained therein.'
+                                            html: '<b>Mass Cloning:</b>  <i>' + massCloneForm.currNode.text + '</i><br><br>This may take several minutes depending on the quantity of programs and assets contained therein.'
                                         }),
                                     cloneToFolderId = massCloneForm.find("fieldLabel", "Clone To")[0].getValue(),
                                     cloneToAffix = massCloneForm.find("fieldLabel", "Program Affix")[0].getValue(),
@@ -1217,6 +1217,8 @@ APP.applyMassClone = function () {
                                                     }
                                                 } else {
                                                     // Mass Clone @ Program
+                                                    var currOrigProgramTreeNode = _this.currNode.attributes;
+                                                    
                                                     cloneProgramResponse = APP.cloneProgram(cloneToAffix, cloneToFolderId, currOrigProgramTreeNode);
                                                     
                                                     if (cloneProgramResponse) {
