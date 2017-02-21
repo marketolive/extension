@@ -573,7 +573,7 @@ APP.clonePeriodCost = function (origProgramSettingsData, newProgramCompId, numOf
     currMonth = new Date().getMonth() + 1,
     setPeriodCost;
     
-    setPeriodCost = function (newProgramCompId, costDate, costAmount) = {
+    setPeriodCost = function (newProgramCompId, costDate, costAmount) {
         APP.webRequest('/marketingEvent/setCostSubmit', 'ajaxHandler=MktSession&mktReqUid=' + new Date().getTime() + Ext.id(null, ':') + '&compId=' + newProgramCompId + '&costId=' + '&type=period' + '&startDate=' + costDate + '&amount=' + costAmount.toString() + '&description=' + '&xsrfId=' + MktSecurity.getXsrfId(), 'POST', false, "", function (response) {
             console.log(response);
         });
