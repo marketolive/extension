@@ -1109,7 +1109,7 @@ APP.applyMassClone = function () {
                                                 getNewProgramSettingsResponse,
                                                 getNewProgramAssetDetailsResponse;
                                                 
-                                                for (var ii = 0; ii < _this.currNode.attributes.children.length; ii++) {
+                                                for (var ii = 0; _this.currNode.attributes.children && ii < _this.currNode.attributes.children.length; ii++) {
                                                     currTreeNode = _this.currNode.attributes.children[ii];
                                                     
                                                     if (currTreeNode.compType == "Marketing Folder") {
@@ -1118,7 +1118,7 @@ APP.applyMassClone = function () {
                                                         if (cloneFolderResponse) {
                                                             var currOrigProgramTreeNode;
                                                             
-                                                            for (var jj = 0; jj < currTreeNode.children.length; jj++) {
+                                                            for (var jj = 0; currTreeNode.children && jj < currTreeNode.children.length; jj++) {
                                                                 currOrigProgramTreeNode = currTreeNode.children[jj];
                                                                 
                                                                 cloneProgramResponse = APP.cloneProgram(cloneToAffix, cloneFolderResponse.JSONResults.actions[0].parameters[0][0].id, currOrigProgramTreeNode);
