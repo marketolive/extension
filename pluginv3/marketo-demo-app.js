@@ -758,7 +758,8 @@ APP.cloneSmartCampaignState = function (origProgramCompId, newProgramCompId, for
                         APP.webRequest('/smartcampaigns/toggleActiveStatus', 'ajaxHandler=MktSession&mktReqUid=' + new Date().getTime() + Ext.id(null, ':') + '&smartCampaignId=' + currNewProgramSmartCampaign.compId + '&xsrfId=' + MktSecurity.getXsrfId(), 'POST', false, "", function (result) {
                             console.log(result);
                         });
-                    } else if (currOrigProgramSmartCampaign.status == 3
+                    }
+                    if (currOrigProgramSmartCampaign.status == 3
                          || currOrigProgramSmartCampaign.status == 5) {
                         APP.webRequest('/smartcampaigns/editScheduleRS', 'ajaxHandler=MktSession&mktReqUid=' + new Date().getTime() + Ext.id(null, ':') + '&isRequest=1' + '&smartCampaignId=' + currOrigProgramSmartCampaign.compId + '&xsrfId=' + MktSecurity.getXsrfId(), 'POST', false, "", function (response) {
                             console.log(response);
