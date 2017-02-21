@@ -625,9 +625,9 @@ APP.clonePeriodCost = function (origProgramSettingsData, newProgramCompId, numOf
             
             if (offset) {
                 if (Math.random() <= 0.5) {
-                    currCostAmount += Math.floor(Math.random() * offset);
+                    currCostAmount += Math.ceil(Math.random() * offset);
                 } else {
-                    currCostAmount -= Math.floor(Math.random() * offset);
+                    currCostAmount -= Math.ceil(Math.random() * offset);
                 }
             }
             
