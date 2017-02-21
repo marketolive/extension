@@ -987,32 +987,6 @@ APP.applyMassClone = function () {
                                 
                                 tagValueField.fieldLabel = "New Tag Value";
                                 
-                                customTags = APP.getTags();
-                                currCustomTagName = tagNameField.store.data.items[0].copy(0);
-                                currCustomTagValue = tagValueField.store.data.items[0].copy(0);
-                                tagNameField.store.removeAll(true);
-                                tagValueField.store.removeAll(true);
-                                var isCustomTags = window.setInterval(function () {
-                                        if (customTags) {
-                                            window.clearInterval(isCustomTags);
-                                            
-                                            for (var ii = 0; ii < customTags.length; ii++) {
-                                                currCustomTag = customTags[ii];
-                                                currCustomTagName = currCustomTagName.copy(currCustomTag.name);
-                                                currCustomTagName.set("text", currCustomTag.name);
-                                                currCustomTagName.data.id = currCustomTag.name;
-                                                tagNameField.store.add(currCustomTagName);
-                                                
-                                                for (var jj = 0; jj < currCustomTag.values.length; jj++) {
-                                                    currCustomTagValue = currCustomTagValue.copy(currCustomTag.values[jj].value);
-                                                    currCustomTagValue.set("text", currCustomTag.values[jj].value);
-                                                    currCustomTagValue.data.id = currCustomTag.values[jj].value;
-                                                    tagValueField.store.add(currCustomTagValue);
-                                                }
-                                            }
-                                        }
-                                    }, 0);
-                                
                                 var origOnSelect = periodCostCloneField.onSelect;
                                 periodCostCloneField.onSelect = function (doFocus) {
                                     origOnSelect.apply(this, arguments);
@@ -1099,7 +1073,7 @@ APP.applyMassClone = function () {
                                             periodCostOffset = null;
                                         }
                                     }
-                                    
+                                    debugger;
                                     massCloneForm.close();
                                     waitMsgShow = waitMsg.show();
                                     
@@ -1176,6 +1150,31 @@ APP.applyMassClone = function () {
                                 periodCostOffsetField.label.setVisible(false);
                                 tagValueField.label.dom.innerHTML = "&nbsp;&nbsp;&nbsp; New Tag Value:";
                                 tagValueField.label.setVisible(false);
+                                customTags = APP.getTags();
+                                currCustomTagName = tagNameField.store.data.items[0].copy(0);
+                                currCustomTagValue = tagValueField.store.data.items[0].copy(0);
+                                tagNameField.store.removeAll(true);
+                                tagValueField.store.removeAll(true);
+                                var isCustomTags = window.setInterval(function () {
+                                        if (customTags) {
+                                            window.clearInterval(isCustomTags);
+                                            
+                                            for (var ii = 0; ii < customTags.length; ii++) {
+                                                currCustomTag = customTags[ii];
+                                                currCustomTagName = currCustomTagName.copy(currCustomTag.name);
+                                                currCustomTagName.set("text", currCustomTag.name);
+                                                currCustomTagName.data.id = currCustomTag.name;
+                                                tagNameField.store.add(currCustomTagName);
+                                                
+                                                for (var jj = 0; jj < currCustomTag.values.length; jj++) {
+                                                    currCustomTagValue = currCustomTagValue.copy(currCustomTag.values[jj].value);
+                                                    currCustomTagValue.set("text", currCustomTag.values[jj].value);
+                                                    currCustomTagValue.data.id = currCustomTag.values[jj].value;
+                                                    tagValueField.store.add(currCustomTagValue);
+                                                }
+                                            }
+                                        }
+                                    }, 0);
                             }
                         }, 0);
                 });
