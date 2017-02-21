@@ -1065,11 +1065,11 @@ APP.applyMassClone = function () {
                                     periodCostClone = periodCostCloneField.getValue(),
                                     periodCostOffset = periodCostOffsetField.getValue(),
                                     tagName = tagNameField.getValue(),
+                                    tagValue = tagValueField.getValue(),
                                     scForceActivate,
                                     inheritPeriodCost,
                                     periodCostMonth,
                                     numOfPeriodCostMonths,
-                                    
                                     _this = this,
                                     waitMsgShow;
                                     
@@ -1137,7 +1137,9 @@ APP.applyMassClone = function () {
                                                                         });
                                                                     
                                                                     if (getNewProgramSettingsResponse
-                                                                         && getNewProgramSettingsResponse.data) {
+                                                                         && getNewProgramSettingsResponse.data
+                                                                         && tagName
+                                                                         && tagValue) {
                                                                         APP.setProgramTag(getNewProgramSettingsResponse.data, cloneProgramResponse.JSONResults.actions[0].parameters[0][0].compId, tagName, tagValue);
                                                                     }
                                                                     
