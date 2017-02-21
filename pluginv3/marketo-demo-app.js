@@ -859,14 +859,15 @@ APP.setProgramReportFilter = function (getOrigProgramAssetDetailsResponse, getNe
     if (getOrigProgramAssetDetailsResponse
          && getNewProgramAssetDetailsResponse) {
         applyProgramReportFilter(getOrigProgramAssetDetailsResponse, getNewProgramAssetDetailsResponse);
-    } else if (newProgramCompId) {
-        if (getOrigProgramAssetDetailsResponse) {
-            applyProgramReportFilter(getOrigProgramAssetDetailsResponse, APP.getProgramAssetDetails(newProgramCompId));
-        } else if (getNewProgramAssetDetailsResponse) {
-            applyProgramReportFilter(APP.getProgramAssetDetails(origProgramCompId), getNewProgramAssetDetailsResponse);
-        } else {
-            applyProgramReportFilter(APP.getProgramAssetDetails(origProgramCompId), APP.getProgramAssetDetails(newProgramCompId));
-        }
+    } else if (getOrigProgramAssetDetailsResponse
+         && newProgramCompId) {
+        applyProgramReportFilter(getOrigProgramAssetDetailsResponse, APP.getProgramAssetDetails(newProgramCompId));
+    } else if (origProgramCompId
+         && getNewProgramAssetDetailsResponse) {
+        applyProgramReportFilter(APP.getProgramAssetDetails(origProgramCompId), getNewProgramAssetDetailsResponse);
+    } else if (origProgramCompId
+         && newProgramCompId) {
+        applyProgramReportFilter(APP.getProgramAssetDetails(origProgramCompId), APP.getProgramAssetDetails(newProgramCompId));
     }
 };
 
@@ -1069,8 +1070,8 @@ APP.applyMassClone = function () {
                                             width: 520,
                                             height: 225,
                                             cls: 'mktModalForm',
-                                            title: 'Please Wait',
-                                            html: '<b>Mass Cloning:</b>  ' + massCloneForm.currNode.text + ' ...<br><br>This may take several minutes depending on the quantity of programs and assets contained therein.'
+                                            title: 'Please Wait ...',
+                                            html: '<b>Mass Cloning:</b>  ' + massCloneForm.currNode.text + '<br><br>This may take several minutes depending on the quantity of programs and assets contained therein.'
                                         }),
                                     cloneToFolderId = massCloneForm.find("fieldLabel", "Clone To")[0].getValue(),
                                     cloneToAffix = massCloneForm.find("fieldLabel", "Program Affix")[0].getValue(),
@@ -1103,6 +1104,8 @@ APP.applyMassClone = function () {
                                             numOfPeriodCostMonths = 12;
                                         } else if (periodCostMonth == 2) {
                                             numOfPeriodCostMonths = 24;
+                                        } else {
+                                            numOfPeriodCostMonths = 0;
                                         }
                                         
                                         if (!isNumber(parseInt(periodCostOffset))) {
@@ -1141,7 +1144,8 @@ APP.applyMassClone = function () {
                                                                     getOrigProgramSettingsResponse = APP.getProgramSettings(currOrigProgramTreeNode);
                                                                     
                                                                     if (getOrigProgramSettingsResponse
-                                                                         && getOrigProgramSettingsResponse.data) {
+                                                                         && getOrigProgramSettingsResponse.data
+                                                                         && numOfPeriodCostMonths > 0) {
                                                                         APP.clonePeriodCost(getOrigProgramSettingsResponse.data, cloneProgramResponse.JSONResults.actions[0].parameters[0][0].compId, numOfPeriodCostMonths, parseInt(periodCostOffset), inheritPeriodCost);
                                                                     }
                                                                     
@@ -1163,7 +1167,7 @@ APP.applyMassClone = function () {
                                                                     
                                                                     getNewProgramAssetDetailsResponse = APP.cloneSmartCampaignState(currOrigProgramTreeNode.compId, cloneProgramResponse.JSONResults.actions[0].parameters[0][0].compId, scForceActivate);
                                                                     
-                                                                    APP.setProgramReportFilter(getOrigProgramSettingsResponse, getNewProgramAssetDetailsResponse);
+                                                                    APP.setProgramReportFilter(null, getNewProgramAssetDetailsResponse, currOrigProgramTreeNode.compId);
                                                                 }
                                                             }
                                                         }
