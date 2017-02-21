@@ -589,11 +589,17 @@ APP.clonePeriodCost = function (origProgramSettingsData, newProgramCompId, numOf
             if (currPeriodCost.itemType == "period"
                  && currPeriodCost.summaryData.amount
                  && currPeriodCost.summaryData.startDate) {
-                var currCostYear = currYear + (currYear - currYearparseInt(currPeriodCost.summaryData.startDate.match(/^[0-9][0-9][0-9][0-9]/))),
-                currCostMonth = currPeriodCost.summaryData.startDate.replace(/^[0-9][0-9][0-9][0-9]-/, ''),
-                currCostDate = currCostYear.toString() + '-' + currCostMonth.toString(),
-                currCostAmount = currPeriodCost.summaryData.amount;
+                var currCostMonth = currPeriodCost.summaryData.startDate.replace(/^[0-9][0-9][0-9][0-9]-/, ''),
+                currCostAmount = currPeriodCost.summaryData.amount,
+                currCostYear,
+                currCostDate;
                 
+                if (currYear > parseInt(currPeriodCost.summaryData.startDate.match(/^[0-9][0-9][0-9][0-9]/))) {
+                    currCostYear = currYear + (currYear - parseInt(currPeriodCost.summaryData.startDate.match(/^[0-9][0-9][0-9][0-9]/)));
+                } else {
+                    currCostYear = parseInt(currPeriodCost.summaryData.startDate.match(/^[0-9][0-9][0-9][0-9]/));
+                }
+                currCostDate = currCostYear.toString() + '-' + currCostMonth.toString();
                 setPeriodCost(newProgramCompId, currCostDate, currCostAmount);
             }
         }
@@ -1050,7 +1056,7 @@ APP.applyMassClone = function () {
                                             height: 225,
                                             cls: 'mktModalForm',
                                             title: 'Please Wait',
-                                            html: '<ins><b>Mass Cloning:</b>  ' + massCloneForm.currNode.text + ' ...</ins><br><br>This may take several minutes depending on the quantity of programs and assets contained therein.'
+                                            html: '<b>Mass Cloning:</b>  ' + massCloneForm.currNode.text + ' ...<br><br>This may take several minutes depending on the quantity of programs and assets contained therein.'
                                         }),
                                     cloneToFolderId = massCloneForm.find("fieldLabel", "Clone To")[0].getValue(),
                                     cloneToAffix = massCloneForm.find("fieldLabel", "Program Affix")[0].getValue(),
@@ -1155,7 +1161,7 @@ APP.applyMassClone = function () {
                                 massCloneForm.show();
                                 massCloneForm.setWidth(525);
                                 massCloneForm.setHeight(530);
-                                massCloneForm.items.last().setText("Programs that have a folder depth greater than 1 will not be cloned.<br><br><ins>This will execute the following cloning actions</ins><br>&nbsp;&nbsp; - Folders<br>&nbsp;&nbsp; - Programs<br>&nbsp;&nbsp; - A Program's first Period Cost amount for the next 24 months<br>&nbsp;&nbsp; - Stream Cadences<br>&nbsp;&nbsp; - Activation state of trigger Smart Campaigns<br>&nbsp;&nbsp; - Recurring schedule of batch Smart Campaigns<br>&nbsp;&nbsp; - Sets the asset filter for contained reports to the destination folder");
+                                massCloneForm.items.last().setText("Programs that have a folder depth greater than 1 will not be cloned.");
                                 massCloneForm.items.last().setVisible(true);
                                 periodCostMonthField.label.dom.innerHTML = "&nbsp;&nbsp;&nbsp; Months:";
                                 periodCostMonthField.label.setVisible(false);
