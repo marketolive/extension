@@ -803,56 +803,69 @@ APP.cloneSmartCampaignState = function (origProgramCompId, newProgramCompId, for
     return getNewProgramAssetDetailsResponse;
 };
 
-APP.setProgramReportFilter = function (getNewProgramAssetDetailsResponse, newProgramCompId) {
+APP.setProgramReportFilter = function (getOrigProgramAssetDetailsResponse, getNewProgramAssetDetailsResponse, origProgramCompId, newProgramCompId) {
     var applyProgramReportFilter;
     
-    applyProgramReportFilter = function (getNewProgramAssetDetailsResponse) {
-        var currNewReport;
+    applyProgramReportFilter = function (getOrigProgramAssetDetailsResponse, getNewProgramAssetDetailsResponse) {
+        var currOrigReport,
+        currNewReport;
         
-        for (var ii = 0; ii < getNewProgramAssetDetailsResponse.assetList[0].tree.length; ii++) {
-            currNewReport = getNewProgramAssetDetailsResponse.assetList[0].tree[ii];
-            
-            if (currNewReport.compType == "Report") {
-                var currNewReportTreeNode = MktExplorer.getNodeById(currNewReport.navType + currNewReport.compId),
-                reportFilterType,
-                selectedNodes;
+        if (getOrigProgramAssetDetailsResponse
+             && getNewProgramAssetDetailsResponse
+             && getOrigProgramAssetDetailsResponse.assetList[0].tree.length == getNewProgramAssetDetailsResponse.assetList[0].tree.length) {
+            for (var ii = 0; ii < getOrigProgramAssetDetailsResponse.assetList[0].tree.length; ii++) {
+                currOrigReport = getOrigProgramAssetDetailsResponse.assetList[0].tree[ii];
+                currNewReport = getNewProgramAssetDetailsResponse.assetList[0].tree[ii];
                 
-                switch (currNewReportTreeNode.attributes.domain) {
-                case "EmailPerformance":
-                    reportFilterType = "maEmail";
-                    selectedNodes = '["' + cloneToFolderId + '"]';
-                    break;
-                case "EngagementTrackPerformance":
-                    reportFilterType = "nurtureprogram";
-                    selectedNodes = '["' + cloneToFolderId + '"]';
-                    break;
-                case "LandingPagePerformance":
-                    reportFilterType = "maLanding";
-                    selectedNodes = '["' + cloneToFolderId + '"]';
-                    break;
-                case "ProgramPerformance":
-                    reportFilterType = "program";
-                    selectedNodes = '["' + cloneToFolderId + '"]';
-                    break;
-                case "LeadPerformance":
-                    break;
-                case "CompanyWebActivity":
-                    break;
-                case "WebPageActivity":
-                    break;
+                if (currOrigReport.compType == "Report") {
+                    var currOrigReportTreeNode = MktExplorer.getNodeById(currOrigReport.id),
+                    reportFilterType,
+                    selectedNodes;
+                    
+                    switch (currOrigReportTreeNode.attributes.domain) {
+                    case "EmailPerformance":
+                        reportFilterType = "maEmail";
+                        selectedNodes = '["' + cloneToFolderId + '"]';
+                        break;
+                    case "EngagementTrackPerformance":
+                        reportFilterType = "nurtureprogram";
+                        selectedNodes = '["' + cloneToFolderId + '"]';
+                        break;
+                    case "LandingPagePerformance":
+                        reportFilterType = "maLanding";
+                        selectedNodes = '["' + cloneToFolderId + '"]';
+                        break;
+                    case "ProgramPerformance":
+                        reportFilterType = "program";
+                        selectedNodes = '["' + cloneToFolderId + '"]';
+                        break;
+                    case "LeadPerformance":
+                        break;
+                    case "CompanyWebActivity":
+                        break;
+                    case "WebPageActivity":
+                        break;
+                    }
+                    
+                    APP.webRequest('/analytics/applyComponentFilter', 'ajaxHandler=MktSession&mktReqUid=' + new Date().getTime() + Ext.id(null, ':') + '&nodeIds=' + selectedNodes + '&filterType=' + reportFilterType + '&reportId=' + currNewReport.compId + '&xsrfId=' + MktSecurity.getXsrfId(), 'POST', false, "", function (response) {
+                        console.log(response);
+                    });
                 }
-                
-                APP.webRequest('/analytics/applyComponentFilter', 'ajaxHandler=MktSession&mktReqUid=' + new Date().getTime() + Ext.id(null, ':') + '&nodeIds=' + selectedNodes + '&filterType=' + reportFilterType + '&reportId=' + currNewReport.compId + '&xsrfId=' + MktSecurity.getXsrfId(), 'POST', false, "", function (response) {
-                    console.log(response);
-                });
             }
         }
     };
     
-    if (getNewProgramAssetDetailsResponse) {
-        applyProgramReportFilter(getNewProgramAssetDetailsResponse);
+    if (getOrigProgramAssetDetailsResponse
+         && getNewProgramAssetDetailsResponse) {
+        applyProgramReportFilter(getOrigProgramAssetDetailsResponse, getNewProgramAssetDetailsResponse);
     } else if (newProgramCompId) {
-        applyProgramReportFilter(APP.getProgramAssetDetails(newProgramCompId));
+        if (getOrigProgramAssetDetailsResponse) {
+            applyProgramReportFilter(getOrigProgramAssetDetailsResponse, APP.getProgramAssetDetails(newProgramCompId));
+        } else if (getNewProgramAssetDetailsResponse) {
+            applyProgramReportFilter(APP.getProgramAssetDetails(origProgramCompId), getNewProgramAssetDetailsResponse);
+        } else {
+            applyProgramReportFilter(APP.getProgramAssetDetails(origProgramCompId), APP.getProgramAssetDetails(newProgramCompId));
+        }
     }
 };
 
@@ -1149,7 +1162,7 @@ APP.applyMassClone = function () {
                                                                     
                                                                     getNewProgramAssetDetailsResponse = APP.cloneSmartCampaignState(currOrigProgramTreeNode.compId, cloneProgramResponse.JSONResults.actions[0].parameters[0][0].compId, scForceActivate);
                                                                     
-                                                                    APP.setProgramReportFilter(getNewProgramAssetDetailsResponse);
+                                                                    APP.setProgramReportFilter(getOrigProgramSettingsResponse, getNewProgramAssetDetailsResponse);
                                                                 }
                                                             }
                                                         }
