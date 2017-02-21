@@ -1019,14 +1019,15 @@ APP.applyMassClone = function () {
                                 tagValueField.setVisible(false);
                                 
                                 massCloneForm.buttons[1].setHandler(function () {
-                                    var waitMsg = new Ext.Window({
+                                    var waitMsgAffix = '</i><br><br>This may take several minutes depending on the quantity of programs and assets contained therein.',
+                                    waitMsg = new Ext.Window({
                                             closable: true,
                                             modal: true,
                                             width: 520,
                                             height: 225,
                                             cls: 'mktModalForm',
                                             title: 'Please Wait ...',
-                                            html: '<b>Mass Cloning:</b>  <i>' + massCloneForm.currNode.text + '</i><br><br>This may take several minutes depending on the quantity of programs and assets contained therein.'
+                                            html: '<b>Mass Cloning:</b>  <i>' + massCloneForm.currNode.text + waitMsgAffix
                                         }),
                                     cloneToFolderId = massCloneForm.find("fieldLabel", "Clone To")[0].getValue(),
                                     cloneToAffix = massCloneForm.find("fieldLabel", "Program Affix")[0].getValue(),
@@ -1088,6 +1089,7 @@ APP.applyMassClone = function () {
                                                         
                                                         if (currTreeNode.compType == "Marketing Folder") {
                                                             // Mass Clone @ Folder with Folder children
+                                                            waitMsg.update('<b>Cloning Folder:</b>  <i>' + currTreeNode.text + waitMsgAffix);
                                                             cloneFolderResponse = APP.cloneFolder(currTreeNode.text, cloneToAffix, cloneToFolderId);
                                                             
                                                             if (cloneFolderResponse) {
@@ -1096,6 +1098,7 @@ APP.applyMassClone = function () {
                                                                         // Mass Clone @ Folder with Folder depth of 2
                                                                         var currFolderTreeNode = currTreeNode.children[jj];
                                                                         
+                                                                        waitMsg.update('<b>Cloning Folder:</b>  <i>' + currFolderTreeNode.text + waitMsgAffix);
                                                                         cloneFolderResponse = APP.cloneFolder(currFolderTreeNode.text, cloneToAffix, currFolderTreeNode.id);
                                                                         
                                                                         if (cloneFolderResponse) {
@@ -1104,6 +1107,7 @@ APP.applyMassClone = function () {
                                                                             for (var kk = 0; currFolderTreeNode.children && kk < currFolderTreeNode.children.length; kk++) {
                                                                                 currOrigProgramTreeNode = currFolderTreeNode.children[kk];
                                                                                 
+                                                                                waitMsg.update('<b>Cloning Program:</b>  <i>' + currOrigProgramTreeNode.text + waitMsgAffix);
                                                                                 cloneProgramResponse = APP.cloneProgram(cloneToAffix, cloneFolderResponse.JSONResults.actions[0].parameters[0][0].id, currOrigProgramTreeNode);
                                                                                 
                                                                                 if (cloneProgramResponse) {
@@ -1113,6 +1117,7 @@ APP.applyMassClone = function () {
                                                                                          && getOrigProgramSettingsResponse.data
                                                                                          && (inheritPeriodCost
                                                                                              || numOfPeriodCostMonths > 0)) {
+                                                                                        waitMsg.update('<b>Cloning Program Period Costs:</b>  <i>' + currOrigProgramTreeNode.text + waitMsgAffix);
                                                                                         APP.clonePeriodCost(getOrigProgramSettingsResponse.data, cloneProgramResponse.JSONResults.actions[0].parameters[0][0].compId, numOfPeriodCostMonths, parseInt(periodCostOffset), inheritPeriodCost);
                                                                                     }
                                                                                     
@@ -1125,13 +1130,16 @@ APP.applyMassClone = function () {
                                                                                          && getNewProgramSettingsResponse.data
                                                                                          && tagName
                                                                                          && tagValue) {
+                                                                                        waitMsg.update('<b>Setting Program Tag:</b>  <i>' + currOrigProgramTreeNode.text + waitMsgAffix);
                                                                                         APP.setProgramTag(getNewProgramSettingsResponse.data, cloneProgramResponse.JSONResults.actions[0].parameters[0][0].compId, tagName, tagValue);
                                                                                     }
                                                                                     
                                                                                     if (cloneProgramResponse.JSONResults.actions[0].parameters[0][0].compType == "Nurture Program") {
+                                                                                        waitMsg.update('<b>Cloning Nurture Cadences:</b>  <i>' + currOrigProgramTreeNode.text + waitMsgAffix);
                                                                                         APP.cloneNurtureCadence(currOrigProgramTreeNode.compId, cloneProgramResponse.JSONResults.actions[0].parameters[0][0].compId);
                                                                                     }
                                                                                     
+                                                                                    waitMsg.update('<b>Cloning Smart Campaign States:</b>  <i>' + currOrigProgramTreeNode.text + waitMsgAffix);
                                                                                     getNewProgramAssetDetailsResponse = APP.cloneSmartCampaignState(currOrigProgramTreeNode.compId, cloneProgramResponse.JSONResults.actions[0].parameters[0][0].compId, scForceActivate);
                                                                                     
                                                                                     APP.setProgramReportFilter(getNewProgramAssetDetailsResponse, cloneToFolderId);
@@ -1142,6 +1150,7 @@ APP.applyMassClone = function () {
                                                                         // Mass Clone @ Folder with Folder depth of 1
                                                                         currOrigProgramTreeNode = currTreeNode.children[jj];
                                                                         
+                                                                        waitMsg.update('<b>Cloning Program:</b>  <i>' + currOrigProgramTreeNode.text + waitMsgAffix);
                                                                         cloneProgramResponse = APP.cloneProgram(cloneToAffix, cloneFolderResponse.JSONResults.actions[0].parameters[0][0].id, currOrigProgramTreeNode);
                                                                         
                                                                         if (cloneProgramResponse) {
@@ -1151,6 +1160,7 @@ APP.applyMassClone = function () {
                                                                                  && getOrigProgramSettingsResponse.data
                                                                                  && (inheritPeriodCost
                                                                                      || numOfPeriodCostMonths > 0)) {
+                                                                                waitMsg.update('<b>Cloning Program Period Costs:</b>  <i>' + currOrigProgramTreeNode.text + waitMsgAffix);
                                                                                 APP.clonePeriodCost(getOrigProgramSettingsResponse.data, cloneProgramResponse.JSONResults.actions[0].parameters[0][0].compId, numOfPeriodCostMonths, parseInt(periodCostOffset), inheritPeriodCost);
                                                                             }
                                                                             
@@ -1163,13 +1173,16 @@ APP.applyMassClone = function () {
                                                                                  && getNewProgramSettingsResponse.data
                                                                                  && tagName
                                                                                  && tagValue) {
+                                                                                waitMsg.update('<b>Setting Program Tag:</b>  <i>' + currOrigProgramTreeNode.text + waitMsgAffix);
                                                                                 APP.setProgramTag(getNewProgramSettingsResponse.data, cloneProgramResponse.JSONResults.actions[0].parameters[0][0].compId, tagName, tagValue);
                                                                             }
                                                                             
                                                                             if (cloneProgramResponse.JSONResults.actions[0].parameters[0][0].compType == "Nurture Program") {
+                                                                                waitMsg.update('<b>Cloning Nurture Cadences:</b>  <i>' + currOrigProgramTreeNode.text + waitMsgAffix);
                                                                                 APP.cloneNurtureCadence(currOrigProgramTreeNode.compId, cloneProgramResponse.JSONResults.actions[0].parameters[0][0].compId);
                                                                             }
                                                                             
+                                                                            waitMsg.update('<b>Cloning Smart Campaign States:</b>  <i>' + currOrigProgramTreeNode.text + waitMsgAffix);
                                                                             getNewProgramAssetDetailsResponse = APP.cloneSmartCampaignState(currOrigProgramTreeNode.compId, cloneProgramResponse.JSONResults.actions[0].parameters[0][0].compId, scForceActivate);
                                                                             
                                                                             APP.setProgramReportFilter(getNewProgramAssetDetailsResponse, cloneToFolderId);
@@ -1181,6 +1194,7 @@ APP.applyMassClone = function () {
                                                             // Mass Clone @ Folder with Program children
                                                             var currOrigProgramTreeNode = currTreeNode;
                                                             
+                                                            waitMsg.update('<b>Cloning Program:</b>  <i>' + currOrigProgramTreeNode.text + waitMsgAffix);
                                                             cloneProgramResponse = APP.cloneProgram(cloneToAffix, cloneToFolderId, currOrigProgramTreeNode);
                                                             
                                                             if (cloneProgramResponse) {
@@ -1190,6 +1204,7 @@ APP.applyMassClone = function () {
                                                                      && getOrigProgramSettingsResponse.data
                                                                      && (inheritPeriodCost
                                                                          || numOfPeriodCostMonths > 0)) {
+                                                                    waitMsg.update('<b>Cloning Program Period Costs:</b>  <i>' + currOrigProgramTreeNode.text + waitMsgAffix);
                                                                     APP.clonePeriodCost(getOrigProgramSettingsResponse.data, cloneProgramResponse.JSONResults.actions[0].parameters[0][0].compId, numOfPeriodCostMonths, parseInt(periodCostOffset), inheritPeriodCost);
                                                                 }
                                                                 
@@ -1202,13 +1217,16 @@ APP.applyMassClone = function () {
                                                                      && getNewProgramSettingsResponse.data
                                                                      && tagName
                                                                      && tagValue) {
+                                                                    waitMsg.update('<b>Setting Program Tag:</b>  <i>' + currOrigProgramTreeNode.text + waitMsgAffix);
                                                                     APP.setProgramTag(getNewProgramSettingsResponse.data, cloneProgramResponse.JSONResults.actions[0].parameters[0][0].compId, tagName, tagValue);
                                                                 }
                                                                 
                                                                 if (cloneProgramResponse.JSONResults.actions[0].parameters[0][0].compType == "Nurture Program") {
+                                                                    waitMsg.update('<b>Cloning Nurture Cadences:</b>  <i>' + currOrigProgramTreeNode.text + waitMsgAffix);
                                                                     APP.cloneNurtureCadence(currOrigProgramTreeNode.compId, cloneProgramResponse.JSONResults.actions[0].parameters[0][0].compId);
                                                                 }
                                                                 
+                                                                waitMsg.update('<b>Cloning Smart Campaign States:</b>  <i>' + currOrigProgramTreeNode.text + waitMsgAffix);
                                                                 getNewProgramAssetDetailsResponse = APP.cloneSmartCampaignState(currOrigProgramTreeNode.compId, cloneProgramResponse.JSONResults.actions[0].parameters[0][0].compId, scForceActivate);
                                                                 
                                                                 APP.setProgramReportFilter(getNewProgramAssetDetailsResponse, cloneToFolderId);
@@ -1219,6 +1237,7 @@ APP.applyMassClone = function () {
                                                     // Mass Clone @ Program
                                                     var currOrigProgramTreeNode = _this.currNode.attributes;
                                                     
+                                                    waitMsg.update('<b>Cloning Program:</b>  <i>' + currOrigProgramTreeNode.text + waitMsgAffix);
                                                     cloneProgramResponse = APP.cloneProgram(cloneToAffix, cloneToFolderId, currOrigProgramTreeNode);
                                                     
                                                     if (cloneProgramResponse) {
@@ -1228,6 +1247,7 @@ APP.applyMassClone = function () {
                                                              && getOrigProgramSettingsResponse.data
                                                              && (inheritPeriodCost
                                                                  || numOfPeriodCostMonths > 0)) {
+                                                            waitMsg.update('<b>Cloning Program Period Costs:</b>  <i>' + currOrigProgramTreeNode.text + waitMsgAffix);
                                                             APP.clonePeriodCost(getOrigProgramSettingsResponse.data, cloneProgramResponse.JSONResults.actions[0].parameters[0][0].compId, numOfPeriodCostMonths, parseInt(periodCostOffset), inheritPeriodCost);
                                                         }
                                                         
@@ -1240,13 +1260,16 @@ APP.applyMassClone = function () {
                                                              && getNewProgramSettingsResponse.data
                                                              && tagName
                                                              && tagValue) {
+                                                            waitMsg.update('<b>Setting Program Tag:</b>  <i>' + currOrigProgramTreeNode.text + waitMsgAffix);
                                                             APP.setProgramTag(getNewProgramSettingsResponse.data, cloneProgramResponse.JSONResults.actions[0].parameters[0][0].compId, tagName, tagValue);
                                                         }
                                                         
                                                         if (cloneProgramResponse.JSONResults.actions[0].parameters[0][0].compType == "Nurture Program") {
+                                                            waitMsg.update('<b>Cloning Nurture Cadences:</b>  <i>' + currOrigProgramTreeNode.text + waitMsgAffix);
                                                             APP.cloneNurtureCadence(currOrigProgramTreeNode.compId, cloneProgramResponse.JSONResults.actions[0].parameters[0][0].compId);
                                                         }
                                                         
+                                                        waitMsg.update('<b>Cloning Smart Campaign States:</b>  <i>' + currOrigProgramTreeNode.text + waitMsgAffix);
                                                         getNewProgramAssetDetailsResponse = APP.cloneSmartCampaignState(currOrigProgramTreeNode.compId, cloneProgramResponse.JSONResults.actions[0].parameters[0][0].compId, scForceActivate);
                                                         
                                                         APP.setProgramReportFilter(getNewProgramAssetDetailsResponse, cloneToFolderId);
