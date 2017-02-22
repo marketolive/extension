@@ -900,6 +900,11 @@ APP.applyMassClone = function () {
                         }),
                     cloneFromField = cloneForm.find("fieldLabel", "Clone From")[0].cloneConfig(),
                     scActivationField = cloneForm.find("fieldLabel", "Clone To")[0].cloneConfig(),
+                    showMoreOptionsField = new Mkt.apps.marketingEvent.MarketingEventForm({
+                            cloneFromId: this.ownerCt.currNode.attributes.compId,
+                            cloneName: this.ownerCt.currNode.attributes.text,
+                            accessZoneId: this.ownerCt.currNode.attributes.accessZoneId
+                        }).find("fieldLabel", "Clone To")[0].cloneConfig(),
                     periodCostCloneField = new Mkt.apps.marketingEvent.MarketingEventForm({
                             cloneFromId: this.ownerCt.currNode.attributes.compId,
                             cloneName: this.ownerCt.currNode.attributes.text,
@@ -963,25 +968,54 @@ APP.applyMassClone = function () {
                                 massCloneForm.find("fieldLabel", "Campaign Folder")[0].fieldLabel = "Clone To";
                                 massCloneForm.find("fieldLabel", "Name")[0].fieldLabel = "Program Affix";
                                 
+                                showMoreOptionsField.fieldLabel = "Show More Options";
+                                showMoreOptionsField.itemCls = "";
+                                showMoreOptionsField.store.data.items[0].set("text", "No");
+                                showMoreOptionsField.store.data.items[1].set("text", "Yes");
+                                
                                 scActivationField.fieldLabel = "SC Activation State";
+                                scActivationField.itemCls = "";
                                 scActivationField.store.data.items[0].set("text", "Inherit State");
                                 scActivationField.store.data.items[1].set("text", "Force Activate");
                                 
                                 periodCostCloneField.fieldLabel = "Period Cost Data";
+                                periodCostCloneField.itemCls = "";
                                 periodCostCloneField.store.data.items[0].set("text", "Inherit Data");
                                 periodCostCloneField.store.data.items[1].set("text", "Baseline Data");
                                 
                                 periodCostMonthField.fieldLabel = "Period Cost Months";
+                                periodCostMonthField.itemCls = "mktRequired";
                                 periodCostMonthField.store.data.items[0].set("text", "12 Months");
                                 periodCostMonthField.store.data.items[1].set("text", "24 Months");
                                 
                                 periodCostOffsetField.fieldLabel = "Period Cost Offset";
+                                periodCostOffsetField.itemCls = "";
                                 
                                 tagNameField.fieldLabel = "Change Tag Type";
+                                tagNameField.itemCls = "";
                                 
                                 tagValueField.fieldLabel = "New Tag Value";
+                                tagValueField.itemCls = "mktRequired";
                                 
-                                var origOnSelect = periodCostCloneField.onSelect;
+                                var origOnSelect = showMoreOptionsField.onSelect;
+                                showMoreOptionsField.onSelect = function (doFocus) {
+                                    origOnSelect.apply(this, arguments);
+                                    if (this.value == 2) {
+                                        this.ownerCt.find("fieldLabel", "SC Activation State")[0].label.setVisible(true);
+                                        this.ownerCt.find("fieldLabel", "SC Activation State")[0].setVisible(true);
+                                        this.ownerCt.find("fieldLabel", "Period Cost Data")[0].label.setVisible(true);
+                                        this.ownerCt.find("fieldLabel", "Period Cost Data")[0].setVisible(true);
+                                        this.ownerCt.find("fieldLabel", "Change Tag Type")[0].label.setVisible(true);
+                                        this.ownerCt.find("fieldLabel", "Change Tag Type")[0].setVisible(true);
+                                    } else {
+                                        this.ownerCt.find("fieldLabel", "Change Tag Type")[0].setVisible(false);
+                                        this.ownerCt.find("fieldLabel", "Change Tag Type")[0].label.setVisible(false);
+                                        this.ownerCt.find("fieldLabel", "Period Cost Offset")[0].setVisible(false);
+                                        this.ownerCt.find("fieldLabel", "Period Cost Offset")[0].label.setVisible(false);
+                                        this.ownerCt.find("fieldLabel", "Period Cost Months")[0].setVisible(false);
+                                        this.ownerCt.find("fieldLabel", "Period Cost Months")[0].label.setVisible(false);
+                                    }
+                                };
                                 periodCostCloneField.onSelect = function (doFocus) {
                                     origOnSelect.apply(this, arguments);
                                     if (this.value == 2) {
@@ -1008,13 +1042,17 @@ APP.applyMassClone = function () {
                                 };
                                 
                                 massCloneForm.insert(0, cloneFromField);
+                                massCloneForm.insert(massCloneForm.items.length - 1, showMoreOptionsField);
                                 massCloneForm.insert(massCloneForm.items.length - 1, scActivationField);
+                                scActivationField.setVisible(false);
                                 massCloneForm.insert(massCloneForm.items.length - 1, periodCostCloneField);
+                                periodCostCloneField.setVisible(false);
                                 massCloneForm.insert(massCloneForm.items.length - 1, periodCostMonthField);
                                 periodCostMonthField.setVisible(false);
                                 massCloneForm.insert(massCloneForm.items.length - 1, periodCostOffsetField);
                                 periodCostOffsetField.setVisible(false);
                                 massCloneForm.insert(massCloneForm.items.length - 1, tagNameField);
+                                tagNameField.setVisible(false);
                                 massCloneForm.insert(massCloneForm.items.length - 1, tagValueField);
                                 tagValueField.setVisible(false);
                                 
@@ -1257,17 +1295,24 @@ APP.applyMassClone = function () {
                                             }
                                         }, 0);
                                 });
+                                
                                 massCloneForm.show();
+                                showMoreOptionsField.onSelect(showMoreOptionsField.findRecord("text", "No"));
+                                scActivationField.onSelect(scActivationField.findRecord("text", "Inherit State"));
+                                periodCostCloneField.onSelect(periodCostCloneField.findRecord("text", "Inherit Data"));
                                 massCloneForm.setWidth(525);
-                                massCloneForm.setHeight(530);
+                                massCloneForm.setHeight(560);
                                 massCloneForm.items.last().setText("Programs that have a folder depth greater than 2 will not be cloned.");
                                 massCloneForm.items.last().setVisible(true);
+                                tagValueField.label.setVisible(false);
+                                tagNameField.label.setVisible(false);
                                 periodCostMonthField.label.dom.innerHTML = "&nbsp;&nbsp;&nbsp; Months:";
                                 periodCostMonthField.label.setVisible(false);
                                 periodCostOffsetField.label.dom.innerHTML = "&nbsp;&nbsp;&nbsp; Cost Offset (+/-):";
                                 periodCostOffsetField.label.setVisible(false);
                                 tagValueField.label.dom.innerHTML = "&nbsp;&nbsp;&nbsp; New Tag Value:";
-                                tagValueField.label.setVisible(false);
+                                periodCostCloneField.label.setVisible(false);
+                                scActivationField.label.setVisible(false);
                                 customTags = APP.getTags();
                                 currCustomTagName = tagNameField.store.data.items[0].copy(0);
                                 currCustomTagValue = tagValueField.store.data.items[0].copy(0);
