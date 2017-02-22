@@ -879,7 +879,7 @@ APP.getTags = function () {
     return result;
 };
 
-APP.applyMassClone = function () {
+APP.applyMassClone = function (forceReload) {
     console.log("Marketo Demo App > Applying: Mass Clone Menu Item");
     
     massClone = function () {
@@ -1353,7 +1353,12 @@ APP.applyMassClone = function () {
                          || this.currNode.attributes.compType == "Marketing Event"
                          || this.currNode.attributes.compType == "Email Batch Program"
                          || this.currNode.attributes.compType == "In-App Program")) {
-                    this.get(massCloneItemId).setVisible(true);
+                    if (forceReload) {
+                        this.get(massCloneItemId).destroy();
+                        this.addItem(massCloneItem);
+                    } else {
+                        this.get(massCloneItemId).setVisible(true);
+                    }
                 } else {
                     this.get(massCloneItemId).setVisible(false);
                 }
