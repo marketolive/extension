@@ -853,7 +853,7 @@ APP.setProgramReportFilter = function (getNewProgramAssetDetailsResponse, cloneT
 };
 
 APP.getTags = function () {
-    var result = APP.webRequest('/marketingEvent/getAllDescriptors', '&start=0' + '&xsrfId=' + MktSecurity.getXsrfId(), 'POST', true, "", function (response) { ;
+    var result = APP.webRequest('/marketingEvent/getAllDescriptors', '&start=0' + '&xsrfId=' + MktSecurity.getXsrfId(), 'POST', false, "", function (response) { ;
             console.log(response);
             response = JSON.parse(response);
             
