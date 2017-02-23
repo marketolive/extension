@@ -1,5 +1,3 @@
-<html>
-<p>
 [{
         type: landingPageType,
         url: "http://" + mktoLiveLandingPageDomain + "/technology-contact-us.html",
@@ -73,5 +71,3 @@
         conversionRate: 0.5
     }
 ]
-</p>
-</html>
