@@ -1,130 +1,130 @@
 [{
-        onlineAd: true,
-        type: landingPageType,
-        url: "http://" + mktoLiveLandingPageDomain + "/google-adwords-acquire.html",
-        lpUrl: "http://" + mktoLiveLandingPageHost + "/lp/" + mktoLiveMunchkinId + "/google-adwords-acquire.html",
-        conversionRate: 0.5
+        "onlineAd": true,
+        "type": "landing",
+        "url": "http://pages.marketolive.com/google-adwords-acquire.html",
+        "lpUrl": "http://na-sjdemo1.marketo.com/lp/185-NGX-811/google-adwords-acquire.html",
+        "conversionRate": 0.5
     }, {
-        type: webPageType,
-        url: "http://" + mktoLiveHost + "/info/contact-us"
+        "type": "web",
+        "url": "http://www.marketolive.com/info/contact-us"
     }, {
-        type: verticalsPageType,
-        url: "http://" + mktoVerticalsHost + "/predictive-content",
-        clickRate: 1.0
+        "type": "verticals",
+        "url": "http://verticals.marketolive.com/predictive-content",
+        "clickRate": 1.0
     }, {
-        type: verticalsPageType,
-        url: "http://" + mktoVerticalsHost + "/predictive-content-106",
-        clickRate: 1.0
+        "type": "verticals",
+        "url": "http://verticals.marketolive.com/predictive-content-106",
+        "clickRate": 1.0
     }, {
-        type: verticalsPageType,
-        url: "http://" + mktoVerticalsHost + "/predictive-content-106d",
-        clickRate: 1.0
+        "type": "verticals",
+        "url": "http://verticals.marketolive.com/predictive-content-106d",
+        "clickRate": 1.0
     }, {
-        onlineAd: true,
-        type: landingPageType,
-        url: "http://" + mktoLiveLandingPageDomain + "/google-display-ads-acquire.html",
-        lpUrl: "http://" + mktoLiveLandingPageHost + "/lp/" + mktoLiveMunchkinId + "/google-display-ads-acquire.html",
-        conversionRate: 0.5
+        "onlineAd": true,
+        "type": "landing",
+        "url": "http://pages.marketolive.com/google-display-ads-acquire.html",
+        "lpUrl": "http://na-sjdemo1.marketo.com/lp/185-NGX-811/google-display-ads-acquire.html",
+        "conversionRate": 0.5
     }, {
-        type: webPageType,
-        url: "http://" + mktoLiveHost + "/info/why-us"
+        "type": "web",
+        "url": "http://www.marketolive.com/info/why-us"
     }, {
-        type: landingPageType,
-        url: "http://" + mktoLiveLandingPageDomain + "/cloud-storage-demo-registration.html",
-        lpUrl: "http://" + mktoLiveLandingPageHost + "/lp/" + mktoLiveMunchkinId + "/cloud-storage-demo-registration.html",
-        conversionRate: 0.5
+        "type": "landing",
+        "url": "http://pages.marketolive.com/cloud-storage-demo-registration.html",
+        "lpUrl": "http://na-sjdemo1.marketo.com/lp/185-NGX-811/cloud-storage-demo-registration.html",
+        "conversionRate": 0.5
     }, {
-        type: webPageType,
-        url: "http://" + mktoLiveHost + "/info/webinar"
+        "type": "web",
+        "url": "http://www.marketolive.com/info/webinar"
     }, {
-        type: landingPageType,
-        url: "http://" + mktoLiveLandingPageDomain + "/cloud-storage-demo-check-in.html",
-        lpUrl: "http://" + mktoLiveLandingPageHost + "/lp/" + mktoLiveMunchkinId + "/cloud-storage-demo-check-in.html",
-        conversionRate: 0.5
+        "type": "landing",
+        "url": "http://pages.marketolive.com/cloud-storage-demo-check-in.html",
+        "lpUrl": "http://na-sjdemo1.marketo.com/lp/185-NGX-811/cloud-storage-demo-check-in.html",
+        "conversionRate": 0.5
     }, {
-        onlineAd: true,
-        type: landingPageType,
-        url: "http://" + mktoLiveLandingPageDomain + "/facebook-lead-ads-acquire.html",
-        lpUrl: "http://" + mktoLiveLandingPageHost + "/lp/" + mktoLiveMunchkinId + "/facebook-lead-ads-acquire.html",
-        conversionRate: 0.5
+        "onlineAd": true,
+        "type": "landing",
+        "url": "http://pages.marketolive.com/facebook-lead-ads-acquire.html",
+        "lpUrl": "http://na-sjdemo1.marketo.com/lp/185-NGX-811/facebook-lead-ads-acquire.html",
+        "conversionRate": 0.5
     }, {
-        type: webPageType,
-        url: "http://" + mktoLiveHost + "/info/products"
+        "type": "web",
+        "url": "http://www.marketolive.com/info/products"
     }, {
-        type: landingPageType,
-        url: "http://" + mktoLiveLandingPageDomain + "/cloud-nation-summit-registration.html",
-        lpUrl: "http://" + mktoLiveLandingPageHost + "/lp/" + mktoLiveMunchkinId + "/cloud-nation-summit-registration.html",
-        conversionRate: 0.5
+        "type": "landing",
+        "url": "http://pages.marketolive.com/cloud-nation-summit-registration.html",
+        "lpUrl": "http://na-sjdemo1.marketo.com/lp/185-NGX-811/cloud-nation-summit-registration.html",
+        "conversionRate": 0.5
     }, {
-        type: webPageType,
-        url: "http://" + mktoLiveHost + "/info/live-event"
+        "type": "web",
+        "url": "http://www.marketolive.com/info/live-event"
     }, {
-        type: landingPageType,
-        url: "http://" + mktoLiveLandingPageDomain + "/cloud-nation-summit-check-in.html",
-        lpUrl: "http://" + mktoLiveLandingPageHost + "/lp/" + mktoLiveMunchkinId + "/cloud-nation-summit-check-in.html",
-        conversionRate: 0.5
+        "type": "landing",
+        "url": "http://pages.marketolive.com/cloud-nation-summit-check-in.html",
+        "lpUrl": "http://na-sjdemo1.marketo.com/lp/185-NGX-811/cloud-nation-summit-check-in.html",
+        "conversionRate": 0.5
     }, {
-        onlineAd: true,
-        type: landingPageType,
-        url: "http://" + mktoLiveLandingPageDomain + "/facebook-news-feed-ads-acquire.html",
-        lpUrl: "http://" + mktoLiveLandingPageHost + "/lp/" + mktoLiveMunchkinId + "/facebook-news-feed-ads-acquire.html",
-        conversionRate: 0.5
+        "onlineAd": true,
+        "type": "landing",
+        "url": "http://pages.marketolive.com/facebook-news-feed-ads-acquire.html",
+        "lpUrl": "http://na-sjdemo1.marketo.com/lp/185-NGX-811/facebook-news-feed-ads-acquire.html",
+        "conversionRate": 0.5
     }, {
-        type: webPageType,
-        url: "http://" + mktoLiveHost + "/info/integrations"
+        "type": "web",
+        "url": "http://www.marketolive.com/info/integrations"
     }, {
-        type: landingPageType,
-        url: "http://" + mktoLiveLandingPageDomain + "/data-compliance-demo-registration.html",
-        lpUrl: "http://" + mktoLiveLandingPageHost + "/lp/" + mktoLiveMunchkinId + "/data-compliance-demo-registration.html",
-        conversionRate: 0.5
+        "type": "landing",
+        "url": "http://pages.marketolive.com/data-compliance-demo-registration.html",
+        "lpUrl": "http://na-sjdemo1.marketo.com/lp/185-NGX-811/data-compliance-demo-registration.html",
+        "conversionRate": 0.5
     }, {
-        type: webPageType,
-        url: "http://" + mktoLiveHost + "/info/webinar"
+        "type": "web",
+        "url": "http://www.marketolive.com/info/webinar"
     }, {
-        type: landingPageType,
-        url: "http://" + mktoLiveLandingPageDomain + "/data-compliance-demo-check-in.html",
-        lpUrl: "http://" + mktoLiveLandingPageHost + "/lp/" + mktoLiveMunchkinId + "/data-compliance-demo-check-in.html",
-        conversionRate: 0.5
+        "type": "landing",
+        "url": "http://pages.marketolive.com/data-compliance-demo-check-in.html",
+        "lpUrl": "http://na-sjdemo1.marketo.com/lp/185-NGX-811/data-compliance-demo-check-in.html",
+        "conversionRate": 0.5
     }, {
-        onlineAd: true,
-        type: landingPageType,
-        url: "http://" + mktoLiveLandingPageDomain + "/linkedin-lead-ads-acquire.html",
-        lpUrl: "http://" + mktoLiveLandingPageHost + "/lp/" + mktoLiveMunchkinId + "/linkedin-lead-ads-acquire.html",
-        conversionRate: 0.5
+        "onlineAd": true,
+        "type": "landing",
+        "url": "http://pages.marketolive.com/linkedin-lead-ads-acquire.html",
+        "lpUrl": "http://na-sjdemo1.marketo.com/lp/185-NGX-811/linkedin-lead-ads-acquire.html",
+        "conversionRate": 0.5
     }, {
-        type: webPageType,
-        url: "http://" + mktoLiveHost + "/info/pricing"
+        "type": "web",
+        "url": "http://www.marketolive.com/info/pricing"
     }, {
-        type: landingPageType,
-        url: "http://" + mktoLiveLandingPageDomain + "/data-protection-webinar-registration.html",
-        lpUrl: "http://" + mktoLiveLandingPageHost + "/lp/" + mktoLiveMunchkinId + "/data-protection-webinar-registration.html",
-        conversionRate: 0.5
+        "type": "landing",
+        "url": "http://pages.marketolive.com/data-protection-webinar-registration.html",
+        "lpUrl": "http://na-sjdemo1.marketo.com/lp/185-NGX-811/data-protection-webinar-registration.html",
+        "conversionRate": 0.5
     }, {
-        type: webPageType,
-        url: "http://" + mktoLiveHost + "/info/webinar"
+        "type": "web",
+        "url": "http://www.marketolive.com/info/webinar"
     }, {
-        type: landingPageType,
-        url: "http://" + mktoLiveLandingPageDomain + "/data-protection-webinar-check-in.html",
-        lpUrl: "http://" + mktoLiveLandingPageHost + "/lp/" + mktoLiveMunchkinId + "/data-protection-webinar-check-in.html",
-        conversionRate: 0.5
+        "type": "landing",
+        "url": "http://pages.marketolive.com/data-protection-webinar-check-in.html",
+        "lpUrl": "http://na-sjdemo1.marketo.com/lp/185-NGX-811/data-protection-webinar-check-in.html",
+        "conversionRate": 0.5
     }, {
-        onlineAd: true,
-        type: landingPageType,
-        url: "http://" + mktoLiveLandingPageDomain + "/demand-side-platform-acquire.html",
-        lpUrl: "http://" + mktoLiveLandingPageHost + "/lp/" + mktoLiveMunchkinId + "/demand-side-platform-acquire.html",
-        conversionRate: 0.5
+        "onlineAd": true,
+        "type": "landing",
+        "url": "http://pages.marketolive.com/demand-side-platform-acquire.html",
+        "lpUrl": "http://na-sjdemo1.marketo.com/lp/185-NGX-811/demand-side-platform-acquire.html",
+        "conversionRate": 0.5
     }, {
-        type: webPageType,
-        url: "http://" + mktoLiveHost + "/info/community"
+        "type": "web",
+        "url": "http://www.marketolive.com/info/community"
     }, {
-        type: landingPageType,
-        url: "http://" + mktoLiveLandingPageDomain + "/preference-center.html",
-        lpUrl: "http://" + mktoLiveLandingPageHost + "/lp/" + mktoLiveMunchkinId + "/preference-center.html",
-        conversionRate: 0.5
+        "type": "landing",
+        "url": "http://pages.marketolive.com/preference-center.html",
+        "lpUrl": "http://na-sjdemo1.marketo.com/lp/185-NGX-811/preference-center.html",
+        "conversionRate": 0.5
     }, {
-        type: landingPageType,
-        url: "http://" + mktoLiveLandingPageDomain + "/not-you-preference-center.html",
-        lpUrl: "http://" + mktoLiveLandingPageHost + "/lp/" + mktoLiveMunchkinId + "/not-you-preference-center.html",
-        conversionRate: 0.5
+        "type": "landing",
+        "url": "http://pages.marketolive.com/not-you-preference-center.html",
+        "lpUrl": "http://na-sjdemo1.marketo.com/lp/185-NGX-811/not-you-preference-center.html",
+        "conversionRate": 0.5
     }
 ]
