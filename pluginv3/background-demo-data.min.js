@@ -181,11 +181,11 @@ if (dayOfMonth > numOfVerticals) {
     currVerticalIndex = dayOfMonth - 1;
 }
 switch (currVerticalIndex) {
-    case 0:
+case 0:
     currVertical = "coe";
     visitedPagesCookieMarketoLive.name = "visitedPagesCoe";
     break;
-    case 1:
+case 1:
     currVertical = "tech";
     visitedPagesCookieMarketoLive.name = "visitedPagesTech";
     break;
@@ -467,7 +467,9 @@ getCookie(visitedPagesCookieMarketoLive, function (cookie) {
     if (cookie
          && cookie.value
          && Number.isInteger(parseInt(cookie.value))) {
-        verticalPages = webRequest('https://marketolive.com/' + URL_PATH + '/pluginv3/data/' + currVertical + '-pages-journey.json', null, 'GET', false, '', function (response) {console.log(response); return JSON.parse(response);});
+        verticalPages = webRequest('https://marketolive.com/' + URL_PATH + '/pluginv3/data/' + currVertical + '-pages-journey.json', null, 'GET', false, '', function (response) {
+                return JSON.parse(response);
+            });
         
         if (parseInt(cookie.value) + 1 < verticalPages.length
              && parseInt(cookie.value) + 1 >= 0) {
@@ -479,7 +481,9 @@ getCookie(visitedPagesCookieMarketoLive, function (cookie) {
         }
         
     } else {
-        verticalPages = webRequest('https://marketolive.com/' + URL_PATH + '/pluginv3/data/' + currVertical + '-pages-acquire.json', null, 'GET', false, '', function (response) {console.log(response); return JSON.parse(response);});
+        verticalPages = webRequest('https://marketolive.com/' + URL_PATH + '/pluginv3/data/' + currVertical + '-pages-acquire.json', null, 'GET', false, '', function (response) {
+                return JSON.parse(response);
+            });
         
         verticalPageX = verticalPages[Math.floor(Math.random() * verticalPages.length)];
         visitedPagesIndex = -1;
@@ -500,7 +504,9 @@ getCookie(visitedPagesCookieMarketoLive, function (cookie) {
                      || (Math.random()) <= verticalPageX.conversionRate) {
                     params = "submit=true";
                     if (verticalPageX.url.search(/-acquire\.html$/) != -1) {
-                        utm = webRequest('https://marketolive.com/' + URL_PATH + '/pluginv3/data/' + currVertical + '-utm-values.json', null, 'GET', false, '', function (response) {console.log(response); return JSON.parse(response);});
+                        utm = webRequest('https://marketolive.com/' + URL_PATH + '/pluginv3/data/' + currVertical + '-utm-values.json', null, 'GET', false, '', function (response) {
+                                return JSON.parse(response);
+                            });
                         
                         var utmTermX = utm.terms[Math.floor(Math.random() * utm.terms.length)],
                         utmMediumX = utm.mediums[Math.floor(Math.random() * utm.mediums.length)],
