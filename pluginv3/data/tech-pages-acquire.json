@@ -2,7 +2,7 @@
   {
     "type": "landing",
     "url": "http://pages.marketolive.com/technology-contact-us.html",
-    "lpUrl": "http://na-sjdemo1.marketo.com/lp/185-NGX-811/turner-contact-us.html",
+    "lpUrl": "http://na-sjdemo1.marketo.com/lp/185-NGX-811/technology-contact-us.html",
     "conversionRate": 0.5
   },
   {
@@ -15,6 +15,12 @@
     "type": "landing",
     "url": "http://pages.marketolive.com/cloud-backup-whitepaper-download.html",
     "lpUrl": "http://na-sjdemo1.marketo.com/lp/185-NGX-811/cloud-backup-whitepaper-download.html",
+    "conversionRate": 0.5
+  },
+  {
+    "type": "landing",
+    "url": "http://pages.marketolive.com/technology-monthly-digest-signup.html",
+    "lpUrl": "http://na-sjdemo1.marketo.com/lp/185-NGX-811/technology-monthly-digest-signup.html",
     "conversionRate": 0.5
   },
   {
