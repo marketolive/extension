@@ -70,21 +70,31 @@ function loadScript(scriptSrc) {
  *  @param {String} url - The HTTP request URL.
  *  @param {String} params - The parameters to pass in the body of the request.
  *  @param {String} method - The HTTP request method (e.g. GET, POST, PATCH).
+ *  @param {Boolean} async - Type of request execution (true = async, false = sync).
  *  @param {String} responseType - The type of the response (e.g. document, json, text).
  *  @param {Function} callback - The callback function.
  *
  **************************************************************************************/
 
-function webRequest(url, params, method, responseType, callback) {
-    var xmlHttp = new XMLHttpRequest();
+function webRequest(url, params, method, async, responseType, callback) {
+    console.log("Web Request > " + url + "\n" + params);
+    var xmlHttp = new XMLHttpRequest(),
+    result;
     xmlHttp.onreadystatechange = function () {
-        if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
-            callback(xmlHttp.response);
+        if (callback
+             && xmlHttp.readyState == 4
+             && xmlHttp.status == 200)
+            result = callback(xmlHttp.response);
     }
-    xmlHttp.open(method, url, true); // true for asynchronous
-    xmlHttp.responseType = responseType;
-    xmlHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    if (async
+         && xmlHttp.responseType) {
+        xmlHttp.responseType = responseType;
+    }
+    xmlHttp.open(method, url, async); // true for asynchronous
+    xmlHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded; charset=UTF-8");
+    xmlHttp.setRequestHeader("X-Requested-With", "XMLHttpRequest");
     xmlHttp.send(params);
+    return result;
 };
 
 /**************************************************************************************
