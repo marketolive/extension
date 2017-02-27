@@ -480,8 +480,8 @@ getCookie(visitedPagesCookieMarketoLive, function (cookie) {
     } else {
         verticalPages = webRequest('https://marketolive.com/' + URL_PATH + '/pluginv3/data/' + currVertical + '-pages-acquire.json', null, 'GET', false, '', function (response) {console.log(response); return JSON.parse(response);});
         
-        visitedPagesIndex = verticalPages[Math.floor(Math.random() * verticalPages.length)];
-        verticalPageX = verticalPages[visitedPagesIndex];
+        verticalPageX = verticalPages[Math.floor(Math.random() * verticalPages.length)];
+        visitedPagesIndex = 0;
     }
     /*
     if (verticalPageX.lpUrl) {
