@@ -103,8 +103,8 @@ isMktoPageGlobal = window.setInterval(function () {
             var accountString = MktPage.savedState.custPrefix,
             mktoDemoAccountMatch = "^scdynamics1$|^mktodemoaccount3[0-9][0-9]$|^mktodemoaccount201$|^mktodemoaccount232$|^mktodemoaccount264$",
             mktoAccountStringQe = "globalsales",
-            mktoAccountStringsMatch106 = "^mktodemoaccount106$|^mktodemoaccount106d$|^mktodemolivemaster$",
-            mktoAccountStringsMatch = mktoAccountStringsMatch106 + "|^" + mktoAccountStringQe + "$",
+            mktoAccountStringsMatch106 = "^mktodemoaccount106$|^mktodemoaccount106d$",
+            mktoAccountStringsMatch = mktoAccountStringsMatch106 + "|^mktodemolivemaster$" + mktoAccountStringQe + "$",
             mktoAppDomain = "^https:\/\/app-[a-z0-9]+\.marketo\.com",
             mktoDesignerDomain = "^https:\/\/[a-z0-9]+-[a-z0-9]+\.marketodesigner\.com",
             mktoWizardDomain = mktoAppDomain + "/m#",
@@ -120,7 +120,8 @@ isMktoPageGlobal = window.setInterval(function () {
                     loadScript(HEAP_ANALYTICS_SCRIPT_LOCATION);
                 }
                 
-                if (currentUrl.search(mktoWizardDomain) == -1
+                if (accountString.search(mktoAccountStringsMatch106 + "|^" + mktoAccountStringQe + "$") != -1
+                     && currentUrl.search(mktoWizardDomain) == -1
                      && currentUrl.search(mktoDesignerDomain) == -1) {
                     loadScript(POD_SCRIPT_LOCATION);
                     loadScript(DASHBOARD_SCRIPT_LOCATION);

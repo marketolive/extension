@@ -59,7 +59,7 @@ currUrlFragment,
 currCompFragment,
 userName,
 
-adminUserNamesMatch = "^admin(\.[a-z]{0,2})?@(marketolive.com$|mktodemoaccount)" + "|" + "^mktodemoaccount[a-z0-9]*@marketo\.com" + "|" + "^marketodemo.*@gmail\.com$",
+adminUserNamesMatch = "^mktodemolivemaster@marketo\.com$|^admin(\.[a-z]{0,2})?@(marketolive.com$|mktodemoaccount)|^mktodemoaccount[a-z0-9]*@marketo\.com$|^marketodemo.*@gmail\.com$",
 
 mktoAccountStringQe = "globalsales",
 mktoAccountString106 = "mktodemoaccount106",
