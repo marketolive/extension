@@ -3017,8 +3017,14 @@ APP.disableMenus = function () {
             
             Ext4.resumeLayouts(true);
             
-            if (editor.down("[action=create]").isVisible()) {
-                editor.down("[action=create]").setDisabled(true);
+            if (editor.down) {
+                if (editor.down("[action=create]")
+                     && editor.down("[action=create]").isVisible()) {
+                    editor.down("[action=create]").setDisabled(true);
+                } else if (editor.down("[action=import]")
+                     && editor.down("[action=import]").isVisible()) {
+                    editor.down("[action=import]").setDisabled(true);
+                }
             }
         };
     } else {
@@ -3037,13 +3043,20 @@ APP.disableMenus = function () {
             menuItems,
             itemsToDisable = [
                 // Account Based Marketing > Named Accounts > New Button
-                //"newNamedAccount", //Create Named Account
-                //"discoverMarketoCompanies", //Discover Marketo Companies
                 //"discoverCrmAccounts", //Discover CRM Accounts
+                //"discoverMarketoCompanies", //Discover Marketo Companies
+                //"importNamedAccounts", //Import Named Accounts
+                //"newNamedAccount", //Create Named Account
                 
                 // Account Based Marketing > Named Accounts > Actions Button
                 //"addToAccountList", //Add to Account List
                 "deleteNamedAccount", //Delete Named Account
+                //"checkImportStatus", //Check Import Status
+                
+                // Account Based Marketing > Named Accounts > Account Team Actions
+                //"assignAccountOwner", //Assign Account Owner
+                //"assignAccountMember", //Assign Account Member
+                "deleteAccountMember", //Remove Account Member
                 
                 // Admin > Marketo Custom Objects > Marketo Custom Objects > Actions Button
                 //"mktoCustomObjectEditBtn", //Edit Object
@@ -8128,6 +8141,7 @@ APP.disableFormSaveButtons = function () {
             
             if (this.getXType() == "createNamedAccountForm" //ABM > Named Accounts > New Named Account
                  || this.getXType() == "addToAccountListForm" //ABM > Named Accounts > Add To Account List
+                 || this.getXType() == "assignTeamMemberForm" //ABM > Named Accounts > Assign Account Member
                  || this.getXType() == "createAccountListForm" //ABM > Account Lists > Create New/Rename Account List
                  || this.getXType() == "analyticsReportSubscriptionForm" //Analytics > Analyzer & Report > New Report Subscription
                  || this.getXType() == "fileUploadForm" //Design Studio > Images & Files > Grab Images from Web
