@@ -1,0 +1,37 @@
+{
+  "terms": [
+    "marketo",
+    "marketo demo",
+    "marketo webinar",
+    "marketo event",
+    "marketo blog",
+    "marketing automation",
+    "marketing solutions",
+    "marketing analytics",
+    "marketing nation",
+    "engagement platform",
+    "engagement engine",
+    "account based marketing",
+    "lead management",
+    "email marketing",
+    "consumer marketing",
+    "customer base marketing",
+    "mobile marketing"
+  ],
+  "campaigns": [
+    "Marketing Automation",
+    "Account Based Marketing",
+    "Email Engagement",
+    "Mobile Engagement",
+    "Social Integration",
+    "Digital Ad Targeting",
+    "Web Personalization",
+    "Marketing Analytics",
+    "Predictive Content"
+  ],
+  "mediums": [
+    "CPC",
+    "CPM",
+    "CPA"
+  ]
+}

@@ -1,0 +1,143 @@
+[
+  {
+    "onlineAd": true,
+    "type": "landing",
+    "url": "http://pages.marketolive.com/google-adwords-acquire.html",
+    "lpUrl": "http://na-sjdemo1.marketo.com/lp/185-NGX-811/google-adwords-acquire.html",
+    "conversionRate": 0.5
+  },
+  {
+    "type": "web",
+    "url": "http://www.marketolive.com/info/contact-us"
+  },
+  {
+    "type": "verticals",
+    "url": "http://verticals.marketolive.com/predictive-content",
+    "clickRate": 1
+  },
+  {
+    "type": "verticals",
+    "url": "http://verticals.marketolive.com/predictive-content-106",
+    "clickRate": 1
+  },
+  {
+    "type": "verticals",
+    "url": "http://verticals.marketolive.com/predictive-content-106d",
+    "clickRate": 1
+  },
+  {
+    "onlineAd": true,
+    "type": "landing",
+    "url": "http://pages.marketolive.com/google-display-ads-acquire.html",
+    "lpUrl": "http://na-sjdemo1.marketo.com/lp/185-NGX-811/google-display-ads-acquire.html",
+    "conversionRate": 0.5
+  },
+  {
+    "type": "web",
+    "url": "http://www.marketolive.com/info/why-us"
+  },
+  {
+    "type": "landing",
+    "url": "http://pages.marketolive.com/best-practices-webinar-registration.html",
+    "lpUrl": "http://na-sjdemo1.marketo.com/lp/185-NGX-811/best-practices-webinar-registration.html",
+    "conversionRate": 0.5
+  },
+  {
+    "type": "web",
+    "url": "http://www.marketolive.com/info/webinar"
+  },
+  {
+    "type": "landing",
+    "url": "http://pages.marketolive.com/best-practices-webinar-check-in.html",
+    "lpUrl": "http://na-sjdemo1.marketo.com/lp/185-NGX-811/best-practices-webinar-check-in.html",
+    "conversionRate": 0.5
+  },
+  {
+    "onlineAd": true,
+    "type": "landing",
+    "url": "http://pages.marketolive.com/facebook-lead-ads-acquire.html",
+    "lpUrl": "http://na-sjdemo1.marketo.com/lp/185-NGX-811/facebook-lead-ads-acquire.html",
+    "conversionRate": 0.5
+  },
+  {
+    "type": "web",
+    "url": "http://www.marketolive.com/info/products"
+  },
+  {
+    "type": "landing",
+    "url": "http://pages.marketolive.com/roadshow-event-registration.html",
+    "lpUrl": "http://na-sjdemo1.marketo.com/lp/185-NGX-811/roadshow-event-registration.html",
+    "conversionRate": 0.5
+  },
+  {
+    "type": "web",
+    "url": "http://www.marketolive.com/info/live-event"
+  },
+  {
+    "type": "landing",
+    "url": "http://pages.marketolive.com/roadshow-event-check-in.html",
+    "lpUrl": "http://na-sjdemo1.marketo.com/lp/185-NGX-811/roadshow-event-check-in.html",
+    "conversionRate": 0.5
+  },
+  {
+    "onlineAd": true,
+    "type": "landing",
+    "url": "http://pages.marketolive.com/facebook-news-feed-ads-acquire.html",
+    "lpUrl": "http://na-sjdemo1.marketo.com/lp/185-NGX-811/facebook-news-feed-ads-acquire.html",
+    "conversionRate": 0.5
+  },
+  {
+    "type": "web",
+    "url": "http://www.marketolive.com/info/integrations"
+  },
+  {
+    "type": "landing",
+    "url": "http://pages.marketolive.com/data-compliance-demo-registration.html",
+    "lpUrl": "http://na-sjdemo1.marketo.com/lp/185-NGX-811/data-compliance-demo-registration.html",
+    "conversionRate": 0.5
+  },
+  {
+    "type": "web",
+    "url": "http://www.marketolive.com/info/webinar"
+  },
+  {
+    "type": "landing",
+    "url": "http://pages.marketolive.com/champions-on-demand-signup.html",
+    "lpUrl": "http://na-sjdemo1.marketo.com/lp/185-NGX-811/champions-on-demand-signup.html",
+    "conversionRate": 0.5
+  },
+  {
+    "onlineAd": true,
+    "type": "landing",
+    "url": "http://pages.marketolive.com/linkedin-lead-ads-acquire.html",
+    "lpUrl": "http://na-sjdemo1.marketo.com/lp/185-NGX-811/linkedin-lead-ads-acquire.html",
+    "conversionRate": 0.5
+  },
+  {
+    "type": "web",
+    "url": "http://www.marketolive.com/info/pricing"
+  },
+  {
+    "onlineAd": true,
+    "type": "landing",
+    "url": "http://pages.marketolive.com/demand-side-platform-acquire.html",
+    "lpUrl": "http://na-sjdemo1.marketo.com/lp/185-NGX-811/demand-side-platform-acquire.html",
+    "conversionRate": 0.5
+  },
+  {
+    "type": "web",
+    "url": "http://www.marketolive.com/info/community"
+  },
+  {
+    "type": "landing",
+    "url": "http://pages.marketolive.com/preference-center.html",
+    "lpUrl": "http://na-sjdemo1.marketo.com/lp/185-NGX-811/preference-center.html",
+    "conversionRate": 0.5
+  },
+  {
+    "type": "landing",
+    "url": "http://pages.marketolive.com/not-you-preference-center.html",
+    "lpUrl": "http://na-sjdemo1.marketo.com/lp/185-NGX-811/not-you-preference-center.html",
+    "conversionRate": 0.5
+  }
+]

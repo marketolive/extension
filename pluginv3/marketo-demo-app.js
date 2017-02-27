@@ -75,6 +75,7 @@ APP.getCookie = function (cookieName) {
  *  @param {String} url - The HTTP request URL.
  *  @param {String} params - The parameters to pass in the body of the request.
  *  @param {String} method - The HTTP request method (e.g. GET, POST, PATCH).
+ *  @param {Boolean} async - Type of request execution (true = async, false = sync).
  *  @param {String} responseType - The type of the response (e.g. document, json, text).
  *  @param {Function} callback - The callback function.
  *
