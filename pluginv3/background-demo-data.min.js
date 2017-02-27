@@ -181,11 +181,11 @@ if (dayOfMonth > numOfVerticals) {
     currVerticalIndex = dayOfMonth - 1;
 }
 switch (currVerticalIndex) {
-    0:
+    case 0:
     currVertical = "coe";
     visitedPagesCookieMarketoLive.name = "visitedPagesCoe";
     break;
-    1:
+    case 1:
     currVertical = "tech";
     visitedPagesCookieMarketoLive.name = "visitedPagesTech";
     break;
