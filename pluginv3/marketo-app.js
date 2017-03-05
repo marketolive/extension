@@ -11,8 +11,8 @@
  *
  **************************************************************************************/
 console.log("Marketo App > Running");
-// This is the value that the demo plugin check looks for
-window.mkto_live_plugin_state = true;
+// Variable that the validate demo extension function tests
+window.mkto_live_extension_state = "MarketoLive extension is alive!";
 
 /**************************************************************************************
  *
@@ -209,12 +209,12 @@ APP.webRequest = function (url, params, method, async, responseType, callback) {
 
 /**************************************************************************************
  *
- *  This function disables the demo plugin check that the Marketo subscription uses
- *  to enforce having the plugin installed. The user experience with the Marketo
- *  feature as implemented today isn't ideal, so this function disables it altogether.
- *  Obviously, only having the plugin could disable the check, so it's guaranteed that
- *  the user has the plugin (unless they're very Javascript savvy and paste this in the
- *  console).
+ *  This function validates the demo extension check that the Marketo subscription uses 
+ *  to enforce having the extension installed. The user experience with the Marketo
+ *  feature as implemented today isn't ideal, so this function disables it altogether. 
+ *  Obviously, only having the extension could disable the check, so it's guaranteed 
+ *  that the user has the extension (unless they're very Javascript savvy and paste this 
+ *  in the console).
  *
  *  @Author Brian Fisher
  *
@@ -222,15 +222,16 @@ APP.webRequest = function (url, params, method, async, responseType, callback) {
  *
  **************************************************************************************/
 
-APP.disableDemoPluginCheck = function () {
-    console.log("Marketo App > Disabling: Demo Plugin Check");
+APP.validateDemoExtensionCheck = function () {
+    console.log("Marketo App > Validating: Demo Extension Check");
     
-    window.mkto_live_plugin_state = true;
-    
+    window.mkto_live_extension_state = "MarketoLive extension is alive!";
+    /*
     if (MktPage
-         && MktPage.validateDemoPlugin) {
-        MktPage.validateDemoPlugin = function () {};
+         && MktPage.validateDemoExtension) {
+        MktPage.validateDemoExtension = function () {};
     }
+    */
 };
 
 /**************************************************************************************
@@ -9900,12 +9901,12 @@ var isMktPageApp = window.setInterval(function () {
                  && userId.search(adminUserNamesMatch) != -1) {
                 console.log("Marketo App > User: Admin");
                 
-                // Disabling Demo Plugin Check
-                APP.disableDemoPluginCheck();
+                // Validating Demo Extension Check
+                APP.validateDemoExtensionCheck();
                 // Enables Mass Clone Feature
                 APP.applyMassClone();
                 
-                // This check ensures that an admin can login and test the plugin as a normal user.
+                // This check ensures that an admin can login and test the extension as a normal user.
                 if (toggleState != "false") {
                     return;
                 } else {
@@ -9913,8 +9914,8 @@ var isMktPageApp = window.setInterval(function () {
                 }
             }
             
-            // Disabling Demo Plugin Check
-            APP.disableDemoPluginCheck();
+            // Validating Demo Extension Check
+            APP.validateDemoExtensionCheck();
             
             if (currUrlFragment) {
                 if (currUrlFragment == mktoMyMarketoFragment) {
