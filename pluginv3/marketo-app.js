@@ -61,6 +61,7 @@ userName,
 
 adminUserNamesMatch = "^mktodemolivemaster@marketo\.com$|^admin(\.[a-z]{0,2})?@(marketolive.com$|mktodemoaccount)|^mktodemoaccount[a-z0-9]*@marketo\.com$|^marketodemo.*@gmail\.com$",
 
+mktoAccountStringMaster = "mktodemolivemaster",
 mktoAccountStringQe = "globalsales",
 mktoAccountString106 = "mktodemoaccount106",
 mktoAccountString106d = "mktodemoaccount106d",
@@ -9989,18 +9990,33 @@ var isMktPageApp = window.setInterval(function () {
                         name: "Last Loaded",
                         assetName: "Page"
                     });
-                } else {
+                } else if (accountString == mktoAccountStringMaster) {
                     APP.overrideSaving();
+                    APP.disableDragAndDrop();
+                    APP.disableMenus();
+                    APP.hideToolbarItems();
+                    APP.overrideDraftEdits();
+                    APP.disableFormSaveButtons();
+                    APP.disableAdminSaveButtons();
                     APP.overrideSmartCampaignSaving();
+                    APP.trackNodeClick();
                     APP.overrideUpdatePortletOrder();
                     APP.disableConfirmationMessage();
-                }
-                
-                if (accountString == mktoAccountStringQe) {
+                    APP.disableRequests();
+                    APP.heapTrack("track", {
+                        name: "Last Loaded",
+                        assetName: "Page"
+                    });
+                } else if (accountString == mktoAccountStringQe) {
                     APP.disableMenus();
                     APP.hideToolbarItems();
                     APP.disableFormSaveButtons();
                     APP.disableAdminSaveButtons();
+                } else if (toggleState == "false") {
+                    APP.overrideSaving();
+                    APP.overrideSmartCampaignSaving();
+                    APP.overrideUpdatePortletOrder();
+                    APP.disableConfirmationMessage();
                 }
             } else if (currCompFragment) {
                 console.log("Marketo App > Location: Designers, ABM Areas");
