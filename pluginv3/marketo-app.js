@@ -89,7 +89,7 @@ mktoLeadDatabaseTechnologyFragment = "ML0A1ZN26475",
 mktoLeadDatabaseTravelLeisureFragment = "ML0A1ZN27574",
 mktoAdminEmailEmailFragment = "EA0A1",
 mktoAdminWebServicesFragment = "MW0A1",
-mktoDisableButtonsFragmentMatch = "^(" + mktoMasterMarketingActivitiesEnglishFragment + "|" + mktoMarketingActivitiesDefaultFragment + "|" + mktoMarketingActivitiesUserFragment + "|" + mktoMarketingActivitiesJapaneseFragment + "|" + mktoMarketingActivitiesFinservFragment + "|" + mktoMarketingActivitiesHealthcareFragment + "|" + mktoMarketingActivitiesHigherEdFragment + "|" + mktoMarketingActivitiesManufacturingFragment + "|" + mktoMarketingActivitiesTechnologyFragment + "|" + mktoMarketingActivitiesTravelLeisureFragment + "|" mktoMasterLeadDatabaseEnglishFragment + "|" + mktoLeadDatabaseDefaultFragment + "|" + mktoLeadDatabaseUserFragment + "|" + mktoLeadDatabaseJapaneseFragment + "|" + mktoLeadDatabaseFinservFragment + "|" + mktoLeadDatabaseHealthcareFragment + "|" + mktoLeadDatabaseHigherEdFragment + "|" + mktoLeadDatabaseManufacturingFragment + "|" + mktoLeadDatabaseTechnologyFragment + "|" + mktoLeadDatabaseTravelLeisureFragment + "|" + mktoAdminEmailEmailFragment + "|" + mktoAdminWebServicesFragment + ")$",
+mktoDisableButtonsFragmentMatch = "^(" + mktoMasterMarketingActivitiesEnglishFragment + "|" + mktoMarketingActivitiesDefaultFragment + "|" + mktoMarketingActivitiesUserFragment + "|" + mktoMarketingActivitiesJapaneseFragment + "|" + mktoMarketingActivitiesFinservFragment + "|" + mktoMarketingActivitiesHealthcareFragment + "|" + mktoMarketingActivitiesHigherEdFragment + "|" + mktoMarketingActivitiesManufacturingFragment + "|" + mktoMarketingActivitiesTechnologyFragment + "|" + mktoMarketingActivitiesTravelLeisureFragment + "|" + mktoMasterLeadDatabaseEnglishFragment + "|" + mktoLeadDatabaseDefaultFragment + "|" + mktoLeadDatabaseUserFragment + "|" + mktoLeadDatabaseJapaneseFragment + "|" + mktoLeadDatabaseFinservFragment + "|" + mktoLeadDatabaseHealthcareFragment + "|" + mktoLeadDatabaseHigherEdFragment + "|" + mktoLeadDatabaseManufacturingFragment + "|" + mktoLeadDatabaseTechnologyFragment + "|" + mktoLeadDatabaseTravelLeisureFragment + "|" + mktoAdminEmailEmailFragment + "|" + mktoAdminWebServicesFragment + ")$",
 
 mktoOppInfluenceAnalyzerFragment = "AR1559A1!",
 mktoProgramAnalyzerFragment = "AR1544A1!",
@@ -9748,6 +9748,10 @@ APP.heapTrack = function (action, event) {
                             heap.addUserProperties({
                                 Environment: "Partner"
                             });
+                        } else if (MktPage.savedState.custPrefix == mktoAccountStringMaster) {
+                            heap.addUserProperties({
+                                Environment: "Master"
+                            });
                         }
                     }
                     break;
@@ -9800,6 +9804,10 @@ APP.heapTrack = function (action, event) {
                                 heapEventProps.environment = "Internal";
                             } else if (MktPage.savedState.custPrefix == mktoAccountString106d) {
                                 heapEventProps.environment = "Partner";
+                            } else if (MktPage.savedState.custPrefix == mktoAccountStringMaster) {
+                                heap.addUserProperties({
+                                    Environment: "Master"
+                                });
                             }
                         }
                         
