@@ -61,11 +61,13 @@ userName,
 
 adminUserNamesMatch = "^mktodemolivemaster@marketo\.com$|^admin(\.[a-z]{0,2})?@(marketolive.com$|mktodemoaccount)|^mktodemoaccount[a-z0-9]*@marketo\.com$|^marketodemo.*@gmail\.com$",
 
+mktoAccountStringMaster = "mktodemolivemaster",
 mktoAccountStringQe = "globalsales",
 mktoAccountString106 = "mktodemoaccount106",
 mktoAccountString106d = "mktodemoaccount106d",
 mktoAccountStringsMatch = "^" + mktoAccountString106 + "$|^" + mktoAccountString106d + "$",
 
+mktoMasterMarketingActivitiesEnglishFragment = "MA19A1",
 mktoMarketingActivitiesDefaultFragment = "MA15A1",
 mktoMarketingActivitiesUserFragment = "MA19802A1",
 mktoMarketingActivitiesJapaneseFragment = "MA19848A1",
@@ -75,6 +77,7 @@ mktoMarketingActivitiesHigherEdFragment = "MA20846A1",
 mktoMarketingActivitiesManufacturingFragment = "MA26410A1",
 mktoMarketingActivitiesTechnologyFragment = "MA26489A1",
 mktoMarketingActivitiesTravelLeisureFragment = "MA27588A1",
+mktoMasterLeadDatabaseEnglishFragment = "ML0A1ZN5",
 mktoLeadDatabaseDefaultFragment = "ML0A1ZN2",
 mktoLeadDatabaseUserFragment = "ML0A1ZN19788",
 mktoLeadDatabaseJapaneseFragment = "ML0A1ZN19834",
@@ -86,7 +89,7 @@ mktoLeadDatabaseTechnologyFragment = "ML0A1ZN26475",
 mktoLeadDatabaseTravelLeisureFragment = "ML0A1ZN27574",
 mktoAdminEmailEmailFragment = "EA0A1",
 mktoAdminWebServicesFragment = "MW0A1",
-mktoDisableButtonsFragmentMatch = "^" + mktoMarketingActivitiesDefaultFragment + "$|^" + mktoMarketingActivitiesUserFragment + "$|^" + mktoMarketingActivitiesJapaneseFragment + "$|^" + mktoMarketingActivitiesFinservFragment + "$|^" + mktoMarketingActivitiesHealthcareFragment + "$|^" + mktoMarketingActivitiesHigherEdFragment + "$|^" + mktoMarketingActivitiesManufacturingFragment + "$|^" + mktoMarketingActivitiesTechnologyFragment + "$|^" + mktoMarketingActivitiesTravelLeisureFragment + "$|^" + mktoLeadDatabaseDefaultFragment + "$|^" + mktoLeadDatabaseUserFragment + "$|^" + mktoLeadDatabaseJapaneseFragment + "$|^" + mktoLeadDatabaseFinservFragment + "$|^" + mktoLeadDatabaseHealthcareFragment + "$|^" + mktoLeadDatabaseHigherEdFragment + "$|^" + mktoLeadDatabaseManufacturingFragment + "$|^" + mktoLeadDatabaseTechnologyFragment + "$|^" + mktoLeadDatabaseTravelLeisureFragment + "$|^" + mktoAdminEmailEmailFragment + "$|^" + mktoAdminWebServicesFragment + "$",
+mktoDisableButtonsFragmentMatch = "^(" + mktoMasterMarketingActivitiesEnglishFragment + "|" + mktoMarketingActivitiesDefaultFragment + "|" + mktoMarketingActivitiesUserFragment + "|" + mktoMarketingActivitiesJapaneseFragment + "|" + mktoMarketingActivitiesFinservFragment + "|" + mktoMarketingActivitiesHealthcareFragment + "|" + mktoMarketingActivitiesHigherEdFragment + "|" + mktoMarketingActivitiesManufacturingFragment + "|" + mktoMarketingActivitiesTechnologyFragment + "|" + mktoMarketingActivitiesTravelLeisureFragment + "|" + mktoMasterLeadDatabaseEnglishFragment + "|" + mktoLeadDatabaseDefaultFragment + "|" + mktoLeadDatabaseUserFragment + "|" + mktoLeadDatabaseJapaneseFragment + "|" + mktoLeadDatabaseFinservFragment + "|" + mktoLeadDatabaseHealthcareFragment + "|" + mktoLeadDatabaseHigherEdFragment + "|" + mktoLeadDatabaseManufacturingFragment + "|" + mktoLeadDatabaseTechnologyFragment + "|" + mktoLeadDatabaseTravelLeisureFragment + "|" + mktoAdminEmailEmailFragment + "|" + mktoAdminWebServicesFragment + ")$",
 
 mktoOppInfluenceAnalyzerFragment = "AR1559A1!",
 mktoProgramAnalyzerFragment = "AR1544A1!",
@@ -8158,6 +8161,8 @@ APP.disableFormSaveButtons = function () {
                  || this.getXType() == "adminAddDomainForm" //Admin > Email > SPF/DKIM > Add Domain
                  || this.getXType() == "adminScoreSettingsForm" //Admin > ABM > Account Score Settings
                  || this.getXType() == "adminCrmFieldSettingsForm" //Admin > ABM > CRM Mapping
+                 || this.getXType() == "adminAccountTeamForm" //Admin > ABM > Account Team Settings
+                 || this.getXType() == "adminAbmReportSettingsForm" //Admin > ABM > Weekly Report
                  || this.getXType() == "adminFieldHtmlEncodeForm" //Admin > Field Management > Field Management > HTML Encode Settings
                  || this.getXType() == "mktocustomactivityActivityTypeForm" //Admin > Marketo Custom Activities > Marketo Custom Activities > New Custom Activity
                  || this.getXType() == "mktocustomactivityActivityTypeEditForm" //Admin > Marketo Custom Activities > Marketo Custom Activities > Edit Activity
@@ -9745,6 +9750,10 @@ APP.heapTrack = function (action, event) {
                             heap.addUserProperties({
                                 Environment: "Partner"
                             });
+                        } else if (MktPage.savedState.custPrefix == mktoAccountStringMaster) {
+                            heap.addUserProperties({
+                                Environment: "Master"
+                            });
                         }
                     }
                     break;
@@ -9797,6 +9806,10 @@ APP.heapTrack = function (action, event) {
                                 heapEventProps.environment = "Internal";
                             } else if (MktPage.savedState.custPrefix == mktoAccountString106d) {
                                 heapEventProps.environment = "Partner";
+                            } else if (MktPage.savedState.custPrefix == mktoAccountStringMaster) {
+                                heap.addUserProperties({
+                                    Environment: "Master"
+                                });
                             }
                         }
                         
@@ -9987,18 +10000,33 @@ var isMktPageApp = window.setInterval(function () {
                         name: "Last Loaded",
                         assetName: "Page"
                     });
-                } else {
+                } else if (accountString == mktoAccountStringMaster) {
                     APP.overrideSaving();
+                    APP.disableDragAndDrop();
+                    APP.disableMenus();
+                    APP.hideToolbarItems();
+                    APP.overrideDraftEdits();
+                    APP.disableFormSaveButtons();
+                    APP.disableAdminSaveButtons();
                     APP.overrideSmartCampaignSaving();
+                    APP.trackNodeClick();
                     APP.overrideUpdatePortletOrder();
                     APP.disableConfirmationMessage();
-                }
-                
-                if (accountString == mktoAccountStringQe) {
+                    APP.disableRequests();
+                    APP.heapTrack("track", {
+                        name: "Last Loaded",
+                        assetName: "Page"
+                    });
+                } else if (accountString == mktoAccountStringQe) {
                     APP.disableMenus();
                     APP.hideToolbarItems();
                     APP.disableFormSaveButtons();
                     APP.disableAdminSaveButtons();
+                } else if (toggleState == "false") {
+                    APP.overrideSaving();
+                    APP.overrideSmartCampaignSaving();
+                    APP.overrideUpdatePortletOrder();
+                    APP.disableConfirmationMessage();
                 }
             } else if (currCompFragment) {
                 console.log("Marketo App > Location: Designers, ABM Areas");
