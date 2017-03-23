@@ -9807,9 +9807,7 @@ APP.heapTrack = function (action, event) {
                             } else if (MktPage.savedState.custPrefix == mktoAccountString106d) {
                                 heapEventProps.environment = "Partner";
                             } else if (MktPage.savedState.custPrefix == mktoAccountStringMaster) {
-                                heap.addUserProperties({
-                                    Environment: "Master"
-                                });
+                                heapEventProps.environment = "Master";
                             }
                         }
                         
