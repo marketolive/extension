@@ -174,10 +174,10 @@ window.onload = function () {
         if (cookie == null
              || cookie.value == null) {
             console.log("Popup > Getting: " + saveEditsToggleCookieDesigner.name + " Cookie for " + saveEditsToggleCookieDesigner.url + " = null");
-            currToggleState = true;
-            saveEditsToggleCookieDesigner.value = "true";
-            document.getElementById("saveEditsToggleText").innerHTML = "Save Edits Enabled";
-            document.getElementById("saveEditsToggle").src = chrome.extension.getURL("images/toggle-on.png");
+            currToggleState = false;
+            saveEditsToggleCookieDesigner.value = "false";
+            document.getElementById("saveEditsToggleText").innerHTML = "Save Edits Disabled";
+            document.getElementById("saveEditsToggle").src = chrome.extension.getURL("images/toggle-off.png");
             background.setCookie(saveEditsToggleCookieDesigner);
         } else if (cookie.value == "true") {
             console.log("Popup > Getting: " + cookie.name + " Cookie for " + cookie.domain + " = " + cookie.value);
