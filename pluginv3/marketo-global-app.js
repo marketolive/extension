@@ -4,6 +4,7 @@ MARKETO_DEMO_APP_SCRIPT_LOCATION = "https://marketolive.com/" + URL_PATH + "/plu
 POD_SCRIPT_LOCATION = "https://marketolive.com/" + URL_PATH + "/pluginv3/pods.min.js",
 DASHBOARD_SCRIPT_LOCATION = "https://marketolive.com/" + URL_PATH + "/pluginv3/dashboards/remote-data.min.js",
 HEAP_ANALYTICS_SCRIPT_LOCATION = "https://marketolive.com/" + URL_PATH + "/pluginv3/heap-analytics.min.js",
+HEAP_ANALYTICS_DEMO_SCRIPT_LOCATION = "https://marketolive.com/" + URL_PATH + "/pluginv3/heap-analytics-demo.min.js",
 //disableDemoPluginCheck,
 loadScript,
 getCookie,
@@ -130,6 +131,7 @@ isMktoPageGlobal = window.setInterval(function () {
                 console.log("Marketo Global App > Location: Marketo Demo Instance");
                 
                 loadScript(MARKETO_DEMO_APP_SCRIPT_LOCATION);
+                loadScript(HEAP_ANALYTICS_DEMO_SCRIPT_LOCATION);
                 
                 if (currentUrl.search(mktoWizardDomain) == -1
                      && currentUrl.search(mktoDesignerDomain) == -1) {

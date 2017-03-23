@@ -835,7 +835,7 @@ APP.setProgramReportFilter = function (getNewProgramAssetDetailsResponse, cloneT
                 }
                 
                 if (reportFilterType
-                && selectedNodes) {
+                     && selectedNodes) {
                     APP.webRequest('/analytics/applyComponentFilter', 'ajaxHandler=MktSession&mktReqUid=' + new Date().getTime() + Ext.id(null, ':') + '&nodeIds=' + selectedNodes + '&filterType=' + reportFilterType + '&reportId=' + currNewReport.compId + '&xsrfId=' + MktSecurity.getXsrfId(), 'POST', false, "", function (response) {
                         console.log(response);
                     });
@@ -1109,6 +1109,10 @@ APP.applyMassClone = function (forceReload) {
                                     
                                     massCloneForm.close();
                                     waitMsgShow = waitMsg.show();
+                                    APP.heapTrack("track", {
+                                        name: "Mass Clone",
+                                        assetName: "Tool"
+                                    });
                                     
                                     var isWaitMsgShow = window.setInterval(function () {
                                             if (waitMsgShow) {
@@ -2943,6 +2947,133 @@ APP.saveEmailEdits = function (mode, asset) {
 
 /**************************************************************************************
  *
+ *  This function tracks and identifies the current user via Heap Analytics
+ *
+ *  @Author Brian Fisher
+ *
+ *  @function
+ *
+ *  @param {String} action - The desired action (id, track).
+ *  @param {Object} event - The object of the event to be tracked.
+ *
+ **************************************************************************************/
+
+APP.heapTrack = function (action, event) {
+    var isHeapAnalytics = window.setInterval(function () {
+            if (typeof(heap) !== "undefined"
+                 && heap) {
+                
+                window.clearInterval(isHeapAnalytics);
+                
+                switch (action) {
+                    // Heap Analytics Identify User
+                case "id":
+                    var oneLoginEmail = APP.getCookie("onelogin_email"),
+                    oneLoginFirstName = APP.getCookie("onelogin_first_name"),
+                    oneLoginLastName = APP.getCookie("onelogin_last_name");
+                    
+                    if (MktPage
+                         && MktPage.userid) {
+                        console.log("Marketo Demo App > Heap Analytics ID: " + MktPage.userid);
+                        heap.identify(MktPage.userid);
+                    }
+                    
+                    if (oneLoginFirstName
+                         && oneLoginLastName) {
+                        heap.addUserProperties({
+                            Name: oneLoginFirstName + " " + oneLoginLastName
+                        });
+                    } else if (MktPage
+                         && MktPage.userName) {
+                        heap.addUserProperties({
+                            Name: MktPage.userName.replace(/ ?\[[^\]]+\]/, "")
+                        });
+                    }
+                    
+                    if (MktPage
+                         && MktPage.userName) {
+                        var roleSubstring = MktPage.userName.search(/\[[^\]]+\]/);
+                        
+                        if (roleSubstring != -1) {
+                            heap.addUserProperties({
+                                Role: MktPage.userName.substring(roleSubstring)
+                            });
+                        }
+                    }
+                    
+                    if (oneLoginEmail) {
+                        heap.addUserProperties({
+                            Email: oneLoginEmail
+                        });
+                    }
+                    
+                    if (MktPage
+                         && MktPage.savedState
+                         && MktPage.savedState.custPrefix) {
+                        heap.addUserProperties({
+                            Environment: MktPage.savedState.custPrefix
+                        });
+                    }
+                    break;
+                    
+                    // Heap Analytics Event Tracking
+                case "track":
+                    var heapApp,
+                    heapArea,
+                    heapEventProps;
+                    
+                    if (MktPage
+                         && MktPage.friendlyName) {
+                        heapApp = MktPage.friendlyName;
+                    } else {
+                        heapApp = "Marketo";
+                    }
+                    
+                    if (MktPage
+                         && MktPage.baseTitle) {
+                        heapArea = MktPage.baseTitle.split("•")[0].trimRight();
+                    } else {
+                        heapArea = "Unknown";
+                    }
+                    
+                    if (event) {
+                        heapEventProps = {
+                            app: heapApp,
+                            assetName: event.assetName,
+                            assetId: event.assetId,
+                            assetType: event.assetType,
+                            assetPath: event.assetPath,
+                            workspaceId: event.workspaceId,
+                            workspaceName: event.workspaceName,
+                            userFolder: event.userFolder,
+                            area: "",
+                            environment: "",
+                            url: currentUrl
+                        };
+                        
+                        if (event.assetArea) {
+                            heapEventProps.area = event.assetArea;
+                        } else {
+                            heapEventProps.area = heapArea;
+                        }
+                        
+                        if (MktPage
+                             && MktPage.savedState
+                             && MktPage.savedState.custPrefix) {
+                            heapEventProps.environment = MktPage.savedState.custPrefix;
+                        }
+                        
+                        console.log("Marketo Demo App > Tracking: Heap Event: " + event.name + "\n" + JSON.stringify(heapEventProps, null, 2));
+                        heap.track(event.name, heapEventProps);
+                    }
+                    break;
+                }
+            }
+        }, 0);
+};
+
+/**************************************************************************************
+ *
  *  Main
  *
  **************************************************************************************/
@@ -2973,6 +3104,11 @@ var isMktPageDemoApp = window.setInterval(function () {
                     APP.overrideHomeTiles();
                 }
             }
+            
+            APP.heapTrack("track", {
+                name: "Last Loaded",
+                assetName: "Page"
+            });
             
             // Only execute this block if the user is not on an editor page.
             if (currUrlFragment
@@ -3134,5 +3270,8 @@ var isMktPageDemoApp = window.setInterval(function () {
                     }, 0);
             };
             APP.overrideSuperballMenuItems();
+            
+            // Heap Analytics ID
+            APP.heapTrack("id");
         }
     }, 0);
