@@ -3048,7 +3048,7 @@ APP.heapTrack = function (action, event) {
                             userFolder: event.userFolder,
                             area: "",
                             environment: "",
-                            url: currentUrl
+                            url: window.location.href
                         };
                         
                         if (event.assetArea) {
