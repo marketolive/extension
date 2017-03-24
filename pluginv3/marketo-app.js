@@ -228,10 +228,18 @@ APP.webRequest = function (url, params, method, async, responseType, callback) {
  *
  **************************************************************************************/
 
-APP.validateDemoExtensionCheck = function () {
+APP.validateDemoExtensionCheck = function (isValidExtension) {
     console.log("Marketo App > Validating: Demo Extension Check");
     
-    window.mkto_live_extension_state = "MarketoLive extension is alive!";
+    if (isValidExtension) {
+        window.mkto_live_extension_state = "MarketoLive extension is alive!";
+        console.log("Marketo App > Validating: Demo Extension IS Valid");
+    } else if (MktPage
+         && MktPage.validateDemoExtension) {
+        MktPage.validateDemoExtension(new Date());
+        console.log("Marketo App > Validating: Demo Extension IS NOT Valid");
+    }
+        
     /*
     if (MktPage
          && MktPage.validateDemoExtension) {
@@ -9916,7 +9924,7 @@ var isMktPageApp = window.setInterval(function () {
                 console.log("Marketo App > User: Admin");
                 
                 // Validating Demo Extension Check
-                APP.validateDemoExtensionCheck();
+                APP.validateDemoExtensionCheck(true);
                 // Enables Mass Clone Feature
                 APP.applyMassClone();
                 
@@ -9931,10 +9939,8 @@ var isMktPageApp = window.setInterval(function () {
             chrome.runtime.sendMessage(extensionId, {
                 action: "checkExtension"
             }, null, function (response) {
-                if (response.validExtension) {
-                    // Validating Demo Extension Check
-                    APP.validateDemoExtensionCheck();
-                }
+                // Validating Demo Extension Check
+                APP.validateDemoExtensionCheck(response.validExtension);
             });
             
             if (currUrlFragment) {
