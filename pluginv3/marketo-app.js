@@ -21,7 +21,7 @@ window.mkto_live_extension_state = "MarketoLive extension is alive!";
  **************************************************************************************/
 
 var currentUrl = window.location.href,
-extensionMinVersion = "4.4.1",
+extensionMinVersion = "4.4.0",
 devExtensionId = "aahhkppadknlakhbppohbeolcfdhmocf",
 prodExtensionId = "onibnnoghllldiecboelbpcaeggfiohl",
 extensionId = devExtensionId,
