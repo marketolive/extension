@@ -9939,11 +9939,21 @@ var isMktPageApp = window.setInterval(function () {
             }
             
             chrome.runtime.sendMessage(extensionId, {
-                action: "checkExtension",
+                action: "checkExtensionVersion",
                 minVersion: extensionMinVersion
             }, null, function (response) {
-                // Validating Demo Extension Check
-                APP.validateDemoExtensionCheck(response.isValidExtension);
+                if (response.isValidExtension) {
+                    chrome.runtime.sendMessage(extensionId, {
+                        action: "checkBadExtension",
+                        minVersion: extensionMinVersion
+                    }, null, function (response) {
+                        // Validating Demo Extension Check
+                        APP.validateDemoExtensionCheck(response.isValidExtension);
+                    });
+                } else {
+                    // Validating Demo Extension Check
+                    APP.validateDemoExtensionCheck(false);
+                }
             });
             
             if (currUrlFragment) {
