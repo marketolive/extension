@@ -21,6 +21,9 @@ window.mkto_live_extension_state = "MarketoLive extension is alive!";
  **************************************************************************************/
 
 var currentUrl = window.location.href,
+devExtensionId = "aahhkppadknlakhbppohbeolcfdhmocf",
+prodExtensionId = "onibnnoghllldiecboelbpcaeggfiohl",
+extensionId = devExtensionId,
 mktoAppDomain = "^https:\/\/app-[a-z0-9]+\.marketo\.com",
 mktoDesignerDomain = "^https:\/\/[a-z0-9]+-[a-z0-9]+\.marketodesigner\.com",
 mktoDesignerHost = "na-sjp.marketodesigner.com",
@@ -9925,8 +9928,14 @@ var isMktPageApp = window.setInterval(function () {
                 }
             }
             
-            // Validating Demo Extension Check
-            APP.validateDemoExtensionCheck();
+            chrome.runtime.sendMessage(extensionId, {
+                action: "checkExtension"
+            }, null, function (response) {
+                if (response.validExtension) {
+                    // Validating Demo Extension Check
+                    APP.validateDemoExtensionCheck();
+                }
+            });
             
             if (currUrlFragment) {
                 if (currUrlFragment == mktoMyMarketoFragment) {
