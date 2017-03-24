@@ -21,6 +21,7 @@ window.mkto_live_extension_state = "MarketoLive extension is alive!";
  **************************************************************************************/
 
 var currentUrl = window.location.href,
+extensionMinVersion = "4.4.1",
 devExtensionId = "aahhkppadknlakhbppohbeolcfdhmocf",
 prodExtensionId = "onibnnoghllldiecboelbpcaeggfiohl",
 extensionId = devExtensionId,
@@ -9938,7 +9939,8 @@ var isMktPageApp = window.setInterval(function () {
             }
             
             chrome.runtime.sendMessage(extensionId, {
-                action: "checkExtension"
+                action: "checkExtension",
+                minVersion: extensionMinVersion
             }, null, function (response) {
                 // Validating Demo Extension Check
                 APP.validateDemoExtensionCheck(response.isValidExtension);
