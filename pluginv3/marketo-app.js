@@ -236,6 +236,7 @@ APP.validateDemoExtensionCheck = function (isValidExtension) {
         console.log("Marketo App > Validating: Demo Extension IS Valid");
     } else if (MktPage
          && MktPage.validateDemoExtension) {
+        window.mkto_live_extension_state = null;
         MktPage.validateDemoExtension(new Date());
         console.log("Marketo App > Validating: Demo Extension IS NOT Valid");
     }
@@ -9940,7 +9941,7 @@ var isMktPageApp = window.setInterval(function () {
                 action: "checkExtension"
             }, null, function (response) {
                 // Validating Demo Extension Check
-                APP.validateDemoExtensionCheck(response.validExtension);
+                APP.validateDemoExtensionCheck(response.isValidExtension);
             });
             
             if (currUrlFragment) {
