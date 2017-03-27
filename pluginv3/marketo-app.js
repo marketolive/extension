@@ -4237,7 +4237,7 @@ APP.hideToolbarItems = function () {
                     }, {
                         "id": "imageReplace_landingIMDetail", //Replace Image or File
                         "action": "setVisible",
-                    }
+                    },
                     
                     // Analytics > Model
                     {
