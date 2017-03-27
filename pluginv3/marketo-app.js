@@ -134,7 +134,9 @@ mktoSocialAppEditFragment = "SOAE",
 mktoSocialAppPreviewFragment = "SOAP",
 mktoAbTestEditFragment = "EBE",
 mktoEmailTestGroupEditFragment = "CCE",
-mktoDesignersFragmentMatch = "^" + mktoEmailEditFragment + "$|^" + mktoEmailPreviewFragment2 + "|^" + mktoEmailPreviewFragment + "$|^" + mktoEmailTemplateEditFragment + "$|^" + mktoLandingPageEditFragment + "$|^" + mktoLandingPagePreviewFragment + "$|^" + mktoLandingPagePreviewDraftFragment + "$|^" + mktoLandingPageTemplateEditFragment + "$|^" + mktoLandingPageTemplatePreviewFragment + "$|^" + mktoFormEditFragment + "$|^" + mktoFormPreviewFragment + "$|^" + mktoFormPreviewDraftFragment + "$|^" + mktoPushNotificationEditFragment + "$|^" + mktoMobilePushNotificationPreviewFragment + "$|^" + mktoInAppMessageEditFragment + "$|^" + mktoInAppMessagePreviewFragment + "$|^" + mktoSmsMessageEditFragment + "$|^" + mktoSocialAppEditFragment + "$|^" + mktoSocialAppPreviewFragment + "$|^" + mktoAbTestEditFragment + "$|^" + mktoEmailTestGroupEditFragment + "$",
+mktoSnippetEditFragment = "SNE",
+mktoSnippetPreviewFragment = "SNP",
+mktoDesignersFragmentMatch = "^" + mktoEmailEditFragment + "$|^" + mktoEmailPreviewFragment2 + "|^" + mktoEmailPreviewFragment + "$|^" + mktoEmailTemplateEditFragment + "$|^" + mktoLandingPageEditFragment + "$|^" + mktoLandingPagePreviewFragment + "$|^" + mktoLandingPagePreviewDraftFragment + "$|^" + mktoLandingPageTemplateEditFragment + "$|^" + mktoLandingPageTemplatePreviewFragment + "$|^" + mktoFormEditFragment + "$|^" + mktoFormPreviewFragment + "$|^" + mktoFormPreviewDraftFragment + "$|^" + mktoPushNotificationEditFragment + "$|^" + mktoMobilePushNotificationPreviewFragment + "$|^" + mktoInAppMessageEditFragment + "$|^" + mktoInAppMessagePreviewFragment + "$|^" + mktoSmsMessageEditFragment + "$|^" + mktoSocialAppEditFragment + "$|^" + mktoSocialAppPreviewFragment + "$|^" + mktoAbTestEditFragment + "$|^" + mktoEmailTestGroupEditFragment + "$|^" + mktoSnippetEditFragment + "$|^" + mktoSnippetPreviewFragment "$",
 
 mktoDefaultWorkspaceId = 1,
 mktoJapaneseWorkspaceId = 173,
@@ -4229,7 +4231,13 @@ APP.hideToolbarItems = function () {
                     }, {
                         "id": "imageReplace_landingCanvasIM", //Replace Image or File
                         "action": "setVisible",
-                    },
+                    }, {
+                        "id": "imageUpload_landingIMDetail", //Upload Image or File
+                        "action": "setDisabled",
+                    }, {
+                        "id": "imageReplace_landingIMDetail", //Replace Image or File
+                        "action": "setVisible",
+                    }
                     
                     // Analytics > Model
                     {
@@ -8027,6 +8035,57 @@ APP.disableDesignerSaving = function (assetType, mode) {
                         break;
                     }
                     break;
+                    
+                case "snippet":
+                    switch (mode) {
+                    case "edit":
+                        console.log("Marketo App > Executing: Snippet Editor: Saving & Toolbar Menus");
+                        var isSnippetEditor = window.setInterval(function () {
+                                if (typeof(Mkt3.app.controllers.get("Mkt3.controller.editor.Snippet")) !== "undefined"
+                                     && Mkt3.app.controllers.get("Mkt3.controller.editor.Snippet")
+                                     && Mkt3.app.controllers.get("Mkt3.controller.editor.Snippet").getSnippet()
+                                     && Mkt3.app.controllers.get("Mkt3.controller.editor.Snippet").getSnippet().getNodeJson()) {
+                                    console.log("Marketo App > Disabling: Snippet Editor: Saving & Toolbar Menus");
+                                    
+                                    window.clearInterval(isSnippetEditor);
+                                    
+                                    assetNode = Mkt3.app.controllers.get("Mkt3.controller.editor.Snippet").getSnippet().getNodeJson();
+                                    menuItems = [
+                                        // Toolbar
+                                        //"toolbar [action=preview]", // Preview Draft
+                                    ];
+                                    
+                                    disableDesignerAsset(assetNode, menuItems, APP.disableSaving);
+                                }
+                            }, 0);
+                        break;
+                        
+                    case "preview":
+                        console.log("Marketo App > Executing: Snippet Previewer: Saving & Toolbar Menus");
+                        var isSnippetEditor = window.setInterval(function () {
+                                if (typeof(Mkt3.app.controllers.get("Mkt3.controller.previewer.Snippet")) !== "undefined"
+                                     && Mkt3.app.controllers.get("Mkt3.controller.previewer.Snippet")
+                                     && Mkt3.app.controllers.get("Mkt3.controller.previewer.Snippet").getSnippet()
+                                     && Mkt3.app.controllers.get("Mkt3.controller.previewer.Snippet").getSnippet().getNodeJson()) {
+                                    console.log("Marketo App > Disabling: Snippet Previewer: Saving & Toolbar Menus");
+                                    
+                                    window.clearInterval(isSnippetEditor);
+                                    
+                                    assetNode = Mkt3.app.controllers.get("Mkt3.controller.previewer.Snippet").getSnippet().getNodeJson();
+                                    menuItems = [
+                                        // Toolbar Menu
+                                        //"toolbar [action=edit]", // Edit Draft
+                                        // Actions Menu
+                                        //"menu [action=showHtmlVersion]", // HTML
+                                        //"menu [action=showTextVersion]", // Text
+                                    ];
+                                    
+                                    disableDesignerAsset(assetNode, menuItems);
+                                }
+                            }, 0);
+                        break;
+                    }
+                    break;
                 }
             }
         }, 0);
@@ -10301,6 +10360,18 @@ var isMktPageApp = window.setInterval(function () {
                     APP.disableDesignerSaving("abTest", "edit");
                     break;
                     
+                case mktoSnippetEditFragment:
+                    console.log("Marketo App > Location: Snippet Editor");
+                    
+                    APP.disableDesignerSaving("snippet", "edit");
+                    break;
+                    
+                case mktoSnippetPreviewFragment:
+                    console.log("Marketo App > Location: Snippet Previewer");
+                    
+                    APP.disableDesignerSaving("snippet", "preview");
+                    break;
+                    
                 default:
                     break;
                 }
@@ -10512,6 +10583,18 @@ var isMktPageApp = window.setInterval(function () {
                                             console.log("Marketo App > Location: Email Test Group Wizard");
                                             
                                             APP.disableDesignerSaving("abTest", "edit");
+                                            break;
+                                            
+                                        case mktoSnippetEditFragment:
+                                            console.log("Marketo App > Location: Snippet Editor");
+                                            
+                                            APP.disableDesignerSaving("snippet", "edit");
+                                            break;
+                                            
+                                        case mktoSnippetPreviewFragment:
+                                            console.log("Marketo App > Location: Snippet Previewer");
+                                            
+                                            APP.disableDesignerSaving("snippet", "preview");
                                             break;
                                             
                                         default:
