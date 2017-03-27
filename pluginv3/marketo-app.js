@@ -7590,18 +7590,25 @@ APP.disableDesignerSaving = function (assetType, mode) {
                         var isLandingPageTemplateEditor = window.setInterval(function () {
                                 if (typeof(Mkt3.app.controllers.get("Mkt3.controller.editor.landingPageTemplate.LandingPageTemplate")) !== "undefined"
                                      && Mkt3.app.controllers.get("Mkt3.controller.editor.landingPageTemplate.LandingPageTemplate")
-                                     && Mkt3.app.controllers.get("Mkt3.controller.editor.landingPageTemplate.LandingPageTemplate").getTemplate()) {
+                                     && Mkt3.app.controllers.get("Mkt3.controller.editor.landingPageTemplate.LandingPageTemplate").getTemplate()
+                                     && Mkt3.app.controllers.get("Mkt3.controller.editor.landingPageTemplate.LandingPageTemplate").getTemplate().get
+                                     && Mkt3.app.controllers.get("Mkt3.controller.editor.landingPageTemplate.LandingPageTemplate").getTemplate().getNodeJson) {
                                     console.log("Marketo App > Disabling: Landing Page Template Editor: Saving & Toolbar Menus");
                                     
                                     window.clearInterval(isLandingPageTemplateEditor);
                                     
                                     var asset = Mkt3.app.controllers.get("Mkt3.controller.editor.landingPageTemplate.LandingPageTemplate").getTemplate();
-                                    assetNode = {
-                                        assetName: asset.get("name"),
-                                        assetType: "Landing Page Template",
-                                        assetId: "LT" + asset.getId(),
-                                        workspaceId: -1
-                                    };
+                                    
+                                    if (asset.get("zoneId")) {
+                                        assetNode = asset.getNodeJson();
+                                    } else {
+                                        assetNode = {
+                                            assetName: asset.get("name"),
+                                            assetType: "Landing Page Template",
+                                            assetId: "LT" + asset.getId(),
+                                            accessZoneId: -1
+                                        };
+                                    }
                                         
                                     menuItems = [
                                         // Toolbar Menu
@@ -7624,13 +7631,24 @@ APP.disableDesignerSaving = function (assetType, mode) {
                                 if (typeof(Mkt3.app.controllers.get("Mkt3.controller.previewer.LandingPageTemplate")) !== "undefined"
                                      && Mkt3.app.controllers.get("Mkt3.controller.previewer.LandingPageTemplate")
                                      && Mkt3.app.controllers.get("Mkt3.controller.previewer.LandingPageTemplate").getTemplate()
-                                     && Mkt3.app.controllers.get("Mkt3.controller.previewer.LandingPageTemplate").getTemplate().getNodeJson()) {
+                                     && Mkt3.app.controllers.get("Mkt3.controller.previewer.LandingPageTemplate").getTemplate().get
+                                     && Mkt3.app.controllers.get("Mkt3.controller.previewer.LandingPageTemplate").getTemplate().getNodeJson) {
                                     console.log("Marketo App > Disabling: Landing Page Template Previewer: Saving & Toolbar Menus");
                                     
                                     window.clearInterval(isLandingPageTemplatePreview);
                                     
                                     var asset = Mkt3.app.controllers.get("Mkt3.controller.previewer.LandingPageTemplate").getTemplate();
-                                    assetNode = asset.getNodeJson();
+                                    
+                                    if (asset.get("zoneId")) {
+                                        assetNode = asset.getNodeJson();
+                                    } else {
+                                        assetNode = {
+                                            assetName: asset.get("name"),
+                                            assetType: "Landing Page Template",
+                                            assetId: "LT" + asset.getId(),
+                                            accessZoneId: -1
+                                        };
+                                    }
                                         
                                     menuItems = [
                                         // Toolbar Menu
@@ -7730,9 +7748,7 @@ APP.disableDesignerSaving = function (assetType, mode) {
                                         //"menu [action=checkSyntax]", // Validate HTML
                                     ];
                                     
-                                    disableDesignerAsset(assetNode, menuItems);
-                                    APP.overlayEmail("edit");
-                                    APP.saveEmailEdits("edit", asset);
+                                    disableDesignerAsset(assetNode, menuItems, APP.disableSaving);
                                 }
                             }, 0);
                         break;
