@@ -7764,9 +7764,7 @@ APP.disableDesignerSaving = function (assetType, mode) {
                                 }
                             }, 0);
                         break;
-                    }
-                    break;
-                    
+                        
                     case "templatePicker":
                         var isEmailTemplatePicker = window.setInterval(function () {
                                 if (typeof(Mkt3.app.controllers.get("Mkt3.controller.editor.email2.EmailTemplatePicker")) !== "undefined"
@@ -7795,6 +7793,8 @@ APP.disableDesignerSaving = function (assetType, mode) {
                                 }
                             }, 0);
                         break;
+                    }
+                    break;
                         
                 case "form":
                     switch (mode) {
