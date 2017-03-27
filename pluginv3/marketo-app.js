@@ -7781,7 +7781,7 @@ APP.disableDesignerSaving = function (assetType, mode) {
                                         text: "Email Template Picker",
                                         compType: "Email Template Picker",
                                         id: "EM",
-                                        accessZoneId: asset.accessZoneId
+                                        accessZoneId: parseInt(asset.accessZoneId)
                                     };
                                     
                                     menuItems = [
