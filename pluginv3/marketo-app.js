@@ -7520,7 +7520,11 @@ APP.disableDesignerSaving = function (assetType, mode) {
                                 console.log("Marketo App > Disabling Designer Toolbar Menus");
                                 mItems.forEach(function (item) {
                                     if (item) {
-                                        item.setDisabled(true);
+                                        if (item.itemId == "createButton") {
+                                            item.setVisible(false);
+                                        } else {
+                                            item.setDisabled(true);
+                                        }
                                     }
                                 });
                             }
@@ -7763,6 +7767,35 @@ APP.disableDesignerSaving = function (assetType, mode) {
                     }
                     break;
                     
+                    case "templatePicker":
+                        var isEmailTemplatePicker = window.setInterval(function () {
+                                if (typeof(Mkt3.app.controllers.get("Mkt3.controller.editor.email2.EmailTemplatePicker")) !== "undefined"
+                                     && Mkt3.app.controllers.get("Mkt3.controller.editor.email2.EmailTemplatePicker")
+                                     && Mkt3.app.controllers.get("Mkt3.controller.editor.email2.EmailTemplatePicker").getEmailTemplatePicker()
+                                     && Mkt3.app.controllers.get("Mkt3.controller.editor.email2.EmailTemplatePicker").getEmailTemplatePicker().accessZoneId) {
+                                    console.log("Marketo App > Disabling: Email Template Picker: Saving & Toolbar Menus");
+                                    
+                                    window.clearInterval(isEmailTemplatePicker);
+                                    
+                                    var asset = Mkt3.app.controllers.get("Mkt3.controller.editor.email2.EmailTemplatePicker").getEmailTemplatePicker();
+                                    
+                                    assetNode = {
+                                        text: "Email Template Picker",
+                                        compType: "Email Template Picker",
+                                        id: "EM",
+                                        accessZoneId: asset.accessZoneId
+                                    };
+                                    
+                                    menuItems = [
+                                        // Toolbar Menu
+                                        "toolbar [itemId=createButton]", // Create
+                                    ];
+                                    
+                                    disableDesignerAsset(assetNode, menuItems);
+                                }
+                            }, 0);
+                        break;
+                        
                 case "form":
                     switch (mode) {
                     case "edit":
@@ -10271,7 +10304,11 @@ var isMktPageApp = window.setInterval(function () {
                     break;
                     
                 case mktoEmailEditFragment:
-                    if (currUrlFragment.search(mktoEmailPreviewFragmentRegex) == -1) {
+                    if (currUrlFragment == mktoEmailEditFragment) {
+                        console.log("Marketo App > Location: Email Template Picker");
+                        
+                        APP.disableDesignerSaving("email", "templatePicker");
+                    } else if (currUrlFragment.search(mktoEmailPreviewFragmentRegex) == -1) {
                         console.log("Marketo App > Location: Email Editor");
                         
                         APP.disableDesignerSaving("email", "edit");
@@ -10496,7 +10533,11 @@ var isMktPageApp = window.setInterval(function () {
                                             break;
                                             
                                         case mktoEmailEditFragment:
-                                            if (currUrlFragment.search(mktoEmailPreviewFragmentRegex) == -1) {
+                                            if (currUrlFragment == mktoEmailEditFragment) {
+                                                console.log("Marketo App > Location: Email Template Picker");
+                                                
+                                                APP.disableDesignerSaving("email", "templatePicker");
+                                            } else if (currUrlFragment.search(mktoEmailPreviewFragmentRegex) == -1) {
                                                 console.log("Marketo App > Location: Email Editor");
                                                 
                                                 APP.disableDesignerSaving("email", "edit");
