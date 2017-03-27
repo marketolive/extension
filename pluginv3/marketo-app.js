@@ -116,9 +116,12 @@ mktoEmailEditFragment = "EME",
 mktoEmailPreviewFragmentRegex = new RegExp("^EME[0-9]+&isPreview", "i"),
 mktoEmailPreviewFragment2 = "EME[0-9]+&isPreview",
 mktoEmailPreviewFragment = "EMP",
+mktoEmailTemplateEditFragment = "EMTE",
 mktoLandingPageEditFragment = "LPE",
 mktoLandingPagePreviewFragment = "LPP",
 mktoLandingPagePreviewDraftFragment = "LPPD",
+mktoLandingPageTemplateEditFragment = "LPTE",
+mktoLandingPageTemplatePreviewFragment = "LPTPD",
 mktoFormEditFragment = "FOE",
 mktoFormPreviewFragment = "FOP",
 mktoFormPreviewDraftFragment = "FOPD",
@@ -131,7 +134,7 @@ mktoSocialAppEditFragment = "SOAE",
 mktoSocialAppPreviewFragment = "SOAP",
 mktoAbTestEditFragment = "EBE",
 mktoEmailTestGroupEditFragment = "CCE",
-mktoDesignersFragmentMatch = "^" + mktoEmailEditFragment + "$|^" + mktoEmailPreviewFragment2 + "|^" + mktoEmailPreviewFragment + "$|^" + mktoLandingPageEditFragment + "$|^" + mktoLandingPagePreviewFragment + "$|^" + mktoLandingPagePreviewDraftFragment + "$|^" + mktoFormEditFragment + "$|^" + mktoFormPreviewFragment + "$|^" + mktoFormPreviewDraftFragment + "$|^" + mktoPushNotificationEditFragment + "$|^" + mktoMobilePushNotificationPreviewFragment + "$|^" + mktoInAppMessageEditFragment + "$|^" + mktoInAppMessagePreviewFragment + "$|^" + mktoSmsMessageEditFragment + "$|^" + mktoSocialAppEditFragment + "$|^" + mktoSocialAppPreviewFragment + "$|^" + mktoAbTestEditFragment + "$|^" + mktoEmailTestGroupEditFragment + "$",
+mktoDesignersFragmentMatch = "^" + mktoEmailEditFragment + "$|^" + mktoEmailPreviewFragment2 + "|^" + mktoEmailPreviewFragment + "$|^" + mktoEmailTemplateEditFragment + "$|^" + mktoLandingPageEditFragment + "$|^" + mktoLandingPagePreviewFragment + "$|^" + mktoLandingPagePreviewDraftFragment + "$|^" + mktoLandingPageTemplateEditFragment + "$|^" + mktoLandingPageTemplatePreviewFragment + "$|^" + mktoFormEditFragment + "$|^" + mktoFormPreviewFragment + "$|^" + mktoFormPreviewDraftFragment + "$|^" + mktoPushNotificationEditFragment + "$|^" + mktoMobilePushNotificationPreviewFragment + "$|^" + mktoInAppMessageEditFragment + "$|^" + mktoInAppMessagePreviewFragment + "$|^" + mktoSmsMessageEditFragment + "$|^" + mktoSocialAppEditFragment + "$|^" + mktoSocialAppPreviewFragment + "$|^" + mktoAbTestEditFragment + "$|^" + mktoEmailTestGroupEditFragment + "$",
 
 mktoDefaultWorkspaceId = 1,
 mktoJapaneseWorkspaceId = 173,
@@ -141,7 +144,8 @@ mktoHigherEdWorkspaceId = 176,
 mktoManufacturingWorkspaceId = 184,
 mktoTechnologyWorkspaceId = 185,
 mktoTravelLesiureWorkspaceId = 186,
-mktoGoldenWorkspacesMatch = "^" + mktoDefaultWorkspaceId + "$|^" + mktoJapaneseWorkspaceId + "$|^" + mktoFinservWorkspaceId + "$|^" + mktoHealthcareWorkspaceId + "$|^" + mktoHigherEdWorkspaceId + "$|^" + mktoManufacturingWorkspaceId + "$|^" + mktoTechnologyWorkspaceId + "$|^" + mktoTravelLesiureWorkspaceId + "$",
+mktoUnknownWorkspaceId = -1,
+mktoGoldenWorkspacesMatch = "^" + mktoDefaultWorkspaceId + "$|^" + mktoJapaneseWorkspaceId + "$|^" + mktoFinservWorkspaceId + "$|^" + mktoHealthcareWorkspaceId + "$|^" + mktoHigherEdWorkspaceId + "$|^" + mktoManufacturingWorkspaceId + "$|^" + mktoTechnologyWorkspaceId + "$|^" + mktoTravelLesiureWorkspaceId + "$|^" + mktoUnknownWorkspaceId +"$",
 
 origMenuShowAtFunc,
 
@@ -303,7 +307,7 @@ APP.getWorkspaceName = function (workspaceId) {
         break;
         
     default:
-        return;
+        workspaceName = "Unknown";
         break;
     }
     
@@ -7581,6 +7585,62 @@ APP.disableDesignerSaving = function (assetType, mode) {
                                 }
                             }, 0);
                         break;
+                    
+                    case "templateEdit":
+                        var isLandingPageTemplateEditor = window.setInterval(function () {
+                                if (typeof(Mkt3.app.controllers.get("Mkt3.controller.editor.landingPageTemplate.LandingPageTemplate")) !== "undefined"
+                                     && Mkt3.app.controllers.get("Mkt3.controller.editor.landingPageTemplate.LandingPageTemplate")
+                                     && Mkt3.app.controllers.get("Mkt3.controller.editor.landingPageTemplate.LandingPageTemplate").getTemplate()) {
+                                    console.log("Marketo App > Disabling: Landing Page Template Editor: Saving & Toolbar Menus");
+                                    
+                                    window.clearInterval(isLandingPageTemplateEditor);
+                                    
+                                    var asset = Mkt3.app.controllers.get("Mkt3.controller.editor.landingPageTemplate.LandingPageTemplate").getTemplate();
+                                    assetNode = {
+                                        assetName: asset.get("name"),
+                                        assetType: "Landing Page Template",
+                                        assetId: "LT" + asset.getId(),
+                                        workspaceId: -1
+                                    };
+                                        
+                                    menuItems = [
+                                        // Toolbar Menu
+                                        "toolbar [action=upgrade]", // Make Mobile Compatible
+                                        //"toolbar [action=preview]", // Preview Draft
+                                        // Actions Menu
+                                        "menu [action=showMunchkinToggler]", // Disable Munchkin Tracking
+                                        //"menu [action=validate]", // Validate Mobile Compatibility
+                                        //"menu [action=checkSyntax]", // Validate Syntax
+                                        "menu [action=approve]", // Approve and Close
+                                    ];
+                                    
+                                    disableDesignerAsset(assetNode, menuItems, APP.disableSaving);
+                                }
+                            }, 0);
+                        break;
+                    
+                    case "templatePreview":
+                        var isLandingPageTemplatePreview = window.setInterval(function () {
+                                if (typeof(Mkt3.app.controllers.get("Mkt3.controller.previewer.LandingPageTemplate")) !== "undefined"
+                                     && Mkt3.app.controllers.get("Mkt3.controller.previewer.LandingPageTemplate")
+                                     && Mkt3.app.controllers.get("Mkt3.controller.previewer.LandingPageTemplate").getTemplate()
+                                     && Mkt3.app.controllers.get("Mkt3.controller.previewer.LandingPageTemplate").getTemplate().getNodeJson()) {
+                                    console.log("Marketo App > Disabling: Landing Page Template Previewer: Saving & Toolbar Menus");
+                                    
+                                    window.clearInterval(isLandingPageTemplatePreview);
+                                    
+                                    var asset = Mkt3.app.controllers.get("Mkt3.controller.previewer.LandingPageTemplate").getTemplate();
+                                    assetNode = asset.getNodeJson();
+                                        
+                                    menuItems = [
+                                        // Toolbar Menu
+                                        //"toolbar [action=edit]", // Edit Draft
+                                    ];
+                                    
+                                    disableDesignerAsset(assetNode, menuItems);
+                                }
+                            }, 0);
+                        break;
                     }
                     break;
                     
@@ -7644,6 +7704,35 @@ APP.disableDesignerSaving = function (assetType, mode) {
                                     
                                     disableDesignerAsset(assetNode, menuItems);
                                     APP.overlayEmail("preview");
+                                }
+                            }, 0);
+                        break;
+                    
+                    case "templateEdit":
+                        var isEmailTemplateEditor = window.setInterval(function () {
+                                if (typeof(Mkt3.app.controllers.get("Mkt3.controller.editor.email2.EmailTemplate")) !== "undefined"
+                                     && Mkt3.app.controllers.get("Mkt3.controller.editor.email2.EmailTemplate")
+                                     && Mkt3.app.controllers.get("Mkt3.controller.editor.email2.EmailTemplate").getTemplate()
+                                     && Mkt3.app.controllers.get("Mkt3.controller.editor.email2.EmailTemplate").getTemplate().getNodeJson()) {
+                                    console.log("Marketo App > Disabling: Email Template Editor: Saving & Toolbar Menus");
+                                    
+                                    window.clearInterval(isEmailTemplateEditor);
+                                    
+                                    var asset = Mkt3.app.controllers.get("Mkt3.controller.editor.email2.EmailTemplate").getTemplate();
+                                    assetNode = asset.getNodeJson();
+                                    menuItems = [
+                                        // Toolbar Menu
+                                        //"toolbar [action=preview]", // Preview Draft
+                                        // Actions Menu
+                                        "menu [action=approveTemplate]", // Approve and Close
+                                        "menu [action=sendSample]", // Send Sample Email
+                                        "menu [action=inlineCss]", // Inline CSS
+                                        //"menu [action=checkSyntax]", // Validate HTML
+                                    ];
+                                    
+                                    disableDesignerAsset(assetNode, menuItems);
+                                    APP.overlayEmail("edit");
+                                    APP.saveEmailEdits("edit", asset);
                                 }
                             }, 0);
                         break;
@@ -10094,6 +10183,18 @@ var isMktPageApp = window.setInterval(function () {
                     APP.disableDesignerSaving("landingPage", "preview");
                     break;
                     
+                case mktoLandingPageTemplateEditFragment:
+                    console.log("Marketo App > Location: Landing Page Template Editor");
+                    
+                    APP.disableDesignerSaving("landingPage", "templateEdit");
+                    break;
+                    
+                case mktoLandingPageTemplatePreviewFragment:
+                    console.log("Marketo App > Location: Landing Page Template Previewer");
+                    
+                    APP.disableDesignerSaving("landingPage", "templatePreview");
+                    break;
+                    
                 case mktoEmailEditFragment:
                     if (currUrlFragment.search(mktoEmailPreviewFragmentRegex) == -1) {
                         console.log("Marketo App > Location: Email Editor");
@@ -10104,6 +10205,12 @@ var isMktPageApp = window.setInterval(function () {
                         
                         APP.disableDesignerSaving("email", "preview");
                     }
+                    break;
+                    
+                case mktoEmailTemplateEditFragment:
+                    console.log("Marketo App > Location: Email Template Editor");
+                    
+                    APP.disableDesignerSaving("email", "templateEdit");
                     break;
                     
                 case mktoFormEditFragment:
@@ -10289,6 +10396,18 @@ var isMktPageApp = window.setInterval(function () {
                                             APP.disableDesignerSaving("landingPage", "preview");
                                             break;
                                             
+                                        case mktoLandingPageTemplateEditFragment:
+                                            console.log("Marketo App > Location: Landing Page Template Editor");
+                                            
+                                            APP.disableDesignerSaving("landingPage", "templateEdit");
+                                            break;
+                                            
+                                        case mktoLandingPageTemplatePreviewFragment:
+                                            console.log("Marketo App > Location: Landing Page Template Previewer");
+                                            
+                                            APP.disableDesignerSaving("landingPage", "templatePreview");
+                                            break;
+                                            
                                         case mktoEmailEditFragment:
                                             if (currUrlFragment.search(mktoEmailPreviewFragmentRegex) == -1) {
                                                 console.log("Marketo App > Location: Email Editor");
@@ -10299,6 +10418,12 @@ var isMktPageApp = window.setInterval(function () {
                                                 
                                                 APP.disableDesignerSaving("email", "preview");
                                             }
+                                            break;
+                                            
+                                        case mktoEmailTemplateEditFragment:
+                                            console.log("Marketo App > Location: Email Template Editor");
+                                            
+                                            APP.disableDesignerSaving("email", "templateEdit");
                                             break;
                                             
                                         case mktoFormEditFragment:
