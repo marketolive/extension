@@ -7603,9 +7603,9 @@ APP.disableDesignerSaving = function (assetType, mode) {
                                         assetNode = asset.getNodeJson();
                                     } else {
                                         assetNode = {
-                                            assetName: asset.get("name"),
-                                            assetType: "Landing Page Template",
-                                            assetId: "LT" + asset.getId(),
+                                            text: asset.get("name"),
+                                            compType: "Landing Page Template",
+                                            id: "LT" + asset.getId(),
                                             accessZoneId: -1
                                         };
                                     }
@@ -7643,9 +7643,9 @@ APP.disableDesignerSaving = function (assetType, mode) {
                                         assetNode = asset.getNodeJson();
                                     } else {
                                         assetNode = {
-                                            assetName: asset.get("name"),
-                                            assetType: "Landing Page Template",
-                                            assetId: "LT" + asset.getId(),
+                                            text: asset.get("name"),
+                                            compType: "Landing Page Template",
+                                            id: "LT" + asset.getId(),
                                             accessZoneId: -1
                                         };
                                     }
