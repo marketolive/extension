@@ -1128,9 +1128,12 @@ APP.overrideTreeNodeExpand = function () {
                      && this.attributes.system == true)) {
                 
                 for (var ii = 0; ii < this.childNodes.length; ii++) {
-                    if (this.childNodes[ii].attributes.system == false
-                         && this.childNodes[ii].text.toLowerCase() !== userName) {
-                        this.childNodes[ii].hidden = true;
+                    var currFolder = this.childNodes[ii];
+                    
+                    if (currFolder.attributes.system == false
+                         && currFolder.text.toLowerCase() !== userName) {
+                        currFolder.ui.hide();
+                        currFolder.hidden = true;
                     }
                 }
             } else if (accountString == mktoAccountStringMaster
@@ -1143,11 +1146,13 @@ APP.overrideTreeNodeExpand = function () {
                         if (currFolder.attributes.system == false
                              && currFolder.attributes.compType == "Marketing Folder"
                              && currFolder.text.search(mktoWorkingFoldersToHide) != -1) {
-                            currFolder.destroy(true);
+                            currFolder.ui.hide();
+                            currFolder.hidden = true;
                         }
                     }
                 } else if (this.parentNode.attributes.compType == "Zone"
                      && this.attributes.system == false
+                     && this.hidden == false
                      && this.attributes.compType == "Marketing Folder") {
                     for (var ii = 0; ii < this.childNodes.length; ii++) {
                         var currFolder = this.childNodes[ii];
@@ -1155,7 +1160,8 @@ APP.overrideTreeNodeExpand = function () {
                         if (currFolder.attributes.system == false
                              && currFolder.attributes.compType == "Marketing Folder"
                              && currFolder.text.search(mktoOperationalFolder) != -1) {
-                            currFolder.destroy(true);
+                            currFolder.ui.hide();
+                            currFolder.hidden = true;
                         }
                     }
                 }
@@ -1217,9 +1223,12 @@ APP.overrideTreeNodeCollapse = function () {
                      && this.attributes.system == true)) {
                 
                 for (ii = 0; ii < this.childNodes.length; ii++) {
-                    if (this.childNodes[ii].attributes.system == false
-                         && this.childNodes[ii].text.toLowerCase() !== userName) {
-                        this.childNodes[ii].ui.elNode.hidden = true;
+                    var currFolder = this.childNodes[ii];
+                    
+                    if (currFolder.attributes.system == false
+                         && currFolder.text.toLowerCase() !== userName) {
+                        currFolder.ui.hide();
+                        currFolder.hidden = currFolder.ui.elNode.hidden = true;
                     }
                 }
             } else if (accountString == mktoAccountStringMaster
@@ -1232,11 +1241,13 @@ APP.overrideTreeNodeCollapse = function () {
                         if (currFolder.attributes.system == false
                              && currFolder.attributes.compType == "Marketing Folder"
                              && currFolder.text.search(mktoWorkingFoldersToHide) != -1) {
-                            currFolder.destroy(true);
+                            currFolder.ui.hide();
+                            currFolder.hidden = true;
                         }
                     }
                 } else if (this.parentNode.attributes.compType == "Zone"
                      && this.attributes.system == false
+                     && this.hidden == false
                      && this.attributes.compType == "Marketing Folder") {
                     for (var ii = 0; ii < this.childNodes.length; ii++) {
                         var currFolder = this.childNodes[ii];
@@ -1244,7 +1255,8 @@ APP.overrideTreeNodeCollapse = function () {
                         if (currFolder.attributes.system == false
                              && currFolder.attributes.compType == "Marketing Folder"
                              && currFolder.text.search(mktoOperationalFolder) != -1) {
-                            currFolder.destroy(true);
+                            currFolder.ui.hide();
+                            currFolder.hidden = true;
                         }
                     }
                 }
