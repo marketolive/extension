@@ -1133,8 +1133,8 @@ APP.overrideTreeNodeExpand = function () {
                     }
                 }
             } else if (accountString == mktoAccountStringMaster
-                 && this.compType == "Zone"
-                 && this.accessZoneId == mktoDefaultWorkspaceId
+                 && this.attributes.compType == "Zone"
+                 && this.attributes.accessZoneId == mktoDefaultWorkspaceId
                  && this.childNodes) {
                 
                 for (var ii = 0; ii < this.childNodes.length; ii++) {
@@ -1207,8 +1207,8 @@ APP.overrideTreeNodeCollapse = function () {
                     }
                 }
             } else if (accountString == mktoAccountStringMaster
-                 && this.compType == "Zone"
-                 && this.accessZoneId == mktoDefaultWorkspaceId
+                 && this.attributes.compType == "Zone"
+                 && this.attributes.accessZoneId == mktoDefaultWorkspaceId
                  && this.childNodes) {
                 
                 for (var ii = 0; ii < this.childNodes.length; ii++) {
