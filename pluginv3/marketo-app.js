@@ -1143,12 +1143,11 @@ APP.overrideTreeNodeExpand = function () {
                         if (currFolder.attributes.system == false
                              && currFolder.attributes.compType == "Marketing Folder"
                              && currFolder.text.search(mktoWorkingFoldersToHide) != -1) {
-                            currFolder.hidden = true;
+                            currFolder.destroy(true);
                         }
                     }
                 } else if (this.parentNode.attributes.compType == "Zone"
                      && this.attributes.system == false
-                     && this.hidden == false
                      && this.attributes.compType == "Marketing Folder") {
                     for (var ii = 0; ii < this.childNodes.length; ii++) {
                         var currFolder = this.childNodes[ii];
@@ -1156,7 +1155,7 @@ APP.overrideTreeNodeExpand = function () {
                         if (currFolder.attributes.system == false
                              && currFolder.attributes.compType == "Marketing Folder"
                              && currFolder.text.search(mktoOperationalFolder) != -1) {
-                            currFolder.hidden = true;
+                            currFolder.destroy(true);
                         }
                     }
                 }
@@ -1233,12 +1232,11 @@ APP.overrideTreeNodeCollapse = function () {
                         if (currFolder.attributes.system == false
                              && currFolder.attributes.compType == "Marketing Folder"
                              && currFolder.text.search(mktoWorkingFoldersToHide) != -1) {
-                            currFolder.hidden = true;
+                            currFolder.destroy(true);
                         }
                     }
                 } else if (this.parentNode.attributes.compType == "Zone"
                      && this.attributes.system == false
-                     && this.hidden == false
                      && this.attributes.compType == "Marketing Folder") {
                     for (var ii = 0; ii < this.childNodes.length; ii++) {
                         var currFolder = this.childNodes[ii];
@@ -1246,7 +1244,7 @@ APP.overrideTreeNodeCollapse = function () {
                         if (currFolder.attributes.system == false
                              && currFolder.attributes.compType == "Marketing Folder"
                              && currFolder.text.search(mktoOperationalFolder) != -1) {
-                            currFolder.hidden = true;
+                            currFolder.destroy(true);
                         }
                     }
                 }
