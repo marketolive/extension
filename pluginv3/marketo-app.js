@@ -10248,6 +10248,8 @@ var isMktPageApp = window.setInterval(function () {
                         assetName: "Page"
                     });
                 } else if (accountString == mktoAccountStringMaster) {
+                    APP.overrideTreeNodeExpand();
+                    APP.overrideTreeNodeCollapse();
                     APP.overrideSaving();
                     APP.disableDragAndDrop();
                     APP.disableMenus();
