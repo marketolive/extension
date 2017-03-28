@@ -62,6 +62,7 @@ waitAfterDiscard = 2000,
 currUrlFragment,
 currCompFragment,
 userName,
+accountString,
 
 adminUserNamesMatch = "^mktodemolivemaster@marketo\.com$|^admin(\.[a-z]{0,2})?@(marketolive.com$|mktodemoaccount)|^mktodemoaccount[a-z0-9]*@marketo\.com$|^marketodemo.*@gmail\.com$",
 
@@ -70,6 +71,8 @@ mktoAccountStringQe = "globalsales",
 mktoAccountString106 = "mktodemoaccount106",
 mktoAccountString106d = "mktodemoaccount106d",
 mktoAccountStringsMatch = "^" + mktoAccountString106 + "$|^" + mktoAccountString106d + "$",
+
+mktoWorkingFoldersToHide = new RegExp("^(Manufacturing|Health ?Care|Telecommunications)$", "i"),
 
 mktoMasterMarketingActivitiesEnglishFragment = "MA19A1",
 mktoMarketingActivitiesDefaultFragment = "MA15A1",
@@ -147,7 +150,7 @@ mktoManufacturingWorkspaceId = 184,
 mktoTechnologyWorkspaceId = 185,
 mktoTravelLesiureWorkspaceId = 186,
 mktoUnknownWorkspaceId = -1,
-mktoGoldenWorkspacesMatch = "^" + mktoDefaultWorkspaceId + "$|^" + mktoJapaneseWorkspaceId + "$|^" + mktoFinservWorkspaceId + "$|^" + mktoHealthcareWorkspaceId + "$|^" + mktoHigherEdWorkspaceId + "$|^" + mktoManufacturingWorkspaceId + "$|^" + mktoTechnologyWorkspaceId + "$|^" + mktoTravelLesiureWorkspaceId + "$|^" + mktoUnknownWorkspaceId +"$",
+mktoGoldenWorkspacesMatch = "^" + mktoDefaultWorkspaceId + "$|^" + mktoJapaneseWorkspaceId + "$|^" + mktoFinservWorkspaceId + "$|^" + mktoHealthcareWorkspaceId + "$|^" + mktoHigherEdWorkspaceId + "$|^" + mktoManufacturingWorkspaceId + "$|^" + mktoTechnologyWorkspaceId + "$|^" + mktoTravelLesiureWorkspaceId + "$|^" + mktoUnknownWorkspaceId + "$",
 
 origMenuShowAtFunc,
 
@@ -222,11 +225,11 @@ APP.webRequest = function (url, params, method, async, responseType, callback) {
 
 /**************************************************************************************
  *
- *  This function validates the demo extension check that the Marketo subscription uses 
+ *  This function validates the demo extension check that the Marketo subscription uses
  *  to enforce having the extension installed. The user experience with the Marketo
- *  feature as implemented today isn't ideal, so this function disables it altogether. 
- *  Obviously, only having the extension could disable the check, so it's guaranteed 
- *  that the user has the extension (unless they're very Javascript savvy and paste this 
+ *  feature as implemented today isn't ideal, so this function disables it altogether.
+ *  Obviously, only having the extension could disable the check, so it's guaranteed
+ *  that the user has the extension (unless they're very Javascript savvy and paste this
  *  in the console).
  *
  *  @Author Brian Fisher
@@ -247,13 +250,13 @@ APP.validateDemoExtensionCheck = function (isValidExtension) {
         MktPage.validateDemoExtension(new Date());
         console.log("Marketo App > Validating: Demo Extension IS NOT Valid");
     }
-        
+    
     /*
     if (MktPage
-         && MktPage.validateDemoExtension) {
-        MktPage.validateDemoExtension = function () {};
+    && MktPage.validateDemoExtension) {
+    MktPage.validateDemoExtension = function () {};
     }
-    */
+     */
 };
 
 /**************************************************************************************
@@ -1124,10 +1127,20 @@ APP.overrideTreeNodeExpand = function () {
                      && this.attributes.system == true)) {
                 
                 for (var ii = 0; ii < this.childNodes.length; ii++) {
-                    if (this.childNodes[ii].attributes.system == false) {
-                        if (this.childNodes[ii].text.toLowerCase() !== userName) {
-                            this.childNodes[ii].hidden = true;
-                        } else {}
+                    if (this.childNodes[ii].attributes.system == false
+                         && this.childNodes[ii].text.toLowerCase() !== userName) {
+                        this.childNodes[ii].hidden = true;
+                    }
+                }
+            } else if (accountString == mktoAccountStringMaster
+                 && this.compType == "Zone"
+                 && this.accessZoneId == mktoDefaultWorkspaceId
+                 && this.childNodes) {
+                
+                for (var ii = 0; ii < this.childNodes.length; ii++) {
+                    if (this.childNodes[ii].attributes.system == false
+                         && this.childNodes[ii].text.search(mktoWorkingFoldersToHide) != -1) {
+                        this.childNodes[ii].hidden = true;
                     }
                 }
             }
@@ -1188,10 +1201,20 @@ APP.overrideTreeNodeCollapse = function () {
                      && this.attributes.system == true)) {
                 
                 for (ii = 0; ii < this.childNodes.length; ii++) {
-                    if (this.childNodes[ii].attributes.system == false) {
-                        if (this.childNodes[ii].text.toLowerCase() !== userName) {
-                            this.childNodes[ii].ui.elNode.hidden = true;
-                        }
+                    if (this.childNodes[ii].attributes.system == false
+                         && this.childNodes[ii].text.toLowerCase() !== userName) {
+                        this.childNodes[ii].ui.elNode.hidden = true;
+                    }
+                }
+            } else if (accountString == mktoAccountStringMaster
+                 && this.compType == "Zone"
+                 && this.accessZoneId == mktoDefaultWorkspaceId
+                 && this.childNodes) {
+                
+                for (var ii = 0; ii < this.childNodes.length; ii++) {
+                    if (this.childNodes[ii].attributes.system == false
+                         && this.childNodes[ii].text.search(mktoWorkingFoldersToHide) != -1) {
+                        this.childNodes[ii].hidden = true;
                     }
                 }
             }
@@ -7597,7 +7620,7 @@ APP.disableDesignerSaving = function (assetType, mode) {
                                 }
                             }, 0);
                         break;
-                    
+                        
                     case "templateEdit":
                         var isLandingPageTemplateEditor = window.setInterval(function () {
                                 if (typeof(Mkt3.app.controllers.get("Mkt3.controller.editor.landingPageTemplate.LandingPageTemplate")) !== "undefined"
@@ -7621,7 +7644,7 @@ APP.disableDesignerSaving = function (assetType, mode) {
                                             accessZoneId: -1
                                         };
                                     }
-                                        
+                                    
                                     menuItems = [
                                         // Toolbar Menu
                                         "toolbar [action=upgrade]", // Make Mobile Compatible
@@ -7637,7 +7660,7 @@ APP.disableDesignerSaving = function (assetType, mode) {
                                 }
                             }, 0);
                         break;
-                    
+                        
                     case "templatePreview":
                         var isLandingPageTemplatePreview = window.setInterval(function () {
                                 if (typeof(Mkt3.app.controllers.get("Mkt3.controller.previewer.LandingPageTemplate")) !== "undefined"
@@ -7661,7 +7684,7 @@ APP.disableDesignerSaving = function (assetType, mode) {
                                             accessZoneId: -1
                                         };
                                     }
-                                        
+                                    
                                     menuItems = [
                                         // Toolbar Menu
                                         //"toolbar [action=edit]", // Edit Draft
@@ -7737,7 +7760,7 @@ APP.disableDesignerSaving = function (assetType, mode) {
                                 }
                             }, 0);
                         break;
-                    
+                        
                     case "templateEdit":
                         var isEmailTemplateEditor = window.setInterval(function () {
                                 if (typeof(Mkt3.app.controllers.get("Mkt3.controller.editor.email2.EmailTemplate")) !== "undefined"
@@ -7795,7 +7818,7 @@ APP.disableDesignerSaving = function (assetType, mode) {
                         break;
                     }
                     break;
-                        
+                    
                 case "form":
                     switch (mode) {
                     case "edit":
@@ -8389,8 +8412,7 @@ APP.disableFormSaveButtons = function () {
                  || this.getXType() == "vespaNewDeviceForm" //Admin > Mobile Apps & Devices > Test Devices > New Test Device
                  || this.getXType() == "adminTagsAddCalendarEntryTypeForm" //Admin > Tags > Calendar Entry Types > New Entry Type
                  || this.getXType() == "featureSwitchForm" //Admin > Feature Manager > Edit Feature
-            )
-            {
+            ) {
                 
                 var me = this,
                 menuItems = [
@@ -10083,8 +10105,7 @@ var isMktPageApp = window.setInterval(function () {
         if (typeof(MktPage) !== "undefined") {
             console.log("Marketo App > Location: Marketo Page");
             
-            var accountString,
-            userId;
+            var userId;
             
             if (MktPage.savedState
                  && MktPage.savedState.custPrefix
