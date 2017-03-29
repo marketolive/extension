@@ -59,6 +59,7 @@ mktoTravelLesiureWorkspaceAssetId = "27588",
 mktoUserWorkspaceId = 172,
 userWorkspaceName = "My Workspace",
 waitAfterDiscard = 2000,
+overrideEmailInsightsTile = true,
 currUrlFragment,
 currCompFragment,
 userName,
@@ -471,7 +472,7 @@ APP.disableConfirmationMessage = function () {
  *
  **************************************************************************************/
 
-APP.overrideHomeTiles = function () {
+APP.overrideHomeTiles = function (tilesToOverride) {
     console.log("Marketo App > Overriding: My Marketo Home Tiles");
     
     if (typeof(MktCanvas) !== "undefined"
@@ -514,30 +515,34 @@ APP.overrideHomeTiles = function () {
             }
         }
         
-        if (emailInsightsTile) {
-            emailInsightsTile.el.dom.outerHTML = emailInsightsTile.el.dom.outerHTML.replace(hrefMatch, " href=\"" + mktoEmailInsightsLink + "\" ");
-        } else {
-            emailInsightsTileOuterHTML = '<div class="x4-btn mkt3-homeTile x4-btn-default-small x4-icon-text-left x4-btn-icon-text-left x4-btn-default-small-icon-text-left x-panel" style="height: 150px;" id="homeTile-1084"><em id="homeTile-1084-btnWrap"><a id="homeTile-1084-btnEl" href="' + mktoEmailInsightsLink + '" class="x4-btn-center" target="_blank" role="link" style="width: 150px; height: 150px;"><span id="homeTile-1084-btnInnerEl" class="x4-btn-inner" style="width: 150px; height: 150px; line-height: 150px;">Email Insights</span><span id="homeTile-1084-btnIconEl" class="x4-btn-icon mki3-email-insights-svg"></span></a></em><div class="x-panel-bwrap" id="ext-gen164"><div class="x-panel-body x-panel-body-noheader" id="ext-gen165"></div></div></div>';
-            idMatch = new RegExp("homeTile-1084", "g");
-            
-            spareTileClone = MktCanvas.lookupComponent(container.childNodes[container.childNodes.length - 1]).cloneConfig();
-            emailInsightsTileOuterHTML = emailInsightsTileOuterHTML.replace(idMatch, spareTileClone.id);
-            spareTileClone.el.dom.outerHTML = emailInsightsTileOuterHTML;
-            container.appendChild(container.childNodes[container.childNodes.length - 2]);
-            container.appendChild(spareTileClone.el.dom);
+        if (tilesToOverride.emailInsightsTile) {
+            if (emailInsightsTile) {
+                emailInsightsTile.el.dom.outerHTML = emailInsightsTile.el.dom.outerHTML.replace(hrefMatch, " href=\"" + mktoEmailInsightsLink + "\" ");
+            } else {
+                emailInsightsTileOuterHTML = '<div class="x4-btn mkt3-homeTile x4-btn-default-small x4-icon-text-left x4-btn-icon-text-left x4-btn-default-small-icon-text-left x-panel" style="height: 150px;" id="homeTile-1084"><em id="homeTile-1084-btnWrap"><a id="homeTile-1084-btnEl" href="' + mktoEmailInsightsLink + '" class="x4-btn-center" target="_blank" role="link" style="width: 150px; height: 150px;"><span id="homeTile-1084-btnInnerEl" class="x4-btn-inner" style="width: 150px; height: 150px; line-height: 150px;">Email Insights</span><span id="homeTile-1084-btnIconEl" class="x4-btn-icon mki3-email-insights-svg"></span></a></em><div class="x-panel-bwrap" id="ext-gen164"><div class="x-panel-body x-panel-body-noheader" id="ext-gen165"></div></div></div>';
+                idMatch = new RegExp("homeTile-1084", "g");
+                
+                spareTileClone = MktCanvas.lookupComponent(container.childNodes[container.childNodes.length - 1]).cloneConfig();
+                emailInsightsTileOuterHTML = emailInsightsTileOuterHTML.replace(idMatch, spareTileClone.id);
+                spareTileClone.el.dom.outerHTML = emailInsightsTileOuterHTML;
+                container.appendChild(container.childNodes[container.childNodes.length - 2]);
+                container.appendChild(spareTileClone.el.dom);
+            }
         }
         
-        if (deliverabilityToolsTile) {
-            deliverabilityToolsTile.el.dom.outerHTML = deliverabilityToolsTile.el.dom.outerHTML.replace(hrefMatch, " href=\"" + mktoEmailDeliverabilityToolsLink + "\" ");
-        } else {
-            deliverabilityToolsTileOuterHTML = '<div class="x4-btn mkt3-homeTile x4-btn-default-small x4-icon-text-left x4-btn-icon-text-left x4-btn-default-small-icon-text-left" style="height: 150px;" id="homeTile-1036"><em id="homeTile-1036-btnWrap"><a id="homeTile-1036-btnEl" href="' + mktoEmailDeliverabilityToolsLink + '" class="x4-btn-center" target="_blank" role="link" style="width: 150px; height: 150px;"><span id="homeTile-1036-btnInnerEl" class="x4-btn-inner" style="width: 150px; height: 150px; line-height: 150px;">Deliverability Tools</span><span id="homeTile-1036-btnIconEl" class="x4-btn-icon mki3-mail-sealed-svg"></span></a></em></div>';
-            idMatch = new RegExp("homeTile-1036", "g");
-            
-            spareTileClone = MktCanvas.lookupComponent(container.childNodes[container.childNodes.length - 1]).cloneConfig();
-            deliverabilityToolsTileOuterHTML = deliverabilityToolsTileOuterHTML.replace(idMatch, spareTileClone.id);
-            spareTileClone.el.dom.outerHTML = deliverabilityToolsTileOuterHTML;
-            container.appendChild(container.childNodes[container.childNodes.length - 2]);
-            container.appendChild(spareTileClone.el.dom);
+        if (tilesToOverride.deliverabilityToolsTile) {
+            if (deliverabilityToolsTile) {
+                deliverabilityToolsTile.el.dom.outerHTML = deliverabilityToolsTile.el.dom.outerHTML.replace(hrefMatch, " href=\"" + mktoEmailDeliverabilityToolsLink + "\" ");
+            } else {
+                deliverabilityToolsTileOuterHTML = '<div class="x4-btn mkt3-homeTile x4-btn-default-small x4-icon-text-left x4-btn-icon-text-left x4-btn-default-small-icon-text-left" style="height: 150px;" id="homeTile-1036"><em id="homeTile-1036-btnWrap"><a id="homeTile-1036-btnEl" href="' + mktoEmailDeliverabilityToolsLink + '" class="x4-btn-center" target="_blank" role="link" style="width: 150px; height: 150px;"><span id="homeTile-1036-btnInnerEl" class="x4-btn-inner" style="width: 150px; height: 150px; line-height: 150px;">Deliverability Tools</span><span id="homeTile-1036-btnIconEl" class="x4-btn-icon mki3-mail-sealed-svg"></span></a></em></div>';
+                idMatch = new RegExp("homeTile-1036", "g");
+                
+                spareTileClone = MktCanvas.lookupComponent(container.childNodes[container.childNodes.length - 1]).cloneConfig();
+                deliverabilityToolsTileOuterHTML = deliverabilityToolsTileOuterHTML.replace(idMatch, spareTileClone.id);
+                spareTileClone.el.dom.outerHTML = deliverabilityToolsTileOuterHTML;
+                container.appendChild(container.childNodes[container.childNodes.length - 2]);
+                container.appendChild(spareTileClone.el.dom);
+            }
         }
     }
 };
@@ -10211,18 +10216,21 @@ var isMktPageApp = window.setInterval(function () {
                         if (response != null
                              && response.isValidExtension != null) {
                             APP.validateDemoExtensionCheck(response.isValidExtension);
+                            overrideEmailInsightsTile = !response.isValidExtension;
                         } else {
                             APP.validateDemoExtensionCheck(true);
+                            overrideEmailInsightsTile = true;
                         }
                     });
                 } else {
                     APP.validateDemoExtensionCheck(false);
+                    overrideEmailInsightsTile = true;
                 }
             });
             
             if (currUrlFragment) {
                 if (currUrlFragment == mktoMyMarketoFragment) {
-                    APP.overrideHomeTiles();
+                    APP.overrideHomeTiles({emailInsightsTile: overrideEmailInsightsTile, deliverabilityToolsTile: true});
                     APP.heapTrack("track", {
                         name: "My Marketo",
                         assetName: "Home"
@@ -10531,7 +10539,7 @@ var isMktPageApp = window.setInterval(function () {
                                 console.log("Marketo App > Loaded: New URL Fragment = " + currUrlFragment);
                                 
                                 if (currUrlFragment == mktoMyMarketoFragment) {
-                                    APP.overrideHomeTiles();
+                                    APP.overrideHomeTiles({emailInsightsTile: overrideEmailInsightsTile, deliverabilityToolsTile: true});
                                     APP.heapTrack("track", {
                                         name: "My Marketo",
                                         assetName: "Home"
