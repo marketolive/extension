@@ -59,7 +59,7 @@ mktoTravelLesiureWorkspaceAssetId = "27588",
 mktoUserWorkspaceId = 172,
 userWorkspaceName = "My Workspace",
 waitAfterDiscard = 2000,
-overrideEmailInsightsTile = true,
+overrideEmailInsightsTile = overrideEmailInsightsMenuItem = true,
 currUrlFragment,
 currCompFragment,
 userName,
@@ -563,7 +563,7 @@ APP.overrideHomeTiles = function (tilesToOverride) {
  *
  **************************************************************************************/
 
-APP.overrideSuperballMenuItems = function () {
+APP.overrideSuperballMenuItems = function (menuItemsToOverride) {
     console.log("Marketo App > Overriding: Superball Menu Items");
     
     if (typeof(MktPage) !== "undefined"
@@ -643,30 +643,34 @@ APP.overrideSuperballMenuItems = function () {
                         }
                     }
                     
-                    if (emailInsightsMenuItem) {
-                        emailInsightsMenuItem.href = mktoEmailInsightsLink;
-                        emailInsightsMenuItem.update();
-                    } else {
-                        clonedMenuItem = menu.items.items[0].cloneConfig();
-                        clonedMenuItem.setText("Email Insights");
-                        clonedMenuItem.setIconCls("mki3-email-insights-svg");
-                        clonedMenuItem.href = mktoEmailInsightsLink;
-                        clonedMenuItem.hrefTarget = "_blank";
-                        clonedMenuItem.update();
-                        menu.add(clonedMenuItem);
+                    if (menuItemsToOverride.emailInsightsMenuItem) {
+                        if (emailInsightsMenuItem) {
+                            emailInsightsMenuItem.href = mktoEmailInsightsLink;
+                            emailInsightsMenuItem.update();
+                        } else {
+                            clonedMenuItem = menu.items.items[0].cloneConfig();
+                            clonedMenuItem.setText("Email Insights");
+                            clonedMenuItem.setIconCls("mki3-email-insights-svg");
+                            clonedMenuItem.href = mktoEmailInsightsLink;
+                            clonedMenuItem.hrefTarget = "_blank";
+                            clonedMenuItem.update();
+                            menu.add(clonedMenuItem);
+                        }
                     }
                     
-                    if (deliverabilityToolsMenuItem) {
-                        deliverabilityToolsMenuItem.href = mktoEmailDeliverabilityToolsLink;
-                        deliverabilityToolsMenuItem.update();
-                    } else {
-                        clonedMenuItem = menu.items.items[0].cloneConfig();
-                        clonedMenuItem.setText("Deliverability Tools");
-                        clonedMenuItem.setIconCls("mki3-mail-sealed-svg");
-                        clonedMenuItem.href = mktoEmailDeliverabilityToolsLink;
-                        clonedMenuItem.hrefTarget = "_blank";
-                        clonedMenuItem.update();
-                        menu.add(clonedMenuItem);
+                    if (menuItemsToOverride.deliverabilityToolsMenuItem) {
+                        if (deliverabilityToolsMenuItem) {
+                            deliverabilityToolsMenuItem.href = mktoEmailDeliverabilityToolsLink;
+                            deliverabilityToolsMenuItem.update();
+                        } else {
+                            clonedMenuItem = menu.items.items[0].cloneConfig();
+                            clonedMenuItem.setText("Deliverability Tools");
+                            clonedMenuItem.setIconCls("mki3-mail-sealed-svg");
+                            clonedMenuItem.href = mktoEmailDeliverabilityToolsLink;
+                            clonedMenuItem.hrefTarget = "_blank";
+                            clonedMenuItem.update();
+                            menu.add(clonedMenuItem);
+                        }
                     }
                 }
             }
@@ -10216,15 +10220,15 @@ var isMktPageApp = window.setInterval(function () {
                         if (response != null
                              && response.isValidExtension != null) {
                             APP.validateDemoExtensionCheck(response.isValidExtension);
-                            overrideEmailInsightsTile = !response.isValidExtension;
+                            overrideEmailInsightsTile = overrideEmailInsightsMenuItem = !response.isValidExtension;
                         } else {
                             APP.validateDemoExtensionCheck(true);
-                            overrideEmailInsightsTile = true;
+                            overrideEmailInsightsTile = overrideEmailInsightsMenuItem = true;
                         }
                     });
                 } else {
                     APP.validateDemoExtensionCheck(false);
-                    overrideEmailInsightsTile = true;
+                    overrideEmailInsightsTile = overrideEmailInsightsMenuItem = true;
                 }
             });
             
@@ -10721,7 +10725,7 @@ var isMktPageApp = window.setInterval(function () {
                         }
                     }, 0);
             };
-            APP.overrideSuperballMenuItems();
+            APP.overrideSuperballMenuItems({emailInsightsMenuItem: overrideEmailInsightsMenuItem, deliverabilityToolsMenuItem: true});
             
             // Heap Analytics ID
             APP.heapTrack("id");
