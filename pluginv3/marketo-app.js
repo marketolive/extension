@@ -10221,6 +10221,11 @@ var isMktPageApp = window.setInterval(function () {
                              && response.isValidExtension != null) {
                             APP.validateDemoExtensionCheck(response.isValidExtension);
                             overrideEmailInsightsTile = overrideEmailInsightsMenuItem = !response.isValidExtension;
+                            APP.overrideSuperballMenuItems({emailInsightsMenuItem: overrideEmailInsightsMenuItem, deliverabilityToolsMenuItem: true});
+                            if (currUrlFragment
+                                 && currUrlFragment == mktoMyMarketoFragment) {
+                                APP.overrideHomeTiles({emailInsightsTile: overrideEmailInsightsTile, deliverabilityToolsTile: true});
+                            }
                         } else {
                             APP.validateDemoExtensionCheck(true);
                             overrideEmailInsightsTile = overrideEmailInsightsMenuItem = true;
