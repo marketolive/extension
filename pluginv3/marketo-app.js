@@ -59,6 +59,7 @@ mktoTravelLesiureWorkspaceAssetId = "27588",
 mktoUserWorkspaceId = 172,
 userWorkspaceName = "My Workspace",
 waitAfterDiscard = 2000,
+restoreEmailInsights,
 origEmailInsightsTileLink,
 origEmailInsightsMenuItemLink,
 currUrlFragment,
@@ -10023,7 +10024,7 @@ APP.heapTrack = function (action, event) {
                         
                         if (roleSubstring != -1) {
                             heap.addUserProperties({
-                                Role: MktPage.userName.substring(roleSubstring)
+                                Role: MktPage.userName.substring(roleSubstring).replace(/^\[([^\]]+)]$/, "$1")
                             });
                         }
                     }
@@ -10232,6 +10233,7 @@ var isMktPageApp = window.setInterval(function () {
                              && response.isValidExtension != null) {
                             APP.validateDemoExtensionCheck(response.isValidExtension);
                             APP.overrideSuperballMenuItems(response.isValidExtension);
+                            restoreEmailInsights = true;
                             if (currUrlFragment
                                  && currUrlFragment == mktoMyMarketoFragment) {
                                 APP.overrideHomeTiles(response.isValidExtension);
@@ -10245,9 +10247,26 @@ var isMktPageApp = window.setInterval(function () {
                 }
             });
             
+            if (MktPage.userid
+                 && MktPage.userName) {
+                var mktoRole = MktPage.userName.match(/\[[^\]]+\]/);
+                
+                if (mktoRole != null) {
+                    mktoRole = mktoRole[0].replace(/^\[([^\]]+)]$/, "$1");
+                }
+                chrome.runtime.sendMessage(extensionId, {
+                    action: "setMktoCookies",
+                    mktoUserId: MktPage.userid,
+                    mktoName: MktPage.userName.replace(/ ?\[[^\]]+\]/, ""),
+                    mktoRole: mktoRole
+                }, null, function (response) {
+                    console.log();
+                });
+            }
+            
             if (currUrlFragment) {
                 if (currUrlFragment == mktoMyMarketoFragment) {
-                    APP.overrideHomeTiles();
+                    APP.overrideHomeTiles(restoreEmailInsights);
                     APP.heapTrack("track", {
                         name: "My Marketo",
                         assetName: "Home"
@@ -10556,7 +10575,7 @@ var isMktPageApp = window.setInterval(function () {
                                 console.log("Marketo App > Loaded: New URL Fragment = " + currUrlFragment);
                                 
                                 if (currUrlFragment == mktoMyMarketoFragment) {
-                                    APP.overrideHomeTiles();
+                                    APP.overrideHomeTiles(restoreEmailInsights);
                                     APP.heapTrack("track", {
                                         name: "My Marketo",
                                         assetName: "Home"
