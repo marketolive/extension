@@ -22,10 +22,6 @@ mktoDesignerUriDomain = ".marketodesigner.com",
 mktoDesignerMatchPattern = "https://*.marketodesigner.com/*",
 mktoSjpWebRequest = "https://app-sjp.marketo.com/",
 mktoSjdemo1WebRequest = "https://app-sjdemo1.marketo.com/",
-//mktoLoginWebRequestMatch = "https://login.marketo.com/",
-//mktoAppWebRequestMatch = "https://app.marketo.com/",
-//mktoSjpLoginWebRequest = "https://app-sjp.marketo.com/homepage/login*",
-//mktoSjdemo1LoginWebRequest = "https://app-sjdemo1.marketo.com/homepage/login*",
 mktoEmailDesignerFragment = "EME",
 mktoEmailPreviewFragmentRegex = new RegExp("#EME[0-9]+&isPreview", "i"),
 mktoEmailPreviewFragment = "EMP",
@@ -33,10 +29,17 @@ mktoLandingPageDesignerFragment = "LPE",
 mktoLandingPagePreviewFragment = "LPPD",
 oneLoginExtMsgRegex = "https:\/\/marketo\.onelogin\.com\/client\/apps",
 colorPickerMsgRegex = "https:\/\/marketolive\.com\/" + URL_PATH + "\/apps\/color-picker\.html\\?.+",
-count = 0,
+mktoAppUserCookie = "ids_sso",
+munchkinIdsMatch = "^(185-NGX-811|026-COU-482|767-TVJ-204)$",
+adminUserNamesMatch = "^mktodemolivemaster@marketo\.com$|^admin(\.[a-z]{0,2})?@(marketolive.com$|mktodemoaccount)|^mktodemoaccount[a-z0-9]*@marketo\.com$|^marketodemo.*@gmail\.com$",
+mktoLiveBlockUrlPatterns = ["*://sjrtp3.marketo.com/app/*", "*://sj-ee-api.marketo.com/api/v1/settings/dimensions/activate/*"],
+mktoLiveRtpDomainsMatch = "sjrtp3\.marketo\.com",
 oneLoginFirstName,
 oneLoginLastName,
-oneLoginEmail;
+oneLoginEmail,
+mktoUserId,
+mktoName,
+mktoRole;
 
 /**************************************************************************************
  *
@@ -92,7 +95,7 @@ function webRequest(url, params, method, async, responseType, callback) {
     }
     xmlHttp.open(method, url, async); // true for asynchronous
     xmlHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded; charset=UTF-8");
-    xmlHttp.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+    //xmlHttp.setRequestHeader("X-Requested-With", "XMLHttpRequest");
     xmlHttp.send(params);
     return result;
 };
@@ -114,8 +117,8 @@ function webRequest(url, params, method, async, responseType, callback) {
 
 function getCookie(obj, callback) {
     chrome.cookies.get({
-        "url" : obj.url,
-        "name" : obj.name
+        "url": obj.url,
+        "name": obj.name
     }, function (cookie) {
         if (cookie) {
             if (cookie.value != null) {
@@ -124,12 +127,12 @@ function getCookie(obj, callback) {
                 console.log("Getting: " + cookie.name + " Cookie for " + cookie.domain + " = null");
             }
             if (callback) {
-                callback(cookie);
+                return callback(cookie);
             }
         } else {
             console.error("Getting: " + obj.name + " Cookie for " + obj.url + " = undefined");
             if (callback) {
-                callback(null);
+                return callback();
             }
         }
     });
@@ -153,10 +156,10 @@ function getCookie(obj, callback) {
 
 function setCookie(obj) {
     var cookie = {
-        url : obj.url,
-        name : obj.name,
-        value : obj.value,
-        domain : obj.domain,
+        url: obj.url,
+        name: obj.name,
+        value: obj.value,
+        domain: obj.domain,
     };
     
     if (obj.expiresInDays) {
@@ -187,8 +190,8 @@ function setCookie(obj) {
 
 function removeCookie(obj) {
     var cookie = {
-        url : obj.url,
-        name : obj.name
+        url: obj.url,
+        name: obj.name
     };
     chrome.cookies.remove(cookie, function () {
         console.log("Removing: " + cookie.name + " Cookie for " + cookie.url);
@@ -208,7 +211,7 @@ function removeCookie(obj) {
 
 function reloadTabs(urlMatch) {
     chrome.tabs.query({
-        url : urlMatch
+        url: urlMatch
     }, function (tabs) {
         for (var ii = 0; ii < tabs.length; ii++) {
             chrome.tabs.reload(tabs[ii].id);
@@ -231,22 +234,22 @@ function reloadCompany() {
     console.log("Loading: Company Logo & Color");
     
     var companyLogoCookieDesigner = {
-        "url" : mktoDesignerDomainMatch,
-        "name" : "logo"
+        "url": mktoDesignerDomainMatch,
+        "name": "logo"
     },
     saveEditsToggleCookieDesigner = {
-        "url" : mktoDesignerDomainMatch,
-        "name" : "saveEditsToggleState"
+        "url": mktoDesignerDomainMatch,
+        "name": "saveEditsToggleState"
     },
     setAssetData,
     queryInfo = {
-        "currentWindow" : true,
-        "url" : mktoDesignerMatchPattern
+        "currentWindow": true,
+        "url": mktoDesignerMatchPattern
     },
     message = {
-        "action" : "",
-        "assetType" : "",
-        "assetView" : ""
+        "action": "",
+        "assetType": "",
+        "assetView": ""
     };
     
     getCookie(companyLogoCookieDesigner, function (cookie) {
@@ -317,7 +320,7 @@ chrome.webRequest.onCompleted.addListener(function (details) {
         area: "Demo Pod"
     });
 }, {
-    urls : [mktoSjpWebRequest, mktoSjdemo1WebRequest]
+    urls: [mktoSjpWebRequest, mktoSjdemo1WebRequest]
 });
 
 /**************************************************************************************
@@ -354,116 +357,116 @@ chrome.runtime.onMessageExternal.addListener(function (message, sender, sendResp
         emailCookieName = "onelogin_email",
         expiresInDays = 365,
         usernameCookieMarketoLive = {
-            "url" : mktoLiveDomainMatch,
-            "name" : usernameCookieName,
-            "value" : message.username,
-            "domain" : mktoLiveUriDomain,
-            "expiresInDays" : expiresInDays
+            "url": mktoLiveDomainMatch,
+            "name": usernameCookieName,
+            "value": message.username,
+            "domain": mktoLiveUriDomain,
+            "expiresInDays": expiresInDays
         },
         usernameCookieMarketoLiveClassic = {
-            "url" : mktoLiveClassicDomainMatch,
-            "name" : usernameCookieName,
-            "value" : message.username,
-            "domain" : mktoLiveClassicUriDomain,
-            "expiresInDays" : expiresInDays
+            "url": mktoLiveClassicDomainMatch,
+            "name": usernameCookieName,
+            "value": message.username,
+            "domain": mktoLiveClassicUriDomain,
+            "expiresInDays": expiresInDays
         },
         usernameCookieMarketoApp = {
-            "url" : mktoAppDomainMatch,
-            "name" : usernameCookieName,
-            "value" : message.username,
-            "domain" : mktoAppUriDomain,
-            "expiresInDays" : expiresInDays
+            "url": mktoAppDomainMatch,
+            "name": usernameCookieName,
+            "value": message.username,
+            "domain": mktoAppUriDomain,
+            "expiresInDays": expiresInDays
         },
         usernameCookieDesigner = {
-            "url" : mktoDesignerMatchPattern,
-            "name" : usernameCookieName,
-            "value" : message.username,
-            "domain" : mktoDesignerUriDomain,
-            "expiresInDays" : expiresInDays
+            "url": mktoDesignerMatchPattern,
+            "name": usernameCookieName,
+            "value": message.username,
+            "domain": mktoDesignerUriDomain,
+            "expiresInDays": expiresInDays
         },
         firstNameCookieMarketoLive = {
-            "url" : mktoLiveDomainMatch,
-            "name" : firstNameCookieName,
-            "value" : message.firstName,
-            "domain" : mktoLiveUriDomain,
-            "expiresInDays" : expiresInDays
+            "url": mktoLiveDomainMatch,
+            "name": firstNameCookieName,
+            "value": message.firstName,
+            "domain": mktoLiveUriDomain,
+            "expiresInDays": expiresInDays
         },
         firstNameCookieMarketoLiveClassic = {
-            "url" : mktoLiveClassicDomainMatch,
-            "name" : firstNameCookieName,
-            "value" : message.firstName,
-            "domain" : mktoLiveClassicUriDomain,
-            "expiresInDays" : expiresInDays
+            "url": mktoLiveClassicDomainMatch,
+            "name": firstNameCookieName,
+            "value": message.firstName,
+            "domain": mktoLiveClassicUriDomain,
+            "expiresInDays": expiresInDays
         },
         firstNameCookieMarketoApp = {
-            "url" : mktoAppDomainMatch,
-            "name" : firstNameCookieName,
-            "value" : message.firstName,
-            "domain" : mktoAppUriDomain,
-            "expiresInDays" : expiresInDays
+            "url": mktoAppDomainMatch,
+            "name": firstNameCookieName,
+            "value": message.firstName,
+            "domain": mktoAppUriDomain,
+            "expiresInDays": expiresInDays
         },
         firstNameCookieDesigner = {
-            "url" : mktoDesignerMatchPattern,
-            "name" : firstNameCookieName,
-            "value" : message.firstName,
-            "domain" : mktoDesignerUriDomain,
-            "expiresInDays" : expiresInDays
+            "url": mktoDesignerMatchPattern,
+            "name": firstNameCookieName,
+            "value": message.firstName,
+            "domain": mktoDesignerUriDomain,
+            "expiresInDays": expiresInDays
         },
         lastNameCookieMarketoLive = {
-            "url" : mktoLiveDomainMatch,
-            "name" : lastNameCookieName,
-            "value" : message.lastName,
-            "domain" : mktoLiveUriDomain,
-            "expiresInDays" : expiresInDays
+            "url": mktoLiveDomainMatch,
+            "name": lastNameCookieName,
+            "value": message.lastName,
+            "domain": mktoLiveUriDomain,
+            "expiresInDays": expiresInDays
         },
         lastNameCookieMarketoLiveClassic = {
-            "url" : mktoLiveClassicDomainMatch,
-            "name" : lastNameCookieName,
-            "value" : message.lastName,
-            "domain" : mktoLiveClassicUriDomain,
-            "expiresInDays" : expiresInDays
+            "url": mktoLiveClassicDomainMatch,
+            "name": lastNameCookieName,
+            "value": message.lastName,
+            "domain": mktoLiveClassicUriDomain,
+            "expiresInDays": expiresInDays
         },
         lastNameCookieMarketoApp = {
-            "url" : mktoAppDomainMatch,
-            "name" : lastNameCookieName,
-            "value" : message.lastName,
-            "domain" : mktoAppUriDomain,
-            "expiresInDays" : expiresInDays
+            "url": mktoAppDomainMatch,
+            "name": lastNameCookieName,
+            "value": message.lastName,
+            "domain": mktoAppUriDomain,
+            "expiresInDays": expiresInDays
         },
         lastNameCookieDesigner = {
-            "url" : mktoDesignerMatchPattern,
-            "name" : lastNameCookieName,
-            "value" : message.lastName,
-            "domain" : mktoDesignerUriDomain,
-            "expiresInDays" : expiresInDays
+            "url": mktoDesignerMatchPattern,
+            "name": lastNameCookieName,
+            "value": message.lastName,
+            "domain": mktoDesignerUriDomain,
+            "expiresInDays": expiresInDays
         },
         emailCookieMarketoLive = {
-            "url" : mktoLiveDomainMatch,
-            "name" : emailCookieName,
-            "value" : message.email,
-            "domain" : mktoLiveUriDomain,
-            "expiresInDays" : expiresInDays
+            "url": mktoLiveDomainMatch,
+            "name": emailCookieName,
+            "value": message.email,
+            "domain": mktoLiveUriDomain,
+            "expiresInDays": expiresInDays
         },
         emailCookieMarketoLiveClassic = {
-            "url" : mktoLiveClassicDomainMatch,
-            "name" : emailCookieName,
-            "value" : message.email,
-            "domain" : mktoLiveClassicUriDomain,
-            "expiresInDays" : expiresInDays
+            "url": mktoLiveClassicDomainMatch,
+            "name": emailCookieName,
+            "value": message.email,
+            "domain": mktoLiveClassicUriDomain,
+            "expiresInDays": expiresInDays
         },
         emailCookieMarketoApp = {
-            "url" : mktoAppDomainMatch,
-            "name" : emailCookieName,
-            "value" : message.email,
-            "domain" : mktoAppUriDomain,
-            "expiresInDays" : expiresInDays
+            "url": mktoAppDomainMatch,
+            "name": emailCookieName,
+            "value": message.email,
+            "domain": mktoAppUriDomain,
+            "expiresInDays": expiresInDays
         },
         emailCookieDesigner = {
-            "url" : mktoDesignerMatchPattern,
-            "name" : emailCookieName,
-            "value" : message.email,
-            "domain" : mktoDesignerUriDomain,
-            "expiresInDays" : expiresInDays
+            "url": mktoDesignerMatchPattern,
+            "name": emailCookieName,
+            "value": message.email,
+            "domain": mktoDesignerUriDomain,
+            "expiresInDays": expiresInDays
         };
         
         setCookie(usernameCookieMarketoLive);
@@ -485,9 +488,9 @@ chrome.runtime.onMessageExternal.addListener(function (message, sender, sendResp
         
         loadScript(BACKGROUND_DATA_SCRIPT_LOCATION);
         heapTrack({
-            name : "OneLogin > Apps",
-            app : "OneLogin",
-            area : "Apps"
+            name: "OneLogin > Apps",
+            app: "OneLogin",
+            area: "Apps"
         });
         return sendResponse;
     } else if (sender.url.search(colorPickerMsgRegex) != -1) {
@@ -501,85 +504,85 @@ chrome.runtime.onMessageExternal.addListener(function (message, sender, sendResp
             
             if (message.logo) {
                 setCookie({
-                    "url" : mktoLiveClassicDomainMatch,
-                    "name" : companyLogoCookieName,
-                    "value" : message.logo,
-                    "domain" : mktoLiveClassicUriDomain
+                    "url": mktoLiveClassicDomainMatch,
+                    "name": companyLogoCookieName,
+                    "value": message.logo,
+                    "domain": mktoLiveClassicUriDomain
                 });
                 
                 setCookie({
-                    "url" : mktoDesignerDomainMatch,
-                    "name" : companyLogoCookieName,
-                    "value" : message.logo,
-                    "domain" : mktoDesignerUriDomain
+                    "url": mktoDesignerDomainMatch,
+                    "name": companyLogoCookieName,
+                    "value": message.logo,
+                    "domain": mktoDesignerUriDomain
                 });
             }
             
             if (message.color) {
                 setCookie({
-                    "url" : mktoLiveClassicDomainMatch,
-                    "name" : companyColorCookieName,
-                    "value" : message.color,
-                    "domain" : mktoLiveClassicUriDomain
+                    "url": mktoLiveClassicDomainMatch,
+                    "name": companyColorCookieName,
+                    "value": message.color,
+                    "domain": mktoLiveClassicUriDomain
                 });
                 
                 setCookie({
-                    "url" : mktoDesignerDomainMatch,
-                    "name" : companyColorCookieName,
-                    "value" : message.color,
-                    "domain" : mktoDesignerUriDomain
+                    "url": mktoDesignerDomainMatch,
+                    "name": companyColorCookieName,
+                    "value": message.color,
+                    "domain": mktoDesignerUriDomain
                 });
             } else {
                 removeCookie({
-                    "url" : mktoLiveClassicDomainMatch,
-                    "name" : companyColorCookieName
+                    "url": mktoLiveClassicDomainMatch,
+                    "name": companyColorCookieName
                 });
                 
                 removeCookie({
-                    "url" : mktoDesignerDomainMatch,
-                    "name" : companyColorCookieName
+                    "url": mktoDesignerDomainMatch,
+                    "name": companyColorCookieName
                 });
             }
             
             if (message.image) {
                 setCookie({
-                    "url" : mktoLiveClassicDomainMatch,
-                    "name" : companyImageCookieName,
-                    "value" : message.image,
-                    "domain" : mktoLiveClassicUriDomain
+                    "url": mktoLiveClassicDomainMatch,
+                    "name": companyImageCookieName,
+                    "value": message.image,
+                    "domain": mktoLiveClassicUriDomain
                 });
                 
                 setCookie({
-                    "url" : mktoDesignerDomainMatch,
-                    "name" : companyImageCookieName,
-                    "value" : message.image,
-                    "domain" : mktoDesignerUriDomain
+                    "url": mktoDesignerDomainMatch,
+                    "name": companyImageCookieName,
+                    "value": message.image,
+                    "domain": mktoDesignerUriDomain
                 });
             } else {
                 removeCookie({
-                    "url" : mktoLiveClassicDomainMatch,
-                    "name" : companyImageCookieName
+                    "url": mktoLiveClassicDomainMatch,
+                    "name": companyImageCookieName
                 });
                 
                 removeCookie({
-                    "url" : mktoDesignerDomainMatch,
-                    "name" : companyImageCookieName
+                    "url": mktoDesignerDomainMatch,
+                    "name": companyImageCookieName
                 });
             }
             
             if (message.imageRes) {
                 setCookie({
-                    "url" : mktoLiveClassicDomainMatch,
-                    "name" : companyImageResCookieName,
-                    "value" : message.imageRes,
-                    "domain" : mktoLiveClassicUriDomain
+                    "url": mktoLiveClassicDomainMatch,
+                    "name": companyImageResCookieName,
+                    "value": message.imageRes,
+                    "domain": mktoLiveClassicUriDomain
                 });
                 
                 setCookie({
-                    "url" : mktoDesignerDomainMatch,
-                    "name" : companyImageResCookieName,
-                    "value" : message.imageRes,
-                    "domain" : mktoDesignerUriDomain
+                    "url": mktoDesignerDomainMatch,
+                    "name": companyImageResCookieName,
+                    "value": message.imageRes,
+                    "domain": mktoDesignerUriDomain
                 });
             }
             
@@ -601,19 +604,8 @@ chrome.runtime.onMessageExternal.addListener(function (message, sender, sendResp
             }
         }
     } else {
-        console.log("Unexpected Message: " + JSON.stringify(message) + " : " + sender.url);
         return sendResponse;
     }
-});
-
-chrome.runtime.onUpdateAvailable.addListener(function (details) {
-    chrome.tabs.create({
-        url : "http://www.marketolive.com/en/update/plugin-update",
-        active : true,
-        selected : true
-    });
-    
-    return;
 });
 
 /**************************************************************************************
@@ -633,30 +625,385 @@ function setMarketoUserPodCookie() {
     userPod = "app-sjp",
     expiresInDays = 365,
     userPodCookieMarketo = {
-        "url" : mktoAppDomainMatch,
-        "name" : userPodCookieName,
-        "value" : userPod,
-        "domain" : mktoAppUriDomain,
-        "expiresInDays" : expiresInDays
+        "url": mktoAppDomainMatch,
+        "name": userPodCookieName,
+        "value": userPod,
+        "domain": mktoAppUriDomain,
+        "expiresInDays": expiresInDays
     },
     userPodCookieDesigner = {
-        "url" : mktoDesignerDomainMatch,
-        "name" : userPodCookieName,
-        "value" : userPod,
-        "domain" : mktoDesignerUriDomain,
-        "expiresInDays" : expiresInDays
+        "url": mktoDesignerDomainMatch,
+        "name": userPodCookieName,
+        "value": userPod,
+        "domain": mktoDesignerUriDomain,
+        "expiresInDays": expiresInDays
     },
     userPodCookieMarketoLiveClassic = {
-        "url" : mktoLiveClassicDomainMatch,
-        "name" : userPodCookieName,
-        "value" : userPod,
-        "domain" : mktoLiveClassicUriDomain,
-        "expiresInDays" : expiresInDays
+        "url": mktoLiveClassicDomainMatch,
+        "name": userPodCookieName,
+        "value": userPod,
+        "domain": mktoLiveClassicUriDomain,
+        "expiresInDays": expiresInDays
     };
     
     setCookie(userPodCookieMarketo);
     setCookie(userPodCookieDesigner);
     setCookie(userPodCookieMarketoLiveClassic);
+}
+
+function createBasicNotification(notification, extensionId) {
+    var notify = {
+        type: "basic",
+        iconUrl: "http://www.marketolive.com/static/marketo-live-circle-logo.png",
+        title: notification.title,
+        message: notification.message,
+        requireInteraction: notification.requireInteraction
+    };
+    
+    if (notification.buttonTitle) {
+        notify.buttons = [{
+                title: notification.buttonTitle
+            }
+        ];
+        
+        chrome.notifications.onButtonClicked.addListener(function (notificationId, buttonIndex) {
+            if (notificationId == notification.id
+                 && buttonIndex == 0) {
+                switch (notification.action) {
+                case "update":
+                    var url = "chrome://extensions";
+                    
+                    if (extensionId) {
+                        url += "/?id=" + extensionId
+                    }
+                    chrome.tabs.create({
+                        url: url
+                    });
+                    break;
+                case "uninstall":
+                    chrome.management.uninstall(extensionId);
+                    break;
+                }
+                
+                if (notification.reload) {
+                    chrome.runtime.reload();
+                }
+                
+                chrome.notifications.onButtonClicked.removeListener(this);
+            }
+        });
+    }
+    
+    chrome.notifications.create(notification.id, notify);
+}
+
+function checkForOldExtension(extensionMinVersion) {
+    var versionSplit = chrome.app.getDetails().version.split("."),
+    minVersionSplit = extensionMinVersion.split("."),
+    version = minVersion = "";
+    
+    for (var ii = 0; ii < versionSplit.length; ii++) {
+        version += versionSplit[ii];
+        minVersion += minVersionSplit[ii];
+    }
+    version = parseInt(version);
+    minVersion = parseInt(minVersion);
+    
+    if (version < minVersion) {
+        var oldExtensionNotification = {
+            id: "MarketoLive Extension is Out of Date",
+            title: "Extension is Out of Date",
+            message: "Your MarketoLive extension is older than the required minimum version (" + extensionMinVersion + ").",
+            buttonTitle: "Update Extension",
+            requireInteraction: true,
+            action: "update",
+            reload: false
+        };
+        
+        createBasicNotification(oldExtensionNotification, chrome.app.getDetails().id);
+        
+        heapTrack({
+            name: "Old Extension",
+            app: "Extension",
+            area: "Background",
+            version: chrome.app.getDetails().id,
+        });
+        
+        return {isValidExtension: false};
+    }
+    
+    return {isValidExtension: true};
+}
+
+function checkForBadExtension() {
+    chrome.management.getAll(function (extensions) {
+        for (var ii = 0; ii < extensions.length; ii++) {
+            var extension = extensions[ii];
+            
+            if (extension.name.search(/(MarketoLive|Marketo Live)/i) != -1
+                 && extension.id != "onibnnoghllldiecboelbpcaeggfiohl"
+                 && extension.installType != "development") {
+                extensionErrorNotification = {
+                    id: "MarketoLive Extension Error",
+                    title: "MarketoLive Extension Error",
+                    message: "You have more than one MarketoLive extension installed.",
+                    buttonTitle: "Uninstall Bad Extension",
+                    requireInteraction: true,
+                    action: "uninstall",
+                    reload: false
+                };
+                
+                addCheckBadExtensionMsgListener({
+                    isValidExtension: false
+                });
+                
+                chrome.management.onUninstalled.addListener(function (extensionId) {
+                    if (extensionId == extension.id) {
+                        chrome.notifications.clear(extensionErrorNotification.id);
+                        chrome.runtime.reload();
+                    }
+                    chrome.management.onUninstalled.removeListener(this);
+                });
+                createBasicNotification(extensionErrorNotification, extension.id);
+                
+                heapTrack({
+                    name: "Bad Extension",
+                    app: "Extension",
+                    area: "Background",
+                    badExtensionId: extension.id,
+                    badExtensionName: extension.name
+                });
+                
+                break;
+            }
+        }
+        
+        addCheckBadExtensionMsgListener({
+            isValidExtension: true
+        });
+    });
+}
+
+function setMktoCookies(message) {
+    var mktoUserIdCookieName = "mkto_user_id",
+    mktoNameCookieName = "mkto_name",
+    mktoRoleCookieName = "mkto_role",
+    expiresInDays = 365,
+    mktoUserIdCookieMarketoLive = {
+        "url": mktoLiveDomainMatch,
+        "name": mktoUserIdCookieName,
+        "value": message.mktoUserId,
+        "domain": mktoLiveUriDomain,
+        "expiresInDays": expiresInDays
+    },
+    mktoUserIdCookieMarketoApp = {
+        "url": mktoAppDomainMatch,
+        "name": mktoUserIdCookieName,
+        "value": message.mktoUserId,
+        "domain": mktoAppUriDomain,
+        "expiresInDays": expiresInDays
+    },
+    mktoNameCookieMarketoLive = {
+        "url": mktoLiveDomainMatch,
+        "name": mktoNameCookieName,
+        "value": message.mktoName,
+        "domain": mktoLiveUriDomain,
+        "expiresInDays": expiresInDays
+    },
+    mktoNameCookieMarketoApp = {
+        "url": mktoAppDomainMatch,
+        "name": mktoNameCookieName,
+        "value": message.mktoName,
+        "domain": mktoAppUriDomain,
+        "expiresInDays": expiresInDays
+    },
+    mktoRoleCookieMarketoLive = {
+        "url": mktoLiveDomainMatch,
+        "name": mktoRoleCookieName,
+        "value": message.mktoName,
+        "domain": mktoLiveUriDomain,
+        "expiresInDays": expiresInDays
+    },
+    mktoRoleCookieMarketoApp = {
+        "url": mktoAppDomainMatch,
+        "name": mktoRoleCookieName,
+        "value": message.mktoRole,
+        "domain": mktoAppUriDomain,
+        "expiresInDays": expiresInDays
+    };
+    
+    mktoUserId = message.mktoUserId;
+    mktoName = message.mktoName;
+    mktoRole = message.mktoRole;
+    setCookie(mktoUserIdCookieMarketoLive);
+    setCookie(mktoUserIdCookieMarketoApp);
+    setCookie(mktoNameCookieMarketoLive);
+    setCookie(mktoNameCookieMarketoApp);
+    setCookie(mktoRoleCookieMarketoLive);
+    setCookie(mktoRoleCookieMarketoApp);
+}
+
+function addCheckBadExtensionMsgListener(response) {
+    chrome.runtime.onMessageExternal.addListener(function (message, sender, sendResponse) {
+        switch (message.action) {
+        case "checkBadExtension":
+            sendResponse(response);
+            console.log("Sent " + message.action + " Response: " + JSON.stringify(response));
+            break;
+        };
+        console.log("Added checkBadExtension Message Listener");
+    });
+}
+
+function checkExtensionVersionMsg(message, sender, sendResponse) {
+    switch (message.action) {
+    case "checkExtensionVersion":
+        var response = checkForOldExtension(message.minVersion);
+        sendResponse(response);
+        console.log("Sent " + message.action + " Response: " + JSON.stringify(response));
+        break;
+    }
+}
+
+function setMktoCookiesMsg(message, sender, sendResponse) {
+    switch (message.action) {
+    case "setMktoCookies":
+        setMktoCookies(message);
+        break;
+    }
+}
+
+function addMsgExtListener(listeningMsg) {
+    chrome.runtime.onMessageExternal.addListener(listeningMsg);
+    console.log("Added External Message Listener");
+}
+
+/**************************************************************************************
+ *
+ *  This function cancels specific web requests for Email Insights, Web Personalization, 
+ *  and Predictive Content in order to block adding, removing, editing, saving, deleting 
+ *  for normal users in MarketoLive instances.
+ *
+ *  @Author Brian Fisher
+ *
+ *  @function
+ *
+ *  @param [Object] details - JSON object that contains the following key/value pairs:
+ *      {String} method - The method of the web request.
+ *      {String} url - The URL of the web request.
+ *      {String} tabId - The ID of the tab that issued the web request.
+ *
+ **************************************************************************************/
+
+function cancelWebRequest(details) {
+    var toCancel;
+    
+    switch (details.method) {
+    case "POST":
+        if (details.url.search("://" + mktoLiveRtpDomainsMatch + "/app/editSegment\.ext") != -1 // Segment > Edit
+             || details.url.search("://" + mktoLiveRtpDomainsMatch + "/app/rest/segments/action") != -1 // Segment > Enable/Disable/Delete
+             || details.url.search("://" + mktoLiveRtpDomainsMatch + "/app/rest/labels") != -1 // Segment > Label > New/Apply
+             || details.url.search("://" + mktoLiveRtpDomainsMatch + "/app/editReaction\.ext") != -1 // Web Campaigns > Edit
+             || details.url.search("://" + mktoLiveRtpDomainsMatch + "/app/campaign/labels\.json") != -1 // Web Campaigns > Label > New/Apply
+             || details.url.search("://" + mktoLiveRtpDomainsMatch + "/app/rest/reactions/action") != -1 // Web Campaigns > Launch/Pause/Delete
+             || details.url.search("://" + mktoLiveRtpDomainsMatch + "/app/rest/reaction/schedule/schedule") != -1 // Web Campaigns > Schedule > Add/Remove
+             || details.url.search("://" + mktoLiveRtpDomainsMatch + "/app/editAudience\.ext") != -1 // Retargeting > Audience > Edit
+             || details.url.search("://" + mktoLiveRtpDomainsMatch + "/app/rest/remarketing/action") != -1 // Retargeting > Audience > Enable/Disable
+             || details.url.search("://" + mktoLiveRtpDomainsMatch + "/app/rest/remarketing/params\.json") != -1 // Retargeting > Domain Retargeting Config > Edit
+             || details.url.search("://" + mktoLiveRtpDomainsMatch + "/app/rest/setting/analytics/params\.json") != -1 // Account Settings > Domain > Analytics > Edit
+             || details.url.search("://" + mktoLiveRtpDomainsMatch + "/app/admin/accountSettings/excludedips\.json") != -1 // Account Settings > Domain > IP Exclude > Edit
+             || details.url.search("://" + mktoLiveRtpDomainsMatch + "/app/admin/accountSettings\.do") != -1 // Account Settings > Database > Fields > Add/Remove
+             || details.url.search("://" + mktoLiveRtpDomainsMatch + "/app/admin/contentSettings\.do") != -1 // Content Settings > Categories & URL Patterns > New/Delete
+             || details.url.search("://" + mktoLiveRtpDomainsMatch + "/app/rest/setting/rcmd/params\.json") != -1 // Content Settings > Bar > Recommendation Bar Config > Edit
+             || details.url.search("://" + mktoLiveRtpDomainsMatch + "/app/predictive/content/addContent\.json") != -1 // Predictive Content > Content > Add
+             || details.url.search("://" + mktoLiveRtpDomainsMatch + "/app/predictive/content/editContent\.json") != -1) { // Predictive Content > Content > Edit
+            toCancel = true;
+        }
+        break;
+    case "PUT":
+        if (details.url.search("://sj-ee-api.marketo.com/api/v1/settings/dimensions/activate/") != -1 // Email Insights > System Settings > Dimension > Add/Remove
+             || details.url.search("://" + mktoLiveRtpDomainsMatch + "/app/predictive/content/setEligibility\.json") != -1 // Predictive Content > Content > Approve/Unapprove
+             || details.url.search("://" + mktoLiveRtpDomainsMatch + "/app/predictive/predictiveContent/setEmail\.json") != -1 // Predictive Content > Content > Enable/Disable EM
+             || details.url.search("://" + mktoLiveRtpDomainsMatch + "/app/predictive/predictiveContent/setBar\.json") != -1 // Predictive Content > Content > Enable/Disable Bar
+             || details.url.search("://" + mktoLiveRtpDomainsMatch + "/app/predictive/predictiveContent/setRichMedia\.json") != -1 // Predictive Content > Content > Enable/Disable RM
+             || details.url.search("://" + mktoLiveRtpDomainsMatch + "/app/predictive/predictiveContent/editContentName\.json") != -1 // Predictive Content > Content > Name > Edit
+             || details.url.search("://" + mktoLiveRtpDomainsMatch + "/app/predictive/predictiveContent/editContent\.json") != -1) { // Predictive Content > Content > Edit
+            toCancel = true;
+        }
+        break;
+    case "GET":
+        if (details.url.search("://" + mktoLiveRtpDomainsMatch + "/app/rest/deleteAudience\.json") != -1 // Retargeting > Audience > Delete
+             || details.url.search("://" + mktoLiveRtpDomainsMatch + "/app/setting/param\.json") != -1) { // Account Settings > ALL > Toggles > Enable/Disable
+            toCancel = true;
+        }
+        break;
+    case "DELETE":
+        if (details.url.search("://" + mktoLiveRtpDomainsMatch + "/app/predictive/content/delete\.json") != -1 // Predictive Content > Content > Delete
+             || details.url.search("://" + mktoLiveRtpDomainsMatch + "/app/rest/reaction/schedule/schedule") != -1) { // Web Campaigns > Schedule > Delete
+            toCancel = true;
+        }
+        break;
+    default:
+        return;
+        break;
+    }
+    
+    if (toCancel) {
+        var notAllowedNotification = {
+            id: "MarketoLive Not Allowed",
+            title: "Not Allowed",
+            message: "You are not authorized to make changes to this demo instance.",
+            requireInteraction: false
+        };
+        
+        createBasicNotification(notAllowedNotification);
+        chrome.tabs.reload(details.tabId);
+        return {
+            cancel: true
+        };
+    } else {
+        return;
+    }
+}
+
+/**************************************************************************************
+ *
+ *  This function adds an event listener for Email Insights, Web Personalization, 
+ *  and Predictive Content web requests in order to block adding, removing,  
+ *  editing, saving, deleting for normal users in MarketoLive instances.
+ *
+ *  @Author Brian Fisher
+ *
+ *  @function
+ *
+ *  @param {function} - Callback function for the response.
+ *
+ **************************************************************************************/
+
+function addWebRequestListener () {
+    chrome.webRequest.onBeforeRequest.addListener(cancelWebRequest, {
+        urls: mktoLiveBlockUrlPatterns
+    }, ["blocking"]);
+    console.log("Added Blocking Web Request Listener");
+}
+
+/**************************************************************************************
+ *
+ *  This function removes an event listener for Email Insights, Web Personalization, 
+ *  and Predictive Content web requests in order to allow adding, removing,  
+ *  editing, saving, deleting for admins and non-MarketoLive instances.
+ *
+ *  @Author Brian Fisher
+ *
+ *  @function
+ *
+ *  @param {function} - Callback function for the response.
+ *
+ **************************************************************************************/
+
+function removeWebRequestListener () {
+    chrome.webRequest.onBeforeRequest.removeListener(cancelWebRequest);
+    console.log("Removed Blocking Web Request Listener");
 }
 
 /**************************************************************************************
@@ -678,130 +1025,160 @@ function heapTrack(event) {
                 
                 window.clearInterval(isHeapAnalyticsForBackground);
                 
-                if (oneLoginEmail) {
-                    heap.identify(oneLoginEmail);
+                if (mktoUserId) {
+                    heap.identify(mktoUserId);
                 } else {
                     getCookie({
-                        url : mktoLiveDomainMatch,
-                        name : "onelogin_email"
+                        url: mktoLiveDomainMatch,
+                        name: "mkto_user_id"
                     }, function (cookie) {
                         if (cookie
                              && cookie.value) {
-                            
+                            mktoUserId = cookie.value;
                             heap.identify(cookie.value);
+                            if (oneLoginEmail) {
+                                heap.addUserProperties({
+                                    Email: oneLoginEmail
+                                });
+                            } else {
+                                getCookie({
+                                    url: mktoLiveDomainMatch,
+                                    name: "onelogin_email"
+                                }, function (cookie) {
+                                    if (cookie
+                                         && cookie.value) {
+                                        heap.addUserProperties({
+                                            Email: cookie.value
+                                        });
+                                    }
+                                });
+                            }
                         } else {
-                            heap.identify();
+                            if (oneLoginEmail) {
+                                heap.identify(oneLoginEmail);
+                            } else {
+                                getCookie({
+                                    url: mktoLiveDomainMatch,
+                                    name: "onelogin_email"
+                                }, function (cookie) {
+                                    if (cookie
+                                         && cookie.value) {
+                                        heap.identify(cookie.value);
+                                    } else {
+                                        heap.identify();
+                                    }
+                                });
+                            }
                         }
                     });
                 }
                 
                 if (oneLoginFirstName
                      && oneLoginLastName) {
-                    console.log("OneLogin > Heap Analytics ID: " + oneLoginFirstName + " " + oneLoginLastName);
-                    
                     heap.addUserProperties({
-                        Name : oneLoginFirstName + " " + oneLoginLastName
+                        Name: oneLoginFirstName + " " + oneLoginLastName
+                    });
+                    console.log("OneLogin > Heap Analytics ID: " + oneLoginFirstName + " " + oneLoginLastName);
+                } else {
+                    getCookie({
+                        url: mktoLiveDomainMatch,
+                        name: "onelogin_first_name"
+                    }, function (cookie) {
+                        if (cookie
+                             && cookie.value) {
+                            oneLoginFirstName = cookie.value;
+                            getCookie({
+                                url: mktoLiveDomainMatch,
+                                name: "onelogin_last_name"
+                            }, function (cookie) {
+                                if (cookie
+                                     && cookie.value) {
+                                    oneLoginLastName = cookie.value;
+                                    heap.addUserProperties({
+                                        Name: oneLoginFirstName + " " + oneLoginLastName
+                                    });
+                                    console.log("OneLogin > Heap Analytics ID: " + oneLoginFirstName + " " + oneLoginLastName);
+                                } else {
+                                    if (mktoName) {
+                                        heap.addUserProperties({
+                                            Name: mktoName
+                                        });
+                                        console.log("OneLogin > Heap Analytics ID: " + mktoName);
+                                    } else {
+                                        getCookie({
+                                            url: mktoLiveDomainMatch,
+                                            name: "mkto_name"
+                                        }, function (cookie) {
+                                            if (cookie
+                                                 && cookie.value) {
+                                                mktoName = cookie.value;
+                                                heap.addUserProperties({
+                                                    Name: mktoName
+                                                });
+                                                console.log("OneLogin > Heap Analytics ID: " + mktoName);
+                                            }
+                                        });
+                                    }
+                                }
+                            });
+                        } else {
+                            if (mktoName) {
+                                heap.addUserProperties({
+                                    Name: mktoName
+                                });
+                                console.log("OneLogin > Heap Analytics ID: " + mktoName);
+                            } else {
+                                getCookie({
+                                    url: mktoLiveDomainMatch,
+                                    name: "mkto_name"
+                                }, function (cookie) {
+                                    if (cookie
+                                         && cookie.value) {
+                                        mktoName = cookie.value;
+                                        heap.addUserProperties({
+                                            Name: mktoName
+                                        });
+                                        console.log("OneLogin > Heap Analytics ID: " + mktoName);
+                                    }
+                                });
+                            }
+                        }
+                    });
+                }
+                
+                if (mktoRole) {
+                    heap.addUserProperties({
+                        Role: mktoRole
                     });
                 } else {
                     getCookie({
-                        url : mktoLiveDomainMatch,
-                        name : "onelogin_first_name"
+                        url: mktoLiveDomainMatch,
+                        name: "mkto_role"
                     }, function (cookie) {
                         if (cookie
                              && cookie.value) {
-                            
-                            oneLoginFirstName = cookie.value;
+                            mktoRole = cookie.value;
+                            heap.addUserProperties({
+                                Role: mktoRole
+                            });
                         }
                     });
-                    
-                    getCookie({
-                        url : mktoLiveDomainMatch,
-                        name : "onelogin_last_name"
-                    }, function (cookie) {
-                        if (cookie
-                             && cookie.value) {
-                            
-                            oneLoginLastName = cookie.value;
-                        }
-                    });
-                    
-                    if (oneLoginFirstName
-                         && oneLoginLastName) {
-                        console.log("OneLogin > Heap Analytics ID: " + oneLoginFirstName + " " + oneLoginLastName);
-                        
-                        heap.addUserProperties({
-                            Name : oneLoginFirstName + " " + oneLoginLastName
-                        });
-                    }
                 }
                 
                 if (event) {
                     console.log("Extension > Tracking: Heap Event:\n" + JSON.stringify(event, null, 2));
                     
                     heap.track(event.name, {
-                        app : event.app,
-                        area : event.area,
-                        version : event.version
+                        app: event.app,
+                        area: event.area,
+                        version: event.version,
+                        badExtensionId: event.badExtensionId,
+                        badExtensionName: event.badExtensionName
                     });
                 }
             }
         }, 0);
 }
-
-/**************************************************************************************
- *
- *  This function sets the MarketoLiveClassic cookie to identify the user's pod.
- *
- *  @Author Andy
- *
- *  @function
- *
- **************************************************************************************/
-/*
-function setMarketoUserPod() {
-console.log("Setting: Marketo User Pod");
-
-getCookie({
-"url" : mktoAppDomainMatch,
-"name" : "mkto_pod"
-}, function (cookie) {
-if (cookie) {
-var userPod = cookie.value.split('.')[0].split(':')[1];
-if (userPod) {
-var userPodCookieName = "userPod",
-
-if (userPod.search(mktoLiveUserPods) != -1) {
-var userPodCookieMarketo = {
-"url" : mktoAppDomainMatch,
-"name" : userPodCookieName,
-"value" : userPod,
-"domain" : mktoAppUriDomain
-},
-userPodCookieDesigner = {
-"url" : mktoDesignerDomainMatch,
-"name" : userPodCookieName,
-"value" : userPod,
-"domain" : mktoDesignerUriDomain
-},
-userPodCookieMarketoLiveClassic = {
-"url" : mktoLiveClassicDomainMatch,
-"name" : userPodCookieName,
-"value" : userPod,
-"domain" : mktoLiveClassicUriDomain
-};
-
-setCookie(userPodCookieMarketo);
-setCookie(userPodCookieDesigner);
-setCookie(userPodCookieMarketoLiveClassic);
-}
-} else {
-console.error("Checking: " + userPodCookieName + " is null");
-}
-} else {
-console.error("Checking: mkto_pod is null");
-}
-});
-}*/
 
 /**************************************************************************************
  *
@@ -812,10 +1189,89 @@ console.error("Checking: mkto_pod is null");
 console.log("Running");
 
 setMarketoUserPodCookie();
+addMsgExtListener(setMktoCookiesMsg);
 loadScript(HEAP_ANALYTICS_SCRIPT_LOCATION);
 heapTrack({
-    name : "Background",
-    app : "Extension",
-    area : "Background",
-    version : chrome.app.getDetails().version
+    name: "Background",
+    app: "Extension",
+    area: "Background",
+    version: chrome.app.getDetails().version
+});
+
+addMsgExtListener(checkExtensionVersionMsg);
+checkForBadExtension();
+
+chrome.cookies.getAll({
+    name: mktoAppUserCookie,
+    domain: mktoAppUriDomain
+}, function (cookies) {
+    var cookie = cookies[0];
+    
+    if (cookie
+         && cookie.value.split(":")[2].search(munchkinIdsMatch) != -1
+         && cookie.value.split(":")[1].search(adminUserNamesMatch) == -1) {
+        addWebRequestListener();
+    }
+});
+
+chrome.cookies.onChanged.addListener(function (changeInfo) {
+    if (changeInfo.cookie
+         && changeInfo.cookie.name == mktoAppUserCookie
+         && changeInfo.cookie.domain == mktoAppUriDomain
+         && changeInfo.cause == "explicit") {
+        if (changeInfo.cookie.value.split(":")[2].search(munchkinIdsMatch) != -1
+             && changeInfo.cookie.value.split(":")[1].search(adminUserNamesMatch) == -1) {
+            addWebRequestListener();
+        } else {
+            removeWebRequestListener();
+        }
+    }
+});
+
+chrome.runtime.onUpdateAvailable.addListener(function (details) {
+    var updateExtensionNotification = {
+        id: "MarketoLive Extension Update Pending",
+        title: "MarketoLive Extension Update Pending",
+        message: "Your MarketoLive extension has a new update pending.",
+        buttonTitle: "Approve Update",
+        requireInteraction: true,
+        action: "update",
+        reload: true
+    };
+    
+    createBasicNotification(updateExtensionNotification, chrome.app.getDetails().id);
+    chrome.tabs.create({
+        url: "http://www.marketolive.com/en/update/extension",
+        active: true,
+        selected: true
+    });
+    
+    return;
+});
+
+chrome.runtime.onInstalled.addListener(function (details) {
+    var event = {
+        name: "",
+        app: "Extension",
+        area: "Background",
+        version: chrome.app.getDetails().version,
+        previousVersion: ""
+    };
+    
+    switch (details.reason) {
+    case "install":
+        event.name = "Install";
+        chrome.tabs.create({
+            url: "http://www.marketolive.com/en/update/privacy-policy",
+            active: true,
+            selected: true
+        });
+        break;
+    case "update":
+        event.name = "Update";
+        event.previousVersion = details.previousVersion;
+        break;
+    }
+    
+    heapTrack(event);
 });

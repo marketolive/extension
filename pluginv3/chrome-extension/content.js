@@ -18,6 +18,7 @@ loadScript,
 getCookie,
 setCookie,
 sendBackgroundMsg,
+isExtensionError,
 displayProgressModal,
 grayOutCompletedStories;
 
@@ -99,61 +100,6 @@ getCookie = function (cookieName) {
     return null;
 };
 
-/*
-sendBackgroundMsg = function(message) {
-var result = chrome.runtime.sendMessage(message, function(response) {
-console.log("Content > Receiving: Message Response from Background: " + response);
-
-return response;
-});
-
-return result;
-};
-
-displayProgressModal = function(parameters) {
-console.log("Content > Displaying: Progress Modal Window");
-
-var nextButton = parameters["next"],
-prevButton = parameters["prev"],
-homeButton = parameters["home"],
-progress = parameters["progress"],
-xmlHttp = new XMLHttpRequest(),
-modal;
-
-xmlHttp.open("GET", chrome.extension.getURL("lib/remote.html"));
-xmlHttp.send();
-
-xmlHttp.onreadystatechange = function() {
-if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
-console.log("Content > Displaying: Progress Modal Window Request Successful");
-
-modal = document.createElement("div");
-modal.innerHTML = xmlHttp.responseText;
-document.getElementsByTagName("body")[0].appendChild(modal);
-document.getElementById("next-button").href = nextButton;
-document.getElementById("prev-button").href = prevButton;
-document.getElementById("home-button").href = homeButton;
-document.getElementById("striped-bar").addClass(progress);
-}
-}
-};
-
-grayOutCompletedStories = function() {
-console.log("Content > Displaying: Disabled Completed Stories");
-
-var completed = chrome.storage.sync.get("completed", function(result) {
-if (typeof(result["stories"]) !== "undefined") {
-for (var ii = 0; ii < result["stories"].length; ii++) {
-document.getElementById(result["stories"][ii]).addClass("completed");
-}
-}
-});
-};
-
-var port = chrome.runtime.connect({
-name: "mycontentscript"
-});*/
-
 /**************************************************************************************
  *
  *  Main
@@ -172,7 +118,6 @@ window.onload = function () {
          && currentUrl.search(mktoLoginDomain) == -1) {
         console.log("Content > Location: Marketo URL");
         
-        //window.mkto_live_plugin_state = true;
         loadScript(MARKETO_GLOBAL_APP_LOCATION);
         
         if (currentUrl.search(mktoDesignerDomain) != -1) {
@@ -180,8 +125,7 @@ window.onload = function () {
             
             var getHumanDate,
             overlayEmail,
-            overlayLandingPage,
-            addNewCompanyListener;
+            overlayLandingPage;
             
             /**************************************************************************************
              *
@@ -1287,39 +1231,34 @@ window.onload = function () {
              *
              **************************************************************************************/
             
-            addNewCompanyListener = function () {
-                console.log("Content > Adding: New Company Listener");
-                
-                chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
-                    switch (message.action) {
-                    case "newCompany":
-                        console.log("Content > Capturing: New Company");
-                        switch (message.assetType) {
-                        case "email":
-                            if (message.assetView == "edit") {
-                                console.log("Content > Capturing: New Company for Email Designer");
-                                overlayEmail("edit");
-                            } else if (message.assetView == "preview") {
-                                console.log("Content > Capturing: New Company for Email Previewer");
-                                overlayEmail("preview");
-                            }
-                            break;
-                        case "landingPage":
-                            if (message.assetView == "edit") {
-                                console.log("Content > Capturing: New Company for Landing Page Designer");
-                                overlayLandingPage("edit");
-                            } else if (message.assetView == "preview") {
-                                console.log("Content > Capturing: New Company for Landing Page Previewer");
-                                overlayLandingPage("preview");
-                            }
-                            break;
+            chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
+                switch (message.action) {
+                case "newCompany":
+                    console.log("Content > Capturing: New Company");
+                    switch (message.assetType) {
+                    case "email":
+                        if (message.assetView == "edit") {
+                            console.log("Content > Capturing: New Company for Email Designer");
+                            overlayEmail("edit");
+                        } else if (message.assetView == "preview") {
+                            console.log("Content > Capturing: New Company for Email Previewer");
+                            overlayEmail("preview");
+                        }
+                        break;
+                    case "landingPage":
+                        if (message.assetView == "edit") {
+                            console.log("Content > Capturing: New Company for Landing Page Designer");
+                            overlayLandingPage("edit");
+                        } else if (message.assetView == "preview") {
+                            console.log("Content > Capturing: New Company for Landing Page Previewer");
+                            overlayLandingPage("preview");
                         }
                         break;
                     }
-                });
-            };
+                    break;
+                }
+            });
             
-            addNewCompanyListener();
         } else if (currentUrl.search(mktoWizardDomain) == -1
              && currentUrl.search(mktoDesignerDomain) == -1) {
             
