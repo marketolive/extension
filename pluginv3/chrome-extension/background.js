@@ -843,32 +843,42 @@ function setMktoCookies(message) {
     setCookie(mktoRoleCookieMarketoApp);
 }
 
+function mktoLiveMessage(message) {
+    var notification = {
+        id: message.id,
+        title: message.title,
+        message: message.notify,
+        requireInteraction: message.requireInteraction
+    };
+    
+    createBasicNotification(notification);
+}
+
 function addCheckBadExtensionMsgListener(response) {
     chrome.runtime.onMessageExternal.addListener(function (message, sender, sendResponse) {
         switch (message.action) {
         case "checkBadExtension":
             sendResponse(response);
-            console.log("Sent " + message.action + " Response: " + JSON.stringify(response));
+            console.log("Received " + message.action + " Response: " + JSON.stringify(response));
             break;
         };
         console.log("Added checkBadExtension Message Listener");
     });
 }
 
-function checkExtensionVersionMsg(message, sender, sendResponse) {
+function checkMsgs(message, sender, sendResponse) {
     switch (message.action) {
     case "checkExtensionVersion":
         var response = checkForOldExtension(message.minVersion);
         sendResponse(response);
-        console.log("Sent " + message.action + " Response: " + JSON.stringify(response));
+        console.log("Received " + message.action + " Response: " + JSON.stringify(response));
         break;
-    }
-}
-
-function setMktoCookiesMsg(message, sender, sendResponse) {
-    switch (message.action) {
     case "setMktoCookies":
         setMktoCookies(message);
+        console.log("Received: " + JSON.stringify(message));
+        break;
+    case "mktoLiveMessage":
+        mktoLiveMessage(message);
         break;
     }
 }
@@ -1189,7 +1199,6 @@ function heapTrack(event) {
 console.log("Running");
 
 setMarketoUserPodCookie();
-addMsgExtListener(setMktoCookiesMsg);
 loadScript(HEAP_ANALYTICS_SCRIPT_LOCATION);
 heapTrack({
     name: "Background",
@@ -1198,7 +1207,7 @@ heapTrack({
     version: chrome.app.getDetails().version
 });
 
-addMsgExtListener(checkExtensionVersionMsg);
+addMsgExtListener(checkMsgs);
 checkForBadExtension();
 
 chrome.cookies.getAll({
@@ -1240,13 +1249,6 @@ chrome.runtime.onUpdateAvailable.addListener(function (details) {
     };
     
     createBasicNotification(updateExtensionNotification, chrome.app.getDetails().id);
-    chrome.tabs.create({
-        url: "http://www.marketolive.com/en/update/extension",
-        active: true,
-        selected: true
-    });
-    
-    return;
 });
 
 chrome.runtime.onInstalled.addListener(function (details) {
@@ -1260,16 +1262,23 @@ chrome.runtime.onInstalled.addListener(function (details) {
     
     switch (details.reason) {
     case "install":
-        event.name = "Install";
         chrome.tabs.create({
             url: "http://www.marketolive.com/en/update/privacy-policy",
             active: true,
             selected: true
         });
+        event.name = "Install";
         break;
     case "update":
-        event.name = "Update";
-        event.previousVersion = details.previousVersion;
+        if (details.previousVersion != chrome.app.getDetails().version) {
+            chrome.tabs.create({
+                url: "http://www.marketolive.com/en/update/extension",
+                active: true,
+                selected: true
+            });
+            event.name = "Update";
+            event.previousVersion = details.previousVersion;
+        }
         break;
     }
     
