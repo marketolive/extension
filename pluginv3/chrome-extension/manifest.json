@@ -74,7 +74,7 @@
     ],
     "content_security_policy": "script-src 'self' https://marketolive.com https://cdn.heapanalytics.com/js/heap-702959232.js https://cdn.heapanalytics.com/js/heap-2823746907.js; object-src 'self'",
     "web_accessible_resources": ["lib/*"],
-    "manifest_version": 5,
+    "manifest_version": 2,
     "minimum_chrome_version": "23",
     "update_url": "https://clients2.google.com/service/update2/crx",
     "author": "Marketo Demo Services",
