@@ -76,7 +76,7 @@ mktoAccountString106d = "mktodemoaccount106d",
 mktoAccountStringsMatch = "^" + mktoAccountString106 + "$|^" + mktoAccountString106d + "$",
 
 mktoWorkingFoldersToHide = new RegExp("^(Manufacturing|Healthcare|Healthcare - backup|Telecommunications|Financial Services)$", "i"),
-mktoOperationalFolder = new RegExp("^_Operational", "i"),
+mktoOperationalFolders = new RegExp("^(_Operational|_Operations)", "i"),
 
 mktoMasterMarketingActivitiesEnglishFragment = "MA19A1",
 mktoMarketingActivitiesDefaultFragment = "MA15A1",
@@ -1171,7 +1171,8 @@ APP.overrideTreeNodeExpand = function () {
                             currFolder.hidden = true;
                         }
                     }
-                } else if (this.parentNode.attributes.compType == "Zone"
+                } else if (this.parentNode
+                     && this.parentNode.attributes.compType == "Zone"
                      && this.attributes.system == false
                      && this.hidden == false
                      && this.attributes.compType == "Marketing Folder") {
@@ -1180,7 +1181,24 @@ APP.overrideTreeNodeExpand = function () {
                         
                         if (currFolder.attributes.system == false
                              && currFolder.attributes.compType == "Marketing Folder"
-                             && currFolder.text.search(mktoOperationalFolder) != -1) {
+                             && currFolder.text.search(mktoOperationalFolders) != -1) {
+                            currFolder.ui.hide();
+                            currFolder.hidden = true;
+                        }
+                    }
+                } else if (this.parentNode
+                     && this.parentNode.parentNode
+                     && this.parentNode.parentNode.parentNode
+                     && this.parentNode.parentNode.parentNode.attributes.compType == "Zone"
+                     && this.attributes.system == false
+                     && this.hidden == false
+                     && this.attributes.compType != "Marketing Folder") {
+                    for (var ii = 0; ii < this.childNodes.length; ii++) {
+                        var currFolder = this.childNodes[ii];
+                        
+                        if (currFolder.attributes.system == false
+                             && currFolder.attributes.compType == "Marketing Folder"
+                             && currFolder.text.search(mktoOperationalFolders) != -1) {
                             currFolder.ui.hide();
                             currFolder.hidden = true;
                         }
@@ -1266,7 +1284,8 @@ APP.overrideTreeNodeCollapse = function () {
                             currFolder.hidden = true;
                         }
                     }
-                } else if (this.parentNode.attributes.compType == "Zone"
+                } else if (this.parentNode
+                     && this.parentNode.attributes.compType == "Zone"
                      && this.attributes.system == false
                      && this.hidden == false
                      && this.attributes.compType == "Marketing Folder") {
@@ -1275,7 +1294,24 @@ APP.overrideTreeNodeCollapse = function () {
                         
                         if (currFolder.attributes.system == false
                              && currFolder.attributes.compType == "Marketing Folder"
-                             && currFolder.text.search(mktoOperationalFolder) != -1) {
+                             && currFolder.text.search(mktoOperationalFolders) != -1) {
+                            currFolder.ui.hide();
+                            currFolder.hidden = true;
+                        }
+                    }
+                } else if (this.parentNode
+                     && this.parentNode.parentNode
+                     && this.parentNode.parentNode.parentNode
+                     && this.parentNode.parentNode.parentNode.attributes.compType == "Zone"
+                     && this.attributes.system == false
+                     && this.hidden == false
+                     && this.attributes.compType != "Marketing Folder") {
+                    for (var ii = 0; ii < this.childNodes.length; ii++) {
+                        var currFolder = this.childNodes[ii];
+                        
+                        if (currFolder.attributes.system == false
+                             && currFolder.attributes.compType == "Marketing Folder"
+                             && currFolder.text.search(mktoOperationalFolders) != -1) {
                             currFolder.ui.hide();
                             currFolder.hidden = true;
                         }
