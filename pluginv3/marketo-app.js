@@ -75,7 +75,7 @@ mktoAccountString106 = "mktodemoaccount106",
 mktoAccountString106d = "mktodemoaccount106d",
 mktoAccountStringsMatch = "^" + mktoAccountString106 + "$|^" + mktoAccountString106d + "$",
 
-mktoWorkingFoldersToHide = new RegExp("^(Manufacturing|Health ?Care|Telecommunications)$", "i"),
+mktoWorkingFoldersToHide = new RegExp("^(Manufacturing|Healthcare|Healthcare - backup|Telecommunications|Financial Services)$", "i"),
 mktoOperationalFolder = new RegExp("^_Operational", "i"),
 
 mktoMasterMarketingActivitiesEnglishFragment = "MA19A1",
