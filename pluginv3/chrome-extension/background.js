@@ -39,7 +39,9 @@ oneLoginLastName,
 oneLoginEmail,
 mktoUserId,
 mktoName,
-mktoRole;
+mktoRole,
+lastMktoMessageDate,
+numOfMktoLiveMessage;
 
 /**************************************************************************************
  *
@@ -843,15 +845,105 @@ function setMktoCookies(message) {
     setCookie(mktoRoleCookieMarketoApp);
 }
 
-function mktoLiveMessage(message) {
-    var notification = {
-        id: message.id,
-        title: message.title,
-        message: message.notify,
-        requireInteraction: message.requireInteraction
-    };
+function isDateInRange(date, startDate, endDate) {
+    var isAfterStartDate,
+    isBeforeEndDate;
     
-    createBasicNotification(notification);
+    if (startDate) {
+        if (typeof(startDate) === "string") {
+            startDate = new Date(startDate);
+        }
+        
+        if (date.getFullYear() >= startDate.getFullYear()
+             && date.getMonth() >= startDate.getMonth()
+             && date.getDate() >= startDate.getDate()) {
+            isAfterStartDate = true;
+        } else {
+            isAfterStartDate = false;
+        }
+    }
+    
+    if (endDate) {
+        if (typeof(endDate) === "string") {
+            endDate = new Date(endDate);
+        }
+        
+        if (date.getFullYear() <= endDate.getFullYear()
+             && date.getMonth() <= endDate.getMonth()
+             && date.getDate() <= endDate.getDate()) {
+            isBeforeEndDate = true;
+        } else {
+            isBeforeEndDate = false;
+        }
+    }
+    
+    if (startDate
+         && !endDate) {
+        if (isAfterStartDate) {
+            return true;
+        } else {
+            return false;
+        }
+    } else if (!startDate
+         && endDate) {
+        if (isBeforeEndDate) {
+            return true;
+        } else {
+            return false;
+        }
+    } else if (startDate
+         && endDate) {
+        if (isAfterStartDate
+             && isBeforeEndDate) {
+            return true;
+        } else {
+            return false;
+        }
+    } else {
+        return true;
+    }
+}
+
+function mktoLiveMessage(message) {
+    var date = new Date();
+    
+    if (isDateInRange(date, message.startDate, message.endDate)) {
+        var notification = {
+            id: message.id,
+            title: message.title,
+            message: message.notify,
+            requireInteraction: message.requireInteraction
+        };
+        
+        if (message.numOfTimesPerDay
+             && message.numOfTimesPerDay != -1) {
+            if (lastMktoMessageDate
+                 && date.toDateString() == lastMktoMessageDate.toDateString()) {
+                if (numOfMktoLiveMessage < message.numOfTimesPerDay) {
+                    createBasicNotification(notification);
+                    numOfMktoLiveMessage++;
+                }
+            } else {
+                createBasicNotification(notification);
+                lastMktoMessageDate = new Date();
+                numOfMktoLiveMessage = 1;
+                heapTrack({
+                    name: "Received Important Message",
+                    app: "Extension",
+                    area: "Background",
+                    title: message.title
+                });
+            }
+        } else {
+            createBasicNotification(notification);
+            heapTrack({
+                name: "Received Important Message",
+                app: "Extension",
+                area: "Background",
+                title: message.title
+            });
+        }
+    }
 }
 
 function addCheckBadExtensionMsgListener(response) {
