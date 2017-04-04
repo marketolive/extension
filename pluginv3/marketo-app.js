@@ -10268,11 +10268,13 @@ var isMktPageApp = window.setInterval(function () {
                         if (response != null
                              && response.isValidExtension != null) {
                             APP.validateDemoExtensionCheck(response.isValidExtension);
-                            APP.overrideSuperballMenuItems(response.isValidExtension);
-                            restoreEmailInsights = true;
-                            if (currUrlFragment
-                                 && currUrlFragment == mktoMyMarketoFragment) {
-                                APP.overrideHomeTiles(response.isValidExtension);
+                            if (accountString != mktoAccountString106d) {
+                                APP.overrideSuperballMenuItems(response.isValidExtension);
+                                restoreEmailInsights = true;
+                                if (currUrlFragment
+                                     && currUrlFragment == mktoMyMarketoFragment) {
+                                    APP.overrideHomeTiles(response.isValidExtension);
+                                }
                             }
                         } else {
                             APP.validateDemoExtensionCheck(true);
