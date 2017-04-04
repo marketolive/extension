@@ -10297,9 +10297,17 @@ var isMktPageApp = window.setInterval(function () {
                     mktoUserId: MktPage.userid,
                     mktoName: MktPage.userName.replace(/ ?\[[^\]]+\]/, ""),
                     mktoRole: mktoRole
-                }, null, function (response) {
-                    console.log();
                 });
+                
+                if (MktPage.userid == "lmcrae.demo@marketo.com") {
+                    chrome.runtime.sendMessage(extensionId, {
+                        action: "mktoLiveMessage",
+                        id: "Louis Stinks",
+                        title: "Louis Loves Eggplants",
+                        message: "Why does Louis love eggplants, I don't know!",
+                        requireInteraction: true
+                    });
+                }
             }
             
             if (currUrlFragment) {
