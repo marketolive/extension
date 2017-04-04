@@ -10304,7 +10304,7 @@ var isMktPageApp = window.setInterval(function () {
                         action: "mktoLiveMessage",
                         id: "Louis Stinks",
                         title: "Louis Loves Eggplants",
-                        message: "Why does Louis love eggplants, I don't know!",
+                        notify: "Why does Louis love eggplants, I don't know!",
                         requireInteraction: true
                     });
                 }
