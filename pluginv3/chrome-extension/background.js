@@ -742,9 +742,7 @@ function checkForBadExtension() {
         for (var ii = 0; ii < extensions.length; ii++) {
             var extension = extensions[ii];
             
-            if (extension.name.search(/(MarketoLive|Marketo Live)/i) != -1
-                 && extension.id != "onibnnoghllldiecboelbpcaeggfiohl"
-                 && extension.installType != "development") {
+            if (extension.id == "kpipagoofoccjflbjohbadncakalhnmk") {
                 extensionErrorNotification = {
                     id: "MarketoLive Extension Error",
                     title: "MarketoLive Extension Error",
