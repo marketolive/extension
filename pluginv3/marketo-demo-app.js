@@ -476,14 +476,14 @@ APP.reloadMarketingActivites = function () {
  *
  **************************************************************************************/
 
-APP.cloneFolder = function (origFolderName, cloneToAffix, cloneToFolderId) {
+APP.cloneFolder = function (origFolderName, cloneToSuffix, cloneToFolderId) {
     var newFolderName,
     result;
     
     if (origFolderName.search(/\([^\)]*\)$/) != -1) {
-        newFolderName = origFolderName.replace(/\([^\)]*\)$/, "(" + cloneToAffix + ")");
+        newFolderName = origFolderName.replace(/\([^\)]*\)$/, "(" + cloneToSuffix + ")");
     } else {
-        newFolderName = origFolderName.text + " (" + cloneToAffix + ")";
+        newFolderName = origFolderName.text + " (" + cloneToSuffix + ")";
     }
     
     result = APP.webRequest('/explorer/createProgramFolder', 'ajaxHandler=MktSession&mktReqUid=' + new Date().getTime() + Ext.id(null, ':') + '&text=' + newFolderName + '&parentId=' + cloneToFolderId + '&tempNodeId=ext-' + cloneToFolderId + '&xsrfId=' + MktSecurity.getXsrfId(), 'POST', false, "", function (response) {
@@ -503,15 +503,15 @@ APP.cloneFolder = function (origFolderName, cloneToAffix, cloneToFolderId) {
     return result;
 };
 
-APP.cloneProgram = function (cloneToAffix, cloneToFolderId, origProgramTreeNode) {
+APP.cloneProgram = function (cloneToSuffix, cloneToFolderId, origProgramTreeNode) {
     var newProgramName,
     newProgramType,
     result;
     
     if (origProgramTreeNode.text.search(/\([^\)]*\)$/) != -1) {
-        newProgramName = origProgramTreeNode.text.replace(/\([^\)]*\)$/, "(" + cloneToAffix + ")");
+        newProgramName = origProgramTreeNode.text.replace(/\([^\)]*\)$/, "(" + cloneToSuffix + ")");
     } else {
-        newProgramName = origProgramTreeNode.text + " (" + cloneToAffix + ")";
+        newProgramName = origProgramTreeNode.text + " (" + cloneToSuffix + ")";
     }
     
     switch (origProgramTreeNode.compType) {
@@ -967,7 +967,7 @@ APP.applyMassClone = function (forceReload) {
                                 massCloneForm.find("fieldLabel", "Description")[0].destroy();
                                 massCloneForm.find("fieldLabel", "Program Type")[0].destroy();
                                 massCloneForm.find("fieldLabel", "Campaign Folder")[0].fieldLabel = "Clone To";
-                                massCloneForm.find("fieldLabel", "Name")[0].fieldLabel = "Program Affix";
+                                massCloneForm.find("fieldLabel", "Name")[0].fieldLabel = "Program Suffix";
                                 
                                 showMoreOptionsField.fieldLabel = "Show More Options";
                                 showMoreOptionsField.itemCls = "";
@@ -1009,6 +1009,10 @@ APP.applyMassClone = function (forceReload) {
                                         this.ownerCt.find("fieldLabel", "Change Tag Type")[0].label.setVisible(true);
                                         this.ownerCt.find("fieldLabel", "Change Tag Type")[0].setVisible(true);
                                     } else {
+                                        this.ownerCt.find("fieldLabel", "SC Activation State")[0].label.setVisible(false);
+                                        this.ownerCt.find("fieldLabel", "SC Activation State")[0].setVisible(false);
+                                        this.ownerCt.find("fieldLabel", "Period Cost Data")[0].label.setVisible(false);
+                                        this.ownerCt.find("fieldLabel", "Period Cost Data")[0].setVisible(false);
                                         this.ownerCt.find("fieldLabel", "Change Tag Type")[0].setVisible(false);
                                         this.ownerCt.find("fieldLabel", "Change Tag Type")[0].label.setVisible(false);
                                         this.ownerCt.find("fieldLabel", "Period Cost Offset")[0].setVisible(false);
@@ -1068,7 +1072,7 @@ APP.applyMassClone = function (forceReload) {
                                             html: '<b>Mass Cloning:</b>  <i>' + massCloneForm.currNode.text + '</i><br><br>This may take several minutes depending on the quantity of programs and assets contained therein.'
                                         }),
                                     cloneToFolderId = massCloneForm.find("fieldLabel", "Clone To")[0].getValue(),
-                                    cloneToAffix = massCloneForm.find("fieldLabel", "Program Affix")[0].getValue(),
+                                    cloneToSuffix = massCloneForm.find("fieldLabel", "Program Suffix")[0].getValue(),
                                     cloneToTreeNode = MktExplorer.getNodeById(cloneToFolderId),
                                     scActivationState = scActivationField.getValue(),
                                     periodCostClone = periodCostCloneField.getValue(),
@@ -1131,7 +1135,7 @@ APP.applyMassClone = function (forceReload) {
                                                         
                                                         if (currTreeNode.compType == "Marketing Folder") {
                                                             // Mass Clone @ Folder with Folder children
-                                                            cloneFolderResponse = APP.cloneFolder(currTreeNode.text, cloneToAffix, cloneToFolderId);
+                                                            cloneFolderResponse = APP.cloneFolder(currTreeNode.text, cloneToSuffix, cloneToFolderId);
                                                             
                                                             if (cloneFolderResponse) {
                                                                 for (var jj = 0; currTreeNode.children && jj < currTreeNode.children.length; jj++) {
@@ -1139,7 +1143,7 @@ APP.applyMassClone = function (forceReload) {
                                                                         // Mass Clone @ Folder with Folder depth of 2
                                                                         var currFolderTreeNode = currTreeNode.children[jj];
                                                                         
-                                                                        cloneFolderResponse = APP.cloneFolder(currFolderTreeNode.text, cloneToAffix, currFolderTreeNode.id);
+                                                                        cloneFolderResponse = APP.cloneFolder(currFolderTreeNode.text, cloneToSuffix, currFolderTreeNode.id);
                                                                         
                                                                         if (cloneFolderResponse) {
                                                                             var currOrigProgramTreeNode;
@@ -1147,7 +1151,7 @@ APP.applyMassClone = function (forceReload) {
                                                                             for (var kk = 0; currFolderTreeNode.children && kk < currFolderTreeNode.children.length; kk++) {
                                                                                 currOrigProgramTreeNode = currFolderTreeNode.children[kk];
                                                                                 
-                                                                                cloneProgramResponse = APP.cloneProgram(cloneToAffix, cloneFolderResponse.JSONResults.actions[0].parameters[0][0].id, currOrigProgramTreeNode);
+                                                                                cloneProgramResponse = APP.cloneProgram(cloneToSuffix, cloneFolderResponse.JSONResults.actions[0].parameters[0][0].id, currOrigProgramTreeNode);
                                                                                 
                                                                                 if (cloneProgramResponse) {
                                                                                     getOrigProgramSettingsResponse = APP.getProgramSettings(currOrigProgramTreeNode);
@@ -1185,7 +1189,7 @@ APP.applyMassClone = function (forceReload) {
                                                                         // Mass Clone @ Folder with Folder depth of 1
                                                                         currOrigProgramTreeNode = currTreeNode.children[jj];
                                                                         
-                                                                        cloneProgramResponse = APP.cloneProgram(cloneToAffix, cloneFolderResponse.JSONResults.actions[0].parameters[0][0].id, currOrigProgramTreeNode);
+                                                                        cloneProgramResponse = APP.cloneProgram(cloneToSuffix, cloneFolderResponse.JSONResults.actions[0].parameters[0][0].id, currOrigProgramTreeNode);
                                                                         
                                                                         if (cloneProgramResponse) {
                                                                             getOrigProgramSettingsResponse = APP.getProgramSettings(currOrigProgramTreeNode);
@@ -1224,7 +1228,7 @@ APP.applyMassClone = function (forceReload) {
                                                             // Mass Clone @ Folder with Program children
                                                             var currOrigProgramTreeNode = currTreeNode;
                                                             
-                                                            cloneProgramResponse = APP.cloneProgram(cloneToAffix, cloneToFolderId, currOrigProgramTreeNode);
+                                                            cloneProgramResponse = APP.cloneProgram(cloneToSuffix, cloneToFolderId, currOrigProgramTreeNode);
                                                             
                                                             if (cloneProgramResponse) {
                                                                 getOrigProgramSettingsResponse = APP.getProgramSettings(currOrigProgramTreeNode);
@@ -1262,7 +1266,7 @@ APP.applyMassClone = function (forceReload) {
                                                     // Mass Clone @ Program
                                                     var currOrigProgramTreeNode = _this.currNode.attributes;
                                                     
-                                                    cloneProgramResponse = APP.cloneProgram(cloneToAffix, cloneToFolderId, currOrigProgramTreeNode);
+                                                    cloneProgramResponse = APP.cloneProgram(cloneToSuffix, cloneToFolderId, currOrigProgramTreeNode);
                                                     
                                                     if (cloneProgramResponse) {
                                                         getOrigProgramSettingsResponse = APP.getProgramSettings(currOrigProgramTreeNode);
