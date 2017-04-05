@@ -5475,7 +5475,7 @@ APP.applyMassClone = function (forceReload) {
                                 massCloneForm.find("fieldLabel", "Description")[0].destroy();
                                 massCloneForm.find("fieldLabel", "Program Type")[0].destroy();
                                 massCloneForm.find("fieldLabel", "Campaign Folder")[0].fieldLabel = "Clone To";
-                                massCloneForm.find("fieldLabel", "Name")[0].fieldLabel = "Program Affix";
+                                massCloneForm.find("fieldLabel", "Name")[0].fieldLabel = "Program Suffix";
                                 
                                 showMoreOptionsField.fieldLabel = "Show More Options";
                                 showMoreOptionsField.itemCls = "";
@@ -5517,6 +5517,10 @@ APP.applyMassClone = function (forceReload) {
                                         this.ownerCt.find("fieldLabel", "Change Tag Type")[0].label.setVisible(true);
                                         this.ownerCt.find("fieldLabel", "Change Tag Type")[0].setVisible(true);
                                     } else {
+                                        this.ownerCt.find("fieldLabel", "SC Activation State")[0].label.setVisible(false);
+                                        this.ownerCt.find("fieldLabel", "SC Activation State")[0].setVisible(false);
+                                        this.ownerCt.find("fieldLabel", "Period Cost Data")[0].label.setVisible(false);
+                                        this.ownerCt.find("fieldLabel", "Period Cost Data")[0].setVisible(false);
                                         this.ownerCt.find("fieldLabel", "Change Tag Type")[0].setVisible(false);
                                         this.ownerCt.find("fieldLabel", "Change Tag Type")[0].label.setVisible(false);
                                         this.ownerCt.find("fieldLabel", "Period Cost Offset")[0].setVisible(false);
