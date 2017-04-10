@@ -977,7 +977,7 @@ function checkMsgs(message, sender, sendResponse) {
             
             if (cookie
                  && cookie.value.split(":")[2].search(message.munchkinId) != -1) {
-                if (cookie.value.split(":")[1].search(adminUserNamesMatch) == -1) {
+                if (cookie.value.split(":")[1].search(adminUserNamesMatch) != -1) {
                     response = "isAdmin";
                 } else {
                     response = "isNotAdmin";

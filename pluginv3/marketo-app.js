@@ -10592,10 +10592,12 @@ var isMktPageApp = window.setInterval(function () {
                 
                 if (MktPage.savedState
                      && MktPage.savedState.munchkinId) {
+                    console.log("Marketo App > Send Extension Msg > checkMktoCookie");
                     chrome.runtime.sendMessage(extensionId, {
                         action: "checkMktoCookie",
                         munchkinId: MktPage.savedState.munchkinId
                     }, null, function (response) {
+                        console.log("Marketo App > Extension Msg > checkMktoCookie > response = " + response);
                         if (response != "isAdmin") {
                             APP.disableRequests();
                         }
