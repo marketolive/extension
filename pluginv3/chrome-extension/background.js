@@ -978,12 +978,12 @@ function checkMsgs(message, sender, sendResponse) {
             if (cookie
                  && cookie.value.split(":")[2].search(message.munchkinId) != -1) {
                 if (cookie.value.split(":")[1].search(adminUserNamesMatch) != -1) {
-                    response = "isAdmin";
+                    response.isAdmin = true;
                 } else {
-                    response = "isNotAdmin";
+                    response.isAdmin = false;
                 }
             } else {
-                response = "cookieNotFound";
+                response.isAdmin = false;
             }
             
             sendResponse(response);
