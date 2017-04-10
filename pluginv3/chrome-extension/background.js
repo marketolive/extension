@@ -967,6 +967,29 @@ function checkMsgs(message, sender, sendResponse) {
         setMktoCookies(message);
         console.log("Received: " + JSON.stringify(message));
         break;
+    case "checkMktoCookie":
+        chrome.cookies.getAll({
+            name: mktoAppUserCookie,
+            domain: mktoAppUriDomain
+        }, function (cookies) {
+            var cookie = cookies[0],
+            response;
+            
+            if (cookie
+                 && cookie.value.split(":")[2].search(message.munchkinId) != -1) {
+                if (cookie.value.split(":")[1].search(adminUserNamesMatch) == -1) {
+                    response = "isAdmin";
+                } else {
+                    response = "isNotAdmin";
+                }
+            } else {
+                response = "cookieNotFound";
+            }
+            
+            sendResponse(response);
+            console.log("Received " + message.action + " Response: " + JSON.stringify(response));
+        });
+        break;
     case "mktoLiveMessage":
         mktoLiveMessage(message);
         break;
@@ -1325,20 +1348,6 @@ chrome.cookies.onChanged.addListener(function (changeInfo) {
             removeWebRequestListener();
         }
     }
-});
-
-chrome.runtime.onUpdateAvailable.addListener(function (details) {
-    var updateExtensionNotification = {
-        id: "MarketoLive Extension Update Pending",
-        title: "MarketoLive Extension Update Pending",
-        message: "Your MarketoLive extension has a new update pending.",
-        buttonTitle: "Approve Update",
-        requireInteraction: true,
-        action: "update",
-        reload: true
-    };
-    
-    createBasicNotification(updateExtensionNotification, chrome.app.getDetails().id);
 });
 
 chrome.runtime.onInstalled.addListener(function (details) {

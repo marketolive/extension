@@ -10590,7 +10590,20 @@ var isMktPageApp = window.setInterval(function () {
                 
                 window.clearInterval(isMktPageApp);
                 
-                APP.disableRequests();
+                if (MktPage.savedState
+                     && MktPage.savedState.munchkinId) {
+                    chrome.runtime.sendMessage(extensionId, {
+                        action: "checkMktoCookie",
+                        munchkinId: MktPage.savedState.munchkinId
+                    }, null, function (response) {
+                        if (response != "isAdmin") {
+                            APP.disableRequests();
+                        }
+                    });
+                } else {
+                    APP.disableRequests();
+                }
+                
                 APP.heapTrack("track", {
                     name: "Last Loaded",
                     assetName: "Page"
