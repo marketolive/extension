@@ -10280,17 +10280,16 @@ var isMktPageApp = window.setInterval(function () {
                                     APP.overrideHomeTiles(response.isValidExtension);
                                 }
                             }
+                            console.log("Marketo App > checkBadExtension Msg > Response: " + JSON.strignify(response);
                         } else {
-                            APP.validateDemoExtensionCheck(true);
+                            APP.validateDemoExtensionCheck(false);
                         }
-                        console.log(chrome.runtime.lastError);
-                        console.log("Marketo App > Extension Msg > checkBadExtension > response = " + JSON.stringify(response));
+                        console.log("Marketo App > checkBadExtension Msg > Last Error: " + chrome.runtime.lastError);
                     });
                 } else {
                     APP.validateDemoExtensionCheck(false);
                 }
-                console.log(chrome.runtime.lastError);
-                console.log("Marketo App > Extension Msg > checkExtensionVersion > response = " + JSON.stringify(response));
+                console.log("Marketo App > checkExtensionVersion Msg > Last Error: " + chrome.runtime.lastError);
             });
             
             if (MktPage.userid
@@ -10596,16 +10595,17 @@ var isMktPageApp = window.setInterval(function () {
                 
                 if (MktPage.savedState
                      && MktPage.savedState.munchkinId) {
-                    console.log("Marketo App > Send Extension Msg > checkMktoCookie");
+                    console.log("Marketo App > checkMktoCookie Msg");
                     chrome.runtime.sendMessage(extensionId, {
                         action: "checkMktoCookie",
                         munchkinId: MktPage.savedState.munchkinId
                     }, null, function (response) {
-                        console.log("Marketo App > Extension Msg > checkMktoCookie > response = " + JSON.stringify(response));
                         if (!response
                              || !response.isAdmin) {
                             APP.disableRequests();
-                            console.log(chrome.runtime.lastError);
+                            console.log("Marketo App > checkMktoCookie Msg > Last Error: " + chrome.runtime.lastError);
+                        } else {
+                            console.log("Marketo App > checkMktoCookie Msg > Saving Enabled for Admin");
                         }
                     });
                 } else {

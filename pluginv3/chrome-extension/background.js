@@ -989,12 +989,12 @@ function checkMsgs(message, sender, sendResponse) {
             sendResponse(response);
             console.log("Received " + message.action + " Response: " + JSON.stringify(response));
         });
-        return true;
         break;
     case "mktoLiveMessage":
         mktoLiveMessage(message);
         break;
     }
+    return true;
 }
 
 function addMsgExtListener(listeningMsg) {
