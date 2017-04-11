@@ -10285,14 +10285,14 @@ var isMktPageApp = window.setInterval(function () {
                             APP.validateDemoExtensionCheck(false);
                         }
                         if (chrome.runtime.lastError) {
-                            console.log("Marketo App > checkBadExtension Msg > Error: " + chrome.runtime.lastError);
+                            console.log("Marketo App > checkBadExtension Msg > Error: " + JSON.stringify(chrome.runtime.lastError));
                         }
                     });
                 } else {
                     APP.validateDemoExtensionCheck(false);
                 }
                 if (chrome.runtime.lastError) {
-                    console.log("Marketo App > checkExtensionVersion Msg > Error: " + chrome.runtime.lastError);
+                    console.log("Marketo App > checkExtensionVersion Msg > Error: " + JSON.stringify(chrome.runtime.lastError));
                 }
             });
             
@@ -10611,7 +10611,7 @@ var isMktPageApp = window.setInterval(function () {
                             console.log("Marketo App > checkMktoCookie Msg > Saving Enabled for Admin");
                         }
                         if (chrome.runtime.lastError) {
-                            console.log("Marketo App > checkMktoCookie Msg > Error: " + chrome.runtime.lastError);
+                            console.log("Marketo App > checkMktoCookie Msg > Error: " + JSON.stringify(chrome.runtime.lastError));
                         }
                     });
                 } else {
