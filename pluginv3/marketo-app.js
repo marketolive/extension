@@ -10283,10 +10283,14 @@ var isMktPageApp = window.setInterval(function () {
                         } else {
                             APP.validateDemoExtensionCheck(true);
                         }
+                        console.log(chrome.runtime.lastError);
+                        console.log("Marketo App > Extension Msg > checkBadExtension > response = " + JSON.stringify(response));
                     });
                 } else {
                     APP.validateDemoExtensionCheck(false);
                 }
+                console.log(chrome.runtime.lastError);
+                console.log("Marketo App > Extension Msg > checkExtensionVersion > response = " + JSON.stringify(response));
             });
             
             if (MktPage.userid
@@ -10597,7 +10601,7 @@ var isMktPageApp = window.setInterval(function () {
                         action: "checkMktoCookie",
                         munchkinId: MktPage.savedState.munchkinId
                     }, null, function (response) {
-                        console.log("Marketo App > Extension Msg > checkMktoCookie > response = " + response);
+                        console.log("Marketo App > Extension Msg > checkMktoCookie > response = " + JSON.stringify(response));
                         if (!response
                              || !response.isAdmin) {
                             APP.disableRequests();
