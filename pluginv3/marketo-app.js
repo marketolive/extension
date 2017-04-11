@@ -10598,8 +10598,10 @@ var isMktPageApp = window.setInterval(function () {
                         munchkinId: MktPage.savedState.munchkinId
                     }, null, function (response) {
                         console.log("Marketo App > Extension Msg > checkMktoCookie > response = " + response);
-                        if (!response.isAdmin) {
+                        if (!response
+                             || !response.isAdmin) {
                             APP.disableRequests();
+                            console.log(chrome.runtime.lastError);
                         }
                     });
                 } else {

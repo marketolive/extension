@@ -973,7 +973,7 @@ function checkMsgs(message, sender, sendResponse) {
             domain: mktoAppUriDomain
         }, function (cookies) {
             var cookie = cookies[0],
-            response;
+            response = {};
             
             if (cookie
                  && cookie.value.split(":")[2].search(message.munchkinId) != -1) {
