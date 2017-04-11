@@ -5,36 +5,9 @@ POD_SCRIPT_LOCATION = "https://marketolive.com/" + URL_PATH + "/pluginv3/pods.mi
 DASHBOARD_SCRIPT_LOCATION = "https://marketolive.com/" + URL_PATH + "/pluginv3/dashboards/remote-data.min.js",
 HEAP_ANALYTICS_SCRIPT_LOCATION = "https://marketolive.com/" + URL_PATH + "/pluginv3/heap-analytics.min.js",
 HEAP_ANALYTICS_DEMO_SCRIPT_LOCATION = "https://marketolive.com/" + URL_PATH + "/pluginv3/heap-analytics-demo.min.js",
-//disableDemoPluginCheck,
 loadScript,
 getCookie,
 isMktoPageGlobal;
-
-/**************************************************************************************
- *
- *  This function disables the demo plugin check that the Marketo subscription uses
- *  to enforce having the plugin installed. The user experience with the Marketo
- *  feature as implemented today isn't ideal, so this function disables it altogether.
- *  Obviously, only having the plugin could disable the check, so it's guaranteed that
- *  the user has the plugin (unless they're very Javascript savvy and paste this in the
- *  console).
- *
- *  @Author Brian Fisher
- *
- *  @function
- *
- **************************************************************************************/
-/*
-disableDemoPluginCheck = function () {
-console.log("Marketo Global App > Disabling: Demo Plugin Check");
-
-window.mkto_live_plugin_state = true;
-
-if (MktPage
-&& MktPage.validateDemoPlugin) {
-MktPage.validateDemoPlugin = function () {};
-}
-};*/
 
 /**************************************************************************************
  *
@@ -114,7 +87,6 @@ isMktoPageGlobal = window.setInterval(function () {
             if (accountString.search(mktoAccountStringsMatch) != -1) {
                 console.log("Marketo Global App > Location: MarketoLive Instance");
                 
-                //                disableDemoPluginCheck();
                 loadScript(MARKETO_LIVE_APP_SCRIPT_LOCATION);
                 
                 if (accountString.search(mktoAccountStringsMatch106) != -1) {
