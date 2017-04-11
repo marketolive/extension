@@ -10280,7 +10280,7 @@ var isMktPageApp = window.setInterval(function () {
                                     APP.overrideHomeTiles(response.isValidExtension);
                                 }
                             }
-                            console.log("Marketo App > checkBadExtension Msg > Response: " + JSON.strignify(response));
+                            console.log("Marketo App > checkBadExtension Msg > Response: " + JSON.stringify(response));
                         } else {
                             APP.validateDemoExtensionCheck(false);
                         }
