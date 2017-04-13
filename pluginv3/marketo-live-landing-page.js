@@ -74,10 +74,10 @@ var isMktoForm = window.setInterval(function () {
                         if (submitParamVal == "true") {
                             window.location.href = "http://www.marketolive.com/en/?followUp=true";
                             //window.close();
-                            return true;
+                            return false;
                         } else {
                             window.location.href = "http://www.marketolive.com";
-                            return true;
+                            return false;
                         }
                     });
                     
@@ -280,7 +280,8 @@ var isMktoForm = window.setInterval(function () {
                                 
                                 window.clearInterval(isMunchkinInit);
                                 
-                                window.close();
+                                //window.close();
+                                window.location.href = "http://www.marketolive.com/en/?followUp=true";
                             }
                         }, 0);
                 }
