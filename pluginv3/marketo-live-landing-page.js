@@ -72,8 +72,9 @@ var isMktoForm = window.setInterval(function () {
                     
                     form.onSuccess(function (values, followUpUrl) {
                         if (submitParamVal == "true") {
-                            window.close();
-                            return false;
+                            followUpUrl = "http://www.marketolive.com/en/?followUp=true";
+                            //window.close();
+                            return true;
                         } else {
                             followUpUrl = "http://www.marketolive.com";
                             return true;
