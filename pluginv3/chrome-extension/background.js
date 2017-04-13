@@ -1001,17 +1001,6 @@ function checkMsgs(message, sender, sendResponse) {
             console.log("Received " + message.action + " Response: " + JSON.stringify(response));
         });
         break;
-    case "demoDataPage":
-        if (tabId) {
-            switch (message.tabAction) {
-            case "update":
-                chrome.tabs.update(tabId, {url: message.nextUrl});
-                break;
-            case "remove":
-                chrome.tabs.remove(tabId);
-                break;
-            }
-        }
     case "mktoLiveMessage":
         mktoLiveMessage(message);
         break;
@@ -1021,7 +1010,12 @@ function checkMsgs(message, sender, sendResponse) {
 
 function addMsgExtListener(listeningMsg) {
     chrome.runtime.onMessageExternal.addListener(listeningMsg);
-    console.log("Added External Message Listener");
+    console.log("Added External Message Listener " + listeningMsg.name);
+}
+
+function removeMsgExtListener(listeningMsg) {
+    chrome.runtime.onMessageExternal.removeListener(listeningMsg);
+    console.log("Removed External Message Listener " + listeningMsg.name);
 }
 
 /**************************************************************************************

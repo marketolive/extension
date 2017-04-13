@@ -439,6 +439,28 @@ getCookie({
     }
 });
 
+function demoDataPageMsgs(message, sender, sendResponse) {
+    switch (message.action) {
+    case "demoDataPage":
+        if (tab.id) {
+            switch (message.tabAction) {
+            case "update":
+                chrome.tabs.update(tab.id, {url: message.nextUrl});
+                break;
+            case "remove":
+                chrome.tabs.remove(tab.id);
+                break;
+            }
+        }
+    }
+    return true;
+}
+
+function addMsgExtListener(listeningMsg) {
+    chrome.runtime.onMessageExternal.addListener(listeningMsg);
+    console.log("Added External Message Listener");
+}
+
 function visitPage(index) {
     var visitedPagesCookie = visitedPagesCookieMarketoLive,
     url;
@@ -457,8 +479,11 @@ function visitPage(index) {
     }, function (tab) {
         tabId = tab.id;
         
+        addMsgExtListener(demoDataPageMsgs);
+        
         window.setTimeout(function () {
             chrome.tabs.remove(tab.id);
+            removeMsgExtListener(demoDataPageMsgs);
         }, 10000);
     });
     
