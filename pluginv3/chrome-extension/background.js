@@ -1002,21 +1002,37 @@ function checkMsgs(message, sender, sendResponse) {
         });
         break;
     case "demoDataPage":
-        chrome.tabs.query({
-            url: message.currUrl,
-            pinned: true
-        }, function (tabs) {
-            var tabId = tabs[0].id;
-            
-            switch (message.tabAction) {
-            case "update":
-                chrome.tabs.update(tab.id, {url: message.nextUrl});
-                break;
-            case "remove":
-                chrome.tabs.remove(tab.id);
-                break;
-            }
-        });
+        if (message.tabAction == "create") {
+            chrome.tabs.create({
+                url: message.url,
+                active: false,
+                selected: false,
+                pinned: true
+            }, function (tab) {
+                window.setTimeout(function () {
+                    if (!Number.isInteger(parseInt(message.tabTimeout))) {
+                        message.tabTimeout = 10000;
+                    }
+                    chrome.tabs.remove(tab.id);
+                }, parseInt(message.tabTimeout));
+            });
+        } else {
+            chrome.tabs.query({
+                url: message.currUrl,
+                pinned: true
+            }, function (tabs) {
+                var tabId = tabs[0].id;
+                
+                switch (message.tabAction) {
+                case "update":
+                    chrome.tabs.update(tabId, {url: message.nextUrl});
+                    break;
+                case "remove":
+                    chrome.tabs.remove(tabId);
+                    break;
+                }
+            });
+        }
         break;
     case "mktoLiveMessage":
         mktoLiveMessage(message);
