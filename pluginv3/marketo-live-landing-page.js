@@ -78,6 +78,7 @@ var isMktoForm = window.setInterval(function () {
                             chrome.runtime.sendMessage(extensionId, {
                                 action: "demoDataPage",
                                 tabAction: "update",
+                                currUrl: window.location.href,
                                 nextUrl: "http://www.marketolive.com/en/?followUp=true"
                             });
                             //window.location.href = "http://www.marketolive.com/en/?followUp=true";
@@ -291,6 +292,7 @@ var isMktoForm = window.setInterval(function () {
                                 chrome.runtime.sendMessage(extensionId, {
                                     action: "demoDataPage",
                                     tabAction: "update",
+                                    currUrl: window.location.href,
                                     nextUrl: "http://www.marketolive.com/en/?followUp=true"
                                 });
                                 //window.close();

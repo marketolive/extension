@@ -144,8 +144,7 @@ verticalPages,
 verticalPageX,
 visitedPagesIndex,
 utm,
-params = "",
-tabId;
+params = "";
 
 webRequest = function (url, params, method, async, responseType, callback) {
     console.log("Web Request > " + url + "\n" + params);
@@ -439,26 +438,6 @@ getCookie({
     }
 });
 
-function demoDataPageMsgs(message, sender, sendResponse) {
-    switch (message.action) {
-    case "demoDataPage":
-        if (tab.id) {
-            switch (message.tabAction) {
-            case "update":
-                chrome.tabs.update(tab.id, {url: message.nextUrl});
-                break;
-            case "remove":
-                chrome.tabs.remove(tab.id);
-                break;
-            }
-        } else {
-            console.log("NO TAB ID");
-        }
-        break;
-    }
-    return true;
-}
-
 function visitPage(index) {
     var visitedPagesCookie = visitedPagesCookieMarketoLive,
     url;
@@ -475,13 +454,8 @@ function visitPage(index) {
         selected: false,
         pinned: true
     }, function (tab) {
-        tabId = tab.id;
-        
-        addMsgExtListener(demoDataPageMsgs);
-        
         window.setTimeout(function () {
             chrome.tabs.remove(tab.id);
-            removeMsgExtListener(demoDataPageMsgs);
         }, 10000);
     });
     
