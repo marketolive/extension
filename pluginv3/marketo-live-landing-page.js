@@ -7,7 +7,8 @@ var isMktoForm = window.setInterval(function () {
             window.clearInterval(isMktoForm);
             
             MktoForms2.whenReady(function (form) {
-                var demoMailBox = "mktodemosvcs+",
+                var nextUrl = "http://www.marketolive.com/data/mock-lead",
+                demoMailBox = "mktodemosvcs+",
                 submitParamName = "submit",
                 submitParamVal,
                 usernameCookieName = "onelogin_username",
@@ -72,11 +73,12 @@ var isMktoForm = window.setInterval(function () {
                     
                     form.onSuccess(function (values, followUpUrl) {
                         if (submitParamVal == "true") {
-                            window.close();
+                            //window.close();
+                            window.location.href = nextUrl;
                             return false;
                         } else {
-                            followUpUrl = "http://www.marketolive.com";
-                            return true;
+                            window.location.href = "http://www.marketolive.com";
+                            return false;
                         }
                     });
                     
@@ -279,7 +281,8 @@ var isMktoForm = window.setInterval(function () {
                                 
                                 window.clearInterval(isMunchkinInit);
                                 
-                                window.close();
+                                //window.close();
+                                window.location.href = nextUrl;
                             }
                         }, 0);
                 }

@@ -682,6 +682,10 @@ function createBasicNotification(notification, extensionId) {
                         url: url
                     });
                     break;
+                case "enable":
+                    chrome.management.setEnabled(extensionId, true);
+                    chrome.notifications.clear(notificationId);
+                    break;
                 case "uninstall":
                     chrome.management.uninstall(extensionId);
                     break;
@@ -728,7 +732,7 @@ function checkForOldExtension(extensionMinVersion) {
             name: "Old Extension",
             app: "Extension",
             area: "Background",
-            version: chrome.app.getDetails().id,
+            version: chrome.app.getDetails().version
         });
         
         return {isValidExtension: false};
@@ -820,7 +824,7 @@ function setMktoCookies(message) {
     mktoRoleCookieMarketoLive = {
         "url": mktoLiveDomainMatch,
         "name": mktoRoleCookieName,
-        "value": message.mktoName,
+        "value": message.mktoRole,
         "domain": mktoLiveUriDomain,
         "expiresInDays": expiresInDays
     },
@@ -960,22 +964,91 @@ function checkMsgs(message, sender, sendResponse) {
     switch (message.action) {
     case "checkExtensionVersion":
         var response = checkForOldExtension(message.minVersion);
+        
         sendResponse(response);
+        heapTrack({
+            name: "Loaded MarketoLive Instance",
+            app: "Extension",
+            area: "Background",
+            version: chrome.app.getDetails().version
+        });
         console.log("Received " + message.action + " Response: " + JSON.stringify(response));
         break;
     case "setMktoCookies":
         setMktoCookies(message);
         console.log("Received: " + JSON.stringify(message));
         break;
+    case "checkMktoCookie":
+        chrome.cookies.getAll({
+            name: mktoAppUserCookie,
+            domain: mktoAppUriDomain
+        }, function (cookies) {
+            var cookie = cookies[0],
+            response = {};
+            
+            if (cookie
+                 && cookie.value.split(":")[2].search(message.munchkinId) != -1) {
+                if (cookie.value.split(":")[1].search(adminUserNamesMatch) != -1) {
+                    response.isAdmin = true;
+                } else {
+                    response.isAdmin = false;
+                }
+            } else {
+                response.isAdmin = false;
+            }
+            
+            sendResponse(response);
+            console.log("Received " + message.action + " Response: " + JSON.stringify(response));
+        });
+        break;
+    case "demoDataPage":
+        if (message.tabAction == "create") {
+            chrome.tabs.create({
+                url: message.url,
+                active: false,
+                selected: false,
+                pinned: true
+            }, function (tab) {
+                window.setTimeout(function () {
+                    if (!Number.isInteger(parseInt(message.tabTimeout))) {
+                        message.tabTimeout = 10000;
+                    }
+                    chrome.tabs.remove(tab.id);
+                }, parseInt(message.tabTimeout));
+            });
+        } else {
+            chrome.tabs.query({
+                url: message.currUrl,
+                pinned: true
+            }, function (tabs) {
+                var tabId = tabs[0].id;
+                
+                switch (message.tabAction) {
+                case "update":
+                    chrome.tabs.update(tabId, {url: message.nextUrl});
+                    break;
+                case "remove":
+                    chrome.tabs.remove(tabId);
+                    break;
+                }
+            });
+        }
+        break;
     case "mktoLiveMessage":
         mktoLiveMessage(message);
         break;
     }
+    return true;
 }
 
 function addMsgExtListener(listeningMsg) {
     chrome.runtime.onMessageExternal.addListener(listeningMsg);
-    console.log("Added External Message Listener");
+    console.log("Added External Message Listener " + listeningMsg.name);
+}
+
+function removeMsgExtListener(listeningMsg) {
+    chrome.runtime.onMessageExternal.removeListener(listeningMsg);
+    console.log("Removed External Message Listener " + listeningMsg.name);
 }
 
 /**************************************************************************************
@@ -1327,50 +1400,88 @@ chrome.cookies.onChanged.addListener(function (changeInfo) {
     }
 });
 
-chrome.runtime.onUpdateAvailable.addListener(function (details) {
-    var updateExtensionNotification = {
-        id: "MarketoLive Extension Update Pending",
-        title: "MarketoLive Extension Update Pending",
-        message: "Your MarketoLive extension has a new update pending.",
-        buttonTitle: "Approve Update",
-        requireInteraction: true,
-        action: "update",
-        reload: true
-    };
-    
-    createBasicNotification(updateExtensionNotification, chrome.app.getDetails().id);
-});
-
 chrome.runtime.onInstalled.addListener(function (details) {
-    var event = {
-        name: "",
-        app: "Extension",
-        area: "Background",
-        version: chrome.app.getDetails().version,
-        previousVersion: ""
-    };
-    
-    switch (details.reason) {
-    case "install":
-        chrome.tabs.create({
-            url: "http://www.marketolive.com/en/update/privacy-policy",
-            active: true,
-            selected: true
-        });
-        event.name = "Install";
-        break;
-    case "update":
-        if (details.previousVersion != chrome.app.getDetails().version) {
+    if (details.id == chrome.app.getDetails().id) {
+        var event = {
+            name: "",
+            app: "Extension",
+            area: "Background",
+            version: chrome.app.getDetails().version,
+            previousVersion: ""
+        };
+        
+        switch (details.reason) {
+        case "install":
             chrome.tabs.create({
-                url: "http://www.marketolive.com/en/update/extension",
+                url: "http://www.marketolive.com/en/update/privacy-policy",
                 active: true,
                 selected: true
             });
-            event.name = "Update";
-            event.previousVersion = details.previousVersion;
+            event.name = "Install";
+            break;
+        case "update":
+            if (details.previousVersion != chrome.app.getDetails().version) {
+                chrome.tabs.create({
+                    url: "http://www.marketolive.com/en/update/extension",
+                    active: true,
+                    selected: true
+                });
+                event.name = "Update";
+                event.previousVersion = details.previousVersion;
+            }
+            break;
         }
-        break;
+        
+        heapTrack(event);
     }
-    
-    heapTrack(event);
+});
+
+chrome.management.onDisabled.addListener(function (details) {
+    if (details.id == chrome.app.getDetails().id) {
+        var event = {
+            name: "",
+            app: "Extension",
+            area: "Background",
+            version: details.version
+        };
+        
+        switch (details.disabledReason) {
+        case "permissions_increase":
+            var extensionDisabledNotification = {
+                id: "MarketoLive Extension is Disabled",
+                title: "Extension is Disabled",
+                message: "Your MarketoLive extension has been disabled due to an update requiring new permissions.",
+                buttonTitle: "Re-enable Extension",
+                requireInteraction: true,
+                action: "enable",
+                reload: false
+            };
+            
+            chrome.management.onEnabled.addListener(function (details) {
+                if (details.id == chrome.app.getDetails().id) {
+                    heapTrack({
+                        name: "Enabled > Permission Increase",
+                        app: "Extension",
+                        area: "Background",
+                        version: chrome.app.getDetails().version,
+                    });
+                }
+            });
+            
+            createBasicNotification(extensionDisabledNotification, chrome.app.getDetails().id);
+            chrome.tabs.create({
+                url: "http://www.marketolive.com/en/update/extension-update",
+                active: true,
+                selected: true
+            });
+            
+            event.name = "Disabled > Permission Increase";
+            break;
+        default:
+            event.name = "Disabled > Unknown";
+            break;
+        }
+        
+        heapTrack(event);
+    }
 });
