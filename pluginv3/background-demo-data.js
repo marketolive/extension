@@ -144,7 +144,8 @@ verticalPages,
 verticalPageX,
 visitedPagesIndex,
 utm,
-params = "";
+params = "",
+tabId;
 
 webRequest = function (url, params, method, async, responseType, callback) {
     console.log("Web Request > " + url + "\n" + params);
@@ -440,8 +441,7 @@ getCookie({
 
 function visitPage(index) {
     var visitedPagesCookie = visitedPagesCookieMarketoLive,
-    url,
-    tabId;
+    url;
     
     if (params) {
         url = verticalPageX.url + "?" + params;
@@ -456,11 +456,11 @@ function visitPage(index) {
         pinned: true
     }, function (tab) {
         tabId = tab.id;
+        
+        window.setTimeout(function () {
+            chrome.tabs.remove(tab.id);
+        }, 10000);
     });
-    
-    window.setTimeout(function () {
-        chrome.tabs.remove(tabId);
-    }, 10000);
     
     visitedPagesCookie.value = index.toString();
     setCookie(visitedPagesCookie);

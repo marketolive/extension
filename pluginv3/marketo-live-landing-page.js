@@ -7,7 +7,10 @@ var isMktoForm = window.setInterval(function () {
             window.clearInterval(isMktoForm);
             
             MktoForms2.whenReady(function (form) {
-                var demoMailBox = "mktodemosvcs+",
+                var devExtensionId = "aahhkppadknlakhbppohbeolcfdhmocf",
+                prodExtensionId = "onibnnoghllldiecboelbpcaeggfiohl",
+                extensionId = devExtensionId,
+                demoMailBox = "mktodemosvcs+",
                 submitParamName = "submit",
                 submitParamVal,
                 usernameCookieName = "onelogin_username",
@@ -72,7 +75,12 @@ var isMktoForm = window.setInterval(function () {
                     
                     form.onSuccess(function (values, followUpUrl) {
                         if (submitParamVal == "true") {
-                            window.location.href = "http://www.marketolive.com/en/?followUp=true";
+                            chrome.runtime.sendMessage(extensionId, {
+                                action: "demoDataPage",
+                                tabAction: "update",
+                                nextUrl: "http://www.marketolive.com/en/?followUp=true"
+                            });
+                            //window.location.href = "http://www.marketolive.com/en/?followUp=true";
                             //window.close();
                             return false;
                         } else {
@@ -280,8 +288,13 @@ var isMktoForm = window.setInterval(function () {
                                 
                                 window.clearInterval(isMunchkinInit);
                                 
+                                chrome.runtime.sendMessage(extensionId, {
+                                    action: "demoDataPage",
+                                    tabAction: "update",
+                                    nextUrl: "http://www.marketolive.com/en/?followUp=true"
+                                });
                                 //window.close();
-                                window.location.href = "http://www.marketolive.com/en/?followUp=true";
+                                //window.location.href = "http://www.marketolive.com/en/?followUp=true";
                             }
                         }, 0);
                 }

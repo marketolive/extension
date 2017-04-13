@@ -1001,6 +1001,17 @@ function checkMsgs(message, sender, sendResponse) {
             console.log("Received " + message.action + " Response: " + JSON.stringify(response));
         });
         break;
+    case "demoDataPage":
+        if (tabId) {
+            switch (message.tabAction) {
+            case "update":
+                chrome.tabs.update(tabId, {url: message.nextUrl});
+                break;
+            case "remove":
+                chrome.tabs.remove(tabId);
+                break;
+            }
+        }
     case "mktoLiveMessage":
         mktoLiveMessage(message);
         break;
