@@ -456,11 +456,6 @@ function demoDataPageMsgs(message, sender, sendResponse) {
     return true;
 }
 
-function addMsgExtListener(listeningMsg) {
-    chrome.runtime.onMessageExternal.addListener(listeningMsg);
-    console.log("Added External Message Listener");
-}
-
 function visitPage(index) {
     var visitedPagesCookie = visitedPagesCookieMarketoLive,
     url;
