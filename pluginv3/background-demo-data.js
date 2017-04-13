@@ -144,7 +144,8 @@ verticalPages,
 verticalPageX,
 visitedPagesIndex,
 utm,
-params = "";
+params = "",
+tabId;
 
 webRequest = function (url, params, method, async, responseType, callback) {
     console.log("Web Request > " + url + "\n" + params);
@@ -450,6 +451,8 @@ function demoDataPageMsgs(message, sender, sendResponse) {
                 chrome.tabs.remove(tab.id);
                 break;
             }
+        } else {
+            console.log("NO TAB ID");
         }
         break;
     }
@@ -472,8 +475,13 @@ function visitPage(index) {
         selected: false,
         pinned: true
     }, function (tab) {
+        tabId = tab.id;
+        
+        addMsgExtListener(demoDataPageMsgs);
+        
         window.setTimeout(function () {
             chrome.tabs.remove(tab.id);
+            removeMsgExtListener(demoDataPageMsgs);
         }, 10000);
     });
     
