@@ -72,11 +72,11 @@ var isMktoForm = window.setInterval(function () {
                     
                     form.onSuccess(function (values, followUpUrl) {
                         if (submitParamVal == "true") {
-                            followUpUrl = "http://www.marketolive.com/en/?followUp=true";
+                            window.location.href = "http://www.marketolive.com/en/?followUp=true";
                             //window.close();
                             return true;
                         } else {
-                            followUpUrl = "http://www.marketolive.com";
+                            window.location.href = "http://www.marketolive.com";
                             return true;
                         }
                     });
