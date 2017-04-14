@@ -3,7 +3,7 @@ $('.body-container').click(function () {
     $('.side-bar').css('background-color', 'transparent');
     $('.side-bar-inner-container').css('display', 'none');
 });
-var devExtensionId = "aahhkppadknlakhbppohbeolcfdhmocf",
+var devExtensionId = "dokkjhbgengdlccldgjnbilajdbjlnhm",
 prodExtensionId = "onibnnoghllldiecboelbpcaeggfiohl",
 extensionId = devExtensionId,
 reload = location.search.split('reloaded=')[1],

@@ -22,7 +22,7 @@ window.mkto_live_extension_state = "MarketoLive extension is alive!";
 
 var currentUrl = window.location.href,
 extensionMinVersion = "5.0.0",
-devExtensionId = "aahhkppadknlakhbppohbeolcfdhmocf",
+devExtensionId = "dokkjhbgengdlccldgjnbilajdbjlnhm",
 prodExtensionId = "onibnnoghllldiecboelbpcaeggfiohl",
 extensionId = devExtensionId,
 mktoAppDomain = "^https:\/\/app-[a-z0-9]+\.marketo\.com",
