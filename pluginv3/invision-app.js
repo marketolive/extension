@@ -13,7 +13,8 @@ console.log("InVision App > Running");
  *
  **************************************************************************************/
 
-var INVISION = INVISION || {};
+var currentUrl = window.location.href,
+INVISION = INVISION || {};
 
 /**************************************************************************************
  *  
@@ -29,19 +30,43 @@ INVISION.login = function (feature) {
     console.log("InVision App > Login: App");
     
     switch (feature) {
-        // MME In App Messaging & Dashboard
-        case "JR790G0CX":
-            document.getElementById("password").value = "MME";
-            document.getElementsByClassName("primary button")[0].click();
-            break;
-        // MME In App Messaging & Dashboard (Old)
-        case "MW5CE0YHS":
-            document.getElementById("password").value = "MME";
-            document.getElementsByClassName("primary button")[0].click();
-            break;
-        default:
-            break;
+        // ABM & New Capabilities > Account Insight
+    case "P9BBA0KDS":
+        document.getElementById("password").value = "@mktgnation2017";
+        break;
+        // ABM > Comprehensive Account View
+    case "TVBBAV9WU":
+        document.getElementById("password").value = "@mktgnation2017";
+        break;
+        // Analytics & New Capabilities > CMO Insights & Marketing Insights
+    case "PYBBDHHDU":
+        document.getElementById("password").value = "@mktgnation2017";
+        break;
+        // Analytics & New Capabilities > Web Insights
+    case "M4BAV7W6F":
+        document.getElementById("password").value = "@mktgnation2017";
+        break;
+        // Engagement Platform & New Capabilities > Systems Monitoring
+    case "":
+        document.getElementById("password").value = "@mktgnation2017";
+        break;
+        // Engagement Platform & New Capabilities > Mktg Performance Benchmark
+    case "KFBBABWHJ":
+        document.getElementById("password").value = "@mktgnation2017";
+        break;
+        // New Capabilities > New User Experience
+    case "":
+        document.getElementById("password").value = "@mktgnation2017";
+        break;
+        // New Capabilities > Adaptive Engagement
+    case "P3BBAZ3CS":
+        document.getElementById("password").value = "@mktgnation2017";
+        break;
+    default:
+        document.getElementById("password").value = "@mktgnation2017";
+        break;
     }
+    document.getElementsByClassName("primary button")[0].click();
 }
 
 /**************************************************************************************
@@ -49,8 +74,6 @@ INVISION.login = function (feature) {
  *  Main
  *
  **************************************************************************************/
- 
-var currentUrl = window.location.href;
 
 if (document.getElementById("password")
     && document.getElementsByClassName("primary button")[0]
