@@ -5672,7 +5672,7 @@ APP.getTags = function () {
 };
 
 APP.applyMassClone = function (forceReload) {
-    console.log("Marketo Demo App > Applying: Mass Clone Menu Item");
+    console.log("Marketo App > Applying: Mass Clone Menu Item");
     
     massClone = function () {
         if (this.triggeredFrom == "tree"
@@ -6178,7 +6178,7 @@ APP.applyMassClone = function (forceReload) {
          && Ext.menu.Menu
          && Ext.menu.Menu.prototype
          && Ext.menu.Menu.prototype.showAt) {
-        console.log("Marketo Demo App > Executing: Applying Mass Clone Menu Item");
+        console.log("Marketo App > Executing: Applying Mass Clone Menu Item");
         if (!origMenuShowAtFunc) {
             origMenuShowAtFunc = Ext.menu.Menu.prototype.showAt;
         }
@@ -6188,7 +6188,7 @@ APP.applyMassClone = function (forceReload) {
             origMenuShowAtFunc.apply(this, arguments);
         };
     } else {
-        console.log("Marketo Demo App > Skipping: Applying Mass Clone Menu Item");
+        console.log("Marketo App > Skipping: Applying Mass Clone Menu Item");
     }
 };
 
@@ -7389,7 +7389,7 @@ APP.saveLandingPageEdits = function (mode, asset) {
                         if (count > 1000
                              || (isSubtitleUpdated
                                  && isTitleUpdated)) {
-                            console.log("Marketo Demo App > Updated: Landing Page Title & Subtitle: " + count);
+                            console.log("Marketo App > Updated: Landing Page Title & Subtitle: " + count);
                             window.clearInterval(isLandingPageEditorComponentStore);
                         }
                         
@@ -7454,7 +7454,7 @@ APP.saveLandingPageEdits = function (mode, asset) {
             }
         };
         
-        console.log("Marketo Demo App > Editing: Landing Page Variables");
+        console.log("Marketo App > Editing: Landing Page Variables");
         
         if (mode == "edit") {
             if (asset) {
@@ -7470,7 +7470,7 @@ APP.saveLandingPageEdits = function (mode, asset) {
                              && Mkt3.app.controllers.get("Mkt3.controller.editor.LandingPage").getLandingPage().getResponsiveVarValues()
                              && Mkt3.app.controllers.get("Mkt3.controller.editor.LandingPage").getLandingPage().setResponsiveVarValue
                              && Mkt3.app.controllers.get("Mkt3.controller.editor.LandingPage").getLandingPage()) {
-                            console.log("Marketo Demo App > Editing: Landing Page Editor Variables");
+                            console.log("Marketo App > Editing: Landing Page Editor Variables");
                             
                             window.clearInterval(isLandingPageEditorVariables);
                             
@@ -7479,7 +7479,7 @@ APP.saveLandingPageEdits = function (mode, asset) {
                     }, 0);
             }
         } else if (mode == "preview") {
-            console.log("Marketo Demo App > Editing: Landing Page Previewer Variables");
+            console.log("Marketo App > Editing: Landing Page Previewer Variables");
         }
     }
 };
@@ -7573,7 +7573,7 @@ APP.saveEmailEdits = function (mode, asset) {
                              && currElement.className.search("mktoImg") != -1
                              && currElement.getElementsByTagName("img")[0]
                              && currElement.getElementsByTagName("img")[0].getAttribute("src") != logo) {
-                            console.log("Marketo Demo App > Replacing: Logo > " + logo);
+                            console.log("Marketo App > Replacing: Logo > " + logo);
                             
                             isLogoReplaced = true;
                             currElement.getElementsByTagName("img")[0].setAttribute("src", logo);
@@ -7588,7 +7588,7 @@ APP.saveEmailEdits = function (mode, asset) {
                              && currElement.className.search("mktoText") != -1
                              && currElement.innerHTML != title
                              && currElement.innerHTML.search(titleMatch) == -1) {
-                            console.log("Marketo Demo App > Replacing: Title > " + title);
+                            console.log("Marketo App > Replacing: Title > " + title);
                             
                             isTitleReplaced = true;
                             currElement.innerHTML = title;
@@ -7604,7 +7604,7 @@ APP.saveEmailEdits = function (mode, asset) {
                              && currElement.className.search("mktoText") == -1
                              && currElement.innerHTML != subtitle
                              && currElement.innerHTML.search(subtitle) != -1) {
-                            console.log("Marketo Demo App > Replacing: Subtitle > " + subtitle);
+                            console.log("Marketo App > Replacing: Subtitle > " + subtitle);
                             
                             isSubtitleReplaced = true;
                             currElement.innerHTML = subtitle;
@@ -7681,11 +7681,11 @@ APP.saveEmailEdits = function (mode, asset) {
             }
         };
         
-        console.log("Marketo Demo App > Editing: Email Variables");
+        console.log("Marketo App > Editing: Email Variables");
         
         if (mode == "edit") {
             var isWebRequestSession = window.setInterval(function () {
-                    console.log("Marketo Demo App > Waiting: Web Request Session Data");
+                    console.log("Marketo App > Waiting: Web Request Session Data");
                     if (typeof(Mkt3) !== "undefined"
                          && Mkt3
                          && Mkt3.DL
@@ -7697,7 +7697,7 @@ APP.saveEmailEdits = function (mode, asset) {
                          && typeof(Ext) !== "undefined"
                          && Ext
                          && Ext.id(null, ':')) {
-                        console.log("Marketo Demo App > Editing: Email HTML");
+                        console.log("Marketo App > Editing: Email HTML");
                         
                         window.clearInterval(isWebRequestSession);
                         
@@ -7709,7 +7709,7 @@ APP.saveEmailEdits = function (mode, asset) {
                 editAssetVars(asset);
             } else {
                 var isEmailEditorVariables = window.setInterval(function () {
-                        console.log("Marketo Demo App > Waiting: Email Editor Variables");
+                        console.log("Marketo App > Waiting: Email Editor Variables");
                         if (!waitForReloadMsg.isVisible()
                              && typeof(Mkt3) !== "undefined"
                              && Mkt3
@@ -7720,7 +7720,7 @@ APP.saveEmailEdits = function (mode, asset) {
                              && Mkt3.app.controllers.get("Mkt3.controller.editor.email2.EmailEditor").getEmail().getVariableValues()
                              && Object.keys(Mkt3.app.controllers.get("Mkt3.controller.editor.email2.EmailEditor").getEmail().getVariableValues()).length != 0
                              && Mkt3.app.controllers.get("Mkt3.controller.editor.email2.EmailEditor").getEmail().setVariableValue) {
-                            console.log("Marketo Demo App > Editing: Email Editor Variables");
+                            console.log("Marketo App > Editing: Email Editor Variables");
                             
                             window.clearInterval(isEmailEditorVariables);
                             
@@ -7729,7 +7729,7 @@ APP.saveEmailEdits = function (mode, asset) {
                     }, 0);
             }
         } else if (mode == "preview") {
-            console.log("Marketo Demo App > Editing: Email Previewer Variables");
+            console.log("Marketo App > Editing: Email Previewer Variables");
         }
     }
 };
