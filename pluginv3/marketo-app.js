@@ -10,6 +10,10 @@
  *  @namespace
  *
  **************************************************************************************/
+var devExtensionId = "dokkjhbgengdlccldgjnbilajdbjlnhm",
+prodExtensionId = "onibnnoghllldiecboelbpcaeggfiohl",
+extensionId = devExtensionId;
+{}
 console.log("Marketo App > Running");
 // Variable that the validate demo extension function tests
 window.mkto_live_extension_state = "MarketoLive extension is alive!";
@@ -22,9 +26,6 @@ window.mkto_live_extension_state = "MarketoLive extension is alive!";
 
 var currentUrl = window.location.href,
 extensionMinVersion = "5.0.0",
-devExtensionId = "dokkjhbgengdlccldgjnbilajdbjlnhm",
-prodExtensionId = "onibnnoghllldiecboelbpcaeggfiohl",
-extensionId = devExtensionId,
 mktoAppDomain = "^https:\/\/app-[a-z0-9]+\.marketo\.com",
 mktoDesignerDomain = "^https:\/\/[a-z0-9]+-[a-z0-9]+\.marketodesigner\.com",
 mktoDesignerHost = "na-sjp.marketodesigner.com",
