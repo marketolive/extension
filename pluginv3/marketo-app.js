@@ -458,7 +458,7 @@ APP.trackTreeNodeEdits = function () {
         Mkt.main.ExplorerPanel.prototype.addNode = function (parentId, nodeConfig, selected) {
             if (nodeConfig
                  && ((nodeConfig.z
-                         && nodeConfig.z.toString().search(mktoGoldenWorkspacesMatch)) != -1
+                         && nodeConfig.z.toString().search(mktoGoldenWorkspacesMatch) != -1)
                      || (nodeConfig.accessZoneId
                          && nodeConfig.accessZoneId.toString().search(mktoGoldenWorkspacesMatch) != -1))) {
                 var changedNodeInfo = "\n>*Added Node:* " + nodeConfig.compType + " | " + nodeConfig.text + " | " + "https://" + window.location.host + "/#" + APP.getAssetCompCode(nodeConfig.compType) + nodeConfig.compId,
