@@ -157,6 +157,9 @@ mktoUnknownWorkspaceId = -1,
 mktoGoldenWorkspacesMatch = "^" + mktoDefaultWorkspaceId + "$|^" + mktoJapaneseWorkspaceId + "$|^" + mktoFinservWorkspaceId + "$|^" + mktoHealthcareWorkspaceId + "$|^" + mktoHigherEdWorkspaceId + "$|^" + mktoManufacturingWorkspaceId + "$|^" + mktoTechnologyWorkspaceId + "$|^" + mktoTravelLesiureWorkspaceId + "$|^" + mktoUnknownWorkspaceId + "$",
 
 origMenuShowAtFunc,
+origExplorerPanelAddNode,
+origExplorerPanelRemoveNodes,
+origExplorerPanelUpdateNodeText,
 
 APP = APP || {};
 
@@ -222,7 +225,10 @@ APP.webRequest = function (url, params, method, async, responseType, callback) {
     }
     xmlHttp.open(method, url, async); // true for asynchronous
     xmlHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded; charset=UTF-8");
-    xmlHttp.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+    if (url.search(/^\//) != -1
+         || url.replace(/^[a-z]+:\/\/([^\/]+)\/?.*$/, "$1") == window.location.host) {
+        xmlHttp.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+    }
     xmlHttp.send(params);
     return result;
 };
@@ -278,7 +284,7 @@ APP.validateDemoExtensionCheck = function (isValidExtension) {
 APP.getWorkspaceName = function (workspaceId) {
     var workspaceName;
     
-    switch (workspaceId) {
+    switch (parseInt(workspaceId)) {
     case mktoDefaultWorkspaceId:
         workspaceName = "Default";
         break;
@@ -321,6 +327,282 @@ APP.getWorkspaceName = function (workspaceId) {
     }
     
     return workspaceName;
+};
+
+/**************************************************************************************
+ *
+ *  This function returns the 2-3 letter asset code for the asset type provided.
+ *
+ *  @Author Brian Fisher
+ *
+ *  @function
+ *
+ *  @param {String} compType - asset type
+ *
+ **************************************************************************************/
+
+APP.getAssetCompCode = function (compType) {
+    var compCode;
+    
+    switch (compType) {
+    case "Marketing Folder":
+        compCode = "MF";
+        break;
+    case "Marketing Program":
+        compCode = "PG";
+        break;
+    case "Marketing Event":
+        compCode = "ME";
+        break;
+    case "Nurture Program":
+        compCode = "NP";
+        break;
+    case "Email Batch Program":
+        compCode = "EBP";
+        break;
+    case "List":
+        compCode = "ST";
+        break;
+    case "Smart List":
+        compCode = "SL";
+        break;
+    case "Smart Campaign":
+        compCode = "SC";
+        break;
+    case "Landing Page Form":
+        compCode = "FO";
+        break;
+    case "Landing Page":
+        compCode = "LP";
+        break;
+    case "Landing Page Test Group":
+        compCode = "LP";
+        break;
+    case "Landing Page Template":
+        compCode = "LT";
+        break;
+    case "Email":
+        compCode = "EM";
+        break;
+    case "Test Group":
+        compCode = "TG";
+        break;
+    case "Email Template":
+        compCode = "ET";
+        break;
+    case "Social App":
+        compCode = "SOA";
+        break;
+    case "Mobile Push Notification":
+        compCode = "MPN";
+        break;
+    case "In-App Message":
+        compCode = "IAM";
+        break;
+    case "SMS Message":
+        compCode = "SMS";
+        break;
+    case "Segmentation":
+        compCode = "SG";
+        break;
+    case "Report":
+        compCode = "AR";
+        break;
+    case "Revenue Cycle Model":
+        compCode = "RCM";
+        break;
+    case "Snippet":
+        compCode = "SN";
+        break;
+    case "Image":
+        compCode = "FI";
+        break;
+    }
+    
+    return compCode;
+};
+
+/**************************************************************************************
+ *
+ *  This function monitors changes to the Tree and tracks whenever a node is either
+ *  added or renamed in a golden workspace and reports this to the user via an
+ *  extension notification and to the Demo Services Team via marketolive-bugs private
+ *  Slack channel.
+ *
+ *  @Author Brian Fisher
+ *
+ *  @function
+ *
+ **************************************************************************************/
+
+APP.trackTreeNodeEdits = function () {
+    console.log("Marketo App > Tracking: Edits to Tree Nodes");
+    var violationMsg = {
+        action: "mktoLiveMessage",
+        id: "Not Permitted",
+        title: "Not Permitted",
+        notify: "",
+        requireInteraction: true
+    };
+    
+    if (typeof(Mkt) !== "undefined"
+         && Mkt
+         && Mkt.main
+         && Mkt.main.ExplorerPanel
+         && Mkt.main.ExplorerPanel.prototype
+         && Mkt.main.ExplorerPanel.prototype.addNode) {
+        if (typeof(origExplorerPanelAddNode) !== "function") {
+            origExplorerPanelAddNode = Mkt.main.ExplorerPanel.prototype.addNode;
+        }
+        
+        Mkt.main.ExplorerPanel.prototype.addNode = function (parentId, nodeConfig, selected) {
+            if (nodeConfig
+                 && ((nodeConfig.z
+                         && nodeConfig.z.toString().search(mktoGoldenWorkspacesMatch)) != -1
+                     || (nodeConfig.accessZoneId
+                         && nodeConfig.accessZoneId.toString().search(mktoGoldenWorkspacesMatch) != -1))) {
+                var changedNodeInfo = "\n>*Added Node:* " + nodeConfig.compType + " | " + nodeConfig.text + " | " + "https://" + window.location.host + "/#" + APP.getAssetCompCode(nodeConfig.compType) + nodeConfig.compId,
+                workspaceId,
+                workspaceName,
+                workspaceInfo,
+                userInfo,
+                parentNodeInfo;
+                
+                if (nodeConfig.z) {
+                    workspaceId = nodeConfig.z;
+                    workspaceName = APP.getWorkspaceName(nodeConfig.z);
+                } else {
+                    workspaceId = nodeConfig.accessZoneId;
+                    workspaceName = APP.getWorkspaceName(nodeConfig.accessZoneId);
+                }
+                workspaceInfo = "\n>*Workspace:* " + workspaceName;
+                
+                if (MktPage
+                     && MktPage.userName
+                     && MktPage.userid) {
+                    userInfo = "\n>*User:* " + MktPage.userName + " (" + MktPage.userid + ") ";
+                }
+                if (this.getNodeById(parentId)
+                     && this.getNodeById(parentId).attributes
+                     && this.getNodeById(parentId).attributes.text
+                     && this.getNodeById(parentId).attributes.compType
+                     && this.getNodeById(parentId).attributes.compId) {
+                    parentNodeInfo = "\n>*Parent Node:* " + this.getNodeById(parentId).attributes.compType + " | " + this.getNodeById(parentId).attributes.text + " | " + "https://" + window.location.host + "/#" + APP.getAssetCompCode(this.getNodeById(parentId).attributes.compType) + this.getNodeById(parentId).attributes.compId;
+                }
+                
+                APP.webRequest('https://hooks.slack.com/services/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', '{"text": "*Unauthorized Changes*' + userInfo + workspaceInfo + parentNodeInfo + changedNodeInfo + '"}', 'POST', true, '');
+                
+                APP.heapTrack("track", {
+                    name: "Unauthorized Node Added",
+                    assetName: nodeConfig.text,
+                    assetId: nodeConfig.compId,
+                    assetType: nodeConfig.compType,
+                    workspaceId: workspaceId,
+                    workspaceName: workspaceName
+                });
+                
+                violationMsg.notify = "You are not permitted to make changes to " + workspaceName + "!\n\nThe Demo Services Team has been notified of this violation.",
+                chrome.runtime.sendMessage(extensionId, violationMsg);
+            }
+            origExplorerPanelAddNode.apply(this, arguments);
+        };
+    } else {
+        console.log("Marketo App > Skipping: Track Adding Tree Nodes");
+    }
+    
+    if (typeof(Mkt) !== "undefined"
+         && Mkt
+         && Mkt.main
+         && Mkt.main.ExplorerPanel
+         && Mkt.main.ExplorerPanel.prototype
+         && Mkt.main.ExplorerPanel.prototype.removeNodes) {
+        if (typeof(origExplorerPanelRemoveNodes) !== "function") {
+            origExplorerPanelRemoveNodes = Mkt.main.ExplorerPanel.prototype.removeNodes;
+        }
+        
+        Mkt.main.ExplorerPanel.prototype.removeNodes = function (nodeIds) {
+            if (this.getNodeById(nodeIds[0])
+                 && this.getNodeById(nodeIds[0]).attributes
+                 && this.getNodeById(nodeIds[0]).attributes.accessZoneId
+                 && this.getNodeById(nodeIds[0]).attributes.accessZoneId.toString().search(mktoGoldenWorkspacesMatch) != -1) {
+                var nodeConfig = this.getNodeById(nodeIds[0]).attributes,
+                workspaceName = APP.getWorkspaceName(nodeConfig.accessZoneId),
+                workspaceInfo = "\n>*Workspace:* " + workspaceName,
+                changedNodeInfo = "\n>*Removed Node:* " + nodeConfig.compType + " | " + nodeConfig.text + " | " + "https://" + window.location.host + "/#" + APP.getAssetCompCode(nodeConfig.compType) + nodeConfig.compId,
+                userInfo;
+                
+                if (MktPage
+                     && MktPage.userName
+                     && MktPage.userid) {
+                    userInfo = "\n>*User:* " + MktPage.userName + " (" + MktPage.userid + ") ";
+                }
+                
+                APP.webRequest('https://hooks.slack.com/services/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', '{"text": "*Unauthorized Changes*' + userInfo + workspaceInfo + changedNodeInfo + '"}', 'POST', true, '');
+                
+                APP.heapTrack("track", {
+                    name: "Unauthorized Node Removed",
+                    assetName: nodeConfig.text,
+                    assetId: nodeConfig.compId,
+                    assetType: nodeConfig.compType,
+                    workspaceId: nodeConfig.accessZoneId,
+                    workspaceName: workspaceName
+                });
+                
+                violationMsg.notify = "You are not permitted to make changes to " + workspaceName + "!\n\nThe Demo Services Team has been notified of this violation.",
+                chrome.runtime.sendMessage(extensionId, violationMsg);
+            }
+            origExplorerPanelRemoveNodes.apply(this, arguments);
+        };
+    } else {
+        console.log("Marketo App > Skipping: Track Removing Tree Nodes");
+    }
+    
+    if (typeof(Mkt) !== "undefined"
+         && Mkt
+         && Mkt.main
+         && Mkt.main.ExplorerPanel
+         && Mkt.main.ExplorerPanel.prototype
+         && Mkt.main.ExplorerPanel.prototype.updateNodeText) {
+        if (typeof(origExplorerPanelUpdateNodeText) !== "function") {
+            origExplorerPanelUpdateNodeText = Mkt.main.ExplorerPanel.prototype.updateNodeText;
+        }
+        
+        Mkt.main.ExplorerPanel.prototype.updateNodeText = function (nodeId, text) {
+            if (this.getNodeById(nodeId)
+                 && this.getNodeById(nodeId).attributes
+                 && this.getNodeById(nodeId).attributes.accessZoneId
+                 && this.getNodeById(nodeId).attributes.accessZoneId.toString().search(mktoGoldenWorkspacesMatch) != -1) {
+                var nodeConfig = this.getNodeById(nodeId).attributes,
+                workspaceName = APP.getWorkspaceName(nodeConfig.accessZoneId),
+                workspaceInfo = "\n>*Workspace:* " + workspaceName,
+                changedNodeInfo = "\n>*Renamed Node:* " + nodeConfig.compType + " | From '" + nodeConfig.text + "' to '" + text + "' | " + "https://" + window.location.host + "/#" + APP.getAssetCompCode(nodeConfig.compType) + nodeConfig.compId,
+                userInfo;
+                
+                if (MktPage
+                     && MktPage.userName
+                     && MktPage.userid) {
+                    userInfo = "\n>*User:* " + MktPage.userName + " (" + MktPage.userid + ") ";
+                }
+                
+                APP.webRequest('https://hooks.slack.com/services/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', '{"text": "*Unauthorized Changes*' + userInfo + workspaceInfo + changedNodeInfo + '"}', 'POST', true, '');
+                
+                APP.heapTrack("track", {
+                    name: "Unauthorized Node Renamed",
+                    assetName: nodeConfig.text,
+                    assetId: nodeConfig.compId,
+                    assetType: nodeConfig.compType,
+                    workspaceId: nodeConfig.accessZoneId,
+                    workspaceName: workspaceName
+                });
+                
+                violationMsg.notify = "You are not permitted to make changes to " + workspaceName + "!\n\nThe Demo Services Team has been notified of this violation.",
+                chrome.runtime.sendMessage(extensionId, violationMsg);
+            }
+            origExplorerPanelUpdateNodeText.apply(this, arguments);
+        };
+    } else {
+        console.log("Marketo App > Skipping: Track Renaming Tree Nodes");
+    }
 };
 
 /**************************************************************************************
@@ -652,7 +934,7 @@ APP.overrideSuperballMenuItems = function (restoreEmailInsightsMenuItem) {
                     
                     if (emailInsightsMenuItem) {
                         if (origEmailInsightsMenuItemLink == null) {
-                          origEmailInsightsMenuItemLink = emailInsightsMenuItem.href;
+                            origEmailInsightsMenuItemLink = emailInsightsMenuItem.href;
                         }
                         
                         if (restoreEmailInsightsMenuItem
@@ -8516,7 +8798,8 @@ APP.disableFormSaveButtons = function () {
                  || this.getXType() == "vespaNewDeviceForm" //Admin > Mobile Apps & Devices > Test Devices > New Test Device
                  || this.getXType() == "adminTagsAddCalendarEntryTypeForm" //Admin > Tags > Calendar Entry Types > New Entry Type
                  || this.getXType() == "featureSwitchForm" //Admin > Feature Manager > Edit Feature
-            ) {
+            )
+            {
                 
                 var me = this,
                 menuItems = [
@@ -9278,7 +9561,7 @@ APP.resetGoldenLandingPageProps = function () {
         case mktoDefaultDiyLandingPageResponsiveEditFragment:
             console.log("Marketo App > Executing: Resetting Landing Page Responsive Properties/Variables");
             
-            APP.webRequest('https://' + mktoDesignerHost + '/data/landingPage/update?context=LPE11822&data=%5B%7B%22id%22%3A11822%2C%22responsiveOptions%22%3A%7B%22variables%22%3A%7B%22gradient1%22%3A%22%232A5370%22%2C%22gradient2%22%3A%22%23F2F2F2%22%2C%22showSection2%22%3Atrue%2C%22showSection3%22%3Atrue%2C%22showSection4%22%3Atrue%2C%22showFooter%22%3Atrue%2C%22showSocialButtons%22%3Atrue%2C%22section4ButtonLabel%22%3A%22Need%20More%20Info%3F%22%2C%22section4ButtonLink%22%3A%22%23%22%2C%22section3LeftButtonLabel%22%3A%22Join%20Us%22%2C%22section4BgColor%22%3A%22%23F2F2F2%22%2C%22footerBgColor%22%3A%22%232A5370%22%2C%22section2BgColor%22%3A%22%23F2F2F2%22%2C%22section3BgColor%22%3A%22%232A5370%22%2C%22section3LeftButtonLink%22%3A%22https%3A%2F%2Fwww.marketo.com%22%2C%22section3RightButtonLabel%22%3A%22Sign%20Up%22%7D%7D%7D%5D&xsrfId=' + MktSecurity.getXsrfId(), null, 'POST', true, "", function (result) {
+            APP.webRequest('/data/landingPage/update?context=LPE11822&data=%5B%7B%22id%22%3A11822%2C%22responsiveOptions%22%3A%7B%22variables%22%3A%7B%22gradient1%22%3A%22%232A5370%22%2C%22gradient2%22%3A%22%23F2F2F2%22%2C%22showSection2%22%3Atrue%2C%22showSection3%22%3Atrue%2C%22showSection4%22%3Atrue%2C%22showFooter%22%3Atrue%2C%22showSocialButtons%22%3Atrue%2C%22section4ButtonLabel%22%3A%22Need%20More%20Info%3F%22%2C%22section4ButtonLink%22%3A%22%23%22%2C%22section3LeftButtonLabel%22%3A%22Join%20Us%22%2C%22section4BgColor%22%3A%22%23F2F2F2%22%2C%22footerBgColor%22%3A%22%232A5370%22%2C%22section2BgColor%22%3A%22%23F2F2F2%22%2C%22section3BgColor%22%3A%22%232A5370%22%2C%22section3LeftButtonLink%22%3A%22https%3A%2F%2Fwww.marketo.com%22%2C%22section3RightButtonLabel%22%3A%22Sign%20Up%22%7D%7D%7D%5D&xsrfId=' + MktSecurity.getXsrfId(), null, 'POST', true, "", function (result) {
                 console.log(result);
             });
             break;
@@ -10365,6 +10648,7 @@ var isMktPageApp = window.setInterval(function () {
                     APP.disableAdminSaveButtons();
                     APP.overrideSmartCampaignSaving();
                     APP.trackNodeClick();
+                    APP.trackTreeNodeEdits();
                     //                        APP.overrideSmartCampaignCanvas();
                     APP.overrideUpdatePortletOrder();
                     APP.overrideNewProgramCreate();
@@ -10393,6 +10677,7 @@ var isMktPageApp = window.setInterval(function () {
                     APP.disableAdminSaveButtons();
                     APP.overrideSmartCampaignSaving();
                     APP.trackNodeClick();
+                    APP.trackTreeNodeEdits();
                     APP.overrideUpdatePortletOrder();
                     APP.disableConfirmationMessage();
                     APP.disableRequests();
