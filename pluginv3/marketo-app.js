@@ -502,7 +502,7 @@ APP.trackTreeNodeEdits = function () {
                     workspaceName: workspaceName
                 });
                 
-                violationMsg.notify = "You are not permitted to make changes to " + workspaceName + "!\n\nThe Demo Services Team has been notified of this violation.",
+                violationMsg.notify = "Do not make changes to the " + workspaceName + " Workspace!",
                 chrome.runtime.sendMessage(extensionId, violationMsg);
             }
             origExplorerPanelAddNode.apply(this, arguments);
@@ -549,7 +549,7 @@ APP.trackTreeNodeEdits = function () {
                     workspaceName: workspaceName
                 });
                 
-                violationMsg.notify = "You are not permitted to make changes to " + workspaceName + "!\n\nThe Demo Services Team has been notified of this violation.",
+                violationMsg.notify = "Do not make changes to the " + workspaceName + " Workspace!",
                 chrome.runtime.sendMessage(extensionId, violationMsg);
             }
             origExplorerPanelRemoveNodes.apply(this, arguments);
