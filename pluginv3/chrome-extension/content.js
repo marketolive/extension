@@ -1,6 +1,7 @@
 var URL_PATH = "m3-dev",
 MARKETO_GLOBAL_APP_LOCATION = "https://marketolive.com/" + URL_PATH + "/pluginv3/marketo-global-app.min.js",
 GLOBAL_LANDING_PAGE_SCRIPT_LOCATION = "https://marketolive.com/" + URL_PATH + "/pluginv3/global-landing-page.min.js",
+EMAIL_INSIGHTS_SCRIPT_LOCATION = "https://marketolive.com/" + URL_PATH + "/pluginv3/email-insights.min.js",
 ASSET_NAV_BAR_LOCATION = "https://marketolive.com/" + URL_PATH + "/v3/assets.html",
 currentUrl = window.location.href,
 mktoAppDomain = "^https:\/\/app-[a-z0-9]+\.marketo\.com",
@@ -8,6 +9,7 @@ mktoLoginDomain = "^https:\/\/login\.marketo\.com|^https:\/\/app\.marketo\.com",
 mktoLoginPathName = "/homepage/login",
 mktoDesignerDomain = "^https:\/\/[a-z0-9]+-[a-z0-9]+\.marketodesigner\.com",
 mktoWizardDomain = mktoAppDomain + "/m#",
+mktoEmailInsightsDomain = "^https://sj-ee-api\.marketo\.com/",
 
 mktoLiveDevLandingPageDomain = "^http:\/\/pages-dev\.marketolive\.com",
 mktoLiveProdLandingPageDomain = "^http:\/\/pages\.marketolive\.com",
@@ -1333,5 +1335,9 @@ window.onload = function () {
         console.log("Content > Location: Global Landing Page");
         
         loadScript(GLOBAL_LANDING_PAGE_SCRIPT_LOCATION);
+    } else if (currentUrl.search(mktoEmailInsightsDomain) != -1) {
+        console.log("Content > Location: Email Insights");
+        
+        loadScript(EMAIL_INSIGHTS_SCRIPT_LOCATION);
     }
 };

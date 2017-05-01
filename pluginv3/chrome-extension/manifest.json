@@ -53,7 +53,13 @@
             "https://app-sjdemo1.marketo.com/*",
             "https://app-sjp.marketo.com/*",
             "https://na-sjdemo1.marketodesigner.com/*",
-            "https://na-sjp.marketodesigner.com/*"
+            "https://na-sjp.marketodesigner.com/*",
+            "https://sjrtp3.marketo.com/*",
+            "https://sjrtp1.marketo.com/*",
+            "https://sj-ee-api.marketo.com/*",
+            "https://sjrcademo1.marketo.com/*",
+            "https://sjrca02.marketo.com/*",
+            "https://seo.marketo.com/*"
         ]
     },
     "icons": {

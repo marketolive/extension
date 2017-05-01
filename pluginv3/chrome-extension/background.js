@@ -987,13 +987,19 @@ function checkMsgs(message, sender, sendResponse) {
             response = {};
             
             if (cookie
-                 && cookie.value.split(":")[2].search(message.munchkinId) != -1) {
+                 && cookie.value
+                 && ((message.munchkinId
+                         && cookie.value.split(":")[2].search(message.munchkinId) != -1)
+                     || cookie.value.split(":")[2].search(munchkinIdsMatch) != -1)) {
+                response.isMktoLive = true;
+                
                 if (cookie.value.split(":")[1].search(adminUserNamesMatch) != -1) {
                     response.isAdmin = true;
                 } else {
                     response.isAdmin = false;
                 }
             } else {
+                response.isMktoLive = false;
                 response.isAdmin = false;
             }
             
