@@ -32,8 +32,9 @@ colorPickerMsgRegex = "https:\/\/marketolive\.com\/" + URL_PATH + "\/apps\/color
 mktoAppUserCookie = "ids_sso",
 munchkinIdsMatch = "^(185-NGX-811|026-COU-482|767-TVJ-204)$",
 adminUserNamesMatch = "^mktodemolivemaster@marketo\.com$|^admin(\.[a-z]{0,2})?@(marketolive.com$|mktodemoaccount)|^mktodemoaccount[a-z0-9]*@marketo\.com$|^marketodemo.*@gmail\.com$",
-mktoLiveBlockUrlPatterns = ["*://sjrtp3.marketo.com/app/*", "*://sj-ee-api.marketo.com/api/v1/settings/dimensions/activate/*"],
+mktoLiveBlockUrlPatterns = ["*://sjrtp3.marketo.com/app/*", "*://sj-ee-api.marketo.com/api/v1/settings/dimensions/activate/*", "*://seo.marketo.com/*"],
 mktoLiveRtpDomainsMatch = "sjrtp3\.marketo\.com",
+mktoLiveSeoDomainsMatch = "seo\.marketo\.com",
 oneLoginFirstName,
 oneLoginLastName,
 oneLoginEmail,
@@ -1095,7 +1096,32 @@ function cancelWebRequest(details) {
              || details.url.search("://" + mktoLiveRtpDomainsMatch + "/app/admin/contentSettings\.do") != -1 // Content Settings > Categories & URL Patterns > New/Delete
              || details.url.search("://" + mktoLiveRtpDomainsMatch + "/app/rest/setting/rcmd/params\.json") != -1 // Content Settings > Bar > Recommendation Bar Config > Edit
              || details.url.search("://" + mktoLiveRtpDomainsMatch + "/app/predictive/content/addContent\.json") != -1 // Predictive Content > Content > Add
-             || details.url.search("://" + mktoLiveRtpDomainsMatch + "/app/predictive/content/editContent\.json") != -1) { // Predictive Content > Content > Edit
+             || details.url.search("://" + mktoLiveRtpDomainsMatch + "/app/predictive/content/editContent\.json") != -1
+             || details.url.search("://" + mktoLiveSeoDomainsMatch + "/rest/report/keyword/addWithLists") != -1 // SEO > Keywords > Phrase/List > Add
+             || details.url.search("://" + mktoLiveSeoDomainsMatch + "/keyword/overview:remove") != -1 // SEO > Keywords > Phrase > Delete
+             || details.url.search("://" + mktoLiveSeoDomainsMatch + "/ajax/orgList:add") != -1 // SEO > Keywords, Pages, Inbound Links > Phrase/Page/Issue/Link > Add To List
+             || details.url.search("://" + mktoLiveSeoDomainsMatch + "/ajax/orgList:delete") != -1 // SEO > Keywords, Pages, Inbound Links > Phrase/Page/Issue/Link > Remove From List
+             || details.url.search("://" + mktoLiveSeoDomainsMatch + "/ajax/orgList:deleteList") != -1 // SEO > Keywords, Pages, Inbound Links > List > Delete
+             || details.url.search("://" + mktoLiveSeoDomainsMatch + "/keyword/overview\.keyworduploadform") != -1 // SEO > Keywords > List > Import
+             || details.url.search("://" + mktoLiveSeoDomainsMatch + "/ajax/ComponentSettings:Save") != -1 // SEO > Keywords > Report > Edit
+             || details.url.search("://" + mktoLiveSeoDomainsMatch + "/rest/report/page/addWithLists") != -1 // SEO > Pages > Page > Add
+             || details.url.search("://" + mktoLiveSeoDomainsMatch + "/rest/report/page/delete") != -1 // SEO > Pages > Page > Delete
+             || details.url.search("://" + mktoLiveSeoDomainsMatch + "/page/detail:hideResult") != -1 // SEO > Pages > Issue > Remove
+             || details.url.search("://" + mktoLiveSeoDomainsMatch + "/ajax/StickyNote:Save") != -1 // SEO > Pages > Issue > Sticky Note > Add/Delete
+             || details.url.search("://" + mktoLiveSeoDomainsMatch + "/rest/report/link/addWithLists") != -1 // SEO > Inbound Links > Link > Add
+             || details.url.search("://" + mktoLiveSeoDomainsMatch + "/rest/report/link/addFromSuggestionsWithLists") != -1 // SEO > Inbound Links > Link > Add From Suggestions
+             || details.url.search("://" + mktoLiveSeoDomainsMatch + "/rest/report/link/delete") != -1 // SEO > Inbound Links > Link > Delete
+             || details.url.search("://" + mktoLiveSeoDomainsMatch + "/rest/report/link/uploadfile") != -1 // SEO > Inbound Links > Link > Import
+             || details.url.search("://" + mktoLiveSeoDomainsMatch + "/rest/reportdetail/create") != -1 // SEO > Reports > Report > Create
+             || details.url.search("://" + mktoLiveSeoDomainsMatch + "/rest/reportdetail/save") != -1 // SEO > Reports > Report > Save
+             || details.url.search("://" + mktoLiveSeoDomainsMatch + "/rest/reportdetail/delete") != -1 // SEO > Reports > Report > Delete
+             || details.url.search("://" + mktoLiveSeoDomainsMatch + "/rest/adminsettings/site/add") != -1 // SEO > Admin Settings > Site > Add
+             || details.url.search("://" + mktoLiveSeoDomainsMatch + "/rest/adminsettings/site/[^/]+/delete") != -1 // SEO > Admin Settings > Site > Delete
+             || details.url.search("://" + mktoLiveSeoDomainsMatch + "/rest/adminsettings/site/[^/]+/rename") != -1 // SEO > Admin Settings > Site > Rename
+             || details.url.search("://" + mktoLiveSeoDomainsMatch + "/rest/adminsettings/searchengines/set") != -1 // SEO > Admin Settings > Site > Search Engines > Set
+             || details.url.search("://" + mktoLiveSeoDomainsMatch + "/rest/adminsettings/competitor/add") != -1 // SEO > Admin Settings > Site > Competitors > Add
+             || details.url.search("://" + mktoLiveSeoDomainsMatch + "rest/adminsettings/competitor/[^/]+/delete") != -1 // SEO > Admin Settings > Site > Competitors > Delete
+             ) {
             toCancel = true;
         }
         break;

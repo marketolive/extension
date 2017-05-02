@@ -1,7 +1,8 @@
 /**************************************************************************************
  *
  *  This script contains all of the functionality needed for the tracking and
- *  manipulation of the Email Insights App
+ *  manipulation of the Marketo's other apps (e.g. Email Insights, Web Personalization, 
+ *  Predictive Content)
  *
  *  @Author Brian Fisher
  *
@@ -12,7 +13,7 @@ var URL_PATH = "m3-dev",
 devExtensionId = "dokkjhbgengdlccldgjnbilajdbjlnhm",
 prodExtensionId = "onibnnoghllldiecboelbpcaeggfiohl",
 extensionId = devExtensionId; {}
-console.log("Email Insights > Running");
+console.log("Marketo Other App > Running");
 
 /**************************************************************************************
  *
@@ -36,7 +37,7 @@ loadScript;
  **************************************************************************************/
 
 loadScript = function (scriptSrc) {
-    console.log("Email Insights > Loading: Script: " + scriptSrc);
+    console.log("Marketo Other App > Loading: Script: " + scriptSrc);
     
     var scriptElement = document.createElement("script");
     scriptElement.async = true;
@@ -56,12 +57,12 @@ chrome.runtime.sendMessage(extensionId, {
     if (response
          && response.isMktoLive
          && !response.isAdmin) {
-        console.log("Email Insights > checkMktoCookie Msg > Heap Tracking Enabled");
+        console.log("Marketo Other App > checkMktoCookie Msg > Heap Tracking Enabled");
         loadScript(HEAP_ANALYTICS_SCRIPT_LOCATION);
     } else {
-        console.log("Email Insights > checkMktoCookie Msg > Heap Tracking Disabled");
+        console.log("Marketo Other App > checkMktoCookie Msg > Heap Tracking Disabled");
     }
     if (chrome.runtime.lastError) {
-        console.log("Email Insights > checkMktoCookie Msg > Error: " + JSON.stringify(chrome.runtime.lastError));
+        console.log("Marketo Other App > checkMktoCookie Msg > Error: " + JSON.stringify(chrome.runtime.lastError));
     }
 });
