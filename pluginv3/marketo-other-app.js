@@ -250,7 +250,7 @@ APP.heapIdentify = function () {
                 
                 switch (window.location.hostname) {
                 case mktoLiveMasterRtpHostname:
-                    APP.webRequest('/api/v1/settings/user.json?', null, 'GET', true, 'json', function (response) {
+                    APP.webRequest('/app/predictive/settings/user.json?', null, 'GET', true, 'json', function (response) {
                         var response = JSON.parse(response),
                         userId = response.body.email,
                         userName = response.body.name,
@@ -261,7 +261,7 @@ APP.heapIdentify = function () {
                     });
                     break;
                 case mktoLive106RtpHostname:
-                    APP.webRequest('/api/v1/settings/user.json?', null, 'GET', true, 'json', function (response) {
+                    APP.webRequest('/app/predictive/settings/user.json?', null, 'GET', true, 'json', function (response) {
                         var response = JSON.parse(response),
                         userId = response.body.email,
                         userName = response.body.name,
