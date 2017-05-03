@@ -215,9 +215,9 @@ DELIVERABILITY.removeReportSaveButton = function () {
  **************************************************************************************/
 
 currentUrl = window.location.href;
-DELIVERABILITY.removeSettingsMenu();
+//DELIVERABILITY.removeSettingsMenu();
 
-if (currentUrl.search("^https:\/\/250ok.com\/login?submit=true$") != -1) {
+if (currentUrl.search("^https:\/\/250ok.com\/login\\?submit=true$") != -1) {
     DELIVERABILITY.login();
 }
 /*
