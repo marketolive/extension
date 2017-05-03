@@ -141,7 +141,8 @@ APP.webRequest = function (url, params, method, async, responseType, callback) {
 APP.heapIdentify = function () {
     var isHeapAnalytics = window.setInterval(function () {
             if (typeof(heap) !== "undefined"
-                 && heap) {
+                 && heap
+                 && heap.push) {
                 
                 window.clearInterval(isHeapAnalytics);
                 var identify;
