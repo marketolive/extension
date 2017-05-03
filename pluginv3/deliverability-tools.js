@@ -126,6 +126,9 @@ DELIVERABILITY.removeDeleteButtons = function () {
 DELIVERABILITY.removeSubmitButtons = function () {
     console.log("Deliverability > Removing: Submit Buttons");
     
+    $("#add_widget").remove();
+    $("#new_dashboard").remove();
+    $("#change_dashboard").remove();
     $("#create-campaign-anchor").remove();
     $("#saveFilters").remove();
     $("#tour-design-add-anchor").remove();
