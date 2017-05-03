@@ -105,10 +105,31 @@ DELIVERABILITY.removeDeleteButtons = function () {
     DELIVERABILITY.removeGenericButton($(".action_delete"));
     DELIVERABILITY.removeGenericButton($(".btn.copy"));
     DELIVERABILITY.removeGenericButton($(".btn.delete"));
-    DELIVERABILITY.removeGenericButton($(".btn.btn-success"), "value", /(save|update|create)/i);
+    DELIVERABILITY.removeGenericButton($(".btn.btn-success"), "value", /(save|update|create|upload|import)/i);
     DELIVERABILITY.removeGenericButton($("button"), "value", /delete/i);
     DELIVERABILITY.removeGenericButton($(".btn"), "onclick", "^return confirm\\(");
     //DELIVERABILITY.removeGenericButton($(".btn"), "href", /action=delete/i);
+};
+
+/**************************************************************************************
+ *
+ *  This function removes create, save, and add buttons from all locations within
+ *  250ok. Currently, removing the DOM element altogether does not result in errors in
+ *  the JS console.
+ *
+ *  @Author Brian Fisher
+ *
+ *  @function
+ *
+ **************************************************************************************/
+
+DELIVERABILITY.removeSubmitButtons = function () {
+    console.log("Deliverability > Removing: Submit Buttons");
+    
+    $("#create-campaign-anchor").remove();
+    $("#saveFilters").remove();
+    $("#tour-design-add-anchor").remove();
+    $("#create_alert").remove();
 };
 
 /**************************************************************************************
@@ -121,4 +142,5 @@ if (currentUrl.search("^https:\/\/250ok.com\/login") != -1) {
     DELIVERABILITY.login();
 } else {
     DELIVERABILITY.removeDeleteButtons();
+    DELIVERABILITY.removeSubmitButtons();
 }
