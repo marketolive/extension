@@ -142,6 +142,7 @@ APP.heapIdentify = function () {
     var isHeapAnalytics = window.setInterval(function () {
             if (typeof(heap) !== "undefined"
                  && heap
+                 && heap.loaded
                  && heap.identify
                  && heap.addUserProperties) {
                 
