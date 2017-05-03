@@ -151,8 +151,17 @@ APP.heapIdentify = function () {
                     oneLoginFirstName = APP.getCookie("onelogin_first_name"),
                     oneLoginLastName = APP.getCookie("onelogin_last_name");
                     
-                    console.log("Marketo Other App > Heap Analytics ID: " + userId);
-                    heap.identify(userId);
+                    if (userId) {
+                        console.log("Marketo Other App > Heap Analytics ID: " + userId);
+                        heap.identify(userId);
+                    } else {
+                        var mktoUserId = APP.getCookie("mkto_user_id");
+                        
+                        if (mktoUserId) {
+                            console.log("Marketo Other App > Heap Analytics ID: " + mktoUserId);
+                            heap.identify(mktoUserId);
+                        }
+                    }
                     
                     if (oneLoginFirstName
                          && oneLoginLastName) {
