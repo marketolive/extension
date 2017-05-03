@@ -101,6 +101,8 @@ DELIVERABILITY.removeDeleteButtons = function () {
     console.log("Deliverability > Removing: Delete Buttons");
     
     $("#btndelete").remove();
+    DELIVERABILITY.removeGenericButton($(".action_copy"));
+    DELIVERABILITY.removeGenericButton($(".action_delete"));
     DELIVERABILITY.removeGenericButton($(".btn.copy"));
     DELIVERABILITY.removeGenericButton($(".btn.delete"));
     DELIVERABILITY.removeGenericButton($(".btn.btn-success"), "value", /save/i);
