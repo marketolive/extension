@@ -31,9 +31,9 @@ oneLoginExtMsgRegex = "https:\/\/marketo\.onelogin\.com\/client\/apps",
 colorPickerMsgRegex = "https:\/\/marketolive\.com\/" + URL_PATH + "\/apps\/color-picker\.html\\?.+",
 mktoAppUserCookie = "ids_sso",
 munchkinIdsMatch = "^(185-NGX-811|026-COU-482|767-TVJ-204)$",
-adminUserNamesMatch = "^mktodemolivemaster@marketo\.com$|^admin(\.[a-z]{0,2})?@(marketolive.com$|mktodemoaccount)|^marketodemo.*@gmail\.com$",
-//adminUserNamesMatch = "^mktodemolivemaster@marketo\.com$|^admin(\.[a-z]{0,2})?@(marketolive.com$|mktodemoaccount)|^mktodemoaccount[a-z0-9]*@marketo\.com$|^marketodemo.*@gmail\.com$",
-mktoLiveBlockUrlPatterns = ["*://sjrtp3.marketo.com/app/*", "*://sj-ee-api.marketo.com/api/v1/settings/dimensions/activate/*", "*://seo.marketo.com/*"],
+//adminUserNamesMatch = "^mktodemolivemaster@marketo\.com$|^admin(\.[a-z]{0,2})?@(marketolive.com$|mktodemoaccount)|^marketodemo.*@gmail\.com$",
+adminUserNamesMatch = "^mktodemolivemaster@marketo\.com$|^admin(\.[a-z]{0,2})?@(marketolive.com$|mktodemoaccount)|^mktodemoaccount[a-z0-9]*@marketo\.com$|^marketodemo.*@gmail\.com$",
+mktoLiveBlockUrlPatterns = ["*://sjrtp3.marketo.com/app/*", "*://sj-ee-api.marketo.com/api/v1/settings/dimensions/activate/*", "*://seo.marketo.com/*", "*://250ok.com/*"],
 mktoLiveRtpDomainsMatch = "sjrtp3\.marketo\.com",
 oneLoginFirstName,
 oneLoginLastName,
@@ -1155,6 +1155,7 @@ function cancelWebRequest(details) {
         if (details.url.search("://" + mktoLiveRtpDomainsMatch + "/app/rest/deleteAudience\.json") != -1 // Retargeting > Audience > Delete
              || details.url.search("://" + mktoLiveRtpDomainsMatch + "/app/setting/param\.json") != -1 // Account Settings > ALL > Toggles > Enable/Disable
              || details.url.search("://seo\.marketo\.com/ajax/ComponentSettings:Save\\?id=keyword\.overview\.grid\.keyword_table") != -1 // SEO > Keywords > Report > Edit
+             || details.url.search("://250ok\.com/app/design-informant/[^\\?]+\\?action=delete") != -1 // 250ok > Design > Test > Delete
         )
         {
             toCancel = true;
