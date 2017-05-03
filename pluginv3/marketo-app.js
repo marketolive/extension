@@ -33,7 +33,7 @@ mktoWizard = mktoAppDomain + "/m#",
 mktoEmailDesigner = mktoDesignerDomain + "/ds",
 mktoLandingPageDesigner = mktoDesignerDomain + "/lpeditor/",
 mktoEmailInsightsLink = "http://www.marketolive.com/en/analytics/email-insights-summit-demo-1",
-mktoEmailDeliverabilityToolsLink = "https://250ok.com/login",
+mktoEmailDeliverabilityToolsLink = "https://250ok.com/login?submit=true",
 mktoDemoAccountMatch = "^mktodemoaccount",
 mktoMyMarketoFragment = "MM0A1",
 mktoCalendarFragment = "CAL",
@@ -801,6 +801,8 @@ APP.overrideHomeTiles = function (restoreEmailInsightsTile) {
         }
         
         if (emailInsightsTile) {
+            var assetName;
+            
             if (origEmailInsightsTileLink == null) {
                 origEmailInsightsTileLink = emailInsightsTile.el.dom.outerHTML.match(hrefMatch)[0].split('"')[1];
             }
@@ -811,6 +813,7 @@ APP.overrideHomeTiles = function (restoreEmailInsightsTile) {
             } else {
                 emailInsightsTile.el.dom.outerHTML = emailInsightsTile.el.dom.outerHTML.replace(hrefMatch, " href=\"" + mktoEmailInsightsLink + "\" ");
             }
+            
         } else {
             emailInsightsTileOuterHTML = '<div class="x4-btn mkt3-homeTile x4-btn-default-small x4-icon-text-left x4-btn-icon-text-left x4-btn-default-small-icon-text-left x-panel" style="height: 150px;" id="homeTile-1084"><em id="homeTile-1084-btnWrap"><a id="homeTile-1084-btnEl" href="' + mktoEmailInsightsLink + '" class="x4-btn-center" target="_blank" role="link" style="width: 150px; height: 150px;"><span id="homeTile-1084-btnInnerEl" class="x4-btn-inner" style="width: 150px; height: 150px; line-height: 150px;">Email Insights</span><span id="homeTile-1084-btnIconEl" class="x4-btn-icon mki3-email-insights-svg"></span></a></em><div class="x-panel-bwrap" id="ext-gen164"><div class="x-panel-body x-panel-body-noheader" id="ext-gen165"></div></div></div>';
             idMatch = new RegExp("homeTile-1084", "g");
@@ -824,6 +827,14 @@ APP.overrideHomeTiles = function (restoreEmailInsightsTile) {
         
         if (deliverabilityToolsTile) {
             deliverabilityToolsTile.el.dom.outerHTML = deliverabilityToolsTile.el.dom.outerHTML.replace(hrefMatch, " href=\"" + mktoEmailDeliverabilityToolsLink + "\" ");
+            
+            deliverabilityToolsTile.el.dom.onclick = function () {
+                APP.heapTrack("track", {
+                    name: "Deliverability Tools",
+                    assetName: "Demo Account",
+                    assetType: "Home Tile"
+                });
+            };
         } else {
             deliverabilityToolsTileOuterHTML = '<div class="x4-btn mkt3-homeTile x4-btn-default-small x4-icon-text-left x4-btn-icon-text-left x4-btn-default-small-icon-text-left" style="height: 150px;" id="homeTile-1036"><em id="homeTile-1036-btnWrap"><a id="homeTile-1036-btnEl" href="' + mktoEmailDeliverabilityToolsLink + '" class="x4-btn-center" target="_blank" role="link" style="width: 150px; height: 150px;"><span id="homeTile-1036-btnInnerEl" class="x4-btn-inner" style="width: 150px; height: 150px; line-height: 150px;">Deliverability Tools</span><span id="homeTile-1036-btnIconEl" class="x4-btn-icon mki3-mail-sealed-svg"></span></a></em></div>';
             idMatch = new RegExp("homeTile-1036", "g");
@@ -833,6 +844,14 @@ APP.overrideHomeTiles = function (restoreEmailInsightsTile) {
             spareTileClone.el.dom.outerHTML = deliverabilityToolsTileOuterHTML;
             container.appendChild(container.childNodes[container.childNodes.length - 2]);
             container.appendChild(spareTileClone.el.dom);
+            
+            spareTileClone.el.dom.onclick = function () {
+                APP.heapTrack("track", {
+                    name: "Deliverability Tools",
+                    assetName: "Demo Account",
+                    assetType: "Home Tile"
+                });
+            };
         }
     }
 };
@@ -957,6 +976,13 @@ APP.overrideSuperballMenuItems = function (restoreEmailInsightsMenuItem) {
                     
                     if (deliverabilityToolsMenuItem) {
                         deliverabilityToolsMenuItem.href = mktoEmailDeliverabilityToolsLink;
+                        deliverabilityToolsMenuItem.onclick = function () {
+                            APP.heapTrack("track", {
+                                name: "Deliverability Tools",
+                                assetName: "Demo Account",
+                                assetType: "Home Tile"
+                            });
+                        };
                         deliverabilityToolsMenuItem.update();
                     } else {
                         clonedMenuItem = menu.items.items[0].cloneConfig();
@@ -964,6 +990,13 @@ APP.overrideSuperballMenuItems = function (restoreEmailInsightsMenuItem) {
                         clonedMenuItem.setIconCls("mki3-mail-sealed-svg");
                         clonedMenuItem.href = mktoEmailDeliverabilityToolsLink;
                         clonedMenuItem.hrefTarget = "_blank";
+                        clonedMenuItem.onclick = function () {
+                            APP.heapTrack("track", {
+                                name: "Deliverability Tools",
+                                assetName: "Demo Account",
+                                assetType: "Home Tile"
+                            });
+                        };
                         clonedMenuItem.update();
                         menu.add(clonedMenuItem);
                     }

@@ -31,7 +31,8 @@ oneLoginExtMsgRegex = "https:\/\/marketo\.onelogin\.com\/client\/apps",
 colorPickerMsgRegex = "https:\/\/marketolive\.com\/" + URL_PATH + "\/apps\/color-picker\.html\\?.+",
 mktoAppUserCookie = "ids_sso",
 munchkinIdsMatch = "^(185-NGX-811|026-COU-482|767-TVJ-204)$",
-adminUserNamesMatch = "^mktodemolivemaster@marketo\.com$|^admin(\.[a-z]{0,2})?@(marketolive.com$|mktodemoaccount)|^mktodemoaccount[a-z0-9]*@marketo\.com$|^marketodemo.*@gmail\.com$",
+adminUserNamesMatch = "^mktodemolivemaster@marketo\.com$|^admin(\.[a-z]{0,2})?@(marketolive.com$|mktodemoaccount)|^marketodemo.*@gmail\.com$",
+//adminUserNamesMatch = "^mktodemolivemaster@marketo\.com$|^admin(\.[a-z]{0,2})?@(marketolive.com$|mktodemoaccount)|^mktodemoaccount[a-z0-9]*@marketo\.com$|^marketodemo.*@gmail\.com$",
 mktoLiveBlockUrlPatterns = ["*://sjrtp3.marketo.com/app/*", "*://sj-ee-api.marketo.com/api/v1/settings/dimensions/activate/*", "*://seo.marketo.com/*"],
 mktoLiveRtpDomainsMatch = "sjrtp3\.marketo\.com",
 mktoLiveSeoDomainsMatch = "seo\.marketo\.com",
@@ -1103,7 +1104,6 @@ function cancelWebRequest(details) {
              || details.url.search("://" + mktoLiveSeoDomainsMatch + "/ajax/orgList:delete") != -1 // SEO > Keywords, Pages, Inbound Links > Phrase/Page/Issue/Link > Remove From List
              || details.url.search("://" + mktoLiveSeoDomainsMatch + "/ajax/orgList:deleteList") != -1 // SEO > Keywords, Pages, Inbound Links > List > Delete
              || details.url.search("://" + mktoLiveSeoDomainsMatch + "/keyword/overview\.keyworduploadform") != -1 // SEO > Keywords > List > Import
-             || details.url.search("://" + mktoLiveSeoDomainsMatch + "/ajax/ComponentSettings:Save") != -1 // SEO > Keywords > Report > Edit
              || details.url.search("://" + mktoLiveSeoDomainsMatch + "/rest/report/page/addWithLists") != -1 // SEO > Pages > Page > Add
              || details.url.search("://" + mktoLiveSeoDomainsMatch + "/rest/report/page/delete") != -1 // SEO > Pages > Page > Delete
              || details.url.search("://" + mktoLiveSeoDomainsMatch + "/page/detail:hideResult") != -1 // SEO > Pages > Issue > Remove
@@ -1120,7 +1120,7 @@ function cancelWebRequest(details) {
              || details.url.search("://" + mktoLiveSeoDomainsMatch + "/rest/adminsettings/site/[^/]+/rename") != -1 // SEO > Admin Settings > Site > Rename
              || details.url.search("://" + mktoLiveSeoDomainsMatch + "/rest/adminsettings/searchengines/set") != -1 // SEO > Admin Settings > Site > Search Engines > Set
              || details.url.search("://" + mktoLiveSeoDomainsMatch + "/rest/adminsettings/competitor/add") != -1 // SEO > Admin Settings > Site > Competitors > Add
-             || details.url.search("://" + mktoLiveSeoDomainsMatch + "rest/adminsettings/competitor/[^/]+/delete") != -1 // SEO > Admin Settings > Site > Competitors > Delete
+             || details.url.search("://" + mktoLiveSeoDomainsMatch + "/rest/adminsettings/competitor/[^/]+/delete") != -1 // SEO > Admin Settings > Site > Competitors > Delete
              ) {
             toCancel = true;
         }
@@ -1138,7 +1138,10 @@ function cancelWebRequest(details) {
         break;
     case "GET":
         if (details.url.search("://" + mktoLiveRtpDomainsMatch + "/app/rest/deleteAudience\.json") != -1 // Retargeting > Audience > Delete
-             || details.url.search("://" + mktoLiveRtpDomainsMatch + "/app/setting/param\.json") != -1) { // Account Settings > ALL > Toggles > Enable/Disable
+             || details.url.search("://" + mktoLiveRtpDomainsMatch + "/app/setting/param\.json") != -1 // Account Settings > ALL > Toggles > Enable/Disable
+             || details.url.search("://" + mktoLiveSeoDomainsMatch + "/ajax/ComponentSettings:Save\\?id=keyword\.overview\.grid\.keyword_table") != -1 // SEO > Keywords > Report > Edit
+        )
+        {
             toCancel = true;
         }
         break;
@@ -1162,7 +1165,9 @@ function cancelWebRequest(details) {
         };
         
         createBasicNotification(notAllowedNotification);
-        chrome.tabs.reload(details.tabId);
+        if (details.url.search("://" + mktoLiveSeoDomainsMatch + "/rest/reportdetail/save") == -1) {
+            chrome.tabs.reload(details.tabId);
+        }
         return {
             cancel: true
         };

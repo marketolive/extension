@@ -39,7 +39,7 @@ DELIVERABILITY.login = function () {
     // This needs to change if another button is ever added to the login
     // page. Currently, the submit button is the only one.
     $("button")[0].click();
-}
+};
 
 /**************************************************************************************
  *  
@@ -59,7 +59,7 @@ DELIVERABILITY.removeSettingsMenu = function () {
     $(".dropdown").each(function () {
         $(this).remove();
     });
-}
+};
 
 /**************************************************************************************
  *  
@@ -77,7 +77,7 @@ DELIVERABILITY.removeCreateTestButton = function () {
     console.log("Deliverability > Removing: Create Test Button");
     
     $("#tour-design-add-anchor").remove();
-}
+};
 
 /**************************************************************************************
  *  
@@ -97,7 +97,7 @@ DELIVERABILITY.removeInboxDeleteButton = function () {
     console.log("Deliverability > Removing: Inbox Delete Button");
 
     $("#btndelete").remove();
-}
+};
 
 /**************************************************************************************
  *  
@@ -119,7 +119,7 @@ DELIVERABILITY.removeInboxDeleteButton = function () {
  **************************************************************************************/
 
 DELIVERABILITY.removeGenericButton = function (buttons, property, target) {    
-    // If buttons is empty, than the selector must be mmalformed.
+    // If buttons is empty, than the selector must be malformed.
     if (buttons.length == 0) {
         console.log("Deliverability > Error: removeGenericButton() received an empty selector.");
         return;
@@ -135,7 +135,7 @@ DELIVERABILITY.removeGenericButton = function (buttons, property, target) {
             $(buttons[ii]).remove();
         }
     }
-}
+};
 
 /**************************************************************************************
  *  
@@ -153,7 +153,7 @@ DELIVERABILITY.removeInboxDrillDownDeleteButtons = function () {
     console.log("Deliverability > Removing: Campaign Delete Buttons");
 
     DELIVERABILITY.removeGenericButton($("button"), "value", "delete");
-}
+};
 
 /**************************************************************************************
  *  
@@ -170,8 +170,8 @@ DELIVERABILITY.removeInboxDrillDownDeleteButtons = function () {
 DELIVERABILITY.removeDesignDeleteButton = function () {
     console.log("Deliverability > Removing: Design Delete Button");
 
-    DELIVERABILITY.removeGenericButton($(".btn.btn-default.pull-right.vertspacerx2.spacerx2"), "href", "action=delete");
-}
+    DELIVERABILITY.removeGenericButton($(".btn.btn-default.pull-right.nomargin"), "href", "action=delete");
+};
 
 /**************************************************************************************
  *  
@@ -188,7 +188,7 @@ DELIVERABILITY.removeManageProfilesButton = function () {
     console.log("Deliverability > Removing: Manage Profiles Button");
 
     DELIVERABILITY.removeGenericButton($(".btn.btn-sm.btn-success.vertspacerx2.spacer"), "href", "/app/inbox-informant/profiles");
-}
+};
 
 /**************************************************************************************
  *  
@@ -206,7 +206,7 @@ DELIVERABILITY.removeReportSaveButton = function () {
     console.log("Deliverability > Removing: Run and Save Button");
 
     DELIVERABILITY.removeGenericButton($(".btn.btn-success"), "value", "Run and Save");
-}
+};
 
 /**************************************************************************************
  *  
@@ -217,22 +217,26 @@ DELIVERABILITY.removeReportSaveButton = function () {
 currentUrl = window.location.href;
 DELIVERABILITY.removeSettingsMenu();
 
-if (currentUrl.search("^https:\/\/250ok.com\/login$") != -1) {
+if (currentUrl.search("^https:\/\/250ok.com\/login?submit=true$") != -1) {
     DELIVERABILITY.login();
 }
+/*
 else if (currentUrl.search("\/app\/design-informant$") != -1) {
     DELIVERABILITY.removeCreateTestButton();
 }
+
 else if (currentUrl.search("\/app\/design-informant\/[0-9a-zA-Z]+$") != -1) {
     DELIVERABILITY.removeDesignDeleteButton();
 }
 else if (currentUrl.search("\/app\/inbox-informant$") != -1) {
     DELIVERABILITY.removeInboxDeleteButton();
-    DELIVERABILITY.removeManageProfilesButton();
+    //DELIVERABILITY.removeManageProfilesButton();
 }
 else if (currentUrl.search("app\/inbox-informant\/campaign\/[0-9a-zA-Z]+$") != -1) {
     DELIVERABILITY.removeInboxDrillDownDeleteButtons();
 }
+/*
 else if(currentUrl.search("\/app\/reports\/report\/custom\/build$") != -1) {
     DELIVERABILITY.removeReportSaveButton();
 }
+*/
