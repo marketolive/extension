@@ -117,7 +117,7 @@ DELIVERABILITY.removeDeleteButtons = function () {
  *
  **************************************************************************************/
 
-if (currentUrl.search("^https:\/\/250ok.com\/login\\?submit=true$") != -1) {
+if (currentUrl.search("^https:\/\/250ok.com\/login") != -1) {
     DELIVERABILITY.login();
 } else {
     DELIVERABILITY.removeDeleteButtons();
