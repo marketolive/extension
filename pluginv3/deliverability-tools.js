@@ -105,8 +105,7 @@ DELIVERABILITY.removeDeleteButtons = function () {
     DELIVERABILITY.removeGenericButton($(".action_delete"));
     DELIVERABILITY.removeGenericButton($(".btn.copy"));
     DELIVERABILITY.removeGenericButton($(".btn.delete"));
-    DELIVERABILITY.removeGenericButton($(".btn.btn-success"), "value", /save/i);
-    DELIVERABILITY.removeGenericButton($(".btn.btn-success"), "value", /update/i);
+    DELIVERABILITY.removeGenericButton($(".btn.btn-success"), "value", /(save|update|create)/i);
     DELIVERABILITY.removeGenericButton($("button"), "value", /delete/i);
     DELIVERABILITY.removeGenericButton($(".btn"), "onclick", "^return confirm\\(");
     //DELIVERABILITY.removeGenericButton($(".btn"), "href", /action=delete/i);
