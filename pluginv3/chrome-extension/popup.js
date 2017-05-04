@@ -269,6 +269,11 @@ window.onload = function () {
         chrome.browsingData.removeCache({since: 0}, function () {
             var clearCacheText = document.getElementById("clear-cache-text");
             
+            background.reloadTabs("*://*.marketo.com/*");
+            background.reloadTabs("*://*.marketodesigner.com/*");
+            background.reloadTabs("*://*.marketolive.com/*");
+            background.reloadTabs("*://250ok.com/*");
+            background.reloadTabs("*://marketo.invisionapp.com/*");
             clearCacheText.innerText = "Cache Cleared";
             setTimeout(function () {
                 window.close();

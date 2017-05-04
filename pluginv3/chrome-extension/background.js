@@ -17,6 +17,7 @@ mktoLiveClassicDomainMatch = "https://marketolive.com/*",
 mktoLiveClassicUriDomain = ".marketolive.com",
 mktoAppDomainMatch = "https://app-*.marketo.com",
 mktoAppUriDomain = ".marketo.com",
+mkto250okDomainMatch = "https://250ok.com/*",
 mktoDesignerDomainMatch = "https://www.marketodesigner.com/*",
 mktoDesignerUriDomain = ".marketodesigner.com",
 mktoDesignerMatchPattern = "https://*.marketodesigner.com/*",
@@ -30,6 +31,7 @@ mktoLandingPagePreviewFragment = "LPPD",
 oneLoginExtMsgRegex = "https:\/\/marketo\.onelogin\.com\/client\/apps",
 colorPickerMsgRegex = "https:\/\/marketolive\.com\/" + URL_PATH + "\/apps\/color-picker\.html\\?.+",
 mktoAppUserCookie = "ids_sso",
+mkto250okUserCookie = "PHPSESSID",
 munchkinIdsMatch = "^(185-NGX-811|026-COU-482|767-TVJ-204)$",
 //adminUserNamesMatch = "^mktodemolivemaster@marketo\.com$|^admin(\.[a-z]{0,2})?@(marketolive.com$|mktodemoaccount)|^marketodemo.*@gmail\.com$",
 adminUserNamesMatch = "^mktodemolivemaster@marketo\.com$|^admin(\.[a-z]{0,2})?@(marketolive.com$|mktodemoaccount)|^mktodemoaccount[a-z0-9]*@marketo\.com$|^marketodemo.*@gmail\.com$",
@@ -1527,10 +1529,21 @@ chrome.management.onDisabled.addListener(function (details) {
                 active: true,
                 selected: true
             });
-            
+            removeCookie({
+                url: mkto250okDomainMatch,
+                name: mkto250okUserCookie
+            });
             event.name = "Disabled > Permission Increase";
             break;
         default:
+            removeCookie({
+                url: mkto250okDomainMatch,
+                name: mkto250okUserCookie
+            });
+            removeCookie({
+                url: mktoAppDomainMatch,
+                name: mktoAppUserCookie
+            });
             event.name = "Disabled > Unknown";
             break;
         }

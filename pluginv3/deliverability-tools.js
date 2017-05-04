@@ -18,8 +18,45 @@ console.log("Deliverability > Running");
  **************************************************************************************/
 
 var currentUrl = window.location.href,
+userId = "marketolive@marketo.com",
 
 DELIVERABILITY = DELIVERABILITY || {};
+
+/**************************************************************************************
+ *
+ *  This function issues an HTTP request.
+ *
+ *  @Author Brian Fisher
+ *
+ *  @function
+ *
+ *  @param {String} url - The HTTP request URL.
+ *  @param {String} params - The parameters to pass in the body of the request.
+ *  @param {String} method - The HTTP request method (e.g. GET, POST, PATCH).
+ *  @param {String} responseType - The type of the response (e.g. document, json, text).
+ *  @param {Function} callback - The callback function.
+ *
+ **************************************************************************************/
+
+DELIVERABILITY.webRequest = function (url, params, method, async, responseType, callback) {
+    console.log("Web Request > " + url + "\n" + params);
+    var xmlHttp = new XMLHttpRequest(),
+    result;
+    xmlHttp.onreadystatechange = function () {
+        if (callback
+             && xmlHttp.readyState == 4
+             && xmlHttp.status == 200)
+            result = callback(xmlHttp.response);
+    }
+    if (async
+         && xmlHttp.responseType) {
+        xmlHttp.responseType = responseType;
+    }
+    xmlHttp.open(method, url, async); // true for asynchronous
+    xmlHttp.setRequestHeader("Content-type", "application/json; charset=utf-8");
+    xmlHttp.send(params);
+    return result;
+};
 
 /**************************************************************************************
  *
@@ -141,9 +178,23 @@ DELIVERABILITY.removeSubmitButtons = function () {
  *
  **************************************************************************************/
 
-if (currentUrl.search("^https:\/\/250ok.com\/login") != -1) {
+if (currentUrl.search("^https:\/\/250ok\.com\/login") != -1) {
     DELIVERABILITY.login();
+} else if ($("#email").length == 1) {
+    if ($("#email")[0].value == userId) {
+        DELIVERABILITY.removeDeleteButtons();
+        DELIVERABILITY.removeSubmitButtons();
+    }
 } else {
-    DELIVERABILITY.removeDeleteButtons();
-    DELIVERABILITY.removeSubmitButtons();
+    DELIVERABILITY.webRequest('/app/account', null, 'GET', true, 'document', function (response) {
+        var el = document.createElement("html"),
+        email;
+        
+        el.innerHTML = response;
+        email = el.querySelector("#email").value;
+        if (email == userId) {
+            DELIVERABILITY.removeDeleteButtons();
+            DELIVERABILITY.removeSubmitButtons();
+        }
+    });
 }
