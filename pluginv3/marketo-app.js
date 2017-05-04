@@ -831,22 +831,40 @@ APP.overrideHomeTiles = function (restoreEmailInsightsTile) {
         if (deliverabilityToolsTile) {
             deliverabilityToolsTile.el.dom.outerHTML = deliverabilityToolsTile.el.dom.outerHTML.replace(hrefMatch, " href=\"" + mktoEmailDeliverabilityToolsLink + "\" ");
             
-            deliverabilityToolsTile.el.dom.setAttribute("onclick", 'APP.heapTrack("track", {name: "Deliverability Tools", assetName: "Demo Account", assetType: "Home Tile"});');
+            document.getElementById(deliverabilityToolsTile.id).onclick = function () {
+                APP.heapTrack("track", {
+                    name: "Deliverability Tools",
+                    assetName: "Demo Account",
+                    assetType: "Home Tile"
+                });
+            };
         } else {
             deliverabilityToolsTileOuterHTML = '<div class="x4-btn mkt3-homeTile x4-btn-default-small x4-icon-text-left x4-btn-icon-text-left x4-btn-default-small-icon-text-left" style="height: 150px;" id="homeTile-1036"><em id="homeTile-1036-btnWrap"><a id="homeTile-1036-btnEl" href="' + mktoEmailDeliverabilityToolsLink + '" class="x4-btn-center" target="_blank" role="link" style="width: 150px; height: 150px;"><span id="homeTile-1036-btnInnerEl" class="x4-btn-inner" style="width: 150px; height: 150px; line-height: 150px;">Deliverability Tools</span><span id="homeTile-1036-btnIconEl" class="x4-btn-icon mki3-mail-sealed-svg"></span></a></em></div>';
             idMatch = new RegExp("homeTile-1036", "g");
-            
-            spareTileClone.el.dom.setAttribute("onclick", 'APP.heapTrack("track", {name: "Deliverability Tools", assetName: "Demo Account", assetType: "Home Tile"});');
             
             spareTileClone = MktCanvas.lookupComponent(container.childNodes[container.childNodes.length - 1]).cloneConfig();
             deliverabilityToolsTileOuterHTML = deliverabilityToolsTileOuterHTML.replace(idMatch, spareTileClone.id);
             spareTileClone.el.dom.outerHTML = deliverabilityToolsTileOuterHTML;
             container.appendChild(container.childNodes[container.childNodes.length - 2]);
             container.appendChild(spareTileClone.el.dom);
+            document.getElementById(spareTileClone.id).onclick = function () {
+                APP.heapTrack("track", {
+                    name: "Deliverability Tools",
+                    assetName: "Demo Account",
+                    assetType: "Home Tile"
+                });
+            };
         }
         
         if (seoTile) {
-            seoTile.el.dom.setAttribute("onclick", 'APP.heapTrack("track", {name: "SEO", assetName: "Home", assetType: "Home Tile"});');
+            //seoTile.el.dom.setAttribute("onclick", 'APP.heapTrack("track", {name: "SEO", assetName: "Home", assetType: "Home Tile"});');
+            document.getElementById(seoTile.id).onclick = function () {
+                APP.heapTrack("track", {
+                    name: "SEO",
+                    assetName: "Home",
+                    assetType: "Home Tile"
+                });
+            };
         }
     }
 };
@@ -973,8 +991,17 @@ APP.overrideSuperballMenuItems = function (restoreEmailInsightsMenuItem) {
                     }
                     
                     if (deliverabilityToolsMenuItem) {
+                        var origMenuItemOnClick = deliverabilityToolsMenuItem.onClick;
+                        
+                        deliverabilityToolsMenuItem.onClick = function (e) {
+                            origMenuItemOnClick.apply(this, arguments);
+                            APP.heapTrack("track", {
+                                name: "Deliverability Tools",
+                                assetName: "Demo Account",
+                                assetType: "Home Tile"
+                            });
+                        };
                         deliverabilityToolsMenuItem.href = mktoEmailDeliverabilityToolsLink;
-                        //deliverabilityToolsMenuItem.setAttribute("onclick", 'APP.heapTrack("track", {name: "Deliverability Tools", assetName: "Demo Account", assetType: "Home Tile"});');
                         deliverabilityToolsMenuItem.update();
                     } else {
                         clonedMenuItem = menu.items.items[0].cloneConfig();
@@ -982,14 +1009,33 @@ APP.overrideSuperballMenuItems = function (restoreEmailInsightsMenuItem) {
                         clonedMenuItem.setIconCls("mki3-mail-sealed-svg");
                         clonedMenuItem.href = mktoEmailDeliverabilityToolsLink;
                         clonedMenuItem.hrefTarget = "_blank";
-                        //clonedMenuItem.setAttribute("onclick", 'APP.heapTrack("track", {name: "Deliverability Tools", assetName: "Demo Account", assetType: "Home Tile"});');
+                        
+                        var origMenuItemOnClick = clonedMenuItem.onClick;
+                        
+                        clonedMenuItem.onClick = function (e) {
+                            origMenuItemOnClick.apply(this, arguments);
+                            APP.heapTrack("track", {
+                                name: "Deliverability Tools",
+                                assetName: "Demo Account",
+                                assetType: "Home Tile"
+                            });
+                        };
+                        
                         clonedMenuItem.update();
                         menu.add(clonedMenuItem);
                     }
                     
                     if (seoMenuItem) {
-                        debugger;
-                        //seoMenuItem.setAttribute("onclick", 'APP.heapTrack("track", {name: "SEO", assetName: "Home", assetType: "Home Tile"});');
+                        var origMenuItemOnClick = seoMenuItem.onClick;
+                        
+                        seoMenuItem.onClick = function (e) {
+                            origMenuItemOnClick.apply(this, arguments);
+                            APP.heapTrack("track", {
+                                name: "SEO",
+                                assetName: "Home",
+                                assetType: "Home Tile"
+                            });
+                        };
                     }
                 }
             }
