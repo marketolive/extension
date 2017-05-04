@@ -15,7 +15,7 @@ prodExtensionId = "onibnnoghllldiecboelbpcaeggfiohl",
 extensionId = devExtensionId,
 prodHeapEnv = "3521051524",
 devHeapEnv = "3020587545",
-heapEnv = dev; {}
+heapEnv = devHeapEnv; {}
 console.log("Marketo Other App > Running");
 
 /**************************************************************************************
