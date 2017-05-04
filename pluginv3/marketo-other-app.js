@@ -9,10 +9,10 @@
  *  @namespace
  *
  **************************************************************************************/
-var URL_PATH = "m3-dev",
+var URL_PATH = "m3",
 devExtensionId = "dokkjhbgengdlccldgjnbilajdbjlnhm",
 prodExtensionId = "onibnnoghllldiecboelbpcaeggfiohl",
-extensionId = devExtensionId; {}
+extensionId = prodExtensionId; {}
 console.log("Marketo Other App > Running");
 
 /**************************************************************************************
