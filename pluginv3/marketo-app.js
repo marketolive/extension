@@ -974,7 +974,7 @@ APP.overrideSuperballMenuItems = function (restoreEmailInsightsMenuItem) {
                     
                     if (deliverabilityToolsMenuItem) {
                         deliverabilityToolsMenuItem.href = mktoEmailDeliverabilityToolsLink;
-                        deliverabilityToolsMenuItem.setAttribute("onclick", 'APP.heapTrack("track", {name: "Deliverability Tools", assetName: "Demo Account", assetType: "Home Tile"});');
+                        //deliverabilityToolsMenuItem.setAttribute("onclick", 'APP.heapTrack("track", {name: "Deliverability Tools", assetName: "Demo Account", assetType: "Home Tile"});');
                         deliverabilityToolsMenuItem.update();
                     } else {
                         clonedMenuItem = menu.items.items[0].cloneConfig();
@@ -982,13 +982,14 @@ APP.overrideSuperballMenuItems = function (restoreEmailInsightsMenuItem) {
                         clonedMenuItem.setIconCls("mki3-mail-sealed-svg");
                         clonedMenuItem.href = mktoEmailDeliverabilityToolsLink;
                         clonedMenuItem.hrefTarget = "_blank";
-                        clonedMenuItem.setAttribute("onclick", 'APP.heapTrack("track", {name: "Deliverability Tools", assetName: "Demo Account", assetType: "Home Tile"});');
+                        //clonedMenuItem.setAttribute("onclick", 'APP.heapTrack("track", {name: "Deliverability Tools", assetName: "Demo Account", assetType: "Home Tile"});');
                         clonedMenuItem.update();
                         menu.add(clonedMenuItem);
                     }
                     
                     if (seoMenuItem) {
-                        seoMenuItem.setAttribute("onclick", 'APP.heapTrack("track", {name: "SEO", assetName: "Home", assetType: "Home Tile"});');
+                        debugger;
+                        //seoMenuItem.setAttribute("onclick", 'APP.heapTrack("track", {name: "SEO", assetName: "Home", assetType: "Home Tile"});');
                     }
                 }
             }
