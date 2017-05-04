@@ -790,6 +790,7 @@ APP.overrideHomeTiles = function (restoreEmailInsightsTile) {
         emailInsightsTileOuterHTML,
         deliverabilityToolsTile,
         deliverabilityToolsTileOuterHTML,
+        seoTile,
         ii;
         
         for (ii = 0; ii < tilesTextContent.length; ii++) {
@@ -797,7 +798,9 @@ APP.overrideHomeTiles = function (restoreEmailInsightsTile) {
                 emailInsightsTile = MktCanvas.lookupComponent(container.childNodes[ii]);
             } else if (tilesTextContent[ii] == "Deliverability Tools") {
                 deliverabilityToolsTile = MktCanvas.lookupComponent(container.childNodes[ii]);
-            }
+            } else if (tilesTextContent[ii] == "SEO") {
+                seoTile = MktCanvas.lookupComponent(container.childNodes[ii]);
+            } 
         }
         
         if (emailInsightsTile) {
@@ -828,30 +831,22 @@ APP.overrideHomeTiles = function (restoreEmailInsightsTile) {
         if (deliverabilityToolsTile) {
             deliverabilityToolsTile.el.dom.outerHTML = deliverabilityToolsTile.el.dom.outerHTML.replace(hrefMatch, " href=\"" + mktoEmailDeliverabilityToolsLink + "\" ");
             
-            deliverabilityToolsTile.el.dom.onclick = function () {
-                APP.heapTrack("track", {
-                    name: "Deliverability Tools",
-                    assetName: "Demo Account",
-                    assetType: "Home Tile"
-                });
-            };
+            deliverabilityToolsTile.el.dom.setAttribute("onclick", 'APP.heapTrack("track", {name: "Deliverability Tools", assetName: "Demo Account", assetType: "Home Tile"});');
         } else {
             deliverabilityToolsTileOuterHTML = '<div class="x4-btn mkt3-homeTile x4-btn-default-small x4-icon-text-left x4-btn-icon-text-left x4-btn-default-small-icon-text-left" style="height: 150px;" id="homeTile-1036"><em id="homeTile-1036-btnWrap"><a id="homeTile-1036-btnEl" href="' + mktoEmailDeliverabilityToolsLink + '" class="x4-btn-center" target="_blank" role="link" style="width: 150px; height: 150px;"><span id="homeTile-1036-btnInnerEl" class="x4-btn-inner" style="width: 150px; height: 150px; line-height: 150px;">Deliverability Tools</span><span id="homeTile-1036-btnIconEl" class="x4-btn-icon mki3-mail-sealed-svg"></span></a></em></div>';
             idMatch = new RegExp("homeTile-1036", "g");
+            
+            spareTileClone.el.dom.setAttribute("onclick", 'APP.heapTrack("track", {name: "Deliverability Tools", assetName: "Demo Account", assetType: "Home Tile"});');
             
             spareTileClone = MktCanvas.lookupComponent(container.childNodes[container.childNodes.length - 1]).cloneConfig();
             deliverabilityToolsTileOuterHTML = deliverabilityToolsTileOuterHTML.replace(idMatch, spareTileClone.id);
             spareTileClone.el.dom.outerHTML = deliverabilityToolsTileOuterHTML;
             container.appendChild(container.childNodes[container.childNodes.length - 2]);
             container.appendChild(spareTileClone.el.dom);
-            
-            spareTileClone.el.dom.onclick = function () {
-                APP.heapTrack("track", {
-                    name: "Deliverability Tools",
-                    assetName: "Demo Account",
-                    assetType: "Home Tile"
-                });
-            };
+        }
+        
+        if (seoTile) {
+            seoTile.el.dom.setAttribute("onclick", 'APP.heapTrack("track", {name: "SEO", assetName: "Home", assetType: "Home Tile"});');
         }
     }
 };
@@ -940,6 +935,7 @@ APP.overrideSuperballMenuItems = function (restoreEmailInsightsMenuItem) {
                     currSuperBallMenuItem,
                     emailInsightsMenuItem,
                     deliverabilityToolsMenuItem,
+                    seoMenuItem,
                     clonedMenuItem;
                     
                     for (ii = 0; ii < menu.items.items.length; ii++) {
@@ -949,6 +945,8 @@ APP.overrideSuperballMenuItems = function (restoreEmailInsightsMenuItem) {
                             emailInsightsMenuItem = currSuperBallMenuItem;
                         } else if (currSuperBallMenuItem.text == "Deliverability Tools") {
                             deliverabilityToolsMenuItem = currSuperBallMenuItem;
+                        } else if (currSuperBallMenuItem.text == "SEO") {
+                            seoMenuItem = currSuperBallMenuItem;
                         }
                     }
                     
@@ -976,13 +974,7 @@ APP.overrideSuperballMenuItems = function (restoreEmailInsightsMenuItem) {
                     
                     if (deliverabilityToolsMenuItem) {
                         deliverabilityToolsMenuItem.href = mktoEmailDeliverabilityToolsLink;
-                        deliverabilityToolsMenuItem.onclick = function () {
-                            APP.heapTrack("track", {
-                                name: "Deliverability Tools",
-                                assetName: "Demo Account",
-                                assetType: "Home Tile"
-                            });
-                        };
+                        deliverabilityToolsMenuItem.setAttribute("onclick", 'APP.heapTrack("track", {name: "Deliverability Tools", assetName: "Demo Account", assetType: "Home Tile"});');
                         deliverabilityToolsMenuItem.update();
                     } else {
                         clonedMenuItem = menu.items.items[0].cloneConfig();
@@ -990,15 +982,13 @@ APP.overrideSuperballMenuItems = function (restoreEmailInsightsMenuItem) {
                         clonedMenuItem.setIconCls("mki3-mail-sealed-svg");
                         clonedMenuItem.href = mktoEmailDeliverabilityToolsLink;
                         clonedMenuItem.hrefTarget = "_blank";
-                        clonedMenuItem.onclick = function () {
-                            APP.heapTrack("track", {
-                                name: "Deliverability Tools",
-                                assetName: "Demo Account",
-                                assetType: "Home Tile"
-                            });
-                        };
+                        clonedMenuItem.setAttribute("onclick", 'APP.heapTrack("track", {name: "Deliverability Tools", assetName: "Demo Account", assetType: "Home Tile"});');
                         clonedMenuItem.update();
                         menu.add(clonedMenuItem);
+                    }
+                    
+                    if (seoMenuItem) {
+                        seoMenuItem.setAttribute("onclick", 'APP.heapTrack("track", {name: "SEO", assetName: "Home", assetType: "Home Tile"});');
                     }
                 }
             }
@@ -10345,8 +10335,8 @@ APP.trackNodeClick = function () {
 APP.heapTrack = function (action, event) {
     var isHeapAnalytics = window.setInterval(function () {
             if (typeof(heap) !== "undefined"
-                 && heap) {
-                //            console.log("Marketo App > Loaded: Heap Analytics");
+                 && heap
+                 && heap.loaded) {
                 
                 window.clearInterval(isHeapAnalytics);
                 
@@ -10396,15 +10386,15 @@ APP.heapTrack = function (action, event) {
                          && MktPage.savedState
                          && MktPage.savedState.custPrefix) {
                         if (MktPage.savedState.custPrefix == mktoAccountString106) {
-                            heap.addUserProperties({
+                            heap.addEventProperties({
                                 Environment: "Internal"
                             });
                         } else if (MktPage.savedState.custPrefix == mktoAccountString106d) {
-                            heap.addUserProperties({
+                            heap.addEventProperties({
                                 Environment: "Partner"
                             });
                         } else if (MktPage.savedState.custPrefix == mktoAccountStringMaster) {
-                            heap.addUserProperties({
+                            heap.addEventProperties({
                                 Environment: "Master"
                             });
                         }

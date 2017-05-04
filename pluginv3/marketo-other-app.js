@@ -12,10 +12,7 @@
 var URL_PATH = "m3-dev",
 devExtensionId = "dokkjhbgengdlccldgjnbilajdbjlnhm",
 prodExtensionId = "onibnnoghllldiecboelbpcaeggfiohl",
-extensionId = devExtensionId,
-prodHeapEnv = "3521051524",
-devHeapEnv = "3020587545",
-heapEnv = devHeapEnv; {}
+extensionId = devExtensionId; {}
 console.log("Marketo Other App > Running");
 
 /**************************************************************************************
@@ -141,22 +138,17 @@ APP.webRequest = function (url, params, method, async, responseType, callback) {
  *
  **************************************************************************************/
 
-APP.heapIdentify = function (env) {
+APP.heapIdentify = function () {
     var isHeapAnalytics = window.setInterval(function () {
             if (typeof(heap) !== "undefined"
                  && heap
                  && heap.loaded
                  && heap.identify
-                 && heap.addUserProperties) {
+                 && heap.addUserProperties
+                 && heap.addEventProperties) {
                 
                 window.clearInterval(isHeapAnalytics);
                 var identify;
-                
-                if (env) {
-                    heap.load(env, {
-                        forceSSL: true
-                    });
-                }
                 
                 identify = function (userId, userName, roleSubstring, subscriptionFriendlyName, accountString, customerName) {
                     var oneLoginEmail = APP.getCookie("onelogin_email"),
@@ -340,10 +332,8 @@ chrome.runtime.sendMessage(extensionId, {
     if (response
          && response.isMktoLive
          && !response.isAdmin) {
-        console.log("Marketo Other App > checkMktoCookie Msg > Heap Tracking Enabled");
-        if (window.location.hostname == mktoLiveSeoHostname) {
-            APP.heapIdentify(heapEnv);
-        } else {
+        if (window.location.hostname != mktoLiveSeoHostname) {
+            console.log("Marketo Other App > checkMktoCookie Msg > Heap Tracking Enabled");
             APP.loadScript(HEAP_ANALYTICS_SCRIPT_LOCATION);
             APP.heapIdentify();
         }
