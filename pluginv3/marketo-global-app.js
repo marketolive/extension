@@ -76,9 +76,10 @@ isMktoPageGlobal = window.setInterval(function () {
             
             var accountString = MktPage.savedState.custPrefix,
             mktoDemoAccountMatch = "^scdynamics1$|^mktodemoaccount3[0-9][0-9]$|^mktodemoaccount232$|^mktodemoaccount264$|^mktodemoinfor01$",
-            mktoAccountStringQe = "globalsales",
-            mktoAccountStringsMatch106 = "^mktodemoaccount106$|^mktodemoaccount106d$",
-            mktoAccountStringsMatch = mktoAccountStringsMatch106 + "|^mktodemolivemaster$|^" + mktoAccountStringQe + "$",
+            mktoAccountStringsMatch106 = "^(mktodemoaccount106|mktodemoaccount106d)$",
+            mktoAccountStringsMatch106andMaster = "^(mktodemoaccount106|mktodemoaccount106d|mktodemolivemaster)$",
+            mktoAccountStringsMatch106andQe = "^(mktodemoaccount106|mktodemoaccount106d|globalsales)$",
+            mktoAccountStringsMatch = "^(mktodemoaccount106|mktodemoaccount106d|mktodemolivemaster|globalsales)$",
             mktoAppDomain = "^https:\/\/app-[a-z0-9]+\.marketo\.com",
             mktoDesignerDomain = "^https:\/\/[a-z0-9]+-[a-z0-9]+\.marketodesigner\.com",
             mktoWizardDomain = mktoAppDomain + "/m#",
@@ -89,14 +90,17 @@ isMktoPageGlobal = window.setInterval(function () {
                 
                 loadScript(MARKETO_LIVE_APP_SCRIPT_LOCATION);
                 
-                if (accountString.search(mktoAccountStringsMatch106) != -1) {
+                if (accountString.search(mktoAccountStringsMatch106andMaster) != -1) {
                     loadScript(HEAP_ANALYTICS_SCRIPT_LOCATION);
                 }
                 
-                if (accountString.search(mktoAccountStringsMatch106 + "|^" + mktoAccountStringQe + "$") != -1
+                if (accountString.search(mktoAccountStringsMatch106) != -1) {
+                    loadScript(POD_SCRIPT_LOCATION);
+                }
+                
+                if (accountString.search(mktoAccountStringsMatch106andQe) != -1
                      && currentUrl.search(mktoWizardDomain) == -1
                      && currentUrl.search(mktoDesignerDomain) == -1) {
-                    loadScript(POD_SCRIPT_LOCATION);
                     loadScript(DASHBOARD_SCRIPT_LOCATION);
                 }
             } else if (accountString.search(mktoDemoAccountMatch) != -1) {

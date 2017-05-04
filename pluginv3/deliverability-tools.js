@@ -5,8 +5,8 @@ console.log("Deliverability > Running");
  *  This module contains all of the functionality needed for preventing unwanted
  *  manipulation of the 250ok app. It handles the login process to ensure that users
  *  are entered into the correct subscription, and it hides all of the administrative
- *  buttons inside the GUI. This module is loaded by the marketoLive plugin on the 
- *  250ok domain. Since the 250ok app is a website and not a single page web-app, 
+ *  buttons inside the GUI. This module is loaded by the marketoLive plugin on the
+ *  250ok domain. Since the 250ok app is a website and not a single page web-app,
  *  this module needs to be loaded on every page. Instead of using display: hidden,
  *  the functions remove DOM elements from the page altogether. This is to prevent
  *  a savvy user from turning the settings menu back on for example.
@@ -17,10 +17,49 @@ console.log("Deliverability > Running");
  *
  **************************************************************************************/
 
-var DELIVERABILITY = DELIVERABILITY || {};
+var currentUrl = window.location.href,
+userId = "marketolive@marketo.com",
+
+DELIVERABILITY = DELIVERABILITY || {};
 
 /**************************************************************************************
- *  
+ *
+ *  This function issues an HTTP request.
+ *
+ *  @Author Brian Fisher
+ *
+ *  @function
+ *
+ *  @param {String} url - The HTTP request URL.
+ *  @param {String} params - The parameters to pass in the body of the request.
+ *  @param {String} method - The HTTP request method (e.g. GET, POST, PATCH).
+ *  @param {String} responseType - The type of the response (e.g. document, json, text).
+ *  @param {Function} callback - The callback function.
+ *
+ **************************************************************************************/
+
+DELIVERABILITY.webRequest = function (url, params, method, async, responseType, callback) {
+    console.log("Web Request > " + url + "\n" + params);
+    var xmlHttp = new XMLHttpRequest(),
+    result;
+    xmlHttp.onreadystatechange = function () {
+        if (callback
+             && xmlHttp.readyState == 4
+             && xmlHttp.status == 200)
+            result = callback(xmlHttp.response);
+    }
+    if (async
+         && xmlHttp.responseType) {
+        xmlHttp.responseType = responseType;
+    }
+    xmlHttp.open(method, url, async); // true for asynchronous
+    xmlHttp.setRequestHeader("Content-type", "application/json; charset=utf-8");
+    xmlHttp.send(params);
+    return result;
+};
+
+/**************************************************************************************
+ *
  *  This function automatically fills out the 250ok login form and clicks submit.
  *
  *  @Author Andy
@@ -39,68 +78,10 @@ DELIVERABILITY.login = function () {
     // This needs to change if another button is ever added to the login
     // page. Currently, the submit button is the only one.
     $("button")[0].click();
-}
+};
 
 /**************************************************************************************
- *  
- *  This function removes the settings menu from the page, so that users cannot
- *  change the administrative controls on the account. This function should be called
- *  on all 250ok pages.
  *
- *  @Author Andy
- *
- *  @function
- *
- **************************************************************************************/
-
-DELIVERABILITY.removeSettingsMenu = function () {
-    console.log("Deliverability > Removing: Settings Menu");
-
-    $(".dropdown").each(function () {
-        $(this).remove();
-    });
-}
-
-/**************************************************************************************
- *  
- *  This function removes the create test button from the Design Informant page. The 
- *  button is on the main page and not inside of the individual assets. This function 
- *  should only be called in the /app/design-informant/ section of the app.
- *
- *  @Author Andy
- *
- *  @function
- *
- **************************************************************************************/
-
-DELIVERABILITY.removeCreateTestButton = function () {
-    console.log("Deliverability > Removing: Create Test Button");
-    
-    $("#tour-design-add-anchor").remove();
-}
-
-/**************************************************************************************
- *  
- *  This function removes the delete button from the Inbox Informant page. The app
- *  toggles the display of this button depending on if an inbox is selected or not. 
- *  Currently, removing the DOM element altogether does not result in errors in the 
- *  JS console. This function should only be called in the /app/inbox-informant/ section
- *  of the app.
- *
- *  @Author Andy
- *
- *  @function
- *
- **************************************************************************************/
-
-DELIVERABILITY.removeInboxDeleteButton = function () {
-    console.log("Deliverability > Removing: Inbox Delete Button");
-
-    $("#btndelete").remove();
-}
-
-/**************************************************************************************
- *  
  *  This function is a generalization of some of the other functions. For buttons
  *  without ids, they have unique property values. The strategy is to create as specific
  *  of a selector as possible, loop through the elements, and search for the desired
@@ -109,17 +90,17 @@ DELIVERABILITY.removeInboxDeleteButton = function () {
  *  @Author Andy
  *
  *  @function
- *  
- *  @param buttons {array} -    This is the array of DOM elements that is returned 
- *                              by the query. The functions in this module will 
+ *
+ *  @param buttons {array} -    This is the array of DOM elements that is returned
+ *                              by the query. The functions in this module will
  *                              use something to the effect of $(".class").
- *  @param property {string} -  The property name to search the buttons array for. 
- *  @param target {string} -    The property value to search the buttons array for.                            
+ *  @param property {string} -  The property name to search the buttons array for.
+ *  @param target {string} -    The property value to search the buttons array for.
  *
  **************************************************************************************/
 
-DELIVERABILITY.removeGenericButton = function (buttons, property, target) {    
-    // If buttons is empty, than the selector must be mmalformed.
+DELIVERABILITY.removeGenericButton = function (buttons, property, target) {
+    // If buttons is empty, than the selector must be malformed.
     if (buttons.length == 0) {
         console.log("Deliverability > Error: removeGenericButton() received an empty selector.");
         return;
@@ -128,111 +109,92 @@ DELIVERABILITY.removeGenericButton = function (buttons, property, target) {
     // There is no break inside the loop because some pages have multiple
     // buttons that need to be deleted.
     for (var ii = 0; ii < buttons.length; ++ii) {
-        if ($(buttons[ii]).attr(property) == null) {
-            continue;
-        }
-        else if ($(buttons[ii]).attr(property).search(target) != -1) {
+        if (property
+             && target) {
+            if ($(buttons[ii]).attr(property) == null) {
+                continue;
+            } else if ($(buttons[ii]).attr(property).search(target) != -1) {
+                $(buttons[ii]).remove();
+            }
+        } else {
             $(buttons[ii]).remove();
         }
     }
-}
+};
 
 /**************************************************************************************
- *  
- *  This function removes the delete buttons from a campaign's page. The button
- *  only appears if you click on one of the checkboxes. This function should only 
- *  be called in the /app/inbox-informant/campaign/ section of the app.
  *
- *  @Author Andy
+ *  This function removes delete, save, and update buttons from all locations within
+ *  250ok. Currently, removing the DOM element altogether does not result in errors in
+ *  the JS console.
+ *
+ *  @Author Brian Fisher
  *
  *  @function
  *
  **************************************************************************************/
 
-DELIVERABILITY.removeInboxDrillDownDeleteButtons = function () {
-    console.log("Deliverability > Removing: Campaign Delete Buttons");
-
-    DELIVERABILITY.removeGenericButton($("button"), "value", "delete");
-}
+DELIVERABILITY.removeDeleteButtons = function () {
+    console.log("Deliverability > Removing: Delete Buttons");
+    
+    $("#btndelete").remove();
+    DELIVERABILITY.removeGenericButton($(".action_copy"));
+    DELIVERABILITY.removeGenericButton($(".action_delete"));
+    DELIVERABILITY.removeGenericButton($(".btn.copy"));
+    DELIVERABILITY.removeGenericButton($(".btn.delete"));
+    DELIVERABILITY.removeGenericButton($(".btn.btn-success"), "value", /(save|update|create|upload|import)/i);
+    DELIVERABILITY.removeGenericButton($("button"), "value", /delete/i);
+    DELIVERABILITY.removeGenericButton($(".btn"), "onclick", "^return confirm\\(");
+    //DELIVERABILITY.removeGenericButton($(".btn"), "href", /action=delete/i);
+};
 
 /**************************************************************************************
- *  
- *  This function removes the delete button from the Design Informant page. The button
- *  only appears if you click on a specific design. This function should only be called 
- *  in the /app/design-informant/ section of the app.
  *
- *  @Author Andy
+ *  This function removes create, save, and add buttons from all locations within
+ *  250ok. Currently, removing the DOM element altogether does not result in errors in
+ *  the JS console.
+ *
+ *  @Author Brian Fisher
  *
  *  @function
  *
  **************************************************************************************/
 
-DELIVERABILITY.removeDesignDeleteButton = function () {
-    console.log("Deliverability > Removing: Design Delete Button");
-
-    DELIVERABILITY.removeGenericButton($(".btn.btn-default.pull-right.vertspacerx2.spacerx2"), "href", "action=delete");
-}
-
-/**************************************************************************************
- *  
- *  This function removes the profiles button from the Inbox Informant page. This function 
- *  should only be called in the /app/inbox-informant/ section of the app.
- *
- *  @Author Andy
- *
- *  @function
- *
- **************************************************************************************/
-
-DELIVERABILITY.removeManageProfilesButton = function () {
-    console.log("Deliverability > Removing: Manage Profiles Button");
-
-    DELIVERABILITY.removeGenericButton($(".btn.btn-sm.btn-success.vertspacerx2.spacer"), "href", "/app/inbox-informant/profiles");
-}
+DELIVERABILITY.removeSubmitButtons = function () {
+    console.log("Deliverability > Removing: Submit Buttons");
+    
+    $("#add_widget").remove();
+    $("#new_dashboard").remove();
+    $("#change_dashboard").remove();
+    $("#create-campaign-anchor").remove();
+    $("#saveFilters").remove();
+    $("#tour-design-add-anchor").remove();
+    $("#create_alert").remove();
+};
 
 /**************************************************************************************
- *  
- *  This function removes the save button from the Reports page. The button only appears
- *  on the custom report builder. This function should only be called in the 
- *  /app/reports/report/custom/build section of the app.
  *
- *  @Author Andy
- *
- *  @function
- *
- **************************************************************************************/
-
-DELIVERABILITY.removeReportSaveButton = function () {
-    console.log("Deliverability > Removing: Run and Save Button");
-
-    DELIVERABILITY.removeGenericButton($(".btn.btn-success"), "value", "Run and Save");
-}
-
-/**************************************************************************************
- *  
  *  Main
  *
  **************************************************************************************/
 
-currentUrl = window.location.href;
-DELIVERABILITY.removeSettingsMenu();
-
-if (currentUrl.search("^https:\/\/250ok.com\/login$") != -1) {
+if (currentUrl.search("^https:\/\/250ok\.com\/login") != -1) {
     DELIVERABILITY.login();
-}
-else if (currentUrl.search("\/app\/design-informant$") != -1) {
-    DELIVERABILITY.removeCreateTestButton();
-}
-else if (currentUrl.search("\/app\/design-informant\/[0-9a-zA-Z]+$") != -1) {
-    DELIVERABILITY.removeDesignDeleteButton();
-}
-else if (currentUrl.search("\/app\/inbox-informant$") != -1) {
-    DELIVERABILITY.removeInboxDeleteButton();
-    DELIVERABILITY.removeManageProfilesButton();
-}
-else if (currentUrl.search("app\/inbox-informant\/campaign\/[0-9a-zA-Z]+$") != -1) {
-    DELIVERABILITY.removeInboxDrillDownDeleteButtons();
-}
-else if(currentUrl.search("\/app\/reports\/report\/custom\/build$") != -1) {
-    DELIVERABILITY.removeReportSaveButton();
+} else if ($("#email").length == 1) {
+    if ($("#email")[0].value == userId) {
+        DELIVERABILITY.removeDeleteButtons();
+        DELIVERABILITY.removeSubmitButtons();
+    }
+} else {
+    DELIVERABILITY.webRequest('/app/account', null, 'GET', true, 'document', function (response) {
+        var el = document.createElement("html"),
+        email;
+        
+        el.innerHTML = response;
+        email = el.querySelector("#email").value;
+        if (email == userId) {
+            DELIVERABILITY.removeDeleteButtons();
+            DELIVERABILITY.removeSubmitButtons();
+        }
+    });
 }

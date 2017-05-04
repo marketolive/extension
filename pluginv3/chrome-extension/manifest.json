@@ -47,9 +47,19 @@
             "*://www.marketolive-dev.com/*",
             "*://verticals.marketolive.com/*",
             "*://verticals-dev.marketolive.com/*",
+            "*://pages.marketolive.com/*",
+            "*://pages-dev.marketolive.com/*",
             "https://marketo.onelogin.com/client/apps",
             "https://app-sjdemo1.marketo.com/*",
-            "https://app-sjp.marketo.com/*"
+            "https://app-sjp.marketo.com/*",
+            "https://na-sjdemo1.marketodesigner.com/*",
+            "https://na-sjp.marketodesigner.com/*",
+            "https://sjrtp3.marketo.com/*",
+            "https://sjrtp1.marketo.com/*",
+            "https://sj-ee-api.marketo.com/*",
+            "https://sjrcademo1.marketo.com/*",
+            "https://sjrca02.marketo.com/*",
+            "https://seo.marketo.com/*"
         ]
     },
     "icons": {
@@ -58,7 +68,7 @@
         "48": "images/icon.png"
     },
     "permissions": [
-        "management", "storage", "webRequest", "webRequestBlocking", "webNavigation", "tabs", "cookies", "activeTab", "notifications",
+        "management", "storage", "webRequest", "webRequestBlocking", "webNavigation", "tabs", "cookies", "activeTab", "notifications", "browsingData",
         "*://*.marketo.com/*",
         "*://*.marketodesigner.com/*",
         "*://pages.marketolive.com/*",
@@ -80,5 +90,5 @@
     "author": "Marketo Demo Services",
     "name": "MarketoLive",
     "description": "This extension is for Marketo employees and partners who have access to the MarketoLive demo environment.",
-    "version": "5.0.5"
+    "version": "5.1.0"
 }
