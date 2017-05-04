@@ -43,6 +43,7 @@ window.onload = function () {
     tags = document.getElementsByClassName("link"),
     company = document.getElementById("name-entered"),
     submit = document.getElementById("company-submit"),
+    clearCache = document.getElementById("clear-cache"),
     privilegesToggle = document.getElementById("privilegesToggle"),
     saveEditsToggle = document.getElementById("saveEditsToggle"),
     clear = document.getElementById("clear-submit"),
@@ -262,6 +263,18 @@ window.onload = function () {
             settingsOpen = false;
             document.getElementById("settings-container").style.display = "none";
         }
+    };
+    
+    clearCache.onclick = function () {
+        chrome.browsingData.removeCache({since: 0}, function () {
+            var clearCacheText = document.getElementById("clear-cache-text");
+            
+            clearCacheText.innerText = "Cache Cleared";
+            setTimeout(function () {
+                window.close();
+                clearCacheText.innerText = "Clear Cache";
+            }, 1100);
+        });
     };
     
     clear.onclick = function () {
