@@ -12,7 +12,10 @@
 var URL_PATH = "m3-dev",
 devExtensionId = "dokkjhbgengdlccldgjnbilajdbjlnhm",
 prodExtensionId = "onibnnoghllldiecboelbpcaeggfiohl",
-extensionId = devExtensionId; {}
+extensionId = devExtensionId,
+prodHeapEnv = "3521051524",
+devHeapEnv = "3020587545",
+heapEnv = dev; {}
 console.log("Marketo Other App > Running");
 
 /**************************************************************************************
@@ -138,7 +141,7 @@ APP.webRequest = function (url, params, method, async, responseType, callback) {
  *
  **************************************************************************************/
 
-APP.heapIdentify = function () {
+APP.heapIdentify = function (env) {
     var isHeapAnalytics = window.setInterval(function () {
             if (typeof(heap) !== "undefined"
                  && heap
@@ -148,6 +151,12 @@ APP.heapIdentify = function () {
                 
                 window.clearInterval(isHeapAnalytics);
                 var identify;
+                
+                if (env) {
+                    heap.load(env, {
+                        forceSSL: true
+                    });
+                }
                 
                 identify = function (userId, userName, roleSubstring, subscriptionFriendlyName, accountString, customerName) {
                     var oneLoginEmail = APP.getCookie("onelogin_email"),
@@ -208,51 +217,51 @@ APP.heapIdentify = function () {
                     
                     if (subscriptionFriendlyName) {
                         if (subscriptionFriendlyName == mktoLive106FriendlyName) {
-                            heap.addUserProperties({
+                            heap.addEventProperties({
                                 Environment: "Internal"
                             });
                         } else if (subscriptionFriendlyName == mktoLive106dFriendlyName) {
-                            heap.addUserProperties({
+                            heap.addEventProperties({
                                 Environment: "Partner"
                             });
                         } else if (subscriptionFriendlyName == mktoLiveMasterFriendlyName) {
-                            heap.addUserProperties({
+                            heap.addEventProperties({
                                 Environment: "Master"
                             });
                         }
-                        heap.addUserProperties({
+                        heap.addEventProperties({
                             app: subscriptionFriendlyName
                         });
                     } else if (accountString) {
                         if (accountString == mktoAccountString106) {
-                            heap.addUserProperties({
+                            heap.addEventProperties({
                                 Environment: "Internal",
                                 app: mktoLive106FriendlyName
                             });
                         } else if (accountString == mktoAccountString106d) {
-                            heap.addUserProperties({
+                            heap.addEventProperties({
                                 Environment: "Partner",
                                 app: mktoLive106dFriendlyName
                             });
                         } else if (accountString == mktoAccountStringMaster) {
-                            heap.addUserProperties({
+                            heap.addEventProperties({
                                 Environment: "Master",
                                 app: mktoLiveMasterFriendlyName
                             });
                         }
                     } else if (customerName) {
                         if (customerName == mktoLive106CustomerName) {
-                            heap.addUserProperties({
+                            heap.addEventProperties({
                                 Environment: "Internal",
                                 app: mktoLive106FriendlyName
                             });
                         } else if (customerName == mktoLive106dCustomerName) {
-                            heap.addUserProperties({
+                            heap.addEventProperties({
                                 Environment: "Partner",
                                 app: mktoLive106dFriendlyName
                             });
                         } else if (customerName == mktoLiveMasterCustomerName) {
-                            heap.addUserProperties({
+                            heap.addEventProperties({
                                 Environment: "Master",
                                 app: mktoLiveMasterFriendlyName
                             });
@@ -332,8 +341,12 @@ chrome.runtime.sendMessage(extensionId, {
          && response.isMktoLive
          && !response.isAdmin) {
         console.log("Marketo Other App > checkMktoCookie Msg > Heap Tracking Enabled");
-        APP.loadScript(HEAP_ANALYTICS_SCRIPT_LOCATION);
-        APP.heapIdentify();
+        if (window.location.hostname == mktoLiveSeoHostname) {
+            APP.heapIdentify(heapEnv);
+        } else {
+            APP.loadScript(HEAP_ANALYTICS_SCRIPT_LOCATION);
+            APP.heapIdentify();
+        }
     } else {
         console.log("Marketo Other App > checkMktoCookie Msg > Heap Tracking Disabled");
     }
