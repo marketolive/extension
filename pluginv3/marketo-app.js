@@ -211,7 +211,7 @@ APP.getCookie = function (cookieName) {
  **************************************************************************************/
 
 APP.webRequest = function (url, params, method, async, responseType, callback) {
-    console.log("Web Request > " + url + "\n" + params);
+    //console.log("Web Request > " + url + "\n" + params);
     var xmlHttp = new XMLHttpRequest(),
     result;
     xmlHttp.onreadystatechange = function () {
@@ -10295,7 +10295,397 @@ APP.discardDrafts = function (accountString, assetType) {
             }, 0);
         break;
     }
-}
+};
+
+/**************************************************************************************
+ *
+ *  This function returns the difference in days between two dates.
+ *
+ *  @Author Brian Fisher
+ *
+ *  @function
+ *
+ **************************************************************************************/
+
+APP.dateDiffInDays = function (a, b) {
+  var _MS_PER_DAY = 1000 * 60 * 60 * 24,
+  utc1 = Date.UTC(a.getFullYear(), a.getMonth(), a.getDate()),
+  utc2 = Date.UTC(b.getFullYear(), b.getMonth(), b.getDate());
+
+  return Math.floor((utc2 - utc1) / _MS_PER_DAY);
+};
+
+/**************************************************************************************
+ *
+ *  This function enables the user management functions only to be used for Admin.
+ *
+ *  @Author Brian Fisher
+ *
+ *  @function
+ *
+ **************************************************************************************/
+
+APP.applyUserMgmt = function () {
+    console.log("Marketo App > Executing: Applying User Management");
+    
+    /**************************************************************************************
+     *
+     *  This function returns the appropriate user roles for the given language and
+     *  instance.
+     *
+     *  @Author Brian Fisher
+     *
+     *  @function
+     *
+     *  @param {String} language - the languge of the user, English or 日本語（日本）
+     *
+     **************************************************************************************/
+    
+    APP.getUserRoles = function (language) {
+        var roles;
+        
+        switch (MktPage.savedState.custPrefix) {
+        case mktoAccountStringMaster:
+            if (language == "日本語（日本）") {
+                roles = '[{"id":1,"allzones":false,"zones":[]},{"id":1003,"allzones":true,"zones":[]},{"id":101,"allzones":false,"zones":[]},{"id":1001,"allzones":false,"zones":[]},{"id":102,"allzones":false,"zones":[]},{"id":1002,"allzones":true,"zones":[]},{"id":25,"allzones":false,"zones":[]},{"id":24,"allzones":false,"zones":[]},{"id":2,"allzones":false,"zones":[]},{"id":103,"allzones":false,"zones":[]}]';
+            } else {
+                roles = '[{"id":1,"allzones":false,"zones":[]},{"id":1003,"allzones":true,"zones":[]},{"id":101,"allzones":false,"zones":[]},{"id":1001,"allzones":false,"zones":[]},{"id":102,"allzones":false,"zones":[]},{"id":1002,"allzones":false,"zones":[{"id":1}]},{"id":25,"allzones":false,"zones":[]},{"id":24,"allzones":false,"zones":[]},{"id":2,"allzones":false,"zones":[]},{"id":103,"allzones":false,"zones":[]}]';
+            }
+            break;
+        case mktoAccountString106:
+            if (language == "日本語（日本）") {
+                roles = '[{"id":1,"allzones":false,"zones":[]},{"id":113,"allzones":true,"zones":[{"id":"43"},{"id":"145"},{"id":"188"},{"id":"170"},{"id":"166"},{"id":"181"},{"id":"39"},{"id":"100"},{"id":"25"},{"id":"1"},{"id":"2"},{"id":"187"},{"id":"174"},{"id":"51"},{"id":"59"},{"id":"175"},{"id":"176"},{"id":"179"},{"id":"177"},{"id":"178"},{"id":"155"},{"id":"183"},{"id":"101"},{"id":"184"},{"id":"172"},{"id":"169"},{"id":"15"},{"id":"14"},{"id":"189"},{"id":"104"},{"id":"136"},{"id":"153"},{"id":"185"},{"id":"134"},{"id":"186"},{"id":"95"},{"id":"18"},{"id":"173"}]},{"id":104,"allzones":false,"zones":[]},{"id":107,"allzones":false,"zones":[]},{"id":102,"allzones":false,"zones":[{"id":"172"}]},{"id":109,"allzones":false,"zones":[{"id":"1"},{"id":"174"},{"id":"175"},{"id":"176"},{"id":"184"},{"id":"185"},{"id":"186"},{"id":"173"}]},{"id":105,"allzones":false,"zones":[]},{"id":25,"allzones":false,"zones":[]},{"id":24,"allzones":false,"zones":[]},{"id":2,"allzones":false,"zones":[]}]';
+            } else {
+                roles = '[{"id":1,"allzones":false,"zones":[]},{"id":113,"allzones":true,"zones":[{"id":"43"},{"id":"145"},{"id":"188"},{"id":"170"},{"id":"166"},{"id":"181"},{"id":"39"},{"id":"100"},{"id":"25"},{"id":"1"},{"id":"2"},{"id":"187"},{"id":"174"},{"id":"51"},{"id":"59"},{"id":"175"},{"id":"176"},{"id":"179"},{"id":"177"},{"id":"178"},{"id":"155"},{"id":"183"},{"id":"101"},{"id":"184"},{"id":"172"},{"id":"169"},{"id":"15"},{"id":"14"},{"id":"189"},{"id":"104"},{"id":"136"},{"id":"153"},{"id":"185"},{"id":"134"},{"id":"186"},{"id":"95"},{"id":"18"},{"id":"173"}]},{"id":104,"allzones":false,"zones":[]},{"id":107,"allzones":false,"zones":[]},{"id":102,"allzones":false,"zones":[{"id":"172"}]},{"id":109,"allzones":false,"zones":[{"id":"1"},{"id":"174"},{"id":"175"},{"id":"176"},{"id":"184"},{"id":"185"},{"id":"186"}]},{"id":105,"allzones":false,"zones":[]},{"id":25,"allzones":false,"zones":[]},{"id":24,"allzones":false,"zones":[]},{"id":2,"allzones":false,"zones":[]}]';
+            }
+            break;
+        case mktoAccountString106d:
+            if (language == "日本語（日本）") {
+                roles = '[{"id":1,"allzones":false,"zones":[]},{"id":101,"allzones":false,"zones":[]},{"id":105,"allzones":false,"zones":[]},{"id":107,"allzones":false,"zones":[]},{"id":102,"allzones":false,"zones":[{"id":183}]},{"id":106,"allzones":false,"zones":[]},{"id":104,"allzones":false,"zones":[{"id":1},{"id":174},{"id":175},{"id":176},{"id":200},{"id":173}]},{"id":25,"allzones":false,"zones":[]},{"id":24,"allzones":false,"zones":[]},{"id":2,"allzones":false,"zones":[]},{"id":103,"allzones":false,"zones":[]}]';
+            } else {
+                roles = '[{"id":1,"allzones":false,"zones":[]},{"id":101,"allzones":false,"zones":[]},{"id":105,"allzones":false,"zones":[]},{"id":107,"allzones":false,"zones":[]},{"id":102,"allzones":false,"zones":[{"id":183}]},{"id":106,"allzones":false,"zones":[]},{"id":104,"allzones":false,"zones":[{"id":1},{"id":174},{"id":175},{"id":176},{"id":200}]},{"id":25,"allzones":false,"zones":[]},{"id":24,"allzones":false,"zones":[]},{"id":2,"allzones":false,"zones":[]},{"id":103,"allzones":false,"zones":[]}]';
+            }
+            break;
+        }
+        
+        return roles;
+    };
+    
+    /**************************************************************************************
+     *
+     *  This function invites a user, by default sending the invitation to marketodemo.
+     *
+     *  @Author Brian Fisher
+     *
+     *  @function
+     *
+     *  @param {Object} user - the user's information
+     *          (required) email, userId, firstName, lastName, role
+     *          (optional) directInvite - boolean, if true sends invite directly to user
+     *
+     **************************************************************************************/
+    
+    APP.inviteUser = function (user) {
+        var userId = user.userId.replace(/\+/, "%2B"),
+        firstName = user.firstName,
+        lastName = user.lastName,
+        email = user.email.replace(/\+/, "%2B"),
+        role = user.role,
+        message = '{{FirstName}} {{LastName}},<br><br>Welcome to Marketo!, Click this link to set your password and begin.<br><br>{{LoginToMarketoLink}}<br><br>Not sure where to start? Visit <a href="https://docs.marketo.com/display/DOCS/Getting+Started" target="_blank">Getting Started with Marketo page</a> for tutorials and other resources. You are already set up - dive right into Step 2!<br><br>Happy Marketing!',
+        roles = APP.getUserRoles(user.language);
+        
+        if (!user.directInvite) {
+            email = "marketodemo%2B" + userId.split("@")[0] + "@gmail.com";
+        }
+        console.log("Inviting User: " + email + ", " + userId + ", " + firstName + ", " + lastName + ' [' + role + ']');
+        APP.webRequest('/custAdmin/inviteUserSubmit', 'ajaxHandler=MktSession&mktReqUid=' + new Date().getTime() + Ext.id(null, ':') + '&cadEmail=' + email + '&cadUserId=' + userId + '&cadFirstName=' + firstName + '&cadLastName=' + lastName + ' [' + role + ']' + '&cadApiOnly=false' + '&cadRole=' + roles + '&cadMessage=' + message + '&xsrfId=' + MktSecurity.getXsrfId(), 'POST', true, 'json', function (response) {
+            console.log("Invited User");
+        });
+    };
+    
+    /**************************************************************************************
+     *
+     *  This function issues a Calendar license for the given user.
+     *
+     *  @Author Brian Fisher
+     *
+     *  @function
+     *
+     *  @param {String} userId - the ID of the user (aka Login ID)
+     *
+     **************************************************************************************/
+    
+    APP.issueCalendarLicense = function (userId) {
+        console.log("Issuing Calendar License: " + userId);
+        APP.webRequest('/calendar/issueLicensesSubmit', 'ajaxHandler=MktSession&mktReqUid=' + new Date().getTime() + Ext.id(null, ':') + '&userIds=["' + userId + '"]' + '&xsrfId=' + MktSecurity.getXsrfId(), 'POST', true, 'json', function (response) {
+            console.log("Issued Calendar License");
+        });
+    };
+    
+    /**************************************************************************************
+     *
+     *  This function revokes a Calendar license for the given user.
+     *
+     *  @Author Brian Fisher
+     *
+     *  @function
+     *
+     *  @param {String} userId - the ID of the user (aka Login ID)
+     *
+     **************************************************************************************/
+    
+    APP.revokeCalendarLicense = function (userId) {
+        console.log("Revoking Calendar License: " + userId);
+        APP.webRequest('/calendar/revokeLicensesSubmit', 'ajaxHandler=MktSession&mktReqUid=' + new Date().getTime() + Ext.id(null, ':') + '&userIds=["' + userId + '"]' + '&xsrfId=' + MktSecurity.getXsrfId(), 'POST', true, 'json', function (response) {
+            console.log("Revoked Calendar License");
+        });
+    };
+    
+    /**************************************************************************************
+     *
+     *  This function issues an ABM license for the given user.
+     *
+     *  @Author Brian Fisher
+     *
+     *  @function
+     *
+     *  @param {String} userId - the ID of the user (aka Login ID)
+     *
+     **************************************************************************************/
+    
+    APP.issueAbmLicense = function (userId) {
+        console.log("Issuing ABM License: " + userId);
+        APP.webRequest('/abm/issueLicensesSubmit', 'ajaxHandler=MktSession&mktReqUid=' + new Date().getTime() + Ext.id(null, ':') + '&userIds=["' + userId + '"]' + '&xsrfId=' + MktSecurity.getXsrfId(), 'POST', true, 'json', function (response) {
+            console.log("Issued ABM License");
+        });
+    };
+    
+    /**************************************************************************************
+     *
+     *  This function revokes an ABM license for the given user.
+     *
+     *  @Author Brian Fisher
+     *
+     *  @function
+     *
+     *  @param {String} userId - the ID of the user (aka Login ID)
+     *
+     **************************************************************************************/
+    
+    APP.revokeAbmLicense = function (userId) {
+        console.log("Revoking ABM License: " + userId);
+        APP.webRequest('/abm/revokeLicensesSubmit', 'ajaxHandler=MktSession&mktReqUid=' + new Date().getTime() + Ext.id(null, ':') + '&userIds=["' + userId + '"]' + '&xsrfId=' + MktSecurity.getXsrfId(), 'POST', true, 'json', function (response) {
+            console.log("Revoked ABM License");
+        });
+    };
+    
+    /**************************************************************************************
+     *
+     *  This function invites multiple users, by default sending the invitation to 
+     *  marketodemo.
+     *
+     *  @Author Brian Fisher
+     *
+     *  @function
+     *
+     *  @param [Array of {Object}] users - the users' information
+     *          (required) email, userId, firstName, lastName, role
+     *          (optional) directInvite - boolean, if true sends invite directly to user
+     *
+     **************************************************************************************/
+    
+    APP.inviteUsers = function (users) {
+        for (var ii = 0; ii < users.length; ii++) {
+            var user = users[ii];
+            
+            console.log("Inviting User (" + (ii+1) + "/" + users.length + ")");
+            APP.inviteUser(user);
+        }
+        
+        console.log("Finished Sending Invite User Requests");
+    };
+    
+    /**************************************************************************************
+     *
+     *  This function edits a user by resetting their information, importantly their roles
+     *  and email. Used to reset their email from marketodemo to their real email.
+     *
+     *  @Author Brian Fisher
+     *
+     *  @function
+     *
+     *  @param [Array of {Object}] users - the users' information
+     *          (required) email, userId, firstName, lastName, role
+     *
+     **************************************************************************************/
+    
+    APP.editUser = function (user) {
+        var userId = user.userId.replace(/\+/, "%2B"),
+        firstName = user.firstName,
+        lastName = user.lastName,
+        role = user.role,
+        newEmail = user.email.replace(/\+/, "%2B"),
+        id = user.id,
+        roles = APP.getUserRoles(user.language);
+        
+        console.log("Editing User: " + userId + ", " + firstName + ", " + lastName + ", " + newEmail);
+        APP.webRequest('/custAdmin/editUserSubmit', 'ajaxHandler=MktSession&mktReqUid=' + new Date().getTime() + Ext.id(null, ':') + '&cadUserId=' + userId + '&cadFirstName=' + firstName + '&cadLastName=' + lastName + ' [' + role + ']' + '&cadEmail=' + newEmail + '&cadRole=' + roles + '&cadId=' + id + '&cadApiOnly=false&cadIsDeviceAuthEnabled=0' + '&xsrfId=' + MktSecurity.getXsrfId(), 'POST', true, 'json', function (response) {
+            console.log("Edited User");
+        });
+    };
+    
+    /**************************************************************************************
+     *
+     *  This function id for editing new users in order to issue them licenses and reset
+     *  their email from marketodemo to their real email.
+     *
+     *  @Author Brian Fisher
+     *
+     *  @function
+     *
+     *  @param [Array of {Object}] users - the users' information
+     *          (required) email, userId, firstName, lastName, role
+     *
+     **************************************************************************************/
+     
+    APP.editNewUsers = function (users) {
+        var editUsers = [];
+        
+        for (var ii = 0; ii < users.length; ii++) {
+            var userId = users[ii].userId.replace(/\+/, "%2B"),
+            email = users[ii].email.replace(/\+/, "%2B");
+            
+            console.log("Editing New User (" + (ii+1) + "/" + users.length + ")");
+            APP.issueCalendarLicense(userId);
+            APP.issueAbmLicense(userId);
+            
+            if (email.search("^marketodemo") != -1) {
+                editUsers.push(users[ii]);
+            }
+        }
+        
+        if (editUsers.length > 0) {
+            console.log("Getting Users to Edit (" + editUsers.length + ") ...");
+            APP.webRequest('/custAdmin/getAllUsers', 'xsrfId=' + MktSecurity.getXsrfId(), 'POST', true, 'json', function (response) {
+                var result = JSON.parse(response).data,
+                num = 0;
+                
+                for (var ii = result.length - 1; ii >= 0; ii--) {
+                    for (var jj = 0; jj < editUsers.length; jj++) {
+                        if (result[ii].userid == editUsers[jj].userId.replace("%2B", "+")) {
+                            var user = editUsers[jj];
+                            user.id = result[ii].id;
+                            num += 1;
+                            
+                            console.log("Editing User : (" + num + "/" + editUsers.length + ")");
+                            APP.editUser(user);
+                            break;
+                        }
+                    }
+                }
+                
+                console.log("Finished Sending Edit User Requests");
+            });
+        }
+        
+        console.log("Finished Sending Edit New User Requests");
+    };
+    
+    /**************************************************************************************
+     *
+     *  This function deletes a given user.
+     *
+     *  @Author Brian Fisher
+     *
+     *  @function
+     *
+     *  @param {Integer} id - the server-side ID of the user
+     *
+     **************************************************************************************/
+    
+    APP.deleteUser = function (id) {
+        console.log("Deleting User");
+        APP.webRequest('/custAdmin/deleteUserSubmit', 'ajaxHandler=MktSession&mktReqUid=' + new Date().getTime() + Ext.id(null, ':') + '&cadUserId=' + id + '&cadIsUser=true' + '&xsrfId=' + MktSecurity.getXsrfId(), 'POST', true, 'json', function (response) {
+            console.log("Deleted User");
+        });
+    };
+    
+    /**************************************************************************************
+     *
+     *  This function deletes multiple given users.
+     *
+     *  @Author Brian Fisher
+     *
+     *  @function
+     *
+     *  @param [Array of {Object}] users - the users' information
+     *          (required) userId
+     *
+     **************************************************************************************/
+    
+    APP.deleteUsers = function (users) {
+        console.log("Getting User IDs to Delete ...");
+        APP.webRequest('/custAdmin/getAllUsers', 'xsrfId=' + MktSecurity.getXsrfId(), 'POST', true, 'json', function (response) {
+            var result = JSON.parse(response).data,
+            num = 0;
+            
+            for (var ii = 0; ii < result.length; ii++) {
+                var userId = result[ii].userid;
+                
+                for (var jj = 0; jj < users.length; jj++) {
+                    if (userId == users[jj].userId.replace("%2B", "+")) {
+                        var id = result[ii].id,
+                        name = result[ii].name;
+                        num += 1;
+                        
+                        console.log("Deleting User (" + num + "/" + users.length + "): " + userId + ", " + name);
+                        APP.deleteUser(id);
+                        break;
+                    }
+                }
+            }
+            
+            console.log("Finished Sending Delete User Requests");
+        });
+    };
+    
+    /**************************************************************************************
+     *
+     *  This function deletes users who have been inactive for more than the given number
+     *  of days.
+     *
+     *  @Author Brian Fisher
+     *
+     *  @function
+     *
+     *  @param {Integer} maxDaysSinceLastLogin - max days since last login, greater than 
+     *   which the user will be deleted
+     *
+     **************************************************************************************/
+    
+    APP.deleteInactiveUsers = function (maxDaysSinceLastLogin) {
+        console.log("Getting Inactive Users to Delete ...");
+        APP.webRequest('/custAdmin/getAllUsers', 'xsrfId=' + MktSecurity.getXsrfId(), 'POST', true, 'json', function (response) {
+            var result = JSON.parse(response).data;
+            
+            for (var ii = 0; ii < result.length; ii++) {
+                var lastLogin = result[ii].lastLogin,
+                daysSinceLastLogin = APP.dateDiffInDays(new Date(lastLogin), new Date());
+                
+                if (daysSinceLastLogin > maxDaysSinceLastLogin) {
+                    var id = result[ii].id,
+                    userId = result[ii].userid,
+                    name = result[ii].name;
+                    
+                    console.log("Deleting User: " + userId + ", " + name + ", " + daysSinceLastLogin + " days since last login");
+                    APP.deleteUser(id);
+                }
+            }
+            
+            console.log("Finished Sending Delete User Requests");
+        });
+    };
+};
 
 /**************************************************************************************
  *
@@ -10603,6 +10993,8 @@ var isMktPageApp = window.setInterval(function () {
                 
                 // Validating Demo Extension Check
                 APP.validateDemoExtensionCheck(true);
+                // Enables User Management Features
+                APP.applyUserMgmt();
                 // Enables Mass Clone Feature
                 APP.applyMassClone();
                 
