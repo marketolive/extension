@@ -10326,6 +10326,7 @@ APP.dateDiffInDays = function (a, b) {
  **************************************************************************************/
 
 APP.applyUserMgmt = function () {
+    console.log("Marketo App > Executing: Applying User Management");
     
     /**************************************************************************************
      *
