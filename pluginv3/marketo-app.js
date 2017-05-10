@@ -10547,20 +10547,34 @@ APP.applyUserMgmt = function () {
      **************************************************************************************/
      
     APP.editNewUsers = function (users) {
-        if (!user.directInvite) {
-            console.log("Getting Users to Edit (" + users.length + ") ...");
+        var editUsers = [];
+        
+        for (var ii = 0; ii < users.length; ii++) {
+            var userId = users[ii].userId.replace(/\+/, "%2B");
+            
+            console.log("Editing New User (" + (ii + 1) + "/" + users.length + ")");
+            APP.issueCalendarLicense(userId);
+            APP.issueAbmLicense(userId);
+            
+            if (!users[ii].directInvite) {
+                editUsers.push(users[ii]);
+            }
+        }
+        
+        if (editUsers.length > 0) {
+            console.log("Getting Users to Edit (" + editUsers.length + ") ...");
             APP.webRequest('/custAdmin/getAllUsers', 'xsrfId=' + MktSecurity.getXsrfId(), 'POST', true, 'json', function (response) {
                 var result = JSON.parse(response).data,
                 num = 0;
                 
                 for (var ii = result.length - 1; ii >= 0; ii--) {
-                    for (var jj = 0; jj < users.length; jj++) {
-                        if (result[ii].userid == users[jj].userId.replace("%2B", "+")) {
-                            var user = users[jj];
+                    for (var jj = 0; jj < editUsers.length; jj++) {
+                        if (result[ii].userid == editUsers[jj].userId.replace("%2B", "+")) {
+                            var user = editUsers[jj];
                             user.id = result[ii].id;
                             num += 1;
                             
-                            console.log("Editing User: (" + num + "/" + users.length + ")");
+                            console.log("Editing User: (" + num + "/" + editUsers.length + ")");
                             APP.editUser(user);
                             break;
                         }
@@ -10569,14 +10583,6 @@ APP.applyUserMgmt = function () {
                 
                 console.log("Finished Sending Edit User Requests");
             });
-        }
-            
-        for (var ii = 0; ii < users.length; ii++) {
-            var userId = users[ii].userId.replace(/\+/, "%2B");
-            
-            console.log("Editing New User (" + (ii + 1) + "/" + users.length + ")");
-            APP.issueCalendarLicense(userId);
-            APP.issueAbmLicense(userId);
         }
     };
     
