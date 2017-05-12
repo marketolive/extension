@@ -11085,6 +11085,31 @@ var isMktPageApp = window.setInterval(function () {
             
             if (currUrlFragment) {
                 if (currUrlFragment == mktoAccountBasedMarketingFragment) {
+                    var navItems = document.getElementsByClassName("x4-tab-center"),
+                    origNavItemOnClick;
+                    
+                    for (var ii = 0; ii < navItems.length; ii++) {
+                        var navButton = navItems[ii].parentNode.parentNode,
+                        navItem = navItems[ii].getElementsByClassName("x4-tab-inner");
+                        
+                        if (navItem.length > 0
+                             && navItem[0].innerHTML) {
+                            if (typeof(origNavItemOnClick) !== "function") {
+                                origNavItemOnClick = navButton.onclick;
+                            }
+                            navButton.onclick = function () {
+                                APP.heapTrack("addProp", {
+                                    area: "ABM",
+                                    assetType: APP.formatText(this.getElementsByClassName("x4-tab-inner")[0].innerHTML)
+                                });
+                                
+                                if (typeof(origNavItemOnClick) == "function") {
+                                    origNavItemOnClick.apply(this, arguments);
+                                }
+                            };
+                        }
+                    }
+                
                     if (document.getElementsByClassName("x4-tab-top-active").length > 0
                     && document.getElementsByClassName("x4-tab-top-active")[0].getElementsByClassName("x4-tab-inner").length > 0) {
                         APP.heapTrack("addProp", {
@@ -11198,33 +11223,63 @@ var isMktPageApp = window.setInterval(function () {
                 
                 switch (currCompFragment) {
                 case mktoAbmDiscoverMarketoCompaniesFragment:
-                    APP.heapTrack("addProp", {
-                        area: "ABM",
-                        assetType: "Discover Marketo Companies"
-                    });
-                case mktoAbmDiscoverCrmAccountsFragment:
-                    APP.heapTrack("addProp", {
-                        area: "ABM",
-                        assetType: "Discover CRM Accounts"
-                    });
-                case mktoAbmNamedAccountFragment:
-                    APP.heapTrack("addProp", {
-                        area: "ABM",
-                        assetType: "Named Account"
-                    });
-                case mktoAbmImportNamedAccountsFragment:
-                    console.log("Marketo App > Location: Account Based Marketing Areas");
+                    console.log("Marketo App > Location: ABM > Discover Marketo Companies");
                     APP.disableMenus();
                     APP.hideToolbarItems();
                     APP.disableFormSaveButtons();
                     APP.disableAdminSaveButtons();
-                    APP.heapTrack("addProp", {
-                        area: "ABM",
-                        assetType: "Import Named Accounts"
-                    });
                     APP.heapTrack("track", {
                         name: "Last Loaded",
                         assetName: "Page"
+                    });
+                    APP.heapTrack("addProp", {
+                        area: "ABM",
+                        assetType: "Discover Marketo Companies"
+                    });
+                    break;
+                case mktoAbmDiscoverCrmAccountsFragment:
+                    console.log("Marketo App > Location: ABM > Discover CRM Accounts");
+                    APP.disableMenus();
+                    APP.hideToolbarItems();
+                    APP.disableFormSaveButtons();
+                    APP.disableAdminSaveButtons();
+                    APP.heapTrack("track", {
+                        name: "Last Loaded",
+                        assetName: "Page"
+                    });
+                    APP.heapTrack("addProp", {
+                        area: "ABM",
+                        assetType: "Discover CRM Accounts"
+                    });
+                    break;
+                case mktoAbmNamedAccountFragment:
+                    console.log("Marketo App > Location: ABM > Named Account");
+                    APP.disableMenus();
+                    APP.hideToolbarItems();
+                    APP.disableFormSaveButtons();
+                    APP.disableAdminSaveButtons();
+                    APP.heapTrack("track", {
+                        name: "Last Loaded",
+                        assetName: "Page"
+                    });
+                    APP.heapTrack("addProp", {
+                        area: "ABM",
+                        assetType: "Named Account"
+                    });
+                    break;
+                case mktoAbmImportNamedAccountsFragment:
+                    console.log("Marketo App > Location: ABM > Import Named Accounts");
+                    APP.disableMenus();
+                    APP.hideToolbarItems();
+                    APP.disableFormSaveButtons();
+                    APP.disableAdminSaveButtons();
+                    APP.heapTrack("track", {
+                        name: "Last Loaded",
+                        assetName: "Page"
+                    });
+                    APP.heapTrack("addProp", {
+                        area: "ABM",
+                        assetType: "Import Named Accounts"
                     });
                     break;
                     

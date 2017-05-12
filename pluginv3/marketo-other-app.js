@@ -385,6 +385,33 @@ APP.heapTrack = function () {
         case mktoLiveRtpHostname.test(window.location.hostname):
             switch (true) {
             case mktoPredictiveContentPathname.test(window.location.pathname):
+                var navItems = document.getElementsByClassName("main-nav-item"),
+                origNavItemOnClick;
+                
+                for (var ii = 0; ii < navItems.length; ii++) {
+                    var navItem = navItems[ii].getElementsByTagName("a");
+                    
+                    if (navItem.length > 0
+                         && navItem[0].innerHTML) {
+                        if (typeof(origNavItemOnClick) !== "function") {
+                            origNavItemOnClick = navItem[0].onclick;
+                        }
+                        navItem[0].onclick = function () {
+                            event = {
+                                area: "Predictive Content",
+                                assetType: APP.formatText(this.innerHTML)
+                            };
+                            
+                            heap.addEventProperties(event);
+                            console.log("Marketo Other App > Adding: Heap Event Properties: " + JSON.stringify(event, null, 2));
+                            
+                            if (typeof(origNavItemOnClick) == "function") {
+                                origNavItemOnClick.apply(this, arguments);
+                            }
+                        };
+                    }
+                }
+                
                 if (document.getElementsByClassName("active").length > 0) {
                     event = {
                         area: "Predictive Content",
@@ -394,6 +421,7 @@ APP.heapTrack = function () {
                     heap.addEventProperties(event);
                 }
                 break;
+            
             case mktoWebPersonalizationPathname.test(window.location.pathname):
                 if (document.getElementsByClassName("page-title").length > 0) {
                     event = {
@@ -409,7 +437,7 @@ APP.heapTrack = function () {
         }
         
         if (event) {
-            console.log("Marketo App > Adding: Heap Event Properties: " + JSON.stringify(event, null, 2));
+            console.log("Marketo Other App > Adding: Heap Event Properties: " + JSON.stringify(event, null, 2));
         }
     });
 };
