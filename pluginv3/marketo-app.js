@@ -118,7 +118,8 @@ mktoOtherAssetsFragmentMatch = "^" + mktoMobilePushNotificationFragment + "|^" +
 mktoAbmDiscoverMarketoCompaniesFragment = "ABMDM",
 mktoAbmDiscoverCrmAccountsFragment = "ABMDC",
 mktoAbmNamedAccountFragment = "NA",
-mktoAbmFragmentMatch = "^" + mktoAbmDiscoverMarketoCompaniesFragment + "$|^" + mktoAbmDiscoverCrmAccountsFragment + "$|^" + mktoAbmNamedAccountFragment + "$",
+mktoAbmImportNamedAccountsFragment = "ABMIA",
+mktoAbmFragmentMatch = "^(" + mktoAbmDiscoverMarketoCompaniesFragment + "|" + mktoAbmDiscoverCrmAccountsFragment + "|" + mktoAbmNamedAccountFragment + "|" + mktoAbmImportNamedAccountsFragment + ")$",
 
 mktoEmailEditFragment = "EME",
 mktoEmailPreviewFragmentRegex = new RegExp("^EME[0-9]+&isPreview", "i"),
@@ -232,6 +233,32 @@ APP.webRequest = function (url, params, method, async, responseType, callback) {
     }
     xmlHttp.send(params);
     return result;
+};
+
+/**************************************************************************************
+ *
+ *  This function formats the given text by trimming and proper capitalization.
+ *
+ *  @Author Brian Fisher
+ *
+ *  @function
+ *
+ *  @param {String} text - The string to format.
+ *
+ **************************************************************************************/
+
+APP.formatText = function (text) {
+    var splitText = text.trim().split(" "),
+    formattedText = "";
+    
+    for (var ii = 0; ii < splitText.length; ii++) {
+        if (ii != 0) {
+            formattedText += " ";
+        }
+        formattedText += splitText[ii].charAt(0).toUpperCase() + splitText[ii].substring(1).toLowerCase();
+    }
+    
+    return formattedText;
 };
 
 /**************************************************************************************
@@ -10501,8 +10528,6 @@ APP.applyUserMgmt = function () {
             console.log("Inviting User (" + (ii+1) + "/" + users.length + ")");
             APP.inviteUser(user);
         }
-        
-        console.log("Finished Sending Invite User Requests");
     };
     
     /**************************************************************************************
@@ -10552,14 +10577,13 @@ APP.applyUserMgmt = function () {
         var editUsers = [];
         
         for (var ii = 0; ii < users.length; ii++) {
-            var userId = users[ii].userId.replace(/\+/, "%2B"),
-            email = users[ii].email.replace(/\+/, "%2B");
+            var userId = users[ii].userId.replace(/\+/, "%2B");
             
-            console.log("Editing New User (" + (ii+1) + "/" + users.length + ")");
+            console.log("Editing New User (" + (ii + 1) + "/" + users.length + ")");
             APP.issueCalendarLicense(userId);
             APP.issueAbmLicense(userId);
             
-            if (email.search("^marketodemo") != -1) {
+            if (!users[ii].directInvite) {
                 editUsers.push(users[ii]);
             }
         }
@@ -10577,7 +10601,7 @@ APP.applyUserMgmt = function () {
                             user.id = result[ii].id;
                             num += 1;
                             
-                            console.log("Editing User : (" + num + "/" + editUsers.length + ")");
+                            console.log("Editing User: (" + num + "/" + editUsers.length + ")");
                             APP.editUser(user);
                             break;
                         }
@@ -10587,8 +10611,6 @@ APP.applyUserMgmt = function () {
                 console.log("Finished Sending Edit User Requests");
             });
         }
-        
-        console.log("Finished Sending Edit New User Requests");
     };
     
     /**************************************************************************************
@@ -10934,6 +10956,10 @@ APP.heapTrack = function (action, event) {
                     }
                     }*/
                     break;
+                case "addProp":
+                    console.log("Marketo App > Adding: Heap Event Properties: " + JSON.stringify(event, null, 2));
+                    heap.addEventProperties(event);
+                    break;
                 }
             }
         }, 0);
@@ -11058,7 +11084,40 @@ var isMktPageApp = window.setInterval(function () {
             }
             
             if (currUrlFragment) {
-                if (currUrlFragment == mktoMyMarketoFragment) {
+                if (currUrlFragment == mktoAccountBasedMarketingFragment) {
+                    var navItems = document.getElementsByClassName("x4-tab-center"),
+                    origNavItemOnClick;
+                    
+                    for (var ii = 0; ii < navItems.length; ii++) {
+                        var navButton = navItems[ii].parentNode.parentNode,
+                        navItem = navItems[ii].getElementsByClassName("x4-tab-inner");
+                        
+                        if (navItem.length > 0
+                             && navItem[0].innerHTML) {
+                            if (typeof(origNavItemOnClick) !== "function") {
+                                origNavItemOnClick = navButton.onclick;
+                            }
+                            navButton.onclick = function () {
+                                APP.heapTrack("addProp", {
+                                    area: "ABM",
+                                    assetType: APP.formatText(this.getElementsByClassName("x4-tab-inner")[0].innerHTML)
+                                });
+                                
+                                if (typeof(origNavItemOnClick) == "function") {
+                                    origNavItemOnClick.apply(this, arguments);
+                                }
+                            };
+                        }
+                    }
+                
+                    if (document.getElementsByClassName("x4-tab-top-active").length > 0
+                    && document.getElementsByClassName("x4-tab-top-active")[0].getElementsByClassName("x4-tab-inner").length > 0) {
+                        APP.heapTrack("addProp", {
+                            area: "ABM",
+                            assetType: APP.formatText(document.getElementsByClassName("x4-tab-top-active")[0].getElementsByClassName("x4-tab-inner")[0].innerHTML)
+                        });
+                    }
+                } else if (currUrlFragment == mktoMyMarketoFragment) {
                     APP.overrideHomeTiles(restoreEmailInsights);
                     APP.heapTrack("track", {
                         name: "My Marketo",
@@ -11164,9 +11223,7 @@ var isMktPageApp = window.setInterval(function () {
                 
                 switch (currCompFragment) {
                 case mktoAbmDiscoverMarketoCompaniesFragment:
-                case mktoAbmDiscoverCrmAccountsFragment:
-                case mktoAbmNamedAccountFragment:
-                    console.log("Marketo App > Location: Account Based Marketing Areas");
+                    console.log("Marketo App > Location: ABM > Discover Marketo Companies");
                     APP.disableMenus();
                     APP.hideToolbarItems();
                     APP.disableFormSaveButtons();
@@ -11174,6 +11231,55 @@ var isMktPageApp = window.setInterval(function () {
                     APP.heapTrack("track", {
                         name: "Last Loaded",
                         assetName: "Page"
+                    });
+                    APP.heapTrack("addProp", {
+                        area: "ABM",
+                        assetType: "Discover Marketo Companies"
+                    });
+                    break;
+                case mktoAbmDiscoverCrmAccountsFragment:
+                    console.log("Marketo App > Location: ABM > Discover CRM Accounts");
+                    APP.disableMenus();
+                    APP.hideToolbarItems();
+                    APP.disableFormSaveButtons();
+                    APP.disableAdminSaveButtons();
+                    APP.heapTrack("track", {
+                        name: "Last Loaded",
+                        assetName: "Page"
+                    });
+                    APP.heapTrack("addProp", {
+                        area: "ABM",
+                        assetType: "Discover CRM Accounts"
+                    });
+                    break;
+                case mktoAbmNamedAccountFragment:
+                    console.log("Marketo App > Location: ABM > Named Account");
+                    APP.disableMenus();
+                    APP.hideToolbarItems();
+                    APP.disableFormSaveButtons();
+                    APP.disableAdminSaveButtons();
+                    APP.heapTrack("track", {
+                        name: "Last Loaded",
+                        assetName: "Page"
+                    });
+                    APP.heapTrack("addProp", {
+                        area: "ABM",
+                        assetType: "Named Account"
+                    });
+                    break;
+                case mktoAbmImportNamedAccountsFragment:
+                    console.log("Marketo App > Location: ABM > Import Named Accounts");
+                    APP.disableMenus();
+                    APP.hideToolbarItems();
+                    APP.disableFormSaveButtons();
+                    APP.disableAdminSaveButtons();
+                    APP.heapTrack("track", {
+                        name: "Last Loaded",
+                        assetName: "Page"
+                    });
+                    APP.heapTrack("addProp", {
+                        area: "ABM",
+                        assetType: "Import Named Accounts"
                     });
                     break;
                     
