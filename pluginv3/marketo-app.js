@@ -10957,6 +10957,7 @@ APP.heapTrack = function (action, event) {
                     }*/
                     break;
                 case "addProp":
+                    console.log("Marketo App > Adding: Heap Event Properties: " + JSON.stringify(event, null, 2));
                     heap.addEventProperties(event);
                     break;
                 }

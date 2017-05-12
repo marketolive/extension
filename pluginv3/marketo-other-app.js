@@ -364,34 +364,55 @@ APP.heapIdentify = function () {
     }, 0);
 };
 
+/**************************************************************************************
+ *
+ *  This function identifies the current user via Heap Analytics.
+ *
+ *  @Author Brian Fisher
+ *
+ *  @function
+ *
+ **************************************************************************************/
+
 APP.heapTrack = function () {
     APP.waitForHeap(function () {
-        var mktoLiveRtpHostname = new RegExp("^(" + mktoLiveMasterRtpHostname + "|" + mktoLive106RtpHostname + ")$", "i");
+        var mktoLiveRtpHostname = new RegExp("^(" + mktoLiveMasterRtpHostname + "|" + mktoLive106RtpHostname + ")$", "i"),
+        mktoPredictiveContentPathname = new RegExp(/^\/app\/predictive-app\/.*$/),
+        mktoWebPersonalizationPathname = new RegExp(/^\/app\/.*$/),
+        event;
         
         switch (true) {
         case mktoLiveRtpHostname.test(window.location.hostname):
             switch (true) {
-            case  /  ^  \  / app \  / predictive - app \  / . * $ / .test(window.location.pathname):
+            case mktoPredictiveContentPathname.test(window.location.pathname):
                 if (document.getElementsByClassName("active").length > 0) {
-                    heap.addEventProperties({
+                    event = {
                         area: "Predictive Content",
                         assetType: APP.formatText(document.getElementsByClassName("active")[0].innerHTML)
-                    });
+                    };
+                    
+                    heap.addEventProperties(event);
                 }
                 break;
-            case  /  ^  \  / app \  / . * $ / .test(window.location.pathname):
+            case mktoWebPersonalizationPathname.test(window.location.pathname):
                 if (document.getElementsByClassName("page-title").length > 0) {
-                    heap.addEventProperties({
+                    event = {
                         area: "Web Personalization",
                         assetType: APP.formatText(document.getElementsByClassName("page-title")[0].innerHTML)
-                    });
+                    };
+                    
+                    heap.addEventProperties(event);
                 }
                 break;
             }
             break;
         }
+        
+        if (event) {
+            console.log("Marketo App > Adding: Heap Event Properties: " + JSON.stringify(event, null, 2));
+        }
     });
-});
+};
 
 /**************************************************************************************
  *
