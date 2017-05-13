@@ -440,7 +440,7 @@ APP.heapTrack = function () {
             
         case mktoWebPersonalizationPathname.test(window.location.pathname):
             if (document.getElementsByClassName("page-title").length > 0
-                 && document.getElementsByClassName("page-title").innerHTML) {
+                 && document.getElementsByClassName("page-title")[0].innerHTML) {
                 APP.heapEventProps({
                     area: "Web Personalization",
                     assetType: APP.formatText(document.getElementsByClassName("page-title")[0].innerHTML)
