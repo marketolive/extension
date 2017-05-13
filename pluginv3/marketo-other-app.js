@@ -183,6 +183,26 @@ APP.waitForHeap = function (callback) {
 
 /**************************************************************************************
  *
+ *  This function adds event properties for the current event via Heap Analytics.
+ *
+ *  @Author Brian Fisher
+ *
+ *  @function
+ *
+ *  @param {Object} props - The properties to add to the current event.
+ *    {String} area, {String} assetType (recommended)
+ *
+ **************************************************************************************/
+
+APP.heapEventProps = function (props) {
+    APP.waitForHeap(function () {
+        heap.addEventProperties(props);
+        console.log("Marketo Other App > Adding: Heap Event Properties: " + JSON.stringify(props, null, 2));
+    });
+};
+
+/**************************************************************************************
+ *
  *  This function identifies the current user via Heap Analytics.
  *
  *  @Author Brian Fisher
@@ -366,7 +386,7 @@ APP.heapIdentify = function () {
 
 /**************************************************************************************
  *
- *  This function identifies the current user via Heap Analytics.
+ *  This function tracks the current event via Heap Analytics.
  *
  *  @Author Brian Fisher
  *
@@ -375,71 +395,122 @@ APP.heapIdentify = function () {
  **************************************************************************************/
 
 APP.heapTrack = function () {
-    APP.waitForHeap(function () {
-        var mktoLiveRtpHostname = new RegExp("^(" + mktoLiveMasterRtpHostname + "|" + mktoLive106RtpHostname + ")$", "i"),
-        mktoPredictiveContentPathname = new RegExp(/^\/app\/predictive-app\/.*$/),
-        mktoWebPersonalizationPathname = new RegExp(/^\/app\/.*$/),
-        event;
-        
+    var mktoLiveRtpHostname = new RegExp("^(" + mktoLiveMasterRtpHostname + "|" + mktoLive106RtpHostname + ")$", "i"),
+    mktoEmailInsightsHostname = new RegExp("^" + mktoLiveEmailInsightsHostname + "$", "i"),
+    mktoPredictiveContentPathname = new RegExp(/^\/app\/predictive-app\/.*$/),
+    mktoWebPersonalizationPathname = new RegExp(/^\/app\/.*$/);
+    
+    switch (true) {
+    case mktoLiveRtpHostname.test(window.location.hostname):
         switch (true) {
-        case mktoLiveRtpHostname.test(window.location.hostname):
-            switch (true) {
-            case mktoPredictiveContentPathname.test(window.location.pathname):
-                var navItems = document.getElementsByClassName("main-nav-item"),
-                origNavItemOnClick;
-                
-                for (var ii = 0; ii < navItems.length; ii++) {
-                    var navItem = navItems[ii].getElementsByTagName("a");
-                    
-                    if (navItem.length > 0
-                         && navItem[0].innerHTML) {
-                        if (typeof(origNavItemOnClick) !== "function") {
-                            origNavItemOnClick = navItem[0].onclick;
-                        }
-                        navItem[0].onclick = function () {
-                            event = {
-                                area: "Predictive Content",
-                                assetType: APP.formatText(this.innerHTML)
-                            };
-                            
-                            heap.addEventProperties(event);
-                            console.log("Marketo Other App > Adding: Heap Event Properties: " + JSON.stringify(event, null, 2));
-                            
-                            if (typeof(origNavItemOnClick) == "function") {
-                                origNavItemOnClick.apply(this, arguments);
-                            }
-                        };
-                    }
-                }
-                
-                if (document.getElementsByClassName("active").length > 0) {
-                    event = {
-                        area: "Predictive Content",
-                        assetType: APP.formatText(document.getElementsByClassName("active")[0].innerHTML)
-                    };
-                    
-                    heap.addEventProperties(event);
-                }
-                break;
+        case mktoPredictiveContentPathname.test(window.location.pathname):
+            var navItems = document.getElementsByClassName("main-nav-item"),
+            origNavItemOnClick;
             
-            case mktoWebPersonalizationPathname.test(window.location.pathname):
-                if (document.getElementsByClassName("page-title").length > 0) {
-                    event = {
-                        area: "Web Personalization",
-                        assetType: APP.formatText(document.getElementsByClassName("page-title")[0].innerHTML)
-                    };
+            for (var ii = 0; ii < navItems.length; ii++) {
+                var navItem = navItems[ii].getElementsByTagName("a");
+                
+                if (navItem.length > 0
+                     && navItem[0].innerHTML) {
+                    if (typeof(origNavItemOnClick) !== "function") {
+                        origNavItemOnClick = navItem[0].onclick;
+                    }
                     
-                    heap.addEventProperties(event);
+                    if (navItem[0].className.search(/ ?active ?/) != -1) {
+                        APP.heapEventProps({
+                            area: "Predictive Content",
+                            assetType: APP.formatText(navItem[0].innerHTML)
+                        });
+                    }
+                    
+                    navItem[0].onclick = function () {
+                        APP.heapEventProps({
+                            area: "Predictive Content",
+                            assetType: APP.formatText(this.innerHTML)
+                        });
+                        
+                        if (typeof(origNavItemOnClick) == "function") {
+                            origNavItemOnClick.apply(this, arguments);
+                        }
+                    };
                 }
-                break;
+            }
+            break;
+            
+        case mktoWebPersonalizationPathname.test(window.location.pathname):
+            if (document.getElementsByClassName("page-title").length > 0
+                 && document.getElementsByClassName("page-title")[0].innerHTML) {
+                APP.heapEventProps({
+                    area: "Web Personalization",
+                    assetType: APP.formatText(document.getElementsByClassName("page-title")[0].innerHTML)
+                });
             }
             break;
         }
+        break;
         
-        if (event) {
-            console.log("Marketo Other App > Adding: Heap Event Properties: " + JSON.stringify(event, null, 2));
-        }
-    });
+    case mktoEmailInsightsHostname.test(window.location.hostname):
+        window.setTimeout(function () {
+            var navItems = document.getElementsByClassName("main-nav-item"),
+            settingsIcon = document.getElementsByClassName("icon sliders"),
+            origNavItemOnClick,
+            origSettingsButtonOnClick;
+            
+            for (var ii = 0; ii < navItems.length; ii++) {
+                var navItem = navItems[ii].getElementsByTagName("a");
+                
+                if (navItem.length > 0
+                     && navItem[0].innerHTML) {
+                    if (typeof(origNavItemOnClick) !== "function") {
+                        origNavItemOnClick = navItem[0].onclick;
+                    }
+                    
+                    if (navItem[0].className.search(/ ?selected ?/) != -1) {
+                        APP.heapEventProps({
+                            area: "Email Insights",
+                            assetType: APP.formatText(navItem[0].innerHTML)
+                        });
+                    }
+                    
+                    navItem[0].onclick = function () {
+                        APP.heapEventProps({
+                            area: "Email Insights",
+                            assetType: APP.formatText(this.innerHTML)
+                        });
+                        
+                        if (typeof(origNavItemOnClick) == "function") {
+                            origNavItemOnClick.apply(this, arguments);
+                        }
+                    };
+                }
+            }
+            
+            if (settingsIcon.length > 0
+                 && settingsIcon[0].parentNode
+                 && settingsIcon[0].parentNode.parentNode
+                 && settingsIcon[0].parentNode.parentNode.className.search(/ ?main-nav-secondary-item ?/) != -1) {
+                var settingsButton = settingsIcon[0].parentNode.parentNode;
+                
+                if (typeof(origSettingsButtonOnClick) !== "function") {
+                    origSettingsButtonOnClick = settingsButton.onclick;
+                }
+                
+                settingsButton.onclick = function () {
+                    if (document.getElementsByClassName("settings").length == 0) {
+                        APP.heapEventProps({
+                            area: "Email Insights",
+                            assetType: "Settings"
+                        });
+                    }
+                    
+                    if (typeof(origSettingsButtonOnClick) == "function") {
+                        origSettingsButtonOnClick.apply(this, arguments);
+                    }
+                };
+            }
+        }, 1000);
+        break;
+    }
 };
 
 /**************************************************************************************
