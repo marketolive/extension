@@ -398,8 +398,7 @@ APP.heapTrack = function () {
     var mktoLiveRtpHostname = new RegExp("^(" + mktoLiveMasterRtpHostname + "|" + mktoLive106RtpHostname + ")$", "i"),
     mktoEmailInsightsHostname = new RegExp("^" + mktoLiveEmailInsightsHostname + "$", "i"),
     mktoPredictiveContentPathname = new RegExp(/^\/app\/predictive-app\/.*$/),
-    mktoWebPersonalizationPathname = new RegExp(/^\/app\/.*$/),
-    event;
+    mktoWebPersonalizationPathname = new RegExp(/^\/app\/.*$/);
     
     switch (true) {
     case mktoLiveRtpHostname.test(window.location.hostname):
@@ -451,63 +450,65 @@ APP.heapTrack = function () {
         break;
         
     case mktoEmailInsightsHostname.test(window.location.hostname):
-        var navItems = document.getElementsByClassName("main-nav-item"),
-        settingsIcon = document.getElementsByClassName("icon sliders"),
-        origNavItemOnClick,
-        origSettingsButtonOnClick;
-        
-        for (var ii = 0; ii < navItems.length; ii++) {
-            var navItem = navItems[ii].getElementsByTagName("a");
+        window.setTimeout = function () {
+            var navItems = document.getElementsByClassName("main-nav-item"),
+            settingsIcon = document.getElementsByClassName("icon sliders"),
+            origNavItemOnClick,
+            origSettingsButtonOnClick;
             
-            if (navItem.length > 0
-                 && navItem[0].innerHTML) {
-                if (typeof(origNavItemOnClick) !== "function") {
-                    origNavItemOnClick = navItem[0].onclick;
-                }
+            for (var ii = 0; ii < navItems.length; ii++) {
+                var navItem = navItems[ii].getElementsByTagName("a");
                 
-                if (navItem[0].className.search(/ ?selected ?/) != -1) {
-                    APP.heapEventProps({
-                        area: "Email Insights",
-                        assetType: APP.formatText(navItem[0].innerHTML)
-                    });
-                }
-                
-                navItem[0].onclick = function () {
-                    APP.heapEventProps({
-                        area: "Email Insights",
-                        assetType: APP.formatText(this.innerHTML)
-                    });
+                if (navItem.length > 0
+                     && navItem[0].innerHTML) {
+                    if (typeof(origNavItemOnClick) !== "function") {
+                        origNavItemOnClick = navItem[0].onclick;
+                    }
                     
-                    if (typeof(origNavItemOnClick) == "function") {
-                        origNavItemOnClick.apply(this, arguments);
+                    if (navItem[0].className.search(/ ?selected ?/) != -1) {
+                        APP.heapEventProps({
+                            area: "Email Insights",
+                            assetType: APP.formatText(navItem[0].innerHTML)
+                        });
+                    }
+                    
+                    navItem[0].onclick = function () {
+                        APP.heapEventProps({
+                            area: "Email Insights",
+                            assetType: APP.formatText(this.innerHTML)
+                        });
+                        
+                        if (typeof(origNavItemOnClick) == "function") {
+                            origNavItemOnClick.apply(this, arguments);
+                        }
+                    };
+                }
+            }
+            
+            if (settingsIcon.length > 0
+                 && settingsIcon[0].parentNode
+                 && settingsIcon[0].parentNode.parentNode
+                 && settingsIcon[0].parentNode.parentNode.className.search(/ ?main-nav-secondary-item ?/) != -1) {
+                var settingsButton = settingsIcon[0].parentNode.parentNode;
+                
+                if (typeof(origSettingsButtonOnClick) !== "function") {
+                    origSettingsButtonOnClick = settingsButton.onclick;
+                }
+                
+                settingsButton.onclick = function () {
+                    if (document.getElementsByClassName("settings").length == 0) {
+                        APP.heapEventProps({
+                            area: "Email Insights",
+                            assetType: "Settings"
+                        });
+                    }
+                    
+                    if (typeof(origSettingsButtonOnClick) == "function") {
+                        origSettingsButtonOnClick.apply(this, arguments);
                     }
                 };
             }
-        }
-        
-        if (settingsIcon.length > 0
-             && settingsIcon[0].parentNode
-             && settingsIcon[0].parentNode.parentNode
-             && settingsIcon[0].parentNode.parentNode.className.search(/ ?main-nav-secondary-item ?/) != -1) {
-            var settingsButton = settingsIcon[0].parentNode.parentNode;
-            
-            if (typeof(origSettingsButtonOnClick) !== "function") {
-                origSettingsButtonOnClick = settingsButton.onclick;
-            }
-            
-            settingsButton.onclick = function () {
-                if (document.getElementsByClassName("settings").length == 0) {
-                    APP.heapEventProps({
-                        area: "Email Insights",
-                        assetType: "Settings"
-                    });
-                }
-                
-                if (typeof(origSettingsButtonOnClick) == "function") {
-                    origSettingsButtonOnClick.apply(this, arguments);
-                }
-            };
-        }
+        }, 500);
         break;
     }
 };
