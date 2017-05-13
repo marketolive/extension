@@ -508,7 +508,7 @@ APP.heapTrack = function () {
                     }
                 };
             }
-        }, 500);
+        }, 1000);
         break;
     }
 };
