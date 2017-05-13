@@ -450,7 +450,7 @@ APP.heapTrack = function () {
         break;
         
     case mktoEmailInsightsHostname.test(window.location.hostname):
-        window.setTimeout = function () {
+        window.setTimeout(function () {
             var navItems = document.getElementsByClassName("main-nav-item"),
             settingsIcon = document.getElementsByClassName("icon sliders"),
             origNavItemOnClick,
