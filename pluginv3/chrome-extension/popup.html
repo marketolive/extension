@@ -22,6 +22,26 @@
       padding-bottom: 5px;
       border-bottom: 1px solid #ccc;
       }
+      #adWords-container {
+      display: none;
+      padding-top: 10px;
+      width: 100%;
+      margin-left: 8px;
+      }
+      .adWords-input {
+      width: 274px;
+      height: 26px;
+      font-size: 12px;
+      font-weight: 200;
+      padding-left: 5px;
+      border: none;
+      border-radius: 5px;
+      padding-bottom: 5px !important;
+      margin-bottom: 3px !important;
+      }
+      .adWords-submit, .adWords-clear {
+      margin-top: 5px !important;
+      }
       #status {
       /* avoid an excessively wide status text */
       width: 300px;
@@ -43,15 +63,16 @@
       float: left;
       margin-left: 15px;
       }
-      #gear-size, #help-size {
+      #gear-size, #help-size, #google-adwords-size {
       /* avoid an excessively wide status text */
       height: 25px;
       }
-      #settings, #help {
+      #settings, #help, #google-adwords {
       padding-top: 3px;
       height: 35px;
       float: right;
       margin-right: 15px;
+      cursor: pointer;
       }
       .option-container {
       display: inline-block;
@@ -65,7 +86,6 @@
       padding-top: 10px;
       width: 100%;
       margin-left: 8px;
-      cursor: pointer;
       }
       .option-image {
       height: 30px;
@@ -133,6 +153,7 @@
       border-bottom-right-radius: 5px;
       font-size: 10px;
       text-transform: uppercase;
+      cursor: pointer;
       }
       .company-inner-submit {
       padding-top: 8px;
@@ -148,6 +169,7 @@
       border-radius: 5px;
       font-size: 10px;
       text-transform: uppercase;
+      cursor: pointer;
       }
       .clear-container {
       margin-left: 5px;
@@ -176,7 +198,7 @@
       -o-transition: all 0.30s ease-in-out;
       outline: none;
       padding: 0px 0px 0px 5px;
-      border-bottom: 2px solid #DDDDDD;
+      border-bottom: 2px solid #ddd;
       }
       input[type=text]:focus {
       padding: 0px 0px 0px 17px;
@@ -201,6 +223,9 @@
       </div>
       <div id="settings">
         <img id="gear-size" src="">
+      </div>
+      <div id="google-adwords">
+        <img id="google-adwords-size" src="">
       </div>
     </div>
     <!-- TODO: change submit to an actual submit button so enter will work -->
@@ -247,7 +272,26 @@
         </div>
       </div>
     </div>
-    <div class="company-container">
+    <div id="adWords-container">
+      <input type="text" id="search-query" placeholder="Search Term..." class="adWords-input float-left">
+      <input type="text" id="ad-title" placeholder="Ad Title..." class="adWords-input float-left">
+      <input type="text" id="ad-link" placeholder="Ad Link..." class="adWords-input float-left">
+      <input type="text" id="ad-link-text" placeholder="Ad Link Text..." class="adWords-input float-lef">
+      <input type="text" id="ad-text" placeholder="Ad Main Text..." class="adWords-input float-left"><br>
+      <div id="adWords-submit" class="float-left clear-submit adWords-submit">
+        <div class="clear-inner-submit">
+          Submit
+        </div>
+      </div>
+      <div class="clear-container adWords-clear">
+        <div id="adWords-clear" class="clear-submit">
+          <div class="clear-inner-submit">
+            Clear
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="company-container" class="company-container">
       <input type="text" id="name-entered" placeholder="Company Website..." class="company-name float-left">
       <div id="company-submit" class="float-left company-submit">
         <div class="company-inner-submit">

@@ -39,6 +39,13 @@
         "matches": [
             "*://marketo.invisionapp.com/*"
         ]
+    }, {
+        "all_frames": false,
+        "js": ["google-search-content.js"],
+        "run_at": "document_end",
+        "matches": [
+            "*://www.google.com/search?dynamicAd=true&*"
+        ]
     } ],
     "externally_connectable": {
         "matches": [
@@ -80,7 +87,8 @@
         "*://verticals-dev.marketolive.com/*",
         "*://250ok.com/*",
         "*://marketo.invisionapp.com/*",
-        "*://marketo.onelogin.com/*"
+        "*://marketo.onelogin.com/*",
+        "*://www.google.com/search?dynamicAd=true&*"
     ],
     "content_security_policy": "script-src 'self' https://marketolive.com https://cdn.heapanalytics.com/js/heap-702959232.js https://cdn.heapanalytics.com/js/heap-2823746907.js; object-src 'self'",
     "web_accessible_resources": ["lib/*"],
@@ -90,6 +98,6 @@
     "author": "Marketo Demo Services",
     "name": "MarketoLive Dev",
     "description": "This is the development version of the MarketoLive extension and is used exclusively for testing purposes.",
-    "version": "5.1.0",
+    "version": "5.1.1",
     "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAja9ybscLdjRmaIrcadZDtKWCrcY4B3VsHSGNWfVbQGY8pnA3WybMQkJkMP/fnWKx23T289xylmVTwwiNCw0BWUVd5yL2Y/yCD/G8N6Fb1IznYNeSXC6yLFTfQtHVnfepGc2RvYs3dRwuhyH9vBu1iadNMWuQ2W/n9P1Jn94ZHEN6fnBqstRKrkMDHsodRsqfjgeyiSuIsc2QtahYuyCGxOHeSEFyEa/MFqjGzxU/6LcBY+h+jOX3myX6KS0cTRR7Lvno0d3iX+ZiS9zJzKOUM5ZZcyHsy5+Z0feyIDASAP7Wm+VTtUfB17Sjuzkt1mKQA4BKc07GnHObpaF+DTHjNwIDAQAB"
 }
