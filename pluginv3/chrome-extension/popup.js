@@ -19,6 +19,7 @@ window.onload = function () {
     // the alternative to using <img src="whatever">
     document.getElementById("logo-size").src = chrome.extension.getURL("images/marketo-live-image-purp.png");
     document.getElementById("gear-size").src = chrome.extension.getURL("images/popupsettings.png");
+    document.getElementById("google-adwords-size").src = chrome.extension.getURL("images/seo-white.png");
     document.getElementById("rtp").src = chrome.extension.getURL("images/rtp-image.png");
     //document.getElementById("ecommerce").src = chrome.extension.getURL("images/shopping-cart-purple.png");
     document.getElementById("mobile-moments").src = chrome.extension.getURL("images/marketo_moments.png");
@@ -48,10 +49,20 @@ window.onload = function () {
     saveEditsToggle = document.getElementById("saveEditsToggle"),
     clear = document.getElementById("clear-submit"),
     settings = document.getElementById("settings"),
+    adWords = document.getElementById("google-adwords"),
+    adSearchQuery = document.getElementById("search-query"),
+    adTitle = document.getElementById("ad-title"),
+    adLink = document.getElementById("ad-link"),
+    adLinkText = document.getElementById("ad-link-text"),
+    adText = document.getElementById("ad-text"),
+    adWordsSubmit = document.getElementById("adWords-submit"),
+    adWordsClear = document.getElementById("adWords-clear"),
     help = document.getElementById("help"),
     close = document.getElementById("close"),
-    settingsOpen = false,
-    helpOpen = false,
+    settingsOpen = adWordsOpen = helpOpen = false,
+    flashBorder,
+    validateFields,
+    submitOnEnter,
     openColorPicker,
     currToggleState,
     privilegesToggleCookieName = "toggleState",
@@ -125,6 +136,12 @@ window.onload = function () {
         "name" : companyImageResCookieName,
         "value" : "",
         "domain" : mktoDesignerUriDomain
+    },
+    googleSearchAdReplacement = {
+        url: "https://www.google.com/*",
+        name: "ad_info",
+        value: "",
+        domain: ".google.com"
     };
     
     background.getCookie(privilegesToggleCookieMarketo, function (cookie) {
@@ -213,6 +230,22 @@ window.onload = function () {
         }
     });
     
+    background.getCookie(googleSearchAdReplacement, function (cookie) {
+        if (cookie == null
+             || cookie.value == null) {
+            console.log("Popup > Getting: " + googleSearchAdReplacement.name + " Cookie for " + googleSearchAdReplacement.url + " = null");
+        } else {
+            console.log("Popup > Getting: " + cookie.name + " Cookie for " + cookie.domain + " = " + cookie.value);
+            var adSplit = cookie.value.split(",,");
+            
+            adSearchQuery.value = adSplit[0].replace(/\+/g, " ");
+            adTitle.value = adSplit[1];
+            adLink.value = adSplit[2];
+            adLinkText.value = adSplit[3];
+            adText.value = adSplit[4];
+        }
+    });
+    
     // getElementsByClassName() returns an array, so the click
     // listener needs to be added to each one individually.
     for (var ii = 0; ii < tags.length; ii++) {
@@ -229,6 +262,67 @@ window.onload = function () {
         }
         //		}
     }
+    
+    flashBorder = function (field, numOfTimes, ms) {
+        var count = 1,
+        redBorder,
+        restoreBorder,
+        origBorderColor = window.getComputedStyle(field).getPropertyValue("border-color");
+        
+        redBorder = function (field) {
+            window.setTimeout(function () {
+                field.style.setProperty("border-color", "red");
+                restoreBorder(field);
+            }, ms);
+        };
+        
+        restoreBorder = function (field) {
+            window.setTimeout(function () {
+                field.style.setProperty("border-color", origBorderColor);
+                
+                if (count < numOfTimes) {
+                    count++;
+                    redBorder(field);
+                }
+            }, ms);
+        };
+        
+        redBorder(field);
+    };
+    
+    validateFields = function (fields) {
+        var isValid = true;
+        
+        for (var ii = 0; ii < fields.length; ii++) {
+            var field = fields[ii];
+            
+            if (!field.value) {
+                flashBorder(field, 3, 500);
+                isValid = false;
+            }
+        }
+        
+        if (isValid) {
+            return true;
+        } else {
+            return false;
+        }
+    };
+    
+    submitOnEnter = function (fields, submitFunc) {
+        for (var ii = 0; ii < fields.length; ii++) {
+            var field = fields[ii];
+            
+            field.onkeyup = function (e) {
+                if (e.keyCode == 13) {
+                    submitFunc();
+                    return;
+                } else {
+                    return;
+                }
+            };
+        }
+    };
     
     openColorPicker = function (companyNameSubmitted) {
         if (companyNameSubmitted) {
@@ -262,6 +356,71 @@ window.onload = function () {
         } else {
             settingsOpen = false;
             document.getElementById("settings-container").style.display = "none";
+        }
+    };
+    
+    adWords.onclick = function () {
+        if (!adWordsOpen) {
+            adWordsSubmit.onclick = function () {
+                if (!validateFields([adSearchQuery, adTitle, adLink, adText])) {
+                    return false;
+                }
+                
+                var googleSearchUrl = "https://www.google.com/search?dynamicAd=true&q=",
+                adQuery = encodeURIComponent(adSearchQuery.value).replace(/%20/g, "+");
+                googleSearchAdReplacement.value = adQuery + ",," + adTitle.value + ",," + adLink.value + ",," + adLinkText.value + ",," + adText.value;
+                
+                background.setCookie(googleSearchAdReplacement);
+                
+                chrome.tabs.query({url: googleSearchUrl + adQuery}, function (tabs) {
+                    if (tabs.length > 0) {
+                        for (var ii = 0; ii < tabs.length; ii++) {
+                            var tab = tabs[ii];
+                            
+                            if (tab.url == googleSearchUrl + adQuery) {
+                                chrome.tabs.reload(tab.id);
+                                chrome.tabs.update(tab.id, {
+                                    active: true
+                                });
+                            } else {
+                                chrome.tabs.create({
+                                    url: googleSearchUrl + adQuery,
+                                    active: true
+                                });
+                            }
+                        }
+                    } else {
+                        chrome.tabs.create({
+                            url: googleSearchUrl + adQuery,
+                            active: true
+                        });
+                    }
+                });
+                
+                setTimeout(function () {
+                    window.close();
+                }, 500);
+            };
+            
+            submitOnEnter([adSearchQuery, adTitle, adLink, adLinkText, adText], adWordsSubmit.onclick);
+            
+            adWordsClear.onclick = function () {
+                adSearchQuery.value = adTitle.value = adLink.value = adLinkText.value = adText.value = "";
+                background.removeCookie(googleSearchAdReplacement);
+                
+                setTimeout(function () {
+                    window.close();
+                }, 1100);
+            };
+            
+            adWordsOpen = true;
+            document.getElementById("adWords-container").style.display = "block";
+            document.getElementById("company-container").style.display = "none";
+            
+        } else {
+            adWordsOpen = false;
+            document.getElementById("adWords-container").style.display = "none";
+            document.getElementById("company-container").style.display = "block";
         }
     };
     
@@ -388,7 +547,7 @@ window.onload = function () {
         document.getElementsByTagName("head")[0].appendChild(scriptElement);
     }
     
-    loadScript(background.HEAP_ANALYTICS_SCRIPT_LOCATION);
+    //loadScript(background.HEAP_ANALYTICS_SCRIPT_LOCATION);
     background.heapTrack({
         name : "Popup",
         app : "Extension",
