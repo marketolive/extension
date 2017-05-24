@@ -861,7 +861,7 @@ APP.overrideHomeTiles = function (restoreEmailInsightsTile) {
             document.getElementById(deliverabilityToolsTile.id).onclick = function () {
                 APP.heapTrack("track", {
                     name: "Deliverability Tools",
-                    area: "Deliverability Tools",
+                    assetArea: "Deliverability Tools",
                     assetName: "Demo Account",
                     assetType: "Home Tile"
                 });
@@ -878,7 +878,7 @@ APP.overrideHomeTiles = function (restoreEmailInsightsTile) {
             document.getElementById(spareTileClone.id).onclick = function () {
                 APP.heapTrack("track", {
                     name: "Deliverability Tools",
-                    area: "Deliverability Tools",
+                    assetArea: "Deliverability Tools",
                     assetName: "Demo Account",
                     assetType: "Home Tile"
                 });
@@ -890,7 +890,7 @@ APP.overrideHomeTiles = function (restoreEmailInsightsTile) {
             document.getElementById(seoTile.id).onclick = function () {
                 APP.heapTrack("track", {
                     name: "SEO",
-                    area: "SEO",
+                    assetArea: "SEO",
                     assetName: "Home",
                     assetType: "Home Tile"
                 });
@@ -1027,7 +1027,7 @@ APP.overrideSuperballMenuItems = function (restoreEmailInsightsMenuItem) {
                             origMenuItemOnClick.apply(this, arguments);
                             APP.heapTrack("track", {
                                 name: "Deliverability Tools",
-                                area: "Deliverability Tools",
+                                assetArea: "Deliverability Tools",
                                 assetName: "Demo Account",
                                 assetType: "Home Tile"
                             });
@@ -1047,7 +1047,7 @@ APP.overrideSuperballMenuItems = function (restoreEmailInsightsMenuItem) {
                             origMenuItemOnClick.apply(this, arguments);
                             APP.heapTrack("track", {
                                 name: "Deliverability Tools",
-                                area: "Deliverability Tools",
+                                assetArea: "Deliverability Tools",
                                 assetName: "Demo Account",
                                 assetType: "Home Tile"
                             });
@@ -1064,7 +1064,7 @@ APP.overrideSuperballMenuItems = function (restoreEmailInsightsMenuItem) {
                             origMenuItemOnClick.apply(this, arguments);
                             APP.heapTrack("track", {
                                 name: "SEO",
-                                area: "SEO",
+                                assetArea: "SEO",
                                 assetName: "Home",
                                 assetType: "Home Tile"
                             });
@@ -11050,7 +11050,7 @@ var isMktPageApp = window.setInterval(function () {
                         if (response != null
                              && response.isValidExtension != null) {
                             APP.validateDemoExtensionCheck(response.isValidExtension);
-                            if (accountString != mktoAccountString106d) {
+                            if (accountString == mktoAccountStringMaster) {
                                 APP.overrideSuperballMenuItems(response.isValidExtension);
                                 restoreEmailInsights = true;
                                 if (currUrlFragment

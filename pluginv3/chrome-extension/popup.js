@@ -236,7 +236,7 @@ window.onload = function () {
             console.log("Popup > Getting: " + googleSearchAdReplacement.name + " Cookie for " + googleSearchAdReplacement.url + " = null");
         } else {
             console.log("Popup > Getting: " + cookie.name + " Cookie for " + cookie.domain + " = " + cookie.value);
-            var adSplit = cookie.value.split("|");
+            var adSplit = cookie.value.split(",,");
             
             adSearchQuery.value = adSplit[0].replace(/\+/g, " ");
             adTitle.value = adSplit[1];
@@ -368,7 +368,7 @@ window.onload = function () {
                 
                 var googleSearchUrl = "https://www.google.com/search?dynamicAd=true&q=",
                 adQuery = encodeURIComponent(adSearchQuery.value).replace(/%20/g, "+");
-                googleSearchAdReplacement.value = adQuery + "|" + adTitle.value + "|" + adLink.value + "|" + adLinkText.value + "|" + adText.value;
+                googleSearchAdReplacement.value = adQuery + ",," + adTitle.value + ",," + adLink.value + ",," + adLinkText.value + ",," + adText.value;
                 
                 background.setCookie(googleSearchAdReplacement);
                 
@@ -379,6 +379,9 @@ window.onload = function () {
                             
                             if (tab.url == googleSearchUrl + adQuery) {
                                 chrome.tabs.reload(tab.id);
+                                chrome.tabs.update(tab.id, {
+                                    active: true
+                                });
                             } else {
                                 chrome.tabs.create({
                                     url: googleSearchUrl + adQuery,
@@ -393,6 +396,10 @@ window.onload = function () {
                         });
                     }
                 });
+                
+                setTimeout(function () {
+                    window.close();
+                }, 500);
             };
             
             submitOnEnter([adSearchQuery, adTitle, adLink, adLinkText, adText], adWordsSubmit.onclick);
