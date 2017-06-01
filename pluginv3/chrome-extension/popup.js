@@ -137,11 +137,17 @@ window.onload = function () {
         "value" : "",
         "domain" : mktoDesignerUriDomain
     },
-    googleSearchAdReplacement = {
+    adInfoCookieGoogle = {
         url: "https://www.google.com/*",
         name: "ad_info",
         value: "",
         domain: ".google.com"
+    },
+    adInfoCookieMarketoLive = {
+        url: "http://www.marketolive.com/*",
+        name: "ad_info",
+        value: "",
+        domain: ".marketolive.com"
     };
     
     background.getCookie(privilegesToggleCookieMarketo, function (cookie) {
@@ -230,10 +236,10 @@ window.onload = function () {
         }
     });
     
-    background.getCookie(googleSearchAdReplacement, function (cookie) {
+    background.getCookie(adInfoCookieMarketoLive, function (cookie) {
         if (cookie == null
              || cookie.value == null) {
-            console.log("Popup > Getting: " + googleSearchAdReplacement.name + " Cookie for " + googleSearchAdReplacement.url + " = null");
+            console.log("Popup > Getting: " + adInfoCookieMarketoLive.name + " Cookie for " + adInfoCookieMarketoLive.url + " = null");
         } else {
             console.log("Popup > Getting: " + cookie.name + " Cookie for " + cookie.domain + " = " + cookie.value);
             var adSplit = cookie.value.split(",,");
@@ -366,47 +372,90 @@ window.onload = function () {
                     return false;
                 }
                 
-                var googleSearchUrl = "https://www.google.com/search?dynamicAd=true&q=",
-                adQuery = encodeURIComponent(adSearchQuery.value).replace(/%20/g, "+");
-                googleSearchAdReplacement.value = adQuery + ",," + adTitle.value + ",," + adLink.value + ",," + adLinkText.value + ",," + adText.value;
+                var isGoogleSearchChecked = document.getElementById("googleSearch").checked,
+                isFacebookChecked = document.getElementById("facebook").checked;
                 
-                background.setCookie(googleSearchAdReplacement);
-                
-                chrome.tabs.query({url: googleSearchUrl + adQuery}, function (tabs) {
-                    if (tabs.length > 0) {
-                        for (var ii = 0; ii < tabs.length; ii++) {
-                            var tab = tabs[ii];
-                            
-                            if (tab.url == googleSearchUrl + adQuery) {
-                                chrome.tabs.reload(tab.id);
-                                chrome.tabs.update(tab.id, {
-                                    active: true
-                                });
-                            } else {
-                                chrome.tabs.create({
-                                    url: googleSearchUrl + adQuery,
-                                    active: true
-                                });
+                if (isGoogleSearchChecked) {
+                    var googleSearchUrl = "https://www.google.com/search?dynamicAd=true&q=",
+                    adQuery = encodeURIComponent(adSearchQuery.value).replace(/%20/g, "+");
+                    adInfoCookieGoogle.value = adInfoCookieMarketoLive.value = adQuery + ",," + adTitle.value + ",," + adLink.value + ",," + adLinkText.value + ",," + adText.value;
+                    
+                    background.setCookie(adInfoCookieGoogle);
+                    background.setCookie(adInfoCookieMarketoLive);
+                    
+                    chrome.tabs.query({
+                        url: googleSearchUrl + adQuery
+                    }, function (tabs) {
+                        if (tabs.length > 0) {
+                            for (var ii = 0; ii < tabs.length; ii++) {
+                                var tab = tabs[ii];
+                                
+                                if (tab.url == googleSearchUrl + adQuery) {
+                                    chrome.tabs.reload(tab.id);
+                                    chrome.tabs.update(tab.id, {
+                                        active: true
+                                    });
+                                } else {
+                                    chrome.tabs.create({
+                                        url: googleSearchUrl + adQuery,
+                                        active: true
+                                    });
+                                }
                             }
+                        } else {
+                            chrome.tabs.create({
+                                url: googleSearchUrl + adQuery,
+                                active: true
+                            });
                         }
-                    } else {
-                        chrome.tabs.create({
-                            url: googleSearchUrl + adQuery,
-                            active: true
-                        });
-                    }
-                });
-                
-                setTimeout(function () {
-                    window.close();
-                }, 500);
+                    });
+                } else if (isFacebookChecked) {
+                    var adQuery = encodeURIComponent(adSearchQuery.value).replace(/%20/g, "+");
+                    adInfoCookieMarketoLive.value = adQuery + ",," + adTitle.value + ",," + adLink.value + ",," + adLinkText.value + ",," + adText.value;
+                    background.setCookie(adInfoCookieMarketoLive);
+                    
+                    background.getCookie(companyImageCookieMarketoLive, function (cookie) {
+                        if (cookie == null
+                             || cookie.value == null) {
+                            console.log("Popup > Getting: " + companyImageCookieMarketoLive.name + " Cookie for " + companyImageCookieMarketoLive.url + " = null");
+                            return false;
+                        } else {
+                            var facebookUrl = "https://www.facebook.com/?dynamicAd=true" + "&title=" + encodeURIComponent(adTitle.value) + "&link=" + encodeURIComponent(adLink.value) + "&linkText=" + encodeURIComponent(adLinkText.value) + "&text=" + encodeURIComponent(adText.value) + "&image=" + encodeURIComponent(cookie.value);
+                            
+                            console.log("Popup > Getting: " + cookie.name + " Cookie for " + cookie.domain + " = " + cookie.value);
+                            
+                            chrome.tabs.query({
+                                url: facebookUrl
+                            }, function (tabs) {
+                                if (tabs.length > 0) {
+                                    for (var ii = 0; ii < tabs.length; ii++) {
+                                        var tab = tabs[ii];
+                                        
+                                        chrome.tabs.reload(tab.id);
+                                        chrome.tabs.update(tab.id, {
+                                            active: true
+                                        });
+                                    }
+                                } else {
+                                    chrome.tabs.create({
+                                        url: facebookUrl,
+                                        active: true
+                                    });
+                                }
+                                
+                                window.close();
+                            });
+                        }
+                    });
+                }
             };
             
             submitOnEnter([adSearchQuery, adTitle, adLink, adLinkText, adText], adWordsSubmit.onclick);
             
             adWordsClear.onclick = function () {
                 adSearchQuery.value = adTitle.value = adLink.value = adLinkText.value = adText.value = "";
-                background.removeCookie(googleSearchAdReplacement);
+                background.removeCookie(adInfoCookieGoogle);
+                background.removeCookie(adInfoCookieMarketoLive);
                 
                 setTimeout(function () {
                     window.close();

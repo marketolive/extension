@@ -46,6 +46,13 @@
         "matches": [
             "*://www.google.com/search?dynamicAd=true&*"
         ]
+    }, {
+        "all_frames": false,
+        "js": ["facebook-content.js"],
+        "run_at": "document_end",
+        "matches": [
+            "*://www.facebook.com/?dynamicAd=true&*"
+        ]
     } ],
     "externally_connectable": {
         "matches": [
@@ -88,7 +95,8 @@
         "*://250ok.com/*",
         "*://marketo.invisionapp.com/*",
         "*://marketo.onelogin.com/*",
-        "*://www.google.com/search?dynamicAd=true&*"
+        "*://www.google.com/search?dynamicAd=true&*",
+        "*://www.facebook.com/?dynamicAd=true&*"
     ],
     "content_security_policy": "script-src 'self' https://marketolive.com https://cdn.heapanalytics.com/js/heap-702959232.js https://cdn.heapanalytics.com/js/heap-2823746907.js; object-src 'self'",
     "web_accessible_resources": ["lib/*"],

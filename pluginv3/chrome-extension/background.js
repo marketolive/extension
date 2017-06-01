@@ -103,7 +103,7 @@ function webRequest(url, params, method, async, responseType, callback) {
     //xmlHttp.setRequestHeader("X-Requested-With", "XMLHttpRequest");
     xmlHttp.send(params);
     return result;
-};
+}
 
 /**************************************************************************************
  *
@@ -170,6 +170,10 @@ function setCookie(obj) {
     if (obj.expiresInDays) {
         cookie.expirationDate = new Date().getTime()/1000 + (obj.expiresInDays * 24 * 60 * 60);
     }
+    if (obj.secure) {
+        cookie.secure = obj.secure;
+    }
+    
     chrome.cookies.set(cookie, function () {
         if (cookie.value != null) {
             console.log("Setting: " + cookie.name + " Cookie for " + cookie.domain + " = " + cookie.value);
@@ -605,6 +609,48 @@ chrome.runtime.onMessageExternal.addListener(function (message, sender, sendResp
                     } else {
                         reloadCompany();
                     }
+                });
+            }
+        } else if (message.action == "setImageCookies") {
+            if (message.image) {
+                setCookie({
+                    "url": mktoLiveDomainMatch,
+                    "name": companyImageCookieName,
+                    "value": message.image,
+                    "domain": mktoLiveUriDomain
+                });
+                
+                setCookie({
+                    "url": mktoDesignerDomainMatch,
+                    "name": companyImageCookieName,
+                    "value": message.image,
+                    "domain": mktoDesignerUriDomain
+                });
+            } else {
+                removeCookie({
+                    "url": mktoLiveDomainMatch,
+                    "name": companyImageCookieName
+                });
+                
+                removeCookie({
+                    "url": mktoDesignerDomainMatch,
+                    "name": companyImageCookieName
+                });
+            }
+            
+            if (message.imageRes) {
+                setCookie({
+                    "url": mktoLiveDomainMatch,
+                    "name": companyImageResCookieName,
+                    "value": message.imageRes,
+                    "domain": mktoLiveUriDomain
+                });
+                
+                setCookie({
+                    "url": mktoDesignerDomainMatch,
+                    "name": companyImageResCookieName,
+                    "value": message.imageRes,
+                    "domain": mktoDesignerUriDomain
                 });
             }
         }
@@ -1484,67 +1530,6 @@ chrome.runtime.onInstalled.addListener(function (details) {
                 event.name = "Update";
                 event.previousVersion = details.previousVersion;
             }
-            break;
-        }
-        
-        heapTrack(event);
-    }
-});
-
-chrome.management.onDisabled.addListener(function (details) {
-    if (details.id == chrome.app.getDetails().id) {
-        var event = {
-            name: "",
-            app: "Extension",
-            area: "Background",
-            version: details.version
-        };
-        
-        switch (details.disabledReason) {
-        case "permissions_increase":
-            var extensionDisabledNotification = {
-                id: "MarketoLive Extension is Disabled",
-                title: "Extension is Disabled",
-                message: "Your MarketoLive extension has been disabled due to an update requiring new permissions.",
-                buttonTitle: "Re-enable Extension",
-                requireInteraction: true,
-                action: "enable",
-                reload: false
-            };
-            
-            chrome.management.onEnabled.addListener(function (details) {
-                if (details.id == chrome.app.getDetails().id) {
-                    heapTrack({
-                        name: "Enabled > Permission Increase",
-                        app: "Extension",
-                        area: "Background",
-                        version: chrome.app.getDetails().version,
-                    });
-                }
-            });
-            
-            createBasicNotification(extensionDisabledNotification, chrome.app.getDetails().id);
-            chrome.tabs.create({
-                url: "http://www.marketolive.com/en/update/extension-update",
-                active: true,
-                selected: true
-            });
-            removeCookie({
-                url: mkto250okDomainMatch,
-                name: mkto250okUserCookie
-            });
-            event.name = "Disabled > Permission Increase";
-            break;
-        default:
-            removeCookie({
-                url: mkto250okDomainMatch,
-                name: mkto250okUserCookie
-            });
-            removeCookie({
-                url: mktoAppDomainMatch,
-                name: mktoAppUserCookie
-            });
-            event.name = "Disabled > Unknown";
             break;
         }
         

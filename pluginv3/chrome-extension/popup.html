@@ -39,6 +39,12 @@
       padding-bottom: 5px !important;
       margin-bottom: 3px !important;
       }
+      .adWords-radio {
+      width: 274px;
+      font-size: 14px;
+      padding: 0px 5px 5px 0px;
+      /*border-bottom: 1px solid #c2c2c2;*/
+      }
       .adWords-submit, .adWords-clear {
       margin-top: 5px !important;
       }
@@ -273,6 +279,10 @@
       </div>
     </div>
     <div id="adWords-container">
+      <div class="adWords-radio">
+        <input type="radio" id="googleSearch" name="ad-type" value="" checked>Google Search
+        <input type="radio" id="facebook" name="ad-type" value="">Facebook
+      </div>
       <input type="text" id="search-query" placeholder="Search Term..." class="adWords-input float-left">
       <input type="text" id="ad-title" placeholder="Ad Title..." class="adWords-input float-left">
       <input type="text" id="ad-link" placeholder="Ad Link..." class="adWords-input float-left">
