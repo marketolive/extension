@@ -29,8 +29,9 @@ window.onload = function () {
     document.getElementById("privilegesToggle").src = chrome.extension.getURL("images/toggle-on.png");
     document.getElementById("saveEditsToggle").src = chrome.extension.getURL("images/toggle-on.png");
     document.getElementById("help-size").src = chrome.extension.getURL("images/help-white.png");
-    document.getElementById("training").src = chrome.extension.getURL("images/training-icon-purple-small.png");
     document.getElementById("report-a-bug").src = chrome.extension.getURL("images/report-a-bug-img-purp.png");
+    document.getElementById("training").src = chrome.extension.getURL("images/training-icon-purple-small.png");
+    document.getElementById("updates").src = chrome.extension.getURL("images/icon.png");
     
     var background = chrome.extension.getBackgroundPage(),
     URL_PATH = "m3-dev",
