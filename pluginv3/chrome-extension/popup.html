@@ -69,11 +69,11 @@
       float: left;
       margin-left: 15px;
       }
-      #gear-size, #help-size, #google-adwords-size {
+      #gear-size, #help-size {
       /* avoid an excessively wide status text */
       height: 25px;
       }
-      #settings, #help, #google-adwords {
+      #settings, #help {
       padding-top: 3px;
       height: 35px;
       float: right;
@@ -230,9 +230,6 @@
       <div id="settings">
         <img id="gear-size" src="">
       </div>
-      <div id="google-adwords">
-        <img id="google-adwords-size" src="">
-      </div>
     </div>
     <!-- TODO: change submit to an actual submit button so enter will work -->
     <div id="help-container">
@@ -278,29 +275,6 @@
         </div>
       </div>
     </div>
-    <div id="adWords-container">
-      <div class="adWords-radio">
-        <input type="radio" id="googleSearch" name="ad-type" value="" checked>Google Search
-        <input type="radio" id="facebook" name="ad-type" value="">Facebook
-      </div>
-      <input type="text" id="search-query" placeholder="Search Term..." class="adWords-input float-left">
-      <input type="text" id="ad-title" placeholder="Ad Title..." class="adWords-input float-left">
-      <input type="text" id="ad-link" placeholder="Ad Link..." class="adWords-input float-left">
-      <input type="text" id="ad-link-text" placeholder="Ad Link Text..." class="adWords-input float-lef">
-      <input type="text" id="ad-text" placeholder="Ad Main Text..." class="adWords-input float-left"><br>
-      <div id="adWords-submit" class="float-left clear-submit adWords-submit">
-        <div class="clear-inner-submit">
-          Submit
-        </div>
-      </div>
-      <div class="clear-container adWords-clear">
-        <div id="adWords-clear" class="clear-submit">
-          <div class="clear-inner-submit">
-            Clear
-          </div>
-        </div>
-      </div>
-    </div>
     <div id="company-container" class="company-container">
       <input type="text" id="name-entered" placeholder="Company Website..." class="company-name float-left">
       <div id="company-submit" class="float-left company-submit">
@@ -315,6 +289,16 @@
           </div>
         </div>
       </div>
+    </div>
+    <div class="option-container">
+      <a href="http://marketolive.com/en/tools/ad-targeting" class="link">
+        <div class="option-image-container">
+          <img id="ad-targeting" class="option-image" src="">
+        </div>
+        <div class="option-title">
+          Ad Targeting
+        </div>
+      </a>
     </div>
     <div class="option-container">
       <a href="http://verticals.marketolive.com" class="link">

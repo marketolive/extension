@@ -1160,6 +1160,11 @@ APP.overrideAnalyticsTiles = function () {
                                 MktCanvas.getActiveTab().el.dom.childNodes[0].childNodes[1].childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[ii].outerHTML = currTileHTML;
                                 break;
                                 
+                            case "Marketing Performance Insights":
+                                currTileHTML = '<a href="https://marketo.invisionapp.com/share/52C0GAGD4#">' + currTileHTML + '</a>';
+                                MktCanvas.getActiveTab().el.dom.childNodes[0].childNodes[1].childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[ii].outerHTML = currTileHTML;
+                                break;
+                                
                             case "Program Analyzer":
                                 currTileHTML = '<a href="' + host + '/#AR1544A1">' + currTileHTML + '</a>';
                                 MktCanvas.getActiveTab().el.dom.childNodes[0].childNodes[1].childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[ii].outerHTML = currTileHTML;

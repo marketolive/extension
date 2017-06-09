@@ -53,14 +53,21 @@
         "matches": [
             "*://www.facebook.com/?dynamicAd=true&*"
         ]
+    }, {
+        "all_frames": false,
+        "js": ["linkedin-content.js"],
+        "run_at": "document_end",
+        "matches": [
+            "*://www.linkedin.com/feed/?dynamicAd=true&*"
+        ]
     } ],
     "externally_connectable": {
         "matches": [
             "*://marketolive.com/*",
             "*://www.marketolive.com/*",
-            "*://www.marketolive-dev.com/*",
+            "*://dev.marketolive.com/*",
             "*://verticals.marketolive.com/*",
-            "*://verticals-dev.marketolive.com/*",
+            "*://dev.verticals.marketolive.com/*",
             "*://pages.marketolive.com/*",
             "*://pages-dev.marketolive.com/*",
             "https://marketo.onelogin.com/client/apps",
@@ -96,7 +103,8 @@
         "*://marketo.invisionapp.com/*",
         "*://marketo.onelogin.com/*",
         "*://www.google.com/search?dynamicAd=true&*",
-        "*://www.facebook.com/?dynamicAd=true&*"
+        "*://www.facebook.com/?dynamicAd=true&*",
+        "*://www.linkedin.com/feed/?dynamicAd=true&*"
     ],
     "content_security_policy": "script-src 'self' https://marketolive.com https://cdn.heapanalytics.com/js/heap-702959232.js https://cdn.heapanalytics.com/js/heap-2823746907.js; object-src 'self'",
     "web_accessible_resources": ["lib/*"],

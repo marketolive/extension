@@ -17,7 +17,6 @@ mktoLiveClassicDomainMatch = "https://marketolive.com/*",
 mktoLiveClassicUriDomain = ".marketolive.com",
 mktoAppDomainMatch = "https://app-*.marketo.com",
 mktoAppUriDomain = ".marketo.com",
-mkto250okDomainMatch = "https://250ok.com/*",
 mktoDesignerDomainMatch = "https://www.marketodesigner.com/*",
 mktoDesignerUriDomain = ".marketodesigner.com",
 mktoDesignerMatchPattern = "https://*.marketodesigner.com/*",
@@ -29,9 +28,8 @@ mktoEmailPreviewFragment = "EMP",
 mktoLandingPageDesignerFragment = "LPE",
 mktoLandingPagePreviewFragment = "LPPD",
 oneLoginExtMsgRegex = "https:\/\/marketo\.onelogin\.com\/client\/apps",
-colorPickerMsgRegex = "https:\/\/marketolive\.com\/" + URL_PATH + "\/apps\/color-picker\.html\\?.+",
+colorPickerMsgRegex = "(^http(s)?:\/\/(www|dev)\.marketolive\.com\/en\/tools\/ad-targeting|^https:\/\/marketolive\.com\/" + URL_PATH + "\/apps\/color-picker\.html\\?.+)",
 mktoAppUserCookie = "ids_sso",
-mkto250okUserCookie = "PHPSESSID",
 munchkinIdsMatch = "^(185-NGX-811|026-COU-482|767-TVJ-204)$",
 //adminUserNamesMatch = "^mktodemolivemaster@marketo\.com$|^admin(\.[a-z]{0,2})?@(marketolive.com$|mktodemoaccount)|^marketodemo.*@gmail\.com$",
 adminUserNamesMatch = "^mktodemolivemaster@marketo\.com$|^admin(\.[a-z]{0,2})?@(marketolive.com$|mktodemoaccount)|^mktodemoaccount[a-z0-9]*@marketo\.com$|^marketodemo.*@gmail\.com$",
@@ -224,6 +222,31 @@ function reloadTabs(urlMatch) {
     }, function (tabs) {
         for (var ii = 0; ii < tabs.length; ii++) {
             chrome.tabs.reload(tabs[ii].id);
+        }
+    });
+}
+
+function findAndReloadOrCreateTab(tabInfo) {
+    chrome.tabs.query({
+        url: tabInfo.urlMatch
+    }, function (tabs) {
+        if (tabs.length > 0) {
+            if (tabs[0].url == tabInfo.urlCreate) {
+                chrome.tabs.reload(tabs[0].id);
+                chrome.tabs.update(tabs[0].id, {
+                    active: true
+                });
+            } else {
+                chrome.tabs.update(tabs[0].id, {
+                    url: tabInfo.urlCreate,
+                    active: true
+                });
+            }
+        } else {
+            chrome.tabs.create({
+                url: tabInfo.urlCreate,
+                active: true
+            });
         }
     });
 }
@@ -611,46 +634,69 @@ chrome.runtime.onMessageExternal.addListener(function (message, sender, sendResp
                     }
                 });
             }
-        } else if (message.action == "setImageCookies") {
-            if (message.image) {
-                setCookie({
-                    "url": mktoLiveDomainMatch,
-                    "name": companyImageCookieName,
-                    "value": message.image,
-                    "domain": mktoLiveUriDomain
-                });
+        } else if (message.action == "setAdInfo") {
+            var googleDomainMatch = "https://www.google.com/*",
+            linkedinDomainMatch = "https://www.linkedin.com/*",
+            adInfoCookieName = "ad_info";
+            
+            if (message.adInfo) {
+                switch (message.adType) {
+                case "googleSearch":
+                    setCookie({
+                        "url": mktoLiveDomainMatch,
+                        "name": adInfoCookieName,
+                        "value": message.adInfo,
+                        "domain": mktoLiveUriDomain
+                    });
+                    setCookie({
+                        "url": googleDomainMatch,
+                        "name": adInfoCookieName,
+                        "value": message.adInfo,
+                        "domain": ".google.com"
+                    });
+                    break;
                 
-                setCookie({
-                    "url": mktoDesignerDomainMatch,
-                    "name": companyImageCookieName,
-                    "value": message.image,
-                    "domain": mktoDesignerUriDomain
+                case "facebook":
+                    setCookie({
+                        "url": mktoLiveDomainMatch,
+                        "name": adInfoCookieName,
+                        "value": message.adInfo,
+                        "domain": mktoLiveUriDomain
+                    });
+                    break;
+                
+                case "linkedin":
+                    setCookie({
+                        "url": mktoLiveDomainMatch,
+                        "name": adInfoCookieName,
+                        "value": message.adInfo,
+                        "domain": mktoLiveUriDomain
+                    });
+                    setCookie({
+                        "url": linkedinDomainMatch,
+                        "name": adInfoCookieName,
+                        "value": message.adInfo,
+                        "domain": ".linkedin.com"
+                    });
+                    break;
+                }
+                
+                findAndReloadOrCreateTab({
+                    urlMatch: message.urlMatch,
+                    urlCreate: message.urlCreate
                 });
             } else {
                 removeCookie({
                     "url": mktoLiveDomainMatch,
-                    "name": companyImageCookieName
+                    "name": adInfoCookieName
                 });
-                
                 removeCookie({
-                    "url": mktoDesignerDomainMatch,
-                    "name": companyImageCookieName
+                    "url": googleDomainMatch,
+                    "name": adInfoCookieName
                 });
-            }
-            
-            if (message.imageRes) {
-                setCookie({
-                    "url": mktoLiveDomainMatch,
-                    "name": companyImageResCookieName,
-                    "value": message.imageRes,
-                    "domain": mktoLiveUriDomain
-                });
-                
-                setCookie({
-                    "url": mktoDesignerDomainMatch,
-                    "name": companyImageResCookieName,
-                    "value": message.imageRes,
-                    "domain": mktoDesignerUriDomain
+                removeCookie({
+                    "url": linkedinDomainMatch,
+                    "name": adInfoCookieName
                 });
             }
         }

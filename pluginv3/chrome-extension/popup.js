@@ -19,7 +19,7 @@ window.onload = function () {
     // the alternative to using <img src="whatever">
     document.getElementById("logo-size").src = chrome.extension.getURL("images/marketo-live-image-purp.png");
     document.getElementById("gear-size").src = chrome.extension.getURL("images/popupsettings.png");
-    document.getElementById("google-adwords-size").src = chrome.extension.getURL("images/seo-white.png");
+    document.getElementById("ad-targeting").src = chrome.extension.getURL("images/ad-targeting.png");
     document.getElementById("rtp").src = chrome.extension.getURL("images/rtp-image.png");
     //document.getElementById("ecommerce").src = chrome.extension.getURL("images/shopping-cart-purple.png");
     document.getElementById("mobile-moments").src = chrome.extension.getURL("images/marketo_moments.png");
@@ -49,17 +49,9 @@ window.onload = function () {
     saveEditsToggle = document.getElementById("saveEditsToggle"),
     clear = document.getElementById("clear-submit"),
     settings = document.getElementById("settings"),
-    adWords = document.getElementById("google-adwords"),
-    adSearchQuery = document.getElementById("search-query"),
-    adTitle = document.getElementById("ad-title"),
-    adLink = document.getElementById("ad-link"),
-    adLinkText = document.getElementById("ad-link-text"),
-    adText = document.getElementById("ad-text"),
-    adWordsSubmit = document.getElementById("adWords-submit"),
-    adWordsClear = document.getElementById("adWords-clear"),
     help = document.getElementById("help"),
     close = document.getElementById("close"),
-    settingsOpen = adWordsOpen = helpOpen = false,
+    settingsOpen = helpOpen = false,
     flashBorder,
     validateFields,
     submitOnEnter,
@@ -136,18 +128,6 @@ window.onload = function () {
         "name" : companyImageResCookieName,
         "value" : "",
         "domain" : mktoDesignerUriDomain
-    },
-    adInfoCookieGoogle = {
-        url: "https://www.google.com/*",
-        name: "ad_info",
-        value: "",
-        domain: ".google.com"
-    },
-    adInfoCookieMarketoLive = {
-        url: "http://www.marketolive.com/*",
-        name: "ad_info",
-        value: "",
-        domain: ".marketolive.com"
     };
     
     background.getCookie(privilegesToggleCookieMarketo, function (cookie) {
@@ -233,22 +213,6 @@ window.onload = function () {
         } else {
             console.log("Popup > Getting: " + cookie.name + " Cookie for " + cookie.domain + " = " + cookie.value);
             company.value = cookie.value.toLowerCase().split(clearbitDomain)[1].split("?")[0];
-        }
-    });
-    
-    background.getCookie(adInfoCookieMarketoLive, function (cookie) {
-        if (cookie == null
-             || cookie.value == null) {
-            console.log("Popup > Getting: " + adInfoCookieMarketoLive.name + " Cookie for " + adInfoCookieMarketoLive.url + " = null");
-        } else {
-            console.log("Popup > Getting: " + cookie.name + " Cookie for " + cookie.domain + " = " + cookie.value);
-            var adSplit = cookie.value.split(",,");
-            
-            adSearchQuery.value = adSplit[0].replace(/\+/g, " ");
-            adTitle.value = adSplit[1];
-            adLink.value = adSplit[2];
-            adLinkText.value = adSplit[3];
-            adText.value = adSplit[4];
         }
     });
     
@@ -362,114 +326,6 @@ window.onload = function () {
         } else {
             settingsOpen = false;
             document.getElementById("settings-container").style.display = "none";
-        }
-    };
-    
-    adWords.onclick = function () {
-        if (!adWordsOpen) {
-            adWordsSubmit.onclick = function () {
-                if (!validateFields([adSearchQuery, adTitle, adLink, adText])) {
-                    return false;
-                }
-                
-                var isGoogleSearchChecked = document.getElementById("googleSearch").checked,
-                isFacebookChecked = document.getElementById("facebook").checked;
-                
-                if (isGoogleSearchChecked) {
-                    var googleSearchUrl = "https://www.google.com/search?dynamicAd=true&q=",
-                    adQuery = encodeURIComponent(adSearchQuery.value).replace(/%20/g, "+");
-                    adInfoCookieGoogle.value = adInfoCookieMarketoLive.value = adQuery + ",," + adTitle.value + ",," + adLink.value + ",," + adLinkText.value + ",," + adText.value;
-                    
-                    background.setCookie(adInfoCookieGoogle);
-                    background.setCookie(adInfoCookieMarketoLive);
-                    
-                    chrome.tabs.query({
-                        url: googleSearchUrl + adQuery
-                    }, function (tabs) {
-                        if (tabs.length > 0) {
-                            for (var ii = 0; ii < tabs.length; ii++) {
-                                var tab = tabs[ii];
-                                
-                                if (tab.url == googleSearchUrl + adQuery) {
-                                    chrome.tabs.reload(tab.id);
-                                    chrome.tabs.update(tab.id, {
-                                        active: true
-                                    });
-                                } else {
-                                    chrome.tabs.create({
-                                        url: googleSearchUrl + adQuery,
-                                        active: true
-                                    });
-                                }
-                            }
-                        } else {
-                            chrome.tabs.create({
-                                url: googleSearchUrl + adQuery,
-                                active: true
-                            });
-                        }
-                    });
-                } else if (isFacebookChecked) {
-                    var adQuery = encodeURIComponent(adSearchQuery.value).replace(/%20/g, "+");
-                    adInfoCookieMarketoLive.value = adQuery + ",," + adTitle.value + ",," + adLink.value + ",," + adLinkText.value + ",," + adText.value;
-                    background.setCookie(adInfoCookieMarketoLive);
-                    
-                    background.getCookie(companyImageCookieMarketoLive, function (cookie) {
-                        if (cookie == null
-                             || cookie.value == null) {
-                            console.log("Popup > Getting: " + companyImageCookieMarketoLive.name + " Cookie for " + companyImageCookieMarketoLive.url + " = null");
-                            return false;
-                        } else {
-                            var facebookUrl = "https://www.facebook.com/?dynamicAd=true" + "&title=" + encodeURIComponent(adTitle.value) + "&link=" + encodeURIComponent(adLink.value) + "&linkText=" + encodeURIComponent(adLinkText.value) + "&text=" + encodeURIComponent(adText.value) + "&image=" + encodeURIComponent(cookie.value);
-                            
-                            console.log("Popup > Getting: " + cookie.name + " Cookie for " + cookie.domain + " = " + cookie.value);
-                            
-                            chrome.tabs.query({
-                                url: facebookUrl
-                            }, function (tabs) {
-                                if (tabs.length > 0) {
-                                    for (var ii = 0; ii < tabs.length; ii++) {
-                                        var tab = tabs[ii];
-                                        
-                                        chrome.tabs.reload(tab.id);
-                                        chrome.tabs.update(tab.id, {
-                                            active: true
-                                        });
-                                    }
-                                } else {
-                                    chrome.tabs.create({
-                                        url: facebookUrl,
-                                        active: true
-                                    });
-                                }
-                                
-                                window.close();
-                            });
-                        }
-                    });
-                }
-            };
-            
-            submitOnEnter([adSearchQuery, adTitle, adLink, adLinkText, adText], adWordsSubmit.onclick);
-            
-            adWordsClear.onclick = function () {
-                adSearchQuery.value = adTitle.value = adLink.value = adLinkText.value = adText.value = "";
-                background.removeCookie(adInfoCookieGoogle);
-                background.removeCookie(adInfoCookieMarketoLive);
-                
-                setTimeout(function () {
-                    window.close();
-                }, 1100);
-            };
-            
-            adWordsOpen = true;
-            document.getElementById("adWords-container").style.display = "block";
-            document.getElementById("company-container").style.display = "none";
-            
-        } else {
-            adWordsOpen = false;
-            document.getElementById("adWords-container").style.display = "none";
-            document.getElementById("company-container").style.display = "block";
         }
     };
     

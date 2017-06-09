@@ -105,7 +105,7 @@ APP.insertAd = function (ad) {
         
         var adSection = document.getElementById("pagelet_ego_pane").lastChild.getElementsByClassName("ego_unit_container")[0],
         topAd = document.createElement("div"),
-        adHtml = '<div class="q_35wwcc_fw"><div class="v_35wwcij3e"><div class="uiSelector inlineBlock emu_x uiChevronSelectorButton uiSelectorRight"><div class="uiToggle wrap"></div></div><a href="' + ad.link + '" target="_blank" rel="noopener"><div class="_4pru l_35wwcd_1o"><div class="u_35wwcd_20"><div class="m_35wwcbth1"><div class="v_35wwcd_1s"><div class="m_35wwcd_1v"><div class="uiScaledImageContainer" style="width:284px; height:149px;"><img class="scaledImageFitWidth img" src="' + ad.image + '" alt="" width="284" height="149"></div></div></div></div></div><div class="c_35wwcd_1r" title="' + ad.title + '"><div class="x_35wwcd_1q"><strong>' + ad.title + '</strong></div><div class="b_35wwcd_1t">' + ad.linkText + '</div></div><div></div><div class="i_35wwcd_1d"><div><span class="u_35wwcd_1c">' + ad.text + '</span></div></div></div></a></div></div>';
+        adHtml = '<div class="q_35wwcc_fw"><div class="v_35wwcij3e"><div class="uiSelector inlineBlock emu_x uiChevronSelectorButton uiSelectorRight"><div class="uiToggle wrap"></div></div><a href="' + ad.link + '" target="_blank" rel="noopener" style="text-decoration: none"><div class="_4pru l_35wwcd_1o"><div class="u_35wwcd_20"><div class="m_35wwcbth1"><div class="v_35wwcd_1s"><div class="m_35wwcd_1v"><div class="uiScaledImageContainer" style="width:284px; height:149px;"><img class="scaledImageFitWidth img" src="' + ad.image + '" alt="" width="284" height="149"></div></div></div></div></div><div class="c_35wwcd_1r" title="' + ad.title + '"><div class="x_35wwcd_1q"><strong>' + ad.title + '</strong></div><div class="b_35wwcd_1t">' + ad.linkText + '</div></div><div></div><div class="i_35wwcd_1d"><div><span class="fsm fwn fcg">' + ad.text + '</span></div></div></div></a></div></div>';
         
         topAd.className = "ego_unit";
         topAd.innerHTML = adHtml;
@@ -121,6 +121,10 @@ APP.insertAd = function (ad) {
         onlyAd.innerHTML = adHtml;
         resultsSection.insertBefore(onlyAd, resultsSection.childNodes[0]);
     }
+    
+    window.setTimeout(function () {
+        document.getElementsByClassName("adsCategoryTitleLink")[0].scrollIntoView();
+    }, 500);
 };
 
 /**************************************************************************************

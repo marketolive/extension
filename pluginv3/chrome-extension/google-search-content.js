@@ -45,44 +45,6 @@ APP.getCookie = function (cookieName) {
 
 /**************************************************************************************
  *
- *  This function returns the value of the specified URL parameter.
- *
- *  @Author Brian Fisher
- *
- *  @function
- *
- *  @param {String} param - name of the URL parameter
- *
- **************************************************************************************/
-
-APP.getUrlParam = function (param) {
-    console.log("Getting: URL Parameter: " + param);
-    
-    var paramString = window.location.href.split("?")[1];
-    
-    if (paramString) {
-        var params = paramString.split("&"),
-        paramPair,
-        paramName,
-        paramValue;
-        
-        for (var ii = 0; ii < params.length; ii++) {
-            paramPair = params[ii].split("=");
-            paramName = paramPair[0];
-            paramValue = paramPair[1];
-            
-            if (paramName == param) {
-                paramValue = paramValue.replace(/%20/g, "+");
-                console.log("URL Parameter: " + paramName + " = " + paramValue);
-                return paramValue;
-            }
-        }
-    }
-    return false;
-};
-
-/**************************************************************************************
- *
  *  This function waits for the Google search to return it's results and then executes
  *  the given callback function.
  *
@@ -193,7 +155,7 @@ APP.insertAd = function (ad) {
 
 /**************************************************************************************
  *
- *  This function gets the ad_info cookie value.
+ *  This function gets the ad_info_google cookie value.
  *
  *  @Author Brian Fisher
  *
