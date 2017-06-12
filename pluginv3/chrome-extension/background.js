@@ -135,7 +135,7 @@ function getCookie(obj, callback) {
                 return callback(cookie);
             }
         } else {
-            console.error("Getting: " + obj.name + " Cookie for " + obj.url + " = undefined");
+            console.log("Getting: " + obj.name + " Cookie for " + obj.url + " = undefined");
             if (callback) {
                 return callback();
             }
@@ -168,7 +168,7 @@ function setCookie(obj) {
     };
     
     if (obj.expiresInDays) {
-        cookie.expirationDate = new Date().getTime()/1000 + (obj.expiresInDays * 24 * 60 * 60);
+        cookie.expirationDate = new Date().getTime() / 1000 + (obj.expiresInDays * 24 * 60 * 60);
     }
     if (obj.secure) {
         cookie.secure = obj.secure;
@@ -332,8 +332,8 @@ function reloadCompany() {
 
 /**************************************************************************************
  *
- *  This function registers an event listener for app-sjp.marketo.com and 
- *  app-sjdemo1.marketo.com demo pods web requests in order to initiate background data 
+ *  This function registers an event listener for app-sjp.marketo.com and
+ *  app-sjdemo1.marketo.com demo pods web requests in order to initiate background data
  *  submission.
  *
  *  @Author Brian Fisher
@@ -482,10 +482,14 @@ function checkForOldExtension(extensionMinVersion) {
             version: chrome.app.getDetails().version
         });
         
-        return {isValidExtension: false};
+        return {
+            isValidExtension: false
+        };
     }
     
-    return {isValidExtension: true};
+    return {
+        isValidExtension: true
+    };
 }
 
 function checkForBadExtension() {
@@ -1119,7 +1123,9 @@ function checkMsgs(message, sender, sendResponse) {
                 
                 switch (message.tabAction) {
                 case "update":
-                    chrome.tabs.update(tabId, {url: message.nextUrl});
+                    chrome.tabs.update(tabId, {
+                        url: message.nextUrl
+                    });
                     break;
                 case "remove":
                     chrome.tabs.remove(tabId);
@@ -1147,8 +1153,8 @@ function removeMsgExtListener(listeningMsg) {
 
 /**************************************************************************************
  *
- *  This function cancels specific web requests for Email Insights, Web Personalization, 
- *  and Predictive Content in order to block adding, removing, editing, saving, deleting 
+ *  This function cancels specific web requests for Email Insights, Web Personalization,
+ *  and Predictive Content in order to block adding, removing, editing, saving, deleting
  *  for normal users in MarketoLive instances.
  *
  *  @Author Brian Fisher
@@ -1223,7 +1229,8 @@ function cancelWebRequest(details) {
              || details.url.search("://250ok\.com/ajax_reputationinformant/switchstatus") != -1 // 250ok > Settings > Reputation > Filter Sets Status > Enable/Disable
              || details.url.search("://250ok\.com/app/design-informant") != -1 // 250ok > Design > ALL Actions
              || details.url.search("://250ok\.com/app/alerts") != -1 // 250ok > Alerts > ALL Actions
-             ) {
+        )
+        {
             toCancel = true;
         }
         break;
@@ -1243,8 +1250,7 @@ function cancelWebRequest(details) {
              || details.url.search("://" + mktoLiveRtpDomainsMatch + "/app/setting/param\.json") != -1 // Account Settings > ALL > Toggles > Enable/Disable
              || details.url.search("://seo\.marketo\.com/ajax/ComponentSettings:Save\\?id=keyword\.overview\.grid\.keyword_table") != -1 // SEO > Keywords > Report > Edit
              || details.url.search("://250ok\.com/app/design-informant/[^\\?]+\\?action=delete") != -1 // 250ok > Design > Test > Delete
-        )
-        {
+        ) {
             toCancel = true;
         }
         break;
@@ -1281,8 +1287,8 @@ function cancelWebRequest(details) {
 
 /**************************************************************************************
  *
- *  This function adds an event listener for Email Insights, Web Personalization, 
- *  and Predictive Content web requests in order to block adding, removing,  
+ *  This function adds an event listener for Email Insights, Web Personalization,
+ *  and Predictive Content web requests in order to block adding, removing,
  *  editing, saving, deleting for normal users in MarketoLive instances.
  *
  *  @Author Brian Fisher
@@ -1293,7 +1299,7 @@ function cancelWebRequest(details) {
  *
  **************************************************************************************/
 
-function addWebRequestListener () {
+function addWebRequestListener() {
     chrome.webRequest.onBeforeRequest.addListener(cancelWebRequest, {
         urls: mktoLiveBlockUrlPatterns
     }, ["blocking"]);
@@ -1302,8 +1308,8 @@ function addWebRequestListener () {
 
 /**************************************************************************************
  *
- *  This function removes an event listener for Email Insights, Web Personalization, 
- *  and Predictive Content web requests in order to allow adding, removing,  
+ *  This function removes an event listener for Email Insights, Web Personalization,
+ *  and Predictive Content web requests in order to allow adding, removing,
  *  editing, saving, deleting for admins and non-MarketoLive instances.
  *
  *  @Author Brian Fisher
@@ -1314,7 +1320,7 @@ function addWebRequestListener () {
  *
  **************************************************************************************/
 
-function removeWebRequestListener () {
+function removeWebRequestListener() {
     chrome.webRequest.onBeforeRequest.removeListener(cancelWebRequest);
     console.log("Removed Blocking Web Request Listener");
 }
@@ -1369,6 +1375,9 @@ function heapTrack(event) {
                         } else {
                             if (oneLoginEmail) {
                                 heap.identify(oneLoginEmail);
+                                heap.addUserProperties({
+                                    Email: oneLoginEmail
+                                });
                             } else {
                                 getCookie({
                                     url: mktoLiveDomainMatch,
@@ -1377,6 +1386,9 @@ function heapTrack(event) {
                                     if (cookie
                                          && cookie.value) {
                                         heap.identify(cookie.value);
+                                        heap.addUserProperties({
+                                            Email: cookie.value
+                                        });
                                     } else {
                                         heap.identify();
                                     }
