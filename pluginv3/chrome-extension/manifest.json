@@ -14,7 +14,6 @@
         "run_at": "document_end",
         "matches": [
             "*://*.marketo.com/*",
-            "*://*.marketodesigner.com/*",
             "*://pages.marketolive.com/*",
             "*://dev.pages.marketolive.com/*"
         ]
@@ -27,26 +26,10 @@
         ]
     }, {
         "all_frames": false,
-        "js": ["designer-content.js"],
+        "js": ["one-login-content.js"],
         "run_at": "document_end",
         "matches": [
-            "*://*.marketodesigner.com/*"
-        ]
-    }, {
-        "all_frames": false,
-        "js": [analyzer-nav-content.js"],
-        "run_at": "document_end",
-        "matches": [
-            "*://app-sjp.marketo.com/#AR1559A1!",
-            "*://app-sjp.marketo.com/#AR1544A1!",
-            "*://app-sjp.marketo.com/#AR1682A1!",
-            "*://app-sjp.marketo.com/#RCM70A1!",
-            "*://app-sjp.marketo.com?preview=true&approved=true/#RCM70A1!",
-            "*://app-sj11.marketo.com/#AR1559A1!",
-            "*://app-sj11.marketo.com/#AR1544A1!",
-            "*://app-sj11.marketo.com/#AR1682A1!",
-            "*://app-sj11.marketo.com/#RCM70A1!",
-            "*://app-sj11.marketo.com?preview=true&approved=true/#RCM70A1!",
+            "*://marketo.onelogin.com/client/apps"
         ]
     }, {
         "all_frames": false,
