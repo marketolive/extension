@@ -9271,7 +9271,7 @@ APP.showNavBar = function () {
         newElement.innerHTML = response;
         document.body.appendChild(newElement);
         APP.updateNavBar();
-    };
+    });
     
     /*
     var xmlHttp = new XMLHttpRequest(),
@@ -9784,7 +9784,7 @@ APP.discardLandingPageDrafts = function (lpIds) {
             lpIdVal = lpIds[lpIdKey];
             
             mktLPLManager.doModifyPages('revert', {
-                [lpIdKey]: lpIdVal,
+                '[lpIdKey]': lpIdVal,
                 beForDemoAccount: true
             });
             
