@@ -135,14 +135,14 @@ DESIGN.overlayLandingPage = function (action) {
     mktoRichMainTextDivClassNameRegex = new RegExp("main title|main_title|mainTitle|main-title|title", "i"),
     mktoRichSubTextDivClassNameRegex = new RegExp("subtitle|sub-title", "i"),
     buttonTextRegex = new RegExp("signup|sign up|call to action|cta|register|more|contribute|submit", "i"),
-    saveEditsToggle = DESIGN.DESIGN.getCookie("saveEditsToggleState"),
+    saveEditsToggle = DESIGN.getCookie("saveEditsToggleState"),
     logo = DESIGN.getCookie("logo"),
     heroBackground = DESIGN.getCookie("heroBackground"),
     color = DESIGN.getCookie("color"),
     defaultColor = "rgb(42, 83, 112)",
     logoOrigMaxHeight = "55",
     mktoMainText = "You To Our Event",
-    mktoSubText = getHumanDate(),
+    mktoSubText = DESIGN.getHumanDate(),
     company,
     companyName,
     linearGradient,
@@ -772,7 +772,7 @@ DESIGN.overlayEmail = function (action) {
     defaultColor = "rgb(42, 83, 112)",
     logoMaxHeight = "55",
     mktoMainText = "You<br>PREMIER BUSINESS EVENT<br>OF THE YEAR",
-    mktoSubText = getHumanDate(),
+    mktoSubText = DESIGN.getHumanDate(),
     company,
     companyName,
     editorRepeatReadyCount = desktopRepeatReadyCount = phoneRepeatReadyCount = 0,
@@ -1205,7 +1205,7 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
  *  Main
  *
  **************************************************************************************/
-/*
+
 var origOnLoad;
 
 if (typeof(window.onload) === "function"
@@ -1220,4 +1220,3 @@ window.onload = function () {
         origOnLoad.apply(this, arguments);
     }
 };
-*/

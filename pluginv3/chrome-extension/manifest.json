@@ -13,9 +13,7 @@
         "js": ["content.js"],
         "run_at": "document_end",
         "matches": [
-            "*://*.marketo.com/*",
-            "*://pages.marketolive.com/*",
-            "*://dev.pages.marketolive.com/*"
+            "*://*.marketo.com/*"
         ]
     }, {
         "all_frames": false,
@@ -23,6 +21,14 @@
         "run_at": "document_end",
         "matches": [
             "*://*.marketodesigner.com/*"
+        ]
+    }, {
+        "all_frames": false,
+        "js": ["landing-page-content.js"],
+        "run_at": "document_end",
+        "matches": [
+            "*://pages.marketolive.com/*",
+            "*://dev.pages.marketolive.com/*"
         ]
     }, {
         "all_frames": false,
@@ -75,7 +81,7 @@
             "*://verticals.marketolive.com/*",
             "*://dev.verticals.marketolive.com/*",
             "*://pages.marketolive.com/*",
-            "*://pages.dev.marketolive.com/*",
+            "*://dev.pages.marketolive.com/*",
             "https://marketo.onelogin.com/client/apps",
             "https://app-sjdemo1.marketo.com/*",
             "https://app-sjp.marketo.com/*",

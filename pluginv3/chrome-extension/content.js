@@ -2,8 +2,8 @@ console.log("Marketo > Running");
 
 /**************************************************************************************
  *
- *  This module contains all of the functionality needed for enabling dynamic landing 
- *  pages and emails within Marketo's Designer.
+ *  This module contains all of the functionality needed for loading external scripts 
+ *  on the Marketo App.
  *
  *  @Author Brian Fisher
  *
@@ -17,20 +17,16 @@ GLOBAL_LANDING_PAGE_SCRIPT_LOCATION = "https://marketolive.com/" + URL_PATH + "/
 MARKETO_OTHER_APP_SCRIPT_LOCATION = "https://marketolive.com/" + URL_PATH + "/pluginv3/marketo-other-app.min.js",
 ASSET_NAV_BAR_LOCATION = "https://marketolive.com/" + URL_PATH + "/v3/assets.html",
 mktoAppDomain = "^https://app-[a-z0-9]+\.marketo\.com",
+mktoWizardDomain = mktoAppDomain + "/m#",
 mktoLoginDomain = "^https://login\.marketo\.com|^https://app\.marketo\.com",
 mktoLoginPathName = "/homepage/login",
 mktoDesignerDomain = "^https://[a-z0-9]+-[a-z0-9]+\.marketodesigner\.com",
-mktoWizardDomain = mktoAppDomain + "/m#",
+mktoLandingPageDomain = "^http://[^\.]+\.marketo\.com/lp/[0-9]{3}-[a-zA-Z]{3}-[0-9]{3}/.*",
 mktoEmailInsightsDomain = "^https://sj-ee-api\.marketo\.com",
 mktoWebPersonalizationUrl = "^https://(sjrtp3\.marketo\.com|sjrtp1\.marketo\.com)/app/",
 mktoPredictiveContentUrl = "^https://(sjrtp3\.marketo\.com|sjrtp1\.marketo\.com)/app/predictive-app/",
 mktoSeoDomain = "^https://seo.marketo.com",
 currentUrl = window.location.href,
-
-mktoLiveDevLandingPageDomain = "^http://dev\.pages\.marketolive\.com",
-mktoLiveProdLandingPageDomain = "^http://pages\.marketolive\.com",
-mktoLandingPageDomain = "^http://[^\.]+\.marketo\.com/lp/[0-9]{3}-[a-zA-Z]{3}-[0-9]{3}/.*",
-mktoGlobalLandingPageDomains = "(" + mktoLiveDevLandingPageDomain + "|" + mktoLiveProdLandingPageDomain + "|" + mktoLandingPageDomain + ")",
 
 oppInfluenceAnalyzerFragment = "#AR1559A1!",
 programAnalyzerFragment = "#AR1544A1!",
@@ -182,20 +178,6 @@ MARKETO.showNavBar = function () {
         newElement.innerHTML = response;
         document.body.appendChild(newElement);
     });
-    
-    /*
-    var xmlHttp = new XMLHttpRequest(),
-    pageLoaded,
-    newElement;
-    
-    xmlHttp.open("GET", "https://marketolive.com/dev/pluginv3/html/analyzer.html", false);
-    xmlHttp.send();
-    pageLoaded = function () {
-        newElement = document.createElement("div");
-        newElement.innerHTML = xmlHttp.responseText;
-        document.body.appendChild(newElement);
-    };
-    */
 };
 
 /**************************************************************************************
@@ -224,8 +206,8 @@ window.onload = function () {
             MARKETO.showNavBar();
         }
         
-    } else if (currentUrl.search(mktoGlobalLandingPageDomains) != -1) {
-        console.log("Marketo > Location: Global Landing Page");
+    } else if (currentUrl.search(mktoLandingPageDomain) != -1) {
+        console.log("Marketo > Location: Landing Page");
         MARKETO.loadScript(GLOBAL_LANDING_PAGE_SCRIPT_LOCATION);
     
     } else if (currentUrl.search(mktoEmailInsightsDomain) != -1
