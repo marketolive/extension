@@ -32,6 +32,13 @@ mktoLiveProdLandingPageDomain = "^http://pages\.marketolive\.com",
 mktoLandingPageDomain = "^http://[^\.]+\.marketo\.com/lp/[0-9]{3}-[a-zA-Z]{3}-[0-9]{3}/.*",
 mktoGlobalLandingPageDomains = "(" + mktoLiveDevLandingPageDomain + "|" + mktoLiveProdLandingPageDomain + "|" + mktoLandingPageDomain + ")",
 
+oppInfluenceAnalyzerFragment = "#AR1559A1!",
+programAnalyzerFragment = "#AR1544A1!",
+modelerFragment = "#RCM70A1!",
+modelerPreviewFragment = "\\?preview=true(&approved=true)?/#RCM70A1!",
+successPathAnalyzerFragment = "#AR1682A1!",
+analyzerFragmentsMatch = mktoAppDomain + "/(" + oppInfluenceAnalyzerFragment + "|" + programAnalyzerFragment + "|" + modelerFragment + "|" + modelerPreviewFragment + "|" + successPathAnalyzerFragment + ")",
+
 MARKETO = MARKETO || {};
 
 /**************************************************************************************
@@ -114,6 +121,85 @@ MARKETO.getCookie = function (cookieName) {
 
 /**************************************************************************************
  *
+ *  This function issues an HTTP request.
+ *
+ *  @Author Brian Fisher
+ *
+ *  @function
+ *
+ *  @param {String} url - The HTTP request URL.
+ *  @param {String} params - The parameters to pass in the body of the request.
+ *  @param {String} method - The HTTP request method (e.g. GET, POST, PATCH).
+ *  @param {String} responseType - The type of the response (e.g. document, json, text).
+ *  @param {Function} callback - The callback function.
+ *
+ **************************************************************************************/
+
+MARKETO.webRequest = function (url, params, method, async, responseType, callback) {
+    var xmlHttp = new XMLHttpRequest(),
+    result;
+    xmlHttp.onreadystatechange = function () {
+        if (typeof(callback) === "function"
+             && xmlHttp.readyState == 4
+             && xmlHttp.status == 200)
+            result = callback(xmlHttp.response);
+    }
+    if (async
+         && xmlHttp.responseType) {
+        xmlHttp.responseType = responseType;
+    }
+    xmlHttp.open(method, url, async); // true for asynchronous
+    xmlHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded; charset=UTF-8");
+    if (url.search(/^\//) != -1
+         || url.replace(/^[a-z]+:\/\/([^\/]+)\/?.*$/, "$1") == window.location.host) {
+        xmlHttp.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+    }
+    xmlHttp.send(params);
+    return result;
+};
+
+/**************************************************************************************
+ *
+ *  This method will insert an HTML template and a CSS sheet inside the template
+ *  directly into the header of the Marketo page via "Import" and runs asynchronously.
+ *  Then it binds the 'prev' and 'next' elements with a click function so that whenever
+ *  they are clicked it will call chooseAnalyzer and pass the element clicked.
+ *
+ *  @Author Arrash
+ *
+ *  @function
+ *
+ *  @namespace link
+ *  @namespace importedDoc
+ *  @namespace el
+ *
+ **************************************************************************************/
+
+MARKETO.showNavBar = function () {
+    MARKETO.webRequest('https://marketolive.com/dev/pluginv3/html/analyzer.html', null, 'GET', true, 'text', function (response) {
+        var newElement = document.createElement("div");
+        
+        newElement.innerHTML = response;
+        document.body.appendChild(newElement);
+    });
+    
+    /*
+    var xmlHttp = new XMLHttpRequest(),
+    pageLoaded,
+    newElement;
+    
+    xmlHttp.open("GET", "https://marketolive.com/dev/pluginv3/html/analyzer.html", false);
+    xmlHttp.send();
+    pageLoaded = function () {
+        newElement = document.createElement("div");
+        newElement.innerHTML = xmlHttp.responseText;
+        document.body.appendChild(newElement);
+    };
+    */
+};
+
+/**************************************************************************************
+ *
  *  Main
  *
  **************************************************************************************/
@@ -131,19 +217,21 @@ window.onload = function () {
          && window.location.pathname != mktoLoginPathName
          && currentUrl.search(mktoLoginDomain) == -1) {
         console.log("Marketo > Location: App URL");
-        
         MARKETO.loadScript(MARKETO_GLOBAL_APP_LOCATION);
+        
+        if (currentUrl.search(analyzerFragmentsMatch) != -1) {
+            console.log("Marketo > Location: Golden Analytics");
+            MARKETO.showNavBar();
+        }
         
     } else if (currentUrl.search(mktoGlobalLandingPageDomains) != -1) {
         console.log("Marketo > Location: Global Landing Page");
-        
         MARKETO.loadScript(GLOBAL_LANDING_PAGE_SCRIPT_LOCATION);
     
     } else if (currentUrl.search(mktoEmailInsightsDomain) != -1
          || currentUrl.search(mktoWebPersonalizationUrl) != -1
          || currentUrl.search(mktoSeoDomain) != -1) {
         console.log("Marketo > Location: Marketo Other App");
-        
         MARKETO.loadScript(MARKETO_OTHER_APP_SCRIPT_LOCATION);
     }
     
