@@ -11439,7 +11439,7 @@ var isMktPageApp = window.setInterval(function () {
                 if (currUrlFragment.search(mktoAnalyzersFragmentMatch) != -1) {
                     console.log("Marketo App > Location: Golden Analytics");
                     
-                    APP.injectAnalyzerNavBar();
+                    //APP.injectAnalyzerNavBar();
                 }
                 
                 if (currUrlFragment.search(mktoReportFragmentRegex) != -1) {

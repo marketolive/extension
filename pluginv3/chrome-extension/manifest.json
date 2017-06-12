@@ -16,14 +16,37 @@
             "*://*.marketo.com/*",
             "*://*.marketodesigner.com/*",
             "*://pages.marketolive.com/*",
-            "*://pages-dev.marketolive.com/*"
+            "*://dev.pages.marketolive.com/*"
         ]
     }, {
         "all_frames": false,
-        "js": ["one-login-content.js"],
+        "js": ["designer-content.js"],
         "run_at": "document_end",
         "matches": [
-            "*://marketo.onelogin.com/client/apps"
+            "*://*.marketodesigner.com/*"
+        ]
+    }, {
+        "all_frames": false,
+        "js": ["designer-content.js"],
+        "run_at": "document_end",
+        "matches": [
+            "*://*.marketodesigner.com/*"
+        ]
+    }, {
+        "all_frames": false,
+        "js": [analyzer-nav-content.js"],
+        "run_at": "document_end",
+        "matches": [
+            "*://app-sjp.marketo.com/#AR1559A1!",
+            "*://app-sjp.marketo.com/#AR1544A1!",
+            "*://app-sjp.marketo.com/#AR1682A1!",
+            "*://app-sjp.marketo.com/#RCM70A1!",
+            "*://app-sjp.marketo.com?preview=true&approved=true/#RCM70A1!",
+            "*://app-sj11.marketo.com/#AR1559A1!",
+            "*://app-sj11.marketo.com/#AR1544A1!",
+            "*://app-sj11.marketo.com/#AR1682A1!",
+            "*://app-sj11.marketo.com/#RCM70A1!",
+            "*://app-sj11.marketo.com?preview=true&approved=true/#RCM70A1!",
         ]
     }, {
         "all_frames": false,
@@ -69,7 +92,7 @@
             "*://verticals.marketolive.com/*",
             "*://dev.verticals.marketolive.com/*",
             "*://pages.marketolive.com/*",
-            "*://pages-dev.marketolive.com/*",
+            "*://pages.dev.marketolive.com/*",
             "https://marketo.onelogin.com/client/apps",
             "https://app-sjdemo1.marketo.com/*",
             "https://app-sjp.marketo.com/*",
@@ -93,12 +116,12 @@
         "*://*.marketo.com/*",
         "*://*.marketodesigner.com/*",
         "*://pages.marketolive.com/*",
-        "*://pages-dev.marketolive.com/*",
+        "*://dev.pages.marketolive.com/*",
         "*://marketolive.com/*",
         "*://www.marketolive.com/*",
-        "*://www.marketolive-dev.com/*",
+        "*://dev.marketolive.com/*",
         "*://verticals.marketolive.com/*",
-        "*://verticals-dev.marketolive.com/*",
+        "*://dev.verticals.marketolive.com/*",
         "*://250ok.com/*",
         "*://marketo.invisionapp.com/*",
         "*://marketo.onelogin.com/*",
