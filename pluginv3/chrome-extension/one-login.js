@@ -1,9 +1,9 @@
-console.log("Landing Page > Running");
+console.log("OneLogin > Running");
 
 /**************************************************************************************
  *
  *  This module contains all of the functionality needed for loading external scripts 
- *  on MarketoLive Landing Pages.
+ *  on 250ok for Email Deliverability.
  *
  *  @Author Brian Fisher
  *
@@ -12,13 +12,9 @@ console.log("Landing Page > Running");
  **************************************************************************************/
 
 var URL_PATH = "m3-dev",
-GLOBAL_LANDING_PAGE_SCRIPT_LOCATION = "https://marketolive.com/" + URL_PATH + "/pluginv3/global-landing-page.min.js",
+ONE_LOGIN = "https://marketolive.com/" + URL_PATH + "/pluginv3/one-login.min.js",
 
-mktoLiveDevLandingPageDomain = "http://dev\.pages\.marketolive\.com",
-mktoLiveProdLandingPageDomain = "http://pages\.marketolive\.com",
-mktoGlobalLandingPageDomains = "^(" + mktoLiveDevLandingPageDomain + "|" + mktoLiveProdLandingPageDomain + ")",
-
-LPAGE = LPAGE || {};
+APP = APP || {};
 
 /**************************************************************************************
  *
@@ -29,12 +25,11 @@ LPAGE = LPAGE || {};
  *  @function
  *
  *  @param {String} scriptSrc - The URL of the desired script.
- *  @param {String} onLoad - The onload function to be set.
  *
  **************************************************************************************/
 
-LPAGE.loadScript = function (scriptSrc) {
-    console.log("Landing Page > Loading: Script: " + scriptSrc);
+APP.loadScript = function (scriptSrc) {
+    console.log("Loading: Script: " + scriptSrc);
     
     var scriptElement = document.createElement("script");
     scriptElement.async = true;
@@ -48,17 +43,6 @@ LPAGE.loadScript = function (scriptSrc) {
  *
  **************************************************************************************/
 
-var origOnLoad;
-
-if (typeof(window.onload) === "function"
-     && typeof(origOnLoad) !== "function") {
-    origOnLoad = window.onload;
-}
-
 window.onload = function () {
-    LPAGE.loadScript(GLOBAL_LANDING_PAGE_SCRIPT_LOCATION);
-    
-    if (typeof(origOnLoad) === "function") {
-        origOnLoad.apply(this, arguments);
-    }
+    APP.loadScript(ONE_LOGIN);
 };

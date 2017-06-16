@@ -1,6 +1,20 @@
+console.log("Landing Page > Running");
+
+/**************************************************************************************
+ *
+ *  This module contains all of the functionality needed for loading external scripts 
+ *  on MarketoLive Landing Pages.
+ *
+ *  @Author Brian Fisher
+ *
+ *  @namespace
+ *
+ **************************************************************************************/
+
 var URL_PATH = "m3-dev",
-INVISION_APP_SCRIPT_LOCATION = "https://marketolive.com/" + URL_PATH + "/pluginv3/invision-app.min.js",
-loadScript;
+GLOBAL_LANDING_PAGE = "https://marketolive.com/" + URL_PATH + "/pluginv3/global-landing-page.min.js",
+
+APP = APP || {};
 
 /**************************************************************************************
  *
@@ -14,8 +28,8 @@ loadScript;
  *
  **************************************************************************************/
 
-loadScript = function (scriptSrc) {
-    console.log("InVision App > Loading: Script: " + scriptSrc);
+APP.loadScript = function (scriptSrc) {
+    console.log("Loading: Script: " + scriptSrc);
     
     var scriptElement = document.createElement("script");
     scriptElement.async = true;
@@ -29,4 +43,6 @@ loadScript = function (scriptSrc) {
  *
  **************************************************************************************/
 
-loadScript(INVISION_APP_SCRIPT_LOCATION);
+window.onload = function () {
+    APP.loadScript(GLOBAL_LANDING_PAGE);
+};

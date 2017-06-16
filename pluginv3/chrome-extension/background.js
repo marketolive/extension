@@ -1,18 +1,24 @@
+console.log("Background > Running");
+
 /**************************************************************************************
  *
- *  Global Constants
+ *  This background script contains all of the functionality needed to support the 
+ *  extension.
+ *
+ *  @Author Brian Fisher
+ *
+ *  @namespace
  *
  **************************************************************************************/
 
 var URL_PATH = "m3-dev",
+
 HEAP_ANALYTICS_SCRIPT_LOCATION = "https://marketolive.com/" + URL_PATH + "/pluginv3/heap-analytics-ext.min.js",
 BACKGROUND_DATA_SCRIPT_LOCATION = "https://marketolive.com/" + URL_PATH + "/pluginv3/background-demo-data.min.js",
-mktoLiveInstances = "^https:\/\/app-sjp\.marketo\.com",
-mktoLiveUserPods = "app-sjp",
-mktoLiveDomain = "^http:\/\/www\.marketolive\.com",
+
+mktoLiveInstances = "^(https://app-sjdemo1\.marketo\.com/|https://app-sjp\.marketo\.com/)",
 mktoLiveDomainMatch = "http://www.marketolive.com/*",
 mktoLiveUriDomain = ".marketolive.com",
-mktoLiveClassicDomain = "^https:\/\/marketolive\.com",
 mktoLiveClassicDomainMatch = "https://marketolive.com/*",
 mktoLiveClassicUriDomain = ".marketolive.com",
 mktoAppDomainMatch = "https://app-*.marketo.com",
@@ -22,21 +28,25 @@ mktoDesignerUriDomain = ".marketodesigner.com",
 mktoDesignerMatchPattern = "https://*.marketodesigner.com/*",
 mktoSjpWebRequest = "https://app-sjp.marketo.com/",
 mktoSjdemo1WebRequest = "https://app-sjdemo1.marketo.com/",
+oneLoginUrl = "https://marketo.onelogin.com/client/apps",
+
 mktoEmailDesignerFragment = "EME",
 mktoEmailPreviewFragmentRegex = new RegExp("#EME[0-9]+&isPreview", "i"),
 mktoEmailPreviewFragment = "EMP",
 mktoLandingPageDesignerFragment = "LPE",
 mktoLandingPagePreviewFragment = "LPPD",
-oneLoginUrl = "https://marketo.onelogin.com/client/apps",
+
 adTargetingRegEx = "^http(s)?://www\.marketolive\.com/en/tools/ad-targeting",
 companyPickerRegEx = "^https://marketolive\.com/" + URL_PATH + "/apps/color-picker\.html\\?company=.+",
-colorPickerMsgRegex = "(^http(s)?:\/\/(www|dev)\.marketolive\.com\/en\/tools\/ad-targeting|^https:\/\/marketolive\.com\/" + URL_PATH + "\/apps\/color-picker\.html\\?.+)",
+
 mktoAppUserCookie = "ids_sso",
 munchkinIdsMatch = "^(185-NGX-811|026-COU-482|767-TVJ-204)$",
+
 //adminUserNamesMatch = "^mktodemolivemaster@marketo\.com$|^admin(\.[a-z]{0,2})?@(marketolive.com$|mktodemoaccount)|^marketodemo.*@gmail\.com$",
 adminUserNamesMatch = "^mktodemolivemaster@marketo\.com$|^admin(\.[a-z]{0,2})?@(marketolive.com$|mktodemoaccount)|^mktodemoaccount[a-z0-9]*@marketo\.com$|^marketodemo.*@gmail\.com$",
 mktoLiveBlockUrlPatterns = ["*://sjrtp3.marketo.com/app/*", "*://sj-ee-api.marketo.com/api/v1/settings/dimensions/activate/*", "*://seo.marketo.com/*", "*://250ok.com/*"],
 mktoLiveRtpDomainsMatch = "sjrtp3\.marketo\.com",
+
 oneLoginFirstName,
 oneLoginLastName,
 oneLoginEmail,
@@ -100,7 +110,6 @@ function webRequest(url, params, method, async, responseType, callback) {
     }
     xmlHttp.open(method, url, async); // true for asynchronous
     xmlHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded; charset=UTF-8");
-    //xmlHttp.setRequestHeader("X-Requested-With", "XMLHttpRequest");
     xmlHttp.send(params);
     return result;
 }
@@ -1046,12 +1055,14 @@ function checkMsgs(message, sender, sendResponse) {
         var response = checkForOldExtension(message.minVersion);
         
         sendResponse(response);
-        heapTrack({
-            name: "Loaded MarketoLive Instance",
-            app: "Extension",
-            area: "Background",
-            version: chrome.app.getDetails().version
-        });
+        if (sender.url.search(mktoLiveInstances) != -1) {
+            heapTrack({
+                name: "Loaded MarketoLive Instance",
+                app: "Extension",
+                area: "Background",
+                version: chrome.app.getDetails().version
+            });
+        }
         console.log("Received " + message.action + " Response: " + JSON.stringify(response));
         break;
     case "setMktoCookies":

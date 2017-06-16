@@ -1,6 +1,20 @@
+console.log("250ok > Running");
+
+/**************************************************************************************
+ *
+ *  This module contains all of the functionality needed for loading external scripts 
+ *  on 250ok for Email Deliverability.
+ *
+ *  @Author Brian Fisher
+ *
+ *  @namespace
+ *
+ **************************************************************************************/
+
 var URL_PATH = "m3-dev",
-ONE_LOGIN_SCRIPT_LOCATION = "https://marketolive.com/" + URL_PATH + "/pluginv3/one-login.min.js",
-loadScript;
+DELIVERABILITY_TOOLS = "https://marketolive.com/" + URL_PATH + "/pluginv3/deliverability-tools.min.js",
+
+APP = APP || {};
 
 /**************************************************************************************
  *
@@ -14,8 +28,8 @@ loadScript;
  *
  **************************************************************************************/
 
-loadScript = function (scriptSrc) {
-    console.log("OneLogin > Loading: Script: " + scriptSrc);
+APP.loadScript = function (scriptSrc) {
+    console.log("Loading: Script: " + scriptSrc);
     
     var scriptElement = document.createElement("script");
     scriptElement.async = true;
@@ -29,4 +43,6 @@ loadScript = function (scriptSrc) {
  *
  **************************************************************************************/
 
-loadScript(ONE_LOGIN_SCRIPT_LOCATION);
+window.onload = function () {
+    APP.loadScript(DELIVERABILITY_TOOLS);
+};

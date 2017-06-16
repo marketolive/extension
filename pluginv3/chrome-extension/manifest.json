@@ -10,21 +10,21 @@
     },
     "content_scripts": [ {
         "all_frames": false,
-        "js": ["content.js"],
+        "js": ["marketo.js"],
         "run_at": "document_end",
         "matches": [
             "*://*.marketo.com/*"
         ]
     }, {
         "all_frames": false,
-        "js": ["designer-content.js"],
+        "js": ["marketo-designer.js"],
         "run_at": "document_end",
         "matches": [
             "*://*.marketodesigner.com/*"
         ]
     }, {
         "all_frames": false,
-        "js": ["landing-page-content.js"],
+        "js": ["marketolive-landing-page.js"],
         "run_at": "document_end",
         "matches": [
             "*://pages.marketolive.com/*",
@@ -32,42 +32,42 @@
         ]
     }, {
         "all_frames": false,
-        "js": ["one-login-content.js"],
+        "js": ["one-login.js"],
         "run_at": "document_end",
         "matches": [
             "*://marketo.onelogin.com/client/apps"
         ]
     }, {
         "all_frames": false,
-        "js": ["deliverability-tools-content.js"],
+        "js": ["250ok.js"],
         "run_at": "document_end",
         "matches": [
             "*://250ok.com/*"
         ]
     }, {
         "all_frames": false,
-        "js": ["invision-app-content.js"],
+        "js": ["invision-app.js"],
         "run_at": "document_end",
         "matches": [
             "*://marketo.invisionapp.com/*"
         ]
     }, {
         "all_frames": false,
-        "js": ["google-search-content.js"],
+        "js": ["google-search-ad.js"],
         "run_at": "document_end",
         "matches": [
             "*://www.google.com/search?dynamicAd=true&*"
         ]
     }, {
         "all_frames": false,
-        "js": ["facebook-content.js"],
+        "js": ["facebook-ad.js"],
         "run_at": "document_end",
         "matches": [
             "*://www.facebook.com/?dynamicAd=true&*"
         ]
     }, {
         "all_frames": false,
-        "js": ["linkedin-content.js"],
+        "js": ["linkedin-ad.js"],
         "run_at": "document_end",
         "matches": [
             "*://www.linkedin.com/feed/?dynamicAd=true&*"
@@ -92,7 +92,8 @@
             "https://sj-ee-api.marketo.com/*",
             "https://sjrcademo1.marketo.com/*",
             "https://sjrca02.marketo.com/*",
-            "https://seo.marketo.com/*"
+            "https://seo.marketo.com/*",
+            "https://250ok.com/*"
         ]
     },
     "icons": {

@@ -159,18 +159,8 @@ APP.getAdInfo = function () {
  *
  **************************************************************************************/
 
-var ad = APP.getAdInfo(),
-origOnLoad;
-
-if (typeof(window.onload) === "function"
-     && typeof(origOnLoad) !== "function") {
-    origOnLoad = window.onload;
-}
+var ad = APP.getAdInfo();
 
 window.onload = function () {
     APP.waitForRightCol(APP.insertAd(ad));
-    
-    if (typeof(origOnLoad) === "function") {
-        origOnLoad.apply(this, arguments);
-    }
 };

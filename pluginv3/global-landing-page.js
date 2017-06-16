@@ -1,16 +1,29 @@
+console.log("Global Landing Page > Running");
+
+/**************************************************************************************
+ *
+ *  This script contains all of the functionality needed for loading external scripts
+ *  on MarketoLive Landing Pages.
+ *
+ *  @Author Brian Fisher
+ *
+ *  @namespace
+ *
+ **************************************************************************************/
+
 var URL_PATH = "m3-dev",
-MARKETO_LIVE_LANDING_PAGE_SCRIPT_LOCATION = "https://marketolive.com/" + URL_PATH + "/pluginv3/marketo-live-landing-page.min.js",
-currentUrl = document.location.href,
-mktoLiveLandingPageHostsMatch = "na-sjdemo1.marketo.com",
+
+MARKETO_LIVE_LANDING_PAGE = "https://marketolive.com/" + URL_PATH + "/pluginv3/marketo-live-landing-page.min.js",
+
+mktoLiveProdLandingPageDomain = "http://pages\.marketolive\.com",
+mktoLiveDevLandingPageDomain = "http://dev\.pages\.marketolive\.com",
+mktoLiveLandingPageHostsMatch = "http://na-sjdemo1.marketo.com",
 mktoLiveDevMunchkinId = "685-BTN-772",
 mktoLiveProdMunchkinId = "185-NGX-811",
+mktoLiveMunchkinIdsMatch = "(" + mktoLiveProdMunchkinId + "|" + mktoLiveDevMunchkinId + ")",
+mktoLiveLandingPageDomainMatch = "^(" + mktoLiveProdLandingPageDomain + "|" + mktoLiveDevLandingPageDomain + "|" + mktoLiveLandingPageHostsMatch + "\/lp\/" + mktoLiveMunchkinIdsMatch + ")/",
 
-mktoLiveDevLandingPageDomain = "^http:\/\/pages-dev\.marketolive\.com",
-mktoLiveProdLandingPageDomain = "^http:\/\/pages\.marketolive\.com",
-mktoLiveMunchkinIdsMatch = "(" + mktoLiveDevMunchkinId + "|" + mktoLiveProdMunchkinId + ")",
-mktoLiveLandingPageDomainMatch = "(" + mktoLiveDevLandingPageDomain + "|" + mktoLiveProdLandingPageDomain + "|^http:\/\/" + mktoLiveLandingPageHostsMatch + "\/lp\/" + mktoLiveMunchkinIdsMatch + "\/.*)",
-
-loadScript;
+GLOBAL_LPAGE = GLOBAL_LPAGE || {};
 
 /**************************************************************************************
  *
@@ -24,13 +37,13 @@ loadScript;
  *
  **************************************************************************************/
 
-loadScript = function (scriptSrc) {
-    console.log("Global Landing Page > Loading: Script: " + scriptSrc);
-    
-    var scriptElement = document.createElement("script");
-    scriptElement.async = true;
-    scriptElement.src = scriptSrc;
-    document.getElementsByTagName("head")[0].appendChild(scriptElement);
+GLOBAL_LPAGE.loadScript = function (scriptSrc) {
+  console.log("Loading: Script: " + scriptSrc);
+  
+  var scriptElement = document.createElement("script");
+  scriptElement.async = true;
+  scriptElement.src = scriptSrc;
+  document.getElementsByTagName("head")[0].appendChild(scriptElement);
 };
 
 /**************************************************************************************
@@ -39,12 +52,8 @@ loadScript = function (scriptSrc) {
  *
  **************************************************************************************/
 
-console.log("Global Landing Page > Script: Loaded");
-
-if (currentUrl.search(mktoLiveLandingPageDomainMatch) != -1) {
-    console.log("Global Landing Page > Location: MarketoLive Landing Page");
-    
-    loadScript(MARKETO_LIVE_LANDING_PAGE_SCRIPT_LOCATION);
-} else {
-    console.log("Global Landing Page > Location: NOT MarketoLive Landing Page");
+if (window.location.href.search(mktoLiveLandingPageDomainMatch) != -1) {
+  console.log("Global Landing Page > Location: MarketoLive Landing Page");
+  
+  GLOBAL_LPAGE.loadScript(MARKETO_LIVE_LANDING_PAGE);
 }

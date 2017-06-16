@@ -1,6 +1,17 @@
-/*
-var getCookie,
-pod;*/
+console.log("RTP Demo Site > Deeplinking");
+
+/**************************************************************************************
+ *
+ *  This script contains all of the functionality needed for overlaying the nav bar
+ *  header on the RTP demo site.
+ *
+ *  @Author Brian Fisher
+ *
+ *  @namespace
+ *
+ **************************************************************************************/
+
+var RTP_DEMO = RTP_DEMO || {};
 
 /**************************************************************************************
  *
@@ -15,8 +26,8 @@ pod;*/
  *
  **************************************************************************************/
 /*
-getCookie = function (cookieName) {
-console.log("Marketo App > Getting: Cookie " + cookieName);
+RTP_DEMO.getCookie = function (cookieName) {
+console.log("Getting: Cookie " + cookieName);
 
 var name = cookieName + '=',
 cookies = document.cookie.split(';'),
@@ -28,9 +39,10 @@ if (currCookie.indexOf(name) == 0) {
 return currCookie.substring(name.length, currCookie.length);
 }
 }
-console.log("Marketo App > Getting: Cookie " + cookieName + " not found");
+console.log("Getting: Cookie " + cookieName + " not found");
 return null;
-};*/
+};
+ */
 
 /**************************************************************************************
  *
@@ -38,31 +50,30 @@ return null;
  *
  **************************************************************************************/
 
-console.log("RTP Demo Site > Deeplinking");
-
 $("#demo-in-marketo").attr("href", "https://sjrtp1.marketo.com/app/editReaction.ext?reactionId=1760");
 
 $(document).ready(function () {
-    $("#help-link").click(function () {
-        console.log("RTP > Showing: Help Modal");
-        
-        $('.help-center-box').animate({
-            'margin-top' : '125px',
-        }, 400, function () {});
-        $('.help-cover').css('display', 'block');
-        $('.help-center-container').css('display', 'block');
-        $('#iframelive').hide();
-    });
-    $('.cancel-help').click(function () {
-        console.log("RTP > Hiding: Help Modal");
-        
-        $('.help-cover').css('display', 'none');
-        $('.help-center-container').css('display', 'none');
-        $('#iframelive').show();
-    });
+  $("#help-link").click(function () {
+    console.log("RTP > Showing: Help Modal");
+    
+    $('.help-center-box').animate({
+      'margin-top': '125px',
+    }, 400, function () {});
+    $('.help-cover').css('display', 'block');
+    $('.help-center-container').css('display', 'block');
+    $('#iframelive').hide();
+  });
+  $('.cancel-help').click(function () {
+    console.log("RTP > Hiding: Help Modal");
+    
+    $('.help-cover').css('display', 'none');
+    $('.help-center-container').css('display', 'none');
+    $('#iframelive').show();
+  });
 });
 /*
-pod = getCookie("userPod");
+var pod = getCookie("userPod");
+
 switch (pod) {
 case "app-sjp":
 case "app-ab07":
@@ -76,7 +87,8 @@ break;
 default:
 console.log("RTP > Invalid userPod cookie: " + pod);
 $("#demo-in-marketo").click(function() {
-location.replace("https://login.marketo.com");
+window.location.replace("https://login.marketo.com");
 });
 break;
-}*/
+}
+*/

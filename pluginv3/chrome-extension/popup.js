@@ -1,3 +1,5 @@
+console.log("Popup > Running");
+
 /**************************************************************************************
  *
  *  For whatever reason, Chrome does not allow the opening of links from inside
@@ -10,10 +12,8 @@
  *  @function
  *
  **************************************************************************************/
-console.log("Popup > Running");
 
 window.onload = function () {
-    
     // This is a strange idiosyncrasy with chrome plugins. You cannot directly reference the local
     // folders without hard-coding the unique id of the plugin, which may potentially change. This is
     // the alternative to using <img src="whatever">

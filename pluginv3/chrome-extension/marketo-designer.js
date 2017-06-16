@@ -12,9 +12,9 @@ console.log("Designer > Running");
  **************************************************************************************/
 
 var URL_PATH = "m3-dev",
-MARKETO_GLOBAL_APP_LOCATION = "https://marketolive.com/" + URL_PATH + "/pluginv3/marketo-global-app.min.js",
+MARKETO_GLOBAL_APP = "https://marketolive.com/" + URL_PATH + "/pluginv3/marketo-global-app.min.js",
 
-DESIGN = DESIGN || {};
+APP = APP || {};
 
 /**************************************************************************************
  *
@@ -25,12 +25,11 @@ DESIGN = DESIGN || {};
  *  @function
  *
  *  @param {String} scriptSrc - The URL of the desired script.
- *  @param {String} onLoad - The onload function to be set.
  *
  **************************************************************************************/
 
-DESIGN.loadScript = function (scriptSrc) {
-    console.log("Designer > Loading: Script: " + scriptSrc);
+APP.loadScript = function (scriptSrc) {
+    console.log("Loading: Script: " + scriptSrc);
     
     var scriptElement = document.createElement("script");
     scriptElement.async = true;
@@ -51,8 +50,8 @@ DESIGN.loadScript = function (scriptSrc) {
  *
  **************************************************************************************/
 
-DESIGN.getCookie = function (cookieName) {
-    console.log("Designer > Getting: Cookie " + cookieName);
+APP.getCookie = function (cookieName) {
+    console.log("Getting: Cookie " + cookieName);
     
     var name = cookieName + '=',
     cookies = document.cookie.split(';'),
@@ -78,7 +77,7 @@ DESIGN.getCookie = function (cookieName) {
  *
  **************************************************************************************/
 
-DESIGN.getHumanDate = function () {
+APP.getHumanDate = function () {
     console.log("Designer > Getting: Today's Date");
     
     var dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
@@ -119,7 +118,7 @@ DESIGN.getHumanDate = function () {
  *
  **************************************************************************************/
 
-DESIGN.overlayLandingPage = function (action) {
+APP.overlayLandingPage = function (action) {
     console.log("Designer > Overlaying: Landing Page");
     
     var isLandingPageEditor,
@@ -135,14 +134,14 @@ DESIGN.overlayLandingPage = function (action) {
     mktoRichMainTextDivClassNameRegex = new RegExp("main title|main_title|mainTitle|main-title|title", "i"),
     mktoRichSubTextDivClassNameRegex = new RegExp("subtitle|sub-title", "i"),
     buttonTextRegex = new RegExp("signup|sign up|call to action|cta|register|more|contribute|submit", "i"),
-    saveEditsToggle = DESIGN.getCookie("saveEditsToggleState"),
-    logo = DESIGN.getCookie("logo"),
-    heroBackground = DESIGN.getCookie("heroBackground"),
-    color = DESIGN.getCookie("color"),
+    saveEditsToggle = APP.getCookie("saveEditsToggleState"),
+    logo = APP.getCookie("logo"),
+    heroBackground = APP.getCookie("heroBackground"),
+    color = APP.getCookie("color"),
     defaultColor = "rgb(42, 83, 112)",
     logoOrigMaxHeight = "55",
     mktoMainText = "You To Our Event",
-    mktoSubText = DESIGN.getHumanDate(),
+    mktoSubText = APP.getHumanDate(),
     company,
     companyName,
     linearGradient,
@@ -754,7 +753,7 @@ DESIGN.overlayLandingPage = function (action) {
  *
  **************************************************************************************/
 
-DESIGN.overlayEmail = function (action) {
+APP.overlayEmail = function (action) {
     console.log("Designer > Overlaying: Email");
     
     var isEmailEditor2,
@@ -765,14 +764,14 @@ DESIGN.overlayEmail = function (action) {
     mainTitleMktoNameRegex = new RegExp("^main title$|^mainTitle$|^main-title$|^hero title$|^heroTitle$|^hero-title$|^title$", "i"),
     subTitleMktoNameRegex = new RegExp("^subtitle$|^sub-title$|^hero subtitle$|^heroSubtitle$|^hero-subtitle$", "i"),
     buttonTextRegex = new RegExp("signup|sign up|call to action|cta|register|more|contribute", "i"),
-    saveEditsToggle = DESIGN.getCookie("saveEditsToggleState"),
-    logo = DESIGN.getCookie("logo"),
-    heroBackground = DESIGN.getCookie("heroBackground"),
-    color = DESIGN.getCookie("color"),
+    saveEditsToggle = APP.getCookie("saveEditsToggleState"),
+    logo = APP.getCookie("logo"),
+    heroBackground = APP.getCookie("heroBackground"),
+    color = APP.getCookie("color"),
     defaultColor = "rgb(42, 83, 112)",
     logoMaxHeight = "55",
     mktoMainText = "You<br>PREMIER BUSINESS EVENT<br>OF THE YEAR",
-    mktoSubText = DESIGN.getHumanDate(),
+    mktoSubText = APP.getHumanDate(),
     company,
     companyName,
     editorRepeatReadyCount = desktopRepeatReadyCount = phoneRepeatReadyCount = 0,
@@ -1180,19 +1179,19 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
         case "email":
             if (message.assetView == "edit") {
                 console.log("Designer > Capturing: New Company for Email Designer");
-                DESIGN.overlayEmail("edit");
+                APP.overlayEmail("edit");
             } else if (message.assetView == "preview") {
                 console.log("Designer > Capturing: New Company for Email Previewer");
-                DESIGN.overlayEmail("preview");
+                APP.overlayEmail("preview");
             }
             break;
         case "landingPage":
             if (message.assetView == "edit") {
                 console.log("Designer > Capturing: New Company for Landing Page Designer");
-                DESIGN.overlayLandingPage("edit");
+                APP.overlayLandingPage("edit");
             } else if (message.assetView == "preview") {
                 console.log("Designer > Capturing: New Company for Landing Page Previewer");
-                DESIGN.overlayLandingPage("preview");
+                APP.overlayLandingPage("preview");
             }
             break;
         }
@@ -1206,17 +1205,6 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
  *
  **************************************************************************************/
 
-var origOnLoad;
-
-if (typeof(window.onload) === "function"
-     && typeof(origOnLoad) !== "function") {
-    origOnLoad = window.onload;
-}
-
 window.onload = function () {
-    DESIGN.loadScript(MARKETO_GLOBAL_APP_LOCATION);
-    
-    if (typeof(origOnLoad) === "function") {
-        origOnLoad.apply(this, arguments);
-    }
+    APP.loadScript(MARKETO_GLOBAL_APP);
 };

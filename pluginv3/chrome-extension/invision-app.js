@@ -1,6 +1,20 @@
+console.log("InVision App > Running");
+
+/**************************************************************************************
+ *
+ *  This module contains all of the functionality needed for loading external scripts 
+ *  on InVision App.
+ *
+ *  @Author Brian Fisher
+ *
+ *  @namespace
+ *
+ **************************************************************************************/
+
 var URL_PATH = "m3-dev",
-DELIVERABILITY_TOOLS_SCRIPT_LOCATION = "https://marketolive.com/" + URL_PATH + "/pluginv3/deliverability-tools.min.js",
-loadScript;
+INVISION_APP = "https://marketolive.com/" + URL_PATH + "/pluginv3/invision-app.min.js",
+
+APP = APP || {};
 
 /**************************************************************************************
  *
@@ -14,8 +28,8 @@ loadScript;
  *
  **************************************************************************************/
 
-loadScript = function (scriptSrc) {
-    console.log("Deliverability > Loading: Script: " + scriptSrc);
+APP.loadScript = function (scriptSrc) {
+    console.log("Loading: Script: " + scriptSrc);
     
     var scriptElement = document.createElement("script");
     scriptElement.async = true;
@@ -29,4 +43,6 @@ loadScript = function (scriptSrc) {
  *
  **************************************************************************************/
 
-loadScript(DELIVERABILITY_TOOLS_SCRIPT_LOCATION);
+window.onload = function () {
+    APP.loadScript(INVISION_APP);
+};
