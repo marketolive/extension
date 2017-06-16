@@ -9656,10 +9656,11 @@ APP.discardLandingPageDrafts = function (lpIds) {
       //            console.log("Marketo App > Executing: Discard Landing Page Draft: " + ii);
       
       var lpIdKey = Object.keys(lpIds)[ii],
-      lpIdVal = lpIds[lpIdKey];
+      lpIdVal = lpIds[lpIdKey],
+      lpIdKeyString = '[' + lpIdKey + ']';
       
       mktLPLManager.doModifyPages('revert', {
-        '[' + lpIdKey + ']': lpIdVal,
+        lpIdKeyString: lpIdVal,
         beForDemoAccount: true
       });
       
