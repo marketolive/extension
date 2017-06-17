@@ -2836,14 +2836,8 @@ APP.evaluateMenu = function (triggeredFrom, menu, canvas, toolbar) {
         
         toBeDisabled = true;
         
-        if (menu
-           && menu.ownerCt
-           && menu.ownerCt.text == "Change Status") {
-          return true;
-          
-        } else if (canvas.config.accessZoneId.toString().search(mktoMyWorkspaceIdMatch) != -1) {
-          var ii,
-          currNode,
+        if (canvas.config.accessZoneId.toString().search(mktoMyWorkspaceIdMatch) != -1) {
+          var currNode,
           depth;
           
           if (canvas.config.expNodeId) {
@@ -2853,7 +2847,7 @@ APP.evaluateMenu = function (triggeredFrom, menu, canvas, toolbar) {
           }
           depth = currNode.getDepth();
           
-          for (ii = 0; ii < depth; ii++) {
+          for (var ii = 0; ii < depth; ii++) {
             if (currNode.attributes.text == userName) {
               toBeDisabled = false;
               break;
@@ -3303,6 +3297,7 @@ APP.disableMenus = function () {
           // Marketing Activities > ALL Programs > Change Status Button
           "Not in ProgramStatusMarketingEvent", //Not in Program
           "SentStatusMarketingEvent", //Sent
+          "OpenedStatusMarketingEvent"
           "VisitedStatusMarketingEvent", //Visited
           "EngagedStatusMarketingEvent", //Engaged
           
@@ -3575,20 +3570,31 @@ APP.disableMenus = function () {
         }
         
         if (this.ownerCt
-           && this.ownerCt.text.search("^View:") != -1) {
-          var ii;
-          for (ii = 0; ii < this.items.items.length; ii++) {
-            switch (this.items.items[ii].text) {
-            case "Create View":
+             && this.ownerCt.text) {
+          
+          switch (this.ownerCt.text) {
+          case "Change Status":
+            for (var ii = 0; ii < this.items.items.length; ii++) {
               this.items.items[ii].setDisabled(true);
-              break;
-              
-            case "Edit Default":
-              this.items.items[ii].setDisabled(true);
-              break;
-              
-            default:
-              break;
+            }
+            break;
+          }
+          
+          if (this.ownerCt.text.search("^View:") != -1) {
+            
+            for (var ii = 0; ii < this.items.items.length; ii++) {
+              switch (this.items.items[ii].text) {
+              case "Create View":
+                this.items.items[ii].setDisabled(true);
+                break;
+                
+              case "Edit Default":
+                this.items.items[ii].setDisabled(true);
+                break;
+                
+              default:
+                break;
+              }
             }
           }
         }
