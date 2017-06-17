@@ -1602,7 +1602,6 @@ if (toggleState == "false") {
   console.log("Marketo App Admin > User: Admin is now a normal user");
   
   ADMIN.loadScript(MARKETO_LIVE_APP);
-  return;
+} else {
+  ADMIN.applyMassClone();
 }
-
-ADMIN.applyMassClone();
