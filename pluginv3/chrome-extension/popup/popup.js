@@ -234,92 +234,6 @@ POPUP.openColorPicker = function (companyNameSubmitted) {
  *
  **************************************************************************************/
 
-background.getCookie(privilegesToggleCookieMarketo, function (cookie) {
-  if (cookie == null
-     || cookie.value == null) {
-    console.log("Getting: " + privilegesToggleCookieMarketo.name + " Cookie for " + privilegesToggleCookieMarketo.url + " = null");
-    currToggleState = true;
-    privilegesToggleCookieMarketo.value = "true";
-    document.getElementById("privilegesToggleText").innerHTML = "Privileges Enabled";
-    document.getElementById("privilegesToggle").src = "../images/toggle-on.png";
-    background.setCookie(privilegesToggleCookieMarketo);
-  } else if (cookie.value == "true") {
-    console.log("Getting: " + cookie.name + " Cookie for " + cookie.domain + " = " + cookie.value);
-    currToggleState = true;
-    document.getElementById("privilegesToggleText").innerHTML = "Privileges Enabled";
-    document.getElementById("privilegesToggle").src = "../images/toggle-on.png";
-  } else {
-    console.log("Getting: " + cookie.name + " Cookie for " + cookie.domain + " = " + cookie.value);
-    currToggleState = false;
-    document.getElementById("privilegesToggleText").innerHTML = "Privileges Disabled";
-    document.getElementById("privilegesToggle").src = "../images/toggle-off.png";
-  }
-});
-
-background.getCookie(privilegesToggleCookieDesigner, function (cookie) {
-  if (cookie == null
-     || cookie.value == null) {
-    console.log("Getting: " + privilegesToggleCookieDesigner.name + " Cookie for " + privilegesToggleCookieDesigner.url + " = null");
-    currToggleState = true;
-    privilegesToggleCookieDesigner.value = "true";
-    document.getElementById("privilegesToggleText").innerHTML = "Privileges Enabled";
-    document.getElementById("privilegesToggle").src = "../images/toggle-on.png";
-    background.setCookie(privilegesToggleCookieDesigner);
-  } else if (cookie.value == "true") {
-    console.log("Getting: " + cookie.name + " Cookie for " + cookie.domain + " = " + cookie.value);
-    currToggleState = true;
-    document.getElementById("privilegesToggleText").innerHTML = "Privileges Enabled";
-    document.getElementById("privilegesToggle").src = "../images/toggle-on.png";
-  } else {
-    console.log("Getting: " + cookie.name + " Cookie for " + cookie.domain + " = " + cookie.value);
-    currToggleState = false;
-    document.getElementById("privilegesToggleText").innerHTML = "Privileges Disabled";
-    document.getElementById("privilegesToggle").src = "../images/toggle-off.png";
-  }
-});
-
-background.getCookie(saveEditsToggleCookieDesigner, function (cookie) {
-  if (cookie == null
-     || cookie.value == null) {
-    console.log("Getting: " + saveEditsToggleCookieDesigner.name + " Cookie for " + saveEditsToggleCookieDesigner.url + " = null");
-    currSaveEditsToggleState = false;
-    saveEditsToggleCookieDesigner.value = "false";
-    document.getElementById("saveEditsToggleText").innerHTML = "Save Edits Disabled";
-    document.getElementById("saveEditsToggle").src = "../images/toggle-off.png";
-    background.setCookie(saveEditsToggleCookieDesigner);
-  } else if (cookie.value == "true") {
-    console.log("Getting: " + cookie.name + " Cookie for " + cookie.domain + " = " + cookie.value);
-    currSaveEditsToggleState = true;
-    document.getElementById("saveEditsToggleText").innerHTML = "Save Edits Enabled";
-    document.getElementById("saveEditsToggle").src = "../images/toggle-on.png";
-  } else {
-    console.log("Getting: " + cookie.name + " Cookie for " + cookie.domain + " = " + cookie.value);
-    currSaveEditsToggleState = false;
-    document.getElementById("saveEditsToggleText").innerHTML = "Save Edits Disabled";
-    document.getElementById("saveEditsToggle").src = "../images/toggle-off.png";
-  }
-});
-
-background.getCookie(companyLogoCookieMarketoLive, function (cookie) {
-  if (cookie == null
-     || cookie.value == null) {
-    console.log("Getting: " + companyLogoCookieMarketoLive.name + " Cookie for " + companyLogoCookieMarketoLive.url + " = null");
-  } else {
-    console.log("Getting: " + cookie.name + " Cookie for " + cookie.domain + " = " + cookie.value);
-    company.value = cookie.value.toLowerCase().split(clearbitDomain)[1].split("?")[0];
-  }
-});
-
-background.getCookie(companyLogoCookieDesigner, function (cookie) {
-  if (cookie == null
-     || cookie.value == null) {
-    console.log("Getting: " + companyLogoCookieDesigner.name + " Cookie for " + companyLogoCookieDesigner.url + " = null");
-  } else {
-    console.log("Getting: " + cookie.name + " Cookie for " + cookie.domain + " = " + cookie.value);
-    company.value = cookie.value.toLowerCase().split(clearbitDomain)[1].split("?")[0];
-  }
-});
-
 background.heapTrack({
   name: "Popup",
   app: "Extension",
@@ -336,6 +250,92 @@ window.onload = function () {
   company = document.getElementById("name-entered"),
   submit = document.getElementById("company-submit"),
   clear = document.getElementById("clear-submit");
+  
+  background.getCookie(privilegesToggleCookieMarketo, function (cookie) {
+    if (cookie == null
+       || cookie.value == null) {
+      console.log("Getting: " + privilegesToggleCookieMarketo.name + " Cookie for " + privilegesToggleCookieMarketo.url + " = null");
+      currToggleState = true;
+      privilegesToggleCookieMarketo.value = "true";
+      document.getElementById("privilegesToggleText").innerHTML = "Privileges Enabled";
+      document.getElementById("privilegesToggle").src = "../images/toggle-on.png";
+      background.setCookie(privilegesToggleCookieMarketo);
+    } else if (cookie.value == "true") {
+      console.log("Getting: " + cookie.name + " Cookie for " + cookie.domain + " = " + cookie.value);
+      currToggleState = true;
+      document.getElementById("privilegesToggleText").innerHTML = "Privileges Enabled";
+      document.getElementById("privilegesToggle").src = "../images/toggle-on.png";
+    } else {
+      console.log("Getting: " + cookie.name + " Cookie for " + cookie.domain + " = " + cookie.value);
+      currToggleState = false;
+      document.getElementById("privilegesToggleText").innerHTML = "Privileges Disabled";
+      document.getElementById("privilegesToggle").src = "../images/toggle-off.png";
+    }
+  });
+  
+  background.getCookie(privilegesToggleCookieDesigner, function (cookie) {
+    if (cookie == null
+       || cookie.value == null) {
+      console.log("Getting: " + privilegesToggleCookieDesigner.name + " Cookie for " + privilegesToggleCookieDesigner.url + " = null");
+      currToggleState = true;
+      privilegesToggleCookieDesigner.value = "true";
+      document.getElementById("privilegesToggleText").innerHTML = "Privileges Enabled";
+      document.getElementById("privilegesToggle").src = "../images/toggle-on.png";
+      background.setCookie(privilegesToggleCookieDesigner);
+    } else if (cookie.value == "true") {
+      console.log("Getting: " + cookie.name + " Cookie for " + cookie.domain + " = " + cookie.value);
+      currToggleState = true;
+      document.getElementById("privilegesToggleText").innerHTML = "Privileges Enabled";
+      document.getElementById("privilegesToggle").src = "../images/toggle-on.png";
+    } else {
+      console.log("Getting: " + cookie.name + " Cookie for " + cookie.domain + " = " + cookie.value);
+      currToggleState = false;
+      document.getElementById("privilegesToggleText").innerHTML = "Privileges Disabled";
+      document.getElementById("privilegesToggle").src = "../images/toggle-off.png";
+    }
+  });
+  
+  background.getCookie(saveEditsToggleCookieDesigner, function (cookie) {
+    if (cookie == null
+       || cookie.value == null) {
+      console.log("Getting: " + saveEditsToggleCookieDesigner.name + " Cookie for " + saveEditsToggleCookieDesigner.url + " = null");
+      currSaveEditsToggleState = false;
+      saveEditsToggleCookieDesigner.value = "false";
+      document.getElementById("saveEditsToggleText").innerHTML = "Save Edits Disabled";
+      document.getElementById("saveEditsToggle").src = "../images/toggle-off.png";
+      background.setCookie(saveEditsToggleCookieDesigner);
+    } else if (cookie.value == "true") {
+      console.log("Getting: " + cookie.name + " Cookie for " + cookie.domain + " = " + cookie.value);
+      currSaveEditsToggleState = true;
+      document.getElementById("saveEditsToggleText").innerHTML = "Save Edits Enabled";
+      document.getElementById("saveEditsToggle").src = "../images/toggle-on.png";
+    } else {
+      console.log("Getting: " + cookie.name + " Cookie for " + cookie.domain + " = " + cookie.value);
+      currSaveEditsToggleState = false;
+      document.getElementById("saveEditsToggleText").innerHTML = "Save Edits Disabled";
+      document.getElementById("saveEditsToggle").src = "../images/toggle-off.png";
+    }
+  });
+  
+  background.getCookie(companyLogoCookieMarketoLive, function (cookie) {
+    if (cookie == null
+       || cookie.value == null) {
+      console.log("Getting: " + companyLogoCookieMarketoLive.name + " Cookie for " + companyLogoCookieMarketoLive.url + " = null");
+    } else {
+      console.log("Getting: " + cookie.name + " Cookie for " + cookie.domain + " = " + cookie.value);
+      company.value = cookie.value.toLowerCase().split(clearbitDomain)[1].split("?")[0];
+    }
+  });
+  
+  background.getCookie(companyLogoCookieDesigner, function (cookie) {
+    if (cookie == null
+       || cookie.value == null) {
+      console.log("Getting: " + companyLogoCookieDesigner.name + " Cookie for " + companyLogoCookieDesigner.url + " = null");
+    } else {
+      console.log("Getting: " + cookie.name + " Cookie for " + cookie.domain + " = " + cookie.value);
+      company.value = cookie.value.toLowerCase().split(clearbitDomain)[1].split("?")[0];
+    }
+  });
   
   POPUP.addLinkClickListeners(document.getElementsByClassName("link"));
   

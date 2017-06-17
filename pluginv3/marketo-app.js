@@ -2838,7 +2838,7 @@ APP.evaluateMenu = function (triggeredFrom, menu, canvas, toolbar) {
         
         if (menu
            && menu.ownerCt
-           && menu.ownerCt.text != "Change Status") {
+           && menu.ownerCt.text == "Change Status") {
           return true;
           
         } else if (canvas.config.accessZoneId.toString().search(mktoMyWorkspaceIdMatch) != -1) {
