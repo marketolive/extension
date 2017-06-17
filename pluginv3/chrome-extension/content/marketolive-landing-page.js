@@ -2,7 +2,7 @@ console.log("Landing Page > Running");
 
 /**************************************************************************************
  *
- *  This module contains all of the functionality needed for loading external scripts 
+ *  This module contains all of the functionality needed for loading external scripts
  *  on MarketoLive Landing Pages.
  *
  *  @Author Brian Fisher
@@ -12,6 +12,7 @@ console.log("Landing Page > Running");
  **************************************************************************************/
 
 var URL_PATH = "m3-dev",
+
 GLOBAL_LANDING_PAGE = "https://marketolive.com/" + URL_PATH + "/pluginv3/global-landing-page.min.js",
 
 APP = APP || {};
@@ -29,12 +30,12 @@ APP = APP || {};
  **************************************************************************************/
 
 APP.loadScript = function (scriptSrc) {
-    console.log("Loading: Script: " + scriptSrc);
-    
-    var scriptElement = document.createElement("script");
-    scriptElement.async = true;
-    scriptElement.src = scriptSrc;
-    document.getElementsByTagName("head")[0].appendChild(scriptElement);
+  console.log("Loading: Script: " + scriptSrc);
+  
+  var scriptElement = document.createElement("script");
+  scriptElement.async = true;
+  scriptElement.src = scriptSrc;
+  document.getElementsByTagName("head")[0].appendChild(scriptElement);
 };
 
 /**************************************************************************************
@@ -44,5 +45,5 @@ APP.loadScript = function (scriptSrc) {
  **************************************************************************************/
 
 window.onload = function () {
-    APP.loadScript(GLOBAL_LANDING_PAGE);
+  APP.loadScript(GLOBAL_LANDING_PAGE);
 };

@@ -12,6 +12,7 @@ console.log("Marketo > Running");
  **************************************************************************************/
 
 var URL_PATH = "m3-dev",
+
 MARKETO_GLOBAL_APP = "https://marketolive.com/" + URL_PATH + "/pluginv3/marketo-global-app.min.js",
 GLOBAL_LANDING_PAGE = "https://marketolive.com/" + URL_PATH + "/pluginv3/global-landing-page.min.js",
 MARKETO_OTHER_APP = "https://marketolive.com/" + URL_PATH + "/pluginv3/marketo-other-app.min.js",
@@ -50,12 +51,12 @@ APP = APP || {};
  **************************************************************************************/
 
 APP.loadScript = function (scriptSrc) {
-    console.log("Loading: Script: " + scriptSrc);
-    
-    var scriptElement = document.createElement("script");
-    scriptElement.async = true;
-    scriptElement.src = scriptSrc;
-    document.getElementsByTagName("head")[0].appendChild(scriptElement);
+  console.log("Loading: Script: " + scriptSrc);
+  
+  var scriptElement = document.createElement("script");
+  scriptElement.async = true;
+  scriptElement.src = scriptSrc;
+  document.getElementsByTagName("head")[0].appendChild(scriptElement);
 };
 
 /**************************************************************************************
@@ -75,26 +76,26 @@ APP.loadScript = function (scriptSrc) {
  **************************************************************************************/
 
 APP.webRequest = function (url, params, method, async, responseType, callback) {
-    var xmlHttp = new XMLHttpRequest(),
-    result;
-    xmlHttp.onreadystatechange = function () {
-        if (typeof(callback) === "function"
-             && xmlHttp.readyState == 4
-             && xmlHttp.status == 200)
-            result = callback(xmlHttp.response);
-    }
-    if (async
-         && xmlHttp.responseType) {
-        xmlHttp.responseType = responseType;
-    }
-    xmlHttp.open(method, url, async); // true for asynchronous
-    xmlHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded; charset=UTF-8");
-    if (url.search(/^\//) != -1
-         || url.replace(/^[a-z]+:\/\/([^\/]+)\/?.*$/, "$1") == window.location.host) {
-        xmlHttp.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-    }
-    xmlHttp.send(params);
-    return result;
+  var xmlHttp = new XMLHttpRequest(),
+  result;
+  xmlHttp.onreadystatechange = function () {
+    if (typeof(callback) === "function"
+       && xmlHttp.readyState == 4
+       && xmlHttp.status == 200)
+      result = callback(xmlHttp.response);
+  }
+  if (async
+     && xmlHttp.responseType) {
+    xmlHttp.responseType = responseType;
+  }
+  xmlHttp.open(method, url, async); // true for asynchronous
+  xmlHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded; charset=UTF-8");
+  if (url.search(/^\//) != -1
+     || url.replace(/^[a-z]+:\/\/([^\/]+)\/?.*$/, "$1") == window.location.host) {
+    xmlHttp.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+  }
+  xmlHttp.send(params);
+  return result;
 };
 
 /**************************************************************************************
@@ -109,12 +110,12 @@ APP.webRequest = function (url, params, method, async, responseType, callback) {
  **************************************************************************************/
 
 APP.showNavBar = function () {
-    APP.webRequest(ANALYZER_NAV_BAR, null, 'GET', true, 'text', function (response) {
-        var newElement = document.createElement("div");
-        
-        newElement.innerHTML = response;
-        document.body.appendChild(newElement);
-    });
+  APP.webRequest(ANALYZER_NAV_BAR, null, 'GET', true, 'text', function (response) {
+    var newElement = document.createElement("div");
+    
+    newElement.innerHTML = response;
+    document.body.appendChild(newElement);
+  });
 };
 
 /**************************************************************************************
@@ -124,25 +125,25 @@ APP.showNavBar = function () {
  **************************************************************************************/
 
 window.onload = function () {
-    if (currentUrl.search(mktoAppDomain) != -1
-         && window.location.pathname != mktoLoginPathName
-         && currentUrl.search(mktoLoginDomain) == -1) {
-        console.log("Marketo > Location: App URL");
-        APP.loadScript(MARKETO_GLOBAL_APP);
-        
-        if (currentUrl.search(analyzerFragmentsMatch) != -1) {
-            console.log("Marketo > Location: Golden Analytics");
-            APP.showNavBar();
-        }
-        
-    } else if (currentUrl.search(mktoLandingPageDomain) != -1) {
-        console.log("Marketo > Location: Landing Page");
-        APP.loadScript(GLOBAL_LANDING_PAGE);
-        
-    } else if (currentUrl.search(mktoEmailInsightsDomain) != -1
-         || currentUrl.search(mktoWebPersonalizationDomain) != -1
-         || currentUrl.search(mktoSeoDomain) != -1) {
-        console.log("Marketo > Location: Marketo Other App");
-        APP.loadScript(MARKETO_OTHER_APP);
+  if (currentUrl.search(mktoAppDomain) != -1
+     && window.location.pathname != mktoLoginPathName
+     && currentUrl.search(mktoLoginDomain) == -1) {
+    console.log("Marketo > Location: App URL");
+    APP.loadScript(MARKETO_GLOBAL_APP);
+    
+    if (currentUrl.search(analyzerFragmentsMatch) != -1) {
+      console.log("Marketo > Location: Golden Analytics");
+      APP.showNavBar();
     }
+    
+  } else if (currentUrl.search(mktoLandingPageDomain) != -1) {
+    console.log("Marketo > Location: Landing Page");
+    APP.loadScript(GLOBAL_LANDING_PAGE);
+    
+  } else if (currentUrl.search(mktoEmailInsightsDomain) != -1
+     || currentUrl.search(mktoWebPersonalizationDomain) != -1
+     || currentUrl.search(mktoSeoDomain) != -1) {
+    console.log("Marketo > Location: Marketo Other App");
+    APP.loadScript(MARKETO_OTHER_APP);
+  }
 };

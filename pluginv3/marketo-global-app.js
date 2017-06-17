@@ -14,6 +14,7 @@ console.log("Marketo Global App > Running");
 var URL_PATH = "m3-dev",
 
 MARKETO_LIVE_APP = "https://marketolive.com/" + URL_PATH + "/pluginv3/marketo-app.min.js",
+MARKETO_LIVE_APP_ADMIN = "https://marketolive.com/" + URL_PATH + "/pluginv3/marketo-app-admin.min.js",
 MARKETO_DEMO_APP = "https://marketolive.com/" + URL_PATH + "/pluginv3/marketo-demo-app.min.js",
 POD_SCRIPT = "https://marketolive.com/" + URL_PATH + "/pluginv3/pods.min.js",
 DASHBOARD_DATA = "https://marketolive.com/" + URL_PATH + "/pluginv3/dashboards/remote-data.min.js",
@@ -28,7 +29,7 @@ mktoAccountStringsMatch106andQe = "^(mktodemoaccount106|mktodemoaccount106d|glob
 mktoAccountStringsMatch = "^(mktodemoaccount106|mktodemoaccount106d|mktodemolivemaster|globalsales)$",
 mktoWizardDomain = "^https://app-[a-z0-9]+\.marketo\.com/m#",
 
-accountString,
+adminUserNamesMatch = "^(mktodemolivemaster@marketo\.com$|admin(\.[a-z]{0,2})?@(marketolive.com$|mktodemoaccount)|mktodemoaccount[a-z0-9]*@marketo\.com$|marketodemo.*@gmail\.com$)",
 
 GLOBAL_APP = GLOBAL_APP || {};
 
@@ -92,17 +93,28 @@ GLOBAL_APP.getCookie = function (cookieName) {
 var isMktoPageGlobal = window.setInterval(function () {
     if (typeof(MktPage) !== "undefined"
        && MktPage.savedState
-       && MktPage.savedState.custPrefix) {
+       && MktPage.savedState.custPrefix
+       && MktPage.userid
+       && MktPage.userid != "") {
       console.log("Marketo Global App > Location: Marketo Page");
       
       window.clearInterval(isMktoPageGlobal);
       
-      accountString = MktPage.savedState.custPrefix;
+      var accountString = MktPage.savedState.custPrefix;
       
       if (accountString.search(mktoAccountStringsMatch) != -1) {
         console.log("Marketo Global App > Location: MarketoLive Instance");
         
-        GLOBAL_APP.loadScript(MARKETO_LIVE_APP);
+        if (MktPage.userid.toLowerCase().search(adminUserNamesMatch) != -1) {
+          console.log("Marketo Global App > User: Admin");
+          
+          GLOBAL_APP.loadScript(MARKETO_LIVE_APP_ADMIN);
+          return;
+        } else {
+          console.log("Marketo Global App > User: Normal");
+          
+          GLOBAL_APP.loadScript(MARKETO_LIVE_APP);
+        }
         
         if (accountString.search(mktoAccountStringsMatch106andMaster) != -1) {
           GLOBAL_APP.loadScript(HEAP_ANALYTICS);
@@ -125,10 +137,12 @@ var isMktoPageGlobal = window.setInterval(function () {
         if (currentUrl.search(mktoWizardDomain) == -1) {
           GLOBAL_APP.loadScript(DASHBOARD_DATA);
         }
-      } else if (GLOBAL_APP.getCookie("toggleState") == "false") {
-        console.log("Marketo Global App > toggleState = false");
         
-        GLOBAL_APP.loadScript(MARKETO_LIVE_APP);
+        if (GLOBAL_APP.getCookie("toggleState") == "false") {
+          console.log("Marketo Global App > toggleState = false");
+          
+          GLOBAL_APP.loadScript(MARKETO_LIVE_APP);
+        }
       }
     }
   }, 0);

@@ -1,0 +1,172 @@
+<!--
+This page is shown when the extension button is clicked, because the
+"browser_action" field in manifest.json contains the "default_popup" key with
+value "popup.html".
+
+JavaScript and HTML must be in separate files: see our Content Security
+- https://developer.chrome.com/extensions/contentSecurityPolicy
+-->
+<!doctype html>
+<html>
+  <head>
+    <title>MarketoLive Popup</title>
+    <link rel="stylesheet" href="popup.css">
+    <script src="popup.js"></script>
+  </head>
+  <body id="status">
+    <div id="marketo-live-logo-container">
+      <a href="http://www.marketolive.com" class="link">
+        <img id="logo-size" src="../images/marketo-live-image-purp.png">
+      </a>
+      <div id="help">
+        <img id="help-size" src="../images/help-white.png">
+      </div>
+      <div id="settings">
+        <img id="gear-size" src="../images/popupsettings.png">
+      </div>
+    </div>
+    <div id="help-container">
+      <div class="option-container">
+        <a href="mailto:marketolive.rl597@zapiermail.com?Body=DESCRIPTION%20%26%20SCREENSHOTS%20HERE" class="link">
+          <div class="option-image-container">
+            <img class="option-image" src="../images/report-a-bug-img-purp.png">
+          </div>
+          <div class="option-title">
+            Report a Bug
+          </div>
+        </a>
+      </div>
+      <div class="option-container">
+        <a href="https://marketoemployee.jiveon.com/community/sales/marketolive" class="link">
+          <div class="option-image-container">
+            <img class="option-image" src="../images/training-icon-purple-small.png">
+          </div>
+          <div class="option-title">
+            Training Videos & Content
+          </div>
+        </a>
+      </div>
+      <div class="option-container">
+        <a href="http://www.marketolive.com/en/update/extension" class="link">
+          <div class="option-image-container">
+            <img class="option-image" src="../images/icon.png">
+          </div>
+          <div class="option-title">
+            News & Updates
+          </div>
+        </a>
+      </div>
+    </div>
+    <div id="settings-container">
+      <div class="clear-container">
+        <div id="clear-cache" class="clear-submit">
+          <div id="clear-cache-text" class="clear-inner-submit">
+            Clear Cache
+          </div>
+        </div>
+      </div>
+      <div class="option-container extra-margin font-size-priv">
+        <div id="privilegesToggleText" class="edit-title float-left"></div>
+        <div class="option-image-container-toggle float-left">
+          <img id="privilegesToggle" class="option-image-toggle" src="../images/toggle-on.png">
+        </div>
+      </div>
+      <div class="option-container extra-margin font-size-priv">
+        <div id="saveEditsToggleText" class="edit-title float-left"></div>
+        <div class="option-image-container-toggle float-left">
+          <img id="saveEditsToggle" class="option-image-toggle" src="../images/toggle-off.png">
+        </div>
+      </div>
+    </div>
+    <div class="company-container">
+      <input type="text" id="name-entered" placeholder="Company Website..." class="company-name float-left">
+      <div id="company-submit" class="float-left company-submit">
+        <div class="company-inner-submit">
+          Submit
+        </div>
+      </div>
+      <div class="clear-container">
+        <div id="clear-submit" class="clear-submit">
+          <div class="clear-inner-submit">
+            Clear
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="option-container">
+      <a href="http://www.marketolive.com/en/tools/ad-targeting" class="link">
+        <div class="option-image-container">
+          <img class="option-image" src="../images/ad-targeting.png">
+        </div>
+        <div class="option-title">
+          Ad Targeting
+        </div>
+      </a>
+    </div>
+    <div class="option-container">
+      <a href="http://verticals.marketolive.com" class="link">
+        <div class="option-image-container">
+          <img class="option-image" src="../images/rtp-image.png">
+        </div>
+        <div class="option-title">
+          Web Personalization
+        </div>
+      </a>
+    </div>
+    <!--
+    <div class="option-container">
+      <a href="http://marketosolutionsconsulting.com/m/b2c/" class="link">
+        <div class="option-image-container">
+          <img class="option-image" src="../images/shopping-cart-purple.png">
+        </div>
+        <div class="option-title">
+          Turner Ecommerce
+        </div>
+      </a>
+    </div>
+    -->
+    <div class="option-container">
+      <a href="https://marketolive.com/m3-dev/apps/moments.html" class="link">
+        <div class="option-image-container">
+          <img class="option-image" src="../images/marketo_moments.png">
+        </div>
+        <div class="option-title">
+          Mobile Moments
+        </div>
+      </a>
+    </div>
+    <div class="option-container">
+      <a href="https://marketolive.com/m3-dev/apps/mobile-engagement-beacon.html" class="link">
+        <div class="option-image-container">
+          <img class="option-image" src="../images/mobile_engagement.png">
+        </div>
+        <div class="option-title">
+          Mobile Engagement
+        </div>
+      </a>
+    </div>
+    <div class="option-container">
+      <a href="https://marketolive.com/m3-dev/apps/mobile_sales_insight.html" class="link">
+        <div class="option-image-container">
+          <img class="option-image" src="../images/mobile_msi.png">
+        </div>
+        <div class="option-title">
+          Mobile Sales Insight
+        </div>
+      </a>
+    </div>
+    <!--
+    <div class="option-container">
+      <a href="https://itunes.apple.com/us/app/marketo-events/id522766637?mt=8" class="link">
+        <div class="option-image-container">
+          <img class="option-image" src="../images/marketoball.png">
+        </div>
+        <div class="option-title">
+          Mobile Event Check-In
+        </div>
+      </a>
+    </div>
+    -->
+  </body>
+  <footer></footer>
+</html>
