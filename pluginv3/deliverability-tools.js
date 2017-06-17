@@ -19,7 +19,7 @@ console.log("250ok > Running");
 
 var devExtensionId = "dokkjhbgengdlccldgjnbilajdbjlnhm",
 prodExtensionId = "onibnnoghllldiecboelbpcaeggfiohl",
-extensionId = devExtensionId;
+extensionId = devExtensionId,
 
 DELIVERABILITY = DELIVERABILITY || {};
 
