@@ -2836,7 +2836,8 @@ APP.evaluateMenu = function (triggeredFrom, menu, canvas, toolbar) {
         
         toBeDisabled = true;
         
-        if (menu.ownerCt
+        if (menu
+           && menu.ownerCt
            && menu.ownerCt.text != "Change Status") {
           return true;
           
