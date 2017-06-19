@@ -56,36 +56,6 @@ GLOBAL_APP.loadScript = function (scriptSrc) {
 
 /**************************************************************************************
  *
- *  This function gets the specified cookie for the current domain. It loops through
- *  the string contained in document.cookie and looks for the given cookie.
- *
- *  @Author Andrew Garcia
- *
- *  @function
- *
- *  @param {String} cookieName - Represents the key to search for inside document.cookie
- *
- **************************************************************************************/
-
-GLOBAL_APP.getCookie = function (cookieName) {
-  console.log("Getting: Cookie " + cookieName);
-  
-  var name = cookieName + '=',
-  cookies = document.cookie.split(';'),
-  currCookie;
-  
-  for (var ii = 0; ii < cookies.length; ii++) {
-    currCookie = cookies[ii].trim();
-    if (currCookie.indexOf(name) == 0) {
-      return currCookie.substring(name.length, currCookie.length);
-    }
-  }
-  console.log("Getting: Cookie " + cookieName + " not found");
-  return null;
-};
-
-/**************************************************************************************
- *
  *  Main
  *
  **************************************************************************************/
@@ -136,12 +106,6 @@ var isMktoPageGlobal = window.setInterval(function () {
         
         if (currentUrl.search(mktoWizardDomain) == -1) {
           GLOBAL_APP.loadScript(DASHBOARD_DATA);
-        }
-        
-        if (GLOBAL_APP.getCookie("toggleState") == "false") {
-          console.log("Marketo Global App > toggleState = false");
-          
-          GLOBAL_APP.loadScript(MARKETO_LIVE_APP);
         }
       }
     }

@@ -3294,12 +3294,6 @@ APP.disableMenus = function () {
           "smsMessageDraftApprove", //Approve Draft
           //"smsMessageDraftDiscard", //Discard Draft
           
-          // Marketing Activities > ALL Programs > Change Status Button
-          //"Not in ProgramStatusMarketingEvent", //Not in Program
-          //"SentStatusMarketingEvent", //Sent
-          //"VisitedStatusMarketingEvent", //Visited
-          //"EngagedStatusMarketingEvent", //Engaged
-          
           // Marketing Activities > ALL Programs & Folders > My Tokens Right-click Tree
           //"editCustomToken",//Edit Token
           "deleteCustomToken", //Delete Token
