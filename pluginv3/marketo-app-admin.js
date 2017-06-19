@@ -1593,7 +1593,8 @@ ADMIN.applyMassClone = function (forceReload) {
  *
  **************************************************************************************/
 
-var toggleState = ADMIN.getCookie("toggleState");
+var toggleState = ADMIN.getCookie("toggleState"),
+origMenuShowAtFunc;
 
 ADMIN.validateDemoExtensionCheck(true);
 

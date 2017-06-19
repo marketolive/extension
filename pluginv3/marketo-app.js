@@ -3529,7 +3529,28 @@ APP.disableMenus = function () {
           "cloneWebhook", //Clone Webhook
           "deleteWebhook", //Delete Webhook
           //"customHeader",//Set Custom Header
+        ],
+        itemsToDisableAlways = [
+          // Default, Email Send, Event, and Nurturing Programs; Smart Campaign, Folder > Right-click Tree
+          "shareProgramFolder", //Share Folder
+          
+          // Lead Database > Segmentation > Actions Button & Right-click Tree
+          "approveSegmentation", //Approve
+          "unapproveSegmentation", //Unapprove
+          "refreshSegmentation", //Refresh Status
+          "approveDraftSegmentation", //Approve Draft
+          
+          // Analytics > Folder > Right-click Tree
+          "share", //Share Folder
+          
+          // Analytics > Model > Actions Button & Right-click Tree
+          "rcmApproveStages", //Approve Stages
+          "rcmUnapproveStages", //Unapprove Stages
+          "rcmApprove", //Approve Model
+          "rcmUnapprove", //Unapprove Model
+          "rcmApproveDraft", //Approve Model Draft
         ];
+        
         if (this.triggeredFrom != "tree"
            && this.triggeredFrom != "button") {
           disable = APP.evaluateMenu("tree", this, canvas, null);
@@ -3556,11 +3577,19 @@ APP.disableMenus = function () {
           }
         });
         
-        if (mItems.get("shareProgramFolder")) {
-          mItems.get("shareProgramFolder").setDisabled(true);
-        } else if (mItems.get("share")) {
-          mItems.get("share").setDisabled(true);
-        }
+        itemsToDisableAlways.forEach(function (itemToDisable) {
+          var item;
+          
+          if (itemToDisable == "Delete") {
+            item = menu.find("text", itemToDisable)[0];
+          } else {
+            item = mItems.get(itemToDisable);
+          }
+          
+          if (item) {
+            item.setDisabled(true);
+          }
+        });
         
         if (this.ownerCt
              && this.ownerCt.text) {
@@ -7691,14 +7720,20 @@ APP.disableFormSaveButtons = function () {
      && Ext4.Component.prototype
      && Ext4.Component.prototype.show) {
     Ext4.Component.prototype.show = function (animateTarget, cb, scope) {
-      console.log("Marketo App > Executing: Disable Form Window Save Buttons");
       
       if (this.getXType() == "createNamedAccountForm" //ABM > Named Accounts > New Named Account
          || this.getXType() == "addToAccountListForm" //ABM > Named Accounts > Add To Account List
          || this.getXType() == "assignTeamMemberForm" //ABM > Named Accounts > Assign Account Member
          || this.getXType() == "createAccountListForm" //ABM > Account Lists > Create New/Rename Account List
-         || this.getXType() == "analyticsReportSubscriptionForm" //Analytics > Analyzer & Report > New Report Subscription
+         || this.getXType() == "adBridgeForm" //Global > List & Smart List > Actions > Send via Ad Bridge
+         || this.getXType() == "smartlistReportSubscriptionForm" //Global > List & Smart List > Actions > New Smart List Subscription
+         || this.getXType() == "analyticsReportSubscriptionForm" //Global > Report > New Actions & Subscriptions > New Report Subscription
+         || this.getXType() == "emailBlastCommunicationLimitForm" //Marketing Activities > Program > Setup > Edit Communication Limit Settings
+         || this.getXType() == "programOperationalModeForm" //Marketing Activities > Program > Setup > Edit Analytics Behavior Settings
+         || this.getXType() == "trackCadenceForm" //Marketing Activities > Nurture Program > Streams > Set Stream Cadence
          || this.getXType() == "fileUploadForm" //Design Studio > Images & Files > Grab Images from Web
+         || this.getXType() == "leadComponentForm" //Database > ALL > New > New Person
+         || this.getXType() == "analyticsReportSubscriptionForm" //Analytics > Analyzer & Report > New Report Subscription
          || this.getXType() == "adminUserInviteWizard" //Admin > User & Roles > Users > Invite New User
          || this.getXType() == "adminEditLicensesForm" //Admin > User & Roles > Users > Issue License
          || this.getXType() == "adminSubscriptionInformationForm" //Admin > My Account > Subcription Information
@@ -7729,8 +7764,7 @@ APP.disableFormSaveButtons = function () {
          || this.getXType() == "vespaNewDeviceForm" //Admin > Mobile Apps & Devices > Test Devices > New Test Device
          || this.getXType() == "adminTagsAddCalendarEntryTypeForm" //Admin > Tags > Calendar Entry Types > New Entry Type
          || this.getXType() == "featureSwitchForm" //Admin > Feature Manager > Edit Feature
-      )
-      {
+      ) {
         
         var me = this,
         menuItems = [
@@ -7740,12 +7774,38 @@ APP.disableFormSaveButtons = function () {
         mItems = this.query(menuItems.toString());
         
         if (mItems) {
+          console.log("Marketo App > Executing: Disable Form Window Save Buttons");
+          
           mItems.forEach(function (item) {
             if (item) {
               item.setDisabled(true);
               if (me.getXType() == "emailAddMultipleDomainForm") {
                 item.stayDisabled = true;
               }
+            }
+          });
+        }
+      } else if (MktCanvas
+         && MktCanvas.getActiveTab
+         && MktCanvas.getActiveTab()
+         && this.getXType() == "nurtureTrackForm" //Marketing Activities > Nurture Program > Streams > Edit Name
+         && this.getXType() == "inAppMessageAssetForm" //Marketing Activities > Mobile In-App Program > Control Panel > New In-App Message
+      )
+      {
+        var me = this,
+        menuItems = [
+          "[action=submit]", //Create, Add, Save
+        ],
+        mItems = this.query(menuItems.toString()),
+        toDisable = APP.evaluateMenu("button", null, MktCanvas.getActiveTab(), null);
+        
+        if (toDisable
+           && mItems) {
+          console.log("Marketo App > Executing: Disable Form Window Save Buttons");
+          
+          mItems.forEach(function (item) {
+            if (item) {
+              item.setDisabled(toDisable);
             }
           });
         }
@@ -7798,7 +7858,7 @@ APP.disableFormSaveButtons = function () {
  **************************************************************************************/
 
 APP.disableAdminSaveButtons = function () {
-  console.log("Marketo App > Disabling: Admin Section Save Buttons");
+  console.log("Marketo App > Disabling: Harmful Save Buttons");
   
   if (typeof(Ext) !== "undefined"
      && Ext
@@ -7807,118 +7867,129 @@ APP.disableAdminSaveButtons = function () {
      && Ext.Window.prototype.show) {
     Ext.Window.prototype.show = function (animateTarget, cb, scope) {
       // Disable ALL areas > ALL assets > ALL Save windows
-      //console.log("Marketo App > Executing: Disable Admin Section Save Buttons");
       
-      if (typeof(MktCanvas) !== "undefined"
-         && MktCanvas
-         && MktCanvas.getActiveTab()
-         && MktCanvas.getActiveTab().title
-         && typeof(this) !== "undefined"
+      if (typeof(this) !== "undefined"
          && this
          && this.buttons
-         && this.buttons.length) {
-        var activeTabTitle = MktCanvas.getActiveTab().title,
-        toDisable,
-        ii,
-        currButton;
-        switch (activeTabTitle) {
-          // Login Settings
-        case "Login Settings":
-          toDisable = true;
-          break;
-          // Users & Roles > Users
-        case "Users":
-          toDisable = true;
-          break;
-          // Users & Roles > Roles
-        case "Roles":
-          toDisable = true;
-          break;
-          // Workspaces & Partitions > Workspaces
-        case "Workspaces":
-          toDisable = true;
-          break;
-          // Workspaces & Partitions > Partitions
-        case "Lead Partitions":
-          toDisable = true;
-          break;
-        case "Person Partitions":
-          toDisable = true;
-          break;
-          // Location > Subscription Currency Settings
-        case "Location":
-          toDisable = true;
-          break;
-          // Smart Campaign
-        case "Smart Campaign":
-          toDisable = true;
-          break;
-          // Communication Limits
-        case "Communication Limits":
-          toDisable = true;
-          break;
-          // Tags > Tags
-        case "Tags":
-          toDisable = true;
-          break;
-          // Field Management > New Custom Field, Block Field Updates, Edit Import Aliases, Change Type
-        case "Field Management":
-          toDisable = true;
-          break;
-          // Salesforce Objects Sync
-        case "Salesforce Objects Sync":
-          toDisable = true;
-          break;
-          // Salesforce
-        case "Salesforce":
-          toDisable = true;
-          break;
-          // Sales Insight > Sales Insight
-        case "Sales Insight":
-          toDisable = true;
-          break;
-          // Sales Insight > Email Add-in
-        case "Email Add-in":
-          toDisable = true;
-          break;
-          // Landing Pages > Landing Pages
-        case "Landing Pages":
-          toDisable = true;
-          break;
-          // Landing Pages > Rules
-        case "Rules":
-          toDisable = true;
-          break;
-          // Munchkin
-        case "Munchkin":
-          toDisable = true;
-          break;
-          // LaunchPoint > Delete Service
-        case "Installed Services":
-          toDisable = true;
-          break;
-          // Webhooks
-        case "Webhooks":
-          toDisable = true;
-          break;
-          // Single Sign-On
-        case "Single Sign-On":
-          toDisable = true;
-          break;
-          // Revenue Cycle Analytics > Attribution
-        case "Revenue Cycle Analytics":
-          toDisable = true;
-          break;
-          // Treasure Chest
-        case "Treasure Chest":
-          toDisable = true;
-          break;
-        default:
-          break;
+         && this.buttons.length > 0
+         && typeof(MktCanvas) !== "undefined"
+         && MktCanvas
+         && MktCanvas.getActiveTab
+         && MktCanvas.getActiveTab()) {
+        var toDisable;
+        
+        if (this.title) {
+          switch (this.title) {
+          // Marketing Activities
+          // Program > Actions
+          case "Salesforce Campaign Sync":
+          case "Event Schedule":
+          case "Event Settings":
+          // Program > Setup
+          case "Edit Channel":
+          case "New Cost":
+          case "Edit Cost":
+          // Program > Members & List > Actions
+          case "Import List":
+          // Nurture Program > Setup
+          case "Program Status":
+          case "Edit Exhausted Content Notification Settings":
+          // Smart Campaign > Schedule
+          case "Activate Triggered Campaign":
+          case "Schedule Recurrence":
+          case "Run Once":
+          case "Edit Qualification Rules":
+          // Database
+          // ALL > New
+          case "New Field Organizer":
+            toDisable = true;
+            break;
+          
+          // Marketing Activities & Analytics
+          // Report
+          case "Date of Activity":
+          case "Group by Segmentations":
+          case "Global Reporting":
+          case "Export Rows Available":
+          case "Filter by Model":
+          case "Filter by Period Cost":
+          // Email Performance Report
+          case "Sent Date":
+          case "Group by Segmentations":
+          case "Email Filter":
+          case "Archived Email Filter":
+          // Email via MSI Performance Report
+          case "Group Emails by":
+          // Engagment Stream Performance Report
+          case "Engagement Program Email Filter":
+          // People Performance Report
+          case "Person Created At":
+          case "Group People by":
+          case "Opportunity Columns":
+          case "Manage Custom Smart List Columns":
+          // Program Performance Report
+          case "Program Filter":
+          case "Archived Program Filter":
+          // Web Activity Report
+          case "Activity Source":
+          // Opp Influence Analyzer & Success Path Analyzer
+          case "Time Frame":
+          // Opp Influence Analyzer
+          case "Show Interesting Moments":
+            toDisable = APP.evaluateMenu("button", null, MktCanvas.getActiveTab(), null);
+            break;
+          }
+          
+          if (this.title.search(/Filter by .+/) != -1) {
+            toDisable = APP.evaluateMenu("button", null, MktCanvas.getActiveTab(), null);
+          }
+        }
+        
+        if (MktCanvas.getActiveTab().title) {
+          var activeTabTitle = MktCanvas.getActiveTab().title;
+          // Admin
+          switch (activeTabTitle) {
+          case "Login Settings":
+            // Users & Roles
+          case "Users":
+          case "Roles":
+            // Workspaces & Partitions
+          case "Workspaces":
+          case "Lead Partitions":
+          case "Person Partitions":
+            //
+          case "Location":
+          case "Smart Campaign":
+          case "Communication Limits":
+          case "Tags":
+          case "Field Management":
+          case "Salesforce Objects Sync":
+          case "Salesforce":
+            // Sales Insight
+          case "Sales Insight":
+          case "Email Add-in":
+            // Landing Pages
+          case "Landing Pages":
+          case "Rules":
+          case "Munchkin":
+            // LaunchPoint
+          case "Installed Services":
+            //
+          case "Webhooks":
+          case "Single Sign-On":
+          case "Revenue Cycle Analytics":
+          case "Treasure Chest":
+            toDisable = true;
+            break;
+          }
         }
         
         if (toDisable) {
-          for (ii = this.buttons.length - 1; ii >= 0; ii--) {
+          console.log("Marketo App > Executing: Disable Harmful Save Buttons");
+          
+          var currButton;
+          
+          for (var ii = this.buttons.length - 1; ii >= 0; ii--) {
             currButton = this.buttons[ii];
             if (currButton.cls == "mktButtonPositive"
                || currButton.iconCls == "mkiOk") {
