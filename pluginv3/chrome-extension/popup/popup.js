@@ -11,7 +11,7 @@ console.log("Running");
  *
  **************************************************************************************/
 
-var URL_PATH = "m3-dev",
+var URL_PATH = "m3",
 
 background = chrome.extension.getBackgroundPage(),
 

@@ -11,7 +11,7 @@ console.log("Marketo > Running");
  *
  **************************************************************************************/
 
-var URL_PATH = "m3-dev",
+var URL_PATH = "m3",
 
 MARKETO_GLOBAL_APP = "https://marketolive.com/" + URL_PATH + "/pluginv3/marketo-global-app.min.js",
 GLOBAL_LANDING_PAGE = "https://marketolive.com/" + URL_PATH + "/pluginv3/global-landing-page.min.js",

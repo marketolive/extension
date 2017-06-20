@@ -13,7 +13,7 @@ console.log("Heap Analytics (MarketoLive) > Running");
 
 var prod = "3521051524",
 dev = "3020587545",
-env = dev;
+env = prod;
 
 /**************************************************************************************
  *

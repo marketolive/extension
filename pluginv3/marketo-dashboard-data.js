@@ -11,7 +11,7 @@ console.log("Marketo Dashboards > Running");
  *
  **************************************************************************************/
 
-var URL_PATH = "m3-dev",
+var URL_PATH = "m3",
 
 PROGRAM_ANALYZER = "https://marketolive.com/" + URL_PATH + "/pluginv3/dashboards/program-analyzer-data.min.js",
 NURTURE_PROGRAM = "https://marketolive.com/" + URL_PATH + "/pluginv3/dashboards/nurture-dashboard-data.min.js",
