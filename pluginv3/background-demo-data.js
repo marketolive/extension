@@ -472,7 +472,7 @@ getCookie(visitedPagesCookieMarketoLive, function (cookie) {
   if (cookie
      && cookie.value
      && Number.isInteger(parseInt(cookie.value))) {
-    verticalPages = webRequest('https://marketolive.com/' + URL_PATH + '/pluginv3/data/' + currVertical + '-pages-journey.min.json', null, 'GET', false, '', function (response) {
+    verticalPages = webRequest('https://marketolive.com/' + URL_PATH + '/pluginv3/data/' + currVertical + '-pages-journey.json', null, 'GET', false, '', function (response) {
         return JSON.parse(response);
       });
     
@@ -486,7 +486,7 @@ getCookie(visitedPagesCookieMarketoLive, function (cookie) {
     }
     
   } else {
-    verticalPages = webRequest('https://marketolive.com/' + URL_PATH + '/pluginv3/data/' + currVertical + '-pages-acquire.min.json', null, 'GET', false, '', function (response) {
+    verticalPages = webRequest('https://marketolive.com/' + URL_PATH + '/pluginv3/data/' + currVertical + '-pages-acquire.json', null, 'GET', false, '', function (response) {
         return JSON.parse(response);
       });
     
@@ -509,7 +509,7 @@ getCookie(visitedPagesCookieMarketoLive, function (cookie) {
            || (Math.random()) <= verticalPageX.conversionRate) {
           params = "submit=true";
           if (verticalPageX.url.search(/-acquire\.html$/) != -1) {
-            utm = webRequest('https://marketolive.com/' + URL_PATH + '/pluginv3/data/' + currVertical + '-utm-values.min.json', null, 'GET', false, '', function (response) {
+            utm = webRequest('https://marketolive.com/' + URL_PATH + '/pluginv3/data/' + currVertical + '-utm-values.json', null, 'GET', false, '', function (response) {
                 return JSON.parse(response);
               });
             
