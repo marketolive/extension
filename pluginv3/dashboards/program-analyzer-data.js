@@ -17,7 +17,7 @@ b2cProgramY = "newnamesuccesses",
 b2cProgramZ = "none",
 b2cProgramW = "none";
 
-function loadProgramData() {
+function loadData() {
   console.log("Marketo Dashboards > Loading: Program Analyzer Data");
   
   var data = [];

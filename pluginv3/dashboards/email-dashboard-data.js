@@ -1,4 +1,4 @@
-function loadEmailDashboardData() {
+function loadData() {
   console.log("Marketo Dashboards > Loading: Email Dashboard Data");
   
   var data = {

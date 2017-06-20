@@ -1,4 +1,4 @@
-function loadEmailAssetData() {
+function loadData() {
   console.log("Marketo Dashboards > Loading: Email Asset Data");
   
   var data = {

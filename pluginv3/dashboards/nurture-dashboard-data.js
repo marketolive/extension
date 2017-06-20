@@ -1,4 +1,4 @@
-function loadCeeData() {
+function loadData() {
   console.log("Marketo Dashboards > Loading: Nurture Dashboard Data");
   
   //var exhaustionDate = Ext4.Date.format(new Date(new Date().getTime() - 43200000), MktLang.getPatternIso8601Long());

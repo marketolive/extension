@@ -1,4 +1,4 @@
-function loadSocialData() {
+function loadData() {
   console.log("Marketo Dashboards > Loading: Social Dashboard Data");
   
   var data = {};

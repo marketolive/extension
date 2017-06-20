@@ -32,15 +32,21 @@ DASHBOARD = DASHBOARD || {};
  *  @function
  *
  *  @param {String} scriptSrc - The URL of the desired script.
+ *  @param {Function} onLoadFn - function to execute when the script loads.
  *
  **************************************************************************************/
 
-DASHBOARD.loadScript = function (scriptSrc) {
+DASHBOARD.loadScript = function (scriptSrc, onLoadFn) {
   console.log("Loading: Script: " + scriptSrc);
   
   var scriptElement = document.createElement("script");
   scriptElement.async = true;
   scriptElement.src = scriptSrc;
+  
+  if (typeof(onLoadFn) === "function") {
+    scriptElement.onload = onLoadFn();
+  }
+  
   document.getElementsByTagName("head")[0].appendChild(scriptElement);
 };
 
@@ -61,12 +67,12 @@ var isMktPageDashboards = window.setInterval(function () {
       window.clearInterval(isMktPageDashboards);
       
       if (accountString == mktoAccountStringMaster) {
-        DASHBOARD.loadScript(PROGRAM_ANALYZER);
+        DASHBOARD.loadScript(PROGRAM_ANALYZER, loadData);
       } else {
-        DASHBOARD.loadScript(PROGRAM_ANALYZER);
-        DASHBOARD.loadScript(NURTURE_PROGRAM);
-        DASHBOARD.loadScript(SOCIAL_APP);
-        DASHBOARD.loadScript(EMAIL_DASHBOARD);
+        DASHBOARD.loadScript(PROGRAM_ANALYZER, loadData);
+        DASHBOARD.loadScript(NURTURE_PROGRAM, loadData);
+        DASHBOARD.loadScript(SOCIAL_APP, loadData);
+        DASHBOARD.loadScript(EMAIL_DASHBOARD, loadData);
       }
     }
   }, 0);
