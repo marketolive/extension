@@ -1664,6 +1664,7 @@ APP.overrideTreeNodeExpand = function () {
             } else {
               node.allowChildren = false;
               node.leaf = true;
+              console.log("Prevented Draft Node Of: " + node.text);
             }
           } else if (node.childNodes.length == 1
              && node.childNodes[0].attributes
@@ -1676,6 +1677,7 @@ APP.overrideTreeNodeExpand = function () {
              && (node.childNodes[0].attributes.isDraftNode == 1
                || node.childNodes[0].attributes.isDraft)) {
             node.childNodes[0].remove(true);
+            console.log("Removed Child Draft Node Of: " + node.text);
           }
         }
         
