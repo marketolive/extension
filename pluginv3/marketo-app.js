@@ -141,6 +141,8 @@ mktoGoldenWorkspacesMatch,
 mktoMyWorkspaceEnId,
 mktoMyWorkspaceJpId,
 mktoMyWorkspaceIdMatch,
+mktoMyWorkspaceEnName,
+mktoMyWorkspaceJpName,
 mktoMyWorkspaceNameMatch,
 mktoOtherWorkspaceName,
 mktoEmailPerformanceReport,
@@ -197,7 +199,7 @@ APP.setInstanceInfo = function (accountString) {
     mktoMyWorkspaceIdMatch = null;
     
     mktoMyWorkspaceEnName;
-    mktoMyWorkspaceJpId;
+    mktoMyWorkspaceJpName;
     mktoMyWorkspaceNameMatch = null;
     
     mktoOtherWorkspaceName = "User's Workspace";
