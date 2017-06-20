@@ -7798,7 +7798,7 @@ APP.disableFormSaveButtons = function () {
           if (item) {
             item.setDisabled(toDisable);
             
-            if (this.getXType() == "emailAddMultipleDomainForm") {
+            if (me.getXType() == "emailAddMultipleDomainForm") {
               item.stayDisabled = true;
             }
           }
@@ -7871,7 +7871,48 @@ APP.disableHarmfulSaveButtons = function () {
          && MktCanvas.getActiveTab()) {
         var toDisable;
         
-        if (this.title) {
+        if (typeof(MktMainNav) !== "undefined"
+           && MktMainNav
+           && MktMainNav.activeNav == "tnCustAdmin"
+           && MktCanvas.getActiveTab().title) {
+          var activeTabTitle = MktCanvas.getActiveTab().title;
+          // Admin
+          switch (activeTabTitle) {
+          case "Login Settings":
+            // Users & Roles
+          case "Users":
+          case "Roles":
+            // Workspaces & Partitions
+          case "Workspaces":
+          case "Lead Partitions":
+          case "Person Partitions":
+            //
+          case "Location":
+          case "Smart Campaign":
+          case "Communication Limits":
+          case "Tags":
+          case "Field Management":
+          case "Salesforce Objects Sync":
+          case "Salesforce":
+            // Sales Insight
+          case "Sales Insight":
+          case "Email Add-in":
+            // Landing Pages
+          case "Landing Pages":
+          case "Rules":
+          case "Munchkin":
+            // LaunchPoint
+          case "Installed Services":
+            //
+          case "Webhooks":
+          case "Single Sign-On":
+          case "Revenue Cycle Analytics":
+          case "Treasure Chest":
+            toDisable = true;
+            break;
+          }
+          
+        } else if (this.title) {
           switch (this.title) {
           // Marketing Activities
           // Program > Actions
@@ -7935,45 +7976,6 @@ APP.disableHarmfulSaveButtons = function () {
           
           if (this.title.search(/Filter by .+/) != -1) {
             toDisable = APP.evaluateMenu("button", null, MktCanvas.getActiveTab(), null);
-          }
-        }
-        
-        if (MktCanvas.getActiveTab().title) {
-          var activeTabTitle = MktCanvas.getActiveTab().title;
-          // Admin
-          switch (activeTabTitle) {
-          case "Login Settings":
-            // Users & Roles
-          case "Users":
-          case "Roles":
-            // Workspaces & Partitions
-          case "Workspaces":
-          case "Lead Partitions":
-          case "Person Partitions":
-            //
-          case "Location":
-          case "Smart Campaign":
-          case "Communication Limits":
-          case "Tags":
-          case "Field Management":
-          case "Salesforce Objects Sync":
-          case "Salesforce":
-            // Sales Insight
-          case "Sales Insight":
-          case "Email Add-in":
-            // Landing Pages
-          case "Landing Pages":
-          case "Rules":
-          case "Munchkin":
-            // LaunchPoint
-          case "Installed Services":
-            //
-          case "Webhooks":
-          case "Single Sign-On":
-          case "Revenue Cycle Analytics":
-          case "Treasure Chest":
-            toDisable = true;
-            break;
           }
         }
         
