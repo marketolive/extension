@@ -7720,6 +7720,10 @@ APP.disableFormSaveButtons = function () {
      && Ext4.Component.prototype
      && Ext4.Component.prototype.show) {
     Ext4.Component.prototype.show = function (animateTarget, cb, scope) {
+      var me = this,
+      menuItems,
+      mItems,
+      toDisable;
       
       if (this.getXType() == "createNamedAccountForm" //ABM > Named Accounts > New Named Account
          || this.getXType() == "addToAccountListForm" //ABM > Named Accounts > Add To Account List
@@ -7765,26 +7769,13 @@ APP.disableFormSaveButtons = function () {
          || this.getXType() == "adminTagsAddCalendarEntryTypeForm" //Admin > Tags > Calendar Entry Types > New Entry Type
          || this.getXType() == "featureSwitchForm" //Admin > Feature Manager > Edit Feature
       ) {
-        
-        var me = this,
         menuItems = [
           "[action=submit]", //Create, Add, Save
           "[action=import]", //Import
-        ],
+        ];
         mItems = this.query(menuItems.toString());
+        toDisable = true;
         
-        if (mItems) {
-          console.log("Marketo App > Executing: Disable Form Window Save Buttons");
-          
-          mItems.forEach(function (item) {
-            if (item) {
-              item.setDisabled(true);
-              if (me.getXType() == "emailAddMultipleDomainForm") {
-                item.stayDisabled = true;
-              }
-            }
-          });
-        }
       } else if (MktCanvas
          && MktCanvas.getActiveTab
          && MktCanvas.getActiveTab()
@@ -7792,27 +7783,29 @@ APP.disableFormSaveButtons = function () {
          && this.getXType() == "inAppMessageAssetForm" //Marketing Activities > Mobile In-App Program > Control Panel > New In-App Message
       )
       {
-        var me = this,
         menuItems = [
           "[action=submit]", //Create, Add, Save
-        ],
-        mItems = this.query(menuItems.toString()),
+        ];
+        mItems = this.query(menuItems.toString());
         toDisable = APP.evaluateMenu("button", null, MktCanvas.getActiveTab(), null);
-        
-        if (toDisable
-           && mItems) {
-          console.log("Marketo App > Executing: Disable Form Window Save Buttons");
-          
-          mItems.forEach(function (item) {
-            if (item) {
-              item.setDisabled(toDisable);
-            }
-          });
-        }
       }
       
-      var me = this,
-      rendered = me.rendered;
+      if (toDisable
+         && mItems) {
+        console.log("Marketo App > Executing: Disable Form Window Save Buttons");
+        
+        mItems.forEach(function (item) {
+          if (item) {
+            item.setDisabled(toDisable);
+            
+            if (this.getXType() == "emailAddMultipleDomainForm") {
+              item.stayDisabled = true;
+            }
+          }
+        });
+      }
+      
+      var rendered = me.rendered;
       if (rendered
          && me.isVisible()) {
         if (me.toFrontOnShow
@@ -7857,7 +7850,7 @@ APP.disableFormSaveButtons = function () {
  *
  **************************************************************************************/
 
-APP.disableAdminSaveButtons = function () {
+APP.disableHarmfulSaveButtons = function () {
   console.log("Marketo App > Disabling: Harmful Save Buttons");
   
   if (typeof(Ext) !== "undefined"
@@ -9621,7 +9614,7 @@ var isMktPageApp = window.setInterval(function () {
           APP.hideToolbarItems();
           APP.overrideDraftEdits();
           APP.disableFormSaveButtons();
-          APP.disableAdminSaveButtons();
+          APP.disableHarmfulSaveButtons();
           APP.overrideSmartCampaignSaving();
           APP.trackNodeClick();
           APP.trackTreeNodeEdits();
@@ -9645,7 +9638,7 @@ var isMktPageApp = window.setInterval(function () {
           APP.disableMenus();
           APP.hideToolbarItems();
           APP.disableFormSaveButtons();
-          APP.disableAdminSaveButtons();
+          APP.disableHarmfulSaveButtons();
         } else if (toggleState == "false") {
           APP.overrideSaving();
           APP.overrideSmartCampaignSaving();
@@ -9661,7 +9654,7 @@ var isMktPageApp = window.setInterval(function () {
           APP.disableMenus();
           APP.hideToolbarItems();
           APP.disableFormSaveButtons();
-          APP.disableAdminSaveButtons();
+          APP.disableHarmfulSaveButtons();
           APP.heapTrack("track", {
             name: "Last Loaded",
             assetName: "Page"
@@ -9676,7 +9669,7 @@ var isMktPageApp = window.setInterval(function () {
           APP.disableMenus();
           APP.hideToolbarItems();
           APP.disableFormSaveButtons();
-          APP.disableAdminSaveButtons();
+          APP.disableHarmfulSaveButtons();
           APP.heapTrack("track", {
             name: "Last Loaded",
             assetName: "Page"
@@ -9691,7 +9684,7 @@ var isMktPageApp = window.setInterval(function () {
           APP.disableMenus();
           APP.hideToolbarItems();
           APP.disableFormSaveButtons();
-          APP.disableAdminSaveButtons();
+          APP.disableHarmfulSaveButtons();
           APP.heapTrack("track", {
             name: "Last Loaded",
             assetName: "Page"
@@ -9706,7 +9699,7 @@ var isMktPageApp = window.setInterval(function () {
           APP.disableMenus();
           APP.hideToolbarItems();
           APP.disableFormSaveButtons();
-          APP.disableAdminSaveButtons();
+          APP.disableHarmfulSaveButtons();
           APP.heapTrack("track", {
             name: "Last Loaded",
             assetName: "Page"
