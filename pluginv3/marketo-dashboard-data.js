@@ -62,17 +62,20 @@ var isMktPageDashboards = window.setInterval(function () {
        && MktPage.savedState.custPrefix) {
       console.log("Marketo Dashboards > Location: Marketo Page");
       
-      var accountString = MktPage.savedState.custPrefix;
+      var accountString = MktPage.savedState.custPrefix,
+      onLoadFn = function () {
+        loadData();
+      };
       
       window.clearInterval(isMktPageDashboards);
       
       if (accountString == mktoAccountStringMaster) {
-        DASHBOARD.loadScript(PROGRAM_ANALYZER, loadData);
+        DASHBOARD.loadScript(PROGRAM_ANALYZER, onLoadFn);
       } else {
-        DASHBOARD.loadScript(PROGRAM_ANALYZER, loadData);
-        DASHBOARD.loadScript(NURTURE_PROGRAM, loadData);
-        DASHBOARD.loadScript(SOCIAL_APP, loadData);
-        DASHBOARD.loadScript(EMAIL_DASHBOARD, loadData);
+        DASHBOARD.loadScript(PROGRAM_ANALYZER, onLoadFn);
+        DASHBOARD.loadScript(NURTURE_PROGRAM, onLoadFn);
+        DASHBOARD.loadScript(SOCIAL_APP, onLoadFn);
+        DASHBOARD.loadScript(EMAIL_DASHBOARD, onLoadFn);
       }
     }
   }, 0);
