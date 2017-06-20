@@ -1,9 +1,9 @@
-console.log("Global Landing Page > Running");
+console.log("250ok > Running");
 
 /**************************************************************************************
  *
  *  This script contains all of the functionality needed for loading external scripts
- *  on MarketoLive Landing Pages.
+ *  on 250ok for Email Deliverability.
  *
  *  @Author Brian Fisher
  *
@@ -13,18 +13,9 @@ console.log("Global Landing Page > Running");
 
 var URL_PATH = "m3",
 
-MARKETO_LIVE_LANDING_PAGE = "https://marketolive.com/" + URL_PATH + "/pluginv3/marketo-live-landing-page.min.js",
+DELIVERABILITY_TOOLS = "https://marketolive.com/" + URL_PATH + "/pluginv3/deliverability-tools.min.js",
 
-mktoLiveProdLandingPageDomain = "http://pages\.marketolive\.com",
-mktoLiveDevLandingPageDomain = "http://dev\.pages\.marketolive\.com",
-mktoLiveLandingPageHostsMatch = "http://na-sjdemo1.marketo.com",
-
-mktoLiveDevMunchkinId = "685-BTN-772",
-mktoLiveProdMunchkinId = "185-NGX-811",
-mktoLiveMunchkinIdsMatch = "(" + mktoLiveProdMunchkinId + "|" + mktoLiveDevMunchkinId + ")",
-mktoLiveLandingPageDomainMatch = "^(" + mktoLiveProdLandingPageDomain + "|" + mktoLiveDevLandingPageDomain + "|" + mktoLiveLandingPageHostsMatch + "\/lp\/" + mktoLiveMunchkinIdsMatch + ")/",
-
-GLOBAL_LPAGE = GLOBAL_LPAGE || {};
+APP = APP || {};
 
 /**************************************************************************************
  *
@@ -38,7 +29,7 @@ GLOBAL_LPAGE = GLOBAL_LPAGE || {};
  *
  **************************************************************************************/
 
-GLOBAL_LPAGE.loadScript = function (scriptSrc) {
+APP.loadScript = function (scriptSrc) {
   console.log("Loading: Script: " + scriptSrc);
   
   var scriptElement = document.createElement("script");
@@ -53,8 +44,6 @@ GLOBAL_LPAGE.loadScript = function (scriptSrc) {
  *
  **************************************************************************************/
 
-if (window.location.href.search(mktoLiveLandingPageDomainMatch) != -1) {
-  console.log("Global Landing Page > Location: MarketoLive Landing Page");
-  
-  GLOBAL_LPAGE.loadScript(MARKETO_LIVE_LANDING_PAGE);
-}
+window.onload = function () {
+  APP.loadScript(DELIVERABILITY_TOOLS);
+};

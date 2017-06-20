@@ -1,13 +1,13 @@
-console.log("Deliverability > Running");
+console.log("250ok > Running");
 
 /**************************************************************************************
  *
- *  This module contains all of the functionality needed for preventing unwanted
+ *  This script contains all of the functionality needed for preventing unwanted
  *  manipulation of the 250ok app. It handles the login process to ensure that users
  *  are entered into the correct subscription, and it hides all of the administrative
- *  buttons inside the GUI. This module is loaded by the marketoLive plugin on the
+ *  buttons inside the GUI. This script is loaded by the marketoLive plugin on the
  *  250ok domain. Since the 250ok app is a website and not a single page web-app,
- *  this module needs to be loaded on every page. Instead of using display: hidden,
+ *  this script needs to be loaded on every page. Instead of using display: hidden,
  *  the functions remove DOM elements from the page altogether. This is to prevent
  *  a savvy user from turning the settings menu back on for example.
  *
@@ -17,8 +17,9 @@ console.log("Deliverability > Running");
  *
  **************************************************************************************/
 
-var currentUrl = window.location.href,
-userId = "marketolive@marketo.com",
+var devExtensionId = "dokkjhbgengdlccldgjnbilajdbjlnhm",
+prodExtensionId = "onibnnoghllldiecboelbpcaeggfiohl",
+extensionId = devExtensionId,
 
 DELIVERABILITY = DELIVERABILITY || {};
 
@@ -39,23 +40,23 @@ DELIVERABILITY = DELIVERABILITY || {};
  **************************************************************************************/
 
 DELIVERABILITY.webRequest = function (url, params, method, async, responseType, callback) {
-    console.log("Web Request > " + url + "\n" + params);
-    var xmlHttp = new XMLHttpRequest(),
-    result;
-    xmlHttp.onreadystatechange = function () {
-        if (callback
-             && xmlHttp.readyState == 4
-             && xmlHttp.status == 200)
-            result = callback(xmlHttp.response);
-    }
-    if (async
-         && xmlHttp.responseType) {
-        xmlHttp.responseType = responseType;
-    }
-    xmlHttp.open(method, url, async); // true for asynchronous
-    xmlHttp.setRequestHeader("Content-type", "application/json; charset=utf-8");
-    xmlHttp.send(params);
-    return result;
+  console.log("Web Request > " + url + "\n" + params);
+  var xmlHttp = new XMLHttpRequest(),
+  result;
+  xmlHttp.onreadystatechange = function () {
+    if (typeof(callback) === "function"
+       && xmlHttp.readyState == 4
+       && xmlHttp.status == 200)
+      result = callback(xmlHttp.response);
+  }
+  if (async
+     && xmlHttp.responseType) {
+    xmlHttp.responseType = responseType;
+  }
+  xmlHttp.open(method, url, async); // true for asynchronous
+  xmlHttp.setRequestHeader("Content-type", "application/json; charset=utf-8");
+  xmlHttp.send(params);
+  return result;
 };
 
 /**************************************************************************************
@@ -69,15 +70,15 @@ DELIVERABILITY.webRequest = function (url, params, method, async, responseType, 
  **************************************************************************************/
 
 DELIVERABILITY.login = function () {
-    console.log("Deliverability > Login: App");
-    
-    // jQuery returns an array even though an id is selected, which
-    // is why there is a [0] on the email and password selectors.
-    $("#email")[0].value = "marketolive@marketo.com";
-    $("#password")[0].value = "!Marketo17";
-    // This needs to change if another button is ever added to the login
-    // page. Currently, the submit button is the only one.
-    $("button")[0].click();
+  console.log("250ok > Login: App");
+  
+  // jQuery returns an array even though an id is selected, which
+  // is why there is a [0] on the email and password selectors.
+  $("#email")[0].value = "marketolive@marketo.com";
+  $("#password")[0].value = "!Marketo17";
+  // This needs to change if another button is ever added to the login
+  // page. Currently, the submit button is the only one.
+  $("button")[0].click();
 };
 
 /**************************************************************************************
@@ -100,26 +101,26 @@ DELIVERABILITY.login = function () {
  **************************************************************************************/
 
 DELIVERABILITY.removeGenericButton = function (buttons, property, target) {
-    // If buttons is empty, than the selector must be malformed.
-    if (buttons.length == 0) {
-        console.log("Deliverability > Error: removeGenericButton() received an empty selector.");
-        return;
+  // If buttons is empty, than the selector must be malformed.
+  if (buttons.length == 0) {
+    console.log("250ok > Error: removeGenericButton() received an empty selector.");
+    return;
+  }
+  
+  // There is no break inside the loop because some pages have multiple
+  // buttons that need to be deleted.
+  for (var ii = 0; ii < buttons.length; ++ii) {
+    if (property
+       && target) {
+      if ($(buttons[ii]).attr(property) == null) {
+        continue;
+      } else if ($(buttons[ii]).attr(property).search(target) != -1) {
+        $(buttons[ii]).remove();
+      }
+    } else {
+      $(buttons[ii]).remove();
     }
-    
-    // There is no break inside the loop because some pages have multiple
-    // buttons that need to be deleted.
-    for (var ii = 0; ii < buttons.length; ++ii) {
-        if (property
-             && target) {
-            if ($(buttons[ii]).attr(property) == null) {
-                continue;
-            } else if ($(buttons[ii]).attr(property).search(target) != -1) {
-                $(buttons[ii]).remove();
-            }
-        } else {
-            $(buttons[ii]).remove();
-        }
-    }
+  }
 };
 
 /**************************************************************************************
@@ -135,17 +136,17 @@ DELIVERABILITY.removeGenericButton = function (buttons, property, target) {
  **************************************************************************************/
 
 DELIVERABILITY.removeDeleteButtons = function () {
-    console.log("Deliverability > Removing: Delete Buttons");
-    
-    $("#btndelete").remove();
-    DELIVERABILITY.removeGenericButton($(".action_copy"));
-    DELIVERABILITY.removeGenericButton($(".action_delete"));
-    DELIVERABILITY.removeGenericButton($(".btn.copy"));
-    DELIVERABILITY.removeGenericButton($(".btn.delete"));
-    DELIVERABILITY.removeGenericButton($(".btn.btn-success"), "value", /(save|update|create|upload|import)/i);
-    DELIVERABILITY.removeGenericButton($("button"), "value", /delete/i);
-    DELIVERABILITY.removeGenericButton($(".btn"), "onclick", "^return confirm\\(");
-    //DELIVERABILITY.removeGenericButton($(".btn"), "href", /action=delete/i);
+  console.log("250ok > Removing: Delete Buttons");
+  
+  $("#btndelete").remove();
+  DELIVERABILITY.removeGenericButton($(".action_copy"));
+  DELIVERABILITY.removeGenericButton($(".action_delete"));
+  DELIVERABILITY.removeGenericButton($(".btn.copy"));
+  DELIVERABILITY.removeGenericButton($(".btn.delete"));
+  DELIVERABILITY.removeGenericButton($(".btn.btn-success"), "value", /(save|update|create|upload|import)/i);
+  DELIVERABILITY.removeGenericButton($("button"), "value", /delete/i);
+  DELIVERABILITY.removeGenericButton($(".btn"), "onclick", "^return confirm\\(");
+  //DELIVERABILITY.removeGenericButton($(".btn"), "href", /action=delete/i);
 };
 
 /**************************************************************************************
@@ -161,15 +162,40 @@ DELIVERABILITY.removeDeleteButtons = function () {
  **************************************************************************************/
 
 DELIVERABILITY.removeSubmitButtons = function () {
-    console.log("Deliverability > Removing: Submit Buttons");
-    
-    $("#add_widget").remove();
-    $("#new_dashboard").remove();
-    $("#change_dashboard").remove();
-    $("#create-campaign-anchor").remove();
-    $("#saveFilters").remove();
-    $("#tour-design-add-anchor").remove();
-    $("#create_alert").remove();
+  console.log("250ok > Removing: Submit Buttons");
+  
+  $("#add_widget").remove();
+  $("#new_dashboard").remove();
+  $("#change_dashboard").remove();
+  $("#create-campaign-anchor").remove();
+  $("#saveFilters").remove();
+  $("#tour-design-add-anchor").remove();
+  $("#create_alert").remove();
+};
+
+/**************************************************************************************
+ *
+ *  This function sends a message to the extension to determine if the current version
+ *  of the extension meets or exceeds the mininum required version given.
+ *
+ *  @Author Brian Fisher
+ *
+ *  @function
+ *
+ *  @param minVersion {String} - minimum required version of the extension (#.#.#)
+ *
+ **************************************************************************************/
+
+DELIVERABILITY.toRemoveSubmitButtons = function (minVersion) {
+  chrome.runtime.sendMessage(extensionId, {
+    action: "checkExtensionVersion",
+    minVersion: minVersion
+  }, null, function (response) {
+    if (response == null
+       || !response.isValidExtension) {
+      DELIVERABILITY.removeSubmitButtons();
+    }
+  });
 };
 
 /**************************************************************************************
@@ -178,23 +204,26 @@ DELIVERABILITY.removeSubmitButtons = function () {
  *
  **************************************************************************************/
 
-if (currentUrl.search("^https:\/\/250ok\.com\/login") != -1) {
-    DELIVERABILITY.login();
+var userId = "marketolive@marketo.com",
+extensionMinVersion = "5.1.2";
+
+if (window.location.href == ("https://250ok.com/login?submit=true")) {
+  DELIVERABILITY.login();
 } else if ($("#email").length == 1) {
-    if ($("#email")[0].value == userId) {
-        DELIVERABILITY.removeDeleteButtons();
-        DELIVERABILITY.removeSubmitButtons();
-    }
+  if ($("#email")[0].value == userId) {
+    DELIVERABILITY.removeDeleteButtons();
+    DELIVERABILITY.toRemoveSubmitButtons(extensionMinVersion);
+  }
 } else {
-    DELIVERABILITY.webRequest('/app/account', null, 'GET', true, 'document', function (response) {
-        var el = document.createElement("html"),
-        email;
-        
-        el.innerHTML = response;
-        email = el.querySelector("#email").value;
-        if (email == userId) {
-            DELIVERABILITY.removeDeleteButtons();
-            DELIVERABILITY.removeSubmitButtons();
-        }
-    });
+  DELIVERABILITY.webRequest('/app/account', null, 'GET', true, 'document', function (response) {
+    var el = document.createElement("html"),
+    email;
+    
+    el.innerHTML = response;
+    email = el.querySelector("#email").value;
+    if (email == userId) {
+      DELIVERABILITY.removeDeleteButtons();
+      DELIVERABILITY.toRemoveSubmitButtons(extensionMinVersion);
+    }
+  });
 }

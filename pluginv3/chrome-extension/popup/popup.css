@@ -1,0 +1,156 @@
+body {
+  font-family: "Segoe UI", "Lucida Grande", Tahoma, sans-serif;
+  font-size: 100%;
+  margin: 0;
+}
+a {
+  text-decoration: none;
+}
+input[type=text] {
+  -webkit-transition: all 0.30s ease-in-out;
+  -moz-transition: all 0.30s ease-in-out;
+  -ms-transition: all 0.30s ease-in-out;
+  -o-transition: all 0.30s ease-in-out;
+  outline: none;
+  padding: 0 0 0 5px;
+  border-bottom: 2px solid #ddd;
+}
+input[type=text]:focus {
+  padding: 0 0 0 17px;
+  border-bottom: 2px solid rgba(88, 82, 161, 1);
+}
+
+.option-container {
+  display: inline-block;
+  width: 100%;
+  padding-top: 10px;
+  padding-left: 30px;
+  cursor: pointer;
+}
+.option-image-container {
+  width: 60px;
+  height: auto;
+  float: left;
+  text-align: center;
+}
+.option-image {
+  height: 30px;
+}
+.option-title {
+  font-size: 12px;
+  color: #5a54a4;
+  padding-top: 10px;
+  padding-left: 10px;
+}
+.clear-container {
+  float: left;
+  margin-left: 5px;
+  cursor: pointer;
+}
+.clear-submit {
+  height: 28px;
+  background-color: #5a54a4;
+  font-size: 10px;
+  color: #fff;
+  text-transform: uppercase;
+  text-align: center;
+  padding-left: 10px;
+  padding-right: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.clear-inner-submit {
+  padding-top: 8px;
+}
+.extra-margin {
+  width: 260px;
+  padding-left: 15px;
+}
+.font-size-priv {
+  font-size: 12px;
+}
+.edit-title {
+  font-size: 12px;
+  color: #5a54a4;
+  margin-right: 10px;
+  padding-top: 3px;
+}
+.option-image-container-toggle {
+  width: 70px;
+  float: left;
+  text-align: center;
+}
+.option-image-toggle {
+  width: 70%;
+  float: left;
+}
+.float-left {
+  float: left;
+}
+.company-container {
+  display: inline-block;
+  width: 100%;
+  margin-left: 8px;
+  padding-top: 10px;
+}
+.company-name {
+  width: 180px;
+  height: 26px;
+  font-size: 12px;
+  font-weight: 200;
+  padding-left: 5px;
+  border: none;
+  border-radius: 5px;
+  border-bottom: 1px solid #ccc;
+}
+.company-submit {
+  width: 50px;
+  height: 28px;
+  background-color: #5a54a4;
+  font-size: 10px;
+  color: #fff;
+  text-transform: uppercase;
+  text-align: center;
+  margin-left: -15px;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  cursor: pointer;
+}
+.company-inner-submit {
+  padding-top: 8px;
+}
+
+#status {
+  display: block;
+  width: 300px;
+}
+#marketo-live-logo-container {
+  display: inline-block;
+  width: 100%;
+  background-color: #5a54a4;
+  text-align: center;
+  padding-top: 10px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #c2c2c2;
+}
+#logo-size {
+  height: 35px;
+  float: left;
+  margin-left: 15px;
+}
+#help, #settings {
+  height: 35px;
+  float: right;
+  margin-right: 15px;
+  padding-top: 3px;
+  cursor: pointer;
+}
+#help-size, #gear-size {
+  height: 25px;
+}
+#help-container, #settings-container {
+  display: none;
+  background-color: #f2f2f2;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #ccc;
+}

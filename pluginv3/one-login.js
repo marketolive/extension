@@ -1,9 +1,21 @@
-var URL_PATH = "m3",
-HEAP_ANALYTICS_SCRIPT_LOCATION = "https://marketolive.com/" + URL_PATH + "/pluginv3/heap-analytics-ext.min.js",
-devExtensionId = "dokkjhbgengdlccldgjnbilajdbjlnhm",
+console.log("OneLogin > Running");
+
+/**************************************************************************************
+ *
+ *  This script contains all of the functionality needed for retrieving the current
+ *  user's name and email address from OneLogin.
+ *
+ *  @Author Brian Fisher
+ *
+ *  @namespace
+ *
+ **************************************************************************************/
+
+var devExtensionId = "dokkjhbgengdlccldgjnbilajdbjlnhm",
 prodExtensionId = "onibnnoghllldiecboelbpcaeggfiohl",
 extensionId = prodExtensionId,
-getOneLoginUser;
+
+ONELOGIN = ONELOGIN || {};
 
 /**************************************************************************************
  *
@@ -16,32 +28,32 @@ getOneLoginUser;
  *
  **************************************************************************************/
 
-getOneLoginUser = function () {
-    var isOneLoginUser = window.setInterval(function () {
-            if (typeof(Application) !== "undefined"
-                 && Application.user) {
-                console.log("OneLogin > Getting: User");
-                
-                window.clearInterval(isOneLoginUser);
-                
-                var oneLoginUser = {
-                    username : Application.user.username,
-                    firstName : Application.user.firstname,
-                    lastName : Application.user.lastname,
-                    email : Application.user.email
-                },
-                isHeapAnalyticsForOneLogin;
-                
-                oneLoginUser.action = "setOneLoginUser";
-                chrome.runtime.sendMessage(extensionId, oneLoginUser, function (response) {
-                    console.log("OneLogin > Receiving: Message Response from Background: " + response);
-                    
-                    return response;
-                });
-            } else {
-                console.log("OneLogin > NOT Getting: User");
-            }
-        }, 0);
+ONELOGIN.getOneLoginUser = function () {
+  var isOneLoginUser = window.setInterval(function () {
+      if (typeof(Application) !== "undefined"
+         && Application.user) {
+        console.log("OneLogin > Getting: User");
+        
+        window.clearInterval(isOneLoginUser);
+        
+        var oneLoginUser = {
+          username: Application.user.username,
+          firstName: Application.user.firstname,
+          lastName: Application.user.lastname,
+          email: Application.user.email
+        },
+        isHeapAnalyticsForOneLogin;
+        
+        oneLoginUser.action = "setOneLoginUser";
+        chrome.runtime.sendMessage(extensionId, oneLoginUser, function (response) {
+          console.log("OneLogin > Receiving: Message Response from Background: " + response);
+          
+          return response;
+        });
+      } else {
+        console.log("OneLogin > NOT Getting: User");
+      }
+    }, 0);
 };
 
 /**************************************************************************************
@@ -50,6 +62,4 @@ getOneLoginUser = function () {
  *
  **************************************************************************************/
 
-console.log("OneLogin > Script Loaded");
-
-getOneLoginUser();
+ONELOGIN.getOneLoginUser();
