@@ -12,6 +12,7 @@ console.log("Marketo Demo App > Running");
  **************************************************************************************/
 
 var mktoMyMarketoFragment = "MM0A1",
+mktoMarketingPerformanceInsights = "https://marketo.invisionapp.com/share/52C0GAGD4#",
 mktoEmailInsightsLink = "http://www.marketolive.com/en/analytics/email-insights-summit-demo-1",
 mktoEmailDeliverabilityToolsLink = "https://250ok.com/login",
 
@@ -349,20 +350,15 @@ APP.overrideHomeTiles = function () {
 APP.overrideAnalyticsTiles = function () {
   console.log("Marketo Demo App > Overriding: Analytics Tiles");
   
-  var isAnalyticsTiles = window.setInterval(function () {
-      if (typeof(MktPage) !== "undefined"
-         && typeof(MktCanvas) !== "undefined"
-         && typeof(MktCanvas.getActiveTab().config.mkt3XType) !== "undefined") {
-        window.clearInterval(isAnalyticsTiles);
+  var isDemoAnalyticsTiles = window.setInterval(function () {
+      if (typeof(MktCanvas) !== "undefined"
+         && MktCanvas
+         && MktCanvas.getActiveTab()
+         && MktCanvas.getActiveTab().config
+         && MktCanvas.getActiveTab().config.mkt3XType) {
+        window.clearInterval(isDemoAnalyticsTiles);
         
-        if (MktPage
-           && MktPage.savedState
-           && MktPage.savedState.custPrefix
-           && MktPage.savedState.custPrefix.search(mktoAccountStringsMatch) != -1
-           && MktCanvas
-           && MktCanvas.getActiveTab()
-           && MktCanvas.getActiveTab().config
-           && MktCanvas.getActiveTab().config.mkt3XType == "analyticsHome"
+        if (MktCanvas.getActiveTab().config.mkt3XType == "analyticsHome"
            && MktCanvas.getActiveTab().el
            && MktCanvas.getActiveTab().el.dom
            && MktCanvas.getActiveTab().el.dom.childNodes

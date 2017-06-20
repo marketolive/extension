@@ -192,15 +192,15 @@ APP.setInstanceInfo = function (accountString) {
     mktoUnknownWorkspaceId = -1;
     mktoGoldenWorkspacesMatch = "^(" + mktoDefaultWorkspaceId + "|" + mktoJapaneseWorkspaceId + "|" + mktoUnknownWorkspaceId + ")$";
     
-    mktoMyWorkspaceEnId = 4;
-    mktoMyWorkspaceJpId = 5;
-    mktoMyWorkspaceIdMatch = "^(" + mktoMyWorkspaceEnId + "|" + mktoMyWorkspaceJpId + ")$";
+    mktoMyWorkspaceEnId;
+    mktoMyWorkspaceJpId;
+    mktoMyWorkspaceIdMatch = null;
     
-    mktoMyWorkspaceEnName = "My Workspace";
-    mktoMyWorkspaceJpId = "私のワークスペース";
-    mktoMyWorkspaceNameMatch = "^(" + mktoMyWorkspaceEnName + "|" + mktoMyWorkspaceJpId + ")$";
+    mktoMyWorkspaceEnName;
+    mktoMyWorkspaceJpId;
+    mktoMyWorkspaceNameMatch = null;
     
-    mktoOtherWorkspaceName = "Other Workspace";
+    mktoOtherWorkspaceName = "User's Workspace";
     
     mktoEmailPerformanceReport = "AR205B2";
     mktoPeoplePerformanceReport = "AR23B2";
@@ -453,10 +453,6 @@ APP.getWorkspaceName = function (workspaceId) {
     
   case mktoMyWorkspaceEnId:
     return "My Workspace";
-    break;
-    
-  case mktoMyWorkspaceJpId:
-    return "私のワークスペース";
     break;
     
   default:
@@ -1205,18 +1201,19 @@ APP.overrideAnalyticsTiles = function () {
   console.log("Marketo App > Overriding: Analytics Tiles");
   
   var isAnalyticsTiles = window.setInterval(function () {
-      if (typeof(MktPage) !== "undefined"
-         && typeof(MktCanvas) !== "undefined"
-         && typeof(MktCanvas.getActiveTab().config.mkt3XType) !== "undefined") {
+      if (typeof(MktCanvas) !== "undefined"
+         && MktCanvas
+         && MktCanvas.getActiveTab()
+         && MktCanvas.getActiveTab().config
+         && MktCanvas.getActiveTab().config.mkt3XType
+         && MktCanvas.getActiveTab().config.accessZoneId
+         && typeof(MktPage) !== "undefined"
+         && MktPage
+         && MktPage.savedState
+         && MktPage.savedState.custPrefix) {
         window.clearInterval(isAnalyticsTiles);
         
-        if (MktPage
-           && MktPage.savedState
-           && MktPage.savedState.custPrefix
-           && MktPage.savedState.custPrefix.search(mktoAccountStringsMatch) != -1
-           && MktCanvas
-           && MktCanvas.getActiveTab()
-           && MktCanvas.getActiveTab().config
+        if (MktPage.savedState.custPrefix.search(mktoAccountStringsMatch) != -1
            && MktCanvas.getActiveTab().config.mkt3XType == "analyticsHome"
            && MktCanvas.getActiveTab().config.accessZoneId == mktoDefaultWorkspaceId
            && MktCanvas.getActiveTab().el
@@ -1736,8 +1733,7 @@ APP.overrideTreeNodeCollapse = function () {
      && MktAsyncTreeNode.prototype.collapse
      && userName) {
     MktAsyncTreeNode.prototype.collapse = function () {
-      var attr = this.attributes,
-      ii;
+      var attr = this.attributes;
       
       if (this.text.search(mktoMyWorkspaceNameMatch) != -1
          || (this.parentNode.text.search(mktoMyWorkspaceNameMatch) != -1
@@ -1746,7 +1742,7 @@ APP.overrideTreeNodeCollapse = function () {
            && this.parentNode.parentNode.text.search(mktoMyWorkspaceNameMatch) != -1
            && this.attributes.system == true)) {
         
-        for (ii = 0; ii < this.childNodes.length; ii++) {
+        for (var ii = 0; ii < this.childNodes.length; ii++) {
           var currFolder = this.childNodes[ii];
           
           if (currFolder.attributes.system == false
@@ -9606,7 +9602,7 @@ var isMktPageApp = window.setInterval(function () {
            || (currCompFragment.search(mktoAbmFragmentMatch) == -1
              && currCompFragment.search(mktoDesignersFragmentMatch) == -1))) {
         
-        if (accountString.search(mktoAccountStringsMatch) != -1) {
+        if (accountString.search(mktoAccountStrings106Match) != -1) {
           //APP.discardDrafts(accountString, "landingPage");
           APP.overrideTreeNodeExpand();
           APP.overrideTreeNodeCollapse();
@@ -9632,6 +9628,26 @@ var isMktPageApp = window.setInterval(function () {
           //APP.overrideSmartCampaignCanvas();
           //APP.hidePageGrid();
           //APP.limitNurturePrograms();
+          APP.heapTrack("track", {
+            name: "Last Loaded",
+            assetName: "Page"
+          });
+        } else if (accountString == mktoAccountStringMaster) {
+          APP.overrideTreeNodeExpand();
+          APP.overrideTreeNodeCollapse();
+          APP.overrideSaving();
+          APP.disableDragAndDrop();
+          APP.disableMenus();
+          APP.hideToolbarItems();
+          APP.overrideDraftEdits();
+          APP.disableFormSaveButtons();
+          APP.disableHarmfulSaveButtons();
+          APP.overrideSmartCampaignSaving();
+          APP.trackNodeClick();
+          APP.trackTreeNodeEdits();
+          APP.overrideUpdatePortletOrder();
+          APP.disableConfirmationMessage();
+          APP.disableRequests();
           APP.heapTrack("track", {
             name: "Last Loaded",
             assetName: "Page"

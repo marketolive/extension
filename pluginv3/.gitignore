@@ -1,2 +1,4 @@
 *.min.js
 css/*.min.css
+dashboards/*.min.js
+data/*.min.json
