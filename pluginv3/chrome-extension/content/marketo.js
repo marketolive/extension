@@ -16,7 +16,7 @@ var URL_PATH = "m3-dev",
 MARKETO_GLOBAL_APP = "https://marketolive.com/" + URL_PATH + "/pluginv3/marketo-global-app.min.js",
 GLOBAL_LANDING_PAGE = "https://marketolive.com/" + URL_PATH + "/pluginv3/global-landing-page.min.js",
 MARKETO_OTHER_APP = "https://marketolive.com/" + URL_PATH + "/pluginv3/marketo-other-app.min.js",
-ANALYZER_NAV_BAR = "https://marketolive.com/" + URL_PATH + "/pluginv3/html/analyzer-nav-bar.min.html",
+ANALYZER_NAV_BAR = "https://marketolive.com/" + URL_PATH + "/pluginv3/html/analyzer-nav-bar.html",
 //ASSET_NAV_BAR = "https://marketolive.com/" + URL_PATH + "/v3/assets.html",
 
 currentUrl = window.location.href,

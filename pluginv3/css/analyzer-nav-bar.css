@@ -1,33 +1,31 @@
-.analyzer-button, .analyzer-title {
-  font-size: 18px;
-  display: inline-block;
-}
 .analyzer-container {
-  background-color: #5a54a4;
-  width: 100%;
-  height: 100px;
   position: absolute;
   top: 0;
-  box-shadow: 1px 1px 1px #505050;
+  width: 100%;
+  height: 100px;
+  background-color: #5a54a4;
   font-family: Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: 100;
-  text-transform: uppercase;
   color: #fff;
+  text-transform: uppercase;
+  box-shadow: 1px 1px 1px #505050;
 }
 .inner-container {
   width: 811px;
   height: 100%;
-  margin: 45px auto inherit auto;
+  margin-top: 45px;
+  margin-left: auto;
+  margin-right: auto;
 }
-.analyzer-button {
-  color: #f79733;
-  cursor: pointer;
-}
-.analyzer-width {
-  width: 300px;
-  text-align: center;
+.analyzer-title, .analyzer-button {
+  display: inline-block;
+  font-size: 18px;
 }
 .analyzer-title-width {
   width: 400px;
   text-align: center;
+}
+.analyzer-button {
+  color: #f79733;
+  cursor: pointer;
 }
