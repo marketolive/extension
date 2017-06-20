@@ -9966,6 +9966,10 @@ var isMktPageApp = window.setInterval(function () {
                         action: "setVisible"
                       }
                     ]);
+                } else if (currUrlFragment.search(mktoAnalyzersFragmentMatch) != -1) {
+                  console.log("Marketo App > Location: Golden Analytics");
+                  
+                  APP.updateNavBar();
                 }
                 
                 if (Mkt3.DL.dl
