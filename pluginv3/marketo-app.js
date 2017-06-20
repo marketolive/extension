@@ -777,7 +777,7 @@ APP.disablePropertyPanelSaving = function () {
   record.set('properties', prop);
   }
   
-  if (record.data.localeId != mktoDefaultWorkspaceId) {
+  if (record.data.localeId.toString().search(mktoGoldenWorkspacesMatch) != -1) {
   this.application.fireEvent('message.lp.syncProperties', record, changes);
   }
   };*/
@@ -1478,7 +1478,7 @@ APP.overrideSmartCampaignCanvas = function () {
          && MktCanvas
          && MktCanvas.getActiveTab()
          && MktCanvas.getActiveTab().config
-         && MktCanvas.getActiveTab().config.accessZoneId == mktoDefaultWorkspaceId) {
+         && MktCanvas.getActiveTab().config.accessZoneId.toString().search(mktoGoldenWorkspacesMatch) != -1) {
         console.log("Marketo App > Enabling: Smart Campaign Canvases");
         
         this.dpEditable = true;
@@ -1644,8 +1644,41 @@ APP.overrideTreeNodeExpand = function () {
           }
         }
       } else if (accountString == mktoAccountStringMaster
-         && this.attributes.accessZoneId == mktoDefaultWorkspaceId
+         && this.attributes.accessZoneId.toString().search(mktoGoldenWorkspacesMatch) != -1
          && this.childNodes.length) {
+        
+        for (var ii = 0; ii < this.childNodes.length; ii++) {
+          var node = this.childNodes[ii];
+          
+          if (node.childNodes.length == 0
+             && node.attributes
+             && node.attributes.children
+             && node.attributes.children.length == 1
+             && (node.attributes.children[0].isDraftNode == 1
+               || node.attributes.children[0].isDraft)) {
+            if (node.ui
+               && node.ui.ecNode
+               && node.ui.ecNode.className) {
+              node.ui.ecNode.className = "x-tree-ec-icon x-tree-elbow";
+              console.log("Removed Draft Node Of: " + node.text);
+            } else {
+              node.allowChildren = false;
+              node.leaf = true;
+            }
+          } else if (node.childNodes.length == 1
+             && node.childNodes[0].attributes
+             && (node.childNodes[0].attributes.isDraftNode == 1
+               || node.childNodes[0].attributes.isDraft)) {
+            node.removeAll(true);
+            console.log("Removed Child Draft Node Of: " + node.text);
+          } else if (node.childNodes.length > 1
+             && node.childNodes[0].attributes
+             && (node.childNodes[0].attributes.isDraftNode == 1
+               || node.childNodes[0].attributes.isDraft)) {
+            node.childNodes[0].remove(true);
+          }
+        }
+        
         if (this.attributes.compType == "Zone") {
           for (var ii = 0; ii < this.childNodes.length; ii++) {
             var currFolder = this.childNodes[ii];
@@ -1754,7 +1787,7 @@ APP.overrideTreeNodeCollapse = function () {
           }
         }
       } else if (accountString == mktoAccountStringMaster
-         && this.attributes.accessZoneId == mktoDefaultWorkspaceId
+         && this.attributes.accessZoneId.toString().search(mktoGoldenWorkspacesMatch) != -1
          && this.childNodes.length) {
         if (this.attributes.compType == "Zone") {
           for (var ii = 0; ii < this.childNodes.length; ii++) {
