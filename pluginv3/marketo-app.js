@@ -9737,6 +9737,7 @@ var isMktPageApp = window.setInterval(function () {
           
           APP.resetGoldenLandingPageProps();
           APP.disableDesignerSaving("landingPage", "edit");
+          APP.disableFormSaveButtons();
           break;
           
         case mktoLandingPagePreviewFragment:
@@ -9772,6 +9773,7 @@ var isMktPageApp = window.setInterval(function () {
             console.log("Marketo App > Location: Email Editor");
             
             APP.disableDesignerSaving("email", "edit");
+            APP.disableFormSaveButtons();
           } else {
             console.log("Marketo App > Location: Email Previewer");
             
@@ -9990,6 +9992,7 @@ var isMktPageApp = window.setInterval(function () {
                       
                       APP.resetGoldenLandingPageProps();
                       APP.disableDesignerSaving("landingPage", "edit");
+                      APP.disableFormSaveButtons();
                       break;
                       
                     case mktoLandingPagePreviewFragment:
@@ -10025,6 +10028,7 @@ var isMktPageApp = window.setInterval(function () {
                         console.log("Marketo App > Location: Email Editor");
                         
                         APP.disableDesignerSaving("email", "edit");
+                        APP.disableFormSaveButtons();
                       } else {
                         console.log("Marketo App > Location: Email Previewer");
                         
