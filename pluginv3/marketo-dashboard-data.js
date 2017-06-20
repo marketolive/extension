@@ -3,7 +3,7 @@ console.log("Marketo Dashboards > Running");
 /**************************************************************************************
  *
  *  This script contains all of the functionality needed for loading external scripts
- *  on MarketoLive environments.
+ *  on MarketoLive and demo environments for loading dashboard data.
  *
  *  @Author Brian Fisher
  *
@@ -32,21 +32,15 @@ DASHBOARD = DASHBOARD || {};
  *  @function
  *
  *  @param {String} scriptSrc - The URL of the desired script.
- *  @param {Function} onLoadFn - function to execute when the script loads.
  *
  **************************************************************************************/
 
-DASHBOARD.loadScript = function (scriptSrc, onLoadFn) {
+DASHBOARD.loadScript = function (scriptSrc) {
   console.log("Loading: Script: " + scriptSrc);
   
   var scriptElement = document.createElement("script");
   scriptElement.async = true;
   scriptElement.src = scriptSrc;
-  
-  if (typeof(onLoadFn) === "function") {
-    scriptElement.onload = onLoadFn();
-  }
-  
   document.getElementsByTagName("head")[0].appendChild(scriptElement);
 };
 
@@ -62,20 +56,17 @@ var isMktPageDashboards = window.setInterval(function () {
        && MktPage.savedState.custPrefix) {
       console.log("Marketo Dashboards > Location: Marketo Page");
       
-      var accountString = MktPage.savedState.custPrefix,
-      onLoadFn = function () {
-        loadData();
-      };
+      var accountString = MktPage.savedState.custPrefix;
       
       window.clearInterval(isMktPageDashboards);
       
       if (accountString == mktoAccountStringMaster) {
-        DASHBOARD.loadScript(PROGRAM_ANALYZER, onLoadFn);
+        DASHBOARD.loadScript(PROGRAM_ANALYZER);
       } else {
-        DASHBOARD.loadScript(PROGRAM_ANALYZER, onLoadFn);
-        DASHBOARD.loadScript(NURTURE_PROGRAM, onLoadFn);
-        DASHBOARD.loadScript(SOCIAL_APP, onLoadFn);
-        DASHBOARD.loadScript(EMAIL_DASHBOARD, onLoadFn);
+        DASHBOARD.loadScript(PROGRAM_ANALYZER);
+        DASHBOARD.loadScript(NURTURE_PROGRAM);
+        DASHBOARD.loadScript(SOCIAL_APP);
+        DASHBOARD.loadScript(EMAIL_DASHBOARD);
       }
     }
   }, 0);
