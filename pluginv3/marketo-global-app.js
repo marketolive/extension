@@ -26,6 +26,8 @@ mktoAccountStringsMatch106 = "^(mktodemoaccount106|mktodemoaccount106d)$",
 mktoAccountStringsMatchMasterAnd106 = "^(mktodemolivemaster|mktodemoaccount106|mktodemoaccount106d)$",
 mktoAccountStringsMatchMasterAnd106AndQe = "^(mktodemolivemaster|mktodemoaccount106|mktodemoaccount106d|globalsales)$",
 mktoAccountStringsMatch = "^(mktodemoaccount106|mktodemoaccount106d|mktodemolivemaster|globalsales)$",
+
+mktoDesignDomain = "^https://.*\.marketodesigner\.com/",
 mktoWizardDomain = "^https://app-[a-z0-9]+\.marketo\.com/m#",
 
 adminUserNamesMatch = "^(mktodemolivemaster@marketo\.com$|admin(\.[a-z]{0,2})?@(marketolive.com$|mktodemoaccount)|mktodemoaccount[a-z0-9]*@marketo\.com$|marketodemo.*@gmail\.com$)",
@@ -96,6 +98,7 @@ var isMktoPageGlobal = window.setInterval(function () {
         }
         
         if (accountString.search(mktoAccountStringsMatchMasterAnd106AndQe) != -1
+           && currentUrl.search(mktoDesignDomain) == -1
            && currentUrl.search(mktoWizardDomain) == -1) {
           GLOBAL_APP.loadScript(DASHBOARD_DATA);
         }
