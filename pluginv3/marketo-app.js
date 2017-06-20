@@ -7734,6 +7734,9 @@ APP.disableFormSaveButtons = function () {
          || this.getXType() == "fileUploadForm" //Design Studio > Images & Files > Grab Images from Web
          || this.getXType() == "leadComponentForm" //Database > ALL > New > New Person
          || this.getXType() == "analyticsReportSubscriptionForm" //Analytics > Analyzer & Report > New Report Subscription
+         || this.getXType() == "lpMetaDataForm" //Designer > Landing Page Editor > Edit Page Meta Tags
+         || this.getXType() == "lpFormSettings" //Designer > Landing Page Editor > Edit Form Settings
+         || this.getXType() == "emailSettingsForm" //Designer > Email Editor > Edit Settings
          || this.getXType() == "adminUserInviteWizard" //Admin > User & Roles > Users > Invite New User
          || this.getXType() == "adminEditLicensesForm" //Admin > User & Roles > Users > Issue License
          || this.getXType() == "adminSubscriptionInformationForm" //Admin > My Account > Subcription Information
@@ -7772,7 +7775,8 @@ APP.disableFormSaveButtons = function () {
         mItems = this.query(menuItems.toString());
         toDisable = true;
         
-      } else if (MktCanvas
+      } else if (typeof(MktCanvas) !== "undefined"
+         && MktCanvas
          && MktCanvas.getActiveTab
          && MktCanvas.getActiveTab()
          && this.getXType() == "nurtureTrackForm" //Marketing Activities > Nurture Program > Streams > Edit Name
