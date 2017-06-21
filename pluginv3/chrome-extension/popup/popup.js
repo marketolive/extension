@@ -70,15 +70,34 @@ POPUP = POPUP || {};
  *
  *  @function
  *
+ *  @param {Array} links - HTML a tag elements
+ *  @param {Object} options
+ *    {Boolean} autoClose - whether to automatically close the newly created tab
+ *
  **************************************************************************************/
 
 POPUP.addLinkClickListeners = function (links) {
   for (var ii = 0; ii < links.length; ii++) {
-    links[ii].onclick = function () {
-      chrome.tabs.create({
-        url: this.href,
-        selected: true
-      });
+    var link = links[ii];
+    
+    if (link.getAttribute("autoclose") == "true") {
+      link.onclick = function () {
+        chrome.tabs.create({
+          url: this.href,
+          selected: false
+        }, function (tab) {
+          window.setTimeout(function () {
+            chrome.tabs.remove(tab.id);
+          }, 333);
+        });
+      }
+    } else {
+      link.onclick = function () {
+        chrome.tabs.create({
+          url: this.href,
+          selected: true
+        });
+      }
     }
   }
 };
