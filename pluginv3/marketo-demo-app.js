@@ -378,7 +378,8 @@ APP.overrideAnalyticsTiles = function () {
           
           var container = MktCanvas.getActiveTab().el.dom.childNodes[0].childNodes[1].childNodes[0].childNodes[0].childNodes[0].childNodes[0],
           tiles = container.childNodes,
-          marketingPerformanceInsightsTileExists = emailInsightsTileExists = false;
+          marketingPerformanceInsightsTileExists = emailInsightsTileExists = false
+          index = 0;
           
           for (var ii = 0; ii < tiles.length; ii++) {
             if (tiles[ii]
@@ -392,22 +393,26 @@ APP.overrideAnalyticsTiles = function () {
             }
           }
           
-          if (!marketingPerformanceInsightsTileExists) {
-            var marketingPerformanceInsightsTileOuterHTML = '<div class="x4-btn mkt3-analyticsTile mkt3-analyticsHomeTile x4-btn-default-small x4-icon-text-left x4-btn-icon-text-left x4-btn-default-small-icon-text-left" id="analyticsTile-1049"><em id="analyticsTile-1049-btnWrap"><a id="analyticsTile-1049-btnEl" href="' + mktoMarketingPerformanceInsights + '" class="x4-btn-center" target="_blank" role="link" style="height: 160px;"><span id="analyticsTile-1049-btnInnerEl" class="x4-btn-inner">Marketing Performance Insights</span><span id="analyticsTile-1049-btnIconEl" class="x4-btn-icon mki3-chart-bubble-svg" style="background-image: url(\'https://app-sjint.marketo.com/mkt-3.0/resources/images/default/icons/default/svg/chart-bubble.svg\') !important;"></span></a></em></div>',
-            idMatch = new RegExp("analyticsTile-1049", "g"),
-            spareTileClone = MktCanvas.lookupComponent(container.childNodes[container.childNodes.length - 1]).cloneConfig();
-            
-            spareTileClone.el.dom.outerHTML = marketingPerformanceInsightsTileOuterHTML.replace(idMatch, spareTileClone.id);
-            container.insertBefore(spareTileClone.el.dom, container.childNodes[0]);
-          }
-          
           if (!emailInsightsTileExists) {
             var emailInsightsTileOuterHTML = '<div class="x4-btn mkt3-analyticsTile mkt3-analyticsHomeTile x4-btn-default-small x4-icon-text-left x4-btn-icon-text-left x4-btn-default-small-icon-text-left" id="analyticsTile-1059"><em id="analyticsTile-1059-btnWrap"><a id="analyticsTile-1059-btnEl" href="' + mktoEmailInsightsLink + '" class="x4-btn-center" target="_blank" role="link" style="height: 160px;"><span id="analyticsTile-1059-btnInnerEl" class="x4-btn-inner">Email Insights</span><span id="analyticsTile-1059-btnIconEl" class="x4-btn-icon mki3-email-insights-svg"></span></a></em></div>',
             idMatch = new RegExp("analyticsTile-1059", "g"),
             spareTileClone = MktCanvas.lookupComponent(container.childNodes[container.childNodes.length - 1]).cloneConfig();
             
             spareTileClone.el.dom.outerHTML = emailInsightsTileOuterHTML.replace(idMatch, spareTileClone.id);
-            container.insertBefore(spareTileClone.el.dom, container.childNodes[0]);
+            container.insertBefore(spareTileClone.el.dom, container.childNodes[index]);
+          }
+          
+          if (!marketingPerformanceInsightsTileExists) {
+            var marketingPerformanceInsightsTileOuterHTML = '<div class="x4-btn mkt3-analyticsTile mkt3-analyticsHomeTile x4-btn-default-small x4-icon-text-left x4-btn-icon-text-left x4-btn-default-small-icon-text-left" id="analyticsTile-1049"><em id="analyticsTile-1049-btnWrap"><a id="analyticsTile-1049-btnEl" href="' + mktoMarketingPerformanceInsights + '" class="x4-btn-center" target="_blank" role="link" style="height: 160px;"><span id="analyticsTile-1049-btnInnerEl" class="x4-btn-inner">Marketing Performance Insights</span><span id="analyticsTile-1049-btnIconEl" class="x4-btn-icon mki3-chart-bubble-svg" style="background-image: url(\'https://app-sjint.marketo.com/mkt-3.0/resources/images/default/icons/default/svg/chart-bubble.svg\') !important;"></span></a></em></div>',
+            idMatch = new RegExp("analyticsTile-1049", "g"),
+            spareTileClone = MktCanvas.lookupComponent(container.childNodes[container.childNodes.length - 1]).cloneConfig();
+            
+            spareTileClone.el.dom.outerHTML = marketingPerformanceInsightsTileOuterHTML.replace(idMatch, spareTileClone.id);
+            
+            if (!emailInsightsTileExists) {
+              index++;
+            }
+            container.insertBefore(spareTileClone.el.dom, container.childNodes[index]);
           }
         }
       }
