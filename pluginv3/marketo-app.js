@@ -2898,10 +2898,6 @@ APP.evaluateMenu = function (triggeredFrom, menu, canvas, toolbar) {
       return toBeDisabled;
       break;
       
-    case "leadDbLeadMenu":
-      return true;
-      break;
-      
     case "socialAppToolbar":
       if (toolbar.getSocialApp()
          && toolbar.getSocialApp().get('zoneId')
@@ -3584,14 +3580,17 @@ APP.disableMenus = function () {
           "rcmApproveDraft", //Approve Model Draft
         ];
         
-        if (this.triggeredFrom != "tree"
-           && this.triggeredFrom != "button") {
-          disable = APP.evaluateMenu("tree", this, canvas, null);
-        } else if (this.id == "leadDbListMenu"
+        if (this.id == "leadDbListMenu"
            || this.id == "segmentationMenu") {
           disable = APP.evaluateMenu("tree", this, canvas, null);
-        } else if (this.id == "leadDbLeadMenu") {
-          disable = APP.evaluateMenu("leadDbLeadMenu", this, canvas, null);
+        } else if (this.id == "leadDbLeadMenu"
+           || (this.ownerCt
+           && this.ownerCt.parentMenu
+           && this.ownerCt.parentMenu.id == "leadDbLeadMenu")) {
+          disable = true;
+        } else if (this.triggeredFrom != "tree"
+           && this.triggeredFrom != "button") {
+          disable = APP.evaluateMenu("tree", this, canvas, null);
         } else {
           disable = APP.evaluateMenu(this.triggeredFrom, this, canvas, null);
         }
