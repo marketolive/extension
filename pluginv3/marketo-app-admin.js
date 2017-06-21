@@ -15,6 +15,10 @@ var URL_PATH = "m3-dev",
 
 MARKETO_LIVE_APP = "https://marketolive.com/" + URL_PATH + "/pluginv3/marketo-app.min.js",
 
+mktoAccountStringMaster = "mktodemolivemaster",
+mktoAccountString106 = "mktodemoaccount106",
+mktoAccountString106d = "mktodemoaccount106d",
+
 ADMIN = ADMIN || {};
 
 /**************************************************************************************
