@@ -9656,15 +9656,15 @@ var isMktPageApp = window.setInterval(function () {
           APP.overrideSmartCampaignSaving();
           APP.trackNodeClick();
           APP.trackTreeNodeEdits();
-          APP.overrideUpdatePortletOrder();
-          APP.overrideNewProgramCreate();
           APP.overrideAssetSaveEdit();
-          APP.overrideNewAssetCreate();
-          APP.overrideNewFolders();
           APP.overrideRenamingFolders();
-          APP.hideFoldersOnImport();
+          APP.overrideUpdatePortletOrder();
           APP.disableConfirmationMessage();
           APP.disableRequests();
+          APP.overrideNewProgramCreate();
+          APP.overrideNewAssetCreate();
+          APP.overrideNewFolders();
+          APP.hideFoldersOnImport();
           //APP.overrideSmartCampaignCanvas();
           //APP.hidePageGrid();
           //APP.limitNurturePrograms();
@@ -9685,6 +9685,8 @@ var isMktPageApp = window.setInterval(function () {
           APP.overrideSmartCampaignSaving();
           APP.trackNodeClick();
           APP.trackTreeNodeEdits();
+          APP.overrideAssetSaveEdit();
+          APP.overrideRenamingFolders();
           APP.overrideUpdatePortletOrder();
           APP.disableConfirmationMessage();
           APP.disableRequests();
@@ -9697,6 +9699,8 @@ var isMktPageApp = window.setInterval(function () {
           APP.hideToolbarItems();
           APP.disableFormSaveButtons();
           APP.disableHarmfulSaveButtons();
+          APP.overrideAssetSaveEdit();
+          APP.overrideRenamingFolders();
         } else if (toggleState == "false") {
           APP.overrideSaving();
           APP.overrideSmartCampaignSaving();
