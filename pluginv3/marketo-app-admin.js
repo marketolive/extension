@@ -160,6 +160,267 @@ ADMIN.dateDiffInDays = function (a, b) {
 
 /**************************************************************************************
  *
+ *  This function returns the data for all users.
+ *
+ *  @Author Brian Fisher
+ *
+ *  @function
+ *
+ *  @param {Function} callabck - function to callback after the async request completes
+ *
+ **************************************************************************************/
+
+ADMIN.getAllUsers = function (callback) {
+  console.log("Getting All Users");
+  
+  ADMIN.webRequest('/custAdmin/getAllUsers', 'xsrfId=' + MktSecurity.getXsrfId(), 'POST', true, 'json', function (response) {
+    var result = JSON.parse(response);
+    
+    if (result.success) {
+      console.log("Retrieved All Users");
+      
+      if (typeof(callback) === "function") {
+        callback(result);
+      }
+    }
+  });
+};
+
+/**************************************************************************************
+ *
+ *  This function returns the data for all workspaces.
+ *
+ *  @Author Brian Fisher
+ *
+ *  @function
+ *
+ *  @param {Function} callabck - function to callback after the async request completes
+ *
+ **************************************************************************************/
+
+ADMIN.getAllWorkspaces = function (callback) {
+  console.log("Getting All Workspaces");
+  
+  ADMIN.webRequest('/custAdmin/getAllZones', 'xsrfId=' + MktSecurity.getXsrfId(), 'POST', true, 'json', function (response) {
+    var result = JSON.parse(response);
+    
+    if (result.data
+       && result.data.length > 0) {
+      console.log("Retrieved All Workspaces");
+      
+      if (typeof(callback) === "function") {
+        callback(result);
+      }
+    }
+  });
+};
+
+/**************************************************************************************
+ *
+ *  This function creates a workspace with the given details.
+ *
+ *  @Author Brian Fisher
+ *
+ *  @function
+ *
+ *  @param {Object} workspace
+ *    {String} name - name of the workspace
+ *    {String} description - description of the workspace
+ *    {String} language - language of the workspace
+ *    {String} admLanguage - language code
+ *    {String} domain - default email branding domain
+ *    {String} partitionId - id of the partition
+ *    {String} partitionName - name of the partition
+ *  @param {Function} callabck - function to callback after the async request completes
+ *
+ **************************************************************************************/
+
+ADMIN.createWorkspace = function (workspace, callback) {
+  console.log("Creating Workspace: " + workspace.name);
+  
+  ADMIN.webRequest('/custAdmin/createZoneSubmit', 'ajaxHandler=MktSession&mktReqUid=' + new Date().getTime() + Ext.id(null, ':') + '&admLanguage=' + workspace.admLanguage + '&xsrfId=' + MktSecurity.getXsrfId() + '&zoneName=' + workspace.name + '&zoneDescription=' + workspace.description + '&prtnsArray=[' + workspace.partitionId + ']&primaryPrtn=' + workspace.partitionId + '&primaryPartition=' + workspace.partitionName + '&domain=' + workspace.domain + '&language=' + workspace.language, 'POST', true, 'json', function (response) {
+    var result = JSON.parse(response);
+    
+    if (result.HTMLResults
+       && result.HTMLResults.begin) {
+      console.log("Created Workspace: " + workspace.name);
+      
+      if (typeof(callback) === "function") {
+        callback();
+      }
+    }
+  });
+};
+
+/**************************************************************************************
+ *
+ *  This function returns the workspace primary partition id and default domain of 
+ *  the matching given workspace name.
+ *
+ *  @Author Brian Fisher
+ *
+ *  @function
+ *
+ *  @param {Object} workspaceMatch
+ *    {String} name - name of the workspace to match
+ *    {String} partitionName - name of the partition to match
+ *  @param {Function} callabck - function to callback after the async request completes
+ *
+ **************************************************************************************/
+
+ADMIN.getWorkspacePartition = function (workspaceMatch, callback) {
+  function getWorkspacePartition(result) {
+    console.log("Getting Workspace Partition: " + workspaceMatch.name);
+    
+    if (result.data) {
+      for (var ii = 0; ii < result.data.length; ii++) {
+        var workspace = result.data[ii];
+        
+        if (workspace.name == workspaceMatch.name) {
+          for (var jj = 0; jj < workspace.ptns.length; jj++) {
+            var partiton = workspace.ptns[jj];
+            
+            if (partiton.name == workspaceMatch.partitionName
+               && partiton.isPrimary) {
+              console.log("Retrieved Workspace/Partion: " + workspaceMatch.name + "/" + workspaceMatch.partitionName);
+              
+              if (typeof(callback) === "function") {
+                callback({
+                  id: partiton.id,
+                  name: partiton.name,
+                  domain: workspace.defaultDomain
+                });
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  ADMIN.getAllWorkspaces(getWorkspacePartition);
+};
+
+/**************************************************************************************
+ *
+ *  This function creates a workspace with the given details.
+ *
+ *  @Author Brian Fisher
+ *
+ *  @function
+ *
+ *  @param {Object} workspace
+ *    {String} name - name of the workspace
+ *    {String} language - language of the workspace
+ *  @param {Function} callabck - function to callback after the async request completes
+ *
+ **************************************************************************************/
+
+ADMIN.createUserWorkspace = function (workspace, callback) {
+  var description = "User Workspace",
+  workspaceMatch = {},
+  admLanguage,
+  language;
+  
+  switch (workspace.language) {
+  case "English":
+    workspaceMatch.name = workspaceMatch.partitionName = "English";
+    admLanguage = "en_US";
+    language = "English";
+    break;
+  
+  case "日本語（日本）":
+  case "日本語":
+    workspaceMatch.name = workspaceMatch.partitionName = "Japanese";
+    admLanguage = "ja";
+    language = "日本語";
+    break;
+  
+  default:
+    workspaceMatch.name = workspaceMatch.partitionName = "English";
+    admLanguage = "en_US";
+    language = "English";
+    break;
+  }
+  
+  function createUserWorkspace(partition) {
+    ADMIN.createWorkspace({
+      name: workspace.name,
+      description: description,
+      language: language,
+      admLanguage: admLanguage,
+      domain: partition.domain,
+      partitionId: partition.id,
+      partitionName: partition.name
+    });
+  }
+  
+  ADMIN.getWorkspacePartition(workspaceMatch, createUserWorkspace);
+};
+
+/**************************************************************************************
+ *
+ *  This function creates a workspace for all users who don't have one.
+ *
+ *  @Author Brian Fisher
+ *
+ *  @function
+ *
+ *  @param {Object} roleMatch
+ *    {String} userWorkspace - role name to match for exisiting user workspace
+ *    {String} protectedWorkspace - role name to match for existing protected workspace
+ *  @param {Function} callabck - function to callback after the async request completes
+ *
+ **************************************************************************************/
+
+ADMIN.createUserWorkspaceForAll = function (roleMatch) {
+  function createUserWorkspaceForAll(users) {
+    for (var ii = 0; ii < users.data.length; ii++) {
+      var user = users.data[ii],
+      name = user.name.split(/\[[^\]]+\]/).trim(),
+      language = user.language,
+      userWorkspaceExists = protectedWorkspaceExists = false;
+      
+      for (var jj = 0; jj < user.roles.length; jj++) {
+        var role = user.roles[jj];
+        
+        if (role.name == roleMatch.userWorkspace) {
+          for (var kk = 0; kk < role.zones.length; kk++) {
+            var zone = role.zones[kk];
+            
+            if (zone.name == name) {
+              userWorkspaceExists = true;
+              break;
+            }
+          }
+          
+          if (userWorkspaceExists) {
+            break;
+          }
+        } else if (role.name == roleMatch.protectedWorkspace) {
+          protectedWorkspaceExists = true;
+        }
+      }
+      
+      if (userWorkspaceExists) {
+        console.log("User Workspace Exists: " + name);
+        break;
+      } else if (protectedWorkspaceExists) {
+        ADMIN.createUserWorkspace({
+          name: name,
+          language: language
+        });
+      } else {
+        console.log("User is Abnormal: " + name);
+      }
+    }
+  }
+  
+  ADMIN.getAllUsers(createUserWorkspaceForAll);
+};
+
+/**************************************************************************************
+ *
  *  This function returns the appropriate user roles for the given language and
  *  instance.
  *
@@ -210,7 +471,7 @@ ADMIN.getUserRoles = function (language) {
  *  @function
  *
  *  @param {Object} user - the user's information
- *          (required) email, userId, firstName, lastName, role
+ *          (required) email, userId, firstName, lastName, role, language
  *          (optional) directInvite - boolean, if true sends invite directly to user
  *
  **************************************************************************************/
@@ -230,6 +491,28 @@ ADMIN.inviteUser = function (user) {
   console.log("Inviting User: " + email + ", " + userId + ", " + firstName + ", " + lastName + ' [' + role + ']');
   ADMIN.webRequest('/custAdmin/inviteUserSubmit', 'ajaxHandler=MktSession&mktReqUid=' + new Date().getTime() + Ext.id(null, ':') + '&cadEmail=' + email + '&cadUserId=' + userId + '&cadFirstName=' + firstName + '&cadLastName=' + lastName + ' [' + role + ']' + '&cadApiOnly=false' + '&cadRole=' + roles + '&cadMessage=' + message + '&xsrfId=' + MktSecurity.getXsrfId(), 'POST', true, 'json', function (response) {
     console.log("Invited User");
+  });
+};
+
+/**************************************************************************************
+ *
+ *  This function invites a user and creates a user workspace.
+ *
+ *  @Author Brian Fisher
+ *
+ *  @function
+ *
+ *  @param {Object} user - the user's information
+ *          (required) email, userId, firstName, lastName, role, language
+ *          (optional) directInvite - boolean, if true sends invite directly to user
+ *
+ **************************************************************************************/
+
+ADMIN.inviteUserWorkspace = function (user) {
+  ADMIN.inviteUser(user);
+  ADMIN.createUserWorkspace({
+    name: user.firstName + " " + user.lastName,
+    language: user.language
   });
 };
 
