@@ -7786,6 +7786,7 @@ APP.disableFormSaveButtons = function () {
          || this.getXType() == "adminScoreSettingsForm" //Admin > ABM > Account Score Settings
          || this.getXType() == "adminCrmFieldSettingsForm" //Admin > ABM > CRM Mapping
          || this.getXType() == "adminAccountTeamForm" //Admin > ABM > Account Team Settings
+         || this.getXType() == "adminAccountInsightSettingsForm" //Admin > ABM > ABM Sales > Account Insight Settings
          || this.getXType() == "adminAbmReportSettingsForm" //Admin > ABM > Weekly Report
          || this.getXType() == "adminFieldHtmlEncodeForm" //Admin > Field Management > Field Management > HTML Encode Settings
          || this.getXType() == "mktocustomactivityActivityTypeForm" //Admin > Marketo Custom Activities > Marketo Custom Activities > New Custom Activity
