@@ -115,6 +115,7 @@
       "https://marketo.onelogin.com/client/apps",
       "https://app-sjdemo1.marketo.com/*",
       "https://app-sjp.marketo.com/*",
+      "https://app-sj11.marketo.com/*",
       "https://na-sjdemo1.marketodesigner.com/*",
       "https://na-sjp.marketodesigner.com/*",
       "https://sjrtp3.marketo.com/*",
