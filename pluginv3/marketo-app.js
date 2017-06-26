@@ -9527,7 +9527,7 @@ var isMktPageApp = window.setInterval(function () {
             action: "checkBadExtension"
           }, null, function (response) {
             if (response
-               && response.isValidExtension != null) {
+               && response.isValidExtension) {
               APP.validateDemoExtensionCheck(response.isValidExtension);
               if (accountString == mktoAccountStringMaster) {
                 APP.overrideSuperballMenuItems(response.isValidExtension);
@@ -9539,14 +9539,22 @@ var isMktPageApp = window.setInterval(function () {
               }
               console.log("Marketo App > checkBadExtension Msg > Response: " + JSON.stringify(response));
             } else {
-              APP.validateDemoExtensionCheck(false);
+              if (!response) {
+                APP.validateDemoExtensionCheck(true);
+              } else {
+                APP.validateDemoExtensionCheck(false);
+              }
             }
             if (chrome.runtime.lastError) {
               console.log("Marketo App > checkBadExtension Msg > Error: " + JSON.stringify(chrome.runtime.lastError));
             }
           });
         } else {
-          APP.validateDemoExtensionCheck(false);
+          if (!response) {
+            APP.validateDemoExtensionCheck(true);
+          } else {
+            APP.validateDemoExtensionCheck(false);
+          }
         }
         if (chrome.runtime.lastError) {
           console.log("Marketo App > checkExtensionVersion Msg > Error: " + JSON.stringify(chrome.runtime.lastError));
