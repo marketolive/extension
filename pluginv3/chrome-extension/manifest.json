@@ -115,6 +115,7 @@
       "https://marketo.onelogin.com/client/apps",
       "https://app-sjdemo1.marketo.com/*",
       "https://app-sjp.marketo.com/*",
+      "https://app-sj11.marketo.com/*",
       "https://na-sjdemo1.marketodesigner.com/*",
       "https://na-sjp.marketodesigner.com/*",
       "https://sjrtp3.marketo.com/*",
@@ -167,6 +168,6 @@
   "update_url": "https://clients2.google.com/service/update2/crx",
   "author": "Marketo Demo Services",
   "name": "MarketoLive",
-  "description": "",
-  "version": "5.1.2"
+  "description": "This extension is for Marketo employees and partners who have access to the MarketoLive demo environment.",
+  "version": "5.1.3"
 }

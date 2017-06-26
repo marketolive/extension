@@ -438,9 +438,9 @@ ADMIN.getUserRoles = function (language) {
   switch (MktPage.savedState.custPrefix) {
   case mktoAccountStringMaster:
     if (language == "日本語（日本）") {
-      roles = '[{"id":1,"allzones":false,"zones":[]},{"id":1003,"allzones":true,"zones":[]},{"id":101,"allzones":false,"zones":[]},{"id":1001,"allzones":false,"zones":[]},{"id":102,"allzones":false,"zones":[]},{"id":1002,"allzones":true,"zones":[]},{"id":25,"allzones":false,"zones":[]},{"id":24,"allzones":false,"zones":[]},{"id":2,"allzones":false,"zones":[]},{"id":103,"allzones":false,"zones":[]}]';
+      roles = '[{"id":1002,"allzones":false,"zones":[{"id":3}]}]';
     } else {
-      roles = '[{"id":1,"allzones":false,"zones":[]},{"id":1003,"allzones":true,"zones":[]},{"id":101,"allzones":false,"zones":[]},{"id":1001,"allzones":false,"zones":[]},{"id":102,"allzones":false,"zones":[]},{"id":1002,"allzones":false,"zones":[{"id":1}]},{"id":25,"allzones":false,"zones":[]},{"id":24,"allzones":false,"zones":[]},{"id":2,"allzones":false,"zones":[]},{"id":103,"allzones":false,"zones":[]}]';
+      roles = '[{"id":1002,"allzones":false,"zones":[{"id":1}]}]';
     }
     break;
   case mktoAccountString106:
@@ -625,8 +625,8 @@ ADMIN.inviteUsers = function (users) {
  *
  *  @function
  *
- *  @param [Array of {Object}] users - the users' information
- *          (required) email, userId, firstName, lastName, role
+ *  @param {Object} users - the users' information
+ *    (required) email, userId, firstName, lastName, role
  *
  **************************************************************************************/
 
