@@ -8545,6 +8545,39 @@ APP.disableRequests = function () {
 
 /**************************************************************************************
  *
+ *  This function sets the Program Status to off for Nurture Programs
+ *
+ *  @Author Brian Fisher
+ *
+ *  @function
+ *
+ **************************************************************************************/
+
+APP.disableNurturePrograms = function () {
+  console.log("Marketo App > Disabling: Nurture Programs");
+  
+  if (typeof(MktCanvas) !== "undefined"
+     && MktCanvas
+     && MktCanvas.getActiveTab
+     && MktCanvas.getActiveTab()
+     && MktCanvas.getActiveTab().config
+     && MktCanvas.getActiveTab().config.accessZoneId.toString().search(mktoGoldenWorkspacesMatch) == -1
+     && MktCanvas.getActiveTab().config.compId) {
+    var compId = MktCanvas.getActiveTab().config.compId;
+    console.log("Marketo App > Executing: Disabling Nurture Program");
+    
+    APP.webRequest('/marketingEvent/setProgramStatusSubmit', 'ajaxHandler=MktSession&mktReqUid=' + new Date().getTime() + Ext.id(null, ':') + '&compId=' + compId + '&_json=' + '{"programId":' + compId + ',"statusValue":"off"}' + '&xsrfId=' + MktSecurity.getXsrfId(), 'POST', true, 'json', function (response) {
+      var result = JSON.parse(response);
+      
+      if (result.JSONResults.appvars.result == "Success") {
+        console.log("Marketo App > Success: Disabled Nurture Program: " + result.JSONResults.actions[0].parameters[0][0].text);
+      }
+    });
+  }
+};
+
+/**************************************************************************************
+ *
  *  This function opens the Send via Ad Bridge modal window
  *
  *  @Author Brian Fisher
@@ -9620,6 +9653,8 @@ var isMktPageApp = window.setInterval(function () {
           APP.disableButtons();
         } else if (currUrlFragment.search(mktoAnalyticsHomeFragment) != -1) {
           APP.overrideAnalyticsTiles();
+        } else if (currUrlFragment.search("^" + APP.getAssetCompCode("Nurture Program") + "[0-9]+A1$") != -1) {
+          APP.disableNurturePrograms();
         } else if (currUrlFragment == mktoAdBridgeSmartListFragment) {
           console.log("Marketo App > Location: Ad Bridge Smart List");
           
@@ -10004,6 +10039,8 @@ var isMktPageApp = window.setInterval(function () {
                   APP.disableButtons();
                 } else if (currUrlFragment.search(mktoAnalyticsHomeFragment) != -1) {
                   APP.overrideAnalyticsTiles();
+                } else if (currUrlFragment.search("^" + APP.getAssetCompCode("Nurture Program") + "[0-9]+A1$") != -1) {
+                  APP.disableNurturePrograms();
                 } else if (currUrlFragment == mktoAdminSalesforceFragment) {
                   console.log("Marketo App > Location: Admin > Salesforce");
                   
