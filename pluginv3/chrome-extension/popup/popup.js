@@ -114,35 +114,42 @@ POPUP.addLinkClickListeners = function (links) {
  *  @param {Object} field - HTML input element
  *  @param {Integer} numOfTimes - number of times to flash the element's border
  *  @param {Integer} ms - time in milliseconds for delta time interval
+ *  @param {String} color - border-color (Optional - default is red)
  *
  **************************************************************************************/
 
-POPUP.flashBorder = function (field, numOfTimes, ms) {
+POPUP.flashBorder = function (field, numOfTimes, ms, color) {
   var count = 1,
-  redBorder,
+  changeBorder,
   restoreBorder,
-  origBorderColor = field.style.getPropertyValue("border-color");
-  //origBorderColor = window.getComputedStyle(field).getPropertyValue("border-color");
+  origBorder = field.style.getPropertyValue("border");
+  //origBorderColor = window.getComputedStyle(field).getPropertyValue("border");
   
-  redBorder = function (field) {
+  if (!color) {
+    color = "red";
+  }
+  
+  field.style.setProperty("border", "2px solid " + color);
+  
+  changeBorder = function (field) {
     window.setTimeout(function () {
-      field.style.setProperty("border-color", "red");
+      field.style.setProperty("border", "2px solid " + color);
       restoreBorder(field);
     }, ms);
   };
   
   restoreBorder = function (field) {
     window.setTimeout(function () {
-      field.style.setProperty("border-color", origBorderColor);
+      field.style.setProperty("border", origBorder);
       
       if (count < numOfTimes) {
         count++;
-        redBorder(field);
+        changeBorder(field);
       }
     }, ms);
   };
   
-  redBorder(field);
+  restoreBorder(field);
 };
 
 /**************************************************************************************
@@ -379,22 +386,24 @@ window.onload = function () {
   };
   
   clearCache.onclick = function () {
+    var clearCacheText = document.getElementById("clear-cache-text");
+    
     chrome.browsingData.removeCache({
       since: 0
     }, function () {
-      var clearCacheText = document.getElementById("clear-cache-text");
       
       background.reloadTabs("*://*.marketo.com/*");
       background.reloadTabs("*://*.marketodesigner.com/*");
       background.reloadTabs("*://*.marketolive.com/*");
       background.reloadTabs("*://250ok.com/*");
       background.reloadTabs("*://marketo.invisionapp.com/*");
-      clearCacheText.innerText = "Cache Cleared";
-      setTimeout(function () {
-        window.close();
-        clearCacheText.innerText = "Clear Cache";
-      }, 1100);
     });
+    
+    clearCacheText.innerText = "Clearing Cache";
+    POPUP.flashBorder(this, 1, 1100, "#ff7139");
+    setTimeout(function () {
+      window.close();
+    }, 1100);
   };
   
   privilegesToggle.onclick = function () {
