@@ -7776,6 +7776,7 @@ APP.disableFormSaveButtons = function () {
          || this.getXType() == "adminUserInviteWizard" //Admin > User & Roles > Users > Invite New User
          || this.getXType() == "adminEditLicensesForm" //Admin > User & Roles > Users > Issue License
          || this.getXType() == "adminSalesUserInviteWizard" //Admin > User & Roles > Sales Users > Invite New Sales User
+         || this.getXType() == "adminEditLicensesForm" //Admin > User & Roles > Sales Users > Manage License > Account Insight
          || this.getXType() == "adminSubscriptionInformationForm" //Admin > My Account > Subcription Information
          || this.getXType() == "adminAccountSettingsForm" //Admin > My Account > Account Settings
         //|| this.getXType() == "localePicker" //Admin > My Account/Location > Location Settings
@@ -7838,6 +7839,8 @@ APP.disableFormSaveButtons = function () {
             
             if (me.getXType() == "emailAddMultipleDomainForm") {
               item.stayDisabled = true;
+            } else if (me.getXType() == "adminEditLicensesForm") {
+              item.setVisible(false);
             }
           }
         });
