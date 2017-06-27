@@ -19,7 +19,139 @@ mktoAccountStringMaster = "mktodemolivemaster",
 mktoAccountString106 = "mktodemoaccount106",
 mktoAccountString106d = "mktodemoaccount106d",
 
+adminAreasWorkspaceRole = {},
+protectedWorkspaceRole = {},
+userWorkspaceRole = {},
+defaultRolesEn = [],
+defaultRolesJp = [],
+
 ADMIN = ADMIN || {};
+
+/**************************************************************************************
+ *
+ *  This function sets the instance specific variables with the proper values based
+ *  upon the given accountString.
+ *
+ *  @Author Brian Fisher
+ *
+ *  @function
+ *
+ *  @param {String} accountString - Marketo instance
+ *
+ **************************************************************************************/
+
+ADMIN.setInstanceInfo = function (accountString) {
+  var protectedWorkspaceEn = {},
+  protectedWorkspaceJp = {};
+  
+  switch (accountString) {
+  case mktoAccountStringMaster:
+    adminAreasWorkspaceRole.id = 1003;
+    adminAreasWorkspaceRole.allzones = true;
+    
+    protectedWorkspaceRole.id = 1002;
+    protectedWorkspaceRole.allzones = false;
+    protectedWorkspaceEn.id = 1;
+    protectedWorkspaceJp.id = 3;
+    
+    userWorkspaceRole.id = 102;
+    userWorkspaceRole.allzones = false;
+    
+    defaultRolesEn = [{
+        "id": adminAreasWorkspaceRole.id,
+        "allzones": adminAreasWorkspaceRole.allzones,
+        "zones": []
+      }, {
+        "id": protectedWorkspaceRole.id,
+        "allzones": protectedWorkspaceRole.allzones,
+        "zones": [{
+            "id": protectedWorkspaceEn.id
+          }
+        ]
+      }
+    ];
+    
+    defaultRolesJp = [{
+        "id": adminAreasWorkspaceRole.id,
+        "allzones": adminAreasWorkspaceRole.allzones,
+        "zones": []
+      }, {
+        "id": protectedWorkspaceRole.id,
+        "allzones": protectedWorkspaceRole.allzones,
+        "zones": [{
+            "id": protectedWorkspaceEn.id
+          }, {
+            "id": protectedWorkspaceJp.id
+          }
+        ]
+      }
+    ];
+    break;
+  
+  case mktoAccountString106:
+    var protectedWorkspacesEn = [];
+    
+    adminAreasWorkspaceRole.id = 113;
+    adminAreasWorkspaceRole.allzones = true;
+    
+    protectedWorkspaceRole.id = 109;
+    protectedWorkspaceRole.allzones = false;
+    protectedWorkspacesEn = [1, 174, 175, 176, 184, 185, 186];
+    protectedWorkspaceJp.id = 3;
+    
+    userWorkspaceRole.id = 102;
+    userWorkspaceRole.allzones = false;
+    userWorkspace.id = 172;
+    
+    defaultRolesEn = [{
+        "id": adminAreasWorkspaceRole.id,
+        "allzones": adminAreasWorkspaceRole.allzones,
+        "zones": []
+      }, {
+        "id": protectedWorkspaceRole.id,
+        "allzones": protectedWorkspaceRole.allzones,
+        "zones": [{}
+        ]
+      }, {
+        "id": userWorkspaceRole.id,
+        "allzones": userWorkspaceRole.allzones,
+        "zones": [{
+            "id": userWorkspace.id
+          }
+        ]
+      }
+    ];
+    
+    defaultRolesJp = [{
+        "id": adminAreasWorkspaceRole.id,
+        "allzones": adminAreasWorkspaceRole.allzones,
+        "zones": []
+      }, {
+        "id": protectedWorkspaceRole.id,
+        "allzones": protectedWorkspaceRole.allzones,
+        "zones": [{}
+        ]
+      }, {
+        "id": userWorkspaceRole.id,
+        "allzones": userWorkspaceRole.allzones,
+        "zones": [{
+            "id": userWorkspace.id
+          }
+        ]
+      }
+    ];
+    
+    for (var ii = 0; ii < protectedWorkspacesEn.length; ii ++) {
+      defaultRolesEn[1].zones[ii].id = protectedWorkspacesEn[ii];
+      defaultRolesJp[1].zones[ii].id = protectedWorkspacesEn[ii];
+    }
+    defaultRolesJp[1].zones.push({"id": protectedWorkspaceJp.id});
+    break;
+  
+  case mktoAccountString106d:
+    break;
+  }
+};
 
 /**************************************************************************************
  *
@@ -188,6 +320,35 @@ ADMIN.getAllUsers = function (callback) {
 
 /**************************************************************************************
  *
+ *  This function returns the data for all roles.
+ *
+ *  @Author Brian Fisher
+ *
+ *  @function
+ *
+ *  @param {Function} callabck - function to callback after the async request completes
+ *
+ **************************************************************************************/
+
+ADMIN.getAllRoles = function (callback) {
+  console.log("Getting All Roles");
+  
+  ADMIN.webRequest('/custAdmin/getAllRoles', 'xsrfId=' + MktSecurity.getXsrfId(), 'POST', true, 'json', function (response) {
+    var result = JSON.parse(response);
+    
+    if (result.data
+       && result.data.length > 0) {
+      console.log("Retrieved All Roles");
+      
+      if (typeof(callback) === "function") {
+        callback(result);
+      }
+    }
+  });
+};
+
+/**************************************************************************************
+ *
  *  This function returns the data for all workspaces.
  *
  *  @Author Brian Fisher
@@ -344,15 +505,27 @@ ADMIN.createUserWorkspace = function (workspace, callback) {
   }
   
   function createUserWorkspace(partition) {
-    ADMIN.createWorkspace({
-      name: workspace.name,
-      description: description,
-      language: language,
-      admLanguage: admLanguage,
-      domain: partition.domain,
-      partitionId: partition.id,
-      partitionName: partition.name
-    });
+    if (typeof(callback) === "function") {
+      ADMIN.createWorkspace({
+        name: workspace.name,
+        description: description,
+        language: language,
+        admLanguage: admLanguage,
+        domain: partition.domain,
+        partitionId: partition.id,
+        partitionName: partition.name
+      }, callback);
+    } else {
+      ADMIN.createWorkspace({
+        name: workspace.name,
+        description: description,
+        language: language,
+        admLanguage: admLanguage,
+        domain: partition.domain,
+        partitionId: partition.id,
+        partitionName: partition.name
+      });
+    }
   }
   
   ADMIN.getWorkspacePartition(workspaceMatch, createUserWorkspace);
@@ -428,38 +601,82 @@ ADMIN.createUserWorkspaceForAll = function (roleMatch) {
  *
  *  @function
  *
- *  @param {String} language - the languge of the user, English or 日本語（日本）
+ *  @param {Object} userWorkspace
+ *    {String} name - name of the user's workspace
+ *    {String} language - the languge of the user, English or 日本語（日本）
+ *  @param {Object} workspaces - array of all workspaces (Optional)
  *
  **************************************************************************************/
 
-ADMIN.getUserRoles = function (language) {
+ADMIN.getUserRoles = function (userWorkspace, workspaces) {
   var roles;
   
-  switch (MktPage.savedState.custPrefix) {
-  case mktoAccountStringMaster:
-    if (language == "日本語（日本）") {
-      roles = '[{"id":1002,"allzones":false,"zones":[{"id":3}]}]';
-    } else {
-      roles = '[{"id":1002,"allzones":false,"zones":[{"id":1}]}]';
+  if (accountString == mktoAccountStringMaster) {
+    for (var ii = 0; ii < workspaces.data.length; ii++) {
+      var workspace = workspaces.data[ii];
+      
+      if (workspace.name == userWorkspace.name) {
+        userWorkspace.id = workspace.id;
+        break;
+      }
     }
-    break;
-  case mktoAccountString106:
-    if (language == "日本語（日本）") {
-      roles = '[{"id":1,"allzones":false,"zones":[]},{"id":113,"allzones":true,"zones":[{"id":"43"},{"id":"145"},{"id":"188"},{"id":"170"},{"id":"166"},{"id":"181"},{"id":"39"},{"id":"100"},{"id":"25"},{"id":"1"},{"id":"2"},{"id":"187"},{"id":"174"},{"id":"51"},{"id":"59"},{"id":"175"},{"id":"176"},{"id":"179"},{"id":"177"},{"id":"178"},{"id":"155"},{"id":"183"},{"id":"101"},{"id":"184"},{"id":"172"},{"id":"169"},{"id":"15"},{"id":"14"},{"id":"189"},{"id":"104"},{"id":"136"},{"id":"153"},{"id":"185"},{"id":"134"},{"id":"186"},{"id":"95"},{"id":"18"},{"id":"173"}]},{"id":104,"allzones":false,"zones":[]},{"id":107,"allzones":false,"zones":[]},{"id":102,"allzones":false,"zones":[{"id":"172"}]},{"id":109,"allzones":false,"zones":[{"id":"1"},{"id":"174"},{"id":"175"},{"id":"176"},{"id":"184"},{"id":"185"},{"id":"186"},{"id":"173"}]},{"id":105,"allzones":false,"zones":[]},{"id":25,"allzones":false,"zones":[]},{"id":24,"allzones":false,"zones":[]},{"id":2,"allzones":false,"zones":[]}]';
-    } else {
-      roles = '[{"id":1,"allzones":false,"zones":[]},{"id":113,"allzones":true,"zones":[{"id":"43"},{"id":"145"},{"id":"188"},{"id":"170"},{"id":"166"},{"id":"181"},{"id":"39"},{"id":"100"},{"id":"25"},{"id":"1"},{"id":"2"},{"id":"187"},{"id":"174"},{"id":"51"},{"id":"59"},{"id":"175"},{"id":"176"},{"id":"179"},{"id":"177"},{"id":"178"},{"id":"155"},{"id":"183"},{"id":"101"},{"id":"184"},{"id":"172"},{"id":"169"},{"id":"15"},{"id":"14"},{"id":"189"},{"id":"104"},{"id":"136"},{"id":"153"},{"id":"185"},{"id":"134"},{"id":"186"},{"id":"95"},{"id":"18"},{"id":"173"}]},{"id":104,"allzones":false,"zones":[]},{"id":107,"allzones":false,"zones":[]},{"id":102,"allzones":false,"zones":[{"id":"172"}]},{"id":109,"allzones":false,"zones":[{"id":"1"},{"id":"174"},{"id":"175"},{"id":"176"},{"id":"184"},{"id":"185"},{"id":"186"}]},{"id":105,"allzones":false,"zones":[]},{"id":25,"allzones":false,"zones":[]},{"id":24,"allzones":false,"zones":[]},{"id":2,"allzones":false,"zones":[]}]';
+    
+    switch (userWorkspace.language) {
+    case "English":
+      roles = JSON.parse(JSON.stringify(defaultRolesEn));
+      roles.push({
+        "id": userWorkspaceRole.id,
+        "allzones": userWorkspaceRole.allzones,
+        "zones": [{
+            "id": userWorkspace.id
+          }
+        ]
+      });
+      break;
+      
+    case "Japanese":
+    case "日本語（日本）":
+      roles = JSON.parse(JSON.stringify(defaultRolesJp));
+      roles.push({
+        "id": userWorkspaceRole.id,
+        "allzones": userWorkspaceRole.allzones,
+        "zones": [{
+            "id": userWorkspace.id
+          }
+        ]
+      });
+      break;
+      
+    default:
+      roles = JSON.parse(JSON.stringify(defaultRolesEn));
+      roles.push({
+        "id": userWorkspaceRole.id,
+        "allzones": userWorkspaceRole.allzones,
+        "zones": [{
+            "id": userWorkspace.id
+          }
+        ]
+      });
+      break;
     }
-    break;
-  case mktoAccountString106d:
-    if (language == "日本語（日本）") {
-      roles = '[{"id":1,"allzones":false,"zones":[]},{"id":101,"allzones":false,"zones":[]},{"id":105,"allzones":false,"zones":[]},{"id":107,"allzones":false,"zones":[]},{"id":102,"allzones":false,"zones":[{"id":183}]},{"id":106,"allzones":false,"zones":[]},{"id":104,"allzones":false,"zones":[{"id":1},{"id":174},{"id":175},{"id":176},{"id":200},{"id":173}]},{"id":25,"allzones":false,"zones":[]},{"id":24,"allzones":false,"zones":[]},{"id":2,"allzones":false,"zones":[]},{"id":103,"allzones":false,"zones":[]}]';
-    } else {
-      roles = '[{"id":1,"allzones":false,"zones":[]},{"id":101,"allzones":false,"zones":[]},{"id":105,"allzones":false,"zones":[]},{"id":107,"allzones":false,"zones":[]},{"id":102,"allzones":false,"zones":[{"id":183}]},{"id":106,"allzones":false,"zones":[]},{"id":104,"allzones":false,"zones":[{"id":1},{"id":174},{"id":175},{"id":176},{"id":200}]},{"id":25,"allzones":false,"zones":[]},{"id":24,"allzones":false,"zones":[]},{"id":2,"allzones":false,"zones":[]},{"id":103,"allzones":false,"zones":[]}]';
+  } else {
+    switch (userWorkspace.language) {
+    case "English":
+      roles = JSON.parse(JSON.stringify(defaultRolesEn));
+      break;
+      
+    case "Japanese":
+    case "日本語（日本）":
+      roles = JSON.parse(JSON.stringify(defaultRolesJp));
+      break;
+      
+    default:
+      roles = JSON.parse(JSON.stringify(defaultRolesEn));
+      break;
     }
-    break;
   }
   
-  return roles;
+  return JSON.stringify(roles);
 };
 
 /**************************************************************************************
@@ -478,42 +695,37 @@ ADMIN.getUserRoles = function (language) {
 
 ADMIN.inviteUser = function (user) {
   var userId = user.userId.replace(/\+/, "%2B"),
-  firstName = user.firstName,
-  lastName = user.lastName,
   email = user.email.replace(/\+/, "%2B"),
-  role = user.role,
   message = '{{FirstName}} {{LastName}},<br><br>Welcome to Marketo!, Click this link to set your password and begin.<br><br>{{LoginToMarketoLink}}<br><br>Not sure where to start? Visit <a href="https://docs.marketo.com/display/DOCS/Getting+Started" target="_blank">Getting Started with Marketo page</a> for tutorials and other resources. You are already set up - dive right into Step 2!<br><br>Happy Marketing!',
-  roles = ADMIN.getUserRoles(user.language);
+  userWorkspace = {
+    "name": user.firstName + " " + user.lastName,
+    "language": user.language
+  },
+  roles;
   
   if (!user.directInvite) {
     email = "marketodemo%2B" + userId.split("@")[0] + "@gmail.com";
   }
-  console.log("Inviting User: " + email + ", " + userId + ", " + firstName + ", " + lastName + ' [' + role + ']');
-  ADMIN.webRequest('/custAdmin/inviteUserSubmit', 'ajaxHandler=MktSession&mktReqUid=' + new Date().getTime() + Ext.id(null, ':') + '&cadEmail=' + email + '&cadUserId=' + userId + '&cadFirstName=' + firstName + '&cadLastName=' + lastName + ' [' + role + ']' + '&cadApiOnly=false' + '&cadRole=' + roles + '&cadMessage=' + message + '&xsrfId=' + MktSecurity.getXsrfId(), 'POST', true, 'json', function (response) {
-    console.log("Invited User");
-  });
-};
-
-/**************************************************************************************
- *
- *  This function invites a user and creates a user workspace.
- *
- *  @Author Brian Fisher
- *
- *  @function
- *
- *  @param {Object} user - the user's information
- *          (required) email, userId, firstName, lastName, role, language
- *          (optional) directInvite - boolean, if true sends invite directly to user
- *
- **************************************************************************************/
-
-ADMIN.inviteUserWorkspace = function (user) {
-  ADMIN.inviteUser(user);
-  ADMIN.createUserWorkspace({
-    name: user.firstName + " " + user.lastName,
-    language: user.language
-  });
+  
+  function getUserWorkspaceId(workspaces) {
+    roles = ADMIN.getUserRoles(userWorkspace, workspaces);
+    console.log("Inviting User: " + email + ", " + userId + ", " + user.firstName + ", " + user.lastName + ' [' + user.role + ']');
+    
+    ADMIN.webRequest('/custAdmin/inviteUserSubmit', 'ajaxHandler=MktSession&mktReqUid=' + new Date().getTime() + Ext.id(null, ':') + '&cadEmail=' + email + '&cadUserId=' + userId + '&cadFirstName=' + user.firstName + '&cadLastName=' + user.lastName + ' [' + user.role + ']' + '&cadApiOnly=false' + '&cadRole=' + roles + '&cadMessage=' + message + '&xsrfId=' + MktSecurity.getXsrfId(), 'POST', true, 'json', function (response) {
+      console.log("Invited User");
+    });
+  }
+  
+  if (accountString == mktoAccountStringMaster) {
+    ADMIN.createUserWorkspace(userWorkspace, ADMIN.getAllWorkspaces(getUserWorkspaceId));
+  } else {
+    roles = ADMIN.getUserRoles(userWorkspace);
+    console.log("Inviting User: " + email + ", " + userId + ", " + user.firstName + ", " + user.lastName + ' [' + user.role + ']');
+    
+    ADMIN.webRequest('/custAdmin/inviteUserSubmit', 'ajaxHandler=MktSession&mktReqUid=' + new Date().getTime() + Ext.id(null, ':') + '&cadEmail=' + email + '&cadUserId=' + userId + '&cadFirstName=' + user.firstName + '&cadLastName=' + user.lastName + ' [' + user.role + ']' + '&cadApiOnly=false' + '&cadRole=' + roles + '&cadMessage=' + message + '&xsrfId=' + MktSecurity.getXsrfId(), 'POST', true, 'json', function (response) {
+      console.log("Invited User");
+    });
+  }
 };
 
 /**************************************************************************************
@@ -637,12 +849,31 @@ ADMIN.editUser = function (user) {
   role = user.role,
   newEmail = user.email.replace(/\+/, "%2B"),
   id = user.id,
-  roles = ADMIN.getUserRoles(user.language);
+  userWorkspace = {
+    "name": user.firstName + " " + user.lastName,
+    "language": user.language
+  },
+  roles;
   
-  console.log("Editing User: " + userId + ", " + firstName + ", " + lastName + ", " + newEmail);
-  ADMIN.webRequest('/custAdmin/editUserSubmit', 'ajaxHandler=MktSession&mktReqUid=' + new Date().getTime() + Ext.id(null, ':') + '&cadUserId=' + userId + '&cadFirstName=' + firstName + '&cadLastName=' + lastName + ' [' + role + ']' + '&cadEmail=' + newEmail + '&cadRole=' + roles + '&cadId=' + id + '&cadApiOnly=false&cadIsDeviceAuthEnabled=0' + '&xsrfId=' + MktSecurity.getXsrfId(), 'POST', true, 'json', function (response) {
-    console.log("Edited User");
-  });
+  function getUserWorkspaceId(workspaces) {
+    roles = ADMIN.getUserRoles(userWorkspace, workspaces);
+    console.log("Editing User: " + userId + ", " + firstName + ", " + lastName + ", " + newEmail);
+    
+    ADMIN.webRequest('/custAdmin/editUserSubmit', 'ajaxHandler=MktSession&mktReqUid=' + new Date().getTime() + Ext.id(null, ':') + '&cadUserId=' + userId + '&cadFirstName=' + firstName + '&cadLastName=' + lastName + ' [' + role + ']' + '&cadEmail=' + newEmail + '&cadRole=' + roles + '&cadId=' + id + '&cadApiOnly=false&cadIsDeviceAuthEnabled=0' + '&xsrfId=' + MktSecurity.getXsrfId(), 'POST', true, 'json', function (response) {
+      console.log("Edited User");
+    });
+  }
+  
+  if (accountString == mktoAccountStringMaster) {
+    ADMIN.getAllWorkspaces(getUserWorkspaceId);
+  } else {
+    roles = ADMIN.getUserRoles(userWorkspace);
+    console.log("Editing User: " + userId + ", " + firstName + ", " + lastName + ", " + newEmail);
+    
+    ADMIN.webRequest('/custAdmin/editUserSubmit', 'ajaxHandler=MktSession&mktReqUid=' + new Date().getTime() + Ext.id(null, ':') + '&cadUserId=' + userId + '&cadFirstName=' + firstName + '&cadLastName=' + lastName + ' [' + role + ']' + '&cadEmail=' + newEmail + '&cadRole=' + roles + '&cadId=' + id + '&cadApiOnly=false&cadIsDeviceAuthEnabled=0' + '&xsrfId=' + MktSecurity.getXsrfId(), 'POST', true, 'json', function (response) {
+      console.log("Edited User");
+    });
+  }
 };
 
 /**************************************************************************************
@@ -1881,7 +2112,8 @@ ADMIN.applyMassClone = function (forceReload) {
  **************************************************************************************/
 
 var toggleState = ADMIN.getCookie("toggleState"),
-origMenuShowAtFunc;
+origMenuShowAtFunc,
+accountString;
 
 ADMIN.validateDemoExtensionCheck(true);
 
@@ -1893,3 +2125,18 @@ if (toggleState == "false") {
 } else {
   ADMIN.applyMassClone();
 }
+
+var isMktPageAppAdmin = window.setInterval(function () {
+    if (typeof(MktPage) !== "undefined"
+       && MktPage
+       && MktPage.savedState
+       && MktPage.savedState.custPrefix
+       && MktPage.savedState.custPrefix != "") {
+      console.log("Marketo App Admin > Location: Marketo Page");
+      
+      window.clearInterval(isMktPageAppAdmin);
+      
+      accountString = MktPage.savedState.custPrefix;
+      ADMIN.setInstanceInfo(accountString);
+    }
+}, 0);
