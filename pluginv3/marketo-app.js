@@ -168,6 +168,8 @@ currCompFragment,
 userName,
 accountString,
 origMenuShowAtFunc,
+origAjaxRequestFunc,
+origAssetSaveEdit,
 origExplorerPanelAddNode,
 origExplorerPanelRemoveNodes,
 origExplorerPanelUpdateNodeText,
@@ -1991,6 +1993,10 @@ APP.overrideAssetSaveEdit = function () {
      && Mkt.widgets.CanvasHeader
      && Mkt.widgets.CanvasHeader.prototype
      && Mkt.widgets.CanvasHeader.prototype.saveEdit) {
+    if (typeof(origAssetSaveEdit) !== "function") {
+      origAssetSaveEdit = Mkt.widgets.CanvasHeader.prototype.saveEdit;
+    }
+    
     Mkt.widgets.CanvasHeader.prototype.saveEdit = function () {
       if (typeof(MktCanvas) !== "undefined"
          && MktCanvas
@@ -2001,7 +2007,7 @@ APP.overrideAssetSaveEdit = function () {
         console.log("Marketo App > Executing: Asset Save Edit");
         var currWorkspaceId = MktCanvas.getActiveTab().config.accessZoneId;
         
-        if (currWorkspaceId.toString().search(mktoGoldenWorkspacesMatch) == -1) {
+        if (currWorkspaceId.toString().search(mktoMyWorkspaceIdMatch) != -1) {
           var isFolderEdit = false;
           
           if ((MktExplorer.getEl().dom.ownerDocument.title.search("Marketing Activities") != -1
@@ -2010,8 +2016,7 @@ APP.overrideAssetSaveEdit = function () {
                  || this.titleId == "pname"))
              || MktExplorer.getEl().dom.ownerDocument.title.search("Marketing Activities") == -1) {
             
-            if (MktCanvas.getActiveTab().config.accessZoneId.toString().search(mktoMyWorkspaceIdMatch) != -1
-               && this.titleId == "pname") {
+            if (this.titleId == "pname") {
               if (this.titleValue == userName) {
                 isFolderEdit = true;
               }
@@ -2152,9 +2157,7 @@ APP.overrideAssetSaveEdit = function () {
               onMyError: this.saveError.createDelegate(this, [nodeId])
             });
           }
-        }
-        
-        if (currWorkspaceId.toString().search(mktoGoldenWorkspacesMatch) != -1) {
+        } else if (currWorkspaceId.toString().search(mktoGoldenWorkspacesMatch) != -1) {
           var toUpdateNodeText = false;
           
           MktSession.clockCursor(true);
@@ -2219,6 +2222,8 @@ APP.overrideAssetSaveEdit = function () {
           onMySuccess : this.saveResponse.createDelegate(this, [nodeId], true),
           onMyError : this.saveError.createDelegate(this, [nodeId])
           });*/
+        } else {
+          origAssetSaveEdit.apply(this, arguments);
         }
       }
     };
@@ -8506,7 +8511,9 @@ APP.disableRequests = function () {
   if (typeof(MktSession) !== "undefined"
      && MktSession
      && MktSession.ajaxRequest) {
-    var origFunc = MktSession.ajaxRequest;
+    if (typeof(origAjaxRequestFunc) !== "function") {
+      origAjaxRequestFunc = MktSession.ajaxRequest;
+    }
     MktSession.ajaxRequest = function (url, opts) {
       switch (url) {
       case "leadDatabase/updateLead":
@@ -8543,7 +8550,7 @@ APP.disableRequests = function () {
         console.log("Marketo App > Executing: Disable Specific Requests");
         return null;
       };
-      origFunc.apply(this, arguments);
+      origAjaxRequestFunc.apply(this, arguments);
     };
   }
 };
