@@ -89,7 +89,8 @@ ADMIN.setInstanceInfo = function (accountString) {
     break;
   
   case mktoAccountString106:
-    var protectedWorkspacesEn = [];
+    var protectedWorkspacesEn = [],
+    userWorkspace = {};
     
     adminAreasWorkspaceRole.id = 113;
     adminAreasWorkspaceRole.allzones = true;
@@ -110,8 +111,7 @@ ADMIN.setInstanceInfo = function (accountString) {
       }, {
         "id": protectedWorkspaceRole.id,
         "allzones": protectedWorkspaceRole.allzones,
-        "zones": [{}
-        ]
+        "zones": []
       }, {
         "id": userWorkspaceRole.id,
         "allzones": userWorkspaceRole.allzones,
@@ -129,8 +129,7 @@ ADMIN.setInstanceInfo = function (accountString) {
       }, {
         "id": protectedWorkspaceRole.id,
         "allzones": protectedWorkspaceRole.allzones,
-        "zones": [{}
-        ]
+        "zones": []
       }, {
         "id": userWorkspaceRole.id,
         "allzones": userWorkspaceRole.allzones,
@@ -141,9 +140,9 @@ ADMIN.setInstanceInfo = function (accountString) {
       }
     ];
     
-    for (var ii = 0; ii < protectedWorkspacesEn.length; ii ++) {
-      defaultRolesEn[1].zones[ii].id = protectedWorkspacesEn[ii];
-      defaultRolesJp[1].zones[ii].id = protectedWorkspacesEn[ii];
+    for (var ii = 0; ii < protectedWorkspacesEn.length; ii++) {
+      defaultRolesEn[1].zones.push({"id": protectedWorkspacesEn[ii]});
+      defaultRolesJp[1].zones.push({"id": protectedWorkspacesEn[ii]});
     }
     defaultRolesJp[1].zones.push({"id": protectedWorkspaceJp.id});
     break;
@@ -356,10 +355,11 @@ ADMIN.getAllRoles = function (callback) {
  *  @function
  *
  *  @param {Function} callabck - function to callback after the async request completes
+ *  @param {Object} args - arguments to pass through (Optional)
  *
  **************************************************************************************/
 
-ADMIN.getAllWorkspaces = function (callback) {
+ADMIN.getAllWorkspaces = function (callback, args) {
   console.log("Getting All Workspaces");
   
   ADMIN.webRequest('/custAdmin/getAllZones', 'xsrfId=' + MktSecurity.getXsrfId(), 'POST', true, 'json', function (response) {
@@ -370,7 +370,7 @@ ADMIN.getAllWorkspaces = function (callback) {
       console.log("Retrieved All Workspaces");
       
       if (typeof(callback) === "function") {
-        callback(result);
+        callback(result, args);
       }
     }
   });
@@ -393,10 +393,11 @@ ADMIN.getAllWorkspaces = function (callback) {
  *    {String} partitionId - id of the partition
  *    {String} partitionName - name of the partition
  *  @param {Function} callabck - function to callback after the async request completes
+ *  @param {Object} args - arguments to pass through (Optional)
  *
  **************************************************************************************/
 
-ADMIN.createWorkspace = function (workspace, callback) {
+ADMIN.createWorkspace = function (workspace, callback, args) {
   console.log("Creating Workspace: " + workspace.name);
   
   ADMIN.webRequest('/custAdmin/createZoneSubmit', 'ajaxHandler=MktSession&mktReqUid=' + new Date().getTime() + Ext.id(null, ':') + '&admLanguage=' + workspace.admLanguage + '&xsrfId=' + MktSecurity.getXsrfId() + '&zoneName=' + workspace.name + '&zoneDescription=' + workspace.description + '&prtnsArray=[' + workspace.partitionId + ']&primaryPrtn=' + workspace.partitionId + '&primaryPartition=' + workspace.partitionName + '&domain=' + workspace.domain + '&language=' + workspace.language, 'POST', true, 'json', function (response) {
@@ -407,7 +408,7 @@ ADMIN.createWorkspace = function (workspace, callback) {
       console.log("Created Workspace: " + workspace.name);
       
       if (typeof(callback) === "function") {
-        callback();
+        callback(args);
       }
     }
   });
@@ -473,11 +474,12 @@ ADMIN.getWorkspacePartition = function (workspaceMatch, callback) {
  *  @param {Object} workspace
  *    {String} name - name of the workspace
  *    {String} language - language of the workspace
- *  @param {Function} callabck - function to callback after the async request completes
+ *  @param {Function} callback - function to callback after the async request completes
+ *  @param {Object} args - arguments to pass through (Optional)
  *
  **************************************************************************************/
 
-ADMIN.createUserWorkspace = function (workspace, callback) {
+ADMIN.createUserWorkspace = function (workspace, callback, args) {
   var description = "User Workspace",
   workspaceMatch = {},
   admLanguage,
@@ -505,91 +507,18 @@ ADMIN.createUserWorkspace = function (workspace, callback) {
   }
   
   function createUserWorkspace(partition) {
-    if (typeof(callback) === "function") {
-      ADMIN.createWorkspace({
-        name: workspace.name,
-        description: description,
-        language: language,
-        admLanguage: admLanguage,
-        domain: partition.domain,
-        partitionId: partition.id,
-        partitionName: partition.name
-      }, callback);
-    } else {
-      ADMIN.createWorkspace({
-        name: workspace.name,
-        description: description,
-        language: language,
-        admLanguage: admLanguage,
-        domain: partition.domain,
-        partitionId: partition.id,
-        partitionName: partition.name
-      });
-    }
+    ADMIN.createWorkspace({
+      name: workspace.name,
+      description: description,
+      language: language,
+      admLanguage: admLanguage,
+      domain: partition.domain,
+      partitionId: partition.id,
+      partitionName: partition.name
+    }, callback, args);
   }
   
   ADMIN.getWorkspacePartition(workspaceMatch, createUserWorkspace);
-};
-
-/**************************************************************************************
- *
- *  This function creates a workspace for all users who don't have one.
- *
- *  @Author Brian Fisher
- *
- *  @function
- *
- *  @param {Object} roleMatch
- *    {String} userWorkspace - role name to match for exisiting user workspace
- *    {String} protectedWorkspace - role name to match for existing protected workspace
- *  @param {Function} callabck - function to callback after the async request completes
- *
- **************************************************************************************/
-
-ADMIN.createUserWorkspaceForAll = function (roleMatch) {
-  function createUserWorkspaceForAll(users) {
-    for (var ii = 0; ii < users.data.length; ii++) {
-      var user = users.data[ii],
-      name = user.name.split(/\[[^\]]+\]/).trim(),
-      language = user.language,
-      userWorkspaceExists = protectedWorkspaceExists = false;
-      
-      for (var jj = 0; jj < user.roles.length; jj++) {
-        var role = user.roles[jj];
-        
-        if (role.name == roleMatch.userWorkspace) {
-          for (var kk = 0; kk < role.zones.length; kk++) {
-            var zone = role.zones[kk];
-            
-            if (zone.name == name) {
-              userWorkspaceExists = true;
-              break;
-            }
-          }
-          
-          if (userWorkspaceExists) {
-            break;
-          }
-        } else if (role.name == roleMatch.protectedWorkspace) {
-          protectedWorkspaceExists = true;
-        }
-      }
-      
-      if (userWorkspaceExists) {
-        console.log("User Workspace Exists: " + name);
-        break;
-      } else if (protectedWorkspaceExists) {
-        ADMIN.createUserWorkspace({
-          name: name,
-          language: language
-        });
-      } else {
-        console.log("User is Abnormal: " + name);
-      }
-    }
-  }
-  
-  ADMIN.getAllUsers(createUserWorkspaceForAll);
 };
 
 /**************************************************************************************
@@ -678,6 +607,79 @@ ADMIN.getUserRoles = function (userWorkspace, workspaces) {
   
   return JSON.stringify(roles);
 };
+
+/**************************************************************************************
+ *
+ *  This function creates a workspace for all users who don't have one.
+ *
+ *  @Author Brian Fisher
+ *
+ *  @function
+ *
+ *  @param {Object} roleMatch
+ *    {String} userWorkspace - role name to match for exisiting user workspace
+ *    {String} protectedWorkspace - role name to match for existing protected workspace
+ *  @param {Function} callabck - function to callback after the async request completes
+ *
+ **************************************************************************************/
+/*
+ADMIN.createUserWorkspaceForAll = function (roleMatch) {
+  function createUserWorkspaceForAll(users) {
+    for (var ii = 0; ii < users.data.length; ii++) {
+      var user = users.data[ii],
+      name = user.name.split(/\[[^\]]+\]/)[0].trim(),
+      userWorkspaceExists = protectedWorkspaceExists = false,
+      userToEdit = {},
+      userWorkspace = {};
+      
+      for (var jj = 0; jj < user.roles.length; jj++) {
+        var role = user.roles[jj];
+        
+        if (role.name == roleMatch.userWorkspace) {
+          for (var kk = 0; kk < role.zones.length; kk++) {
+            var zone = role.zones[kk];
+            
+            if (zone.name == name) {
+              userWorkspaceExists = true;
+              break;
+            }
+          }
+          
+          if (userWorkspaceExists) {
+            break;
+          }
+        } else if (role.name == roleMatch.protectedWorkspace) {
+          protectedWorkspaceExists = true;
+        }
+      }
+      
+      if (userWorkspaceExists) {
+        console.log("User Workspace Exists: " + name);
+        break;
+      } else if (protectedWorkspaceExists) {
+        userToEdit = {
+          "email": user.email,
+          "userId": user.userid,
+          "firstName": name.trim().split(" ")[0],
+          "lastName": name.substring(name.trim().split(" ")[0].length + 1),
+          "role": user.name.replace(/[^\[]+\[(.+)\][^\]]*$/, "$1"),
+          "id": user.id
+        };
+        userWorkspace = {
+          "name": name,
+          "language": user.language
+        };
+        
+        ADMIN.createUserWorkspace(userWorkspace, ADMIN.editUser(userToEdit));
+      } else {
+        console.log("User is Abnormal: " + name);
+      }
+    }
+  }
+  
+  ADMIN.getAllUsers(createUserWorkspaceForAll);
+};
+*/
 
 /**************************************************************************************
  *
@@ -838,7 +840,7 @@ ADMIN.inviteUsers = function (users) {
  *  @function
  *
  *  @param {Object} users - the users' information
- *    (required) email, userId, firstName, lastName, role
+ *    (required) email, userId, firstName, lastName, role, id
  *
  **************************************************************************************/
 
