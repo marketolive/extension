@@ -447,12 +447,23 @@ function createBasicNotification(notification, extensionId) {
             url: url
           });
           break;
+        
         case "enable":
           chrome.management.setEnabled(extensionId, true);
           chrome.notifications.clear(notificationId);
           break;
+        
         case "uninstall":
           chrome.management.uninstall(extensionId);
+          break;
+        
+        case "mktoLiveMessage":
+          if (notification.buttonLink) {
+            chrome.tabs.create({
+              url: notification.buttonLink
+            });
+          }
+          chrome.notifications.clear(notificationId);
           break;
         }
         
@@ -982,10 +993,13 @@ function mktoLiveMessage(message) {
   
   if (isDateInRange(date, message.startDate, message.endDate)) {
     var notification = {
+      action: message.action,
       id: message.id,
       title: message.title,
       message: message.notify,
-      requireInteraction: message.requireInteraction
+      requireInteraction: message.requireInteraction,
+      buttonTitle: message.buttonTitle,
+      buttonLink: message.buttonLink
     };
     
     if (message.numOfTimesPerDay
