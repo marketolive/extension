@@ -170,6 +170,7 @@ accountString,
 origMenuShowAtFunc,
 origAjaxRequestFunc,
 origAssetSaveEdit,
+origFillCanvas,
 origExplorerPanelAddNode,
 origExplorerPanelRemoveNodes,
 origExplorerPanelUpdateNodeText,
@@ -1553,6 +1554,50 @@ APP.overrideSmartCampaignCanvas = function () {
   }
 };
 */
+
+/**************************************************************************************
+ *
+ *  This function overrides the fillCanvas function for the Program > Assets tab in
+ *  order to remove the new asset buttons within the Default Workspace at all times 
+ *  and within My Worksapce if the Program is NOT within the user's root folder.
+ *
+ *  @Author Brian Fisher
+ *
+ *  @function
+ *
+ **************************************************************************************/
+
+APP.overrideCanvas = function () {
+  console.log("Marketo App > Overriding: Canvas");
+  
+  if (typeof(MktCanvasPanelManager) !== "undefined"
+     && MktCanvasPanelManager
+     && MktCanvasPanelManager.prototype
+     && MktCanvasPanelManager.prototype.fillCanvas) {
+    if (typeof(origFillCanvas) !== "function") {
+      origFillCanvas = MktCanvasPanelManager.prototype.fillCanvas;
+    }
+    
+    MktCanvasPanelManager.prototype.fillCanvas = function (items, tabId, isGrid) {
+      var tab = this.getTabOrActive(tabId),
+      disable = APP.evaluateMenu("button", null, tab, null);
+      
+      if (disable
+         && tab
+         && tab.title == "Assets") {
+        console.log("Marketo App > Executing: Override Assets Canvas > Removing New Asset Buttons");
+        var newAssetButtons = items.find("cellCls", "pickerButton");
+        
+        for (var ii = 0; ii < newAssetButtons.length; ii++) {
+          newAssetButtons[ii].destroy();
+        }
+      }
+      
+      origFillCanvas.apply(this, arguments);
+    };
+  }
+};
+
 /**************************************************************************************
  *
  *  This function overrides the updatePortletOrder function of Program > Assets tab in
@@ -1581,18 +1626,18 @@ APP.overrideUpdatePortletOrder = function () {
       var canvas = MktCanvas.getActiveTab(),
       disable = APP.evaluateMenu("button", null, canvas, null);
       if (!disable) {
-        // Gets the current portlet order array
         var newPortletOrder = [];
+        
         for (var i = 0; i < this.items.length; i++) {
           var itemInfo = this.items.get(i).smartCampaignMetaData;
           newPortletOrder.push(itemInfo.compTypeId + ":" + itemInfo.compId);
         }
         
-        // Save the current order on the server
         var params = {
           compId: this.programId,
           portletOrdering: Ext.encode(newPortletOrder)
         };
+        
         MktSession.ajaxRequest('marketingEvent/orderLocalAssetPortlets', {
           serializeParms: params,
           localAssetManager: this,
@@ -9713,6 +9758,7 @@ var isMktPageApp = window.setInterval(function () {
           APP.trackTreeNodeEdits();
           APP.overrideAssetSaveEdit();
           APP.overrideRenamingFolders();
+          APP.overrideCanvas();
           APP.overrideUpdatePortletOrder();
           APP.disableConfirmationMessage();
           APP.disableRequests();
@@ -9742,6 +9788,7 @@ var isMktPageApp = window.setInterval(function () {
           APP.trackTreeNodeEdits();
           APP.overrideAssetSaveEdit();
           APP.overrideRenamingFolders();
+          APP.overrideCanvas();
           APP.overrideUpdatePortletOrder();
           APP.disableConfirmationMessage();
           APP.disableRequests();
