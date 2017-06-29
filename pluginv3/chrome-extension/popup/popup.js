@@ -104,52 +104,64 @@ POPUP.addLinkClickListeners = function (links) {
 
 /**************************************************************************************
  *
- *  This function flashes the border of the given input field red for the given number
- *  of times using the given ms as a timeout.
+ *  This function flashes the border of the given HTML element using the given color 
+ *  (default is red) for the given number of times using the given ms as a timeout, 
+ *  then leaves the bottom-border the given color until the element is focused again.
  *
  *  @Author Brian Fisher
  *
  *  @function
  *
- *  @param {Object} field - HTML input element
+ *  @param {Object} el - HTML element
  *  @param {Integer} numOfTimes - number of times to flash the element's border
  *  @param {Integer} ms - time in milliseconds for delta time interval
  *  @param {String} color - border-color (Optional - default is red)
+ *  @param {String} borderProp - border property to modify (Optional - default is border)
  *
  **************************************************************************************/
 
-POPUP.flashBorder = function (field, numOfTimes, ms, color) {
+POPUP.flashBorder = function (el, numOfTimes, ms, color, borderProp) {
   var count = 1,
   changeBorder,
   restoreBorder,
-  origBorder = field.style.getPropertyValue("border");
-  //origBorderColor = window.getComputedStyle(field).getPropertyValue("border");
+  origBorder;
+  //origBorderColor = window.getComputedStyle(el).getPropertyValue("border");
   
   if (!color) {
     color = "red";
   }
+  if (!borderProp) {
+    borderProp = "border";
+  }
+  origBorder = el.style.getPropertyValue(borderProp);
+  el.style.setProperty(borderProp, "2px solid " + color);
   
-  field.style.setProperty("border", "2px solid " + color);
-  
-  changeBorder = function (field) {
+  changeBorder = function (el, borderProp) {
     window.setTimeout(function () {
-      field.style.setProperty("border", "2px solid " + color);
-      restoreBorder(field);
+      el.style.setProperty(borderProp, "2px solid " + color);
+      restoreBorder(el, borderProp);
     }, ms);
   };
   
-  restoreBorder = function (field) {
+  restoreBorder = function (el, borderProp) {
     window.setTimeout(function () {
-      field.style.setProperty("border", origBorder);
+      el.style.setProperty(borderProp, origBorder);
       
       if (count < numOfTimes) {
         count++;
-        changeBorder(field);
+        changeBorder(el, borderProp);
+      } else if (count == numOfTimes) {
+        count++;
+        el.style.setProperty("border-bottom", "2px solid " + color);
       }
     }, ms);
   };
   
-  restoreBorder(field);
+  el.onfocus = function () {
+    this.style.setProperty(borderProp, origBorder);
+  };
+  
+  restoreBorder(el, borderProp);
 };
 
 /**************************************************************************************
@@ -172,7 +184,7 @@ POPUP.validateFields = function (fields) {
     var field = fields[ii];
     
     if (!field.value) {
-      POPUP.flashBorder(field, 3, 500);
+      POPUP.flashBorder(field, 3, 500, "red", "border-bottom");
       isValid = false;
     }
   }

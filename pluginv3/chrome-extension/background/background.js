@@ -36,7 +36,7 @@ mktoEmailPreviewFragment = "EMP",
 mktoLandingPageDesignerFragment = "LPE",
 mktoLandingPagePreviewFragment = "LPPD",
 
-adTargetingRegEx = "^http(s)?://www\.marketolive\.com/en/tools/ad-targeting",
+adTargetingRegEx = "^http(s)?://(www|dev)\.marketolive\.com/en/tools/ad-targeting",
 companyPickerRegEx = "^https://marketolive\.com/" + URL_PATH + "/apps/color-picker\.html\\?company=.+",
 
 mktoAppUserCookie = "ids_sso",
