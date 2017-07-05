@@ -280,7 +280,7 @@ APP.sendMktoMessage = function (accountString, roleName, mktoUserId) {
     action: "mktoLiveMessage",
     id: "adTargeting",
     title: "New Feature: Ad Targeting",
-    notify: "Take a look at our latest feature built to help you demo ad targeting more effectively.",
+    notify: "Now you can quickly capture ad targeting images or demo ad targeting live for Google Search, Facebook, and LinkedIn.",
     requireInteraction: true,
     buttonTitle: "                        Learn More -->",
     buttonLink: "https://marketoemployee.jiveon.com/videos/2842",
