@@ -98,7 +98,7 @@ ADMIN.setInstanceInfo = function (accountString) {
     protectedWorkspaceRole.id = 109;
     protectedWorkspaceRole.allzones = false;
     protectedWorkspacesEn = [1, 174, 175, 176, 184, 185, 186];
-    protectedWorkspaceJp.id = 3;
+    protectedWorkspaceJp.id = 173;
     
     userWorkspaceRole.id = 102;
     userWorkspaceRole.allzones = false;
