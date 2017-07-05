@@ -286,7 +286,7 @@ APP.sendMktoMessage = function (accountString, roleName, mktoUserId) {
     buttonLink: "https://marketoemployee.jiveon.com/videos/2842",
     startDate: "",
     endDate: "07-12-2017",
-    numOfTimesPerDay: 1
+    numOfTimesPerDay: 2
   },
   userWorkspaceMsg = {
     action: "mktoLiveMessage",
@@ -296,7 +296,7 @@ APP.sendMktoMessage = function (accountString, roleName, mktoUserId) {
     requireInteraction: true,
     startDate: "",
     endDate: "07-12-2017",
-    numOfTimesPerDay: 1
+    numOfTimesPerDay: 2
   };
   
   if (accountString == mktoAccountStringMaster) {
