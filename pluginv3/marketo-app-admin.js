@@ -58,8 +58,20 @@ ADMIN.setInstanceInfo = function (accountString) {
     userWorkspaceRole.allzones = false;
     
     defaultRolesEn = [{
+        "id": 1,
+        "allzones": false,
+        "zones": []
+      }, {
         "id": adminAreasWorkspaceRole.id,
         "allzones": adminAreasWorkspaceRole.allzones,
+        "zones": []
+      }, {
+        "id": 101,
+        "allzones": false,
+        "zones": []
+      }, {
+        "id": 1001,
+        "allzones": false,
         "zones": []
       }, {
         "id": protectedWorkspaceRole.id,
@@ -68,12 +80,44 @@ ADMIN.setInstanceInfo = function (accountString) {
             "id": protectedWorkspaceEn.id
           }
         ]
+      }, {
+        "id": 25,
+        "allzones": false,
+        "zones": []
+      }, {
+        "id": 24,
+        "allzones": false,
+        "zones": []
+      }, {
+        "id": 2,
+        "allzones": false,
+        "zones": []
+      }, {
+        "id": 1004,
+        "allzones": false,
+        "zones": []
+      }, {
+        "id": 103,
+        "allzones": false,
+        "zones": []
       }
     ];
     
     defaultRolesJp = [{
+        "id": 1,
+        "allzones": false,
+        "zones": []
+      }, {
         "id": adminAreasWorkspaceRole.id,
         "allzones": adminAreasWorkspaceRole.allzones,
+        "zones": []
+      }, {
+        "id": 101,
+        "allzones": false,
+        "zones": []
+      }, {
+        "id": 1001,
+        "allzones": false,
         "zones": []
       }, {
         "id": protectedWorkspaceRole.id,
@@ -84,6 +128,26 @@ ADMIN.setInstanceInfo = function (accountString) {
             "id": protectedWorkspaceJp.id
           }
         ]
+      }, {
+        "id": 25,
+        "allzones": false,
+        "zones": []
+      }, {
+        "id": 24,
+        "allzones": false,
+        "zones": []
+      }, {
+        "id": 2,
+        "allzones": false,
+        "zones": []
+      }, {
+        "id": 1004,
+        "allzones": false,
+        "zones": []
+      }, {
+        "id": 103,
+        "allzones": false,
+        "zones": []
       }
     ];
     break;
@@ -98,19 +162,39 @@ ADMIN.setInstanceInfo = function (accountString) {
     protectedWorkspaceRole.id = 109;
     protectedWorkspaceRole.allzones = false;
     protectedWorkspacesEn = [1, 174, 175, 176, 184, 185, 186];
-    protectedWorkspaceJp.id = 3;
+    protectedWorkspaceJp.id = 173;
     
     userWorkspaceRole.id = 102;
     userWorkspaceRole.allzones = false;
     userWorkspace.id = 172;
     
     defaultRolesEn = [{
+        "id": 1,
+        "allzones": false,
+        "zones": []
+      }, {
         "id": adminAreasWorkspaceRole.id,
         "allzones": adminAreasWorkspaceRole.allzones,
         "zones": []
       }, {
+        "id": 104,
+        "allzones": false,
+        "zones": []
+      }, {
         "id": protectedWorkspaceRole.id,
         "allzones": protectedWorkspaceRole.allzones,
+        "zones": []
+      }, {
+        "id": 25,
+        "allzones": false,
+        "zones": []
+      }, {
+        "id": 24,
+        "allzones": false,
+        "zones": []
+      }, {
+        "id": 2,
+        "allzones": false,
         "zones": []
       }, {
         "id": userWorkspaceRole.id,
@@ -123,12 +207,32 @@ ADMIN.setInstanceInfo = function (accountString) {
     ];
     
     defaultRolesJp = [{
+        "id": 1,
+        "allzones": false,
+        "zones": []
+      }, {
         "id": adminAreasWorkspaceRole.id,
         "allzones": adminAreasWorkspaceRole.allzones,
         "zones": []
       }, {
+        "id": 104,
+        "allzones": false,
+        "zones": []
+      }, {
         "id": protectedWorkspaceRole.id,
         "allzones": protectedWorkspaceRole.allzones,
+        "zones": []
+      }, {
+        "id": 25,
+        "allzones": false,
+        "zones": []
+      }, {
+        "id": 24,
+        "allzones": false,
+        "zones": []
+      }, {
+        "id": 2,
+        "allzones": false,
         "zones": []
       }, {
         "id": userWorkspaceRole.id,
@@ -141,10 +245,10 @@ ADMIN.setInstanceInfo = function (accountString) {
     ];
     
     for (var ii = 0; ii < protectedWorkspacesEn.length; ii++) {
-      defaultRolesEn[1].zones.push({"id": protectedWorkspacesEn[ii]});
-      defaultRolesJp[1].zones.push({"id": protectedWorkspacesEn[ii]});
+      defaultRolesEn[3].zones.push({"id": protectedWorkspacesEn[ii]});
+      defaultRolesJp[3].zones.push({"id": protectedWorkspacesEn[ii]});
     }
-    defaultRolesJp[1].zones.push({"id": protectedWorkspaceJp.id});
+    defaultRolesJp[3].zones.push({"id": protectedWorkspaceJp.id});
     break;
   
   case mktoAccountString106d:

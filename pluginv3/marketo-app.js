@@ -262,6 +262,67 @@ APP.setInstanceInfo = function (accountString) {
 
 /**************************************************************************************
  *
+ *  This function sends a message to the extension in order to create a Chrome 
+ *  notification in a given instance and a user with a specific role.
+ *
+ *  @Author Brian Fisher
+ *
+ *  @function
+ *
+ *  @param {String} accountString - Marketo instance
+ *  @param {String} roleName - role of the current user (Optional)
+ *  @param {String} mktoUserId - user name of the current user (Optional)
+ *
+ **************************************************************************************/
+
+APP.sendMktoMessage = function (accountString, roleName, mktoUserId) {
+  var adTargetingMsg = {
+    action: "mktoLiveMessage",
+    id: "adTargeting",
+    title: "New Feature: Ad Targeting",
+    notify: "Now you can quickly capture ad targeting images or demo ad targeting live for:\n\nGoogle Search, Facebook, LinkedIn",
+    requireInteraction: true,
+    buttonTitle: "                        Learn More -->",
+    buttonLink: "https://marketoemployee.jiveon.com/videos/2842",
+    startDate: "",
+    endDate: "07-12-2017",
+    numOfTimesPerDay: 2
+  },
+  userWorkspaceMsg = {
+    action: "mktoLiveMessage",
+    id: "userWorkspace",
+    title: "New To Reloaded: User Workspace",
+    notify: "Leverage your own SC workspace for creating any program/asset using the provided demo data of our shared partition in the MarketoLive Reloaded instance.\n\nUser ID: ",
+    requireInteraction: true,
+    startDate: "",
+    endDate: "07-12-2017",
+    numOfTimesPerDay: 2
+  };
+  
+  if (accountString == mktoAccountStringMaster) {
+    chrome.runtime.sendMessage(extensionId, adTargetingMsg);
+  } else if (accountString.search(mktoAccountStrings106Match) != -1) {
+    chrome.runtime.sendMessage(extensionId, adTargetingMsg);
+    
+    switch (roleName) {
+    case "SC":
+      if (mktoUserId) {
+        userWorkspaceMsg.notify += mktoUserId + "@marketolive.com)";
+      } else {
+        userWorkspaceMsg.notify += "@marketolive.com)";
+      }
+      
+      chrome.runtime.sendMessage(extensionId, userWorkspaceMsg);
+      break;
+      
+    default:
+      break;
+    }
+  }
+};
+
+/**************************************************************************************
+ *
  *  This function gets the specified cookie for the current domain. It loops through
  *  the string contained in document.cookie and looks for the given cookie.
  *
@@ -9595,7 +9656,7 @@ var isMktPageApp = window.setInterval(function () {
           currCompFragment = Mkt3.DL.dl.dlCompCode;
         }
         
-        if (userId.search("\.demo@marketo.com$") != -1) {
+        if (userId.search("\.demo@(marketo\.com|marketolive\.com)$") != -1) {
           userName = userId.split(".demo")[0];
         } else {
           userName = userId.split("@")[0];
@@ -9664,6 +9725,8 @@ var isMktPageApp = window.setInterval(function () {
           mktoName: MktPage.userName.replace(/ ?\[[^\]]+\]/, ""),
           mktoRole: mktoRole
         });
+        
+        APP.sendMktoMessage(accountString, mktoRole, userName);
       }
       
       if (currUrlFragment) {
