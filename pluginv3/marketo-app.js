@@ -311,7 +311,7 @@ APP.sendMktoMessage = function (accountString, roleName, mktoUserId) {
       } else {
         userWorkspaceMsg.notify += "@marketolive.com)";
       }
-      
+      console.log("Marketo App > Waiting to Send User Workspace Message");
       window.setTimeout(function () {
         chrome.runtime.sendMessage(extensionId, userWorkspaceMsg);
       }, 30000);
