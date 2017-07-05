@@ -58,8 +58,20 @@ ADMIN.setInstanceInfo = function (accountString) {
     userWorkspaceRole.allzones = false;
     
     defaultRolesEn = [{
+        "id": 1,
+        "allzones": false,
+        "zones": []
+      }, {
         "id": adminAreasWorkspaceRole.id,
         "allzones": adminAreasWorkspaceRole.allzones,
+        "zones": []
+      }, {
+        "id": 101,
+        "allzones": false,
+        "zones": []
+      }, {
+        "id": 1001,
+        "allzones": false,
         "zones": []
       }, {
         "id": protectedWorkspaceRole.id,
@@ -68,12 +80,44 @@ ADMIN.setInstanceInfo = function (accountString) {
             "id": protectedWorkspaceEn.id
           }
         ]
+      }, {
+        "id": 25,
+        "allzones": false,
+        "zones": []
+      }, {
+        "id": 24,
+        "allzones": false,
+        "zones": []
+      }, {
+        "id": 2,
+        "allzones": false,
+        "zones": []
+      }, {
+        "id": 1004,
+        "allzones": false,
+        "zones": []
+      }, {
+        "id": 103,
+        "allzones": false,
+        "zones": []
       }
     ];
     
     defaultRolesJp = [{
+        "id": 1,
+        "allzones": false,
+        "zones": []
+      }, {
         "id": adminAreasWorkspaceRole.id,
         "allzones": adminAreasWorkspaceRole.allzones,
+        "zones": []
+      }, {
+        "id": 101,
+        "allzones": false,
+        "zones": []
+      }, {
+        "id": 1001,
+        "allzones": false,
         "zones": []
       }, {
         "id": protectedWorkspaceRole.id,
@@ -84,6 +128,26 @@ ADMIN.setInstanceInfo = function (accountString) {
             "id": protectedWorkspaceJp.id
           }
         ]
+      }, {
+        "id": 25,
+        "allzones": false,
+        "zones": []
+      }, {
+        "id": 24,
+        "allzones": false,
+        "zones": []
+      }, {
+        "id": 2,
+        "allzones": false,
+        "zones": []
+      }, {
+        "id": 1004,
+        "allzones": false,
+        "zones": []
+      }, {
+        "id": 103,
+        "allzones": false,
+        "zones": []
       }
     ];
     break;
