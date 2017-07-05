@@ -276,50 +276,45 @@ APP.setInstanceInfo = function (accountString) {
  **************************************************************************************/
 
 APP.sendMktoMessage = function (accountString, roleName, mktoUserId) {
-  var msgProps = {
+  var adTargetingMsg = {
     action: "mktoLiveMessage",
+    id: "adTargeting",
+    title: "New Feature: Ad Targeting",
+    notify: "Take a look at our latest feature built to help you demo ad targeting more effectively.",
+    requireInteraction: true,
+    buttonTitle: "                        Learn More -->",
+    buttonLink: "https://marketoemployee.jiveon.com/videos/2842",
+    startDate: "",
+    endDate: "07-12-2017",
+    numOfTimesPerDay: 1
+  },
+  userWorkspaceMsg = {
+    action: "mktoLiveMessage",
+    id: "userWorkspace",
+    title: "New To Reloaded: User Workspace",
+    notify: "Leverage your own user workspace for creating any program/asset using the provided demo data of our shared partition in the MarketoLive Reloaded instance (User ID: ",
+    requireInteraction: true,
     startDate: "",
     endDate: "07-12-2017",
     numOfTimesPerDay: 1
   };
   
   if (accountString == mktoAccountStringMaster) {
-    var msg = {
-      action: msgProps.action,
-      id: "adTargeting",
-      title: "New Feature: Ad Targeting",
-      notify: "Take a look at our latest feature built to help you demo ad targeting more effectively.",
-      requireInteraction: true,
-      buttonTitle: "                        Learn More -->",
-      buttonLink: "https://marketoemployee.jiveon.com/videos/2842",
-      startDate: msgProps.startDate,
-      endDate: msgProps.endDate,
-      numOfTimesPerDay: msgProps.numOfTimesPerDay
-    };
-    
-    chrome.runtime.sendMessage(extensionId, msg);
+    chrome.runtime.sendMessage(extensionId, adTargetingMsg);
   } else if (accountString.search(mktoAccountStrings106Match) != -1) {
+    chrome.runtime.sendMessage(extensionId, adTargetingMsg);
     
     switch (roleName) {
     case "SC":
-      var msg = {
-        action: msgProps.action,
-        id: "userWorkspace",
-        title: "New To Reloaded: User Workspace",
-        notify: "Leverage your own SC workspace for creating any program/asset using the provided demo data of our shared partition in the MarketoLive Reloaded instance (User ID: ",
-        requireInteraction: true,
-        startDate: msgProps.startDate,
-        endDate: msgProps.endDate,
-        numOfTimesPerDay: msgProps.numOfTimesPerDay
-      };
-      
       if (mktoUserId) {
-        msg.notify += mktoUserId + "@marketolive.com)";
+        userWorkspaceMsg.notify += mktoUserId + "@marketolive.com)";
       } else {
-        msg.notify += "@marketolive.com)";
+        userWorkspaceMsg.notify += "@marketolive.com)";
       }
       
-      chrome.runtime.sendMessage(extensionId, msg);
+      window.setTimeout(function () {
+        chrome.runtime.sendMessage(extensionId, userWorkspaceMsg);
+      }, 30000);
       break;
       
     default:
