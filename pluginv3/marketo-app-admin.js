@@ -181,10 +181,10 @@ ADMIN.setInstanceInfo = function (accountString) {
     ];
     
     for (var ii = 0; ii < protectedWorkspacesEn.length; ii++) {
-      defaultRolesEn[1].zones.push({"id": protectedWorkspacesEn[ii]});
-      defaultRolesJp[1].zones.push({"id": protectedWorkspacesEn[ii]});
+      defaultRolesEn[3].zones.push({"id": protectedWorkspacesEn[ii]});
+      defaultRolesJp[3].zones.push({"id": protectedWorkspacesEn[ii]});
     }
-    defaultRolesJp[1].zones.push({"id": protectedWorkspaceJp.id});
+    defaultRolesJp[3].zones.push({"id": protectedWorkspaceJp.id});
     break;
   
   case mktoAccountString106d:
