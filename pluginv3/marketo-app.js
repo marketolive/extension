@@ -280,7 +280,7 @@ APP.sendMktoMessage = function (accountString, roleName, mktoUserId) {
     action: "mktoLiveMessage",
     id: "adTargeting",
     title: "New Feature: Ad Targeting",
-    notify: "Now you can quickly capture ad targeting images or demo ad targeting live for Google Search, Facebook, and LinkedIn.",
+    notify: "Now you can quickly capture ad targeting images or demo ad targeting live for:\n\nGoogle Search, Facebook, LinkedIn",
     requireInteraction: true,
     buttonTitle: "                        Learn More -->",
     buttonLink: "https://marketoemployee.jiveon.com/videos/2842",
@@ -292,7 +292,7 @@ APP.sendMktoMessage = function (accountString, roleName, mktoUserId) {
     action: "mktoLiveMessage",
     id: "userWorkspace",
     title: "New To Reloaded: User Workspace",
-    notify: "Leverage your own user workspace for creating any program/asset using the provided demo data of our shared partition in the MarketoLive Reloaded instance (User ID: ",
+    notify: "Leverage your own SC workspace for creating any program/asset using the provided demo data of our shared partition in the MarketoLive Reloaded instance.\n\nUser ID: ",
     requireInteraction: true,
     startDate: "",
     endDate: "07-12-2017",
@@ -311,10 +311,8 @@ APP.sendMktoMessage = function (accountString, roleName, mktoUserId) {
       } else {
         userWorkspaceMsg.notify += "@marketolive.com)";
       }
-      console.log("Marketo App > Waiting to Send User Workspace Message");
-      window.setTimeout(function () {
-        chrome.runtime.sendMessage(extensionId, userWorkspaceMsg);
-      }, 30000);
+      
+      chrome.runtime.sendMessage(extensionId, userWorkspaceMsg);
       break;
       
     default:
