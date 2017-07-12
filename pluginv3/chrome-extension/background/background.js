@@ -755,7 +755,7 @@ function setMktoCookies(message) {
 }
 
 function setAdInfoCookies(message) {
-  var googleDomainMatch = "https://www.google.com/*",
+  var googleDomainMatch = "https://www" + message.domain + "/*",
   linkedinDomainMatch = "https://www.linkedin.com/*",
   adInfoCookieName = "ad_info";
   
@@ -772,7 +772,7 @@ function setAdInfoCookies(message) {
         "url": googleDomainMatch,
         "name": adInfoCookieName,
         "value": message.adInfo,
-        "domain": ".google.com"
+        "domain": message.domain
       });
       break;
       
