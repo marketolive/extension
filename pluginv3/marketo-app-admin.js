@@ -822,8 +822,12 @@ ADMIN.inviteUser = function (user) {
     });
   }
   
+  function getAllWorkspaces() {
+    ADMIN.getAllWorkspaces(getUserWorkspaceId);
+  }
+  
   if (accountString == mktoAccountStringMaster) {
-    ADMIN.createUserWorkspace(userWorkspace, ADMIN.getAllWorkspaces(getUserWorkspaceId));
+    ADMIN.createUserWorkspace(userWorkspace, getAllWorkspaces);
   } else {
     roles = ADMIN.getUserRoles(userWorkspace);
     console.log("Inviting User: " + email + ", " + userId + ", " + user.firstName + ", " + user.lastName + ' [' + user.role + ']');
