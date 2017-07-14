@@ -380,6 +380,7 @@ LPAGE.fillForm = function () {
             } else {
               form.onSubmit(function (f) {
                 nextWebPage = LPAGE.getNextWebPage();
+                debugger;
               });
               
               form.onSuccess(function (values, followUpUrl) {
