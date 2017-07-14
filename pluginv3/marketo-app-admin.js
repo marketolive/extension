@@ -93,10 +93,6 @@ ADMIN.setInstanceInfo = function (accountString) {
         "allzones": false,
         "zones": []
       }, {
-        "id": 1004,
-        "allzones": false,
-        "zones": []
-      }, {
         "id": 103,
         "allzones": false,
         "zones": []
@@ -138,10 +134,6 @@ ADMIN.setInstanceInfo = function (accountString) {
         "zones": []
       }, {
         "id": 2,
-        "allzones": false,
-        "zones": []
-      }, {
-        "id": 1004,
         "allzones": false,
         "zones": []
       }, {
