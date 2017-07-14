@@ -47,7 +47,7 @@ LPAGE.getUrlParam = function (param) {
       }
     }
   }
-  return false;
+  return;
 };
 
 LPAGE.getCookie = function (cookieName) {
