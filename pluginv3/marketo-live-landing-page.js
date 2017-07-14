@@ -122,7 +122,7 @@ LPAGE.getNextWebPage = function (mockLeadEmail) {
     break;
   }
   
-  LPAGE.webRequest('https://marketolive.com/' + URL_PATH + '/pluginv3/data/' + currVertical + '-pages-web.json', null, 'GET', false, '', function (response) {
+  return LPAGE.webRequest('https://marketolive.com/' + URL_PATH + '/pluginv3/data/' + currVertical + '-pages-web.json', null, 'GET', false, '', function (response) {
     var webPages = JSON.parse(response);
     
     if (!mockLeadEmail) {
@@ -131,7 +131,7 @@ LPAGE.getNextWebPage = function (mockLeadEmail) {
     
     if (webPages) {
       var webPageX = webPages[Math.floor(Math.random() * webPages.length)],
-      params;
+      params = "";
       
       if (webPageX.type == "verticals") {
         if (webPageX.clickRate >= 1.0
@@ -142,7 +142,11 @@ LPAGE.getNextWebPage = function (mockLeadEmail) {
         }
       }
       
-      return webPageX.url + "?" + params + "&mockLead=" + mockLeadEmail;
+      if (params == "") {
+        return webPageX.url + "?" + "mockLead=" + mockLeadEmail;
+      } else {
+        return webPageX.url + "?" + params + "&mockLead=" + mockLeadEmail;
+      }
     }
     
     return "";
@@ -378,14 +382,15 @@ LPAGE.fillForm = function () {
                 }
               });
             } else {
+              /*
               form.onSubmit(function (f) {
                 nextWebPage = LPAGE.getNextWebPage();
-                debugger;
               });
-              
+              */
               form.onSuccess(function (values, followUpUrl) {
                 //window.close();
-                window.location.href = nextWebPage;
+                //window.location.href = nextWebPage;
+                window.location.href = LPAGE.getNextWebPage();
                 return false;
               });
               
