@@ -138,6 +138,8 @@ LPAGE.getNextWebPage = function (mockLeadEmail) {
       }
       
       if (webPageX.type == "verticals") {
+        webPageX.url = webPageX.url.replace("//verticals\.", "//dev.verticals.");
+        
         if (webPageX.clickRate >= 1.0
            || (Math.random()) <= webPageX.clickRate) {
           params = "click=true";
@@ -386,14 +388,8 @@ LPAGE.fillForm = function () {
                 }
               });
             } else {
-              /*
-              form.onSubmit(function (f) {
-                nextWebPage = LPAGE.getNextWebPage();
-              });
-              */
               form.onSuccess(function (values, followUpUrl) {
                 //window.close();
-                //window.location.href = nextWebPage;
                 window.location.href = LPAGE.getNextWebPage();
                 return false;
               });
