@@ -11,6 +11,9 @@ console.log("Landing Page > Script: Loaded");
  *
  **************************************************************************************/
 var URL_PATH = "m3-dev",
+devExtensionId = "dokkjhbgengdlccldgjnbilajdbjlnhm",
+prodExtensionId = "onibnnoghllldiecboelbpcaeggfiohl",
+extensionId = devExtensionId,
 mktoLiveDevMunchkinId = "685-BTN-772",
 mktoLiveProdMunchkinId = "185-NGX-811",
 mktoLiveMunchkinId = mktoLiveProdMunchkinId,
@@ -70,19 +73,20 @@ LPAGE.webRequest = function (url, params, method, async, responseType, callback)
   result;
   
   xmlHttp.onreadystatechange = function () {
-    if (xmlHttp.readyState == 4
-       && xmlHttp.status == 200) {
-      if (typeof(callback) === "function") {
-        result = callback(xmlHttp.response);
+    if (xmlHttp.readyState == 4) {
+      if (xmlHttp.status == 200) {
+        if (typeof(callback) === "function") {
+          result = callback(xmlHttp.response);
+        } else {
+          result = xmlHttp.response;
+        }
       } else {
-        result = xmlHttp.response;
+        chrome.runtime.sendMessage(extensionId, {
+          action: "demoDataPage",
+          tabAction: "remove",
+          currUrl: window.location.href
+        });
       }
-    } else {
-      chrome.runtime.sendMessage(extensionId, {
-        action: "demoDataPage",
-        tabAction: "remove",
-        currUrl: window.location.href
-      });
     }
   }
   
