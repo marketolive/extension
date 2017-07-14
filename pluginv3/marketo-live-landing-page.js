@@ -138,7 +138,7 @@ LPAGE.getNextWebPage = function (mockLeadEmail) {
       }
       
       if (webPageX.type == "verticals") {
-        webPageX.url = webPageX.url.replace("//verticals\.", "//dev.verticals.");
+        webPageX.url = webPageX.url.replace("https://verticals\.", "http://dev.verticals.");
         
         if (webPageX.clickRate >= 1.0
            || (Math.random()) <= webPageX.clickRate) {
