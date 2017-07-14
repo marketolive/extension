@@ -122,7 +122,7 @@ LPAGE.getNextWebPage = function (mockLeadEmail) {
     break;
   }
   
-  LPAGE.webRequest('https://marketolive.com/' + URL_PATH + '/pluginv3/data/' + currVertical + '-pages-web.json', null, 'GET', true, 'json', function (response) {
+  LPAGE.webRequest('https://marketolive.com/' + URL_PATH + '/pluginv3/data/' + currVertical + '-pages-web.json', null, 'GET', false, '', function (response) {
     var webPages = JSON.parse(response);
     
     if (!mockLeadEmail) {
