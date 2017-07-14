@@ -1,0 +1,49 @@
+[
+  {
+    "type": "web",
+    "url": "http://www.marketolive.com/info/contact-us"
+  },
+  {
+    "type": "web",
+    "url": "http://www.marketolive.com/info/why-us"
+  },
+  {
+    "type": "web",
+    "url": "http://www.marketolive.com/info/webinar"
+  },
+  {
+    "type": "web",
+    "url": "http://www.marketolive.com/info/products"
+  },
+  {
+    "type": "web",
+    "url": "http://www.marketolive.com/info/live-event"
+  },
+  {
+    "type": "web",
+    "url": "http://www.marketolive.com/info/integrations"
+  },
+  {
+    "type": "web",
+    "url": "http://www.marketolive.com/info/pricing"
+  },
+  {
+    "type": "web",
+    "url": "http://www.marketolive.com/info/community"
+  },
+  {
+    "type": "verticals",
+    "url": "https://verticals.marketolive.com/predictive-content",
+    "clickRate": 1
+  },
+  {
+    "type": "verticals",
+    "url": "https://verticals.marketolive.com/predictive-content-106",
+    "clickRate": 1
+  },
+  {
+    "type": "verticals",
+    "url": "https://verticals.marketolive.com/predictive-content-106d",
+    "clickRate": 1
+  }
+]
