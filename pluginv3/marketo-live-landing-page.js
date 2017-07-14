@@ -18,6 +18,8 @@ mktoLiveMunchkinId = mktoLiveProdMunchkinId,
 numOfVerticals = 3,
 mockLeadEndpoint = "https://www.mockaroo.com/0799ab60/download?count=1&key=7d30cdf0",
 
+origCookie,
+
 LPAGE = LPAGE || {};
 
 LPAGE.getUrlParam = function (param) {
@@ -705,8 +707,7 @@ LPAGE.fillForm = function () {
   }
   
   function submitLeadData() {
-    var cookieAnon = LPAGE.getUrlParam("submit"),
-    origCookie;
+    var cookieAnon = LPAGE.getUrlParam("submit");
     
     if (cookieAnon == "true") {
       cookieAnon = true;
