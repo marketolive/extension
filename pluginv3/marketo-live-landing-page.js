@@ -650,7 +650,7 @@ LPAGE.fillForm = function () {
   
   function resetMunchkinCookie(munchkinId, cookieAnon, callback) {
     var hostSplit = window.location.host.split("."),
-    currCookie = getCookie("_mkto_trk");
+    currCookie = LPAGE.getCookie("_mkto_trk");
     
     if (currCookie
       && !origCookie) {
@@ -669,7 +669,7 @@ LPAGE.fillForm = function () {
   }
   
   function resetMasterMunchkinCookie(callback) {
-    var oneLoginUsername = getCookie("onelogin_username"),
+    var oneLoginUsername = LPAGE.getCookie("onelogin_username"),
     hostSplit = window.location.host.split(".");
     
     if (oneLoginUsername) {
@@ -695,7 +695,7 @@ LPAGE.fillForm = function () {
       if (origCookie) {
         document.cookie = "_mkto_trk=" + origCookie + ";domain=" + hostSplit[hostSplit.length - 2] + "." + hostSplit[hostSplit.length - 1] + ";path=/;expires=" + new Date(new Date().getTime() + (365 * 24 * 60 * 60 * 1000)).toUTCString();
         console.log("Restored > Cookie: _mkto_trk = " + origCookie);
-        console.log("Restored > Cookie: _mkto_trk = " + getCookie("_mkto_trk"));
+        console.log("Restored > Cookie: _mkto_trk = " + LPAGE.getCookie("_mkto_trk"));
       }
       
       if (typeof(callback) === "function") {
