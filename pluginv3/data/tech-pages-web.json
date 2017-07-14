@@ -1,0 +1,49 @@
+[
+  {
+    "type": "web",
+    "url": "http://www.marketolive.com/info/turner-tech"
+  },
+  {
+    "type": "web",
+    "url": "http://www.marketolive.com/info/cloud-storage"
+  },
+  {
+    "type": "web",
+    "url": "http://www.marketolive.com/info/cloud-backup"
+  },
+  {
+    "type": "web",
+    "url": "http://www.marketolive.com/info/cloud-management"
+  },
+  {
+    "type": "web",
+    "url": "http://www.marketolive.com/info/data-protection"
+  },
+  {
+    "type": "web",
+    "url": "http://www.marketolive.com/info/data-compliance"
+  },
+  {
+    "type": "web",
+    "url": "http://www.marketolive.com/info/data-continuity"
+  },
+  {
+    "type": "web",
+    "url": "http://www.marketolive.com/info/data-recovery"
+  },
+  {
+    "type": "verticals",
+    "url": "https://verticals.marketolive.com/predictive-content",
+    "clickRate": 1
+  },
+  {
+    "type": "verticals",
+    "url": "https://verticals.marketolive.com/predictive-content-106",
+    "clickRate": 1
+  },
+  {
+    "type": "verticals",
+    "url": "https://verticals.marketolive.com/predictive-content-106d",
+    "clickRate": 1
+  }
+]

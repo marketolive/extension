@@ -403,19 +403,16 @@ window.onload = function () {
     chrome.browsingData.removeCache({
       since: 0
     }, function () {
-      
       background.reloadTabs("*://*.marketo.com/*");
       background.reloadTabs("*://*.marketodesigner.com/*");
       background.reloadTabs("*://*.marketolive.com/*");
       background.reloadTabs("*://250ok.com/*");
       background.reloadTabs("*://marketo.invisionapp.com/*");
+      window.close();
     });
     
     clearCacheText.innerText = "Clearing Cache";
     POPUP.flashBorder(this, 1, 1100, "#ff7139");
-    setTimeout(function () {
-      window.close();
-    }, 1100);
   };
   
   privilegesToggle.onclick = function () {

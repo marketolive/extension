@@ -141,13 +141,8 @@ visitedPagesCookieMarketoLive = {
 
 companyX,
 webRequest,
-dayOfMonth = new Date().getDate(),
+getVertical,
 currVerticalIndex,
-currVertical,
-verticalPages,
-verticalPageX,
-visitedPagesIndex,
-utm,
 params = "";
 
 webRequest = function (url, params, method, async, responseType, callback) {
@@ -171,6 +166,31 @@ webRequest = function (url, params, method, async, responseType, callback) {
   return result;
 };
 
+getVertical = function () {
+  var dayOfMonth = new Date().getDate(),
+  currVerticalIndex;
+  
+  if (dayOfMonth > numOfVerticals) {
+    currVerticalIndex = (dayOfMonth - 1) % numOfVerticals;
+  } else {
+    currVerticalIndex = dayOfMonth - 1;
+  }
+  switch (currVerticalIndex) {
+  case 0:
+    currVertical = "coe";
+    visitedPagesCookieMarketoLive.name = "visitedPagesCoe";
+    break;
+  case 1:
+    currVertical = "tech";
+    visitedPagesCookieMarketoLive.name = "visitedPagesTech";
+    break;
+  case 2:
+    currVertical = "mfg";
+    visitedPagesCookieMarketoLive.name = "visitedPagesMfg";
+    break;
+  }
+};
+
 /**************************************************************************************
  *
  *  Main
@@ -178,26 +198,6 @@ webRequest = function (url, params, method, async, responseType, callback) {
  **************************************************************************************/
 
 console.log("Selecting: Web Page to Visit & Lead Attributes for Form Fill");
-
-if (dayOfMonth > numOfVerticals) {
-  currVerticalIndex = (dayOfMonth - 1) % numOfVerticals;
-} else {
-  currVerticalIndex = dayOfMonth - 1;
-}
-switch (currVerticalIndex) {
-case 0:
-  currVertical = "coe";
-  visitedPagesCookieMarketoLive.name = "visitedPagesCoe";
-  break;
-case 1:
-  currVertical = "tech";
-  visitedPagesCookieMarketoLive.name = "visitedPagesTech";
-  break;
-case 2:
-  currVertical = "mfg";
-  visitedPagesCookieMarketoLive.name = "visitedPagesMfg";
-  break;
-}
 
 companyX = companies[Math.floor(Math.random() * companies.length)];
 
@@ -442,9 +442,8 @@ getCookie({
   }
 });
 
-function visitPage(index) {
-  var visitedPagesCookie = visitedPagesCookieMarketoLive,
-  url;
+function visitPage(verticalPageX, index) {
+  var url;
   
   if (params) {
     url = verticalPageX.url + "?" + params;
@@ -463,11 +462,49 @@ function visitPage(index) {
     }, 10000);
   });
   
-  visitedPagesCookie.value = index.toString();
-  setCookie(visitedPagesCookie);
-  console.log("Visited Page Index (" + index + "): " + url);
+  if (index) {
+    var visitedPagesCookie = visitedPagesCookieMarketoLive;
+    
+    visitedPagesCookie.value = index.toString();
+    setCookie(visitedPagesCookie);
+    console.log("Visited Page Index (" + index + "): " + url);
+  }
 }
 
+getVertical();
+webRequest('https://marketolive.com/' + URL_PATH + '/pluginv3/data/' + currVertical + '-pages-acquire.json', null, 'GET', true, 'json', function (response) {
+  var verticalPages = JSON.parse(response),
+  verticalPageX = verticalPages[Math.floor(Math.random() * verticalPages.length)];
+  
+  if (verticalPageX.type == "landing") {
+    getCookie({
+      url: mktoAppDomainMatch,
+      name: usernameCookieName
+    }, function (cookie) {
+      if (cookie
+         && cookie.value) {
+        if (verticalPageX.conversionRate >= 1.0
+           || (Math.random()) <= verticalPageX.conversionRate) {
+          params = "submit=true&isMockLead=true";
+          webRequest('https://marketolive.com/' + URL_PATH + '/pluginv3/data/' + currVertical + '-utm-values.json', null, 'GET', true, 'json', function (response) {
+            var utm = JSON.parse(response),
+            utmTermX = utm.terms[Math.floor(Math.random() * utm.terms.length)],
+            utmMediumX = utm.mediums[Math.floor(Math.random() * utm.mediums.length)],
+            utmCampaignX = utm.campaigns[Math.floor(Math.random() * utm.campaigns.length)];
+            params = params + "&utmTerm=" + encodeURIComponent(utmTermX) + "&utmMedium=" + encodeURIComponent(utmMediumX) + "&utmCampaign=" + encodeURIComponent(utmCampaignX);
+          });
+        } else {
+          params = "submit=false&isMockLead=true";
+        }
+        visitPage(verticalPageX);
+      } else {
+        console.log("NOT Visiting: " + verticalPageX.url + " due to " + usernameCookieName + " cookie is null");
+      }
+    });
+  }
+});
+
+/*
 getCookie(visitedPagesCookieMarketoLive, function (cookie) {
   if (cookie
      && cookie.value
@@ -493,11 +530,7 @@ getCookie(visitedPagesCookieMarketoLive, function (cookie) {
     verticalPageX = verticalPages[Math.floor(Math.random() * verticalPages.length)];
     visitedPagesIndex = -1;
   }
-  /*
-  if (verticalPageX.lpUrl) {
-  verticalPageX.url = verticalPageX.lpUrl;
-  }
-   */
+  
   if (verticalPageX.type == "landing") {
     getCookie({
       url: mktoAppDomainMatch,
@@ -521,7 +554,7 @@ getCookie(visitedPagesCookieMarketoLive, function (cookie) {
         } else {
           params = "submit=false";
         }
-        visitPage(visitedPagesIndex);
+        visitPage(verticalPageX, visitedPagesIndex);
       } else {
         console.log("NOT Visiting: " + verticalPageX.url + " due to " + usernameCookieName + " cookie is null");
       }
@@ -533,7 +566,7 @@ getCookie(visitedPagesCookieMarketoLive, function (cookie) {
     }, function (cookie) {
       if (cookie
          && cookie.value) {
-        visitPage(visitedPagesIndex);
+        visitPage(verticalPageX, visitedPagesIndex);
       } else {
         console.log("NOT Visiting: " + verticalPageX.url + " due to " + usernameCookieName + " cookie is null");
       }
@@ -551,10 +584,11 @@ getCookie(visitedPagesCookieMarketoLive, function (cookie) {
         } else {
           params = "click=false";
         }
-        visitPage(visitedPagesIndex);
+        visitPage(verticalPageX, visitedPagesIndex);
       } else {
         console.log("NOT Visiting: " + verticalPageX.url + " due to " + usernameCookieName + " cookie is null");
       }
     });
   }
 });
+*/

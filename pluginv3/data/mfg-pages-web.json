@@ -1,0 +1,49 @@
+[
+  {
+    "type": "web",
+    "url": "http://www.marketolive.com/info/turner-manufacturing"
+  },
+  {
+    "type": "web",
+    "url": "http://www.marketolive.com/info/energy-efficient-windows"
+  },
+  {
+    "type": "web",
+    "url": "http://www.marketolive.com/info/bay-windows"
+  },
+  {
+    "type": "web",
+    "url": "http://www.marketolive.com/info/bow-windows"
+  },
+  {
+    "type": "web",
+    "url": "http://www.marketolive.com/info/double-hung-windows"
+  },
+  {
+    "type": "web",
+    "url": "http://www.marketolive.com/info/casement-windows"
+  },
+  {
+    "type": "web",
+    "url": "http://www.marketolive.com/info/window-installation"
+  },
+  {
+    "type": "web",
+    "url": "http://www.marketolive.com/info/dealer-rebates"
+  },
+  {
+    "type": "verticals",
+    "url": "https://verticals.marketolive.com/predictive-content",
+    "clickRate": 1
+  },
+  {
+    "type": "verticals",
+    "url": "https://verticals.marketolive.com/predictive-content-106",
+    "clickRate": 1
+  },
+  {
+    "type": "verticals",
+    "url": "https://verticals.marketolive.com/predictive-content-106d",
+    "clickRate": 1
+  }
+]
