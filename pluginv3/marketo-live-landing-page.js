@@ -133,6 +133,10 @@ LPAGE.getNextWebPage = function (mockLeadEmail) {
       var webPageX = webPages[Math.floor(Math.random() * webPages.length)],
       params = "";
       
+      if (URL_PATH == "m3-dev") {
+        webPageX.url = webPageX.url.replace("//www\.", "//dev.");
+      }
+      
       if (webPageX.type == "verticals") {
         if (webPageX.clickRate >= 1.0
            || (Math.random()) <= webPageX.clickRate) {
@@ -719,7 +723,8 @@ LPAGE.fillForm = function () {
   function submitLeadData() {
     var cookieAnon = LPAGE.getUrlParam("submit");
     
-    if (cookieAnon == "true") {
+    if (cookieAnon == "true"
+       || cookieAnon == "test") {
       cookieAnon = true;
     } else {
       cookieAnon = false;
