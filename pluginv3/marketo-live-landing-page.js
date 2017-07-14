@@ -378,14 +378,9 @@ LPAGE.fillForm = function () {
               });
             } else {
               form.onSuccess(function (values, followUpUrl) {
-                if (submit == "true") {
-                  //window.close();
-                  window.location.href = LPAGE.getNextWebPage();
-                  return false;
-                } else {
-                  window.location.href = "http://www.marketolive.com";
-                  return false;
-                }
+                //window.close();
+                window.location.href = LPAGE.getNextWebPage(values.Email);
+                return false;
               });
               
               if (typeof(form.getValues().Email) != "undefined") {
