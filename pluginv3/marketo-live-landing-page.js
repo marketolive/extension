@@ -175,7 +175,8 @@ LPAGE.fillForm = function () {
           utmTerm = LPAGE.getUrlParam("utmTerm"),
           utmMedium = LPAGE.getUrlParam("utmMedium"),
           utmCampaign = LPAGE.getUrlParam("utmCampaign"),
-          answer;
+          answer,
+          nextWebPage;
           
           if (submit == "true"
              || submit == "test") {
@@ -377,9 +378,13 @@ LPAGE.fillForm = function () {
                 }
               });
             } else {
+              form.onSubmit(function (f) {
+                nextWebPage = LPAGE.getNextWebPage();
+              });
+              
               form.onSuccess(function (values, followUpUrl) {
                 //window.close();
-                window.location.href = LPAGE.getNextWebPage(values.Email);
+                window.location.href = nextWebPage;
                 return false;
               });
               
