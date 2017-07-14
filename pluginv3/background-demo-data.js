@@ -442,7 +442,7 @@ getCookie({
   }
 });
 
-function visitPage(index) {
+function visitPage(verticalPageX, index) {
   var url;
   
   if (params) {
@@ -496,7 +496,7 @@ webRequest('https://marketolive.com/' + URL_PATH + '/pluginv3/data/' + currVerti
         } else {
           params = "submit=false&isMockLead=true";
         }
-        visitPage();
+        visitPage(verticalPageX);
       } else {
         console.log("NOT Visiting: " + verticalPageX.url + " due to " + usernameCookieName + " cookie is null");
       }
@@ -554,7 +554,7 @@ getCookie(visitedPagesCookieMarketoLive, function (cookie) {
         } else {
           params = "submit=false";
         }
-        visitPage(visitedPagesIndex);
+        visitPage(verticalPageX, visitedPagesIndex);
       } else {
         console.log("NOT Visiting: " + verticalPageX.url + " due to " + usernameCookieName + " cookie is null");
       }
@@ -566,7 +566,7 @@ getCookie(visitedPagesCookieMarketoLive, function (cookie) {
     }, function (cookie) {
       if (cookie
          && cookie.value) {
-        visitPage(visitedPagesIndex);
+        visitPage(verticalPageX, visitedPagesIndex);
       } else {
         console.log("NOT Visiting: " + verticalPageX.url + " due to " + usernameCookieName + " cookie is null");
       }
@@ -584,7 +584,7 @@ getCookie(visitedPagesCookieMarketoLive, function (cookie) {
         } else {
           params = "click=false";
         }
-        visitPage(visitedPagesIndex);
+        visitPage(verticalPageX, visitedPagesIndex);
       } else {
         console.log("NOT Visiting: " + verticalPageX.url + " due to " + usernameCookieName + " cookie is null");
       }
