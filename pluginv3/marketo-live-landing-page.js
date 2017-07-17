@@ -11,15 +11,15 @@ console.log("Landing Page > Script: Loaded");
  *
  **************************************************************************************/
 var URL_PATH = "m3-dev",
-devExtensionId = "dokkjhbgengdlccldgjnbilajdbjlnhm",
-prodExtensionId = "onibnnoghllldiecboelbpcaeggfiohl",
-extensionId = devExtensionId,
+
 mktoLiveDevMunchkinId = "685-BTN-772",
 mktoLiveProdMunchkinId = "185-NGX-811",
 mktoLiveMunchkinId = mktoLiveProdMunchkinId,
 
 numOfVerticals = 3,
 mockLeadEndpoint = "https://www.mockaroo.com/0799ab60/download?count=1&key=7d30cdf0",
+
+hostSplit = window.location.host.split("."),
 
 origCookie,
 
@@ -81,11 +81,7 @@ LPAGE.webRequest = function (url, params, method, async, responseType, callback)
           result = xmlHttp.response;
         }
       } else {
-        chrome.runtime.sendMessage(extensionId, {
-          action: "demoDataPage",
-          tabAction: "remove",
-          currUrl: window.location.href
-        });
+        window.location.href = window.location.protocol + "//www.marketolive.com/en/tools/auto-close";
       }
     }
   }
@@ -201,8 +197,7 @@ LPAGE.getNextWebPage = function (mockLeadEmail) {
   }
   
   function resetMunchkinCookie(munchkinId, cookieAnon, callback) {
-    var hostSplit = window.location.host.split("."),
-    currCookie = LPAGE.getCookie("_mkto_trk");
+    var currCookie = LPAGE.getCookie("_mkto_trk");
     
     if (currCookie
       && !origCookie) {
@@ -221,8 +216,7 @@ LPAGE.getNextWebPage = function (mockLeadEmail) {
   }
   
   function resetMasterMunchkinCookie(callback) {
-    var oneLoginUsername = LPAGE.getCookie("onelogin_username"),
-    hostSplit = window.location.host.split(".");
+    var oneLoginUsername = LPAGE.getCookie("onelogin_username");
     
     if (oneLoginUsername) {
       var email = "mktodemosvcs+" + oneLoginUsername + "@gmail.com";
@@ -279,7 +273,6 @@ LPAGE.getNextWebPage = function (mockLeadEmail) {
               usernameCookieName = "onelogin_username",
               firstNameCookieName = "onelogin_first_name",
               lastNameCookieName = "onelogin_last_name",
-              emailCookieName = "onelogin_email",
               jobTitleCookieName = "attrib_job_title",
               companyNameCookieName = "attrib_company_name",
               industryCookieName = "attrib_industry",
@@ -300,7 +293,6 @@ LPAGE.getNextWebPage = function (mockLeadEmail) {
                 
                 if (isMockLead == "true") {
                   form.onSuccess(function (values, followUpUrl) {
-                    //window.close();
                     window.location.href = window.location.origin + window.location.pathname + "?submit=" + submit + "&isMockLead=false" + "&utmTerm=" + utmTerm + "&utmMedium=" + utmMedium + "&utmCampaign=" + utmCampaign + "&mockLead=" + values.Email;
                     return false;
                   });
@@ -324,8 +316,7 @@ LPAGE.getNextWebPage = function (mockLeadEmail) {
                             Email: email
                           });
                         } else {
-                          window.close();
-                          return null;
+                          window.location.href = window.location.protocol + "//www.marketolive.com/en/tools/auto-close";
                         }
                       }
                       
@@ -496,7 +487,6 @@ LPAGE.getNextWebPage = function (mockLeadEmail) {
                   });
                 } else {
                   form.onSuccess(function (values, followUpUrl) {
-                    //window.close();
                     window.location.href = LPAGE.getNextWebPage();
                     return false;
                   });
@@ -510,8 +500,7 @@ LPAGE.getNextWebPage = function (mockLeadEmail) {
                         Email: email
                       });
                     } else {
-                      window.close();
-                      return null;
+                      window.location.href = window.location.protocol + "//www.marketolive.com/en/tools/auto-close";
                     }
                   }
                   
