@@ -16,7 +16,8 @@ var URL_PATH = "m3",
 HEAP_ANALYTICS_SCRIPT_LOCATION = "https://marketolive.com/" + URL_PATH + "/pluginv3/heap-analytics-ext.min.js",
 BACKGROUND_DATA_SCRIPT_LOCATION = "https://marketolive.com/" + URL_PATH + "/pluginv3/background-demo-data.min.js",
 
-mktoLiveInstances = "^(https://app-sjdemo1\.marketo\.com/|https://app-sjp\.marketo\.com/)",
+mktoLivePages = "^(https://app-.+\.marketo\.com/|https://.+\.marketodesigner\.com/|http(s)?://.*\.marketolive.com/)",
+mktoLiveInstances = "^https://app-(sjdemo1|sjp|sj11)\.marketo\.com/",
 mktoLiveDomainMatch = "http://www.marketolive.com/*",
 mktoLiveUriDomain = ".marketolive.com",
 mktoLiveClassicDomainMatch = "https://marketolive.com/*",
@@ -433,9 +434,10 @@ function createBasicNotification(notification, extensionId) {
       }
     ];
     
-    chrome.notifications.onButtonClicked.addListener(function (notificationId, buttonIndex) {
+    function buttonClicked(notificationId, buttonIndex) {
       if (notificationId == notification.id
          && buttonIndex == 0) {
+        
         switch (notification.action) {
         case "update":
           var url = "chrome://extensions";
@@ -447,16 +449,16 @@ function createBasicNotification(notification, extensionId) {
             url: url
           });
           break;
-        
+          
         case "enable":
           chrome.management.setEnabled(extensionId, true);
           chrome.notifications.clear(notificationId);
           break;
-        
+          
         case "uninstall":
           chrome.management.uninstall(extensionId);
           break;
-        
+          
         case "mktoLiveMessage":
           if (notification.buttonLink) {
             chrome.tabs.create({
@@ -470,13 +472,25 @@ function createBasicNotification(notification, extensionId) {
         if (notification.reload) {
           chrome.runtime.reload();
         }
-        
-        chrome.notifications.onButtonClicked.removeListener(this);
       }
-    });
+    }
+    
+    chrome.notifications.onButtonClicked.addListener(buttonClicked);
   }
   
+  function closedNotification(notificationId, byUser) {
+    if (notificationId == notification.id) {
+      chrome.notifications.onButtonClicked.removeListener(buttonClicked);
+      chrome.notifications.onClosed.removeListener(closedNotification);
+    }
+  }
+  
+  chrome.notifications.onClosed.addListener(closedNotification);
   chrome.notifications.create(notification.id, notify);
+}
+
+function getExtensionDetails() {
+  return chrome.app.getDetails();
 }
 
 function checkForOldExtension(extensionMinVersion) {
@@ -1051,6 +1065,14 @@ function checkMsgs(message, sender, sendResponse) {
     if (sender.url == oneLoginUrl) {
       setOneLoginCookies(message);
       console.log("Received: " + JSON.stringify(message));
+    }
+    break;
+  case "getExtensionDetails":
+    if (sender.url.search(mktoLivePages) != -1) {
+      var response = getExtensionDetails();
+      
+      sendResponse(response);
+      console.log("Received " + message.action + " Response: " + JSON.stringify(response));
     }
     break;
   case "checkExtensionVersion":
