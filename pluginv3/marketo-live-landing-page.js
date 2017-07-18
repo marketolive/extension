@@ -21,6 +21,7 @@ mockLeadEndpoint = "https://www.mockaroo.com/0799ab60/download?count=1&key=7d30c
 
 hostSplit = window.location.host.split("."),
 
+mktoLiveDomain,
 origCookie,
 
 LPAGE = LPAGE || {};
@@ -81,7 +82,7 @@ LPAGE.webRequest = function (url, params, method, async, responseType, callback)
           result = xmlHttp.response;
         }
       } else {
-        window.location.href = window.location.protocol + "//www.marketolive.com/en/tools/auto-close";
+        window.location.href = window.location.protocol + "//" + mktoLiveDomain + "/en/tools/auto-close";
       }
     }
   }
@@ -160,6 +161,12 @@ LPAGE.getNextWebPage = function (mockLeadEmail) {
  *  Main
  *
  **************************************************************************************/
+
+if (URL_PATH == "m3-dev") {
+  mktoLiveDomain = "dev.marketolive.com";
+} else {
+  mktoLiveDomain = "www.marketolive.com";
+}
 
 (function () {
   var didInit = false,
@@ -316,7 +323,7 @@ LPAGE.getNextWebPage = function (mockLeadEmail) {
                             Email: email
                           });
                         } else {
-                          window.location.href = window.location.protocol + "//www.marketolive.com/en/tools/auto-close";
+                          window.location.href = window.location.protocol + "//" + mktoLiveDomain + "/en/tools/auto-close";
                         }
                       }
                       
@@ -500,7 +507,7 @@ LPAGE.getNextWebPage = function (mockLeadEmail) {
                         Email: email
                       });
                     } else {
-                      window.location.href = window.location.protocol + "//www.marketolive.com/en/tools/auto-close";
+                      window.location.href = window.location.protocol + "//" + mktoLiveDomain + "/en/tools/auto-close";
                     }
                   }
                   
