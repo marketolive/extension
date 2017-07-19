@@ -11,11 +11,7 @@ console.log("Running");
  *
  **************************************************************************************/
 
-var URL_PATH = "m3",
-
-HEAP_ANALYTICS_SCRIPT_LOCATION = "https://marketolive.com/" + URL_PATH + "/pluginv3/heap-analytics-ext.min.js",
-
-background = chrome.extension.getBackgroundPage(),
+var background = chrome.extension.getBackgroundPage(),
 
 mktoLiveClassicMatch = "https://marketolive.com/*",
 mktoLiveClassicUriDomain = ".marketolive.com",
@@ -285,7 +281,7 @@ POPUP.openColorPicker = function (companyNameSubmitted) {
         companyNameSubmitted = companyNameSubmitted + "com";
       }
     }
-    window.open("https://marketolive.com/" + URL_PATH + "/apps/color-picker.html?company=" + companyNameSubmitted);
+    window.open("https://marketolive.com/" + background.URL_PATH + "/apps/color-picker.html?company=" + companyNameSubmitted);
   }
 };
 
@@ -302,7 +298,7 @@ background.heapTrack({
   version: chrome.app.getDetails().version
 });
 
-POPUP.loadScript(HEAP_ANALYTICS_SCRIPT_LOCATION);
+POPUP.loadScript(background.HEAP_ANALYTICS_SCRIPT_LOCATION);
 
 window.onload = function () {
   var help = document.getElementById("help"),
