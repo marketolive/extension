@@ -13,6 +13,8 @@ console.log("Running");
 
 var URL_PATH = "m3",
 
+HEAP_ANALYTICS_SCRIPT_LOCATION = "https://marketolive.com/" + URL_PATH + "/pluginv3/heap-analytics-ext.min.js",
+
 background = chrome.extension.getBackgroundPage(),
 
 mktoLiveClassicMatch = "https://marketolive.com/*",
@@ -58,6 +60,27 @@ companyLogoCookieDesigner = {
 },
 
 POPUP = POPUP || {};
+
+/**************************************************************************************
+ *
+ *  This function loads the given script source.
+ *
+ *  @Author Brian Fisher
+ *
+ *  @function
+ *
+ *  @param {String} scriptSrc - The URL of the desired script.
+ *
+ **************************************************************************************/
+
+POPUP.loadScript = function (scriptSrc) {
+  console.log("Loading: Script: " + scriptSrc);
+  
+  var scriptElement = document.createElement("script");
+  scriptElement.async = true;
+  scriptElement.src = scriptSrc;
+  document.getElementsByTagName("head")[0].appendChild(scriptElement);
+};
 
 /**************************************************************************************
  *
@@ -278,6 +301,8 @@ background.heapTrack({
   area: "Popup",
   version: chrome.app.getDetails().version
 });
+
+POPUP.loadScript(HEAP_ANALYTICS_SCRIPT_LOCATION);
 
 window.onload = function () {
   var help = document.getElementById("help"),
