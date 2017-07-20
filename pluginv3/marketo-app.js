@@ -283,10 +283,10 @@ APP.sendMktoMessage = function (accountString, roleName, mktoUserId) {
     notify: "Now you can quickly capture ad targeting images or demo ad targeting live for:\n\nGoogle Search, Facebook, LinkedIn",
     requireInteraction: true,
     buttonTitle: "                        Learn More -->",
-    buttonLink: "https://marketoemployee.jiveon.com/videos/2842",
+    buttonLink: "http://www.marketolive.com/en/learn/videos",
     startDate: "",
-    endDate: "07-12-2017",
-    numOfTimesPerDay: 2
+    endDate: "07-27-2017",
+    numOfTimesPerDay: 1
   },
   userWorkspaceMsg = {
     action: "mktoLiveMessage",
@@ -311,7 +311,7 @@ APP.sendMktoMessage = function (accountString, roleName, mktoUserId) {
     numOfTimesPerDay: 1
   };
   
-  chrome.runtime.sendMessage(extensionId, extensionUpdateMsg);
+  chrome.runtime.sendMessage(extensionId, adTargetingMsg);
   
   /*
   if (accountString == mktoAccountStringMaster) {
