@@ -490,8 +490,9 @@ webRequest('https://marketolive.com/' + URL_PATH + '/pluginv3/data/' + currVerti
             var utm = JSON.parse(response),
             utmTermX = utm.terms[Math.floor(Math.random() * utm.terms.length)],
             utmMediumX = utm.mediums[Math.floor(Math.random() * utm.mediums.length)],
-            utmCampaignX = utm.campaigns[Math.floor(Math.random() * utm.campaigns.length)];
-            params = params + "&utmTerm=" + encodeURIComponent(utmTermX) + "&utmMedium=" + encodeURIComponent(utmMediumX) + "&utmCampaign=" + encodeURIComponent(utmCampaignX);
+            utmCampaignX = utm.campaigns[Math.floor(Math.random() * utm.campaigns.length)],
+            utmSourceX = utm.sources[Math.floor(Math.random() * utm.sources.length)];
+            params = params + "&utmTerm=" + encodeURIComponent(utmTermX) + "&utmMedium=" + encodeURIComponent(utmMediumX) + "&utmCampaign=" + encodeURIComponent(utmCampaignX) + "&utmSource=" + encodeURIComponent(utmSourceX);
           });
         } else {
           params = "submit=false&isMockLead=true";
