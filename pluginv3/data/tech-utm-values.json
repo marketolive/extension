@@ -25,5 +25,13 @@
     "CPC",
     "CPM",
     "CPA"
+  ],
+  "sources": [
+    "Demand-Side Platform",
+    "Facebook Lead Ads",
+    "Facebook News Feed Ads",
+    "Google AdWords",
+    "Google Display Ads",
+    "LinkedIn Lead Ads"
   ]
 }
