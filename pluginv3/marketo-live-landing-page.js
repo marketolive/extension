@@ -168,6 +168,10 @@ if (URL_PATH == "m3-dev") {
   mktoLiveDomain = "www.marketolive.com";
 }
 
+if (!origCookie) {
+  origCookie = getCookie("_mkto_trk");
+}
+
 (function () {
   var didInit = false,
   s,
@@ -204,13 +208,6 @@ if (URL_PATH == "m3-dev") {
   }
   
   function resetMunchkinCookie(munchkinId, cookieAnon, callback) {
-    var currCookie = LPAGE.getCookie("_mkto_trk");
-    
-    if (currCookie
-      && !origCookie) {
-      origCookie = currCookie;
-    }
-    
     document.cookie = "_mkto_trk=;domain=." + hostSplit[hostSplit.length - 2] + "." + hostSplit[hostSplit.length - 1] + ";path=/;expires=Thu, 01 Jan 1970 00:00:01 GMT";
     console.log("Removed > Cookie: _mkto_trk");
     
