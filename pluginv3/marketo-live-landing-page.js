@@ -694,23 +694,16 @@ if (URL_PATH == "m3-dev") {
                       Munchkin.munchkinFunction("associateLead", {
                         Email: mockLeadX.email
                       }, sha1("123123123" + mockLeadX.email), function () {
-                        console.log("Posting > Mock Lead > Visit Web Page: " + mockLeadX.email + " : " + window.location.pathname);
-                        
-                        overloadMunchkinFunction();
-                        Munchkin.munchkinFunction("visitWebPage", {
-                          url: window.location.pathname
-                        }, null, function () {
-                          resetMasterMunchkinCookie(function () {
-                            console.log("Posting > Real Lead > Visit Web Page: " + window.location.pathname);
-                            
-                            overloadMunchkinFunction();
-                            Munchkin.munchkinFunction("visitWebPage", {
-                              url: window.location.pathname
-                            }, null, function () {
-                              window.setTimeout(function () {
-                                window.location.href = LPAGE.getNextWebPage(mockLeadX.email);
-                              }, 1000);
-                            });
+                        resetMasterMunchkinCookie(function () {
+                          console.log("Posting > Real Lead > Visit Web Page: " + window.location.pathname);
+                          
+                          overloadMunchkinFunction();
+                          Munchkin.munchkinFunction("visitWebPage", {
+                            url: window.location.pathname
+                          }, null, function () {
+                            window.setTimeout(function () {
+                              window.location.href = LPAGE.getNextWebPage(mockLeadX.email);
+                            }, 1000);
                           });
                         });
                       });
