@@ -169,7 +169,7 @@ if (URL_PATH == "m3-dev") {
 }
 
 if (!origCookie) {
-  origCookie = getCookie("_mkto_trk");
+  origCookie = LPAGE.getCookie("_mkto_trk");
 }
 
 (function () {
