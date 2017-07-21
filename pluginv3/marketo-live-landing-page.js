@@ -169,6 +169,10 @@ if (URL_PATH == "m3-dev") {
   mktoLiveDomain = "www.marketolive.com";
 }
 
+if (!origCookie) {
+  origCookie = getCookie("_mkto_trk");
+}
+
 (function () {
   var didInit = false,
   s,
@@ -205,13 +209,6 @@ if (URL_PATH == "m3-dev") {
   }
   
   function resetMunchkinCookie(munchkinId, cookieAnon, callback) {
-    var currCookie = LPAGE.getCookie("_mkto_trk");
-    
-    if (currCookie
-      && !origCookie) {
-      origCookie = currCookie;
-    }
-    
     document.cookie = "_mkto_trk=;domain=." + hostSplit[hostSplit.length - 2] + "." + hostSplit[hostSplit.length - 1] + ";path=/;expires=Thu, 01 Jan 1970 00:00:01 GMT";
     console.log("Removed > Cookie: _mkto_trk");
     
@@ -259,14 +256,7 @@ if (URL_PATH == "m3-dev") {
   }
   
   function submitLeadData() {
-    var cookieAnon = LPAGE.getUrlParam("submit");
-    
-    if (cookieAnon == "true"
-       || cookieAnon == "test") {
-      cookieAnon = true;
-    } else {
-      cookieAnon = false;
-    }
+    var cookieAnon = true;
     
     resetMunchkinCookie(mktoLiveMunchkinId, cookieAnon, function () {
       var isMktoForm = window.setInterval(function () {
@@ -493,6 +483,10 @@ if (URL_PATH == "m3-dev") {
                         });
                       }
                     }
+                    
+                    if (submit == "true") {
+                      form.submit();
+                    }
                   });
                 } else {
                   form.onSuccess(function (values, followUpUrl) {
@@ -676,47 +670,23 @@ if (URL_PATH == "m3-dev") {
                       unsubscribedToAll: answer
                     });
                   }
-                }
-                
-                //console.log(JSON.stringify(form.vals(), null, 2));
-                if (submit == "true") {
-                  form.submit();
+                  
+                  if (submit == "true") {
+                    form.submit();
+                  }
                 }
               } else if (submit == "false") {
-                LPAGE.webRequest(mockLeadEndpoint, null, 'GET', true, 'json', function (response) {
-                  var mockLeadX = JSON.parse(response);
+                resetMasterMunchkinCookie(function () {
+                  console.log("Posting > Real Lead > Visit Web Page: " + window.location.pathname);
                   
-                  if (mockLeadX
-                     && mockLeadX.email) {
+                  overloadMunchkinFunction();
+                  Munchkin.munchkinFunction("visitWebPage", {
+                    url: window.location.pathname
+                  }, null, function () {
                     window.setTimeout(function () {
-                      console.log("Associating > Mock Lead: " + mockLeadX.email);
-                      
-                      overloadMunchkinFunction();
-                      Munchkin.munchkinFunction("associateLead", {
-                        Email: mockLeadX.email
-                      }, sha1("123123123" + mockLeadX.email), function () {
-                        console.log("Posting > Mock Lead > Visit Web Page: " + mockLeadX.email + " : " + window.location.pathname);
-                        
-                        overloadMunchkinFunction();
-                        Munchkin.munchkinFunction("visitWebPage", {
-                          url: window.location.pathname
-                        }, null, function () {
-                          resetMasterMunchkinCookie(function () {
-                            console.log("Posting > Real Lead > Visit Web Page: " + window.location.pathname);
-                            
-                            overloadMunchkinFunction();
-                            Munchkin.munchkinFunction("visitWebPage", {
-                              url: window.location.pathname
-                            }, null, function () {
-                              window.setTimeout(function () {
-                                window.location.href = LPAGE.getNextWebPage(mockLeadX.email);
-                              }, 1000);
-                            });
-                          });
-                        });
-                      });
+                      window.location.href = LPAGE.getNextWebPage();
                     }, 1000);
-                  }
+                  });
                 });
               }
             });
