@@ -258,14 +258,7 @@ if (URL_PATH == "m3-dev") {
   }
   
   function submitLeadData() {
-    var cookieAnon = LPAGE.getUrlParam("submit");
-    
-    if (cookieAnon == "true"
-       || cookieAnon == "test") {
-      cookieAnon = true;
-    } else {
-      cookieAnon = true;
-    }
+    var cookieAnon = true;
     
     resetMunchkinCookie(mktoLiveMunchkinId, cookieAnon, function () {
       var isMktoForm = window.setInterval(function () {
