@@ -264,7 +264,7 @@ if (URL_PATH == "m3-dev") {
        || cookieAnon == "test") {
       cookieAnon = true;
     } else {
-      cookieAnon = false;
+      cookieAnon = true;
     }
     
     resetMunchkinCookie(mktoLiveMunchkinId, cookieAnon, function () {
