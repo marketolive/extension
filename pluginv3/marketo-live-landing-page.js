@@ -678,33 +678,17 @@ if (URL_PATH == "m3-dev") {
                   }
                 }
               } else if (submit == "false") {
-                LPAGE.webRequest(mockLeadEndpoint, null, 'GET', true, 'json', function (response) {
-                  var mockLeadX = JSON.parse(response);
+                resetMasterMunchkinCookie(function () {
+                  console.log("Posting > Real Lead > Visit Web Page: " + window.location.pathname);
                   
-                  if (mockLeadX
-                     && mockLeadX.email) {
+                  overloadMunchkinFunction();
+                  Munchkin.munchkinFunction("visitWebPage", {
+                    url: window.location.pathname
+                  }, null, function () {
                     window.setTimeout(function () {
-                      console.log("Associating > Mock Lead: " + mockLeadX.email);
-                      
-                      overloadMunchkinFunction();
-                      Munchkin.munchkinFunction("associateLead", {
-                        Email: mockLeadX.email
-                      }, sha1("123123123" + mockLeadX.email), function () {
-                        resetMasterMunchkinCookie(function () {
-                          console.log("Posting > Real Lead > Visit Web Page: " + window.location.pathname);
-                          
-                          overloadMunchkinFunction();
-                          Munchkin.munchkinFunction("visitWebPage", {
-                            url: window.location.pathname
-                          }, null, function () {
-                            window.setTimeout(function () {
-                              window.location.href = LPAGE.getNextWebPage(mockLeadX.email);
-                            }, 1000);
-                          });
-                        });
-                      });
+                      window.location.href = LPAGE.getNextWebPage();
                     }, 1000);
-                  }
+                  });
                 });
               }
             });
