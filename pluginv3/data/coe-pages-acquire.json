@@ -100,5 +100,77 @@
     "formid": 1314,
     "lpId": 1362,
     "conversionRate": 0.5
+  },
+  {
+    "type": "landing",
+    "url": "http://pages.marketolive.com/trust-radius-acquire.html",
+    "lpUrl": "http://na-sjdemo1.marketo.com/lp/185-NGX-811/trust-radius-acquire.html",
+    "formid": 1314,
+    "lpId": 2064,
+    "conversionRate": 0.5
+  },
+  {
+    "type": "landing",
+    "url": "http://pages.marketolive.com/testimonial-postcards-acquire.html",
+    "lpUrl": "http://na-sjdemo1.marketo.com/lp/185-NGX-811/testimonial-postcards-acquire.html",
+    "formid": 1314,
+    "lpId": 2066,
+    "conversionRate": 0.5
+  },
+  {
+    "type": "landing",
+    "url": "http://pages.marketolive.com/news-and-updates-acquire.html",
+    "lpUrl": "http://na-sjdemo1.marketo.com/lp/185-NGX-811/news-and-updates-acquire.html",
+    "formid": 1314,
+    "lpId": 2068,
+    "conversionRate": 0.5
+  },
+  {
+    "type": "landing",
+    "url": "http://pages.marketolive.com/list-import-acquire.html",
+    "lpUrl": "http://na-sjdemo1.marketo.com/lp/185-NGX-811/list-import-acquire.html",
+    "formid": 1314,
+    "lpId": 2070,
+    "conversionRate": 0.5
+  },
+  {
+    "type": "landing",
+    "url": "http://pages.marketolive.com/marketing-push-notifications-acquire.html",
+    "lpUrl": "http://na-sjdemo1.marketo.com/lp/185-NGX-811/marketing-push-notifications-acquire.html",
+    "formid": 1314,
+    "lpId": 2072,
+    "conversionRate": 0.5
+  },
+  {
+    "type": "landing",
+    "url": "http://pages.marketolive.com/paid-google-search-terms-acquire.html",
+    "lpUrl": "http://na-sjdemo1.marketo.com/lp/185-NGX-811/paid-google-search-terms-acquire.html",
+    "formid": 1314,
+    "lpId": 2076,
+    "conversionRate": 0.5
+  },
+  {
+    "type": "landing",
+    "url": "http://pages.marketolive.com/inbound-links-referrer-acquire.html",
+    "lpUrl": "http://na-sjdemo1.marketo.com/lp/185-NGX-811/inbound-links-referrer-acquire.html",
+    "formid": 1314,
+    "lpId": 2078,
+    "conversionRate": 0.5
+  },
+  {
+    "type": "landing",
+    "url": "http://pages.marketolive.com/marketing-cloud-solutions-acquire.html",
+    "lpUrl": "http://na-sjdemo1.marketo.com/lp/185-NGX-811/marketing-cloud-solutions-acquire.html",
+    "formid": 1314,
+    "lpId": 2080,
+    "conversionRate": 0.5
+  },
+  {
+    "type": "landing",
+    "url": "http://pages.marketolive.com/customer-case-studies-acquire.html",
+    "lpUrl": "http://na-sjdemo1.marketo.com/lp/185-NGX-811/customer-case-studies-acquire.html",
+    "formid": 1314,
+    "lpId": 2082,
+    "conversionRate": 0.5
   }
 ]
