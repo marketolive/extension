@@ -492,6 +492,10 @@ if (URL_PATH == "m3-dev") {
                         });
                       }
                     }
+                    
+                    if (submit == "true") {
+                      form.submit();
+                    }
                   });
                 } else {
                   form.onSuccess(function (values, followUpUrl) {
@@ -675,11 +679,10 @@ if (URL_PATH == "m3-dev") {
                       unsubscribedToAll: answer
                     });
                   }
-                }
-                
-                //console.log(JSON.stringify(form.vals(), null, 2));
-                if (submit == "true") {
-                  form.submit();
+                  
+                  if (submit == "true") {
+                    form.submit();
+                  }
                 }
               } else if (submit == "false") {
                 LPAGE.webRequest(mockLeadEndpoint, null, 'GET', true, 'json', function (response) {
