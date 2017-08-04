@@ -326,7 +326,7 @@ APP.sendMktoMessage = function (accountString, roleName, mktoUserId) {
     action: "mktoLiveMessage",
     id: "emailInsightsMsg",
     title: "Email Insights Not Working",
-    notify: "There is a known issue with Email Insights not displaying data after 07/15/17 and is affecting many instances, including this instance.\n\nIn the meantime I have deep linked it's tile and menu item to our Email Insights demo app and is also linked below.",
+    notify: "There is a known issue with Email Insights not displaying data after 07/15/17.\n\nAs a fix, I have deep linked it's tile and menu item to our Email Insights demo app.",
     requireInteraction: true,
     buttonTitle: "                        Email Insights Demo App -->",
     buttonLink: "http://www.marketolive.com/en/analytics/email-insights-summit-demo-1",
