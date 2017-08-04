@@ -551,7 +551,7 @@ function checkForBadExtension() {
           reload: false
         };
         
-        addCheckBadExtensionMsgListener({
+        addAsyncExternalMsgListener({
           isValidExtension: false
         });
         
@@ -572,11 +572,11 @@ function checkForBadExtension() {
           badExtensionName: extension.name
         });
         
-        break;
+        return;
       }
     }
     
-    addCheckBadExtensionMsgListener({
+    addAsyncExternalMsgListener({
       isValidExtension: true
     });
   });
@@ -1047,16 +1047,17 @@ function mktoLiveMessage(message) {
   }
 }
 
-function addCheckBadExtensionMsgListener(response) {
+function addAsyncExternalMsgListener(response) {
   chrome.runtime.onMessageExternal.addListener(function (message, sender, sendResponse) {
     switch (message.action) {
     case "checkBadExtension":
       sendResponse(response);
       console.log("Received " + message.action + " Response: " + JSON.stringify(response));
       break;
-    };
-    console.log("Added checkBadExtension Message Listener");
+    }
   });
+  
+  console.log("Added Async External Message Listener");
 }
 
 function checkMsgs(message, sender, sendResponse) {

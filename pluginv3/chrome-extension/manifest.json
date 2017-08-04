@@ -75,6 +75,26 @@
     {
       "all_frames": false,
       "js": [
+        "content/tout-app.js"
+      ],
+      "run_at": "document_end",
+      "matches": [
+        "*://toutapp.com/*"
+      ]
+    },
+    {
+      "all_frames": false,
+      "js": [
+        "content/gmail.js"
+      ],
+      "run_at": "document_end",
+      "matches": [
+        "*://mail.google.com/*"
+      ]
+    },
+    {
+      "all_frames": false,
+      "js": [
         "content/google-search-ad.js"
       ],
       "run_at": "document_end",
@@ -132,7 +152,8 @@
       "https://sjrcademo1.marketo.com/*",
       "https://sjrca02.marketo.com/*",
       "https://seo.marketo.com/*",
-      "https://250ok.com/*"
+      "https://250ok.com/*",
+      "https://toutapp.com/*"
     ]
   },
   "icons": {

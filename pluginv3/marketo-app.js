@@ -309,9 +309,39 @@ APP.sendMktoMessage = function (accountString, roleName, mktoUserId) {
     startDate: "",
     endDate: "07-19-2017",
     numOfTimesPerDay: 1
+  },
+  changePasswordMsg = {
+    action: "mktoLiveMessage",
+    id: "changePasswordMsg",
+    title: "MANDATORY: Change Your Password",
+    notify: "As per IT security policy, passwords must expire every 60 days. Please change your password before August 18th.",
+    requireInteraction: true,
+    buttonTitle: "                        Change Your Password -->",
+    buttonLink: "https://app-sjdemo1.marketo.com/#MC0A1",
+    startDate: "",
+    endDate: "08-17-2017",
+    numOfTimesPerDay: 1
+  },
+  issueMsg = {
+    action: "mktoLiveMessage",
+    id: "emailInsightsMsg",
+    title: "Email Insights Not Working",
+    notify: "There is a known issue with Email Insights not displaying data after 07/15/17.\n\nAs a fix, I have deep linked it's tile and menu item to our Email Insights demo app.",
+    requireInteraction: true,
+    buttonTitle: "                        Email Insights Demo App -->",
+    buttonLink: "http://www.marketolive.com/en/analytics/email-insights-summit-demo-1",
+    startDate: "",
+    endDate: "08-09-2017",
+    numOfTimesPerDay: 1
   };
   
-  chrome.runtime.sendMessage(extensionId, adTargetingMsg);
+  chrome.runtime.sendMessage(extensionId, issueMsg);
+  
+  /*
+  if (accountString == mktoAccountStringMaster) {
+    chrome.runtime.sendMessage(extensionId, changePasswordMsg);
+  }
+  */
   
   /*
   if (accountString == mktoAccountStringMaster) {
@@ -9698,7 +9728,7 @@ var isMktPageApp = window.setInterval(function () {
               APP.validateDemoExtensionCheck(response.isValidExtension);
               if (accountString == mktoAccountStringMaster) {
                 APP.overrideSuperballMenuItems(response.isValidExtension);
-                restoreEmailInsights = true;
+                //restoreEmailInsights = true;
                 if (currUrlFragment
                    && currUrlFragment == mktoMyMarketoFragment) {
                   APP.overrideHomeTiles(response.isValidExtension);
