@@ -62,6 +62,7 @@ var isMktPageDashboards = window.setInterval(function () {
       
       if (accountString == mktoAccountStringMaster) {
         DASHBOARD.loadScript(PROGRAM_ANALYZER);
+        DASHBOARD.loadScript(SOCIAL_APP);
       } else {
         DASHBOARD.loadScript(PROGRAM_ANALYZER);
         DASHBOARD.loadScript(NURTURE_PROGRAM);
