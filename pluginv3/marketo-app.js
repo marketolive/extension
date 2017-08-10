@@ -1353,83 +1353,86 @@ APP.overrideAnalyticsTiles = function () {
             if (tiles[ii]
                && tiles[ii].outerHTML
                && tiles[ii].textContent) {
-              var currTileHTML = tiles[ii].outerHTML;
+              var tileHTML = tiles[ii].outerHTML;
               
               switch (tiles[ii].textContent) {
               case "Email Performance":
-                tiles[ii].outerHTML = '<a href="/#' + mktoEmailPerformanceReport + '">' + currTileHTML + '</a>';
+                tiles[ii].outerHTML = '<a href="/#' + mktoEmailPerformanceReport + '">' + tileHTML + '</a>';
                 break;
                 
               case "People Performance":
-                tiles[ii].outerHTML = '<a href="/#' + mktoPeoplePerformanceReport + '">' + currTileHTML + '</a>';
+                tiles[ii].outerHTML = '<a href="/#' + mktoPeoplePerformanceReport + '">' + tileHTML + '</a>';
                 break;
                 
               case "Web Page Activity":
-                tiles[ii].outerHTML = '<a href="/#' + mktoWebPageActivityReport + '">' + currTileHTML + '</a>';
+                tiles[ii].outerHTML = '<a href="/#' + mktoWebPageActivityReport + '">' + tileHTML + '</a>';
                 break;
                 
               case "Opportunity Influence Analyzer":
-                tiles[ii].outerHTML = '<a href="/#' + mktoOpportunityInfluenceAnalyzer + '">' + currTileHTML + '</a>';
+                tiles[ii].outerHTML = '<a href="/#' + mktoOpportunityInfluenceAnalyzer + '">' + tileHTML + '</a>';
                 break;
                 
               case "Program Analyzer":
-                tiles[ii].outerHTML = '<a href="/#' + mktoProgramAnalyzer + '">' + currTileHTML + '</a>';
+                tiles[ii].outerHTML = '<a href="/#' + mktoProgramAnalyzer + '">' + tileHTML + '</a>';
                 break;
                 
               case "Success Path Analyzer":
-                tiles[ii].outerHTML = '<a href="/#' + mktoSuccessPathAnalyzer + '">' + currTileHTML + '</a>';
+                tiles[ii].outerHTML = '<a href="/#' + mktoSuccessPathAnalyzer + '">' + tileHTML + '</a>';
                 break;
                 
               case "Marketing Performance Insights":
-                tiles[ii].outerHTML = '<a href="' + mktoMarketingPerformanceInsights + '">' + currTileHTML + '</a>';
+                if (MktPage.savedState.custPrefix != mktoAccountStringMaster) {
+                  var hrefMatch = new RegExp(' href=\"[^\"]*\" ', 'g');
+                  tiles[ii].outerHTML = tileHTML.replace(hrefMatch, ' href=\"' + mktoMarketingPerformanceInsights + '\" ');
+                }
                 marketingPerformanceInsightsTileExists = true;
                 break;
                 
               case "Revenue Explorer":
-                //tiles[ii].outerHTML = '<a href="/#' +  + '">' + currTileHTML + '</a>';
+                //tiles[ii].outerHTML = '<a href="/#' +  + '">' + tileHTML + '</a>';
                 break;
                 
               case "Email Insights":
                 if (!restoreEmailInsights) {
                   var hrefMatch = new RegExp(' href=\"[^\"]*\" ', 'g');
-                  tiles[ii].outerHTML = currTileHTML.replace(hrefMatch, ' href=\"' + mktoEmailInsightsLink + '\" ');
+                  tiles[ii].outerHTML = tileHTML.replace(hrefMatch, ' href=\"' + mktoEmailInsightsLink + '\" ');
                 }
                 break;
                 
               case "Engagement Stream Performance":
-                tiles[ii].outerHTML = '<a href="/#' + mktoEngagmentStreamPerformaceReport + '">' + currTileHTML + '</a>';
+                tiles[ii].outerHTML = '<a href="/#' + mktoEngagmentStreamPerformaceReport + '">' + tileHTML + '</a>';
                 break;
                 
               case "Program Performance":
-                tiles[ii].outerHTML = '<a href="/#' + mktoProgramPerformanceReport + '">' + currTileHTML + '</a>';
+                tiles[ii].outerHTML = '<a href="/#' + mktoProgramPerformanceReport + '">' + tileHTML + '</a>';
                 break;
                 
               case "Email Link Performance":
-                tiles[ii].outerHTML = '<a href="/#' + mktoEmailLinkPerformanceReport + '">' + currTileHTML + '</a>';
+                tiles[ii].outerHTML = '<a href="/#' + mktoEmailLinkPerformanceReport + '">' + tileHTML + '</a>';
                 break;
                 
               case "Social Influence":
-                //tiles[ii].outerHTML = '<a href="/#' +  + '">' + currTileHTML + '</a>';
+                //tiles[ii].outerHTML = '<a href="/#' +  + '">' + tileHTML + '</a>';
                 break;
                 
               case "People By Revenue Stage":
-                tiles[ii].outerHTML = '<a href="/#' + mktoPeopleByRevenueStageReport + '">' + currTileHTML + '</a>';
+                tiles[ii].outerHTML = '<a href="/#' + mktoPeopleByRevenueStageReport + '">' + tileHTML + '</a>';
                 break;
                 
               case "Landing Page Performance":
-                tiles[ii].outerHTML = '<a href="/#' + mktoLandingPagePerformanceReport + '">' + currTileHTML + '</a>';
+                tiles[ii].outerHTML = '<a href="/#' + mktoLandingPagePerformanceReport + '">' + tileHTML + '</a>';
                 break;
                 
               case "People By Status":
-                tiles[ii].outerHTML = '<a href="/#' + mktoPeopleByStatusReport + '">' + currTileHTML + '</a>';
+                tiles[ii].outerHTML = '<a href="/#' + mktoPeopleByStatusReport + '">' + tileHTML + '</a>';
                 break;
                 
               case "Company Web Activity":
-                tiles[ii].outerHTML = '<a href="/#' + mktoCompanyWebActivityReport + '">' + currTileHTML + '</a>';
+                tiles[ii].outerHTML = '<a href="/#' + mktoCompanyWebActivityReport + '">' + tileHTML + '</a>';
                 break;
                 
               case "Sales Insight Email Performance":
-                tiles[ii].outerHTML = '<a href="/#' + mktoSalesInsightEmailPerformanceReport + '">' + currTileHTML + '</a>';
+                tiles[ii].outerHTML = '<a href="/#' + mktoSalesInsightEmailPerformanceReport + '">' + tileHTML + '</a>';
                 break;
               }
             }
