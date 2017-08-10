@@ -1312,7 +1312,7 @@ APP.overrideSuperballMenuItems = function (restoreEmailInsightsMenuItem) {
 APP.overrideAnalyticsTiles = function () {
   console.log("Marketo App > Overriding: Analytics Tiles");
   
-  var isAnalyticsTiles = window.setInterval(function () {
+  var isAnalyticsHomeTiles = window.setInterval(function () {
       if (typeof(MktCanvas) !== "undefined"
          && MktCanvas
          && MktCanvas.getActiveTab()
@@ -1323,7 +1323,7 @@ APP.overrideAnalyticsTiles = function () {
          && MktPage
          && MktPage.savedState
          && MktPage.savedState.custPrefix) {
-        window.clearInterval(isAnalyticsTiles);
+        window.clearInterval(isAnalyticsHomeTiles);
         
         if (MktPage.savedState.custPrefix.search(mktoAccountStringsMatch) != -1
            && MktCanvas.getActiveTab().config.mkt3XType == "analyticsHome"
