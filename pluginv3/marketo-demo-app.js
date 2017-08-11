@@ -14,7 +14,7 @@ console.log("Marketo Demo App > Running");
 var mktoMyMarketoFragment = "MM0A1",
 mktoMarketingPerformanceInsights = "https://marketo.invisionapp.com/share/52C0GAGD4#",
 mktoEmailInsightsLink = "http://www.marketolive.com/en/analytics/email-insights-summit-demo-1",
-mktoEmailDeliverabilityToolsLink = "https://250ok.com/login",
+mktoEmailDeliverabilityToolsLink = "https://250ok.com/login?submit=true",
 
 mktoAnalyticsFragmentMatch = new RegExp("^(AR[^!]+!|RCM[^!]+!)$", "i"),
 mktoAnalyticsHomeFragment = "AH0A1ZN",
