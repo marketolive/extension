@@ -17,7 +17,7 @@ MARKETO_LIVE_LANDING_PAGE = "https://marketolive.com/" + URL_PATH + "/pluginv3/m
 
 mktoLiveProdLandingPageDomain = "http://pages\.marketolive\.com",
 mktoLiveDevLandingPageDomain = "http://dev\.pages\.marketolive\.com",
-mktoLiveLandingPageHostsMatch = "http://na-sjdemo1.marketo.com",
+mktoLiveLandingPageHostsMatch = "http://na-sjdemo1\.marketo\.com",
 mktoLiveDevMunchkinId = "685-BTN-772",
 mktoLiveProdMunchkinId = "185-NGX-811",
 mktoLiveMunchkinIdsMatch = "(" + mktoLiveProdMunchkinId + "|" + mktoLiveDevMunchkinId + ")",
