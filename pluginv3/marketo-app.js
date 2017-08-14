@@ -301,13 +301,13 @@ APP.sendMktoMessage = function (accountString, roleName, mktoUserId) {
   extensionUpdateMsg = {
     action: "mktoLiveMessage",
     id: "extensionUpdate",
-    title: "Coming Soon: Extension v5.1.6",
+    title: "Coming Soon: Extension v5.2.0",
     notify: "Within the next day or two your extension will automatically update and be disabled due to new permissions being requested. Approve the new permission by re-enabling the extension.",
     requireInteraction: true,
     buttonTitle: "                        How to Re-enable the Extension -->",
     buttonLink: "http://www.marketolive.com/en/update/extension-update",
     startDate: "",
-    endDate: "07-19-2017",
+    endDate: "08-16-2017",
     numOfTimesPerDay: 1
   },
   changePasswordMsg = {
@@ -335,7 +335,7 @@ APP.sendMktoMessage = function (accountString, roleName, mktoUserId) {
     numOfTimesPerDay: 1
   };
   
-  chrome.runtime.sendMessage(extensionId, issueMsg);
+  chrome.runtime.sendMessage(extensionId, extensionUpdateMsg);
   
   /*
   if (accountString == mktoAccountStringMaster) {
