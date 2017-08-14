@@ -182,6 +182,7 @@
     "*://verticals.marketolive.com/*",
     "*://dev.verticals.marketolive.com/*",
     "*://250ok.com/*",
+    "*://toutapp.com/*",
     "*://marketo.invisionapp.com/*",
     "*://marketo.onelogin.com/*",
     "*://www.google.com.au/search?dynamicAd=true&*",
@@ -205,5 +206,5 @@
   "author": "Marketo Demo Services",
   "name": "MarketoLive",
   "description": "This extension is for Marketo employees and partners who have access to the MarketoLive demo environment.",
-  "version": "5.1.7"
+  "version": "5.2.0"
 }
