@@ -48,4 +48,4 @@ TOUT.removeToolbarButtons = function () {
  *
  **************************************************************************************/
 
-TOUT.removeToolbarButtons();
+//TOUT.removeToolbarButtons();

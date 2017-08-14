@@ -48,6 +48,6 @@ APP.removeToutAppBanner = function () {
  *
  **************************************************************************************/
 
-window.onload = function () {
+window.addEventListener("load", function () {
   APP.removeToutAppBanner();
-};
+});
