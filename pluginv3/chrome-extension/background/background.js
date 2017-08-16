@@ -465,6 +465,13 @@ function createBasicNotification(notification, extensionId) {
               url: notification.buttonLink
             });
           }
+          heapTrack({
+            name: "Clicked Notification Button",
+            notificationTitle: notification.title, 
+            app: "Extension",
+            area: "Background",
+            version: chrome.app.getDetails().version
+          });
           chrome.notifications.clear(notificationId);
           break;
         }

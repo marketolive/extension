@@ -9740,7 +9740,7 @@ var isMktPageApp = window.setInterval(function () {
               console.log("Marketo App > checkBadExtension Msg > Response: " + JSON.stringify(response));
             } else {
               if (!response) {
-                APP.validateDemoExtensionCheck(false);
+                APP.validateDemoExtensionCheck(true);
               } else {
                 APP.validateDemoExtensionCheck(false);
               }
@@ -9751,7 +9751,7 @@ var isMktPageApp = window.setInterval(function () {
           });
         } else {
           if (!response) {
-            APP.validateDemoExtensionCheck(false);
+            APP.validateDemoExtensionCheck(true);
           } else {
             APP.validateDemoExtensionCheck(false);
           }
