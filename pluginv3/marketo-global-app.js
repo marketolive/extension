@@ -21,7 +21,7 @@ DASHBOARD_DATA = "https://marketolive.com/" + URL_PATH + "/pluginv3/marketo-dash
 HEAP_ANALYTICS = "https://marketolive.com/" + URL_PATH + "/pluginv3/heap-analytics.min.js",
 HEAP_ANALYTICS_DEMO = "https://marketolive.com/" + URL_PATH + "/pluginv3/heap-analytics-demo.min.js",
 
-mktoDemoAccountMatch = "^(scdynamics1|mktodemoaccount3[0-9][0-9]|mktodemoaccount232|mktodemoaccount264|mktodemoinfor01)$",
+mktoDemoAccountMatch = "^(mktodemoaccount3[0-9][0-9]|mktodemoaccount134|mktodemoaccount232|mktodemoaccount264|scdynamics1|mktodemoinfor01)$",
 mktoAccountStringsMatch106 = "^(mktodemoaccount106|mktodemoaccount106d)$",
 mktoAccountStringsMatchMasterAnd106 = "^(mktodemolivemaster|mktodemoaccount106|mktodemoaccount106d)$",
 mktoAccountStringsMatchMasterAnd106AndQe = "^(mktodemolivemaster|mktodemoaccount106|mktodemoaccount106d|globalsales)$",
