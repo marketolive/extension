@@ -1670,12 +1670,25 @@ APP.overlayLandingPage = function (action) {
           
           if (mktoLogo) {
             console.log("Marketo Demo App > Overlaying: Landing Page Company Logo for Demo Svcs Template");
-            if (mktoLogo.style.height) {
+            if (mktoLogo.style.width == "auto") {
               mktoLogo.style.setProperty("max-height", mktoLogo.style.height);
               mktoLogo.style.setProperty("width", "auto");
               console.log("Marketo Demo App > Overlaying: Landing Page Company Logo Max Height = " + mktoLogo.style.height);
+            } else if (mktoLogo.style.height == "auto") {
+              mktoLogo.style.setProperty("max-width", mktoLogo.style.width);
+              mktoLogo.style.setProperty("height", "auto");
+              console.log("Marketo Demo App > Overlaying: Landing Page Company Logo Max Width = " + mktoLogo.style.width);
+            } else if (mktoLogo.width == "auto") {
+              mktoLogo.style.setProperty("max-height", mktoLogo.height + "px");
+              mktoLogo.style.setProperty("width", "auto");
+              console.log("Marketo Demo App > Overlaying: Landing Page Company Logo Max Height = " + mktoLogo.height);
+            } else if (mktoLogo.height == "auto") {
+              mktoLogo.style.setProperty("max-width", mktoLogo.width + "px");
+              mktoLogo.style.setProperty("height", "auto");
+              console.log("Marketo Demo App > Overlaying: Landing Page Company Logo Max Width = " + mktoLogo.width);
             } else {
               mktoLogo.style.setProperty("max-height", mktoLogo.height + "px");
+              mktoLogo.style.setProperty("width", "auto");
               console.log("Marketo Demo App > Overlaying: Landing Page Company Logo Max Height = " + mktoLogo.height);
             }
             mktoLogo.setAttribute("src", logo);
@@ -1700,10 +1713,22 @@ APP.overlayLandingPage = function (action) {
                  && currMktoImg.parentNode.parentNode
                  && currMktoImg.parentNode.parentNode.className.search(logoRegex) != -1) {
                 console.log("Marketo Demo App > Overlaying: Freeform Landing Page Company Logo");
-                if (currMktoImg.style.height) {
+                if (currMktoImg.style.width == "auto") {
                   currMktoImg.style.setProperty("max-height", currMktoImg.style.height);
                   currMktoImg.style.setProperty("width", "auto");
                   console.log("Marketo Demo App > Overlaying: Freeform Landing Page Company Logo Max Height = " + currMktoImg.style.height);
+                } else if (currMktoImg.style.height == "auto") {
+                  currMktoImg.style.setProperty("max-width", currMktoImg.style.width);
+                  currMktoImg.style.setProperty("height", "auto");
+                  console.log("Marketo Demo App > Overlaying: Freeform Landing Page Company Logo Max Width = " + currMktoImg.style.width);
+                } else if (currMktoImg.width == "auto") {
+                  currMktoImg.style.setProperty("max-height", currMktoImg.height + "px");
+                  currMktoImg.style.setProperty("width", "auto");
+                  console.log("Marketo Demo App > Overlaying: Freeform Landing Page Company Logo Max Height = " + currMktoImg.height);
+                } else if (currMktoImg.height == "auto") {
+                  currMktoImg.style.setProperty("max-width", currMktoImg.width + "px");
+                  currMktoImg.style.setProperty("height", "auto");
+                  console.log("Marketo Demo App > Overlaying: Freeform Landing Page Company Logo Max Width = " + currMktoImg.width);
                 } else {
                   currMktoImg.style.setProperty("max-height", currMktoImg.height + "px");
                   currMktoImg.style.setProperty("width", "auto");
@@ -2279,10 +2304,22 @@ APP.overlayEmail = function (action) {
           
           if (mktoLogo) {
             console.log("Marketo Demo App > Overlaying: Email 2.0 Company Logo for Demo Svcs Template");
-            if (mktoLogo.style.height) {
+            if (mktoLogo.style.width == "auto") {
               mktoLogo.style.setProperty("max-height", mktoLogo.style.height);
               mktoLogo.style.setProperty("width", "auto");
               console.log("Marketo Demo App > Overlaying: Email 2.0 Company Logo Max Height = " + mktoLogo.style.height);
+            } else if (mktoLogo.style.height == "auto") {
+              mktoLogo.style.setProperty("max-width", mktoLogo.style.width);
+              mktoLogo.style.setProperty("height", "auto");
+              console.log("Marketo Demo App > Overlaying: Email 2.0 Company Logo Max Width = " + mktoLogo.style.width);
+            } else if (mktoLogo.width == "auto") {
+              mktoLogo.style.setProperty("max-height", mktoLogo.height + "px");
+              mktoLogo.style.setProperty("width", "auto");
+              console.log("Marketo Demo App > Overlaying: Email 2.0 Company Logo Max Height = " + mktoLogo.height);
+            } else if (mktoLogo.height == "auto") {
+              mktoLogo.style.setProperty("max-width", mktoLogo.width + "px");
+              mktoLogo.style.setProperty("height", "auto");
+              console.log("Marketo Demo App > Overlaying: Email 2.0 Company Logo Max Width = " + mktoLogo.width);
             } else {
               mktoLogo.style.setProperty("max-height", mktoLogo.height + "px");
               mktoLogo.style.setProperty("width", "auto");
@@ -2308,10 +2345,22 @@ APP.overlayEmail = function (action) {
                 if (currMktoImgTag
                    && currMktoImgTag.getAttribute("src")) {
                   console.log("Marketo Demo App > Overlaying: Email 2.0 Company Logo");
-                  if (currMktoImgTag.style.height) {
+                  if (currMktoImgTag.style.width == "auto") {
                     currMktoImgTag.style.setProperty("max-height", currMktoImgTag.style.height);
                     currMktoImgTag.style.setProperty("width", "auto");
                     console.log("Marketo Demo App > Overlaying: Email 2.0 Company Logo Max Height = " + currMktoImgTag.style.height);
+                  } else if (currMktoImgTag.style.height == "auto") {
+                    currMktoImgTag.style.setProperty("max-width", currMktoImgTag.style.width);
+                    currMktoImgTag.style.setProperty("height", "auto");
+                    console.log("Marketo Demo App > Overlaying: Email 2.0 Company Logo Max Width = " + currMktoImgTag.style.width);
+                  } else if (currMktoImgTag.width == "auto") {
+                    currMktoImgTag.style.setProperty("max-height", currMktoImgTag.height + "px");
+                    currMktoImgTag.style.setProperty("width", "auto");
+                    console.log("Marketo Demo App > Overlaying: Email 2.0 Company Logo Max Height = " + currMktoImgTag.height);
+                  } else if (currMktoImgTag.height == "auto") {
+                    currMktoImgTag.style.setProperty("max-width", currMktoImgTag.width + "px");
+                    currMktoImgTag.style.setProperty("height", "auto");
+                    console.log("Marketo Demo App > Overlaying: Email 2.0 Company Logo Max Width = " + currMktoImgTag.width);
                   } else {
                     currMktoImgTag.style.setProperty("max-height", currMktoImgTag.height + "px");
                     currMktoImgTag.style.setProperty("width", "auto");
