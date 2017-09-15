@@ -182,7 +182,7 @@ if (reload) {
 if (companyDomain) {
     document.getElementById('company-image-title').innerHTML = companyDomain.substring(0, companyDomain.indexOf('.')) + " Logo";
     img.crossOrigin = 'https://logo.clearbit.com/*'; //crossdomain xml file, this is facebook example
-    img.src = "https://logo.clearbit.com/" + companyDomain + '?size=150';
+    img.src = "https://logo.clearbit.com/" + companyDomain + '?size=100';
 } else {
     document.getElementById('company-image-title').innerHTML = "No Logo Found";
     img.src = "";
