@@ -1514,15 +1514,19 @@ APP.applyMassClone = function (forceReload) {
  **************************************************************************************/
 
 APP.getHumanDate = function () {
-  console.log("Marketo Demo App > Getting: Today's Date");
+  console.log("Marketo Demo App > Getting: Date 4 Weeks From Now");
   
   var dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
   monthNames = ["JAN", "FEB", "MAR", "APR", "MAY", "JUNE", "JULY", "AUG", "SEPT", "OCT", "NOV", "DEC"],
   date = new Date(),
-  date.setDate(date.getDate() + 28),
-  dayOfWeek = dayNames[date.getDay()],
-  month = monthNames[date.getMonth()],
+  dayOfWeek,
+  month,
   dayOfMonth,
+  year;
+  
+  date.setDate(date.getDate() + 28);
+  dayOfWeek = dayNames[date.getDay()];
+  month = monthNames[date.getMonth()];
   year = date.getFullYear();
   
   switch (date.getDate()) {
