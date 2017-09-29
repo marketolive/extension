@@ -128,6 +128,16 @@
       "matches": [
         "*://www.linkedin.com/feed/?dynamicAd=true&*"
       ]
+    },
+    {
+      "all_frames": false,
+      "js": [
+        "content/economist-ad.js"
+      ],
+      "run_at": "document_end",
+      "matches": [
+        "*://www.economist.com/?dynamicAd=true&*"
+      ]
     }
   ],
   "externally_connectable": {
@@ -206,5 +216,5 @@
   "author": "Marketo Demo Services",
   "name": "MarketoLive",
   "description": "This extension is for Marketo employees and partners who have access to the MarketoLive demo environment.",
-  "version": "5.2.2"
+  "version": "5.3.0"
 }
