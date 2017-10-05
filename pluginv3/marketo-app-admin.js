@@ -641,51 +641,59 @@ ADMIN.getUserRoles = function (userWorkspace, workspaces) {
   var roles;
   
   if (accountString == mktoAccountStringMaster) {
-    for (var ii = 0; ii < workspaces.data.length; ii++) {
-      var workspace = workspaces.data[ii];
-      
-      if (workspace.name == userWorkspace.name) {
-        userWorkspace.id = workspace.id;
-        break;
+    if (!userWorkspace.none) {
+      for (var ii = 0; ii < workspaces.data.length; ii++) {
+        var workspace = workspaces.data[ii];
+        
+        if (workspace.name == userWorkspace.name) {
+          userWorkspace.id = workspace.id;
+          break;
+        }
       }
     }
     
     switch (userWorkspace.language) {
     case "English":
       roles = JSON.parse(JSON.stringify(defaultRolesEn));
-      roles.push({
-        "id": userWorkspaceRole.id,
-        "allzones": userWorkspaceRole.allzones,
-        "zones": [{
-            "id": userWorkspace.id
-          }
-        ]
-      });
+      if (!userWorkspace.none) {
+        roles.push({
+          "id": userWorkspaceRole.id,
+          "allzones": userWorkspaceRole.allzones,
+          "zones": [{
+              "id": userWorkspace.id
+            }
+          ]
+        });
+      }
       break;
       
     case "Japanese":
     case "日本語（日本）":
       roles = JSON.parse(JSON.stringify(defaultRolesJp));
-      roles.push({
-        "id": userWorkspaceRole.id,
-        "allzones": userWorkspaceRole.allzones,
-        "zones": [{
-            "id": userWorkspace.id
-          }
-        ]
-      });
+      if (!userWorkspace.none) {
+        roles.push({
+          "id": userWorkspaceRole.id,
+          "allzones": userWorkspaceRole.allzones,
+          "zones": [{
+              "id": userWorkspace.id
+            }
+          ]
+        });
+      }
       break;
       
     default:
       roles = JSON.parse(JSON.stringify(defaultRolesEn));
-      roles.push({
-        "id": userWorkspaceRole.id,
-        "allzones": userWorkspaceRole.allzones,
-        "zones": [{
-            "id": userWorkspace.id
-          }
-        ]
-      });
+      if (!userWorkspace.none) {
+        roles.push({
+          "id": userWorkspaceRole.id,
+          "allzones": userWorkspaceRole.allzones,
+          "zones": [{
+              "id": userWorkspace.id
+            }
+          ]
+        });
+      }
       break;
     }
   } else {
