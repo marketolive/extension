@@ -576,45 +576,49 @@ ADMIN.getWorkspacePartition = function (workspaceMatch, callback) {
  **************************************************************************************/
 
 ADMIN.createUserWorkspace = function (workspace, callback, args) {
-  var description = "User Workspace",
-  workspaceMatch = {},
-  admLanguage,
-  language;
-  
-  switch (workspace.language) {
-  case "English":
-    workspaceMatch.name = workspaceMatch.partitionName = "English";
-    admLanguage = "en_US";
-    language = "English";
-    break;
-  
-  case "日本語（日本）":
-  case "日本語":
-    workspaceMatch.name = workspaceMatch.partitionName = "Japanese";
-    admLanguage = "ja";
-    language = "日本語";
-    break;
-  
-  default:
-    workspaceMatch.name = workspaceMatch.partitionName = "English";
-    admLanguage = "en_US";
-    language = "English";
-    break;
+  if (!workspace.none) {
+    var description = "User Workspace",
+    workspaceMatch = {},
+    admLanguage,
+    language;
+    
+    switch (workspace.language) {
+    case "English":
+      workspaceMatch.name = workspaceMatch.partitionName = "English";
+      admLanguage = "en_US";
+      language = "English";
+      break;
+    
+    case "日本語（日本）":
+    case "日本語":
+      workspaceMatch.name = workspaceMatch.partitionName = "Japanese";
+      admLanguage = "ja";
+      language = "日本語";
+      break;
+    
+    default:
+      workspaceMatch.name = workspaceMatch.partitionName = "English";
+      admLanguage = "en_US";
+      language = "English";
+      break;
+    }
+    
+    function createUserWorkspace(partition) {
+      ADMIN.createWorkspace({
+        name: workspace.name,
+        description: description,
+        language: language,
+        admLanguage: admLanguage,
+        domain: partition.domain,
+        partitionId: partition.id,
+        partitionName: partition.name
+      }, callback, args);
+    }
+    
+    ADMIN.getWorkspacePartition(workspaceMatch, createUserWorkspace);
+  } else {
+    callback(args);
   }
-  
-  function createUserWorkspace(partition) {
-    ADMIN.createWorkspace({
-      name: workspace.name,
-      description: description,
-      language: language,
-      admLanguage: admLanguage,
-      domain: partition.domain,
-      partitionId: partition.id,
-      partitionName: partition.name
-    }, callback, args);
-  }
-  
-  ADMIN.getWorkspacePartition(workspaceMatch, createUserWorkspace);
 };
 
 /**************************************************************************************
@@ -818,8 +822,10 @@ ADMIN.inviteUser = function (user) {
     ADMIN.getAllWorkspaces(getUserWorkspaceId);
   }
   
-  if (accountString == mktoAccountStringMaster
-    && !user.noWorkspace) {
+  if (accountString == mktoAccountStringMaster) {
+    if (user.noWorkspace) {
+      userWorkspace.none = true;
+    }
     ADMIN.createUserWorkspace(userWorkspace, getAllWorkspaces);
   } else {
     roles = ADMIN.getUserRoles(userWorkspace);
