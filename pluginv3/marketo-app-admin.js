@@ -818,7 +818,8 @@ ADMIN.inviteUser = function (user) {
     ADMIN.getAllWorkspaces(getUserWorkspaceId);
   }
   
-  if (accountString == mktoAccountStringMaster) {
+  if (accountString == mktoAccountStringMaster
+    && !user.noWorkspace) {
     ADMIN.createUserWorkspace(userWorkspace, getAllWorkspaces);
   } else {
     roles = ADMIN.getUserRoles(userWorkspace);
