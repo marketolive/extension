@@ -982,6 +982,9 @@ ADMIN.editUser = function (user) {
   }
   
   if (accountString == mktoAccountStringMaster) {
+    if (user.noWorkspace) {
+      userWorkspace.none = true;
+    }
     ADMIN.getAllWorkspaces(getUserWorkspaceId);
   } else {
     roles = ADMIN.getUserRoles(userWorkspace);
