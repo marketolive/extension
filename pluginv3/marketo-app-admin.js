@@ -576,45 +576,49 @@ ADMIN.getWorkspacePartition = function (workspaceMatch, callback) {
  **************************************************************************************/
 
 ADMIN.createUserWorkspace = function (workspace, callback, args) {
-  var description = "User Workspace",
-  workspaceMatch = {},
-  admLanguage,
-  language;
-  
-  switch (workspace.language) {
-  case "English":
-    workspaceMatch.name = workspaceMatch.partitionName = "English";
-    admLanguage = "en_US";
-    language = "English";
-    break;
-  
-  case "日本語（日本）":
-  case "日本語":
-    workspaceMatch.name = workspaceMatch.partitionName = "Japanese";
-    admLanguage = "ja";
-    language = "日本語";
-    break;
-  
-  default:
-    workspaceMatch.name = workspaceMatch.partitionName = "English";
-    admLanguage = "en_US";
-    language = "English";
-    break;
+  if (!workspace.none) {
+    var description = "User Workspace",
+    workspaceMatch = {},
+    admLanguage,
+    language;
+    
+    switch (workspace.language) {
+    case "English":
+      workspaceMatch.name = workspaceMatch.partitionName = "English";
+      admLanguage = "en_US";
+      language = "English";
+      break;
+    
+    case "日本語（日本）":
+    case "日本語":
+      workspaceMatch.name = workspaceMatch.partitionName = "Japanese";
+      admLanguage = "ja";
+      language = "日本語";
+      break;
+    
+    default:
+      workspaceMatch.name = workspaceMatch.partitionName = "English";
+      admLanguage = "en_US";
+      language = "English";
+      break;
+    }
+    
+    function createUserWorkspace(partition) {
+      ADMIN.createWorkspace({
+        name: workspace.name,
+        description: description,
+        language: language,
+        admLanguage: admLanguage,
+        domain: partition.domain,
+        partitionId: partition.id,
+        partitionName: partition.name
+      }, callback, args);
+    }
+    
+    ADMIN.getWorkspacePartition(workspaceMatch, createUserWorkspace);
+  } else {
+    callback(args);
   }
-  
-  function createUserWorkspace(partition) {
-    ADMIN.createWorkspace({
-      name: workspace.name,
-      description: description,
-      language: language,
-      admLanguage: admLanguage,
-      domain: partition.domain,
-      partitionId: partition.id,
-      partitionName: partition.name
-    }, callback, args);
-  }
-  
-  ADMIN.getWorkspacePartition(workspaceMatch, createUserWorkspace);
 };
 
 /**************************************************************************************
@@ -637,51 +641,59 @@ ADMIN.getUserRoles = function (userWorkspace, workspaces) {
   var roles;
   
   if (accountString == mktoAccountStringMaster) {
-    for (var ii = 0; ii < workspaces.data.length; ii++) {
-      var workspace = workspaces.data[ii];
-      
-      if (workspace.name == userWorkspace.name) {
-        userWorkspace.id = workspace.id;
-        break;
+    if (!userWorkspace.none) {
+      for (var ii = 0; ii < workspaces.data.length; ii++) {
+        var workspace = workspaces.data[ii];
+        
+        if (workspace.name == userWorkspace.name) {
+          userWorkspace.id = workspace.id;
+          break;
+        }
       }
     }
     
     switch (userWorkspace.language) {
     case "English":
       roles = JSON.parse(JSON.stringify(defaultRolesEn));
-      roles.push({
-        "id": userWorkspaceRole.id,
-        "allzones": userWorkspaceRole.allzones,
-        "zones": [{
-            "id": userWorkspace.id
-          }
-        ]
-      });
+      if (!userWorkspace.none) {
+        roles.push({
+          "id": userWorkspaceRole.id,
+          "allzones": userWorkspaceRole.allzones,
+          "zones": [{
+              "id": userWorkspace.id
+            }
+          ]
+        });
+      }
       break;
       
     case "Japanese":
     case "日本語（日本）":
       roles = JSON.parse(JSON.stringify(defaultRolesJp));
-      roles.push({
-        "id": userWorkspaceRole.id,
-        "allzones": userWorkspaceRole.allzones,
-        "zones": [{
-            "id": userWorkspace.id
-          }
-        ]
-      });
+      if (!userWorkspace.none) {
+        roles.push({
+          "id": userWorkspaceRole.id,
+          "allzones": userWorkspaceRole.allzones,
+          "zones": [{
+              "id": userWorkspace.id
+            }
+          ]
+        });
+      }
       break;
       
     default:
       roles = JSON.parse(JSON.stringify(defaultRolesEn));
-      roles.push({
-        "id": userWorkspaceRole.id,
-        "allzones": userWorkspaceRole.allzones,
-        "zones": [{
-            "id": userWorkspace.id
-          }
-        ]
-      });
+      if (!userWorkspace.none) {
+        roles.push({
+          "id": userWorkspaceRole.id,
+          "allzones": userWorkspaceRole.allzones,
+          "zones": [{
+              "id": userWorkspace.id
+            }
+          ]
+        });
+      }
       break;
     }
   } else {
@@ -819,6 +831,9 @@ ADMIN.inviteUser = function (user) {
   }
   
   if (accountString == mktoAccountStringMaster) {
+    if (user.noWorkspace) {
+      userWorkspace.none = true;
+    }
     ADMIN.createUserWorkspace(userWorkspace, getAllWorkspaces);
   } else {
     roles = ADMIN.getUserRoles(userWorkspace);
@@ -967,6 +982,9 @@ ADMIN.editUser = function (user) {
   }
   
   if (accountString == mktoAccountStringMaster) {
+    if (user.noWorkspace) {
+      userWorkspace.none = true;
+    }
     ADMIN.getAllWorkspaces(getUserWorkspaceId);
   } else {
     roles = ADMIN.getUserRoles(userWorkspace);

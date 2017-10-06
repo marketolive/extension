@@ -102,6 +102,7 @@ APP.insertAd = function (ad) {
   topAd.id = 'topGoogleAd';
   topAd.style = 'width: 970px; height: 250px;';
   topAd.innerHTML = '<a target="_blank" href="'+ad.link+'" style="text-decoration: none;"><div style="z-index: 0; width: 100%; height: 100%; background-image: linear-gradient(rgb(238, 238, 238) 3%, rgb(17, 17, 17) 50%);"><div style="width: 100%; height: 100%; background-image: url(\''+ad.image+'\'); background-size: cover; opacity: 0.7;"></div></div><div style="z-index: 1; position: relative; top: -137px; left: 35px; width: 900px; height: 40px; color: #ffffff; font-family: Roboto, Helvetica Neue, Helvetica, Arial, sans-serif; font-weight: normal; font-size: 24px; text-align: center;">'+ad.title+'</div></a>';
+  adElement.parentElement.style.width = '';
   adElement.replaceWith(topAd);
 };
 
@@ -121,10 +122,6 @@ APP.getAdInfo = function () {
   ad.title = APP.getUrlParam('title');
   ad.link = APP.getUrlParam('link');
   ad.image = APP.getUrlParam('image');
-  
-  if (!ad.linkText) {
-    ad.linkText = ad.link.replace(/^(http(s)?:\/\/)?(www\.)?/, '').split('?')[0];
-  }
   
   return ad;
 };
