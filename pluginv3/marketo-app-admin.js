@@ -831,7 +831,7 @@ ADMIN.inviteUser = function (user) {
   }
   
   if (accountString == mktoAccountStringMaster) {
-    if (user.noWorkspace) {
+    if (user.ownWorkspace == false) {
       userWorkspace.none = true;
     }
     ADMIN.createUserWorkspace(userWorkspace, getAllWorkspaces);
@@ -982,7 +982,7 @@ ADMIN.editUser = function (user) {
   }
   
   if (accountString == mktoAccountStringMaster) {
-    if (user.noWorkspace) {
+    if (user.ownWorkspace == false) {
       userWorkspace.none = true;
     }
     ADMIN.getAllWorkspaces(getUserWorkspaceId);
