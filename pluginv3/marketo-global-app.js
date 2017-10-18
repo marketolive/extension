@@ -30,7 +30,7 @@ mktoAccountStringsMatch = "^(mktodemoaccount106|mktodemoaccount106d|mktodemolive
 mktoDesignDomain = "^https://.*\.marketodesigner\.com/",
 mktoWizardDomain = "^https://app-[a-z0-9]+\.marketo\.com/m#",
 
-adminUserNamesMatch = "^(mktodemolivemaster@marketo\.com$|admin(\.[a-z0-9]+)?@(marketolive\.com$|mktodemoaccount)|mktodemoaccount[a-z0-9]*@marketo\.com$|marketodemo.*@gmail\.com$)",
+adminUserNamesMatch = "^(mktodemolivemaster@marketo\.com$|admin(\.[a-z0-9]+)*@(marketolive\.com$|mktodemoaccount)|mktodemoaccount[a-z0-9]*@marketo\.com$|marketodemo.*@gmail\.com$)",
 
 currentUrl = window.location.href,
 
