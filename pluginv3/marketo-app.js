@@ -40,6 +40,7 @@ mktoAdminSalesforceFragment = "SF0A1",
 mktoAdminRcaCustomFieldSync = "CFS0B2",
 mktoPersonDetailPath = "/leadDatabase/loadLeadDetail",
 mktoDefaultDiyLandingPageResponsiveEditFragment = "LPE11822",
+/*
 mktoDefaultWorkspaceAssetId = "15",
 mktoJapaneseWorkspaceAssetId = "19848",
 mktoFinservWorkspaceAssetId = "20806",
@@ -48,6 +49,28 @@ mktoHigherEdWorkspaceAssetId = "20846",
 mktoManufacturingWorkspaceAssetId = "26410",
 mktoTechnologyWorkspaceAssetId = "26489",
 mktoTravelLesiureWorkspaceAssetId = "27588",
+*/
+mktoAssetManagementMovableEventCompIdsMatch = "^(1767|1785)$",
+mktoAssetManagementEventFolderCompIdsMatch = "^(3144|3145)$",
+
+mktoHealthcareMovableEventCompIdsMatch = "^(1671|1691)$",
+mktoHealthcareEventFolderCompIdsMatch = "^(2821|2822)$",
+
+mktoHigherEducationMovableEventCompIdsMatch = "^(1635|1655)$",
+mktoHigherEducationEventFolderCompIdsMatch = "^(2719|2720)$",
+
+mktoManufacturingMovableEventCompIdsMatch = "^(1793|1794)$",
+mktoManufacturingEventFolderCompIdsMatch = "^(3179|3180)$",
+
+mktoSportsMovableEventCompIdsMatch = "^(1704|1723)$",
+mktoSportsEventFolderCompIdsMatch = "^(2928|2929)$",
+
+mktoTechnologyMovableEventCompIdsMatch = "^(1072|1061)$",
+mktoTechnologyEventFolderCompIdsMatch = "^(2593|2594)$",
+
+mktoTravelMovableEventCompIdsMatch = "^(1736|1754)$",
+mktoTravelEventFolderCompIdsMatch = "^(3045|3046)$",
+
 waitAfterDiscard = 2000,
 
 mktoAccountStringMaster = "mktodemolivemaster",
@@ -2815,7 +2838,27 @@ APP.evaluateMoveItem = function (nodeToMove, destNode) {
          && destNode.attributes.accessZoneId
          && (destNode.attributes.accessZoneId.toString().search(mktoGoldenWorkspacesMatch) != -1))) {
       
-      return false;
+      if (nodeToMove.attributes.compType == "Marketing Event"
+       && destNode.attributes.compType == "Marketing Folder") {
+        if ((nodeToMove.attributes.compId.toString().search(mktoAssetManagementMovableEventCompIdsMatch) != -1
+             && destNode.attributes.compId.toString().search(mktoAssetManagementEventFolderCompIdsMatch) != -1)
+           || (nodeToMove.attributes.compId.toString().search(mktoHealthcareMovableEventCompIdsMatch) != -1
+             && destNode.attributes.compId.toString().search(mktoHealthcareEventFolderCompIdsMatch) != -1)
+           || (nodeToMove.attributes.compId.toString().search(mktoHigherEducationMovableEventCompIdsMatch) != -1
+             && destNode.attributes.compId.toString().search(mktoHigherEducationEventFolderCompIdsMatch) != -1)
+           || (nodeToMove.attributes.compId.toString().search(mktoManufacturingMovableEventCompIdsMatch) != -1
+             && destNode.attributes.compId.toString().search(mktoManufacturingEventFolderCompIdsMatch) != -1)
+           || (nodeToMove.attributes.compId.toString().search(mktoSportsMovableEventCompIdsMatch) != -1
+             && destNode.attributes.compId.toString().search(mktoSportsEventFolderCompIdsMatch) != -1)
+           || (nodeToMove.attributes.compId.toString().search(mktoTechnologyMovableEventCompIdsMatch) != -1
+             && destNode.attributes.compId.toString().search(mktoTechnologyEventFolderCompIdsMatch) != -1)
+           || (nodeToMove.attributes.compId.toString().search(mktoTravelMovableEventCompIdsMatch) != -1
+             && destNode.attributes.compId.toString().search(mktoTravelEventFolderCompIdsMatch) != -1)) {
+          return true;
+        }
+      } else {
+        return false;
+      }
     } else if (nodeToMove.attributes.accessZoneId.toString().search(mktoMyWorkspaceIdMatch) != -1
        && destNode.attributes.accessZoneId.toString().search(mktoMyWorkspaceIdMatch) != -1) {
       
