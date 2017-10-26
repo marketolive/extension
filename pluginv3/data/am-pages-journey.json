@@ -1,0 +1,127 @@
+[
+  {
+    "onlineAd": true,
+    "type": "landing",
+    "url": "http://pages.marketolive.com/google-adwords-acquire.html",
+    "lpUrl": "http://na-sjdemo1.marketo.com/lp/185-NGX-811/google-adwords-acquire.html",
+    "conversionRate": 0.5
+  },
+  {
+    "type": "web",
+    "url": "http://www.marketolive.com/info/contact-us"
+  },
+  {
+    "type": "verticals",
+    "url": "https://verticals.marketolive.com/predictive-content",
+    "clickRate": 1
+  },
+  {
+    "type": "verticals",
+    "url": "https://verticals.marketolive.com/predictive-content-106",
+    "clickRate": 1
+  },
+  {
+    "type": "verticals",
+    "url": "https://verticals.marketolive.com/predictive-content-106d",
+    "clickRate": 1
+  },
+  {
+    "onlineAd": true,
+    "type": "landing",
+    "url": "http://pages.marketolive.com/google-display-ads-acquire.html",
+    "lpUrl": "http://na-sjdemo1.marketo.com/lp/185-NGX-811/google-display-ads-acquire.html",
+    "conversionRate": 0.5
+  },
+  {
+    "type": "web",
+    "url": "http://www.marketolive.com/info/why-us"
+  },
+  {
+    "type": "landing",
+    "url": "http://pages.marketolive.com/emerging-markets-webinar-registration.html",
+    "lpUrl": "http://na-sjdemo1.marketo.com/lp/185-NGX-811/emerging-markets-webinar-registration.html",
+    "conversionRate": 0.5
+  },
+  {
+    "type": "web",
+    "url": "http://www.marketolive.com/info/webinar"
+  },
+  {
+    "type": "landing",
+    "url": "http://pages.marketolive.com/emerging-markets-webinar-check-in.html",
+    "lpUrl": "http://na-sjdemo1.marketo.com/lp/185-NGX-811/emerging-markets-webinar-check-in.html",
+    "conversionRate": 0.5
+  },
+  {
+    "onlineAd": true,
+    "type": "landing",
+    "url": "http://pages.marketolive.com/facebook-lead-ads-acquire.html",
+    "lpUrl": "http://na-sjdemo1.marketo.com/lp/185-NGX-811/facebook-lead-ads-acquire.html",
+    "conversionRate": 0.5
+  },
+  {
+    "type": "web",
+    "url": "http://www.marketolive.com/info/investments"
+  },
+  {
+    "type": "landing",
+    "url": "http://pages.marketolive.com/investor-seminar-registration.html",
+    "lpUrl": "http://na-sjdemo1.marketo.com/lp/185-NGX-811/investor-seminar-registration.html",
+    "conversionRate": 0.5
+  },
+  {
+    "type": "web",
+    "url": "http://www.marketolive.com/info/live-event"
+  },
+  {
+    "type": "landing",
+    "url": "http://pages.marketolive.com/investor-seminar-check-in.html",
+    "lpUrl": "http://na-sjdemo1.marketo.com/lp/185-NGX-811/investor-seminar-check-in.html",
+    "conversionRate": 0.5
+  },
+  {
+    "onlineAd": true,
+    "type": "landing",
+    "url": "http://pages.marketolive.com/facebook-news-feed-ads-acquire.html",
+    "lpUrl": "http://na-sjdemo1.marketo.com/lp/185-NGX-811/facebook-news-feed-ads-acquire.html",
+    "conversionRate": 0.5
+  },
+  {
+    "type": "web",
+    "url": "http://www.marketolive.com/info/asset-management"
+  },
+  {
+    "onlineAd": true,
+    "type": "landing",
+    "url": "http://pages.marketolive.com/linkedin-lead-ads-acquire.html",
+    "lpUrl": "http://na-sjdemo1.marketo.com/lp/185-NGX-811/linkedin-lead-ads-acquire.html",
+    "conversionRate": 0.5
+  },
+  {
+    "type": "web",
+    "url": "http://www.marketolive.com/info/investment-fees"
+  },
+  {
+    "onlineAd": true,
+    "type": "landing",
+    "url": "http://pages.marketolive.com/demand-side-platform-acquire.html",
+    "lpUrl": "http://na-sjdemo1.marketo.com/lp/185-NGX-811/demand-side-platform-acquire.html",
+    "conversionRate": 0.5
+  },
+  {
+    "type": "web",
+    "url": "http://www.marketolive.com/info/cash-equivalents"
+  },
+  {
+    "type": "landing",
+    "url": "http://pages.marketolive.com/preference-center.html",
+    "lpUrl": "http://na-sjdemo1.marketo.com/lp/185-NGX-811/preference-center.html",
+    "conversionRate": 0.5
+  },
+  {
+    "type": "landing",
+    "url": "http://pages.marketolive.com/not-you-preference-center.html",
+    "lpUrl": "http://na-sjdemo1.marketo.com/lp/185-NGX-811/not-you-preference-center.html",
+    "conversionRate": 0.5
+  }
+]
