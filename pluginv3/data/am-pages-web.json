@@ -1,0 +1,49 @@
+[
+  {
+    "type": "web",
+    "url": "http://www.marketolive.com/info/turner-financial"
+  },
+  {
+    "type": "web",
+    "url": "http://www.marketolive.com/info/prospectus"
+  },
+  {
+    "type": "web",
+    "url": "http://www.marketolive.com/info/mutual-funds"
+  },
+  {
+    "type": "web",
+    "url": "http://www.marketolive.com/info/etf"
+  },
+  {
+    "type": "web",
+    "url": "http://www.marketolive.com/info/hedge-funds"
+  },
+  {
+    "type": "web",
+    "url": "http://www.marketolive.com/info/finra-compliance"
+  },
+  {
+    "type": "web",
+    "url": "http://www.marketolive.com/info/asset-allocation"
+  },
+  {
+    "type": "web",
+    "url": "http://www.marketolive.com/info/asset-diversity"
+  },
+  {
+    "type": "verticals",
+    "url": "https://verticals.marketolive.com/predictive-content",
+    "clickRate": 1
+  },
+  {
+    "type": "verticals",
+    "url": "https://verticals.marketolive.com/predictive-content-106",
+    "clickRate": 1
+  },
+  {
+    "type": "verticals",
+    "url": "https://verticals.marketolive.com/predictive-content-106d",
+    "clickRate": 1
+  }
+]

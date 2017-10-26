@@ -1,6 +1,6 @@
 var URL_PATH = "m3-dev",
 
-numOfVerticals = 3,
+numOfVerticals = 4,
 jobTitles = [
   "Account Director",
   "Account Executive",
@@ -187,6 +187,10 @@ getVertical = function () {
   case 2:
     currVertical = "mfg";
     visitedPagesCookieMarketoLive.name = "visitedPagesMfg";
+    break;
+  case 3:
+    currVertical = "am";
+    visitedPagesCookieMarketoLive.name = "visitedPagesAm";
     break;
   }
 };
