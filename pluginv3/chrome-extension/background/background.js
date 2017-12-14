@@ -29,7 +29,7 @@ mktoDesignerUriDomain = ".marketodesigner.com",
 mktoDesignerMatchPattern = "https://*.marketodesigner.com/*",
 mktoSjpWebRequest = "https://app-sjp.marketo.com/",
 mktoSjdemo1WebRequest = "https://app-sjdemo1.marketo.com/",
-oneLoginUrl = "https://marketo.onelogin.com/client/apps",
+oneLoginUrl = "https://marketo.onelogin.com/portal/",
 
 mktoEmailDesignerFragment = "EME",
 mktoEmailPreviewFragmentRegex = new RegExp("#EME[0-9]+&isPreview", "i"),
