@@ -23,39 +23,43 @@ ONELOGIN.webRequest = function (url, params, headers, method) {
   if (!url) {
     throw new Error('Missing required argument: url');
   }
-  
+
   return new Promise(function (resolve, reject) {
     let req = new XMLHttpRequest(),
     data = '';
-    
+
     params = (typeof(params) === 'object') ? params : '';
     headers = (typeof(headers) === 'object') ? headers : '';
     method = (typeof(method) === 'string') ? method : 'GET';
-    
+
     try {
-      for (let param of Object.entries(params)) {
+      for (let i = 0; i < Object.entries(params).length; i++) {
+        let param = Object.entries(params)[i];
+
         if (data.length > 0) {
           data += '&';
         }
-        
+
         data += encodeURIComponent(param[0].toString()) + '=' + encodeURIComponent(param[1].toString());
       }
     } catch (e) {
       console.error(e);
     }
-    
+
     req.open(method, url);
-    
+
     if (headers) {
       try {
-        for (let header of Object.entries(headers)) {
+        for (let i = 0; i < Object.entries(headers); i++) {
+          let header = Object.entries(headers)[i];
+
           req.setRequestHeader(header[0].toString(), header[1].toString());
         }
       } catch (e) {
         console.error(e);
       }
     }
-    
+
     req.onload = function () {
       if (req.status == 200) {
         resolve(req.response);
@@ -63,12 +67,12 @@ ONELOGIN.webRequest = function (url, params, headers, method) {
         reject(Error(req.statusText));
       }
     };
-    
+
     req.onerror = function () {
       reject(Error('Network Error'));
     };
-    
-    req.withCredentials  = true;
+
+    req.withCredentials = true;
     req.send(data);
   });
 };
@@ -115,7 +119,7 @@ ONELOGIN.getOneLoginUser = function () {
         lastName: name.last,
         email: response.email
       };
-      
+
       chrome.runtime.sendMessage(extensionId, oneLoginUser, function (response) {
         console.log("OneLogin > Receiving: Message Response from Background: " + response);
 
@@ -124,7 +128,7 @@ ONELOGIN.getOneLoginUser = function () {
     } catch (e) {
       console.error(e);
     }
-    
+
     return response;
   }, function (e) {
     console.error(e);
