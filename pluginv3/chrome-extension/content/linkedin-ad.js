@@ -99,8 +99,8 @@ APP.insertAd = function (ad) {
     for (let post of posts) {
       if (post.className == 'relative ember-view'
          && post.getAttribute('data-id').search('^urn:li:activity:') != -1
-         && post.querySelector('div[class="feed-base-update__description feed-base-inline-show-more-text ember-view"]')
-         && !post.querySelector('div[class="feed-base-mini-update ember-view"]')) {
+         && post.querySelector('div[class="feed-shared-update__description feed-shared-inline-show-more-text ember-view"]')
+         && !post.querySelector('div[class="feed-shared-mini-update ember-view"]')) {
         topAd = post.cloneNode(true);
         break;
       }
@@ -109,7 +109,7 @@ APP.insertAd = function (ad) {
     if (topAd) {
       var actorPicture = topAd.querySelector('a[data-control-name="actor_picture"]'),
       actor = topAd.querySelector('a[data-control-name="actor"]'),
-      postText = topAd.querySelector('div[class="feed-base-update__description feed-base-inline-show-more-text ember-view"]'),
+      postText = topAd.querySelector('div[class="feed-shared-update__description feed-shared-inline-show-more-text ember-view"]'),
       postDescription = postText.querySelector('span[class="ember-view"]'),
       image = topAd.querySelector('a[class="ember-view"]'),
       imageDescription = topAd.querySelector('a[class="tap-target ember-view"]'),
@@ -122,7 +122,7 @@ APP.insertAd = function (ad) {
       actorPicture.querySelector('div[data-entity-hovercard-id]').setAttribute('data-entity-hovercard-id', '');
       actor.querySelector('span[data-entity-hovercard-id]').innerText = ad.title;
       actor.querySelector('span[data-entity-hovercard-id]').setAttribute('data-entity-hovercard-id', '');
-      actor.getElementsByClassName('feed-base-post-meta__headline')[0].innerText = 'Sponsored';
+      actor.getElementsByClassName('feed-shared-post-meta__headline')[0].innerText = 'Sponsored';
       postDescription.innerHTML = '<span>' + ad.text + '</span>';
       
       if (!image) {
@@ -134,8 +134,8 @@ APP.insertAd = function (ad) {
       
       if (imageDescription) {
         imageDescription.href = ad.link;
-        imageDescription.getElementsByClassName('feed-base-image-description__headline')[0].innerText = ad.title;
-        imageDescription.getElementsByClassName('feed-base-image-description__byline')[0].innerText = ad.linkText;
+        imageDescription.getElementsByClassName('feed-shared-image-description__headline')[0].innerText = ad.title;
+        imageDescription.getElementsByClassName('feed-shared-image-description__byline')[0].innerText = ad.linkText;
       }
       
       if (actor.getElementsByTagName('time')[0]) {
