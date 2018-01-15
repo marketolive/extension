@@ -99,6 +99,7 @@ APP.insertAd = function (ad) {
     for (let post of posts) {
       if (post.className == 'relative ember-view'
          && post.getAttribute('data-id').search('^urn:li:activity:') != -1
+         && post.querySelector('article[class="feed-shared-update mh0 Elevation-2dp relative feed-shared-update--share share-update article ember-view"]')
          && post.querySelector('div[class="feed-shared-update__description feed-shared-inline-show-more-text ember-view"]')
          && !post.querySelector('div[class="feed-shared-mini-update ember-view"]')) {
         topAd = post.cloneNode(true);
