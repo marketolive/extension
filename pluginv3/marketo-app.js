@@ -25,6 +25,7 @@ mktoEmailDesigner = mktoDesignerDomain + "/ds",
 mktoLandingPageDesigner = mktoDesignerDomain + "/lpeditor/",
 mktoEmailInsightsLink = "http://www.marketolive.com/en/analytics/email-insights-summit-demo-1",
 mktoEmailDeliverabilityToolsLink = "https://250ok.com/login?submit=true",
+mktoNextGenUxLink = "https://marketo.invisionapp.com/share/V2FQQBSYUPX",
 mktoDemoAccountMatch = "^mktodemoaccount",
 mktoMyMarketoFragment = "MM0A1",
 mktoCalendarFragment = "CAL",
@@ -1036,6 +1037,8 @@ APP.overrideHomeTiles = function (restoreEmailInsightsTile) {
     deliverabilityToolsTile,
     deliverabilityToolsTileOuterHTML,
     seoTile,
+    nextGenUxTile,
+    nextGenUxTileOuterHTML,
     ii;
     
     for (ii = 0; ii < tilesTextContent.length; ii++) {
@@ -1045,6 +1048,8 @@ APP.overrideHomeTiles = function (restoreEmailInsightsTile) {
         deliverabilityToolsTile = MktCanvas.lookupComponent(container.childNodes[ii]);
       } else if (tilesTextContent[ii] == "SEO") {
         seoTile = MktCanvas.lookupComponent(container.childNodes[ii]);
+      } else if (tilesTextContent[ii] == "Next Gen UX") {
+        nextGenUxTile = MktCanvas.lookupComponent(container.childNodes[ii]);
       }
     }
     
@@ -1108,6 +1113,24 @@ APP.overrideHomeTiles = function (restoreEmailInsightsTile) {
           name: "SEO",
           assetArea: "SEO",
           assetName: "Home",
+          assetType: "Home Tile"
+        });
+      };
+    }
+    
+    if (!nextGenUxTile) {
+      nextGenUxTileOuterHTML = '<div class="x4-btn mkt3-homeTile x4-btn-default-small x4-icon-text-left x4-btn-icon-text-left x4-btn-default-small-icon-text-left" style="height: 150px;" id="homeTile-1035"><em id="homeTile-1035-btnWrap"><a id="homeTile-1035-btnEl" href="' + mktoNextGenUxLink + '" class="x4-btn-center" target="_blank" role="link" style="width: 150px; height: 150px;"><span id="homeTile-1035-btnInnerEl" class="x4-btn-inner" style="width: 150px; height: 150px; line-height: 150px;">Next Gen UX</span><span id="homeTile-1035-btnIconEl" class="x4-btn-icon mki3-mercury-svg"></span></a></em></div>';
+      idMatch = new RegExp("homeTile-1035", "g");
+      
+      spareTileClone = MktCanvas.lookupComponent(container.childNodes[container.childNodes.length - 1]).cloneConfig();
+      nextGenUxTileOuterHTML = nextGenUxTileOuterHTML.replace(idMatch, spareTileClone.id);
+      spareTileClone.el.dom.outerHTML = nextGenUxTileOuterHTML;
+      container.insertBefore(spareTileClone.el.dom, container.childNodes[container.childNodes.length - 1]);
+      document.getElementById(spareTileClone.id).onclick = function () {
+        APP.heapTrack("track", {
+          name: "Mercury UX",
+          assetArea: "Mercury UX",
+          assetName: "InVision App",
           assetType: "Home Tile"
         });
       };

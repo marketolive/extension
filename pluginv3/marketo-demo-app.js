@@ -15,6 +15,7 @@ var mktoMyMarketoFragment = "MM0A1",
 mktoMarketingPerformanceInsights = "https://marketo.invisionapp.com/share/52C0GAGD4#",
 mktoEmailInsightsLink = "http://www.marketolive.com/en/analytics/email-insights-summit-demo-1",
 mktoEmailDeliverabilityToolsLink = "https://250ok.com/login?submit=true",
+mktoNextGenUxLink = "https://marketo.invisionapp.com/share/V2FQQBSYUPX",
 
 mktoAnalyticsFragmentMatch = new RegExp("^(AR[^!]+!|RCM[^!]+!)$", "i"),
 mktoAnalyticsHomeFragment = "AH0A1ZN",
@@ -298,6 +299,8 @@ APP.overrideHomeTiles = function () {
     emailInsightsTileOuterHTML,
     deliverabilityToolsTile,
     deliverabilityToolsTileOuterHTML,
+    nextGenUxTile,
+    nextGenUxTileOuterHTML,
     ii;
     
     for (ii = 0; ii < tilesTextContent.length; ii++) {
@@ -305,6 +308,8 @@ APP.overrideHomeTiles = function () {
         emailInsightsTile = MktCanvas.lookupComponent(container.childNodes[ii]);
       } else if (tilesTextContent[ii] == "Deliverability Tools") {
         deliverabilityToolsTile = MktCanvas.lookupComponent(container.childNodes[ii]);
+      } else if (tilesTextContent[ii] == "Next Gen UX") {
+        nextGenUxTile = MktCanvas.lookupComponent(container.childNodes[ii]);
       }
     }
     
@@ -330,6 +335,17 @@ APP.overrideHomeTiles = function () {
       spareTileClone = MktCanvas.lookupComponent(container.childNodes[container.childNodes.length - 1]).cloneConfig();
       deliverabilityToolsTileOuterHTML = deliverabilityToolsTileOuterHTML.replace(idMatch, spareTileClone.id);
       spareTileClone.el.dom.outerHTML = deliverabilityToolsTileOuterHTML;
+      container.appendChild(container.childNodes[container.childNodes.length - 2]);
+      container.appendChild(spareTileClone.el.dom);
+    }
+    
+    if (!nextGenUxTile) {
+      nextGenUxTileOuterHTML = '<div class="x4-btn mkt3-homeTile x4-btn-default-small x4-icon-text-left x4-btn-icon-text-left x4-btn-default-small-icon-text-left" style="height: 150px;" id="homeTile-1035"><em id="homeTile-1035-btnWrap"><a id="homeTile-1035-btnEl" href="' + mktoNextGenUxLink + '" class="x4-btn-center" target="_blank" role="link" style="width: 150px; height: 150px;"><span id="homeTile-1035-btnInnerEl" class="x4-btn-inner" style="width: 150px; height: 150px; line-height: 150px;">Next Gen UX</span><span id="homeTile-1035-btnIconEl" class="x4-btn-icon mki3-mercury-svg"></span></a></em></div>';
+      idMatch = new RegExp("homeTile-1035", "g");
+      
+      spareTileClone = MktCanvas.lookupComponent(container.childNodes[container.childNodes.length - 1]).cloneConfig();
+      nextGenUxTileOuterHTML = nextGenUxTileOuterHTML.replace(idMatch, spareTileClone.id);
+      spareTileClone.el.dom.outerHTML = nextGenUxTileOuterHTML;
       container.appendChild(container.childNodes[container.childNodes.length - 2]);
       container.appendChild(spareTileClone.el.dom);
     }
