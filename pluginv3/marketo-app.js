@@ -262,6 +262,15 @@ APP.setInstanceInfo = function (accountString) {
     mktoPeopleByStatusReport = "AR3893B2";
     mktoCompanyWebActivityReport = "AR3901B2";
     mktoSalesInsightEmailPerformanceReport = "AR3903B2";
+  } else if (accountString == mktoAccountStringDynamics) {
+    mktoDefaultWorkspaceId = 1;
+    mktoUnknownWorkspaceId = -1;
+    mktoGoldenWorkspacesMatch = "^(" + mktoDefaultWorkspaceId + "|" + mktoUnknownWorkspaceId + ")$";
+    
+    mktoMyWorkspaceIdMatch = null;
+    mktoMyWorkspaceNameMatch = null;
+    
+    mktoMarketingPerformanceInsights = "https://marketo.invisionapp.com/share/52C0GAGD4#";
   }
 };
 
