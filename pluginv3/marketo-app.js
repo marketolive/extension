@@ -8039,6 +8039,7 @@ APP.disableFormSaveButtons = function () {
          || this.getXType() == "mktocustomactivityActivityTypeFormStepThree" //Admin > Marketo Custom Activities > Fields > New/Edit Field
          || this.getXType() == "mktocustomobjectObjectForm" //Admin > Marketo Custom Objects > Marketo Custom Objects > New/Edit Custom Object
          || this.getXType() == "mktocustomobjectFieldForm" //Admin > Marketo Custom Objects > Fields > New/Edit Field
+         || this.getXType() == "crmEditCredentialsForm" //Admin > Microsoft Dynamics > Credentials > Edit
          || this.getXType() == "adminSpecifyPluginContactForm" //Admin > Sales Insight > Email Add-in > Specify Plugin Contact
          || this.getXType() == "wildcardRedirectForm" //Admin > Landing Pages > New Wildcard Redirect
          || this.getXType() == "mktowsEditIpRestrictionForm" //Admin > Web Services > IP Restrictions
