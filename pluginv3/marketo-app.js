@@ -38,6 +38,7 @@ mktoAnalyticsHomeFragment = "AH0A1ZN",
 mktoAccountBasedMarketingFragment = "ABM0A1",
 mktoAdBridgeSmartListFragment = "SL1119566B2LA1",
 mktoAdminSalesforceFragment = "SF0A1",
+mktoAdminDynamicsFragment = "DY0A1",
 mktoAdminRcaCustomFieldSync = "CFS0B2",
 mktoPersonDetailPath = "/leadDatabase/loadLeadDetail",
 mktoDefaultDiyLandingPageResponsiveEditFragment = "LPE11822",
@@ -3397,7 +3398,7 @@ APP.disableMenus = function () {
           "giveCreditToReferrer", //Give Credit to Referrer
           "requestCampaign", //Request Campaign...
           "removeFromFlow", //Remove from Flow...
-          //"salesforceFolder",//Salesforce
+          //"salesforceFolder", //Salesforce
           "pushLeadToSFDC", //Sync Lead to SFDC...
           "createTask", //Create Task...
           "convertLead", //Convert Lead...
@@ -3406,6 +3407,8 @@ APP.disableMenus = function () {
           "addToSFDCCampaign", //Add to SFDC Campaign...
           "changeStatusInSFDCCampaign", //Change Status in SFDC Campaign...
           "removeFromSFDCCampaign", //Remove from SFDC Campaign...
+          //"microsoftFolder", //Microsoft
+          "syncLeadToMicrosoft", //Sync Lead to Microsoft
           
           // Global > Programs, Analyzers, and Reports > Setup Right-click Tree
           //"editItem",//Edit
@@ -8166,6 +8169,8 @@ APP.disableHarmfulSaveButtons = function () {
           case "Field Management":
           case "Salesforce Objects Sync":
           case "Salesforce":
+          case "Microsoft Dynamics":
+          case "Dynamics Entities Sync":
             // Sales Insight
           case "Sales Insight":
           case "Email Add-in":
@@ -8742,6 +8747,7 @@ APP.disableRequests = function () {
     }
     MktSession.ajaxRequest = function (url, opts) {
       switch (url) {
+      case "crm/enableSync":
       case "leadDatabase/updateLead":
       case "fieldManagement/analyticsOptionsSubmit":
         console.log("Marketo App > Executing: Disable Specific Requests");
@@ -9899,8 +9905,9 @@ var isMktPageApp = window.setInterval(function () {
           console.log("Marketo App > Location: Ad Bridge Smart List");
           
           APP.openAdBridgeModal();
-        } else if (currUrlFragment == mktoAdminSalesforceFragment) {
-          console.log("Marketo App > Location: Admin > Salesforce");
+        } else if (currUrlFragment == mktoAdminSalesforceFragment
+           || currUrlFragment == mktoAdminDynamicsFragment) {
+          console.log("Marketo App > Location: Admin > CRM");
           
           APP.hideOtherToolbarItems([{
                 id: "enableSync", //Enable/Disable Sync
@@ -10305,8 +10312,9 @@ var isMktPageApp = window.setInterval(function () {
                   APP.overrideAnalyticsTiles();
                 } else if (currUrlFragment.search("^" + APP.getAssetCompCode("Nurture Program") + "[0-9]+A1$") != -1) {
                   APP.disableNurturePrograms();
-                } else if (currUrlFragment == mktoAdminSalesforceFragment) {
-                  console.log("Marketo App > Location: Admin > Salesforce");
+                } else if (currUrlFragment == mktoAdminSalesforceFragment
+                   || currUrlFragment == mktoAdminDynamicsFragment) {
+                  console.log("Marketo App > Location: Admin > CRM");
                   
                   APP.hideOtherToolbarItems([{
                         id: "enableSync", //Enable/Disable Sync
