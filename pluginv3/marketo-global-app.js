@@ -21,11 +21,12 @@ DASHBOARD_DATA = "https://marketolive.com/" + URL_PATH + "/pluginv3/marketo-dash
 HEAP_ANALYTICS = "https://marketolive.com/" + URL_PATH + "/pluginv3/heap-analytics.min.js",
 HEAP_ANALYTICS_DEMO = "https://marketolive.com/" + URL_PATH + "/pluginv3/heap-analytics-demo.min.js",
 
+mktoDemoAccountStringDynamics = "mktodemoaccount408",
 mktoDemoAccountMatch = "^(mktodemoaccount(3|4)[0-9][0-9]|mktodemoaccount36|mktodemoaccount134|mktodemoaccount232|mktodemoaccount264|mktodemoaccount295|scdynamics1|mktodemoinfor01|mktodemoaccount390dev1)$",
 mktoAccountStringsMatch106 = "^(mktodemoaccount106|mktodemoaccount106d)$",
 mktoAccountStringsMatchMasterAnd106 = "^(mktodemolivemaster|mktodemoaccount106|mktodemoaccount106d)$",
-mktoAccountStringsMatchMasterAnd106AndQe = "^(mktodemolivemaster|mktodemoaccount106|mktodemoaccount106d|globalsales)$",
-mktoAccountStringsMatch = "^(mktodemoaccount106|mktodemoaccount106d|mktodemolivemaster|globalsales)$",
+mktoAccountStringsMatchMasterAnd106AndQe = "^(mktodemolivemaster|mktodemoaccount408|mktodemoaccount106|mktodemoaccount106d|globalsales)$",
+mktoAccountStringsMatch = "^(mktodemoaccount106|mktodemoaccount106d|mktodemolivemaster|mktodemoaccount408|globalsales)$",
 
 mktoDesignDomain = "^https://.*\.marketodesigner\.com/",
 mktoWizardDomain = "^https://app-[a-z0-9]+\.marketo\.com/m#",
@@ -89,7 +90,9 @@ var isMktoPageGlobal = window.setInterval(function () {
           GLOBAL_APP.loadScript(MARKETO_LIVE_APP);
         }
         
-        if (accountString.search(mktoAccountStringsMatchMasterAnd106) != -1) {
+        if (accountString == mktoDemoAccountStringDynamics) {
+          GLOBAL_APP.loadScript(HEAP_ANALYTICS_DEMO);
+        } else if (accountString.search(mktoAccountStringsMatchMasterAnd106) != -1) {
           GLOBAL_APP.loadScript(HEAP_ANALYTICS);
         }
         

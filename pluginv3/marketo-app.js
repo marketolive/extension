@@ -57,8 +57,9 @@ mktoAccountStringMaster = "mktodemolivemaster",
 mktoAccountStringQe = "globalsales",
 mktoAccountString106 = "mktodemoaccount106",
 mktoAccountString106d = "mktodemoaccount106d",
+mktoAccountStringDynamics = "mktodemoaccount408",
 mktoAccountStrings106Match = "^(" + mktoAccountString106 + "|" + mktoAccountString106d + ")$",
-mktoAccountStringsMatch = "^(" + mktoAccountStringMaster + "|" + mktoAccountString106 + "|" + mktoAccountString106d + ")$",
+mktoAccountStringsMatch = "^(" + mktoAccountStringMaster + mktoAccountString106 + "|" + mktoAccountString106d + "|" + mktoAccountStringDynamics + "|" + ")$",
 
 mktoWorkingFoldersToHide = new RegExp("^Manufacturing$|\\(TEST\\)$", "i"),
 mktoOperationalFolders = new RegExp("^(_Operational|_Operations)", "i"),
@@ -9967,6 +9968,28 @@ var isMktPageApp = window.setInterval(function () {
           APP.disableHarmfulSaveButtons();
           APP.overrideSmartCampaignSaving();
           APP.trackNodeClick();
+          APP.trackTreeNodeEdits();
+          APP.overrideAssetSaveEdit();
+          APP.overrideRenamingFolders();
+          APP.overrideCanvas();
+          APP.overrideUpdatePortletOrder();
+          APP.disableConfirmationMessage();
+          APP.disableRequests();
+          APP.heapTrack("track", {
+            name: "Last Loaded",
+            assetName: "Page"
+          });
+        } else if (accountString == mktoAccountStringDynamics) {
+          APP.overrideTreeNodeExpand();
+          APP.overrideTreeNodeCollapse();
+          APP.overrideSaving();
+          APP.disableDragAndDrop();
+          APP.disableMenus();
+          APP.hideToolbarItems();
+          APP.overrideDraftEdits();
+          APP.disableFormSaveButtons();
+          APP.disableHarmfulSaveButtons();
+          APP.overrideSmartCampaignSaving();
           APP.trackTreeNodeEdits();
           APP.overrideAssetSaveEdit();
           APP.overrideRenamingFolders();
