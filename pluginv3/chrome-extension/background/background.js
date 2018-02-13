@@ -41,12 +41,12 @@ adTargetingRegEx = "^http(s)?://(www|dev)\.marketolive\.com/en/tools/ad-targetin
 companyPickerRegEx = "^https://marketolive\.com/" + URL_PATH + "/apps/color-picker\.html\\?company=.+",
 
 mktoAppUserCookie = "ids_sso",
-munchkinIdsMatch = "^(185-NGX-811|026-COU-482|767-TVJ-204)$",
+munchkinIdsMatch = "^(185-NGX-811|026-COU-482|767-TVJ-204|400-TWP-453)$",
 
 //adminUserNamesMatch = "^(mktodemolivemaster@marketo\.com$|admin(\.[a-z]{0,2})?@(marketolive.com$|mktodemoaccount)|marketodemo.*@gmail\.com$)",
 adminUserNamesMatch = "^(mktodemolivemaster@marketo\.com$|admin(\.[a-z]{0,2})?@(marketolive.com$|mktodemoaccount)|mktodemoaccount[a-z0-9]*@marketo\.com$|marketodemo.*@gmail\.com$)",
-mktoLiveBlockUrlPatterns = ["*://sjrtp3.marketo.com/app/*", "*://sj-ee-api.marketo.com/api/v1/settings/dimensions/activate/*", "*://seo.marketo.com/*", "*://250ok.com/*"],
-mktoLiveRtpDomainsMatch = "sjrtp3\.marketo\.com",
+mktoLiveBlockUrlPatterns = ["*://sjrtp3.marketo.com/app/*", "*://sjrtp4.marketo.com/app/*", "*://sj-ee-api.marketo.com/api/v1/settings/dimensions/activate/*", "*://seo.marketo.com/*", "*://250ok.com/*"],
+mktoLiveRtpDomainsMatch = "(sjrtp3|sjrtp4)\.marketo\.com",
 
 oneLoginFirstName,
 oneLoginLastName,
