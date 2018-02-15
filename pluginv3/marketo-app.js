@@ -8204,7 +8204,7 @@ APP.disableHarmfulSaveButtons = function () {
           // Marketing Activities
           // Program > Actions
           case "Salesforce Campaign Sync":
-          case "Event Schedule":
+          case "Event Settings":
           // Program > Setup
           case "New Reporting":
           case "Edit Reporting":
