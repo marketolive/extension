@@ -8207,9 +8207,7 @@ APP.disableHarmfulSaveButtons = function () {
           case "Event Schedule":
           case "Event Settings":
           // Program > Setup
-          case "Edit Channel":
-          case "New Cost":
-          case "Edit Cost":
+          case "Edit Reporting":
           // Program > Members & List > Actions
           case "Import List":
           // Nurture Program > Setup
@@ -8224,6 +8222,14 @@ APP.disableHarmfulSaveButtons = function () {
           // ALL > New
           case "New Field Organizer":
             toDisable = true;
+            break;
+          // Program > Actions
+          case "Event Schedule":
+          // Program > Setup
+          case "Edit Channel":
+          case "New Cost":
+          case "Edit Cost":
+            toDisable = APP.evaluateMenu("button", null, MktCanvas.getActiveTab(), null);
             break;
           
           // Marketing Activities & Analytics
@@ -8241,7 +8247,7 @@ APP.disableHarmfulSaveButtons = function () {
           case "Archived Email Filter":
           // Email via MSI Performance Report
           case "Group Emails by":
-          // Engagment Stream Performance Report
+          // Engagement Stream Performance Report
           case "Engagement Program Email Filter":
           // People Performance Report
           case "Person Created At":
