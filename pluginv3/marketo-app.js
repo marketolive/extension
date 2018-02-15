@@ -8205,9 +8205,11 @@ APP.disableHarmfulSaveButtons = function () {
           // Program > Actions
           case "Salesforce Campaign Sync":
           case "Event Schedule":
-          case "Event Settings":
           // Program > Setup
+          case "New Reporting":
           case "Edit Reporting":
+          case "New Vertical":
+          case "Edit Vertical":
           // Program > Members & List > Actions
           case "Import List":
           // Nurture Program > Setup
