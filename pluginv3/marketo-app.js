@@ -8462,18 +8462,8 @@ APP.overrideSaving = function () {
            && MktCanvas.getActiveTab().config.programSummary
            && MktCanvas.getActiveTab().config.programSummary.viewButton
            && MktCanvas.getActiveTab().config.programSummary.viewButton.text == "View: Summary")) {
-        if (this.autoSyncSuspended) {
-          this.autoSync = true;
-          this.autoSyncSuspended = false;
-        }
-        
-        if (this.getProxy()instanceof Mkt3.data.proxy.AjaxPost) {
-          Mkt3.Synchronizer.sync(this);
-        }
-        else {
-          this.callParent(arguments);
-        }
-        console.log("Marketo App > Restored: Original sync Function");
+        console.log("Marketo App > Restoring: Original sync Function");
+        prevDataStoreSync.apply(this, arguments);
       } else {
         
         var disable;
