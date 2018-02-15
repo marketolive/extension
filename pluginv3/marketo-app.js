@@ -8008,6 +8008,7 @@ APP.disableFormSaveButtons = function () {
          || this.getXType() == "smartlistReportSubscriptionForm" //Global > List & Smart List > Actions > New Smart List Subscription
          || this.getXType() == "analyticsReportSubscriptionForm" //Global > Report > New Actions & Subscriptions > New Report Subscription
          || this.getXType() == "emailBlastCommunicationLimitForm" //Marketing Activities > Program > Setup > Edit Communication Limit Settings
+         || this.getXType() == "calendarEntryRescheduleForm" //Marketing Activities > Event > Actions > Reschedule Entries
          || this.getXType() == "programOperationalModeForm" //Marketing Activities > Program > Setup > Edit Analytics Behavior Settings
          || this.getXType() == "trackCadenceForm" //Marketing Activities > Nurture Program > Streams > Set Stream Cadence
          || this.getXType() == "fileUploadForm" //Design Studio > Images & Files > Grab Images from Web
