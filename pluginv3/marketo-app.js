@@ -8475,7 +8475,7 @@ APP.overrideSaving = function () {
             this.autoSyncSuspended = false;
           }
           
-          if (this.getProxy()instanceof Mkt3.data.proxy.AjaxPost) {
+          if (this.getProxy() instanceof Mkt3.data.proxy.AjaxPost) {
             Mkt3.Synchronizer.sync(this);
           } else {
             this.callParent(arguments);
