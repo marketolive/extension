@@ -28,7 +28,6 @@ mktoEmailDeliverabilityToolsLink = "https://250ok.com/login?submit=true",
 mktoNextGenUxLink = "https://marketo.invisionapp.com/share/V2FQQBSYUPX",
 mktoDemoAccountMatch = "^mktodemoaccount",
 mktoMyMarketoFragment = "MM0A1",
-mktoCalendarFragment = "CAL",
 mktoAnalyticsFragment = "AR",
 mktoReportFragmentRegex = new RegExp("^AR[^!]+!$", "i"),
 mktoModelerFragmentRegex = new RegExp("^RCM[^!]+!$", "i"),
@@ -8455,13 +8454,7 @@ APP.overrideSaving = function () {
     Mkt3.data.Store.prototype.sync = function () {
       //console.log("Marketo App > Executing: Override Saving for Nurture Streams (sync)");
       
-      if (window.location.href.search("\/#" + mktoCalendarFragment) != -1
-         || (MktCanvas
-           && MktCanvas.getActiveTab()
-           && MktCanvas.getActiveTab().config
-           && MktCanvas.getActiveTab().config.programSummary
-           && MktCanvas.getActiveTab().config.programSummary.viewButton
-           && MktCanvas.getActiveTab().config.programSummary.viewButton.text == "View: Summary")) {
+      if (this.storeId == "CalendarView") {
         console.log("Marketo App > Restoring: Original sync Function");
         prevDataStoreSync.apply(this, arguments);
       } else {
