@@ -8008,6 +8008,7 @@ APP.disableFormSaveButtons = function () {
          || this.getXType() == "smartlistReportSubscriptionForm" //Global > List & Smart List > Actions > New Smart List Subscription
          || this.getXType() == "analyticsReportSubscriptionForm" //Global > Report > New Actions & Subscriptions > New Report Subscription
          || this.getXType() == "emailBlastCommunicationLimitForm" //Marketing Activities > Program > Setup > Edit Communication Limit Settings
+         || this.getXType() == "calendarEntryRescheduleForm" //Marketing Activities > Event > Actions > Reschedule Entries
          || this.getXType() == "programOperationalModeForm" //Marketing Activities > Program > Setup > Edit Analytics Behavior Settings
          || this.getXType() == "trackCadenceForm" //Marketing Activities > Nurture Program > Streams > Set Stream Cadence
          || this.getXType() == "fileUploadForm" //Design Studio > Images & Files > Grab Images from Web
@@ -8204,12 +8205,12 @@ APP.disableHarmfulSaveButtons = function () {
           // Marketing Activities
           // Program > Actions
           case "Salesforce Campaign Sync":
-          case "Event Schedule":
           case "Event Settings":
           // Program > Setup
-          case "Edit Channel":
-          case "New Cost":
-          case "Edit Cost":
+          case "New Reporting":
+          case "Edit Reporting":
+          case "New Vertical":
+          case "Edit Vertical":
           // Program > Members & List > Actions
           case "Import List":
           // Nurture Program > Setup
@@ -8224,6 +8225,14 @@ APP.disableHarmfulSaveButtons = function () {
           // ALL > New
           case "New Field Organizer":
             toDisable = true;
+            break;
+          // Program > Actions
+          case "Event Schedule":
+          // Program > Setup
+          case "Edit Channel":
+          case "New Cost":
+          case "Edit Cost":
+            toDisable = APP.evaluateMenu("button", null, MktCanvas.getActiveTab(), null);
             break;
           
           // Marketing Activities & Analytics
@@ -8241,7 +8250,7 @@ APP.disableHarmfulSaveButtons = function () {
           case "Archived Email Filter":
           // Email via MSI Performance Report
           case "Group Emails by":
-          // Engagment Stream Performance Report
+          // Engagement Stream Performance Report
           case "Engagement Program Email Filter":
           // People Performance Report
           case "Person Created At":
@@ -8447,8 +8456,10 @@ APP.overrideSaving = function () {
     Mkt3.data.Store.prototype.sync = function () {
       //console.log("Marketo App > Executing: Override Saving for Nurture Streams (sync)");
       
-      if (window.location.href.search("\/#" + mktoCalendarFragment) != -1) {
-        Mkt3.data.Store.prototype.sync = prevDataStoreSync;
+      if (this.storeId == "CalendarView"
+         || window.location.href.search("\/#" + mktoCalendarFragment) != -1) {
+        console.log("Marketo App > Restoring: Original sync Function");
+        prevDataStoreSync.apply(this, arguments);
       } else {
         
         var disable;
@@ -8467,7 +8478,7 @@ APP.overrideSaving = function () {
             this.autoSyncSuspended = false;
           }
           
-          if (this.getProxy()instanceof Mkt3.data.proxy.AjaxPost) {
+          if (this.getProxy() instanceof Mkt3.data.proxy.AjaxPost) {
             Mkt3.Synchronizer.sync(this);
           } else {
             this.callParent(arguments);
