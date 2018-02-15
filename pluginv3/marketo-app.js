@@ -8455,7 +8455,13 @@ APP.overrideSaving = function () {
     Mkt3.data.Store.prototype.sync = function () {
       //console.log("Marketo App > Executing: Override Saving for Nurture Streams (sync)");
       
-      if (window.location.href.search("\/#" + mktoCalendarFragment) != -1) {
+      if (window.location.href.search("\/#" + mktoCalendarFragment) != -1
+         || (MktCanvas
+           && MktCanvas.getActiveTab()
+           && MktCanvas.getActiveTab().config
+           && MktCanvas.getActiveTab().config.programSummary
+           && MktCanvas.getActiveTab().config.programSummary.viewButton
+           && MktCanvas.getActiveTab().config.programSummary.viewButton.text == "View: Summary")) {
         Mkt3.data.Store.prototype.sync = prevDataStoreSync;
       } else {
         
