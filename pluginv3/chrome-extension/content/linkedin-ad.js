@@ -117,9 +117,26 @@ APP.insertAd = function (ad) {
       likesCount = topAd.querySelector('button[data-control-name="likes_count"]'),
       commentsCount = topAd.querySelector('button[data-control-name="comments_count"]');
       
+      if (actorPicture.querySelector('img[src]')) {
+        actorPicture.querySelector('img[src]').src = ad.logo;
+        actorPicture.querySelector('img[src]').alt = ad.title;
+      } else {
+        actorPicture.firstElementChild.innerHTML = '<img src="' + ad.logo + '" class="avatar company EntityPhoto-square-3" alt="' + ad.title + '">'
+      }
+      
+      if (actor.getElementsByClassName('feed-shared-post-meta__edited').length > 0) {
+        actor.getElementsByClassName('feed-shared-post-meta__edited')[0].remove();
+      }
+      
+      if (postDescription.parentNode.querySelector('a')) {
+        postDescription.parentNode.querySelector('a').remove();
+      }
+      
+      if (postDescription.parentNode.getElementsByClassName('ember-view').length = 2) {
+        postDescription.parentNode.lastElementChild.remove();
+      }
+      
       actorPicture.href = actor.href = ad.link;
-      actorPicture.querySelector('img[src]').src = ad.logo;
-      actorPicture.querySelector('img[src]').alt = ad.title;
       actorPicture.querySelector('div[data-entity-hovercard-id]').setAttribute('data-entity-hovercard-id', '');
       actor.querySelector('span[data-entity-hovercard-id]').innerText = ad.title;
       actor.querySelector('span[data-entity-hovercard-id]').setAttribute('data-entity-hovercard-id', '');
@@ -127,7 +144,11 @@ APP.insertAd = function (ad) {
       postDescription.innerHTML = '<span>' + ad.text + '</span>';
       
       if (!image) {
-        image = topAd.querySelector('a[class="tap-target"]');
+        if (topAd.querySelector('a[class="app-aware-link ember-view"]')) {
+          image = topAd.querySelector('a[class="app-aware-link ember-view"]');
+        } else if (topAd.querySelector('a[class="tap-target"]')) {
+          image = topAd.querySelector('a[class="tap-target"]');
+        }
       }
       image.href = ad.link;
       image.querySelector('div').style.backgroundImage = 'url("' + ad.image + '")';
