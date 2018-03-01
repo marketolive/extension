@@ -13,7 +13,7 @@ console.log("Marketo Demo App > Running");
 
 var mktoMyMarketoFragment = "MM0A1",
 mktoMarketingPerformanceInsights = "https://insights.marketolive.com/mpi",
-mktoEmailInsightsLink = "http://www.marketolive.com/en/analytics/email-insights-summit-demo-1",
+mktoEmailInsightsLink = "https://insights.marketolive.com/email",
 mktoEmailDeliverabilityToolsLink = "https://250ok.com/login?submit=true",
 mktoNextGenUxLink = "https://marketo.invisionapp.com/share/V2FQQBSYUPX",
 
