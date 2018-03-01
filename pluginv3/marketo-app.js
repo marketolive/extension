@@ -218,7 +218,7 @@ APP.setInstanceInfo = function (accountString) {
     mktoOpportunityInfluenceAnalyzer = "AR207A1";
     mktoProgramAnalyzer = "AR223A1";
     mktoSuccessPathAnalyzer = "AR208A1";
-    mktoMarketingPerformanceInsights = "https://marketo.invisionapp.com/share/52C0GAGD4#";
+    mktoMarketingPerformanceInsights = "https://insights.marketolive.com/mpi";
     mktoEngagmentStreamPerformaceReport = "AR209B2";
     mktoProgramPerformanceReport = "AR216B2";
     mktoEmailLinkPerformanceReport = "AR204B2";
@@ -1417,10 +1417,8 @@ APP.overrideAnalyticsTiles = function () {
                 break;
                 
               case "Marketing Performance Insights":
-                if (MktPage.savedState.custPrefix != mktoAccountStringMaster) {
-                  var hrefMatch = new RegExp(' href=\"[^\"]*\" ', 'g');
-                  tiles[ii].outerHTML = tileHTML.replace(hrefMatch, ' href=\"' + mktoMarketingPerformanceInsights + '\" ');
-                }
+                var hrefMatch = new RegExp(' href=\"[^\"]*\" ', 'g');
+                tiles[ii].outerHTML = tileHTML.replace(hrefMatch, ' href=\"' + mktoMarketingPerformanceInsights + '\" ');
                 marketingPerformanceInsightsTileExists = true;
                 break;
                 

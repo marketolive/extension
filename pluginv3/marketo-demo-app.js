@@ -12,7 +12,7 @@ console.log("Marketo Demo App > Running");
  **************************************************************************************/
 
 var mktoMyMarketoFragment = "MM0A1",
-mktoMarketingPerformanceInsights = "https://marketo.invisionapp.com/share/52C0GAGD4#",
+mktoMarketingPerformanceInsights = "https://insights.marketolive.com/mpi",
 mktoEmailInsightsLink = "http://www.marketolive.com/en/analytics/email-insights-summit-demo-1",
 mktoEmailDeliverabilityToolsLink = "https://250ok.com/login?submit=true",
 mktoNextGenUxLink = "https://marketo.invisionapp.com/share/V2FQQBSYUPX",
@@ -402,6 +402,8 @@ APP.overrideAnalyticsTiles = function () {
                && tiles[ii].textContent) {
               
               if (tiles[ii].textContent == "Marketing Performance Insights") {
+                var hrefMatch = new RegExp(' href=\"[^\"]*\" ', 'g');
+                tiles[ii].outerHTML = tileHTML.replace(hrefMatch, ' href=\"' + mktoMarketingPerformanceInsights + '\" ');
                 marketingPerformanceInsightsTileExists = true;
               } else if (tiles[ii].textContent == "Email Insights") {
                 emailInsightsTileExists = true;
