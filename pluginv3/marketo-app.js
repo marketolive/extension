@@ -23,7 +23,7 @@ mktoDesignerHost = "na-sjp.marketodesigner.com",
 mktoWizard = mktoAppDomain + "/m#",
 mktoEmailDesigner = mktoDesignerDomain + "/ds",
 mktoLandingPageDesigner = mktoDesignerDomain + "/lpeditor/",
-mktoEmailInsightsLink = "http://www.marketolive.com/en/analytics/email-insights-summit-demo-1",
+mktoEmailInsightsLink = "https://insights.marketolive.com/email",
 mktoEmailDeliverabilityToolsLink = "https://250ok.com/login?submit=true",
 mktoNextGenUxLink = "https://marketo.invisionapp.com/share/V2FQQBSYUPX",
 mktoDemoAccountMatch = "^mktodemoaccount",
@@ -60,7 +60,7 @@ mktoAccountString106 = "mktodemoaccount106",
 mktoAccountString106d = "mktodemoaccount106d",
 mktoAccountStringDynamics = "mktodemoaccount408",
 mktoAccountStrings106Match = "^(" + mktoAccountString106 + "|" + mktoAccountString106d + ")$",
-mktoAccountStringsMatch = "^(" + mktoAccountStringMaster + mktoAccountString106 + "|" + mktoAccountString106d + "|" + mktoAccountStringDynamics + "|" + ")$",
+mktoAccountStringsMatch = "^(" + mktoAccountStringMaster + "|" + mktoAccountString106 + "|" + mktoAccountString106d + "|" + mktoAccountStringDynamics + ")$",
 
 mktoWorkingFoldersToHide = new RegExp("^Manufacturing$|\\(TEST\\)$", "i"),
 mktoOperationalFolders = new RegExp("^(_Operational|_Operations)", "i"),
@@ -218,7 +218,7 @@ APP.setInstanceInfo = function (accountString) {
     mktoOpportunityInfluenceAnalyzer = "AR207A1";
     mktoProgramAnalyzer = "AR223A1";
     mktoSuccessPathAnalyzer = "AR208A1";
-    mktoMarketingPerformanceInsights = "https://marketo.invisionapp.com/share/52C0GAGD4#";
+    mktoMarketingPerformanceInsights = "https://insights.marketolive.com/mpi";
     mktoEngagmentStreamPerformaceReport = "AR209B2";
     mktoProgramPerformanceReport = "AR216B2";
     mktoEmailLinkPerformanceReport = "AR204B2";
@@ -253,7 +253,7 @@ APP.setInstanceInfo = function (accountString) {
     mktoOpportunityInfluenceAnalyzer = "AR1559A1";
     mktoProgramAnalyzer = "AR1544A1";
     mktoSuccessPathAnalyzer = "AR1682A1";
-    mktoMarketingPerformanceInsights = "https://marketo.invisionapp.com/share/52C0GAGD4#";
+    mktoMarketingPerformanceInsights = "https://insights.marketolive.com/mpi";
     mktoEngagmentStreamPerformaceReport = "AR3881B2";
     mktoProgramPerformanceReport = "AR3882B2";
     mktoEmailLinkPerformanceReport = "AR3886B2";
@@ -270,7 +270,7 @@ APP.setInstanceInfo = function (accountString) {
     mktoMyWorkspaceIdMatch = null;
     mktoMyWorkspaceNameMatch = null;
     
-    mktoMarketingPerformanceInsights = "https://marketo.invisionapp.com/share/52C0GAGD4#";
+    mktoMarketingPerformanceInsights = "https://insights.marketolive.com/mpi";
   }
 };
 
@@ -1417,10 +1417,8 @@ APP.overrideAnalyticsTiles = function () {
                 break;
                 
               case "Marketing Performance Insights":
-                if (MktPage.savedState.custPrefix != mktoAccountStringMaster) {
-                  var hrefMatch = new RegExp(' href=\"[^\"]*\" ', 'g');
-                  tiles[ii].outerHTML = tileHTML.replace(hrefMatch, ' href=\"' + mktoMarketingPerformanceInsights + '\" ');
-                }
+                var hrefMatch = new RegExp(' href=\"[^\"]*\" ', 'g');
+                tiles[ii].outerHTML = tileHTML.replace(hrefMatch, ' href=\"' + mktoMarketingPerformanceInsights + '\" ');
                 marketingPerformanceInsightsTileExists = true;
                 break;
                 
