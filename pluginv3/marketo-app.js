@@ -60,7 +60,7 @@ mktoAccountString106 = "mktodemoaccount106",
 mktoAccountString106d = "mktodemoaccount106d",
 mktoAccountStringDynamics = "mktodemoaccount408",
 mktoAccountStrings106Match = "^(" + mktoAccountString106 + "|" + mktoAccountString106d + ")$",
-mktoAccountStringsMatch = "^(" + mktoAccountStringMaster + mktoAccountString106 + "|" + mktoAccountString106d + "|" + mktoAccountStringDynamics + "|" + ")$",
+mktoAccountStringsMatch = "^(" + mktoAccountStringMaster + "|" + mktoAccountString106 + "|" + mktoAccountString106d + "|" + mktoAccountStringDynamics + ")$",
 
 mktoWorkingFoldersToHide = new RegExp("^Manufacturing$|\\(TEST\\)$", "i"),
 mktoOperationalFolders = new RegExp("^(_Operational|_Operations)", "i"),
