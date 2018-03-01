@@ -253,7 +253,7 @@ APP.setInstanceInfo = function (accountString) {
     mktoOpportunityInfluenceAnalyzer = "AR1559A1";
     mktoProgramAnalyzer = "AR1544A1";
     mktoSuccessPathAnalyzer = "AR1682A1";
-    mktoMarketingPerformanceInsights = "https://marketo.invisionapp.com/share/52C0GAGD4#";
+    mktoMarketingPerformanceInsights = "https://insights.marketolive.com/mpi";
     mktoEngagmentStreamPerformaceReport = "AR3881B2";
     mktoProgramPerformanceReport = "AR3882B2";
     mktoEmailLinkPerformanceReport = "AR3886B2";
@@ -270,7 +270,7 @@ APP.setInstanceInfo = function (accountString) {
     mktoMyWorkspaceIdMatch = null;
     mktoMyWorkspaceNameMatch = null;
     
-    mktoMarketingPerformanceInsights = "https://marketo.invisionapp.com/share/52C0GAGD4#";
+    mktoMarketingPerformanceInsights = "https://insights.marketolive.com/mpi";
   }
 };
 
