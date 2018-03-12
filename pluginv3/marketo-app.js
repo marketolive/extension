@@ -10030,6 +10030,7 @@ var isMktPageApp = window.setInterval(function () {
           APP.hideToolbarItems();
           APP.overrideDraftEdits();
           APP.disableFormSaveButtons();
+          APP.disableFormDeleteButtons();
           APP.disableHarmfulSaveButtons();
           APP.overrideSmartCampaignSaving();
           APP.trackNodeClick();
@@ -10060,6 +10061,7 @@ var isMktPageApp = window.setInterval(function () {
           APP.hideToolbarItems();
           APP.overrideDraftEdits();
           APP.disableFormSaveButtons();
+          APP.disableFormDeleteButtons();
           APP.disableHarmfulSaveButtons();
           APP.overrideSmartCampaignSaving();
           APP.trackNodeClick();
@@ -10083,6 +10085,7 @@ var isMktPageApp = window.setInterval(function () {
           APP.hideToolbarItems();
           APP.overrideDraftEdits();
           APP.disableFormSaveButtons();
+          APP.disableFormDeleteButtons();
           APP.disableHarmfulSaveButtons();
           APP.overrideSmartCampaignSaving();
           APP.trackTreeNodeEdits();
@@ -10100,6 +10103,7 @@ var isMktPageApp = window.setInterval(function () {
           APP.disableMenus();
           APP.hideToolbarItems();
           APP.disableFormSaveButtons();
+          APP.disableFormDeleteButtons();
           APP.disableHarmfulSaveButtons();
           APP.overrideAssetSaveEdit();
           APP.overrideRenamingFolders();
@@ -10118,6 +10122,7 @@ var isMktPageApp = window.setInterval(function () {
           APP.disableMenus();
           APP.hideToolbarItems();
           APP.disableFormSaveButtons();
+          APP.disableFormDeleteButtons();
           APP.disableHarmfulSaveButtons();
           APP.heapTrack("track", {
             name: "Last Loaded",
@@ -10133,6 +10138,7 @@ var isMktPageApp = window.setInterval(function () {
           APP.disableMenus();
           APP.hideToolbarItems();
           APP.disableFormSaveButtons();
+          APP.disableFormDeleteButtons();
           APP.disableHarmfulSaveButtons();
           APP.heapTrack("track", {
             name: "Last Loaded",
@@ -10148,6 +10154,7 @@ var isMktPageApp = window.setInterval(function () {
           APP.disableMenus();
           APP.hideToolbarItems();
           APP.disableFormSaveButtons();
+          APP.disableFormDeleteButtons();
           APP.disableHarmfulSaveButtons();
           APP.heapTrack("track", {
             name: "Last Loaded",
@@ -10163,6 +10170,7 @@ var isMktPageApp = window.setInterval(function () {
           APP.disableMenus();
           APP.hideToolbarItems();
           APP.disableFormSaveButtons();
+          APP.disableFormDeleteButtons();
           APP.disableHarmfulSaveButtons();
           APP.heapTrack("track", {
             name: "Last Loaded",
