@@ -4124,27 +4124,15 @@ APP.disableMenus = function () {
      && Mkt3.controller.abm.accountList
      && Mkt3.controller.abm.accountList.Dashboard
      && Mkt3.controller.abm.accountList.Dashboard.prototype
-     && Mkt3.controller.abm.accountList.Dashboard.prototype.loadNamedAccountsGrid) {
-    Mkt3.controller.abm.accountList.Dashboard.prototype.loadNamedAccountsGrid = function (grid) {
+     && Mkt3.controller.abm.accountList.Dashboard.prototype.loadToolBar) {
+    Mkt3.controller.abm.accountList.Dashboard.prototype.loadToolBar = function () {
       console.log("Marketo App > Executing: Disable Toolbar Buttons for ABM > Account Lists > Named Accounts");
-      
-      var dashboard = this.getDashboard(),
-      accountListId = dashboard.compId,
-      isAccountListIdEmpty = Ext4.isEmpty(accountListId);
-      
-      if (!isAccountListIdEmpty) {
-        grid.store.load({
-          params: {
-            accountListId: accountListId
-          }
-        });
-      }
       
       var menuItems = [
         // Account Based Marketing > Account Lists > Named Account > Toolbar Buttons
         "abmAccountListToolbar [action=removeNamedAccount]", //Remove Named Accounts
       ],
-      mItems = dashboard.query(menuItems.toString());
+      mItems = Ext4.ComponentQuery.query(menuItems.toString());
       
       if (mItems) {
         mItems.forEach(function (item) {
@@ -4152,6 +4140,13 @@ APP.disableMenus = function () {
             item.destroy();
           }
         });
+      }
+      
+      var dashboard = this.getDashboard(),
+      toolbar = dashboard.query('abmAccountListToolbar');
+      
+      for (var i = 0; i < toolbar.length; i++) {
+        toolbar[i].down('#newMenu').hide();
       }
     };
   } else {
@@ -8119,6 +8114,80 @@ APP.disableFormSaveButtons = function () {
         me.setVisible(false);
       }
       return me;
+    };
+  }
+};
+
+/**************************************************************************************
+ *
+ *  This function disables the Delete buttons in Form windows.
+ *  It can be used to disable any generic Form save window.
+ *
+ *  @Author Brian Fisher
+ *
+ *  @function
+ *
+ **************************************************************************************/
+
+APP.disableFormDeleteButtons = function () {
+  console.log("Marketo App > Disabling: Form Window Delete Buttons");
+  
+  if (typeof(Ext4) !== "undefined"
+     && Ext4
+     && Ext4.window
+     && Ext4.window.MessageBox.prototype
+     && Ext4.window.MessageBox.prototype.confirmDelete) {
+    Ext4.window.MessageBox.prototype.confirmDelete = function (cfg, msg, fn, scope) {
+      var menuItems,
+      mItems,
+      toDisable;
+      
+      if (cfg.title == "Remove Named Accounts" //ABM > Account Lists > Select Account
+      ) {
+        menuItems = [
+          "[itemId=ok]", //Delete
+          "[text=Delete]", //Delete
+        ];
+        mItems = this.query(menuItems.toString());
+        toDisable = true;
+        
+      }
+      
+      if (toDisable
+         && mItems) {
+        console.log("Marketo App > Executing: Disable Form Window Delete Buttons");
+        
+        mItems.forEach(function (item) {
+          if (item) {
+            item.setDisabled(toDisable);
+          }
+        });
+      }
+      
+      if (Ext4.isString(cfg)) {
+        cfg = {
+          title: cfg,
+          msg: msg,
+          fn: fn,
+          scope: scope
+        };
+      }
+      
+      cfg = Ext4.apply({
+          icon: this.INFO,
+          buttons: this.OKCANCEL,
+          buttonText: {
+            ok: MktLang.getStr('messagebox.Delete')
+          }
+        }, cfg);
+      
+      // TODO-legacy
+      if (!Mkt3.Config.isFeatureEnabled('mkt3Ds')) {
+        cfg.fn = Ext4.Function.bind(cfg.fn, cfg.scope || this, ['ok']);
+        return MktMessage.confirmDelete(cfg.title, cfg.msg, cfg.fn, cfg.animateTarget);
+      }
+      
+      return this.show(cfg);
     };
   }
 };
