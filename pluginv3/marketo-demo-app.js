@@ -380,6 +380,7 @@ APP.overrideHomeTiles = function () {
     }
     
     container.querySelector('div[role="presentation"]').remove();
+    container.querySelector('div[class="x-panel-bwrap x-panel"]').remove();
   }
 };
 
