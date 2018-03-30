@@ -1052,6 +1052,8 @@ APP.overrideHomeTiles = function (restoreEmailInsightsTile) {
     seoTile,
     nextGenUxTile,
     nextGenUxTileOuterHTML,
+    hiddenTile1,
+    hiddenTile2,
     ii;
     
     for (ii = 0; ii < tilesTextContent.length; ii++) {
@@ -1180,8 +1182,14 @@ APP.overrideHomeTiles = function (restoreEmailInsightsTile) {
       };
     }
     
-    container.querySelector('div[role="presentation"]').remove();
-    container.querySelector('div[class="x-panel-bwrap x-panel"]').remove();
+    hiddenTile1 = container.querySelector('div[role="presentation"]')
+    hiddenTile2 = container.querySelector('div[class="x-panel-bwrap x-panel"]')
+    if (hiddenTile1) {
+      hiddenTile1.remove();
+    }
+    if (hiddenTile2) {
+      hiddenTile2.remove();
+    }
   }
 };
 
