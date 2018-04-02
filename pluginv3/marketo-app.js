@@ -5412,7 +5412,7 @@ APP.hideToolbarItems = function () {
           },*/
           {
           "text" : "New Custom Field",//New Custom Field
-          "action" : "setDisabled",
+          "action" : "setVisible",
           },
           /*{
           "id" : "exportFieldsFmFields",//Export Field Names
