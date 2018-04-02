@@ -5410,10 +5410,10 @@ APP.hideToolbarItems = function () {
           "id" : "fieldManagement_fmFields",//Field Actions
           "action" : "setDisabled",
           },*/
-          /*{
+          {
           "text" : "New Custom Field",//New Custom Field
           "action" : "setDisabled",
-          },*/
+          },
           /*{
           "id" : "exportFieldsFmFields",//Export Field Names
           "action" : "setDisabled",
