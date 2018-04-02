@@ -3947,6 +3947,14 @@ APP.disableMenus = function () {
               this.items.items[ii].setDisabled(true);
             }
             break;
+          
+          case "Field Actions":
+            for (var ii = 0; ii < this.items.items.length; ii++) {
+              if (this.items.items[ii].text == "New Custom Field") {
+                this.items.items[ii].setDisabled(true);
+                break;
+              }
+            }
           }
           
           if (this.ownerCt.text.search("^View:") != -1) {
@@ -5412,7 +5420,7 @@ APP.hideToolbarItems = function () {
           },*/
           {
           "text" : "New Custom Field",//New Custom Field
-          "action" : "setVisible",
+          "action" : "setDisabled",
           },
           /*{
           "id" : "exportFieldsFmFields",//Export Field Names
