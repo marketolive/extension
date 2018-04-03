@@ -1058,7 +1058,9 @@ APP.overrideHomeTiles = function (restoreEmailInsightsTile) {
     
     for (ii = 0; ii < tilesTextContent.length; ii++) {
       if (tilesTextContent[ii] == "Performance Insights") {
-        performanceInsightsTile = MktCanvas.lookupComponent(container.childNodes[ii]);
+        if (container.childNodes[ii].style.display != "none") {
+          performanceInsightsTile = MktCanvas.lookupComponent(container.childNodes[ii]);
+        }
       } else if (tilesTextContent[ii] == "Email Insights") {
         emailInsightsTile = MktCanvas.lookupComponent(container.childNodes[ii]);
       } else if (tilesTextContent[ii] == "Deliverability Tools") {
@@ -1285,7 +1287,9 @@ APP.overrideSuperballMenuItems = function (restoreEmailInsightsMenuItem) {
             currSuperBallMenuItem = menu.items.items[ii];
             
             if (currSuperBallMenuItem.text == "Performance Insights") {
-              performanceInsightsMenuItem = currSuperBallMenuItem;
+              if (currSuperBallMenuItem.hidden != true) {
+                performanceInsightsMenuItem = currSuperBallMenuItem;
+              }
             } else if (currSuperBallMenuItem.text == "Email Insights") {
               emailInsightsMenuItem = currSuperBallMenuItem;
             } else if (currSuperBallMenuItem.text == "Deliverability Tools") {
@@ -1559,7 +1563,7 @@ APP.overrideAnalyticsTiles = function () {
             spareTileClone = MktCanvas.lookupComponent(container.childNodes[container.childNodes.length - 1]).cloneConfig();
             
             spareTileClone.el.dom.outerHTML = performanceInsightsTileOuterHTML.replace(idMatch, spareTileClone.id);
-            container.insertBefore(spareTileClone.el.dom, container.childNodes[0]);
+            container.appendChild(spareTileClone.el.dom);
           }
         }
       }
