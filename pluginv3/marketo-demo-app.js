@@ -438,7 +438,9 @@ APP.overrideAnalyticsTiles = function () {
           
           for (var ii = 0; ii < tiles.length; ii++) {
             if (tiles[ii]
+               && tiles[ii].outerHTML
                && tiles[ii].textContent) {
+              var tileHTML = tiles[ii].outerHTML;
               
               if (tiles[ii].textContent == "Performance Insights") {
                 var hrefMatch = new RegExp(' href=\"[^\"]*\" ', 'g');
@@ -456,7 +458,7 @@ APP.overrideAnalyticsTiles = function () {
             spareTileClone = MktCanvas.lookupComponent(container.childNodes[container.childNodes.length - 1]).cloneConfig();
             
             spareTileClone.el.dom.outerHTML = emailInsightsTileOuterHTML.replace(idMatch, spareTileClone.id);
-            container.insertBefore(spareTileClone.el.dom, container.childNodes[0]);
+            container.insertAfter(spareTileClone.el.dom, container.childNodes[container.childNodes.length - 1]);
           }
           
           if (!performanceInsightsTileExists) {
@@ -465,7 +467,7 @@ APP.overrideAnalyticsTiles = function () {
             spareTileClone = MktCanvas.lookupComponent(container.childNodes[container.childNodes.length - 1]).cloneConfig();
             
             spareTileClone.el.dom.outerHTML = performanceInsightsTileOuterHTML.replace(idMatch, spareTileClone.id);
-            container.insertBefore(spareTileClone.el.dom, container.childNodes[0]);
+            container.insertAfter(spareTileClone.el.dom, container.childNodes[container.childNodes.length - 1]);
           }
         }
       }
