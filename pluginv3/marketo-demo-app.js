@@ -458,7 +458,7 @@ APP.overrideAnalyticsTiles = function () {
             spareTileClone = MktCanvas.lookupComponent(container.childNodes[container.childNodes.length - 1]).cloneConfig();
             
             spareTileClone.el.dom.outerHTML = emailInsightsTileOuterHTML.replace(idMatch, spareTileClone.id);
-            container.insertAfter(spareTileClone.el.dom, container.childNodes[container.childNodes.length - 1]);
+            container.appendChild(spareTileClone.el.dom);
           }
           
           if (!performanceInsightsTileExists) {
@@ -467,7 +467,7 @@ APP.overrideAnalyticsTiles = function () {
             spareTileClone = MktCanvas.lookupComponent(container.childNodes[container.childNodes.length - 1]).cloneConfig();
             
             spareTileClone.el.dom.outerHTML = performanceInsightsTileOuterHTML.replace(idMatch, spareTileClone.id);
-            container.insertAfter(spareTileClone.el.dom, container.childNodes[container.childNodes.length - 1]);
+            container.appendChild(spareTileClone.el.dom);
           }
         }
       }
