@@ -207,7 +207,9 @@ APP.overrideSuperballMenuItems = function () {
             currSuperBallMenuItem = menu.items.items[ii];
             
             if (currSuperBallMenuItem.text == "Performance Insights") {
-              performanceInsightsMenuItem = currSuperBallMenuItem;
+              if (currSuperBallMenuItem.hidden != true) {
+                performanceInsightsMenuItem = currSuperBallMenuItem;
+              }
             } else if (currSuperBallMenuItem.text == "Email Insights") {
               emailInsightsMenuItem = currSuperBallMenuItem;
             } else if (currSuperBallMenuItem.text == "Deliverability Tools") {
@@ -325,7 +327,9 @@ APP.overrideHomeTiles = function () {
     
     for (ii = 0; ii < tilesTextContent.length; ii++) {
       if (tilesTextContent[ii] == "Performance Insights") {
-        performanceInsightsTile = MktCanvas.lookupComponent(container.childNodes[ii]);
+        if (container.childNodes[ii].style.display != "none") {
+          performanceInsightsTile = MktCanvas.lookupComponent(container.childNodes[ii]);
+        }
       } else if (tilesTextContent[ii] == "Email Insights") {
         emailInsightsTile = MktCanvas.lookupComponent(container.childNodes[ii]);
       } else if (tilesTextContent[ii] == "Deliverability Tools") {
