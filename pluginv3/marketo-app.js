@@ -1204,6 +1204,22 @@ APP.overrideHomeTiles = function (restoreEmailInsightsTile) {
       };
     }
     
+      let nextGenUxTileEl = document.createElement('div');
+      nextGenUxTileEl.className = "x4-btn mkt3-homeTile x4-btn-default-small x4-icon-text-left x4-btn-icon-text-left x4-btn-default-small-icon-text-left";
+      nextGenUxTileEl.style = "height: 150px;";
+      nextGenUxTileEl.id = "nextGenUxTile2";
+      nextGenUxTileEl.innerHTML = '<em id="nextGenUxTile2-btnWrap"><a id="nextGenUxTile2-btnEl" href="' + 'blah' + '" class="x4-btn-center" target="_blank" role="link" style="width: 150px; height: 150px;"><span id="nextGenUxTile2-btnInnerEl" class="x4-btn-inner" style="width: 150px; height: 150px; line-height: 150px;">Next Gen UX</span><span id="nextGenUxTile2-btnIconEl" class="x4-btn-icon mki3-mercury-svg"></span></a></em>';
+      
+      container.insertBefore(nextGenUxTileEl, container.childNodes[container.childNodes.length - 1]);
+      document.getElementById("nextGenUxTile2").onclick = function () {
+        APP.heapTrack("track", {
+          name: "Mercury UX",
+          assetArea: "Mercury UX",
+          assetName: "InVision App",
+          assetType: "Home Tile"
+        });
+      };
+    
     hiddenTile1 = container.querySelector('div[role="presentation"]')
     hiddenTile2 = container.querySelector('div[class="x-panel-bwrap x-panel"]')
     if (hiddenTile1) {
