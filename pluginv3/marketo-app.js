@@ -1144,24 +1144,6 @@ APP.overrideHomeTiles = function (restoreEmailInsightsTile) {
       };
     }
     
-    if (!nextGenUxTile) {
-      let nextGenUxTileEl = document.createElement('div');
-      nextGenUxTileEl.className = "x4-btn mkt3-homeTile x4-btn-default-small x4-icon-text-left x4-btn-icon-text-left x4-btn-default-small-icon-text-left";
-      nextGenUxTileEl.style = "height: 150px;";
-      nextGenUxTileEl.id = "nextGenUxTile";
-      nextGenUxTileEl.innerHTML = '<em id="nextGenUxTile-btnWrap"><a id="nextGenUxTile-btnEl" href="' + mktoNextGenUxLink + '" class="x4-btn-center" target="_blank" role="link" style="width: 150px; height: 150px;"><span id="nextGenUxTile-btnInnerEl" class="x4-btn-inner" style="width: 150px; height: 150px; line-height: 150px;">Next Gen UX</span><span id="nextGenUxTile-btnIconEl" class="x4-btn-icon mki3-mercury-svg"></span></a></em>';
-      
-      container.insertBefore(nextGenUxTileEl, container.childNodes[container.childNodes.length - 1]);
-      document.getElementById("nextGenUxTile").onclick = function () {
-        APP.heapTrack("track", {
-          name: "Mercury UX",
-          assetArea: "Mercury UX",
-          assetName: "InVision App",
-          assetType: "Home Tile"
-        });
-      };
-    }
-    
     if (deliverabilityToolsTile) {
       deliverabilityToolsTile.el.dom.outerHTML = deliverabilityToolsTile.el.dom.outerHTML.replace(hrefMatch, " href=\"" + mktoEmailDeliverabilityToolsLink + "\" ");
       
@@ -1198,6 +1180,24 @@ APP.overrideHomeTiles = function (restoreEmailInsightsTile) {
           name: "SEO",
           assetArea: "SEO",
           assetName: "Home",
+          assetType: "Home Tile"
+        });
+      };
+    }
+    
+    if (!nextGenUxTile) {
+      let nextGenUxTileEl = document.createElement('div');
+      nextGenUxTileEl.className = "x4-btn mkt3-homeTile x4-btn-default-small x4-icon-text-left x4-btn-icon-text-left x4-btn-default-small-icon-text-left";
+      nextGenUxTileEl.style = "height: 150px;";
+      nextGenUxTileEl.id = "nextGenUxTile";
+      nextGenUxTileEl.innerHTML = '<em id="nextGenUxTile-btnWrap"><a id="nextGenUxTile-btnEl" href="' + mktoNextGenUxLink + '" class="x4-btn-center" target="_blank" role="link" style="width: 150px; height: 150px;"><span id="nextGenUxTile-btnInnerEl" class="x4-btn-inner" style="width: 150px; height: 150px; line-height: 150px;">Next Gen UX</span><span id="nextGenUxTile-btnIconEl" class="x4-btn-icon"></span></a></em>';
+      
+      container.insertBefore(nextGenUxTileEl, container.childNodes[container.childNodes.length - 1]);
+      document.getElementById("nextGenUxTile").onclick = function () {
+        APP.heapTrack("track", {
+          name: "Mercury UX",
+          assetArea: "Mercury UX",
+          assetName: "InVision App",
           assetType: "Home Tile"
         });
       };
