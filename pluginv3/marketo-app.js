@@ -1067,7 +1067,8 @@ APP.overrideHomeTiles = function (restoreEmailInsightsTile) {
     }
     
     if (performanceInsightsTile) {
-      performanceInsightsTile.el.dom.outerHTML = performanceInsightsTile.el.dom.outerHTML.replace(hrefMatch, " href=\"" + mktoPerformanceInsightsLink + "\" ");
+      performanceInsightsTile.outerHTML = performanceInsightsTile.outerHTML.replace(hrefMatch, " href=\"" + mktoPerformanceInsightsLink + "\" ");
+      //performanceInsightsTile.el.dom.outerHTML = performanceInsightsTile.el.dom.outerHTML.replace(hrefMatch, " href=\"" + mktoPerformanceInsightsLink + "\" ");
       
       document.getElementById(performanceInsightsTile.id).onclick = function () {
         APP.heapTrack("track", {
@@ -1100,12 +1101,12 @@ APP.overrideHomeTiles = function (restoreEmailInsightsTile) {
       var assetName;
       
       if (origEmailInsightsTileLink == null) {
-        origEmailInsightsTileLink = emailInsightsTile.el.dom.outerHTML.match(hrefMatch)[0].split('"')[1];
+        origEmailInsightsTileLink = emailInsightsTile.outerHTML.match(hrefMatch)[0].split('"')[1];
       }
       
       if (restoreEmailInsightsTile
          && origEmailInsightsTileLink != null) {
-        emailInsightsTile.el.dom.outerHTML = emailInsightsTile.el.dom.outerHTML.replace(hrefMatch, " href=\"" + origEmailInsightsTileLink + "\" ");
+        emailInsightsTile.outerHTML = emailInsightsTile.outerHTML.replace(hrefMatch, " href=\"" + origEmailInsightsTileLink + "\" ");
         document.getElementById(emailInsightsTile.id).onclick = function () {
           APP.heapTrack("track", {
             name: "Email Insights",
@@ -1115,7 +1116,7 @@ APP.overrideHomeTiles = function (restoreEmailInsightsTile) {
           });
         };
       } else {
-        emailInsightsTile.el.dom.outerHTML = emailInsightsTile.el.dom.outerHTML.replace(hrefMatch, " href=\"" + mktoEmailInsightsLink + "\" ");
+        emailInsightsTile.outerHTML = emailInsightsTile.outerHTML.replace(hrefMatch, " href=\"" + mktoEmailInsightsLink + "\" ");
         document.getElementById(emailInsightsTile.id).onclick = function () {
           APP.heapTrack("track", {
             name: "Email Insights",
@@ -1145,7 +1146,7 @@ APP.overrideHomeTiles = function (restoreEmailInsightsTile) {
     }
     
     if (deliverabilityToolsTile) {
-      deliverabilityToolsTile.el.dom.outerHTML = deliverabilityToolsTile.el.dom.outerHTML.replace(hrefMatch, " href=\"" + mktoEmailDeliverabilityToolsLink + "\" ");
+      deliverabilityToolsTile.outerHTML = deliverabilityToolsTile.outerHTML.replace(hrefMatch, " href=\"" + mktoEmailDeliverabilityToolsLink + "\" ");
       
       document.getElementById(deliverabilityToolsTile.id).onclick = function () {
         APP.heapTrack("track", {
