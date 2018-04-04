@@ -1078,10 +1078,14 @@ APP.overrideHomeTiles = function (restoreEmailInsightsTile) {
         });
       };
     } else {
-      let performanceInsightsTileOuterHTML = document.createElement('<div class="x4-btn mkt3-homeTile x4-btn-default-small x4-icon-text-left x4-btn-icon-text-left x4-btn-default-small-icon-text-left" style="height: 150px;" id="performanceInsightsTile"><em id="performanceInsightsTile-btnWrap"><a id="performanceInsightsTile-btnEl" href="' + mktoPerformanceInsightsLink + '" class="x4-btn-center" target="_blank" role="link" style="width: 150px; height: 150px;"><span id="performanceInsightsTile-btnInnerEl" class="x4-btn-inner" style="width: 150px; height: 150px; line-height: 150px;">Performance Insights</span><span id="performanceInsightsTile-btnIconEl" class="x4-btn-icon mki3-mpi-logo-svg"></span></a></em></div>');
+      let performanceInsightsTileEl = document.createElement('div');
+      performanceInsightsTileEl.className = "x4-btn mkt3-homeTile x4-btn-default-small x4-icon-text-left x4-btn-icon-text-left x4-btn-default-small-icon-text-left";
+      performanceInsightsTileEl.style = "height: 150px;";
+      performanceInsightsTileEl.id = "performanceInsightsTile";
+      performanceInsightsTileEl.innerHTML = '<em id="performanceInsightsTile-btnWrap"><a id="performanceInsightsTile-btnEl" href="' + mktoPerformanceInsightsLink + '" class="x4-btn-center" target="_blank" role="link" style="width: 150px; height: 150px;"><span id="performanceInsightsTile-btnInnerEl" class="x4-btn-inner" style="width: 150px; height: 150px; line-height: 150px;">Performance Insights</span><span id="performanceInsightsTile-btnIconEl" class="x4-btn-icon mki3-mpi-logo-svg"></span></a></em>';
       
       //spareTileClone = MktCanvas.lookupComponent(container.childNodes[container.childNodes.length - 1]).cloneConfig();
-      container.insertBefore(performanceInsightsTileOuterHTML, container.childNodes[container.childNodes.length - 1]);
+      container.insertBefore(performanceInsightsTileEl, container.childNodes[container.childNodes.length - 1]);
       document.getElementById("performanceInsightsTile").onclick = function () {
         APP.heapTrack("track", {
           name: "Performance Insights",
@@ -1123,9 +1127,13 @@ APP.overrideHomeTiles = function (restoreEmailInsightsTile) {
       }
       
     } else {
-      let emailInsightsTileOuterHTML = document.createElement('<div class="x4-btn mkt3-homeTile x4-btn-default-small x4-icon-text-left x4-btn-icon-text-left x4-btn-default-small-icon-text-left x-panel" style="height: 150px;" id="emailInsightsTile"><em id="emailInsightsTile-btnWrap"><a id="emailInsightsTile-btnEl" href="' + mktoEmailInsightsLink + '" class="x4-btn-center" target="_blank" role="link" style="width: 150px; height: 150px;"><span id="emailInsightsTile-btnInnerEl" class="x4-btn-inner" style="width: 150px; height: 150px; line-height: 150px;">Email Insights</span><span id="emailInsightsTile-btnIconEl" class="x4-btn-icon mki3-email-insights-svg"></span></a></em><div class="x-panel-bwrap" id="ext-gen164"><div class="x-panel-body x-panel-body-noheader" id="ext-gen165"></div></div></div>');
+      let emailInsightsTileEl = document.createElement('div');
+      emailInsightsTileEl.className = "x4-btn mkt3-homeTile x4-btn-default-small x4-icon-text-left x4-btn-icon-text-left x4-btn-default-small-icon-text-left x-panel";
+      emailInsightsTileEl.style = "height: 150px;";
+      emailInsightsTileEl.id = "emailInsightsTile";
+      emailInsightsTileEl.innerHTML = '<em id="emailInsightsTile-btnWrap"><a id="emailInsightsTile-btnEl" href="' + mktoEmailInsightsLink + '" class="x4-btn-center" target="_blank" role="link" style="width: 150px; height: 150px;"><span id="emailInsightsTile-btnInnerEl" class="x4-btn-inner" style="width: 150px; height: 150px; line-height: 150px;">Email Insights</span><span id="emailInsightsTile-btnIconEl" class="x4-btn-icon mki3-email-insights-svg"></span></a></em><div class="x-panel-bwrap" id="ext-gen164"><div class="x-panel-body x-panel-body-noheader" id="ext-gen165"></div></div>';
       
-      container.insertBefore(emailInsightsTileOuterHTML, container.childNodes[container.childNodes.length - 1]);
+      container.insertBefore(emailInsightsTileEl, container.childNodes[container.childNodes.length - 1]);
       document.getElementById("emailInsightsTile").onclick = function () {
         APP.heapTrack("track", {
           name: "Email Insights",
@@ -1148,9 +1156,13 @@ APP.overrideHomeTiles = function (restoreEmailInsightsTile) {
         });
       };
     } else {
-      let deliverabilityToolsTileOuterHTML = document.createElement('<div class="x4-btn mkt3-homeTile x4-btn-default-small x4-icon-text-left x4-btn-icon-text-left x4-btn-default-small-icon-text-left" style="height: 150px;" id="deliverabilityToolsTile"><em id="deliverabilityToolsTile-btnWrap"><a id="deliverabilityToolsTile-btnEl" href="' + mktoEmailDeliverabilityToolsLink + '" class="x4-btn-center" target="_blank" role="link" style="width: 150px; height: 150px;"><span id="deliverabilityToolsTile-btnInnerEl" class="x4-btn-inner" style="width: 150px; height: 150px; line-height: 150px;">Deliverability Tools</span><span id="deliverabilityToolsTile-btnIconEl" class="x4-btn-icon mki3-mail-sealed-svg"></span></a></em></div>');
+      let deliverabilityToolsTileEl = document.createElement('div');
+      deliverabilityToolsTileEl.className = "x4-btn mkt3-homeTile x4-btn-default-small x4-icon-text-left x4-btn-icon-text-left x4-btn-default-small-icon-text-left";
+      deliverabilityToolsTileEl.style = "height: 150px;";
+      deliverabilityToolsTileEl.id = "deliverabilityToolsTile";
+      deliverabilityToolsTileEl.innerHTML = '<em id="deliverabilityToolsTile-btnWrap"><a id="deliverabilityToolsTile-btnEl" href="' + mktoEmailDeliverabilityToolsLink + '" class="x4-btn-center" target="_blank" role="link" style="width: 150px; height: 150px;"><span id="deliverabilityToolsTile-btnInnerEl" class="x4-btn-inner" style="width: 150px; height: 150px; line-height: 150px;">Deliverability Tools</span><span id="deliverabilityToolsTile-btnIconEl" class="x4-btn-icon mki3-mail-sealed-svg"></span></a></em>';
       
-      container.insertBefore(deliverabilityToolsTileOuterHTML, container.childNodes[container.childNodes.length - 1]);
+      container.insertBefore(deliverabilityToolsTileEl, container.childNodes[container.childNodes.length - 1]);
       document.getElementById("deliverabilityToolsTile").onclick = function () {
         APP.heapTrack("track", {
           name: "Deliverability Tools",
@@ -1174,9 +1186,13 @@ APP.overrideHomeTiles = function (restoreEmailInsightsTile) {
     }
     
     if (!nextGenUxTile) {
-      let nextGenUxTileOuterHTML = document.createElement('<div class="x4-btn mkt3-homeTile x4-btn-default-small x4-icon-text-left x4-btn-icon-text-left x4-btn-default-small-icon-text-left" style="height: 150px;" id="nextGenUxTile"><em id="nextGenUxTile-btnWrap"><a id="nextGenUxTile-btnEl" href="' + mktoNextGenUxLink + '" class="x4-btn-center" target="_blank" role="link" style="width: 150px; height: 150px;"><span id="nextGenUxTile-btnInnerEl" class="x4-btn-inner" style="width: 150px; height: 150px; line-height: 150px;">Next Gen UX</span><span id="nextGenUxTile-btnIconEl" class="x4-btn-icon mki3-mercury-svg"></span></a></em></div>');
+      let nextGenUxTileEl = document.createElement('div');
+      nextGenUxTileEl.className = "x4-btn mkt3-homeTile x4-btn-default-small x4-icon-text-left x4-btn-icon-text-left x4-btn-default-small-icon-text-left";
+      nextGenUxTileEl.style = "height: 150px;";
+      nextGenUxTileEl.id = "nextGenUxTile";
+      nextGenUxTileEl.innerHTML = '<em id="nextGenUxTile-btnWrap"><a id="nextGenUxTile-btnEl" href="' + mktoNextGenUxLink + '" class="x4-btn-center" target="_blank" role="link" style="width: 150px; height: 150px;"><span id="nextGenUxTile-btnInnerEl" class="x4-btn-inner" style="width: 150px; height: 150px; line-height: 150px;">Next Gen UX</span><span id="nextGenUxTile-btnIconEl" class="x4-btn-icon mki3-mercury-svg"></span></a></em>';
       
-      container.insertBefore(nextGenUxTileOuterHTML, container.childNodes[container.childNodes.length - 1]);
+      container.insertBefore(nextGenUxTileEl, container.childNodes[container.childNodes.length - 1]);
       document.getElementById("nextGenUxTile").onclick = function () {
         APP.heapTrack("track", {
           name: "Mercury UX",
