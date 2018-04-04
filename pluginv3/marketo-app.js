@@ -1051,26 +1051,16 @@ APP.overrideHomeTiles = function (restoreEmailInsightsTile) {
     hiddenTile2;
     
     for (let tile of tilesTextContent) {
-      switch (tile.textContent) {
-      case "Performance Insights":
+      if (tile.textContent == "Performance Insights") {
         performanceInsightsTile = tile.parentNode.parentNode.parentNode;
-        break;
-      
-      case "Email Insights":
+      } else if (tile.textContent == "Email Insights") {
         emailInsightsTile = tile.parentNode.parentNode.parentNode;
-        break;
-      
-      case "Deliverability Tools":
+      } else if (tile.textContent == "Deliverability Tools") {
         deliverabilityToolsTile = tile.parentNode.parentNode.parentNode;
-        break;
-      
-      case "SEO":
+      } else if (tile.textContent == "SEO") {
         seoTile = tile.parentNode.parentNode.parentNode;
-        break;
-      
-      case "Next Gen UX":
+      } else if (tile.textContent == "Next Gen UX") {
         nextGenUxTile = tile.parentNode.parentNode.parentNode;
-        break;
       }
     }
     
