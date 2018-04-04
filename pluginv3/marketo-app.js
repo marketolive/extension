@@ -1038,8 +1038,9 @@ APP.overrideHomeTiles = function (restoreEmailInsightsTile) {
     console.log("Marketo App > Executing: Override My Marketo Home Tiles 2");
     
     var container = MktCanvas.getEl().dom.nextSibling.childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[0],
-    containerComponent = MktCanvas.lookupComponent(container),
-    tilesTextContent = containerComponent.el.dom.textContent.replace(/([a-z])([A-Z])/g, "$1,$2").replace(/([A-Z])([A-Z][a-z])/g, "$1,$2").split(','),
+    tilesTextContent = container.textContent.replace(/([a-z])([A-Z])/g, "$1,$2").replace(/([A-Z])([A-Z][a-z])/g, "$1,$2").split(','),
+    //containerComponent = MktCanvas.lookupComponent(container),
+    //tilesTextContent = containerComponent.el.dom.textContent.replace(/([a-z])([A-Z])/g, "$1,$2").replace(/([A-Z])([A-Z][a-z])/g, "$1,$2").split(','),
     hrefMatch = new RegExp(" href=\"[^\"]*\" ", "g"),
     spareTileClone,
     performanceInsightsTile,
@@ -1144,7 +1145,7 @@ APP.overrideHomeTiles = function (restoreEmailInsightsTile) {
       };
     }
     
-    if (false) {
+    if (deliverabilityToolsTile) {
       deliverabilityToolsTile.el.dom.outerHTML = deliverabilityToolsTile.el.dom.outerHTML.replace(hrefMatch, " href=\"" + mktoEmailDeliverabilityToolsLink + "\" ");
       
       document.getElementById(deliverabilityToolsTile.id).onclick = function () {
