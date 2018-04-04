@@ -1039,8 +1039,6 @@ APP.overrideHomeTiles = function (restoreEmailInsightsTile) {
     
     var container = MktCanvas.getEl().dom.nextSibling.childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[0],
     tilesTextContent = container.textContent.replace(/([a-z])([A-Z])/g, "$1,$2").replace(/([A-Z])([A-Z][a-z])/g, "$1,$2").split(','),
-    //containerComponent = MktCanvas.lookupComponent(container),
-    //tilesTextContent = containerComponent.el.dom.textContent.replace(/([a-z])([A-Z])/g, "$1,$2").replace(/([A-Z])([A-Z][a-z])/g, "$1,$2").split(','),
     hrefMatch = new RegExp(" href=\"[^\"]*\" ", "g"),
     spareTileClone,
     performanceInsightsTile,
@@ -1054,16 +1052,17 @@ APP.overrideHomeTiles = function (restoreEmailInsightsTile) {
     for (let ii = 0; ii < tilesTextContent.length; ii++) {
       if (tilesTextContent[ii] == "Performance Insights") {
         if (container.childNodes[ii].style.display != "none") {
-          performanceInsightsTile = MktCanvas.lookupComponent(container.childNodes[ii]);
+          performanceInsightsTile = container.childNodes[ii];
+          //performanceInsightsTile = MktCanvas.lookupComponent(container.childNodes[ii]);
         }
       } else if (tilesTextContent[ii] == "Email Insights") {
-        emailInsightsTile = MktCanvas.lookupComponent(container.childNodes[ii]);
+        emailInsightsTile = container.childNodes[ii];
       } else if (tilesTextContent[ii] == "Deliverability Tools") {
-        deliverabilityToolsTile = MktCanvas.lookupComponent(container.childNodes[ii]);
+        deliverabilityToolsTile = container.childNodes[ii];
       } else if (tilesTextContent[ii] == "SEO") {
-        seoTile = MktCanvas.lookupComponent(container.childNodes[ii]);
+        seoTile = container.childNodes[ii];
       } else if (tilesTextContent[ii] == "Next Gen UX") {
-        nextGenUxTile = MktCanvas.lookupComponent(container.childNodes[ii]);
+        nextGenUxTile = container.childNodes[ii];
       }
     }
     
