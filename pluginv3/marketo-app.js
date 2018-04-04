@@ -1053,7 +1053,9 @@ APP.overrideHomeTiles = function (restoreEmailInsightsTile) {
       let tile = tilesTextContent[ii];
       switch (tile.textContent) {
       case "Performance Insights":
-        performanceInsightsTile = tile.parentNode.parentNode.parentNode;
+        if (tile.parentNode.parentNode.parentNode.style.display != "none") {
+          performanceInsightsTile = tile.parentNode.parentNode.parentNode;
+        }
         break;
       
       case "Email Insights":

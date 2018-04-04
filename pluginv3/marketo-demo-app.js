@@ -322,7 +322,9 @@ APP.overrideHomeTiles = function () {
       let tile = tilesTextContent[ii];
       switch (tile.textContent) {
       case "Performance Insights":
-        performanceInsightsTile = tile.parentNode.parentNode.parentNode;
+        if (tile.parentNode.parentNode.parentNode.style.display != "none") {
+          performanceInsightsTile = tile.parentNode.parentNode.parentNode;
+        }
         break;
       
       case "Email Insights":
@@ -3420,7 +3422,7 @@ var isMktPageDemoApp = window.setInterval(function () {
                 if (currUrlFragment == mktoMyMarketoSuperballFragment
                    && Mkt3.DL.getDlToken() == mktoMyMarketoFragment) {
                   window.setTimeout(function() {
-                    APP.overrideHomeTiles(restoreEmailInsights);
+                    APP.overrideHomeTiles();
                   }, 1000);
                 }
                 
