@@ -1038,9 +1038,10 @@ APP.overrideHomeTiles = function (restoreEmailInsightsTile) {
     console.log("Marketo App > Executing: Override My Marketo Home Tiles 2");
     
     var container = MktCanvas.getEl().dom.nextSibling.childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[0],
-    tilesTextContent = container.textContent.replace(/([a-z])([A-Z])/g, "$1,$2").replace(/([A-Z])([A-Z][a-z])/g, "$1,$2").split(','),
+    tilesTextContent = container.getElementsByTagName('span'),
+    //tilesTextContent = container.textContent.replace(/([a-z])([A-Z])/g, "$1,$2").replace(/([A-Z])([A-Z][a-z])/g, "$1,$2").split(','),
     hrefMatch = new RegExp(" href=\"[^\"]*\" ", "g"),
-    spareTileClone,
+    //spareTileClone,
     performanceInsightsTile,
     emailInsightsTile,
     deliverabilityToolsTile,
@@ -1049,6 +1050,31 @@ APP.overrideHomeTiles = function (restoreEmailInsightsTile) {
     hiddenTile1,
     hiddenTile2;
     
+    for (let tile of tilesTextContent) {
+      switch (tile.textContent) {
+      case "Performance Insights":
+        performanceInsightsTile = tile.parentNode.parentNode.parentNode;
+        break;
+      
+      case "Email Insights":
+        emailInsightsTile = tile.parentNode.parentNode.parentNode;
+        break;
+      
+      case "Deliverability Tools":
+        deliverabilityToolsTile = tile.parentNode.parentNode.parentNode;
+        break;
+      
+      case "SEO":
+        seoTile = tile.parentNode.parentNode.parentNode;
+        break;
+      
+      case "Next Gen UX":
+        nextGenUxTile = tile.parentNode.parentNode.parentNode;
+        break;
+      }
+    }
+    
+    /*
     for (let ii = 0; ii < tilesTextContent.length; ii++) {
       if (tilesTextContent[ii] == "Performance Insights") {
         if (container.childNodes[ii].style.display != "none") {
@@ -1064,7 +1090,7 @@ APP.overrideHomeTiles = function (restoreEmailInsightsTile) {
       } else if (tilesTextContent[ii] == "Next Gen UX") {
         nextGenUxTile = container.childNodes[ii];
       }
-    }
+    }*/
     
     if (performanceInsightsTile) {
       performanceInsightsTile.outerHTML = performanceInsightsTile.outerHTML.replace(hrefMatch, " href=\"" + mktoPerformanceInsightsLink + "\" ");
