@@ -1050,17 +1050,28 @@ APP.overrideHomeTiles = function (restoreEmailInsightsTile) {
     hiddenTile1,
     hiddenTile2;
     
-    for (let tile of tilesTextContent) {
-      if (tile.textContent == "Performance Insights") {
+    for (let ii = 0; ii < tilesTextContent.length; ii++) {
+      let tile = tilesTextContent[ii];
+      switch (tile.textContent) {
+      case "Performance Insights":
         performanceInsightsTile = tile.parentNode.parentNode.parentNode;
-      } else if (tile.textContent == "Email Insights") {
+        break;
+      
+      case "Email Insights":
         emailInsightsTile = tile.parentNode.parentNode.parentNode;
-      } else if (tile.textContent == "Deliverability Tools") {
+        break;
+      
+      case "Deliverability Tools":
         deliverabilityToolsTile = tile.parentNode.parentNode.parentNode;
-      } else if (tile.textContent == "SEO") {
+        break;
+      
+      case "SEO":
         seoTile = tile.parentNode.parentNode.parentNode;
-      } else if (tile.textContent == "Next Gen UX") {
+        break;
+      
+      case "Next Gen UX":
         nextGenUxTile = tile.parentNode.parentNode.parentNode;
+        break;
       }
     }
     
