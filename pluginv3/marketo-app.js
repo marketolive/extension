@@ -1035,7 +1035,7 @@ APP.overrideHomeTiles = function (restoreEmailInsightsTile) {
      && MktCanvas.getEl().dom.nextSibling.childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes
      && MktCanvas.getEl().dom.nextSibling.childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[0]
      && MktCanvas.getEl().dom.nextSibling.childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes) {
-    console.log("Marketo App > Executing: Override My Marketo Home Tiles");
+    console.log("Marketo App > Executing: Override My Marketo Home Tiles 2");
     
     var container = MktCanvas.getEl().dom.nextSibling.childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[0],
     containerComponent = MktCanvas.lookupComponent(container),
