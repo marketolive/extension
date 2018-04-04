@@ -1102,7 +1102,7 @@ APP.overrideHomeTiles = function (restoreEmailInsightsTile) {
       if (restoreEmailInsightsTile
          && origEmailInsightsTileLink != null) {
         emailInsightsTile.el.dom.outerHTML = emailInsightsTile.el.dom.outerHTML.replace(hrefMatch, " href=\"" + origEmailInsightsTileLink + "\" ");
-        document.getElementById("emailInsightsTile").onclick = function () {
+        document.getElementById(emailInsightsTile.id).onclick = function () {
           APP.heapTrack("track", {
             name: "Email Insights",
             assetArea: "Email Insights",
@@ -1112,7 +1112,7 @@ APP.overrideHomeTiles = function (restoreEmailInsightsTile) {
         };
       } else {
         emailInsightsTile.el.dom.outerHTML = emailInsightsTile.el.dom.outerHTML.replace(hrefMatch, " href=\"" + mktoEmailInsightsLink + "\" ");
-        document.getElementById("emailInsightsTile").onclick = function () {
+        document.getElementById(emailInsightsTile.id).onclick = function () {
           APP.heapTrack("track", {
             name: "Email Insights",
             assetArea: "Email Insights",
