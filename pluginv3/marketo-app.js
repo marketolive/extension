@@ -1109,6 +1109,7 @@ APP.overrideHomeTiles = function (restoreEmailInsightsTile) {
             assetName: "Home",
             assetType: "Home Tile"
           });
+        };
       } else {
         emailInsightsTile.el.dom.outerHTML = emailInsightsTile.el.dom.outerHTML.replace(hrefMatch, " href=\"" + mktoEmailInsightsLink + "\" ");
         document.getElementById("emailInsightsTile").onclick = function () {
@@ -1118,7 +1119,7 @@ APP.overrideHomeTiles = function (restoreEmailInsightsTile) {
             assetName: "Demo App",
             assetType: "Home Tile"
           });
-      };
+        };
       }
       
     } else {
