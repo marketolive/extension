@@ -1041,22 +1041,16 @@ APP.overrideHomeTiles = function (restoreEmailInsightsTile) {
     containerComponent = MktCanvas.lookupComponent(container),
     tilesTextContent = containerComponent.el.dom.textContent.replace(/([a-z])([A-Z])/g, "$1,$2").replace(/([A-Z])([A-Z][a-z])/g, "$1,$2").split(','),
     hrefMatch = new RegExp(" href=\"[^\"]*\" ", "g"),
-    idMatch,
     spareTileClone,
     performanceInsightsTile,
-    performanceInsightsTileOuterHTML,
     emailInsightsTile,
-    emailInsightsTileOuterHTML,
     deliverabilityToolsTile,
-    deliverabilityToolsTileOuterHTML,
     seoTile,
     nextGenUxTile,
-    nextGenUxTileOuterHTML,
     hiddenTile1,
-    hiddenTile2,
-    ii;
+    hiddenTile2;
     
-    for (ii = 0; ii < tilesTextContent.length; ii++) {
+    for (let ii = 0; ii < tilesTextContent.length; ii++) {
       if (tilesTextContent[ii] == "Performance Insights") {
         if (container.childNodes[ii].style.display != "none") {
           performanceInsightsTile = MktCanvas.lookupComponent(container.childNodes[ii]);
@@ -1084,14 +1078,11 @@ APP.overrideHomeTiles = function (restoreEmailInsightsTile) {
         });
       };
     } else {
-      performanceInsightsTileOuterHTML = '<div class="x4-btn mkt3-homeTile x4-btn-default-small x4-icon-text-left x4-btn-icon-text-left x4-btn-default-small-icon-text-left" style="height: 150px;" id="homeTile-1344"><em id="homeTile-1344-btnWrap"><a id="homeTile-1344-btnEl" href="' + mktoPerformanceInsightsLink + '" class="x4-btn-center" target="_blank" role="link" style="width: 150px; height: 150px;"><span id="homeTile-1344-btnInnerEl" class="x4-btn-inner" style="width: 150px; height: 150px; line-height: 150px;">Performance Insights</span><span id="homeTile-1344-btnIconEl" class="x4-btn-icon mki3-mpi-logo-svg"></span></a></em></div>';
-      idMatch = new RegExp("homeTile-1344", "g");
+      let performanceInsightsTileOuterHTML = '<div class="x4-btn mkt3-homeTile x4-btn-default-small x4-icon-text-left x4-btn-icon-text-left x4-btn-default-small-icon-text-left" style="height: 150px;" id="performanceInsightsTile"><em id="performanceInsightsTile-btnWrap"><a id="performanceInsightsTile-btnEl" href="' + mktoPerformanceInsightsLink + '" class="x4-btn-center" target="_blank" role="link" style="width: 150px; height: 150px;"><span id="performanceInsightsTile-btnInnerEl" class="x4-btn-inner" style="width: 150px; height: 150px; line-height: 150px;">Performance Insights</span><span id="performanceInsightsTile-btnIconEl" class="x4-btn-icon mki3-mpi-logo-svg"></span></a></em></div>';
       
-      spareTileClone = MktCanvas.lookupComponent(container.childNodes[container.childNodes.length - 1]).cloneConfig();
-      performanceInsightsTileOuterHTML = performanceInsightsTileOuterHTML.replace(idMatch, spareTileClone.id);
-      spareTileClone.el.dom.outerHTML = performanceInsightsTileOuterHTML;
-      container.insertBefore(spareTileClone.el.dom, container.childNodes[container.childNodes.length - 1]);
-      document.getElementById(spareTileClone.id).onclick = function () {
+      //spareTileClone = MktCanvas.lookupComponent(container.childNodes[container.childNodes.length - 1]).cloneConfig();
+      container.insertBefore(performanceInsightsTileOuterHTML, container.childNodes[container.childNodes.length - 1]);
+      document.getElementById("performanceInsightsTile").onclick = function () {
         APP.heapTrack("track", {
           name: "Performance Insights",
           assetArea: "Performance Insights",
@@ -1111,18 +1102,37 @@ APP.overrideHomeTiles = function (restoreEmailInsightsTile) {
       if (restoreEmailInsightsTile
          && origEmailInsightsTileLink != null) {
         emailInsightsTile.el.dom.outerHTML = emailInsightsTile.el.dom.outerHTML.replace(hrefMatch, " href=\"" + origEmailInsightsTileLink + "\" ");
+        document.getElementById("emailInsightsTile").onclick = function () {
+          APP.heapTrack("track", {
+            name: "Email Insights",
+            assetArea: "Email Insights",
+            assetName: "Home",
+            assetType: "Home Tile"
+          });
       } else {
         emailInsightsTile.el.dom.outerHTML = emailInsightsTile.el.dom.outerHTML.replace(hrefMatch, " href=\"" + mktoEmailInsightsLink + "\" ");
+        document.getElementById("emailInsightsTile").onclick = function () {
+          APP.heapTrack("track", {
+            name: "Email Insights",
+            assetArea: "Email Insights",
+            assetName: "Demo App",
+            assetType: "Home Tile"
+          });
+      };
       }
       
     } else {
-      emailInsightsTileOuterHTML = '<div class="x4-btn mkt3-homeTile x4-btn-default-small x4-icon-text-left x4-btn-icon-text-left x4-btn-default-small-icon-text-left x-panel" style="height: 150px;" id="homeTile-1084"><em id="homeTile-1084-btnWrap"><a id="homeTile-1084-btnEl" href="' + mktoEmailInsightsLink + '" class="x4-btn-center" target="_blank" role="link" style="width: 150px; height: 150px;"><span id="homeTile-1084-btnInnerEl" class="x4-btn-inner" style="width: 150px; height: 150px; line-height: 150px;">Email Insights</span><span id="homeTile-1084-btnIconEl" class="x4-btn-icon mki3-email-insights-svg"></span></a></em><div class="x-panel-bwrap" id="ext-gen164"><div class="x-panel-body x-panel-body-noheader" id="ext-gen165"></div></div></div>';
-      idMatch = new RegExp("homeTile-1084", "g");
+      let emailInsightsTileOuterHTML = '<div class="x4-btn mkt3-homeTile x4-btn-default-small x4-icon-text-left x4-btn-icon-text-left x4-btn-default-small-icon-text-left x-panel" style="height: 150px;" id="emailInsightsTile"><em id="emailInsightsTile-btnWrap"><a id="emailInsightsTile-btnEl" href="' + mktoEmailInsightsLink + '" class="x4-btn-center" target="_blank" role="link" style="width: 150px; height: 150px;"><span id="emailInsightsTile-btnInnerEl" class="x4-btn-inner" style="width: 150px; height: 150px; line-height: 150px;">Email Insights</span><span id="emailInsightsTile-btnIconEl" class="x4-btn-icon mki3-email-insights-svg"></span></a></em><div class="x-panel-bwrap" id="ext-gen164"><div class="x-panel-body x-panel-body-noheader" id="ext-gen165"></div></div></div>';
       
-      spareTileClone = MktCanvas.lookupComponent(container.childNodes[container.childNodes.length - 1]).cloneConfig();
-      emailInsightsTileOuterHTML = emailInsightsTileOuterHTML.replace(idMatch, spareTileClone.id);
-      spareTileClone.el.dom.outerHTML = emailInsightsTileOuterHTML;
-      container.insertBefore(spareTileClone.el.dom, container.childNodes[container.childNodes.length - 1]);
+      container.insertBefore(emailInsightsTileOuterHTML, container.childNodes[container.childNodes.length - 1]);
+      document.getElementById("emailInsightsTile").onclick = function () {
+        APP.heapTrack("track", {
+          name: "Email Insights",
+          assetArea: "Email Insights",
+          assetName: "Demo App",
+          assetType: "Home Tile"
+        });
+      };
     }
     
     if (deliverabilityToolsTile) {
@@ -1137,14 +1147,10 @@ APP.overrideHomeTiles = function (restoreEmailInsightsTile) {
         });
       };
     } else {
-      deliverabilityToolsTileOuterHTML = '<div class="x4-btn mkt3-homeTile x4-btn-default-small x4-icon-text-left x4-btn-icon-text-left x4-btn-default-small-icon-text-left" style="height: 150px;" id="homeTile-1036"><em id="homeTile-1036-btnWrap"><a id="homeTile-1036-btnEl" href="' + mktoEmailDeliverabilityToolsLink + '" class="x4-btn-center" target="_blank" role="link" style="width: 150px; height: 150px;"><span id="homeTile-1036-btnInnerEl" class="x4-btn-inner" style="width: 150px; height: 150px; line-height: 150px;">Deliverability Tools</span><span id="homeTile-1036-btnIconEl" class="x4-btn-icon mki3-mail-sealed-svg"></span></a></em></div>';
-      idMatch = new RegExp("homeTile-1036", "g");
+      let deliverabilityToolsTileOuterHTML = '<div class="x4-btn mkt3-homeTile x4-btn-default-small x4-icon-text-left x4-btn-icon-text-left x4-btn-default-small-icon-text-left" style="height: 150px;" id="deliverabilityToolsTile"><em id="deliverabilityToolsTile-btnWrap"><a id="deliverabilityToolsTile-btnEl" href="' + mktoEmailDeliverabilityToolsLink + '" class="x4-btn-center" target="_blank" role="link" style="width: 150px; height: 150px;"><span id="deliverabilityToolsTile-btnInnerEl" class="x4-btn-inner" style="width: 150px; height: 150px; line-height: 150px;">Deliverability Tools</span><span id="deliverabilityToolsTile-btnIconEl" class="x4-btn-icon mki3-mail-sealed-svg"></span></a></em></div>';
       
-      spareTileClone = MktCanvas.lookupComponent(container.childNodes[container.childNodes.length - 1]).cloneConfig();
-      deliverabilityToolsTileOuterHTML = deliverabilityToolsTileOuterHTML.replace(idMatch, spareTileClone.id);
-      spareTileClone.el.dom.outerHTML = deliverabilityToolsTileOuterHTML;
-      container.insertBefore(spareTileClone.el.dom, container.childNodes[container.childNodes.length - 1]);
-      document.getElementById(spareTileClone.id).onclick = function () {
+      container.insertBefore(deliverabilityToolsTileOuterHTML, container.childNodes[container.childNodes.length - 1]);
+      document.getElementById("deliverabilityToolsTile").onclick = function () {
         APP.heapTrack("track", {
           name: "Deliverability Tools",
           assetArea: "Deliverability Tools",
@@ -1167,14 +1173,10 @@ APP.overrideHomeTiles = function (restoreEmailInsightsTile) {
     }
     
     if (!nextGenUxTile) {
-      nextGenUxTileOuterHTML = '<div class="x4-btn mkt3-homeTile x4-btn-default-small x4-icon-text-left x4-btn-icon-text-left x4-btn-default-small-icon-text-left" style="height: 150px;" id="homeTile-1035"><em id="homeTile-1035-btnWrap"><a id="homeTile-1035-btnEl" href="' + mktoNextGenUxLink + '" class="x4-btn-center" target="_blank" role="link" style="width: 150px; height: 150px;"><span id="homeTile-1035-btnInnerEl" class="x4-btn-inner" style="width: 150px; height: 150px; line-height: 150px;">Next Gen UX</span><span id="homeTile-1035-btnIconEl" class="x4-btn-icon mki3-mercury-svg"></span></a></em></div>';
-      idMatch = new RegExp("homeTile-1035", "g");
+      let nextGenUxTileOuterHTML = '<div class="x4-btn mkt3-homeTile x4-btn-default-small x4-icon-text-left x4-btn-icon-text-left x4-btn-default-small-icon-text-left" style="height: 150px;" id="nextGenUxTile"><em id="nextGenUxTile-btnWrap"><a id="nextGenUxTile-btnEl" href="' + mktoNextGenUxLink + '" class="x4-btn-center" target="_blank" role="link" style="width: 150px; height: 150px;"><span id="nextGenUxTile-btnInnerEl" class="x4-btn-inner" style="width: 150px; height: 150px; line-height: 150px;">Next Gen UX</span><span id="nextGenUxTile-btnIconEl" class="x4-btn-icon mki3-mercury-svg"></span></a></em></div>';
       
-      spareTileClone = MktCanvas.lookupComponent(container.childNodes[container.childNodes.length - 1]).cloneConfig();
-      nextGenUxTileOuterHTML = nextGenUxTileOuterHTML.replace(idMatch, spareTileClone.id);
-      spareTileClone.el.dom.outerHTML = nextGenUxTileOuterHTML;
-      container.insertBefore(spareTileClone.el.dom, container.childNodes[container.childNodes.length - 1]);
-      document.getElementById(spareTileClone.id).onclick = function () {
+      container.insertBefore(nextGenUxTileOuterHTML, container.childNodes[container.childNodes.length - 1]);
+      document.getElementById("nextGenUxTile").onclick = function () {
         APP.heapTrack("track", {
           name: "Mercury UX",
           assetArea: "Mercury UX",
