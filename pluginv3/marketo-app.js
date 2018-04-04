@@ -28,6 +28,7 @@ mktoEmailDeliverabilityToolsLink = "https://250ok.com/login?submit=true",
 mktoNextGenUxLink = "https://marketo.invisionapp.com/share/V2FQQBSYUPX",
 mktoDemoAccountMatch = "^mktodemoaccount",
 mktoMyMarketoFragment = "MM0A1",
+mktoMyMarketoSuperballFragment = "MM",
 mktoCalendarFragment = "CAL",
 mktoAnalyticsFragment = "AR",
 mktoReportFragmentRegex = new RegExp("^AR[^!]+!$", "i"),
@@ -1035,13 +1036,11 @@ APP.overrideHomeTiles = function (restoreEmailInsightsTile) {
      && MktCanvas.getEl().dom.nextSibling.childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes
      && MktCanvas.getEl().dom.nextSibling.childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[0]
      && MktCanvas.getEl().dom.nextSibling.childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes) {
-    console.log("Marketo App > Executing: Override My Marketo Home Tiles 2");
+    console.log("Marketo App > Executing: Override My Marketo Home Tiles");
     
     var container = MktCanvas.getEl().dom.nextSibling.childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[0],
     tilesTextContent = container.getElementsByTagName('span'),
-    //tilesTextContent = container.textContent.replace(/([a-z])([A-Z])/g, "$1,$2").replace(/([A-Z])([A-Z][a-z])/g, "$1,$2").split(','),
     hrefMatch = new RegExp(" href=\"[^\"]*\" ", "g"),
-    //spareTileClone,
     performanceInsightsTile,
     emailInsightsTile,
     deliverabilityToolsTile,
@@ -1075,27 +1074,8 @@ APP.overrideHomeTiles = function (restoreEmailInsightsTile) {
       }
     }
     
-    /*
-    for (let ii = 0; ii < tilesTextContent.length; ii++) {
-      if (tilesTextContent[ii] == "Performance Insights") {
-        if (container.childNodes[ii].style.display != "none") {
-          performanceInsightsTile = container.childNodes[ii];
-          //performanceInsightsTile = MktCanvas.lookupComponent(container.childNodes[ii]);
-        }
-      } else if (tilesTextContent[ii] == "Email Insights") {
-        emailInsightsTile = container.childNodes[ii];
-      } else if (tilesTextContent[ii] == "Deliverability Tools") {
-        deliverabilityToolsTile = container.childNodes[ii];
-      } else if (tilesTextContent[ii] == "SEO") {
-        seoTile = container.childNodes[ii];
-      } else if (tilesTextContent[ii] == "Next Gen UX") {
-        nextGenUxTile = container.childNodes[ii];
-      }
-    }*/
-    
     if (performanceInsightsTile) {
       performanceInsightsTile.outerHTML = performanceInsightsTile.outerHTML.replace(hrefMatch, " href=\"" + mktoPerformanceInsightsLink + "\" ");
-      //performanceInsightsTile.el.dom.outerHTML = performanceInsightsTile.el.dom.outerHTML.replace(hrefMatch, " href=\"" + mktoPerformanceInsightsLink + "\" ");
       
       document.getElementById(performanceInsightsTile.id).onclick = function () {
         APP.heapTrack("track", {
@@ -1112,7 +1092,6 @@ APP.overrideHomeTiles = function (restoreEmailInsightsTile) {
       performanceInsightsTileEl.id = "performanceInsightsTile";
       performanceInsightsTileEl.innerHTML = '<em id="performanceInsightsTile-btnWrap"><a id="performanceInsightsTile-btnEl" href="' + mktoPerformanceInsightsLink + '" class="x4-btn-center" target="_blank" role="link" style="width: 150px; height: 150px;"><span id="performanceInsightsTile-btnInnerEl" class="x4-btn-inner" style="width: 150px; height: 150px; line-height: 150px;">Performance Insights</span><span id="performanceInsightsTile-btnIconEl" class="x4-btn-icon mki3-mpi-logo-svg"></span></a></em>';
       
-      //spareTileClone = MktCanvas.lookupComponent(container.childNodes[container.childNodes.length - 1]).cloneConfig();
       container.insertBefore(performanceInsightsTileEl, container.childNodes[container.childNodes.length - 1]);
       document.getElementById("performanceInsightsTile").onclick = function () {
         APP.heapTrack("track", {
@@ -10532,6 +10511,13 @@ var isMktPageApp = window.setInterval(function () {
                && Mkt3.DL.getDlToken()) {
               if (currUrlFragment != Mkt3.DL.getDlToken()) {
                 window.clearInterval(isNewUrlFragment);
+                
+                if (currUrlFragment == mktoMyMarketoSuperballFragment
+                   && Mkt3.DL.getDlToken() == mktoMyMarketoFragment) {
+                  window.setTimeout(function() {
+                    APP.overrideHomeTiles(restoreEmailInsights);
+                  }, 1000);
+                }
                 
                 currUrlFragment = Mkt3.DL.getDlToken();
                 console.log("Marketo App > Loaded: New URL Fragment = " + currUrlFragment);
