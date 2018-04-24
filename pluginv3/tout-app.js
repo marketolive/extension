@@ -802,7 +802,7 @@ TOUT.removeHarmfulButtons = function () {
           console.log('ToutApp > NOT Removing: Harmful Buttons');
           window.clearInterval(isHarmful);
         }
-      });
+      }, 500);
   }
 };
 
