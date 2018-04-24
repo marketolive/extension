@@ -798,7 +798,7 @@ TOUT.removeHarmfulButtons = function () {
           document.getElementById('update-identity').remove();
         }
         
-        if (parseInt((currTime - startTime) / 1000) > 7) {
+        if (parseInt((currTime - startTime) / 1000) > 10) {
           console.log('ToutApp > NOT Removing: Harmful Buttons');
           window.clearInterval(isHarmful);
         }
