@@ -1,4 +1,4 @@
-console.log("ToutApp > Running");
+console.log('ToutApp > Running');
 
 /**************************************************************************************
  *
@@ -78,7 +78,7 @@ TOUT.webRequest = function (url, params, data, headers, method) {
     }
     
     req.open(method, url);
-    req.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr("content"));
+    req.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
     req.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
     
     if (!headers) {
@@ -133,7 +133,7 @@ TOUT.dateOffsetInDays = function (d, offset) {
 
 /**************************************************************************************
  *
- *  This function gets a single mock person from mockaroo and is only used when there 
+ *  This function gets a single mock person from mockaroo and is only used when there
  *  are no more inactive people to add to a campaign
  *
  *  @Author Brian Fisher
@@ -374,14 +374,12 @@ TOUT.addPerson = function (params) {
     'person': {
       'first_name': params.first_name,
       'last_name': params.last_name,
-      'addresses': [
-        {
+      'addresses': [{
           'address': params.email,
           'address_type': 'email',
           'is_primary': true,
           'location': 'work'
-        },
-        {
+        }, {
           'address': params.phone,
           'address_type': 'phone',
           'is_primary': false,
@@ -600,10 +598,9 @@ TOUT.skipTask = function (params) {
   });
 };
 
-
 /**************************************************************************************
  *
- *  This function waits up to 5s for the CSRF-Token element to exist which is used to 
+ *  This function waits up to 5s for the CSRF-Token element to exist which is used to
  *  authorize all succeeding requests
  *
  *  @Author Brian Fisher
@@ -621,14 +618,14 @@ TOUT.waitForCsrfToken = function (callback) {
       
       if (typeof(document.querySelector('meta[name="csrf-token"]')) === 'object'
          && document.querySelector('meta[name="csrf-token"]').content) {
-        console.log("ToutApp > CSRF-Token Exists");
+        console.log('ToutApp > CSRF-Token Exists');
         window.clearInterval(isCsrfToken);
         
         if (typeof(callback) === 'function') {
           callback();
         }
       } else if (parseInt((currTime - startTime) / 1000) > 5) {
-        console.log("ToutApp > CSRF-Token Does NOT Exist");
+        console.log('ToutApp > CSRF-Token Does NOT Exist');
         window.clearInterval(isCsrfToken);
       }
     });
@@ -684,15 +681,21 @@ TOUT.addPeopleToCampaigns = function (pct) {
               };
               TOUT.updatePerson(updatePerson);
               TOUT.addPersonToMockGroup(addPerson);
+              
+              params = {
+                'campaignId': chosenCampaigns[Math.floor(Math.random() * chosenCampaigns.length)],
+                'person_ids': chosenPeople
+              };
+              return TOUT.addPeopleToCampaign(params);
             });
           });
+        } else {
+          params = {
+            'campaignId': chosenCampaigns[Math.floor(Math.random() * chosenCampaigns.length)],
+            'person_ids': chosenPeople
+          };
+          return TOUT.addPeopleToCampaign(params);
         }
-        
-        params = {
-          'campaignId': chosenCampaigns[Math.floor(Math.random() * chosenCampaigns.length)],
-          'person_ids': chosenPeople
-        };
-        return TOUT.addPeopleToCampaign(params);
       } catch (e) {
         console.error(e);
       }
@@ -728,7 +731,7 @@ TOUT.completeTasks = function (pct) {
             };
             TOUT.makeCall(params);
             break;
-          
+            
           case 'inmail':
           case 'other':
             params = {
@@ -747,6 +750,64 @@ TOUT.completeTasks = function (pct) {
 
 /**************************************************************************************
  *
+ *  This function removes harmful delete and save buttons in ToutApp
+ *
+ *  @Author Brian Fisher
+ *
+ *  @function
+ *
+ **************************************************************************************/
+
+TOUT.removeHarmfulButtons = function () {
+  if (document.location.hash.search('^#settings/') != -1
+     || document.location.hash.search('^#identities') != -1) {
+    console.log('ToutApp > Executing: removeHarmfulButtons');
+    let startTime = new Date(),
+    isHarmful = window.setInterval(function () {
+        let currTime = new Date();
+        
+        if (document.getElementsByClassName('btn btn-danger').length > 0) {
+          console.log('ToutApp > Removing: Delete Buttons');
+          window.clearInterval(isHarmful);
+          for (let button of document.getElementsByClassName('btn btn-danger')) {
+            button.remove();
+          }
+        } else if (document.getElementsByClassName('save btn btn-success').length > 0) {
+          console.log('ToutApp > Removing: Save Buttons (Green)');
+          window.clearInterval(isHarmful);
+          for (let button of document.getElementsByClassName('save btn btn-success')) {
+            button.remove();
+          }
+        } else if (document.getElementsByClassName('btn btn-primary save').length > 0) {
+          console.log('ToutApp > Removing: Save Buttons (Blue)');
+          window.clearInterval(isHarmful);
+          for (let button of document.getElementsByClassName('btn btn-primary save')) {
+            button.remove();
+          }
+        } else if (document.location.hash == '#settings/marketo-admin'
+           && document.getElementsByClassName('tout-action setup-connect red standard').length > 0) {
+          console.log('ToutApp > Removing: Marketo Disconnect Button');
+          window.clearInterval(isHarmful);
+          for (let button of document.getElementsByClassName('tout-action setup-connect red standard')) {
+            button.remove();
+          }
+        } else if (document.location.hash == '#identities'
+           && document.getElementById('update-identity')) {
+          console.log('ToutApp > Removing: Identity Save Button');
+          window.clearInterval(isHarmful);
+          document.getElementById('update-identity').remove();
+        }
+        
+        if (parseInt((currTime - startTime) / 1000) > 10) {
+          console.log('ToutApp > NOT Removing: Harmful Buttons');
+          window.clearInterval(isHarmful);
+        }
+      }, 500);
+  }
+};
+
+/**************************************************************************************
+ *
  *  This function removes harmful toolbar buttons in ToutApp
  *
  *  @Author Brian Fisher
@@ -756,16 +817,16 @@ TOUT.completeTasks = function (pct) {
  **************************************************************************************/
 
 TOUT.removeToolbarButtons = function () {
-  var startTime = new Date(),
+  let startTime = new Date(),
   isToolbar = window.setInterval(function () {
-      var currTime = new Date();
+      let currTime = new Date();
       
-      if (document.getElementById("nav-win")) {
-        console.log("ToutApp > Removing: Harmful Toolbar Buttons");
+      if (document.getElementById('nav-win')) {
+        console.log('ToutApp > Removing: Harmful Toolbar Buttons');
         window.clearInterval(isToolbar);
-        document.getElementById("nav-win").remove();
+        document.getElementById('nav-win').remove();
       } else if (parseInt((currTime - startTime) / 1000) > 5) {
-        console.log("ToutApp > NOT Removing: Harmful Toolbar Buttons");
+        console.log('ToutApp > NOT Removing: Harmful Toolbar Buttons');
         window.clearInterval(isToolbar);
       }
     });
@@ -777,5 +838,6 @@ TOUT.removeToolbarButtons = function () {
  *
  **************************************************************************************/
 
+window.addEventListener('hashchange', TOUT.removeHarmfulButtons);
 TOUT.removeToolbarButtons();
 TOUT.waitForCsrfToken(TOUT.addPeopleToCampaigns(0.2).then(TOUT.completeTasks(0.5)));
