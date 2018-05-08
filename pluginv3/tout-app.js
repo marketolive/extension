@@ -840,4 +840,4 @@ TOUT.removeToolbarButtons = function () {
 
 window.addEventListener('hashchange', TOUT.removeHarmfulButtons);
 TOUT.removeToolbarButtons();
-TOUT.waitForCsrfToken(TOUT.addPeopleToCampaigns(0.2).then(TOUT.completeTasks(0.5)));
+//TOUT.waitForCsrfToken(TOUT.addPeopleToCampaigns(0.2).then(TOUT.completeTasks(0.5)));
