@@ -63,8 +63,8 @@ mktoAccountStringDynamics = "mktodemoaccount408",
 mktoAccountStrings106Match = "^(" + mktoAccountString106 + "|" + mktoAccountString106d + ")$",
 mktoAccountStringsMatch = "^(" + mktoAccountStringMaster + "|" + mktoAccountString106 + "|" + mktoAccountString106d + "|" + mktoAccountStringDynamics + ")$",
 
-mktoWorkingFoldersToHide = new RegExp("^Manufacturing$|\\(TEST\\)$", "i"),
-mktoOperationalFolders = new RegExp("^(_Operational|_Operations)", "i"),
+mktoLaunchPointFolderToHide = new RegExp("^LaunchPoint$", "i"),
+mktoOperationalFolders = new RegExp("^_Operational|^_Operations|\\(TEST\\)$", "i"),
 
 mktoMasterMarketingActivitiesEnglishFragment = "MA19A1",
 mktoMarketingActivitiesDefaultFragment = "MA15A1",
@@ -1995,7 +1995,10 @@ APP.overrideTreeNodeExpand = function () {
             
             if (currFolder.attributes.system == false
                && currFolder.attributes.compType == "Marketing Folder"
-               && currFolder.text.search(mktoWorkingFoldersToHide) != -1) {
+               && (currFolder.text.search(mktoOperationalFolders) != -1
+                 || (APP.getUserRole() == 'Partner'
+                   && APP.getUserId().split('@')[0].search(/\.infor$/) == -1
+                   && currFolder.text.search(mktoLaunchPointFolderToHide) != -1))) {
               currFolder.ui.hide();
               currFolder.hidden = true;
             }
@@ -2105,7 +2108,10 @@ APP.overrideTreeNodeCollapse = function () {
             
             if (currFolder.attributes.system == false
                && currFolder.attributes.compType == "Marketing Folder"
-               && currFolder.text.search(mktoWorkingFoldersToHide) != -1) {
+               && (currFolder.text.search(mktoOperationalFolders) != -1
+                 || (APP.getUserRole() == 'Partner'
+                   && APP.getUserId().split('@')[0].search(/\.infor$/) == -1
+                   && currFolder.text.search(mktoLaunchPointFolderToHide) != -1))) {
               currFolder.ui.hide();
               currFolder.hidden = true;
             }
@@ -9806,6 +9812,29 @@ APP.trackNodeClick = function () {
   }
 };
 
+APP.getUserRole = function () {
+  if (MktPage
+     && MktPage.userName) {
+    let roleSubstring = MktPage.userName.search(/\[[^\]]+\]/);
+    
+    if (roleSubstring != -1) {
+      return MktPage.userName.substring(roleSubstring).replace(/^\[([^\]]+)]$/, "$1");
+    }
+  }
+  
+  return '';
+};
+
+APP.getUserId = function () {
+  if (MktPage
+     && MktPage.userid) {
+    return MktPage.userid;
+    
+  }
+  
+  return '';
+};
+
 /**************************************************************************************
  *
  *  This function tracks and identifies the current user via Heap Analytics
@@ -9852,16 +9881,9 @@ APP.heapTrack = function (action, event) {
             });
           }
           
-          if (MktPage
-             && MktPage.userName) {
-            var roleSubstring = MktPage.userName.search(/\[[^\]]+\]/);
-            
-            if (roleSubstring != -1) {
-              heap.addUserProperties({
-                Role: MktPage.userName.substring(roleSubstring).replace(/^\[([^\]]+)]$/, "$1")
-              });
-            }
-          }
+          heap.addUserProperties({
+            Role: APP.getUserRole()
+          });
           
           if (oneLoginEmail) {
             heap.addUserProperties({
