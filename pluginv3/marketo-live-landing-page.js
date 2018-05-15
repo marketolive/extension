@@ -133,10 +133,10 @@ LPAGE.getNextWebPage = function (mockLeadEmail) {
       
       if (URL_PATH == "m3-dev") {
         webPageX.url = webPageX.url.replace("//www\.", "//dev.");
+        webPageX.url = webPageX.url.replace("https://verticals\.", "http://dev.verticals.");
       }
       
       if (webPageX.type == "verticals") {
-        webPageX.url = webPageX.url.replace("https://verticals\.", "http://dev.verticals.");
         
         if (webPageX.clickRate >= 1.0
            || (Math.random()) <= webPageX.clickRate) {
