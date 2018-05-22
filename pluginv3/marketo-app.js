@@ -9788,7 +9788,15 @@ APP.trackNodeClick = function () {
           heapEvent.assetPath = currNode.text + " > " + heapEvent.assetPath;
         }
         
-        heapEvent.workspaceName = APP.getWorkspaceName(currNode.attributes.accessZoneId);
+        if (accountString == mktoAccountStringMaster && node.getPath().search(/^\\\\\\Programsroot\\\\\\19\\\\\\7506\\\\\\/) != -1) {
+         try {
+            heapEvent.workspaceName = MktExplorer.getNodeById(node.getPath().split('\\\\\\')[4]).text.replace('&amp; ','');
+          } catch (e) {
+            console.log("Marketo App > Tracking: Tree Node Click Error: " + e);
+          }
+        } else {
+          heapEvent.workspaceName = APP.getWorkspaceName(currNode.attributes.accessZoneId);
+        }
         
         if (currNode.attributes.accessZoneId.toString().search(mktoGoldenWorkspacesMatch) != -1) {
           heapEvent.name = heapEvent.workspaceName;
