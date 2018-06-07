@@ -98,10 +98,12 @@ APP.insertAd = function (ad) {
     
     for (let post of posts) {
       if (post.className == 'relative ember-view'
-         && post.getAttribute('data-id').search('^urn:li:activity:') != -1
-         && post.querySelector('article[class="feed-shared-update mh0 Elevation-2dp relative feed-shared-update--share share-update article ember-view"]')
-         && post.querySelector('div[class="feed-shared-update__description feed-shared-inline-show-more-text ember-view"]')
-         && !post.querySelector('div[class="feed-shared-mini-update ember-view"]')) {
+         && post.getAttribute('data-id')
+         && post.getAttribute('data-id').search('^urn:li:activity:') != -1){
+         //&& !post.querySelector('.feed-shared-update__update-content-wrapper')){
+         //&& post.querySelector('article[class="feed-shared-update mh0 Elevation-2dp relative feed-shared-update--share share-update article ember-view"]')
+        // && post.querySelector('div[class="feed-shared-update__description feed-shared-inline-show-more-text ember-view"]')
+         //&& !post.querySelector('div[class="feed-shared-mini-update ember-view"]')) {
         topAd = post.cloneNode(true);
         break;
       }
@@ -110,57 +112,77 @@ APP.insertAd = function (ad) {
     if (topAd) {
       var actorPicture = topAd.querySelector('a[data-control-name="actor_picture"]'),
       actor = topAd.querySelector('a[data-control-name="actor"]'),
-      postText = topAd.querySelector('div[class="feed-shared-update__description feed-shared-inline-show-more-text ember-view"]'),
-      postDescription = postText.querySelector('span[class="ember-view"]'),
-      image = topAd.querySelector('a[class="ember-view"]'),
-      imageDescription = topAd.querySelector('a[class="tap-target ember-view"]'),
+      postText = topAd.querySelector('.feed-shared-update__description.feed-shared-inline-show-more-text'),
+      postDescription = postText.querySelector('.feed-shared-text__text-view'),
+      image = topAd.querySelector('a[class="tap-target app-aware-link ember-view"]'),
+      imageDescription = topAd.querySelector('.tap-target.ember-view.full-width'),
       likesCount = topAd.querySelector('button[data-control-name="likes_count"]'),
-      commentsCount = topAd.querySelector('button[data-control-name="comments_count"]');
+      commentsCount = topAd.querySelector('button[data-control-name="comments_count"]'),
+      seeMore = topAd.querySelector('.see-more');
       
-      if (actorPicture.querySelector('img[src]')) {
-        actorPicture.querySelector('img[src]').src = ad.logo;
-        actorPicture.querySelector('img[src]').alt = ad.title;
-      } else {
-        actorPicture.firstElementChild.innerHTML = '<img src="' + ad.logo + '" class="avatar company EntityPhoto-square-3" alt="' + ad.title + '">'
+      if (actorPicture && actorPicture.querySelector('.avatar.member')) {
+        actorPicture.querySelector('.avatar.member').style.backgroundImage = "url ('"+ad.logo+"')";
+        actorPicture.querySelector('[data-entity-hovercard-id]').setAttribute('data-entity-hovercard-id', '');
+      } else if(actorPicture){
+        actorPicture.firstElementChild.innerHTML = '<img src="' + ad.logo + '" class="EntityPhoto-circle-3" alt="' + ad.title + '">'
       }
       
-      if (actor.getElementsByClassName('feed-shared-post-meta__edited').length > 0) {
-        actor.getElementsByClassName('feed-shared-post-meta__edited')[0].remove();
+      if (actor && actor.getElementsByClassName('feed-shared-update__update-content-wrapper').length > 0) {
+        actor.getElementsByClassName('feed-shared-update__update-content-wrapper')[0].remove();
       }
       
-      if (postDescription.parentNode.querySelector('a')) {
-        postDescription.parentNode.querySelector('a').remove();
+      if(postDescription){
+        postDescription.innerHTML = '<span>' + ad.text + '</span>';
       }
-      
-      if (postDescription.parentNode.getElementsByClassName('ember-view').length = 2) {
-        postDescription.parentNode.lastElementChild.remove();
+      else if(postText){
+        postText.innerHTML = '<span class="Sans-15px-black-70%">' + ad.text + '</span>';
       }
-      
-      actorPicture.href = actor.href = ad.link;
-      actorPicture.querySelector('div[data-entity-hovercard-id]').setAttribute('data-entity-hovercard-id', '');
-      actor.querySelector('span[data-entity-hovercard-id]').innerText = ad.title;
-      actor.querySelector('span[data-entity-hovercard-id]').setAttribute('data-entity-hovercard-id', '');
-      actor.getElementsByClassName('feed-shared-post-meta__headline')[0].innerText = 'Sponsored';
-      postDescription.innerHTML = '<span>' + ad.text + '</span>';
+
+      if (topAd.querySelector('.feed-shared-header')) {
+        topAd.querySelector('.feed-shared-header').remove();
+      }
+      if(seeMore){
+        seeMore.remove();
+      }
+
+      if(actor){
+        actor.querySelector('[data-entity-hovercard-id]').innerText = ad.title;
+        actor.querySelector('[data-entity-hovercard-id]').setAttribute('data-entity-hovercard-id', '');
+        if(actor.querySelector('.feed-shared-actor__description'))
+          actor.querySelector('.feed-shared-actor__description').innerText = 'Promoted';
+        else if(actor.querySelector('.feed-shared-post-meta__headline'))
+          actor.querySelector('.feed-shared-post-meta__headline').innerText = 'Promoted';
+        else
+          actor.firstElementChild.insertAdjacentHTML = '<span class="feed-shared-actor__description Sans-13px-black-55%">Promoted</span>';
+      }
       
       if (!image) {
         if (topAd.querySelector('a[class="app-aware-link ember-view"]')) {
           image = topAd.querySelector('a[class="app-aware-link ember-view"]');
         } else if (topAd.querySelector('a[class="tap-target"]')) {
           image = topAd.querySelector('a[class="tap-target"]');
+        } else if (topAd.querySelector('a[class="feed-shared-image__image-link"]')) {
+          image = topAd.querySelector('a[class="feed-shared-image__image-link"]');
         }
       }
-      image.href = ad.link;
-      image.querySelector('div').style.backgroundImage = 'url("' + ad.image + '")';
-      image.querySelector('div').setAttribute('aria-label', ad.title);
-      
+      if(image){
+        image.href = ad.link;
+        image.querySelector('.ivm-view-attr__img--centered').style.backgroundImage = 'url("' + ad.image + '")';
+        image.querySelector('div').setAttribute('aria-label', ad.title);
+      }
       if (imageDescription) {
         imageDescription.href = ad.link;
-        imageDescription.getElementsByClassName('feed-shared-image-description__headline')[0].innerText = ad.title;
-        imageDescription.getElementsByClassName('feed-shared-image-description__byline')[0].innerText = ad.linkText;
+        if(imageDescription.getElementsByClassName('feed-shared-image-description__headline').length > 0)
+          imageDescription.getElementsByClassName('feed-shared-image-description__headline')[0].innerText = ad.title;
+        else if(imageDescription.getElementsByClassName('feed-shared-article__title').length > 0)
+          imageDescription.getElementsByClassName('feed-shared-article__title')[0].innerText = ad.title;
+        if(imageDescription.getElementsByClassName('feed-shared-image-description__byline').length > 0)
+          imageDescription.getElementsByClassName('feed-shared-image-description__byline')[0].innerText = ad.linkText;
+        else if(imageDescription.getElementsByClassName('feed-shared-article__subtitle').length > 0)
+          imageDescription.getElementsByClassName('feed-shared-article__subtitle')[0].innerText = ad.linkText;
       }
       
-      if (actor.getElementsByTagName('time')[0]) {
+      if (actor && actor.getElementsByTagName('time')[0]) {
         actor.getElementsByTagName('time')[0].remove();
       }
       

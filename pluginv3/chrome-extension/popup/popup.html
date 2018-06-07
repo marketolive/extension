@@ -11,10 +11,13 @@
         <img id="logo-size" src="../images/marketo-live-image-purp.png">
       </a>
       <div id="help">
-        <img id="help-size" src="../images/help-white.png">
+        <img class="iconSize" title="help" src="../images/help-white.png">
       </div>
       <div id="settings">
-        <img id="gear-size" src="../images/popupsettings.png">
+        <img class="iconSize" title="Settings" src="../images/popupsettings.png">
+      </div>
+      <div id="admin">
+        <img class="iconSize" title="Admin Section" src="../images/admin.png">
       </div>
     </div>
     <div id="help-container">
@@ -70,82 +73,121 @@
         </div>
       </div>
     </div>
-    <div class="company-container">
-      <input type="text" id="name-entered" placeholder="Company Website..." class="company-name float-left">
-      <div id="company-submit" class="float-left company-submit">
-        <div class="company-inner-submit">
-          Submit
-        </div>
-      </div>
-      <div class="clear-container">
-        <div id="clear-submit" class="clear-submit">
-          <div class="clear-inner-submit">
-            Clear
+    <div id="admin-container">
+      <div id="adminKey-container">
+        <div class="title">Demo Services Section</div>
+        <input type="text" id="key-entered" placeholder="Enter Key..." class="company-name float-left">
+        <div id="key-submit" class="float-left company-submit">
+          <div class="company-inner-submit">
+            Submit
           </div>
         </div>
       </div>
+      <div id="adminFunc-container">
+        <div class="checkboxContainer inlineForInput" style="">
+            <div id="addToCampaign" class="checkboxWrapper">
+                <input id='addToCampCheck' type='checkbox' />
+                <label for='addToCampCheck'>
+                  <span></span>
+                </label>
+            </div><label for='addToCampCheck'>Add to Campaign</label>
+        </div>
+        <div style="float:right;"><input id="addPerc" type="text" value="10" class="percInput"> %</div>
+        <div class="checkboxContainer inlineForInput" style="">
+            <div id="completeTasks" class="checkboxWrapper">
+                <input id='compTasksCheck' type='checkbox' />
+                <label for='compTasksCheck'>
+                  <span></span>
+                </label>
+            </div><label for='compTasksCheck'>Complete Tasks</label>
+        </div>
+        <div style="float:right;"><input id="compPerc" type="text" value="10" class="percInput"> %</div>
+        <div id="runse-submit" class="clear-submit">
+          <div class="clear-inner-submit">
+            Run SE Automation
+          </div>
+        </div>
+        <div id="adminErrorMsg"></div>
+      </div>
     </div>
-    <div class="option-container">
-      <a href="http://www.marketolive.com/en/tools/ad-targeting" class="link">
-        <div class="option-image-container">
-          <img class="option-image" src="../images/ad-targeting.png">
+    <div id="homeContainer">
+      <div class="company-container adminHide">
+        <input type="text" id="name-entered" placeholder="Company Website..." class="company-name float-left">
+        <div id="company-submit" class="float-left company-submit">
+          <div class="company-inner-submit">
+            Submit
+          </div>
         </div>
-        <div class="option-title">
-          Ad Targeting
+        <div class="clear-container">
+          <div id="clear-submit" class="clear-submit">
+            <div class="clear-inner-submit">
+              Clear
+            </div>
+          </div>
         </div>
-      </a>
-    </div>
-    <div class="option-container">
-      <a href="https://verticals.marketolive.com" class="link">
-        <div class="option-image-container">
-          <img class="option-image" src="../images/rtp-image.png">
-        </div>
-        <div class="option-title">
-          Web Personalization
-        </div>
-      </a>
-    </div>
-    <!--
-    <div class="option-container">
-      <a href="http://marketosolutionsconsulting.com/m/b2c/" class="link">
-        <div class="option-image-container">
-          <img class="option-image" src="../images/shopping-cart-purple.png">
-        </div>
-        <div class="option-title">
-          Turner Ecommerce
-        </div>
-      </a>
-    </div>
-    -->
-    <div class="option-container">
-      <a href="https://marketolive.com/m3/apps/moments.html" class="link">
-        <div class="option-image-container">
-          <img class="option-image" src="../images/marketo_moments.png">
-        </div>
-        <div class="option-title">
-          Mobile Moments
-        </div>
-      </a>
-    </div>
-    <div class="option-container">
-      <a href="https://marketolive.com/m3/apps/mobile-engagement-beacon.html" class="link">
-        <div class="option-image-container">
-          <img class="option-image" src="../images/mobile_engagement.png">
-        </div>
-        <div class="option-title">
-          Mobile Engagement
-        </div>
-      </a>
-    </div>
-    <div class="option-container">
-      <a href="https://marketolive.com/m3/apps/mobile_sales_insight.html" class="link">
-        <div class="option-image-container">
-          <img class="option-image" src="../images/mobile_msi.png">
-        </div>
-        <div class="option-title">
-          Mobile Sales Insight
-        </div>
-      </a>
+      </div>
+      <div class="option-container adminHide">
+        <a href="http://dev.marketolive.com/en/tools/ad-targeting" class="link">
+          <div class="option-image-container">
+            <img class="option-image" src="../images/ad-targeting.png">
+          </div>
+          <div class="option-title">
+            Ad Targeting
+          </div>
+        </a>
+      </div>
+      <div class="option-container adminHide">
+        <a href="https://verticals.marketolive.com" class="link">
+          <div class="option-image-container">
+            <img class="option-image" src="../images/rtp-image.png">
+          </div>
+          <div class="option-title">
+            Web Personalization
+          </div>
+        </a>
+      </div>
+      <!--
+      <div class="option-container">
+        <a href="http://marketosolutionsconsulting.com/m/b2c/" class="link">
+          <div class="option-image-container">
+            <img class="option-image" src="../images/shopping-cart-purple.png">
+          </div>
+          <div class="option-title">
+            Turner Ecommerce
+          </div>
+        </a>
+      </div>
+      -->
+      <div class="option-container adminHide">
+        <a href="https://marketolive.com/m3-dev/apps/moments.html" class="link">
+          <div class="option-image-container">
+            <img class="option-image" src="../images/marketo_moments.png">
+          </div>
+          <div class="option-title">
+            Mobile Moments
+          </div>
+        </a>
+      </div>
+      <div class="option-container adminHide">
+        <a href="https://marketolive.com/m3-dev/apps/mobile-engagement-beacon.html" class="link">
+          <div class="option-image-container">
+            <img class="option-image" src="../images/mobile_engagement.png">
+          </div>
+          <div class="option-title">
+            Mobile Engagement
+          </div>
+        </a>
+      </div>
+      <div class="option-container adminHide">
+        <a href="https://marketolive.com/m3-dev/apps/mobile_sales_insight.html" class="link">
+          <div class="option-image-container">
+            <img class="option-image" src="../images/mobile_msi.png">
+          </div>
+          <div class="option-title">
+            Mobile Sales Insight
+          </div>
+        </a>
+      </div>
     </div>
     <!--
     <div class="option-container">
