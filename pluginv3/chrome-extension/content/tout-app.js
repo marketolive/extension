@@ -1,4 +1,4 @@
-console.log("ToutApp > Running");
+console.log("ToutApp Content Script > Running");
 
 /**************************************************************************************
  *
@@ -46,4 +46,23 @@ APP.loadScript = function (scriptSrc) {
 
 window.addEventListener("load", function () {
   APP.loadScript(TOUT_APP);
+});
+
+chrome.runtime.onMessage.addListener(function(msg, sender, response) {
+  if (msg.from === 'popup') {
+    var runScript = document.createElement("script");
+    var innerScript;
+    if(msg.subject === 'all'){
+      innerScript = document.createTextNode("console.log('Starting comp then add '"+compperc+" : "+msg.addperc+");TOUT.waitForCsrfToken(TOUT.addPeopleToCampaigns("+msg.addperc+").then(TOUT.completeTasks("+compperc+")));console.log('Finished');");
+    }
+    else if(msg.subject === 'add'){
+      innerScript = document.createTextNode("console.log('Starting ' + "+msg.addperc+");TOUT.waitForCsrfToken(TOUT.addPeopleToCampaigns("+msg.addperc+"));console.log('Finished');");
+    }
+    else if(msg.subject === 'camp'){
+      innerScript = document.createTextNode("console.log('Starting ' + "+msg.compperc+");TOUT.waitForCsrfToken(TOUT.completeTasks("+msg.compperc+"));console.log('Finished');");
+    }
+    runScript.appendChild(innerScript); 
+    (document.head||document.documentElement).appendChild(runScript);
+    runScript.parentNode.removeChild(runScript); 
+  }
 });

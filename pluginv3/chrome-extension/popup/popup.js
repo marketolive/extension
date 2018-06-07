@@ -12,7 +12,7 @@ console.log("Running");
  **************************************************************************************/
 
 var background = chrome.extension.getBackgroundPage(),
-
+match = 'MarketoLive Admin',
 mktoLiveClassicMatch = "https://marketolive.com/*",
 mktoLiveClassicUriDomain = ".marketolive.com",
 mktoDomainMatch = "https://www.marketo.com/*",
@@ -22,7 +22,7 @@ mktoDesignerUriDomain = ".marketodesigner.com",
 clearbitDomain = "https://logo.clearbit.com/",
 
 currToggleState = true,
-currSaveEditsToggleState = settingsOpen = helpOpen = false,
+currSaveEditsToggleState = settingsOpen = adminOpen = helpOpen = false,
 
 privilegesToggleCookieMarketo = {
   "url": mktoDomainMatch,
@@ -217,6 +217,15 @@ POPUP.validateFields = function (fields) {
   }
 };
 
+POPUP.validatePerc = function(val){
+  val = parseFloat(val);
+  if(isNaN(val))
+    return false;
+  if(val < 0 || val > 100)
+    return false;
+  return true;
+};
+
 /**************************************************************************************
  *
  *  This function sets an onkeyup event listener for the given input fields in order
@@ -304,11 +313,15 @@ window.onload = function () {
   var help = document.getElementById("help"),
   settings = document.getElementById("settings"),
   clearCache = document.getElementById("clear-cache"),
+  seSubmit = document.getElementById("runse-submit"),
   privilegesToggle = document.getElementById("privilegesToggle"),
   saveEditsToggle = document.getElementById("saveEditsToggle"),
   company = document.getElementById("name-entered"),
+  key = document.getElementById("key-entered"),
+  keySubmit = document.getElementById("key-submit"),
   submit = document.getElementById("company-submit"),
-  clear = document.getElementById("clear-submit");
+  clear = document.getElementById("clear-submit"),
+  admin = document.getElementById("admin");
   
   background.getCookie(privilegesToggleCookieMarketo, function (cookie) {
     if (cookie == null
@@ -399,6 +412,9 @@ window.onload = function () {
   POPUP.addLinkClickListeners(document.getElementsByClassName("link"));
   
   help.onclick = function () {
+    adminOpen = false;
+    document.getElementById("homeContainer").style.display = "block";
+    document.getElementById("admin-container").style.display = "none";
     if (!helpOpen) {
       helpOpen = true;
       document.getElementById("help-container").style.display = "block";
@@ -407,8 +423,23 @@ window.onload = function () {
       document.getElementById("help-container").style.display = "none";
     }
   };
-  
+  admin.onclick = function () {
+    if (!adminOpen) {
+      adminOpen = true;
+      document.getElementById("help-container").style.display = "none";
+      document.getElementById("settings-container").style.display = "none";
+      document.getElementById("homeContainer").style.display = "none";
+      document.getElementById("admin-container").style.display = "block";
+    } else {
+      adminOpen = false;
+      document.getElementById("admin-container").style.display = "none";
+      document.getElementById("homeContainer").style.display = "block";
+    }
+  };
   settings.onclick = function () {
+    adminOpen = false;
+    document.getElementById("homeContainer").style.display = "block";
+    document.getElementById("admin-container").style.display = "none";
     if (!settingsOpen) {
       settingsOpen = true;
       document.getElementById("settings-container").style.display = "block";
@@ -417,7 +448,50 @@ window.onload = function () {
       document.getElementById("settings-container").style.display = "none";
     }
   };
-  
+
+  seSubmit.onclick = function () {
+    document.getElementById('adminErrorMsg').innerHTML = '';
+    var task = '';
+    var addPerc = document.getElementById('addPerc').value;
+    if(document.getElementById('addToCampCheck').checked){
+      if(!POPUP.validatePerc(addPerc)){
+        document.getElementById('adminErrorMsg').innerHTML = 'Please enter a valid % value for Add to Campaign';
+        return;
+      }
+      task = 'add';
+    }
+    var compPerc = document.getElementById('compPerc').value;
+    if(document.getElementById('compTasksCheck').checked){
+      if(!POPUP.validatePerc(compPerc)){
+        document.getElementById('adminErrorMsg').innerHTML = 'Please enter a valid % value for Complete Tasks';
+        return;
+      }
+      task += 'camp';
+    }
+    if(task === 'addcamp')
+      task = 'all';
+    else if(task === ''){
+      document.getElementById('adminErrorMsg').innerHTML = 'Please select a checkbox';
+      return;
+    }
+    chrome.tabs.query({
+      active: true,
+      currentWindow: true
+    }, function (tabs) {
+      console.log('on page '+tabs[0].url);
+      if(tabs[0].url.indexOf('toutapp.com') === -1){
+        document.getElementById('adminErrorMsg').innerHTML = 'Please run this on the Sales Engage tab';
+        return;
+      }
+      chrome.tabs.sendMessage(
+          tabs[0].id,
+          {from: 'popup', subject: task, addperc: (parseFloat(addPerc)/100), compperc: (parseFloat(compPerc)/100)},{}, 
+            function(resp){
+            console.log('done'+resp);
+          });
+    });
+  };
+
   clearCache.onclick = function () {
     var clearCacheText = document.getElementById("clear-cache-text");
     
@@ -483,14 +557,26 @@ window.onload = function () {
     }, 1500);
   };
   
+  keySubmit.onclick = function (e) {
+    if (POPUP.validateFields([key]) && key.value === match) {
+      document.getElementById("adminKey-container").style.display = 'none';
+      document.getElementById("adminFunc-container").style.display = 'block';
+      key.classList.remove("errorColor");
+      key.value = '';
+    }
+    else
+      key.classList.add("errorColor");
+  };
+  
   submit.onclick = function (e) {
     if (POPUP.validateFields([company])) {
       POPUP.openColorPicker(company.value);
     }
   };
   
+  POPUP.submitOnEnter([key], submit.onclick);
   POPUP.submitOnEnter([company], submit.onclick);
-  
+
   clear.onclick = function () {
     company.value = null;
     background.removeCookie(companyLogoCookieMarketoLive);

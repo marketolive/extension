@@ -12,7 +12,7 @@ console.log('ToutApp > Running');
  **************************************************************************************/
 
 var TOUT = TOUT || {};
-
+debugger;
 /**************************************************************************************
  *
  *  This function issues an XmlHttp web request (XHR) using the given parameters
@@ -507,7 +507,7 @@ TOUT.addPeopleToCampaign = function (params) {
     }
   },
   method = 'POST';
-  
+  console.log('ToutApp > Adding People: ' + params.person_ids);
   console.log('ToutApp > Adding People to Campaign: ' + params.campaignId);
   return TOUT.webRequest(url, '', data, '', method).then(function (response) {
     try {
@@ -644,7 +644,7 @@ TOUT.waitForCsrfToken = function (callback) {
  **************************************************************************************/
 
 TOUT.addPeopleToCampaigns = function (pct) {
-  console.log('ToutApp > Adding Inactive People to Campaigns');
+  console.log('ToutApp > Adding Inactive People to Campaigns' + pct);
   return TOUT.getPeople().then(function (getPeople) {
     return TOUT.getCampaigns().then(function (getCampaigns) {
       let allCampaigns = [],
