@@ -25,6 +25,10 @@ mktoEmailDesigner = mktoDesignerDomain + "/ds",
 mktoLandingPageDesigner = mktoDesignerDomain + "/lpeditor/",
 mktoEmailInsightsLink = "https://insights.marketolive.com/email",
 mktoEmailDeliverabilityToolsLink = "https://250ok.com/login?submit=true",
+mktoBizibleDiscoverLink = "https://apps.bizible.com/Discover/3839",
+mktoBizibleRevPlanLink = "https://apps.bizible.com/MyAccount/Business/391?busView=false#!/MyAccount/Business/DecisionEngine.DecisionEngineHome",
+targetAcctPlanLink = "https://marketo.invisionapp.com/share/JSNEDPTN8FR",
+demoModelerLink = "https://app-sjp.marketo.com/?preview=true&approved=true/#RCM83A1",
 mktoNextGenUxLink = "https://marketo.invisionapp.com/share/V2FQQBSYUPX",
 mktoDemoAccountMatch = "^mktodemoaccount",
 mktoMyMarketoFragment = "MM0A1",
@@ -1046,6 +1050,10 @@ APP.overrideHomeTiles = function (restoreEmailInsightsTile) {
     deliverabilityToolsTile,
     seoTile,
     nextGenUxTile,
+    bizibleDiscover,
+    bizibleRevPlan,
+    targetAccountPlan,
+    demoModeler,
     hiddenTile1,
     hiddenTile2;
     
@@ -1077,6 +1085,22 @@ APP.overrideHomeTiles = function (restoreEmailInsightsTile) {
       case "Marketo Sky":
         nextGenUxTile = tile.parentNode.parentNode.parentNode;
         break;
+      
+      case "Bizible Discover":
+        bizibleDiscover = tile.parentNode.parentNode.parentNode;
+        break;
+      
+      case "Bizible Revenue Planner":
+        bizibleRevPlan = tile.parentNode.parentNode.parentNode;
+        break;
+      
+      case "Target Account Planning":
+        targetAccountPlan = tile.parentNode.parentNode.parentNode;
+        break;
+      
+      case "Lifecycle Modeler":
+        demoModeler = tile.parentNode.parentNode.parentNode;
+        break;  
       }
     }
     
@@ -1186,6 +1210,78 @@ APP.overrideHomeTiles = function (restoreEmailInsightsTile) {
       };
     }
     
+    if(!bizibleDiscover && (MktPage.savedState.custPrefix == mktoAccountString106)){
+      let bizibleDiscoverTileEl = document.createElement('div');
+      bizibleDiscoverTileEl.className = "x4-btn mkt3-homeTile x4-btn-default-small x4-icon-text-left x4-btn-icon-text-left x4-btn-default-small-icon-text-left";
+      bizibleDiscoverTileEl.style = "height: 150px;";
+      bizibleDiscoverTileEl.id = "bizibleDiscoverToolsTile";
+      bizibleDiscoverTileEl.innerHTML = '<em id="bizibleDiscoverToolsTile-btnWrap"><a id="bizibleDiscoverToolsTile-btnEl" href="' + mktoBizibleDiscoverLink + '" class="x4-btn-center" target="_blank" role="link" style="width: 150px; height: 150px;"><span id="bizibleDiscoverToolsTile-btnInnerEl" class="x4-btn-inner" style="width: 150px; height: 150px; line-height: 150px;">Bizible Discover</span><span id="bizibleDiscoverToolsTile-btnIconEl" class="x4-btn-icon"><img src="https://www.bizible.com/hs-fs/hub/233537/file-2495819411-png/bizible-logo-retina.png?t=1533581965699&amp;width=277&amp;name=bizible-logo-retina.png" style="width: 145px;margin-left:5px;margin-top:30px;"></span></a></em>';
+      
+      container.insertBefore(bizibleDiscoverTileEl, container.childNodes[container.childNodes.length - 1]);
+      document.getElementById("bizibleDiscoverToolsTile").onclick = function () {
+        APP.heapTrack("track", {
+          name: "BizibleDiscover",
+          assetArea: "BizibleDiscover",
+          assetName: "Demo 106 Account",
+          assetType: "Home Tile"
+        });
+      };
+    }
+    
+    if(!targetAccountPlan && (MktPage.savedState.custPrefix == mktoAccountString106)){
+      let targetAccountPlanTileEl = document.createElement('div');
+      targetAccountPlanTileEl.className = "x4-btn mkt3-homeTile x4-btn-default-small x4-icon-text-left x4-btn-icon-text-left x4-btn-default-small-icon-text-left";
+      targetAccountPlanTileEl.style = "height: 150px;";
+      targetAccountPlanTileEl.id = "targetAccountPlanTile";
+      targetAccountPlanTileEl.innerHTML = '<em id="targetAccountPlanTile-btnWrap"><a id="targetAccountPlanTile-btnEl" href="' + targetAcctPlanLink + '" class="x4-btn-center" target="_blank" role="link" style="width: 150px; height: 150px;"><span id="targetAccountPlanTile-btnInnerEl" class="x4-btn-inner" style="width: 150px; height: 150px; line-height: 150px;">Target Account Planning</span><span id="targetAccountPlanTile-btnIconEl" class="x4-btn-icon mki3-abm-main-svg"></span></a></em>';
+      
+      container.insertBefore(targetAccountPlanTileEl, container.childNodes[container.childNodes.length - 1]);
+      document.getElementById("targetAccountPlanTile").onclick = function () {
+        APP.heapTrack("track", {
+          name: "Target Account Planning ",
+          assetArea: "Target Account Planning",
+          assetName: "Demo 106 Account",
+          assetType: "Home Tile"
+        });
+      };
+    }
+
+    if(!bizibleRevPlan && (MktPage.savedState.custPrefix == mktoAccountString106)){
+      let bizibleRevPlanTileEl = document.createElement('div');
+      bizibleRevPlanTileEl.className = "x4-btn mkt3-homeTile x4-btn-default-small x4-icon-text-left x4-btn-icon-text-left x4-btn-default-small-icon-text-left";
+      bizibleRevPlanTileEl.style = "height: 150px;";
+      bizibleRevPlanTileEl.id = "bizibleRevPlanTile";
+      bizibleRevPlanTileEl.innerHTML = '<em id="bizibleRevPlanTile-btnWrap"><a id="bizibleRevPlanTile-btnEl" href="' + mktoBizibleRevPlanLink + '" class="x4-btn-center" target="_blank" role="link" style="width: 150px; height: 150px;"><span id="bizibleRevPlanTile-btnInnerEl" class="x4-btn-inner" style="width: 150px; height: 150px; line-height: 150px;">Bizible Revenue Planner</span><span id="bizibleRevPlanTile-btnIconEl" class="x4-btn-icon"><img src="https://www.bizible.com/hs-fs/hub/233537/file-2495819411-png/bizible-logo-retina.png?t=1533581965699&amp;width=277&amp;name=bizible-logo-retina.png" style="width: 145px;margin-left:5px;margin-top:30px;"></span></a></em>';
+      
+      container.insertBefore(bizibleRevPlanTileEl, container.childNodes[container.childNodes.length - 1]);
+      document.getElementById("bizibleRevPlanTile").onclick = function () {
+        APP.heapTrack("track", {
+          name: "Bizible Rev Plan ",
+          assetArea: "Bizible Rev Plan",
+          assetName: "Demo 106 Account",
+          assetType: "Home Tile"
+        });
+      };
+    }
+
+    if(!demoModeler && (MktPage.savedState.custPrefix == mktoAccountString106)){
+      let demoModelerTileEl = document.createElement('div');
+      demoModelerTileEl.className = "x4-btn mkt3-homeTile x4-btn-default-small x4-icon-text-left x4-btn-icon-text-left x4-btn-default-small-icon-text-left";
+      demoModelerTileEl.style = "height: 150px;";
+      demoModelerTileEl.id = "demoModelerTile";
+      demoModelerTileEl.innerHTML = '<em id="demoModelerTile-btnWrap"><a id="demoModelerTile-btnEl" href="' + demoModelerLink + '" class="x4-btn-center" target="_blank" role="link" style="width: 150px; height: 150px;"><span id="demoModelerTile-btnInnerEl" class="x4-btn-inner" style="width: 150px; height: 150px; line-height: 150px;">Lifecycle Modeler</span><span id="demoModelerTile-btnIconEl" class="x4-btn-icon mki3-success-path-svg"></span></a></em>';
+      
+      container.insertBefore(demoModelerTileEl, container.childNodes[container.childNodes.length - 1]);
+      document.getElementById("demoModelerTile").onclick = function () {
+        APP.heapTrack("track", {
+          name: "Demo Modeler ",
+          assetArea: "Demo Modeler",
+          assetName: "Demo 106 Account",
+          assetType: "Home Tile"
+        });
+      };
+    }
+
     if (seoTile) {
       //seoTile.el.dom.setAttribute("onclick", 'APP.heapTrack("track", {name: "SEO", assetName: "Home", assetType: "Home Tile"});');
       document.getElementById(seoTile.id).onclick = function () {
