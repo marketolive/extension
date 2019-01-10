@@ -1341,7 +1341,10 @@ APP.overrideHomeTiles = function (restoreEmailInsightsTile) {
 
 APP.overrideSuperballMenuItems = function (restoreEmailInsightsMenuItem) {
   console.log("Marketo App > Overriding: Superball Menu Items");
-  
+  var tmpSky = document.querySelectorAll('.x4-btn-icon.mki3-sky_btn-svg');
+  for(var x = 0, y = tmpSky.length; x < y; x++){//this is only for ML
+    tmpSky[x].parentNode.parentNode.parentNode.remove();
+  }
   if (typeof(MktPage) !== "undefined"
      && MktPage
      && MktPage.showSuperMenu) {
@@ -1442,7 +1445,7 @@ APP.overrideSuperballMenuItems = function (restoreEmailInsightsMenuItem) {
             performanceInsightsMenuItem.href = mktoPerformanceInsightsLink;
             performanceInsightsMenuItem.update();
           } else {
-            clonedMenuItem = menu.items.items[0].cloneConfig();
+            clonedMenuItem = menu.items.items[3].cloneConfig();
             clonedMenuItem.setText("Performance Insights");
             clonedMenuItem.setIconCls("mki3-mpi-logo-svg");
             clonedMenuItem.href = mktoPerformanceInsightsLink;
@@ -1474,7 +1477,7 @@ APP.overrideSuperballMenuItems = function (restoreEmailInsightsMenuItem) {
             }
             emailInsightsMenuItem.update();
           } else {
-            clonedMenuItem = menu.items.items[0].cloneConfig();
+            clonedMenuItem = menu.items.items[3].cloneConfig();
             clonedMenuItem.setText("Email Insights");
             clonedMenuItem.setIconCls("mki3-email-insights-svg");
             clonedMenuItem.href = mktoEmailInsightsLink;
@@ -1498,7 +1501,7 @@ APP.overrideSuperballMenuItems = function (restoreEmailInsightsMenuItem) {
             deliverabilityToolsMenuItem.href = mktoEmailDeliverabilityToolsLink;
             deliverabilityToolsMenuItem.update();
           } else {
-            clonedMenuItem = menu.items.items[0].cloneConfig();
+            clonedMenuItem = menu.items.items[3].cloneConfig();
             clonedMenuItem.setText("Deliverability Tools");
             clonedMenuItem.setIconCls("mki3-mail-sealed-svg");
             clonedMenuItem.href = mktoEmailDeliverabilityToolsLink;
