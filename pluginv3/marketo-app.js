@@ -1293,8 +1293,19 @@ APP.overrideHomeTiles = function (restoreEmailInsightsTile) {
         });
       };
     }
-    
-    if (!nextGenUxTile) {
+    if (nextGenUxTile) {
+      nextGenUxTile.outerHTML = nextGenUxTile.outerHTML.replace(hrefMatch, " href=\"" + mktoNextGenUxLink + "\" ");
+      
+      document.getElementById(nextGenUxTile.id).onclick = function () {
+        APP.heapTrack("track", {
+          name: "Mercury UX",
+          assetArea: "Mercury UX",
+          assetName: "InVision App",
+          assetType: "Home Tile"
+        });
+      };
+    } 
+    else if (!nextGenUxTile) {
       let nextGenUxTileEl = document.createElement('div');
       nextGenUxTileEl.className = "x4-btn mkt3-homeTile x4-btn-default-small x4-icon-text-left x4-btn-icon-text-left x4-btn-default-small-icon-text-left";
       nextGenUxTileEl.style = "height: 150px;";
@@ -1341,16 +1352,12 @@ APP.overrideHomeTiles = function (restoreEmailInsightsTile) {
 
 APP.overrideSuperballMenuItems = function (restoreEmailInsightsMenuItem) {
   console.log("Marketo App > Overriding: Superball Menu Items");
-  var tmpSky = document.querySelectorAll('.x4-btn-icon.mki3-sky_btn-svg');
-  for(var x = 0, y = tmpSky.length; x < y; x++){//this is only for ML
-    tmpSky[x].parentNode.parentNode.parentNode.remove();
-  }
+  
   if (typeof(MktPage) !== "undefined"
      && MktPage
      && MktPage.showSuperMenu) {
     MktPage.showSuperMenu = function () {
-      console.log("Marketo App > Executing: Override Superball Menu Items");
-      
+      console.log("MMMMMarketo App > Executing: Override Superball Menu Items");
       var logoEl = Ext.get(Ext.DomQuery.selectNode('.mkt-app-logo')),
       menu = logoEl.menu,
       menuTop = 55;
@@ -1500,7 +1507,7 @@ APP.overrideSuperballMenuItems = function (restoreEmailInsightsMenuItem) {
             };
             deliverabilityToolsMenuItem.href = mktoEmailDeliverabilityToolsLink;
             deliverabilityToolsMenuItem.update();
-          } else {
+          } else {debugger;
             clonedMenuItem = menu.items.items[3].cloneConfig();
             clonedMenuItem.setText("Deliverability Tools");
             clonedMenuItem.setIconCls("mki3-mail-sealed-svg");
@@ -1542,6 +1549,10 @@ APP.overrideSuperballMenuItems = function (restoreEmailInsightsMenuItem) {
       if (!menu.isVisible() && !logoEl.ignoreNextClick) {
         // position below app bar
         menu.showAt(0, menuTop);
+        var tmpSky = document.querySelectorAll('.x4-btn-icon.mki3-sky_btn-svg');
+        for(var x = 0, y = tmpSky.length; x < y; x++){//this is only for ML
+            tmpSky[x].parentNode.parentNode.parentNode.remove();
+        }
         
         // prevent layering in front of the logo
         menu.setZIndex(logoEl.getStyle('zIndex') - 5);
@@ -8778,7 +8789,9 @@ APP.overrideSaving = function () {
           if (this.getProxy() instanceof Mkt3.data.proxy.AjaxPost) {
             Mkt3.Synchronizer.sync(this);
           } else {
-            this.callParent(arguments);
+            try{
+                this.callParent(arguments);
+            }catch(e){}
           }
         } else {
           //console.log("Marketo App > Disabling: Saving for Nurture Streams (sync)");

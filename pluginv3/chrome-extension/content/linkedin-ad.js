@@ -112,9 +112,10 @@ APP.insertAd = function (ad) {
     if (topAd) {
       var actorPicture = topAd.querySelector('a[data-control-name="actor_picture"]'),
       actor = topAd.querySelector('a[data-control-name="actor"]'),
-      postText = topAd.querySelector('.feed-shared-update__description.feed-shared-inline-show-more-text'),
+      postText = topAd.querySelector('.feed-shared-update-v2__description.feed-shared-inline-show-more-text'),
       postDescription = postText.querySelector('.feed-shared-text__text-view'),
-      image = topAd.querySelector('a[class="tap-target app-aware-link ember-view"]'),
+      image = (topAd.querySelector('a[class="tap-target app-aware-link ember-view"]') || topAd.querySelector('a[class="feed-shared-image__image-link app-aware-link ember-view"]')),//feed-shared-image__image-link app-aware-link ember-view
+      //imagePost = topAd.querySelector('.lazy-image.ivm-view-attr__img--centered.feed-shared-image__image.loaded')
       imageDescription = topAd.querySelector('.tap-target.ember-view.full-width'),
       likesCount = topAd.querySelector('button[data-control-name="likes_count"]'),
       commentsCount = topAd.querySelector('button[data-control-name="comments_count"]'),
@@ -126,7 +127,7 @@ APP.insertAd = function (ad) {
       } else if(actorPicture){
         actorPicture.firstElementChild.innerHTML = '<img src="' + ad.logo + '" class="EntityPhoto-circle-3" alt="' + ad.title + '">'
       }
-      
+
       if (actor && actor.getElementsByClassName('feed-shared-update__update-content-wrapper').length > 0) {
         actor.getElementsByClassName('feed-shared-update__update-content-wrapper')[0].remove();
       }
@@ -168,6 +169,7 @@ APP.insertAd = function (ad) {
       if(image){
         image.href = ad.link;
         image.querySelector('.ivm-view-attr__img--centered').style.backgroundImage = 'url("' + ad.image + '")';
+        image.querySelector('.ivm-view-attr__img--centered').src = ad.image;
         image.querySelector('div').setAttribute('aria-label', ad.title);
       }
       if (imageDescription) {
