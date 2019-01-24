@@ -8766,7 +8766,7 @@ APP.overrideSaving = function () {
       
       if (this.storeId == "CalendarView"
          || window.location.href.search("\/#" + mktoCalendarFragment) != -1
-         || ((window.location.href.search("\/#" + mktoAccountBasedMarketingFragment) != -1) && !this.storeId) {//added to take care of the error on the edit view in Named Accounts
+         || ((window.location.href.search("\/#" + mktoAccountBasedMarketingFragment) != -1) && !this.storeId)) {//added to take care of the error on the edit view in Named Accounts
         console.log("Marketo App > Restoring: Original sync Function");
         prevDataStoreSync.apply(this, arguments);
       } else {
