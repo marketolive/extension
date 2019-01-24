@@ -8765,7 +8765,8 @@ APP.overrideSaving = function () {
       //console.log("Marketo App > Executing: Override Saving for Nurture Streams (sync)");
       
       if (this.storeId == "CalendarView"
-         || window.location.href.search("\/#" + mktoCalendarFragment) != -1) {
+         || window.location.href.search("\/#" + mktoCalendarFragment) != -1
+         || ((window.location.href.search("\/#" + mktoAccountBasedMarketingFragment) != -1) && !this.storeId) {//added to take care of the error on the edit view in Named Accounts
         console.log("Marketo App > Restoring: Original sync Function");
         prevDataStoreSync.apply(this, arguments);
       } else {
@@ -8789,9 +8790,7 @@ APP.overrideSaving = function () {
           if (this.getProxy() instanceof Mkt3.data.proxy.AjaxPost) {
             Mkt3.Synchronizer.sync(this);
           } else {
-            try{
-                this.callParent(arguments);
-            }catch(e){}
+            this.callParent(arguments);
           }
         } else {
           //console.log("Marketo App > Disabling: Saving for Nurture Streams (sync)");
