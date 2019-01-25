@@ -3478,6 +3478,27 @@ APP.evaluateMenu = function (triggeredFrom, menu, canvas, toolbar) {
   }
 };
 
+APP.disableAccountAI = function () {
+    console.log("Marketo App > Disabling: Account AI");
+    debugger;
+     if (typeof(Mkt3) !== "undefined"
+     && Mkt3
+     && Mkt3.controller
+     && Mkt3.controller.abm
+     && Mkt3.controller.abm.icpModeling
+     && Mkt3.controller.abm.icpModeling.Dashboard
+     && Mkt3.controller.abm.icpModeling.Dashboard.prototype
+     && Mkt3.controller.abm.icpModeling.Dashboard.prototype.onDeleteModelClick) {
+         Mkt3.controller.abm.icpModeling.Dashboard.prototype.onDeleteModelClick = function(){debugger;
+            console.log('I got your click');
+            return null;
+        }
+    }
+    else{
+        console.log('I got nothing for onDeleteModelClick!!!!!');
+    }
+
+};
 /**************************************************************************************
  *
  *  This function disables menu items for all asset types for all Actions Buttons and
@@ -10211,6 +10232,7 @@ var isMktPageApp = window.setInterval(function () {
       
       if (currUrlFragment) {
         if (currUrlFragment == mktoAccountBasedMarketingFragment) {
+            APP.disableAccountAI();
           var navItems = document.getElementsByClassName("x4-tab-center"),
           origNavItemOnClick;
           
@@ -10223,7 +10245,7 @@ var isMktPageApp = window.setInterval(function () {
               if (typeof(origNavItemOnClick) !== "function") {
                 origNavItemOnClick = navButton.onclick;
               }
-              navButton.onclick = function () {
+              navButton.onclick = function () {debugger;
                 APP.heapTrack("addProp", {
                   area: "ABM",
                   assetType: APP.formatText(this.getElementsByClassName("x4-tab-inner")[0].innerHTML)
