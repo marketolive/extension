@@ -10711,6 +10711,8 @@ var isMktPageApp = window.setInterval(function () {
                   });
                 } else if (currUrlFragment.search(mktoDisableButtonsFragmentMatch) != -1) {
                   APP.disableButtons();
+                } else if (currUrlFragment.search(mktoAccountBasedMarketingFragment) != -1) {
+                  APP.disableAccountAI();
                 } else if (currUrlFragment.search(mktoAnalyticsHomeFragment) != -1) {
                   APP.overrideAnalyticsTiles();
                 } else if (currUrlFragment.search("^" + APP.getAssetCompCode("Nurture Program") + "[0-9]+A1$") != -1) {
