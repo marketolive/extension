@@ -3490,14 +3490,26 @@ APP.disableAccountAI = function () {
      && Mkt3.controller.abm.icpModeling.Dashboard.prototype
      && Mkt3.controller.abm.icpModeling.Dashboard.prototype.onDeleteModelClick) {
          Mkt3.controller.abm.icpModeling.Dashboard.prototype.onDeleteModelClick = function(){debugger;
-            console.log('I got your click');
+            console.log('hijacked onDeleteModelClick click');
             return null;
         }
     }
     else{
         console.log('I got nothing for onDeleteModelClick!!!!!');
     }
-
+    if (typeof(Mkt3) !== "undefined"
+     && Mkt3
+     && Mkt3.controller
+     && Mkt3.controller.abm
+     && Mkt3.controller.abm.icpModeling
+     && Mkt3.controller.abm.icpModeling.ModelTuning
+     && Mkt3.controller.abm.icpModeling.ModelTuning.prototype
+     && Mkt3.controller.abm.icpModeling.ModelTuning.prototype.onRefreshModelClick) {
+         Mkt3.controller.abm.icpModeling.Dashboard.prototype.onRefreshModelClick = function(){debugger;
+            console.log('hijacked onRefreshModelClick click');
+            return null;
+        }
+    }
 };
 /**************************************************************************************
  *
