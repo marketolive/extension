@@ -1293,8 +1293,19 @@ APP.overrideHomeTiles = function (restoreEmailInsightsTile) {
         });
       };
     }
-    
-    if (!nextGenUxTile) {
+    if (nextGenUxTile) {
+      nextGenUxTile.outerHTML = nextGenUxTile.outerHTML.replace(hrefMatch, " href=\"" + mktoNextGenUxLink + "\" ");
+      
+      document.getElementById(nextGenUxTile.id).onclick = function () {
+        APP.heapTrack("track", {
+          name: "Mercury UX",
+          assetArea: "Mercury UX",
+          assetName: "InVision App",
+          assetType: "Home Tile"
+        });
+      };
+    } 
+    else if (!nextGenUxTile) {
       let nextGenUxTileEl = document.createElement('div');
       nextGenUxTileEl.className = "x4-btn mkt3-homeTile x4-btn-default-small x4-icon-text-left x4-btn-icon-text-left x4-btn-default-small-icon-text-left";
       nextGenUxTileEl.style = "height: 150px;";
@@ -1346,8 +1357,7 @@ APP.overrideSuperballMenuItems = function (restoreEmailInsightsMenuItem) {
      && MktPage
      && MktPage.showSuperMenu) {
     MktPage.showSuperMenu = function () {
-      console.log("Marketo App > Executing: Override Superball Menu Items");
-      
+      console.log("MMMMMarketo App > Executing: Override Superball Menu Items");
       var logoEl = Ext.get(Ext.DomQuery.selectNode('.mkt-app-logo')),
       menu = logoEl.menu,
       menuTop = 55;
@@ -1442,7 +1452,7 @@ APP.overrideSuperballMenuItems = function (restoreEmailInsightsMenuItem) {
             performanceInsightsMenuItem.href = mktoPerformanceInsightsLink;
             performanceInsightsMenuItem.update();
           } else {
-            clonedMenuItem = menu.items.items[0].cloneConfig();
+            clonedMenuItem = menu.items.items[3].cloneConfig();
             clonedMenuItem.setText("Performance Insights");
             clonedMenuItem.setIconCls("mki3-mpi-logo-svg");
             clonedMenuItem.href = mktoPerformanceInsightsLink;
@@ -1474,7 +1484,7 @@ APP.overrideSuperballMenuItems = function (restoreEmailInsightsMenuItem) {
             }
             emailInsightsMenuItem.update();
           } else {
-            clonedMenuItem = menu.items.items[0].cloneConfig();
+            clonedMenuItem = menu.items.items[3].cloneConfig();
             clonedMenuItem.setText("Email Insights");
             clonedMenuItem.setIconCls("mki3-email-insights-svg");
             clonedMenuItem.href = mktoEmailInsightsLink;
@@ -1497,8 +1507,8 @@ APP.overrideSuperballMenuItems = function (restoreEmailInsightsMenuItem) {
             };
             deliverabilityToolsMenuItem.href = mktoEmailDeliverabilityToolsLink;
             deliverabilityToolsMenuItem.update();
-          } else {
-            clonedMenuItem = menu.items.items[0].cloneConfig();
+          } else {debugger;
+            clonedMenuItem = menu.items.items[3].cloneConfig();
             clonedMenuItem.setText("Deliverability Tools");
             clonedMenuItem.setIconCls("mki3-mail-sealed-svg");
             clonedMenuItem.href = mktoEmailDeliverabilityToolsLink;
@@ -1539,6 +1549,10 @@ APP.overrideSuperballMenuItems = function (restoreEmailInsightsMenuItem) {
       if (!menu.isVisible() && !logoEl.ignoreNextClick) {
         // position below app bar
         menu.showAt(0, menuTop);
+        var tmpSky = document.querySelectorAll('.x4-btn-icon.mki3-sky_btn-svg');
+        for(var x = 0, y = tmpSky.length; x < y; x++){//this is only for ML
+            tmpSky[x].parentNode.parentNode.parentNode.remove();
+        }
         
         // prevent layering in front of the logo
         menu.setZIndex(logoEl.getStyle('zIndex') - 5);
@@ -3464,6 +3478,39 @@ APP.evaluateMenu = function (triggeredFrom, menu, canvas, toolbar) {
   }
 };
 
+APP.disableAccountAI = function () {
+    console.log("Marketo App > Disabling: Account AI");
+    debugger;
+     if (typeof(Mkt3) !== "undefined"
+     && Mkt3
+     && Mkt3.controller
+     && Mkt3.controller.abm
+     && Mkt3.controller.abm.icpModeling
+     && Mkt3.controller.abm.icpModeling.Dashboard
+     && Mkt3.controller.abm.icpModeling.Dashboard.prototype
+     && Mkt3.controller.abm.icpModeling.Dashboard.prototype.onDeleteModelClick) {
+         Mkt3.controller.abm.icpModeling.Dashboard.prototype.onDeleteModelClick = function(){debugger;
+            console.log('hijacked onDeleteModelClick click');
+            return null;
+        }
+    }
+    else{
+        console.log('I got nothing for onDeleteModelClick!!!!!');
+    }
+    if (typeof(Mkt3) !== "undefined"
+     && Mkt3
+     && Mkt3.controller
+     && Mkt3.controller.abm
+     && Mkt3.controller.abm.icpModeling
+     && Mkt3.controller.abm.icpModeling.ModelTuning
+     && Mkt3.controller.abm.icpModeling.ModelTuning.prototype
+     && Mkt3.controller.abm.icpModeling.ModelTuning.prototype.onRefreshModelClick) {
+         Mkt3.controller.abm.icpModeling.Dashboard.prototype.onRefreshModelClick = function(){debugger;
+            console.log('hijacked onRefreshModelClick click');
+            return null;
+        }
+    }
+};
 /**************************************************************************************
  *
  *  This function disables menu items for all asset types for all Actions Buttons and
@@ -8751,7 +8798,8 @@ APP.overrideSaving = function () {
       //console.log("Marketo App > Executing: Override Saving for Nurture Streams (sync)");
       
       if (this.storeId == "CalendarView"
-         || window.location.href.search("\/#" + mktoCalendarFragment) != -1) {
+         || window.location.href.search("\/#" + mktoCalendarFragment) != -1
+         || ((window.location.href.search("\/#" + mktoAccountBasedMarketingFragment) != -1) && !this.storeId)) {//added to take care of the error on the edit view in Named Accounts
         console.log("Marketo App > Restoring: Original sync Function");
         prevDataStoreSync.apply(this, arguments);
       } else {
@@ -10196,6 +10244,7 @@ var isMktPageApp = window.setInterval(function () {
       
       if (currUrlFragment) {
         if (currUrlFragment == mktoAccountBasedMarketingFragment) {
+            APP.disableAccountAI();
           var navItems = document.getElementsByClassName("x4-tab-center"),
           origNavItemOnClick;
           
@@ -10208,7 +10257,7 @@ var isMktPageApp = window.setInterval(function () {
               if (typeof(origNavItemOnClick) !== "function") {
                 origNavItemOnClick = navButton.onclick;
               }
-              navButton.onclick = function () {
+              navButton.onclick = function () {debugger;
                 APP.heapTrack("addProp", {
                   area: "ABM",
                   assetType: APP.formatText(this.getElementsByClassName("x4-tab-inner")[0].innerHTML)
@@ -10662,6 +10711,8 @@ var isMktPageApp = window.setInterval(function () {
                   });
                 } else if (currUrlFragment.search(mktoDisableButtonsFragmentMatch) != -1) {
                   APP.disableButtons();
+                } else if (currUrlFragment.search(mktoAccountBasedMarketingFragment) != -1) {
+                  APP.disableAccountAI();
                 } else if (currUrlFragment.search(mktoAnalyticsHomeFragment) != -1) {
                   APP.overrideAnalyticsTiles();
                 } else if (currUrlFragment.search("^" + APP.getAssetCompCode("Nurture Program") + "[0-9]+A1$") != -1) {

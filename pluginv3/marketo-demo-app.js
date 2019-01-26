@@ -222,7 +222,7 @@ APP.overrideSuperballMenuItems = function () {
             performanceInsightsMenuItem.href = mktoPerformanceInsightsLink;
             performanceInsightsMenuItem.update();
           } else {
-            clonedMenuItem = menu.items.items[0].cloneConfig();
+            clonedMenuItem = menu.items.items[3].cloneConfig();
             clonedMenuItem.setText("Performance Insights");
             clonedMenuItem.setIconCls("mki3-mpi-logo-svg");
             clonedMenuItem.href = mktoPerformanceInsightsLink;
@@ -235,7 +235,7 @@ APP.overrideSuperballMenuItems = function () {
             emailInsightsMenuItem.href = mktoEmailInsightsLink;
             emailInsightsMenuItem.update();
           } else {
-            clonedMenuItem = menu.items.items[0].cloneConfig();
+            clonedMenuItem = menu.items.items[3].cloneConfig();
             clonedMenuItem.setText("Email Insights");
             clonedMenuItem.setIconCls("mki3-email-insights-svg");
             clonedMenuItem.href = mktoEmailInsightsLink;
@@ -248,7 +248,7 @@ APP.overrideSuperballMenuItems = function () {
             deliverabilityToolsMenuItem.href = mktoEmailDeliverabilityToolsLink;
             deliverabilityToolsMenuItem.update();
           } else {
-            clonedMenuItem = menu.items.items[0].cloneConfig();
+            clonedMenuItem = menu.items.items[3].cloneConfig();
             clonedMenuItem.setText("Deliverability Tools");
             clonedMenuItem.setIconCls("mki3-mail-sealed-svg");
             clonedMenuItem.href = mktoEmailDeliverabilityToolsLink;
