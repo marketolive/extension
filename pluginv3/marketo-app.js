@@ -3489,7 +3489,7 @@ APP.disableAccountAI = function () {
      && Mkt3.controller.abm.icpModeling.Dashboard
      && Mkt3.controller.abm.icpModeling.Dashboard.prototype
      && Mkt3.controller.abm.icpModeling.Dashboard.prototype.onDeleteModelClick) {
-         Mkt3.controller.abm.icpModeling.Dashboard.prototype.onDeleteModelClick = function(){debugger;
+         Mkt3.controller.abm.icpModeling.Dashboard.prototype.onDeleteModelClick = function(){
             console.log('hijacked onDeleteModelClick click');
             return null;
         }
@@ -3503,7 +3503,7 @@ APP.disableAccountAI = function () {
      && Mkt3.controller.abm.icpModeling.ModelTuning
      && Mkt3.controller.abm.icpModeling.ModelTuning.prototype
      && Mkt3.controller.abm.icpModeling.ModelTuning.prototype.onRefreshModelClick) {
-         Mkt3.controller.abm.icpModeling.Dashboard.prototype.onRefreshModelClick = function(){debugger;
+         Mkt3.controller.abm.icpModeling.ModelTuning.prototype.onRefreshModelClick = function(){
             console.log('hijacked onRefreshModelClick click');
             return null;
         }
@@ -3517,7 +3517,7 @@ APP.disableAccountAI = function () {
      && Mkt3.controller.abm.icpModeling.ModelPerformance
      && Mkt3.controller.abm.icpModeling.ModelPerformance.prototype
      && Mkt3.controller.abm.icpModeling.ModelPerformance.prototype.onBeforePushData) {
-         Mkt3.controller.abm.icpModeling.ModelPerformance.prototype.onBeforePushData = function(){debugger;
+         Mkt3.controller.abm.icpModeling.ModelPerformance.prototype.onBeforePushData = function(){
             console.log('hijacked onBeforePushData click');
             return null;
         }
