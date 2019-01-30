@@ -1549,10 +1549,10 @@ APP.overrideSuperballMenuItems = function (restoreEmailInsightsMenuItem) {
       if (!menu.isVisible() && !logoEl.ignoreNextClick) {
         // position below app bar
         menu.showAt(0, menuTop);
-        var tmpSky = document.querySelectorAll('.x4-btn-icon.mki3-sky_btn-svg');
+        /*var tmpSky = document.querySelectorAll('.x4-btn-icon.mki3-sky_btn-svg');
         for(var x = 0, y = tmpSky.length; x < y; x++){//this is only for ML
             tmpSky[x].parentNode.parentNode.parentNode.remove();
-        }
+        }*/
         
         // prevent layering in front of the logo
         menu.setZIndex(logoEl.getStyle('zIndex') - 5);
