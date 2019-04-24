@@ -3064,8 +3064,7 @@ APP.disableCheckboxes = function () {
         MktSession.ajaxRequest('/mercury/getMercuryEnabledRoles', {
             params: {},
             onMySuccess: function(response) {
-                var enabledRoles = response.JSONResults || [];
-                me.enabledRoles = enabledRoles;
+                me.enabledRoles = [];
             }
         });
     };
