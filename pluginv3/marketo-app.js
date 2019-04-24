@@ -3058,23 +3058,22 @@ APP.disableButtons = function () {
 };
 
 APP.disableCheckboxes = function () {
-  console.log("Marketo App > Disabling: Checkboxes");
-   var skyCheckboxDeactivate = window.setInterval(function () {
-      $jQ = jQuery.noConflict();
-      if ($jQ) {
-        var tmp = $jQ(".x4-form-checkbox");
-        console.log("Number of Checkboxes Disabling " + tmp.length);
-        if(tmp.length < 1 || tmp.length > 2){
-          $jQ(".x4-form-checkbox").attr('disabled',true);
-          window.clearInterval(skyCheckboxDeactivate);
-        }
-      }
-      else{
-        console.log("Unable to Disable Checkboxes did not find jQuery");
-        window.clearInterval(skyCheckboxDeactivate);
-      }
-   });
-  
+    console.log("Marketo App > Disabling: Checkboxes");
+    Mkt3.controller.admin.mercury.MercuryAdmin.prototype.getEnabledRoles = function() {
+        var me = this;
+        MktSession.ajaxRequest('/mercury/getMercuryEnabledRoles', {
+            params: {},
+            onMySuccess: function(response) {
+                var enabledRoles = response.JSONResults || [];
+                me.enabledRoles = enabledRoles;
+            }
+        });
+    };
+
+    $jQ = jQuery.noConflict();
+    if ($jQ) 
+        $jQ(".x4-form-checkbox").attr('disabled',true);
+
 };
 /**************************************************************************************
  *
