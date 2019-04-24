@@ -92,6 +92,7 @@ mktoLeadDatabaseTechnologyFragment = "ML0A1ZN26475",
 mktoLeadDatabaseTravelLeisureFragment = "ML0A1ZN27574",
 mktoAdminEmailEmailFragment = "EA0A1",
 mktoAdminWebServicesFragment = "MW0A1",
+mktoAdminWebSkyFragment = "HG0A1",
 mktoDisableButtonsFragmentMatch = "^(" + mktoMasterMarketingActivitiesEnglishFragment + "|" + mktoMarketingActivitiesDefaultFragment + "|" + mktoMarketingActivitiesUserFragment + "|" + mktoMarketingActivitiesJapaneseFragment + "|" + mktoMarketingActivitiesFinservFragment + "|" + mktoMarketingActivitiesHealthcareFragment + "|" + mktoMarketingActivitiesHigherEdFragment + "|" + mktoMarketingActivitiesManufacturingFragment + "|" + mktoMarketingActivitiesTechnologyFragment + "|" + mktoMarketingActivitiesTravelLeisureFragment + "|" + mktoMasterLeadDatabaseEnglishFragment + "|" + mktoLeadDatabaseDefaultFragment + "|" + mktoLeadDatabaseUserFragment + "|" + mktoLeadDatabaseJapaneseFragment + "|" + mktoLeadDatabaseFinservFragment + "|" + mktoLeadDatabaseHealthcareFragment + "|" + mktoLeadDatabaseHigherEdFragment + "|" + mktoLeadDatabaseManufacturingFragment + "|" + mktoLeadDatabaseTechnologyFragment + "|" + mktoLeadDatabaseTravelLeisureFragment + "|" + mktoAdminEmailEmailFragment + "|" + mktoAdminWebServicesFragment + ")$",
 
 mktoOppInfluenceAnalyzerFragment = "AR1559A1!",
@@ -3056,6 +3057,23 @@ APP.disableButtons = function () {
   }
 };
 
+APP.disableCheckboxes = function () {
+    console.log("Marketo App > Disabling: Checkboxes");
+    Mkt3.controller.admin.mercury.MercuryAdmin.prototype.getEnabledRoles = function() {
+        var me = this;
+        MktSession.ajaxRequest('/mercury/getMercuryEnabledRoles', {
+            params: {},
+            onMySuccess: function(response) {
+                me.enabledRoles = [];
+            }
+        });
+    };
+
+    $jQ = jQuery.noConflict();
+    if ($jQ) 
+        $jQ(".x4-form-checkbox").attr('disabled',true);
+
+};
 /**************************************************************************************
  *
  *  This function evaluates the current node context being moved to determine if the
@@ -10297,6 +10315,8 @@ var isMktPageApp = window.setInterval(function () {
           });
         } else if (currUrlFragment.search(mktoDisableButtonsFragmentMatch) != -1) {
           APP.disableButtons();
+        }else if (currUrlFragment == mktoAdminWebSkyFragment) {
+          APP.disableCheckboxes();
         } else if (currUrlFragment.search(mktoAnalyticsHomeFragment) != -1) {
           APP.overrideAnalyticsTiles();
         } else if (currUrlFragment.search("^" + APP.getAssetCompCode("Nurture Program") + "[0-9]+A1$") != -1) {
@@ -10723,7 +10743,9 @@ var isMktPageApp = window.setInterval(function () {
                   });
                 } else if (currUrlFragment.search(mktoDisableButtonsFragmentMatch) != -1) {
                   APP.disableButtons();
-                } else if (currUrlFragment.search(mktoAccountBasedMarketingFragment) != -1) {
+                } else if (currUrlFragment === mktoAdminWebSkyFragment){
+                  APP.disableCheckboxes();
+                }else if (currUrlFragment.search(mktoAccountBasedMarketingFragment) != -1) {
                   APP.disableAccountAI();
                 } else if (currUrlFragment.search(mktoAnalyticsHomeFragment) != -1) {
                   APP.overrideAnalyticsTiles();
