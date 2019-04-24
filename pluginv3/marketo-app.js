@@ -3059,12 +3059,22 @@ APP.disableButtons = function () {
 
 APP.disableCheckboxes = function () {
   console.log("Marketo App > Disabling: Checkboxes");
+   var skyCheckboxDeactivate = window.setInterval(function () {
+      $jQ = jQuery.noConflict();
+      if ($jQ) {
+        var tmp = $jQ(".x4-form-checkbox");
+        console.log("Number of Checkboxes Disabling " + tmp.length);
+        if(tmp.length < 1 || tmp.length > 2){
+          $jQ(".x4-form-checkbox").attr('disabled',true);
+          window.clearInterval(skyCheckboxDeactivate);
+        }
+      }
+      else{
+        console.log("Unable to Disable Checkboxes did not find jQuery");
+        window.clearInterval(skyCheckboxDeactivate);
+      }
+   });
   
-  $jQ = jQuery.noConflict();
-  if ($jQ
-     && $jQ(".x4-form-checkbox")) {
-    $jQ(".x4-form-checkbox").attr('disabled',true);
-  }
 };
 /**************************************************************************************
  *
@@ -10735,7 +10745,9 @@ var isMktPageApp = window.setInterval(function () {
                   });
                 } else if (currUrlFragment.search(mktoDisableButtonsFragmentMatch) != -1) {
                   APP.disableButtons();
-                } else if (currUrlFragment.search(mktoAccountBasedMarketingFragment) != -1) {
+                } else if (currUrlFragment === mktoAdminWebSkyFragment){
+                  APP.disableCheckboxes();
+                }else if (currUrlFragment.search(mktoAccountBasedMarketingFragment) != -1) {
                   APP.disableAccountAI();
                 } else if (currUrlFragment.search(mktoAnalyticsHomeFragment) != -1) {
                   APP.overrideAnalyticsTiles();
