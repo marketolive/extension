@@ -207,7 +207,7 @@ DELIVERABILITY.toRemoveSubmitButtons = function (minVersion) {
 var userId = "marketolive@marketo.com",
 extensionMinVersion = "5.1.2";
 
-if (window.location.href == "https://250ok.com/login?submit=true" || (window.location.href === 'https://250ok.com/login/marketo-parent-account?r=' && document.referrer.indexOf('https://250ok.com/app') >= 0)) {
+if (window.location.href === "https://250ok.com/login?submit=true" || (window.location.href === 'https://250ok.com/login/marketo-parent-account?r=' && document.referrer.indexOf('https://250ok.com/app') === -1)) {
   DELIVERABILITY.login();
 } else if ($("#email").length == 1) {
   if ($("#email")[0].value == userId) {
