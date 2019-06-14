@@ -777,7 +777,7 @@ function setMktoCookies(message) {
 
 function setAdInfoCookies(message) {
   var googleDomainMatch = "https://www" + message.domain + "/*",
-  linkedinDomainMatch = "https://www.linkedin.com/*",
+  linkedinDomainMatch = "marketolive.com/*",
   adInfoCookieName = "ad_info";
   
   if (message.adInfo) {
@@ -806,19 +806,19 @@ function setAdInfoCookies(message) {
       });
       break;
       
-    case "linkedin":
+    case "linkedin": 
       setCookie({
         "url": mktoLiveDomainMatch,
         "name": adInfoCookieName,
         "value": message.adInfo,
         "domain": mktoLiveUriDomain
       });
-      setCookie({
+/*      setCookie({
         "url": linkedinDomainMatch,
         "name": adInfoCookieName,
         "value": message.adInfo,
-        "domain": ".linkedin.com"
-      });
+        "domain": linkedinDomainMatch
+      });*/
       break;
     }
     
