@@ -7530,6 +7530,7 @@ APP.disableAnalyticsSaving = function (assetType, mode) {
           APP.disableMenus();
           APP.hideToolbarItems();
           APP.disableFormSaveButtons();
+          APP.disableHarmfulSaveButtons();
           heapEvent.assetArea = "Full Screen";
         }
         
