@@ -516,6 +516,7 @@ APP.overrideAnalyticsTiles = function () {
                 tiles[ii].outerHTML = tileHTML.replace(hrefMatch, ' href=\"' + mktoPerformanceInsightsLink + '\" ');
                 performanceInsightsTileExists = true;
               } else if (tiles[ii].textContent == "Email Insights") {
+                var hrefMatch = new RegExp(' href=\"[^\"]*\" ', 'g');
                 tiles[ii].outerHTML = tileHTML.replace(hrefMatch, ' href=\"' + mktoEmailInsightsLink + '\" ');
                 emailInsightsTileExists = true;
               }
