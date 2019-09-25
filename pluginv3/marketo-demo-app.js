@@ -222,7 +222,7 @@ APP.overrideSuperballMenuItems = function () {
             performanceInsightsMenuItem.href = mktoPerformanceInsightsLink;
             performanceInsightsMenuItem.update();
           } else {
-            clonedMenuItem = menu.items.items[3].cloneConfig();
+            clonedMenuItem = menu.items.items[4].cloneConfig();
             clonedMenuItem.setText("Performance Insights");
             clonedMenuItem.setIconCls("mki3-mpi-logo-svg");
             clonedMenuItem.href = mktoPerformanceInsightsLink;
@@ -235,7 +235,7 @@ APP.overrideSuperballMenuItems = function () {
             emailInsightsMenuItem.href = mktoEmailInsightsLink;
             emailInsightsMenuItem.update();
           } else {
-            clonedMenuItem = menu.items.items[3].cloneConfig();
+            clonedMenuItem = menu.items.items[4].cloneConfig();
             clonedMenuItem.setText("Email Insights");
             clonedMenuItem.setIconCls("mki3-email-insights-svg");
             clonedMenuItem.href = mktoEmailInsightsLink;
@@ -516,6 +516,8 @@ APP.overrideAnalyticsTiles = function () {
                 tiles[ii].outerHTML = tileHTML.replace(hrefMatch, ' href=\"' + mktoPerformanceInsightsLink + '\" ');
                 performanceInsightsTileExists = true;
               } else if (tiles[ii].textContent == "Email Insights") {
+                var hrefMatch = new RegExp(' href=\"[^\"]*\" ', 'g');
+                tiles[ii].outerHTML = tileHTML.replace(hrefMatch, ' href=\"' + mktoEmailInsightsLink + '\" ');
                 emailInsightsTileExists = true;
               }
             }

@@ -1453,7 +1453,7 @@ APP.overrideSuperballMenuItems = function (restoreEmailInsightsMenuItem) {
             performanceInsightsMenuItem.href = mktoPerformanceInsightsLink;
             performanceInsightsMenuItem.update();
           } else {
-            clonedMenuItem = menu.items.items[3].cloneConfig();
+            clonedMenuItem = menu.items.items[4].cloneConfig();
             clonedMenuItem.setText("Performance Insights");
             clonedMenuItem.setIconCls("mki3-mpi-logo-svg");
             clonedMenuItem.href = mktoPerformanceInsightsLink;
@@ -1485,7 +1485,7 @@ APP.overrideSuperballMenuItems = function (restoreEmailInsightsMenuItem) {
             }
             emailInsightsMenuItem.update();
           } else {
-            clonedMenuItem = menu.items.items[3].cloneConfig();
+            clonedMenuItem = menu.items.items[4].cloneConfig();
             clonedMenuItem.setText("Email Insights");
             clonedMenuItem.setIconCls("mki3-email-insights-svg");
             clonedMenuItem.href = mktoEmailInsightsLink;
