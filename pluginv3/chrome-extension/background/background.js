@@ -176,6 +176,7 @@ function setCookie(obj) {
     name: obj.name,
     value: obj.value,
     domain: obj.domain,
+    sameSite: 'no_restriction',
   };
   
   if (obj.expiresInDays) {
