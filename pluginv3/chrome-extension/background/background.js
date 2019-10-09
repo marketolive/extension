@@ -30,6 +30,7 @@ mktoDesignerMatchPattern = "https://*.marketodesigner.com/*",
 mktoSjpWebRequest = "https://app-sjp.marketo.com/",
 mktoSjdemo1WebRequest = "https://app-sjdemo1.marketo.com/",
 oneLoginUrl = "https://marketo.onelogin.com/portal/",
+oktaUrl = "https://adobe.okta.com/app/UserHome",
 
 mktoEmailDesignerFragment = "EME",
 mktoEmailPreviewFragmentRegex = new RegExp("#EME[0-9]+&isPreview", "i"),
@@ -721,6 +722,15 @@ function setOneLoginCookies(message) {
   });
 }
 
+function setOktaCookies(){
+  loadScript(BACKGROUND_DATA_SCRIPT_LOCATION);
+  heapTrack({
+    name: "OneLogin > Apps",
+    app: "OneLogin",
+    area: "Apps"
+  });
+}
+
 function setMktoCookies(message) {
   var mktoUserIdCookieName = "mkto_user_id",
   mktoNameCookieName = "mkto_name",
@@ -1074,6 +1084,12 @@ function checkMsgs(message, sender, sendResponse) {
       setOneLoginCookies(message);
       console.log("Received: " + JSON.stringify(message));
     }
+    break;
+  case "setOktaUser":
+    if (sender.url.indexOf(oktaUrl) >= 0) {
+      setOneLoginCookies(message);//to reuse the code
+      console.log("Received: " + JSON.stringify(message));
+    } 
     break;
   case "getExtensionDetails":
     if (sender.url.search(mktoLivePages) != -1) {
