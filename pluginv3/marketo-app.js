@@ -1358,7 +1358,7 @@ APP.overrideSuperballMenuItems = function (restoreEmailInsightsMenuItem) {
      && MktPage
      && MktPage.showSuperMenu) {
     MktPage.showSuperMenu = function () {
-      console.log("MMMMMarketo App > Executing: Override Superball Menu Items");
+      console.log("Marketo App > Executing: Override Superball Menu Items");
       var logoEl = Ext.get(Ext.DomQuery.selectNode('.mkt-app-logo')),
       menu = logoEl.menu,
       menuTop = 55;
@@ -10225,11 +10225,11 @@ var isMktPageApp = window.setInterval(function () {
                && response.isValidExtension) {
               APP.validateDemoExtensionCheck(response.isValidExtension);
               if (accountString == mktoAccountStringMaster) {
-                APP.overrideSuperballMenuItems(response.isValidExtension);
+                APP.overrideSuperballMenuItems();//response.isValidExtension);
                 //restoreEmailInsights = true;
                 if (currUrlFragment
                    && currUrlFragment == mktoMyMarketoFragment) {
-                  APP.overrideHomeTiles(response.isValidExtension);
+                  APP.overrideHomeTiles();//response.isValidExtension);
                 }
               }
               console.log("Marketo App > checkBadExtension Msg > Response: " + JSON.stringify(response));
@@ -10309,7 +10309,7 @@ var isMktPageApp = window.setInterval(function () {
             });
           }
         } else if (currUrlFragment == mktoMyMarketoFragment) {
-          APP.overrideHomeTiles(restoreEmailInsights);
+          APP.overrideHomeTiles();//restoreEmailInsights);
           APP.heapTrack("track", {
             name: "My Marketo",
             assetName: "Home"
@@ -10729,7 +10729,7 @@ var isMktPageApp = window.setInterval(function () {
                 if (currUrlFragment == mktoMyMarketoSuperballFragment
                    && Mkt3.DL.getDlToken() == mktoMyMarketoFragment) {
                   window.setTimeout(function() {
-                    APP.overrideHomeTiles(restoreEmailInsights);
+                    APP.overrideHomeTiles();//restoreEmailInsights);
                   }, 1000);
                 }
                 
@@ -10737,7 +10737,7 @@ var isMktPageApp = window.setInterval(function () {
                 console.log("Marketo App > Loaded: New URL Fragment = " + currUrlFragment);
                 
                 if (currUrlFragment == mktoMyMarketoFragment) {
-                  APP.overrideHomeTiles(restoreEmailInsights);
+                  APP.overrideHomeTiles();//restoreEmailInsights);
                   APP.heapTrack("track", {
                     name: "My Marketo",
                     assetName: "Home"
