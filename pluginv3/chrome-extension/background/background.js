@@ -30,7 +30,8 @@ mktoDesignerMatchPattern = "https://*.marketodesigner.com/*",
 mktoSjpWebRequest = "https://app-sjp.marketo.com/",
 mktoSjdemo1WebRequest = "https://app-sjdemo1.marketo.com/",
 oneLoginUrl = "https://marketo.onelogin.com/portal/",
-oktaUrl = "https://adobe.okta.com/app/UserHome",
+oktaUrl = "https://adobe.okta.com/policy",
+oktaUrlRefresh = "https://adobe.okta.com/signin/verify/okta/push",
 
 mktoEmailDesignerFragment = "EME",
 mktoEmailPreviewFragmentRegex = new RegExp("#EME[0-9]+&isPreview", "i"),
@@ -1086,7 +1087,7 @@ function checkMsgs(message, sender, sendResponse) {
     }
     break;
   case "setOktaUser":
-    if (sender.url.indexOf(oktaUrl) >= 0) {
+    if (sender.url.indexOf(oktaUrl) >= 0 || sender.url.indexOf(oktaUrlRefresh) >= 0) {
       setOneLoginCookies(message);//to reuse the code
       console.log("Received: " + JSON.stringify(message));
     } 

@@ -58,10 +58,9 @@
       "js": [
         "content/okta.js"
       ],
-      "run_at": "document_end",
+      "run_at": "document_idle",
       "matches": [
-        "*://adobe.okta.com/app/UserHome#",
-        "*://adobe.okta.com/app/UserHome"
+        "*://adobe.okta.com/*"
       ]
     },
     {
@@ -162,7 +161,7 @@
       "*://pages.marketolive.com/*",
       "*://dev.pages.marketolive.com/*",
       "https://marketo.onelogin.com/portal/",
-      "https://adobe.okta.com/app/UserHome*",
+      "https://adobe.okta.com/*",
       "https://app-sjdemo1.marketo.com/*",
       "https://app-sjp.marketo.com/*",
       "https://app-sj11.marketo.com/*",
@@ -230,5 +229,5 @@
   "author": "Marketo Demo Services",
   "name": "MarketoLive",
   "description": "This extension is for Marketo employees and partners who have access to the MarketoLive demo environment.",
-  "version": "5.3.16"
+  "version": "5.3.17"
 }
