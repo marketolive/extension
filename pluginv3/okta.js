@@ -9,7 +9,7 @@ console.log("OKTA > Running");
 
 var devExtensionId = "dokkjhbgengdlccldgjnbilajdbjlnhm",
 prodExtensionId = "onibnnoghllldiecboelbpcaeggfiohl",
-extensionId = devExtensionId,
+extensionId = prodExtensionId,
 
 ME_URL = 'https://adobe.okta.com/api/internal/enduser/home',
 
