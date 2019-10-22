@@ -7,11 +7,11 @@ console.log("OKTA > Running");
  *
  **************************************************************************************/
 
-var URL_PATH = "m3-dev",
+var URL_PATH = "m3",
 
-OKTA_LOGIN = "https://marketolive.com/" + URL_PATH + "/pluginv3/okta.min.js",
+  OKTA_LOGIN = "https://marketolive.com/" + URL_PATH + "/pluginv3/okta.min.js",
 
-APP = APP || {};
+  APP = APP || {};
 
 /**************************************************************************************
  *
@@ -23,7 +23,7 @@ APP = APP || {};
 
 APP.loadScript = function (scriptSrc) {
   console.log("Loading: Script: " + scriptSrc);
-  
+
   var scriptElement = document.createElement("script");
   scriptElement.async = true;
   scriptElement.src = scriptSrc;
