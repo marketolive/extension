@@ -50,7 +50,7 @@
       "run_at": "document_end",
       "matches": [
         "*://marketo.onelogin.com/portal",
-				"*://marketo.onelogin.com/portal/"
+        "*://marketo.onelogin.com/portal/"
       ]
     },
     {
@@ -114,7 +114,7 @@
         "*://www.google.de/search?dynamicAd=true&*",
         "*://www.google.fr/search?dynamicAd=true&*",
         "*://www.google.ie/search?dynamicAd=true&*",
-        "*://www.google.co.il/search?dynamicAd=true&*",    
+        "*://www.google.co.il/search?dynamicAd=true&*",
         "*://www.google.co.jp/search?dynamicAd=true&*",
         "*://www.google.co.uk/search?dynamicAd=true&*",
         "*://www.google.com/search?dynamicAd=true&*"
@@ -212,7 +212,7 @@
     "*://www.google.de/search?dynamicAd=true&*",
     "*://www.google.fr/search?dynamicAd=true&*",
     "*://www.google.ie/search?dynamicAd=true&*",
-    "*://www.google.co.il/search?dynamicAd=true&*",    
+    "*://www.google.co.il/search?dynamicAd=true&*",
     "*://www.google.co.jp/search?dynamicAd=true&*",
     "*://www.google.co.uk/search?dynamicAd=true&*",
     "*://www.google.com/search?dynamicAd=true&*",
@@ -229,5 +229,5 @@
   "author": "Marketo Demo Services",
   "name": "MarketoLive",
   "description": "This extension is for Marketo employees and partners who have access to the MarketoLive demo environment.",
-  "version": "5.3.17"
+  "version": "5.3.19"
 }
