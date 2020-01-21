@@ -74,8 +74,8 @@ DELIVERABILITY.login = function () {
   
   // jQuery returns an array even though an id is selected, which
   // is why there is a [0] on the email and password selectors.
-  $("#email")[0].value = "marketolive@marketo.com";
-  $("#password")[0].value = "!Marketo17";
+  $("#email")[0].value = "";
+  $("#password")[0].value = "";
   // This needs to change if another button is ever added to the login
   // page. Currently, the submit button is the only one.
   $("button")[0].click();
@@ -208,7 +208,7 @@ var userId = "marketolive@marketo.com",
 extensionMinVersion = "5.1.2";
 
 if (window.location.href === "https://250ok.com/login?submit=true" || (window.location.href === 'https://250ok.com/login/marketo-parent-account?r=' && document.referrer.indexOf('https://250ok.com/app') === -1)) {
-  DELIVERABILITY.login();
+  //DELIVERABILITY.login();
 } else if ($("#email").length == 1) {
   if ($("#email")[0].value == userId) {
     DELIVERABILITY.removeDeleteButtons();
