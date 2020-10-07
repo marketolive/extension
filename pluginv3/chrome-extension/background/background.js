@@ -16,8 +16,8 @@ var URL_PATH = "m3-dev",
   HEAP_ANALYTICS_SCRIPT_LOCATION = "https://marketolive.com/" + URL_PATH + "/pluginv3/heap-analytics-ext.min.js",
   BACKGROUND_DATA_SCRIPT_LOCATION = "https://marketolive.com/" + URL_PATH + "/pluginv3/background-demo-data.min.js",
 
-  mktoLivePages = "^(https://app-.+\.marketo\.com/|https://.+\.marketodesigner\.com/|http(s)?://.*\.marketolive.com/)",
-  mktoLiveInstances = "^(https://app-(sjdemo1|sjp|sj11)\.marketo\.com/|https://engage-sj\.marketo\.com)",
+  mktoLivePages = "^(https://app-.+\.marketo\.com/|https://.+\.marketodesigner\.com/|http(s)?://.*\.marketolive.com/)",//probably not working on MEUE ABDEMO
+  mktoLiveInstances = "^(https://app-(sjdemo1|sjp|sj11)\.marketo\.com/|https://engage-(ab|sj)\.marketo\.com)",
   mktoLiveDomainMatch = "http://www.marketolive.com/*",
   mktoLiveUriDomain = ".marketolive.com",
   mktoLiveClassicDomainMatch = "https://marketolive.com/*",
@@ -29,6 +29,7 @@ var URL_PATH = "m3-dev",
   mktoDesignerUriDomain = ".marketodesigner.com",
   mktoDesignerMatchPattern = "https://*.marketodesigner.com/*",
   mktoSjpWebRequest = "https://app-sjp.marketo.com/",
+  mktoABDemoWebRequest = "https://app-abdemo1.marketo.com/",
   mktoSjdemo1WebRequest = "https://app-sjdemo1.marketo.com/",
   mktoMEUEWebRequest = "https://engage-sj.marketo.com/",
   oneLoginUrl = "https://marketo.onelogin.com/portal/",
@@ -45,12 +46,12 @@ var URL_PATH = "m3-dev",
   companyPickerRegEx = "^https://marketolive\.com/" + URL_PATH + "/apps/color-picker\.html\\?company=.+",
 
   mktoAppUserCookie = "ids_sso",
-  munchkinIdsMatch = "^(185-NGX-811|026-COU-482|767-TVJ-204|400-TWP-453|068-VUG-672)$",//added 451 munchkin for testing, TODO remove
+  munchkinIdsMatch = "^(185-NGX-811|026-COU-482|767-TVJ-204|400-TWP-453|068-VUG-672|924-LFC-514)$",//added 451 munchkin for testing, TODO remove
 
   //adminUserNamesMatch = "^(mktodemolivemaster@marketo\.com$|admin(\.[a-z]{0,2})?@(marketolive.com$|mktodemoaccount)|marketodemo.*@gmail\.com$)",
   adminUserNamesMatch = "^(mktodemolivemaster@marketo\.com$|admin(\.[a-z]{0,2})?@(marketolive.com$|mktodemoaccount)|mktodemoaccount[a-z0-9]*@marketo\.com$|marketodemo.*@gmail\.com$)",
-  mktoLiveBlockUrlPatterns = ["*://sjrtp3.marketo.com/app/*", "*://sjrtp8.marketo.com/app/*", "*://sjrtp4.marketo.com/app/*", "*://sj-ee-api.marketo.com/api/v1/settings/dimensions/activate/*", "*://seo.marketo.com/*", "*://250ok.com/*"],//TODO remove sjrtp8 used for testing MEUE
-  mktoLiveRtpDomainsMatch = "(sjrtp3|sjrtp4|sjrtp8)\.marketo\.com",//TODO remove sjrtp8 used for MEUE
+  mktoLiveBlockUrlPatterns = ["*://sjrtp3.marketo.com/app/*","*://abrtp2.marketo.com/app/*", "*://sjrtp8.marketo.com/app/*", "*://sjrtp4.marketo.com/app/*", "*://sj-ee-api.marketo.com/api/v1/settings/dimensions/activate/*", "*://seo.marketo.com/*", "*://250ok.com/*"],//TODO remove sjrtp8 used for testing MEUE
+  mktoLiveRtpDomainsMatch = "(sjrtp3|sjrtp4|sjrtp8|abrtp2)\.marketo\.com",//TODO remove sjrtp8 used for MEUE
 
   oneLoginFirstName,
   oneLoginLastName,
@@ -380,7 +381,7 @@ chrome.webRequest.onCompleted.addListener(function (details) {
     area: "Demo Pod"
   });
 }, {
-    urls: [mktoSjpWebRequest, mktoSjdemo1WebRequest, mktoMEUEWebRequest]
+    urls: [mktoSjpWebRequest, mktoSjdemo1WebRequest, mktoMEUEWebRequest,mktoABDemoWebRequest]
   });
 
 /**************************************************************************************

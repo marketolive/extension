@@ -20,6 +20,7 @@ EMAIL_DASHBOARD = "https://marketolive.com/" + URL_PATH + "/pluginv3/dashboards/
 //EMAIL_ASSET= "https://marketolive.com/" + URL_PATH + "/pluginv3/dashboards/email-asset-data.min.js",
 
 mktoAccountStringMaster = "mktodemolivemaster",
+mktoAccountStringABDemoMaster = "mktodemoaccount544",
 
 DASHBOARD = DASHBOARD || {};
 
@@ -60,7 +61,7 @@ var isMktPageDashboards = window.setInterval(function () {
       
       window.clearInterval(isMktPageDashboards);
       
-      if (accountString == mktoAccountStringMaster) {
+      if (accountString == mktoAccountStringMaster || accountString == mktoAccountStringABDemoMaster) {
         DASHBOARD.loadScript(PROGRAM_ANALYZER);
         DASHBOARD.loadScript(SOCIAL_APP);
       } else {

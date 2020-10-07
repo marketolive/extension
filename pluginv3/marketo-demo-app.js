@@ -1621,7 +1621,7 @@ APP.applyMassClone = function (forceReload) {
     }
     
     Ext.menu.Menu.prototype.showAt = function (xy, parentMenu) {
-      massClone.apply(this, arguments);
+      massClone.apply(this, arguments);//TODO changes here Hunter
       origMenuShowAtFunc.apply(this, arguments);
     };
   } else {
@@ -3349,7 +3349,7 @@ var isMktPageDemoApp = window.setInterval(function () {
          && currUrlFragment.search(mktoAnalyticsFragmentMatch) == -1
          && (!currCompFragment
            || (currCompFragment.search(mktoAbmFragmentMatch) == -1
-             && currCompFragment.search(mktoDesignersFragmentMatch) == -1))) {
+             && currCompFragment.search(mktoDesignersFragmentMatch) == -1))) {//TODO put the MF hash hunter
         APP.applyMassClone();
       } else if (currCompFragment
          && currCompFragment.search(mktoDesignersFragmentMatch) != -1

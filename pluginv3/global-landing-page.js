@@ -20,7 +20,8 @@ mktoLiveDevLandingPageDomain = "http://dev\.pages\.marketolive\.com",
 mktoLiveLandingPageHostsMatch = "http://na-sjdemo1\.marketo\.com",
 mktoLiveDevMunchkinId = "685-BTN-772",
 mktoLiveProdMunchkinId = "185-NGX-811",
-mktoLiveMunchkinIdsMatch = "(" + mktoLiveProdMunchkinId + "|" + mktoLiveDevMunchkinId + ")",
+mktoLiveNewPodMunchkinId = "924-LFC-514",
+mktoLiveMunchkinIdsMatch = "(" + mktoLiveProdMunchkinId + "|" + mktoLiveDevMunchkinId + "|" + mktoLiveNewPodMunchkinId + ")",
 mktoLiveLandingPageDomainMatch = "^(" + mktoLiveProdLandingPageDomain + "|" + mktoLiveDevLandingPageDomain + "|" + mktoLiveLandingPageHostsMatch + "\/lp\/" + mktoLiveMunchkinIdsMatch + ")/",
 
 GLOBAL_LPAGE = GLOBAL_LPAGE || {};
