@@ -186,6 +186,7 @@ var devExtensionId = "dokkjhbgengdlccldgjnbilajdbjlnhm",
   origExplorerPanelAddNode,
   origExplorerPanelRemoveNodes,
   origExplorerPanelUpdateNodeText,
+  overrideTileTimerCount = true,
 
   APP = APP || {};
 
@@ -1333,6 +1334,10 @@ APP.overrideHomeTiles = function (restoreEmailInsightsTile) {
     if (hiddenTile2) {
       hiddenTile2.remove();
     }
+  }
+  else if(overrideTileTimerCount){
+    overrideTileTimerCount = false;
+    setTimeout(APP.overrideHomeTiles, 2000);
   }
 };
 
@@ -3506,10 +3511,10 @@ APP.disableAccountAI = function () {
     && Mkt3.controller
     && Mkt3.controller.abm
     && Mkt3.controller.abm.icpModeling
-    && Mkt3.controller.abm.icpModeling.Dashboard
-    && Mkt3.controller.abm.icpModeling.Dashboard.prototype
-    && Mkt3.controller.abm.icpModeling.Dashboard.prototype.onDeleteModelClick) {
-    Mkt3.controller.abm.icpModeling.Dashboard.prototype.onDeleteModelClick = function () {
+    && Mkt3.controller.abm.icpModeling.DeleteModelForm
+    && Mkt3.controller.abm.icpModeling.DeleteModelForm.prototype
+    && Mkt3.controller.abm.icpModeling.DeleteModelForm.prototype.onSubmit) {
+    Mkt3.controller.abm.icpModeling.DeleteModelForm.prototype.onSubmit = function () {
       console.log('hijacked onDeleteModelClick click');
       return null;
     }
@@ -3520,11 +3525,11 @@ APP.disableAccountAI = function () {
     && Mkt3.controller
     && Mkt3.controller.abm
     && Mkt3.controller.abm.icpModeling
-    && Mkt3.controller.abm.icpModeling.ModelTuning
-    && Mkt3.controller.abm.icpModeling.ModelTuning.prototype
-    && Mkt3.controller.abm.icpModeling.ModelTuning.prototype.onRefreshModelClick) {
-    Mkt3.controller.abm.icpModeling.ModelTuning.prototype.onRefreshModelClick = function () {
-      console.log('hijacked onRefreshModelClick click');
+    && Mkt3.controller.abm.icpModeling.TuneModelForm
+    && Mkt3.controller.abm.icpModeling.TuneModelForm.prototype
+    && Mkt3.controller.abm.icpModeling.TuneModelForm.prototype.onSubmit) {
+    Mkt3.controller.abm.icpModeling.TuneModelForm.prototype.onSubmit = function () {
+      console.log('hijacked onSubmit click');
       return null;
     }
   }
@@ -3534,10 +3539,10 @@ APP.disableAccountAI = function () {
     && Mkt3.controller
     && Mkt3.controller.abm
     && Mkt3.controller.abm.icpModeling
-    && Mkt3.controller.abm.icpModeling.ModelPerformance
-    && Mkt3.controller.abm.icpModeling.ModelPerformance.prototype
-    && Mkt3.controller.abm.icpModeling.ModelPerformance.prototype.onBeforePushData) {
-    Mkt3.controller.abm.icpModeling.ModelPerformance.prototype.onBeforePushData = function () {
+    && Mkt3.controller.abm.icpModeling.UpdateAccountsForm
+    && Mkt3.controller.abm.icpModeling.UpdateAccountsForm.prototype
+    && Mkt3.controller.abm.icpModeling.UpdateAccountsForm.prototype.onSubmit) {
+    Mkt3.controller.abm.icpModeling.UpdateAccountsForm.prototype.onSubmit = function () {
       console.log('hijacked onBeforePushData click');
       return null;
     }
@@ -10230,6 +10235,7 @@ var isMktPageApp = window.setInterval(function () {
               //restoreEmailInsights = true;
               if (currUrlFragment
                 && currUrlFragment == mktoMyMarketoFragment) {
+                overrideTileTimerCount = true;
                 APP.overrideHomeTiles();//response.isValidExtension);
               }
             }
@@ -10311,6 +10317,7 @@ var isMktPageApp = window.setInterval(function () {
           });
         }
       } else if (currUrlFragment == mktoMyMarketoFragment) {
+        overrideTileTimerCount = true;
         APP.overrideHomeTiles();//restoreEmailInsights);
         APP.heapTrack("track", {
           name: "My Marketo",
@@ -10730,6 +10737,7 @@ var isMktPageApp = window.setInterval(function () {
 
             if (currUrlFragment == mktoMyMarketoSuperballFragment
               && Mkt3.DL.getDlToken() == mktoMyMarketoFragment) {
+              overrideTileTimerCount = true;
               window.setTimeout(function () {
                 APP.overrideHomeTiles();//restoreEmailInsights);
               }, 1000);
@@ -10739,6 +10747,7 @@ var isMktPageApp = window.setInterval(function () {
             console.log("Marketo App > Loaded: New URL Fragment = " + currUrlFragment);
 
             if (currUrlFragment == mktoMyMarketoFragment) {
+              overrideTileTimerCount = true;
               APP.overrideHomeTiles();//restoreEmailInsights);
               APP.heapTrack("track", {
                 name: "My Marketo",
