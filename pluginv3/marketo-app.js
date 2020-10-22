@@ -1042,7 +1042,8 @@ APP.overrideHomeTiles = function (restoreEmailInsightsTile) {
     && MktCanvas.getEl().dom.nextSibling.childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[0]
     && MktCanvas.getEl().dom.nextSibling.childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes
     && MktCanvas.getEl().dom.nextSibling.childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[0]
-    && MktCanvas.getEl().dom.nextSibling.childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes) {
+    && MktCanvas.getEl().dom.nextSibling.childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes
+    &&(MktCanvas.getEl().dom.nextSibling.childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[0].id.toLowerCase().indexOf('hometile') >= 0 )) {
     console.log("Marketo App > Executing: Override My Marketo Home Tiles");
 
     var container = MktCanvas.getEl().dom.nextSibling.childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[0],
@@ -1515,7 +1516,7 @@ APP.overrideSuperballMenuItems = function (restoreEmailInsightsMenuItem) {
             deliverabilityToolsMenuItem.href = mktoEmailDeliverabilityToolsLink;
             deliverabilityToolsMenuItem.update();
           } else {
-            debugger;
+            //debugger;
             clonedMenuItem = menu.items.items[3].cloneConfig();
             clonedMenuItem.setText("Deliverability Tools");
             clonedMenuItem.setIconCls("mki3-mail-sealed-svg");
@@ -10296,7 +10297,7 @@ var isMktPageApp = window.setInterval(function () {
               origNavItemOnClick = navButton.onclick;
             }
             navButton.onclick = function () {
-              debugger;
+              //debugger;
               APP.heapTrack("addProp", {
                 area: "ABM",
                 assetType: APP.formatText(this.getElementsByClassName("x4-tab-inner")[0].innerHTML)
