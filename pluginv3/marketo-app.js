@@ -10721,7 +10721,225 @@ var isMktPageApp = window.setInterval(function () {
         assetName: "Page"
       });
     }
+window.onresize = function () {
+  console.log("Marketo App > Window: Window Resize");
+  currentUrl = window.location.href;
+  var isNewUrlFragment = window.setInterval(function () {
+      if (typeof (Mkt3) !== "undefined"
+          && Mkt3
+          && Mkt3.DL
+          && Mkt3.DL.getDlToken()) {
+          if (currUrlFragment != Mkt3.DL.getDlToken()) {
+            window.clearInterval(isNewUrlFragment);
 
+            if (currUrlFragment == mktoMyMarketoSuperballFragment
+              && Mkt3.DL.getDlToken() == mktoMyMarketoFragment) {
+              overrideTileTimerCount = true;
+              window.setTimeout(function () {
+                APP.overrideHomeTiles();//restoreEmailInsights);
+              }, 1000);
+            }
+
+            currUrlFragment = Mkt3.DL.getDlToken();
+            console.log("Marketo App > Loaded: New URL Fragment = " + currUrlFragment);
+
+            if (currUrlFragment == mktoMyMarketoFragment) {
+              overrideTileTimerCount = true;
+              APP.overrideHomeTiles();//restoreEmailInsights);
+              APP.heapTrack("track", {
+                name: "My Marketo",
+                assetName: "Home"
+              });
+            } else if (currUrlFragment.search(mktoDisableButtonsFragmentMatch) != -1) {
+              APP.disableButtons();
+            } else if (currUrlFragment === mktoAdminWebSkyFragment) {
+              APP.disableCheckboxes();
+            } else if (currUrlFragment.search(mktoAccountBasedMarketingFragment) != -1) {
+              APP.disableAccountAI();
+            } else if (currUrlFragment.search(mktoAnalyticsHomeFragment) != -1) {
+              APP.overrideAnalyticsTiles();
+            } else if (currUrlFragment.search("^" + APP.getAssetCompCode("Nurture Program") + "[0-9]+A1$") != -1) {
+              APP.disableNurturePrograms();
+            } else if (currUrlFragment == mktoAdminSalesforceFragment
+              || currUrlFragment == mktoAdminDynamicsFragment) {
+              console.log("Marketo App > Location: Admin > CRM");
+
+              APP.hideOtherToolbarItems([{
+                id: "enableSync", //Enable/Disable Sync
+                action: "setVisible"
+              }
+              ]);
+            } else if (currUrlFragment == mktoAdminRcaCustomFieldSync) {
+              console.log("Marketo App > Location: Admin > Revenue Cycle Analytics > Custom Field Sync");
+
+              APP.hideOtherToolbarItems([{
+                id: "cadChangeButton", //Edit Sync Option
+                action: "setVisible"
+              }
+              ]);
+            } else if (currUrlFragment.search(mktoAnalyzersFragmentMatch) != -1) {
+              console.log("Marketo App > Location: Golden Analytics");
+
+              APP.updateNavBar();
+            }
+
+            if (Mkt3.DL.dl
+              && Mkt3.DL.dl.dlCompCode) {
+              currCompFragment = Mkt3.DL.dl.dlCompCode;
+              //                                    console.log("Marketo App > Window: Comp Fragment = " + currCompFragment);
+
+              if (currCompFragment.search(mktoDesignersFragmentMatch) != -1) {
+                console.log("Marketo App > Location: Designers/Wizards");
+
+                switch (currCompFragment) {
+                  case mktoLandingPageEditFragment:
+                    console.log("Marketo App > Location: Landing Page Editor");
+
+                    APP.resetGoldenLandingPageProps();
+                    APP.disableDesignerSaving("landingPage", "edit");
+                    APP.disableFormSaveButtons();
+                    break;
+
+                  case mktoLandingPagePreviewFragment:
+                    console.log("Marketo App > Location: Landing Page Previewer");
+
+                    APP.disableDesignerSaving("landingPage", "preview");
+                    break;
+
+                  case mktoLandingPagePreviewDraftFragment:
+                    console.log("Marketo App > Location: Landing Page Draft Previewer");
+
+                    APP.disableDesignerSaving("landingPage", "preview");
+                    break;
+
+                  case mktoLandingPageTemplateEditFragment:
+                    console.log("Marketo App > Location: Landing Page Template Editor");
+
+                    APP.disableDesignerSaving("landingPage", "templateEdit");
+                    break;
+
+                  case mktoLandingPageTemplatePreviewFragment:
+                    console.log("Marketo App > Location: Landing Page Template Previewer");
+
+                    APP.disableDesignerSaving("landingPage", "templatePreview");
+                    break;
+
+                  case mktoEmailEditFragment:
+                    if (currUrlFragment == mktoEmailEditFragment) {
+                      console.log("Marketo App > Location: Email Template Picker");
+
+                      APP.disableDesignerSaving("email", "templatePicker");
+                    } else if (currUrlFragment.search(mktoEmailPreviewFragmentRegex) == -1) {
+                      console.log("Marketo App > Location: Email Editor");
+
+                      APP.disableDesignerSaving("email", "edit");
+                      APP.disableFormSaveButtons();
+                    } else {
+                      console.log("Marketo App > Location: Email Previewer");
+
+                      APP.disableDesignerSaving("email", "preview");
+                    }
+                    break;
+
+                  case mktoEmailTemplateEditFragment:
+                    console.log("Marketo App > Location: Email Template Editor");
+
+                    APP.disableDesignerSaving("email", "templateEdit");
+                    break;
+
+                  case mktoFormEditFragment:
+                    console.log("Marketo App > Location: Form Editor");
+
+                    APP.disableDesignerSaving("form", "edit");
+                    break;
+
+                  case mktoFormPreviewFragment:
+                    console.log("Marketo App > Location: Form Previewer");
+
+                    APP.disableDesignerSaving("form", "preview");
+                    break;
+
+                  case mktoFormPreviewDraftFragment:
+                    console.log("Marketo App > Location: Form Draft Previewer");
+
+                    APP.disableDesignerSaving("form", "preview");
+                    break;
+
+                  case mktoPushNotificationEditFragment:
+                    console.log("Marketo App > Location: Push Notification Editor");
+
+                    APP.disableDesignerSaving("pushNotification", "edit");
+                    break;
+
+                  case mktoMobilePushNotificationPreviewFragment:
+                    console.log("Marketo App > Location: Push Notification Previewer");
+
+                    APP.disableDesignerSaving("pushNotification", "preview");
+                    break;
+
+                  case mktoInAppMessageEditFragment:
+                    console.log("Marketo App > Location: In-App Message Editor");
+
+                    APP.disableDesignerSaving("inAppMessage", "edit");
+                    break;
+
+                  case mktoInAppMessagePreviewFragment:
+                    console.log("Marketo App > Location: In-App Message Previewer");
+
+                    APP.disableDesignerSaving("inAppMessage", "preview");
+                    break;
+
+                  case mktoSmsMessageEditFragment:
+                    console.log("Marketo App > Location: SMS Message Editor");
+
+                    APP.disableDesignerSaving("smsMessage", "edit");
+                    break;
+
+                  case mktoSocialAppEditFragment:
+                    console.log("Marketo App > Location: Social App Editor");
+
+                    APP.disableDesignerSaving("socialApp", "edit");
+                    break;
+
+                  case mktoSocialAppPreviewFragment:
+                    console.log("Marketo App > Location: Social App Previewer");
+
+                    APP.disableDesignerSaving("socialApp", "preview");
+                    break;
+
+                  case mktoAbTestEditFragment:
+                    console.log("Marketo App > Location: A/B Test Wizard");
+
+                    APP.disableDesignerSaving("abTest", "edit");
+                    break;
+
+                  case mktoEmailTestGroupEditFragment:
+                    console.log("Marketo App > Location: Email Test Group Wizard");
+
+                    APP.disableDesignerSaving("abTest", "edit");
+                    break;
+
+                  case mktoSnippetEditFragment:
+                    console.log("Marketo App > Location: Snippet Editor");
+
+                    APP.disableDesignerSaving("snippet", "edit");
+                    break;
+
+                  case mktoSnippetPreviewFragment:
+                    console.log("Marketo App > Location: Snippet Previewer");
+
+                    APP.disableDesignerSaving("snippet", "preview");
+                    break;
+
+                  default:
+                    break;
+                }
+              }
+            }
+          }
+        }
+  }, 0);
+};
     window.onhashchange = function () {
       console.log("Marketo App > Window: Hash Changed");
 
