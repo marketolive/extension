@@ -1006,6 +1006,157 @@ APP.disableConfirmationMessage = function () {
   }
 };
 
+APP.overrideHomeTilesResize = function (){
+  //resizeFirstCall = false;
+  var container = MktCanvas.getEl().dom.nextSibling.childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[0],
+      tilesTextContent = container.getElementsByTagName('span'),
+      hrefMatch = new RegExp(" href=\"[^\"]*\" ", "g"),
+      performanceInsightsTile,
+      emailInsightsTile,
+      nextGenUxTile,
+      hiddenTile1,
+      hiddenTile2,
+      mpiRepeat = false,
+      eiRepeat = false,
+      nextgenRepeat = false,
+      toBeRemoved = [];
+
+  for (let ii = 0; ii < tilesTextContent.length; ii++) {
+      let tile = tilesTextContent[ii];
+      switch (tile.textContent) {
+        case "Performance Insights":
+          if (tile.parentNode.parentNode.parentNode.style.display != "none") {
+            if(mpiRepeat){
+              toBeRemoved.push(tile.parentNode.parentNode.parentNode);
+            }
+            else{
+              mpiRepeat = true;
+              performanceInsightsTile = tile.parentNode.parentNode.parentNode;
+            }
+          }
+          break;
+
+        case "Email Insights":
+          if(eiRepeat){
+              toBeRemoved.push(tile.parentNode.parentNode.parentNode);
+            }
+            else{
+              eiRepeat = true;
+              emailInsightsTile = tile.parentNode.parentNode.parentNode;
+            }
+          
+            break;
+
+        case "Marketo Sky":
+         if(nextgenRepeat){
+            toBeRemoved.push(tile.parentNode.parentNode.parentNode);
+          }
+          else{
+            nextgenRepeat = true;
+            nextGenUxTile = tile.parentNode.parentNode.parentNode;
+          }
+          break;
+      }
+    }
+    console.log('!!!!!!!!!!!!!!!!!!!'+toBeRemoved.length);
+    for(var x = 0; x < toBeRemoved.length; x++){
+      toBeRemoved[x].remove();
+    }
+    if (performanceInsightsTile) {
+      performanceInsightsTile.outerHTML = performanceInsightsTile.outerHTML.replace(hrefMatch, " href=\"" + mktoPerformanceInsightsLink + "\" ");
+
+      document.getElementById(performanceInsightsTile.id).onclick = function () {
+        APP.heapTrack("track", {
+          name: "Performance Insights",
+          assetArea: "Performance Insights",
+          assetName: "Demo App",
+          assetType: "Home Tile"
+        });
+      };
+    } else {
+      let performanceInsightsTileEl = document.createElement('div');
+      performanceInsightsTileEl.className = "x4-btn mkt3-homeTile x4-btn-default-small x4-icon-text-left x4-btn-icon-text-left x4-btn-default-small-icon-text-left";
+      performanceInsightsTileEl.style = "height: 150px;";
+      performanceInsightsTileEl.id = "performanceInsightsTile";
+      performanceInsightsTileEl.innerHTML = '<em id="performanceInsightsTile-btnWrap"><a id="performanceInsightsTile-btnEl" href="' + mktoPerformanceInsightsLink + '" class="x4-btn-center" target="_blank" role="link" style="width: 150px; height: 150px;"><span id="performanceInsightsTile-btnInnerEl" class="x4-btn-inner" style="width: 150px; height: 150px; line-height: 150px;">Performance Insights</span><span id="performanceInsightsTile-btnIconEl" class="x4-btn-icon mki3-mpi-logo-svg"></span></a></em>';
+
+      container.insertBefore(performanceInsightsTileEl, container.childNodes[container.childNodes.length - 1]);
+      document.getElementById("performanceInsightsTile").onclick = function () {
+        APP.heapTrack("track", {
+          name: "Performance Insights",
+          assetArea: "Performance Insights",
+          assetName: "Demo App",
+          assetType: "Home Tile"
+        });
+      };
+    }
+    if (emailInsightsTile) { 
+        emailInsightsTile.outerHTML = emailInsightsTile.outerHTML.replace(hrefMatch, " href=\"" + mktoEmailInsightsLink + "\" ");
+        document.getElementById(emailInsightsTile.id).onclick = function () {
+          APP.heapTrack("track", {
+            name: "Email Insights",
+            assetArea: "Email Insights",
+            assetName: "Home",
+            assetType: "Home Tile"
+          });
+        };
+    } else {
+      let emailInsightsTileEl = document.createElement('div');
+      emailInsightsTileEl.className = "x4-btn mkt3-homeTile x4-btn-default-small x4-icon-text-left x4-btn-icon-text-left x4-btn-default-small-icon-text-left x-panel";
+      emailInsightsTileEl.style = "height: 150px;";
+      emailInsightsTileEl.id = "emailInsightsTile";
+      emailInsightsTileEl.innerHTML = '<em id="emailInsightsTile-btnWrap"><a id="emailInsightsTile-btnEl" href="' + mktoEmailInsightsLink + '" class="x4-btn-center" target="_blank" role="link" style="width: 150px; height: 150px;"><span id="emailInsightsTile-btnInnerEl" class="x4-btn-inner" style="width: 150px; height: 150px; line-height: 150px;">Email Insights</span><span id="emailInsightsTile-btnIconEl" class="x4-btn-icon mki3-email-insights-svg"></span></a></em><div class="x-panel-bwrap" id="ext-gen164"><div class="x-panel-body x-panel-body-noheader" id="ext-gen165"></div></div>';
+      console.log('**********INSIDE ELSE emailInsightsTile ' + emailInsightsTile);
+      container.insertBefore(emailInsightsTileEl, container.childNodes[container.childNodes.length - 1]);
+      document.getElementById("emailInsightsTile").onclick = function () {
+        APP.heapTrack("track", {
+          name: "Email Insights",
+          assetArea: "Email Insights",
+          assetName: "Demo App",
+          assetType: "Home Tile"
+        });
+      };
+    }
+    if (nextGenUxTile) {
+      nextGenUxTile.outerHTML = nextGenUxTile.outerHTML.replace(hrefMatch, " href=\"" + mktoNextGenUxLink + "\" ");
+
+      document.getElementById(nextGenUxTile.id).onclick = function () {
+        APP.heapTrack("track", {
+          name: "Mercury UX",
+          assetArea: "Mercury UX",
+          assetName: "InVision App",
+          assetType: "Home Tile"
+        });
+      };
+    }
+    else if (!nextGenUxTile) {
+      let nextGenUxTileEl = document.createElement('div');
+      nextGenUxTileEl.className = "x4-btn mkt3-homeTile x4-btn-default-small x4-icon-text-left x4-btn-icon-text-left x4-btn-default-small-icon-text-left";
+      nextGenUxTileEl.style = "height: 150px;";
+      nextGenUxTileEl.id = "nextGenUxTile";
+      nextGenUxTileEl.innerHTML = '<em id="nextGenUxTile-btnWrap"><a id="nextGenUxTile-btnEl" href="' + mktoNextGenUxLink + '" class="x4-btn-center" target="_blank" role="link" style="width: 150px; height: 150px;"><span id="nextGenUxTile-btnInnerEl" class="x4-btn-inner" style="width: 150px; height: 150px; line-height: 150px;">Marketo Sky (Beta)</span><span id="nextGenUxTile-btnIconEl" class="x4-btn-icon mki3-mercury-svg"></span></a></em>';
+
+      container.insertBefore(nextGenUxTileEl, container.childNodes[container.childNodes.length - 1]);
+      document.getElementById("nextGenUxTile").onclick = function () {
+        APP.heapTrack("track", {
+          name: "Mercury UX",
+          assetArea: "Mercury UX",
+          assetName: "InVision App",
+          assetType: "Home Tile"
+        });
+      };
+    }
+
+    hiddenTile1 = container.querySelector('div[role="presentation"]')
+    hiddenTile2 = container.querySelector('div[class="x-panel-bwrap x-panel"]')
+    if (hiddenTile1) {
+      hiddenTile1.remove();
+    }
+    if (hiddenTile2) {
+      hiddenTile2.remove();
+    }
+};
+
 /**************************************************************************************
  *
  *  This function overrides the target links for the Deliverability Tools and Email
@@ -1021,7 +1172,6 @@ APP.disableConfirmationMessage = function () {
  *  @function
  *
  **************************************************************************************/
-
 APP.overrideHomeTiles = function (restoreEmailInsightsTile) {
   console.log("Marketo App > Overriding: My Marketo Home Tiles");
 
@@ -10721,225 +10871,28 @@ var isMktPageApp = window.setInterval(function () {
         assetName: "Page"
       });
     }
-window.onresize = function () {
-  console.log("Marketo App > Window: Window Resize");
-  currentUrl = window.location.href;
-  var isNewUrlFragment = window.setInterval(function () {
-      if (typeof (Mkt3) !== "undefined"
-          && Mkt3
-          && Mkt3.DL
-          && Mkt3.DL.getDlToken()) {
-          if (currUrlFragment != Mkt3.DL.getDlToken()) {
-            window.clearInterval(isNewUrlFragment);
 
-            if (currUrlFragment == mktoMyMarketoSuperballFragment
-              && Mkt3.DL.getDlToken() == mktoMyMarketoFragment) {
-              overrideTileTimerCount = true;
-              window.setTimeout(function () {
-                APP.overrideHomeTiles();//restoreEmailInsights);
-              }, 1000);
-            }
+//var resizeFirstCall = false;
+  window.onresize = function () {
+  
+    console.log("Marketo App > Window: Resize");
+    currentUrl = window.location.href;
+    //                    console.log("Marketo App > Window: URL = " + currentUrl);
+    // Getting the URL fragment, the part after the #
 
-            currUrlFragment = Mkt3.DL.getDlToken();
-            console.log("Marketo App > Loaded: New URL Fragment = " + currUrlFragment);
+    if (currentUrl.indexOf(mktoMyMarketoFragment)  >= 0) {
+      //if(!resizeFirstCall){
+      //resizeFirstCall = true;
+      setTimeout(APP.overrideHomeTilesResize, 2000);
+      //}
+    }/*else if (currUrlFragment.search(mktoAnalyticsHomeFragment) != -1) {
+      //if(!resizeFirstCall){
+      //  resizeFirstCall = true;
+        setTimeout(APP.overrideAnalyticsTiles, 2000);
+      //}
+    }*/
+  }
 
-            if (currUrlFragment == mktoMyMarketoFragment) {
-              overrideTileTimerCount = true;
-              APP.overrideHomeTiles();//restoreEmailInsights);
-              APP.heapTrack("track", {
-                name: "My Marketo",
-                assetName: "Home"
-              });
-            } else if (currUrlFragment.search(mktoDisableButtonsFragmentMatch) != -1) {
-              APP.disableButtons();
-            } else if (currUrlFragment === mktoAdminWebSkyFragment) {
-              APP.disableCheckboxes();
-            } else if (currUrlFragment.search(mktoAccountBasedMarketingFragment) != -1) {
-              APP.disableAccountAI();
-            } else if (currUrlFragment.search(mktoAnalyticsHomeFragment) != -1) {
-              APP.overrideAnalyticsTiles();
-            } else if (currUrlFragment.search("^" + APP.getAssetCompCode("Nurture Program") + "[0-9]+A1$") != -1) {
-              APP.disableNurturePrograms();
-            } else if (currUrlFragment == mktoAdminSalesforceFragment
-              || currUrlFragment == mktoAdminDynamicsFragment) {
-              console.log("Marketo App > Location: Admin > CRM");
-
-              APP.hideOtherToolbarItems([{
-                id: "enableSync", //Enable/Disable Sync
-                action: "setVisible"
-              }
-              ]);
-            } else if (currUrlFragment == mktoAdminRcaCustomFieldSync) {
-              console.log("Marketo App > Location: Admin > Revenue Cycle Analytics > Custom Field Sync");
-
-              APP.hideOtherToolbarItems([{
-                id: "cadChangeButton", //Edit Sync Option
-                action: "setVisible"
-              }
-              ]);
-            } else if (currUrlFragment.search(mktoAnalyzersFragmentMatch) != -1) {
-              console.log("Marketo App > Location: Golden Analytics");
-
-              APP.updateNavBar();
-            }
-
-            if (Mkt3.DL.dl
-              && Mkt3.DL.dl.dlCompCode) {
-              currCompFragment = Mkt3.DL.dl.dlCompCode;
-              //                                    console.log("Marketo App > Window: Comp Fragment = " + currCompFragment);
-
-              if (currCompFragment.search(mktoDesignersFragmentMatch) != -1) {
-                console.log("Marketo App > Location: Designers/Wizards");
-
-                switch (currCompFragment) {
-                  case mktoLandingPageEditFragment:
-                    console.log("Marketo App > Location: Landing Page Editor");
-
-                    APP.resetGoldenLandingPageProps();
-                    APP.disableDesignerSaving("landingPage", "edit");
-                    APP.disableFormSaveButtons();
-                    break;
-
-                  case mktoLandingPagePreviewFragment:
-                    console.log("Marketo App > Location: Landing Page Previewer");
-
-                    APP.disableDesignerSaving("landingPage", "preview");
-                    break;
-
-                  case mktoLandingPagePreviewDraftFragment:
-                    console.log("Marketo App > Location: Landing Page Draft Previewer");
-
-                    APP.disableDesignerSaving("landingPage", "preview");
-                    break;
-
-                  case mktoLandingPageTemplateEditFragment:
-                    console.log("Marketo App > Location: Landing Page Template Editor");
-
-                    APP.disableDesignerSaving("landingPage", "templateEdit");
-                    break;
-
-                  case mktoLandingPageTemplatePreviewFragment:
-                    console.log("Marketo App > Location: Landing Page Template Previewer");
-
-                    APP.disableDesignerSaving("landingPage", "templatePreview");
-                    break;
-
-                  case mktoEmailEditFragment:
-                    if (currUrlFragment == mktoEmailEditFragment) {
-                      console.log("Marketo App > Location: Email Template Picker");
-
-                      APP.disableDesignerSaving("email", "templatePicker");
-                    } else if (currUrlFragment.search(mktoEmailPreviewFragmentRegex) == -1) {
-                      console.log("Marketo App > Location: Email Editor");
-
-                      APP.disableDesignerSaving("email", "edit");
-                      APP.disableFormSaveButtons();
-                    } else {
-                      console.log("Marketo App > Location: Email Previewer");
-
-                      APP.disableDesignerSaving("email", "preview");
-                    }
-                    break;
-
-                  case mktoEmailTemplateEditFragment:
-                    console.log("Marketo App > Location: Email Template Editor");
-
-                    APP.disableDesignerSaving("email", "templateEdit");
-                    break;
-
-                  case mktoFormEditFragment:
-                    console.log("Marketo App > Location: Form Editor");
-
-                    APP.disableDesignerSaving("form", "edit");
-                    break;
-
-                  case mktoFormPreviewFragment:
-                    console.log("Marketo App > Location: Form Previewer");
-
-                    APP.disableDesignerSaving("form", "preview");
-                    break;
-
-                  case mktoFormPreviewDraftFragment:
-                    console.log("Marketo App > Location: Form Draft Previewer");
-
-                    APP.disableDesignerSaving("form", "preview");
-                    break;
-
-                  case mktoPushNotificationEditFragment:
-                    console.log("Marketo App > Location: Push Notification Editor");
-
-                    APP.disableDesignerSaving("pushNotification", "edit");
-                    break;
-
-                  case mktoMobilePushNotificationPreviewFragment:
-                    console.log("Marketo App > Location: Push Notification Previewer");
-
-                    APP.disableDesignerSaving("pushNotification", "preview");
-                    break;
-
-                  case mktoInAppMessageEditFragment:
-                    console.log("Marketo App > Location: In-App Message Editor");
-
-                    APP.disableDesignerSaving("inAppMessage", "edit");
-                    break;
-
-                  case mktoInAppMessagePreviewFragment:
-                    console.log("Marketo App > Location: In-App Message Previewer");
-
-                    APP.disableDesignerSaving("inAppMessage", "preview");
-                    break;
-
-                  case mktoSmsMessageEditFragment:
-                    console.log("Marketo App > Location: SMS Message Editor");
-
-                    APP.disableDesignerSaving("smsMessage", "edit");
-                    break;
-
-                  case mktoSocialAppEditFragment:
-                    console.log("Marketo App > Location: Social App Editor");
-
-                    APP.disableDesignerSaving("socialApp", "edit");
-                    break;
-
-                  case mktoSocialAppPreviewFragment:
-                    console.log("Marketo App > Location: Social App Previewer");
-
-                    APP.disableDesignerSaving("socialApp", "preview");
-                    break;
-
-                  case mktoAbTestEditFragment:
-                    console.log("Marketo App > Location: A/B Test Wizard");
-
-                    APP.disableDesignerSaving("abTest", "edit");
-                    break;
-
-                  case mktoEmailTestGroupEditFragment:
-                    console.log("Marketo App > Location: Email Test Group Wizard");
-
-                    APP.disableDesignerSaving("abTest", "edit");
-                    break;
-
-                  case mktoSnippetEditFragment:
-                    console.log("Marketo App > Location: Snippet Editor");
-
-                    APP.disableDesignerSaving("snippet", "edit");
-                    break;
-
-                  case mktoSnippetPreviewFragment:
-                    console.log("Marketo App > Location: Snippet Previewer");
-
-                    APP.disableDesignerSaving("snippet", "preview");
-                    break;
-
-                  default:
-                    break;
-                }
-              }
-            }
-          }
-        }
-  }, 0);
-};
     window.onhashchange = function () {
       console.log("Marketo App > Window: Hash Changed");
 
