@@ -10883,7 +10883,7 @@ var isMktPageApp = window.setInterval(function () {
     if (currentUrl.indexOf(mktoMyMarketoFragment)  >= 0) {
       //if(!resizeFirstCall){
       //resizeFirstCall = true;
-      setTimeout(APP.overrideHomeTilesResize, 2000);
+      setTimeout(APP.overrideHomeTilesResize, 1000);
       //}
     }/*else if (currUrlFragment.search(mktoAnalyticsHomeFragment) != -1) {
       //if(!resizeFirstCall){
