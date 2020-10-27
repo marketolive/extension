@@ -204,7 +204,7 @@ var devExtensionId = "dokkjhbgengdlccldgjnbilajdbjlnhm",
  **************************************************************************************/
 
 APP.setInstanceInfo = function (accountString) {
-  if (accountString == mktoAccountStringMaster || accountString == mktoAccountStringMasterMEUE) {//TODO MEUE
+  if (accountString == mktoAccountStringMaster) {
     mktoDefaultWorkspaceId = 1;
     mktoJapaneseWorkspaceId = 3;
     mktoUnknownWorkspaceId = -1;
@@ -235,6 +235,37 @@ APP.setInstanceInfo = function (accountString) {
     mktoPeopleByStatusReport = "AR225B2";
     mktoCompanyWebActivityReport = "AR221B2";
     mktoSalesInsightEmailPerformanceReport = "AR226B2";
+  } else if (accountString == mktoAccountStringMasterMEUE) {
+      mktoDefaultWorkspaceId = 1;
+      mktoJapaneseWorkspaceId = 3;
+      mktoUnknownWorkspaceId = -1;
+      mktoGoldenWorkspacesMatch = "^(" + mktoDefaultWorkspaceId + "|" + mktoJapaneseWorkspaceId + "|" + mktoUnknownWorkspaceId + ")$";
+
+      mktoMyWorkspaceEnId;
+      mktoMyWorkspaceJpId;
+      mktoMyWorkspaceIdMatch = null;
+
+      mktoMyWorkspaceEnName;
+      mktoMyWorkspaceJpName;
+      mktoMyWorkspaceNameMatch = null;
+
+      mktoOtherWorkspaceName = "User's Workspace";
+
+      mktoEmailPerformanceReport = "AR205B2";
+      mktoPeoplePerformanceReport = "AR23B2";
+      mktoWebPageActivityReport = "AR218B2";
+      mktoOpportunityInfluenceAnalyzer = "AR207A1";
+      mktoProgramAnalyzer = "AR223A1";
+      mktoSuccessPathAnalyzer = "AR208A1";
+      mktoPerformanceInsightsLink = "https://insights.marketolive.com/mpi";
+      mktoEngagmentStreamPerformaceReport = "AR209B2";
+      mktoProgramPerformanceReport = "AR216B2";
+      mktoEmailLinkPerformanceReport = "AR204B2";
+      mktoPeopleByRevenueStageReport = "AR26B2";
+      mktoLandingPagePerformanceReport = "AR210B2";
+      mktoPeopleByStatusReport = "AR225B2";
+      mktoCompanyWebActivityReport = "AR221B2";
+      mktoSalesInsightEmailPerformanceReport = "AR226B2";
   } else if (accountString.search(mktoAccountStrings106Match) != -1) {
     mktoDefaultWorkspaceId = 1;
     mktoJapaneseWorkspaceId = 173;
@@ -1058,7 +1089,7 @@ APP.overrideHomeTilesResize = function (){
           break;
       }
     }
-    console.log('!!!!!!!!!!!!!!!!!!!'+toBeRemoved.length);
+
     for(var x = 0; x < toBeRemoved.length; x++){
       toBeRemoved[x].remove();
     }
@@ -1718,6 +1749,219 @@ APP.overrideSuperballMenuItems = function (restoreEmailInsightsMenuItem) {
       }
     };
   }
+};
+
+APP.overrideAnalyticsTilesResize = function () {
+  console.log("Marketo App > Overriding: Analytics Tiles");
+
+    if (typeof (MktCanvas) !== "undefined"
+      && MktCanvas
+      && MktCanvas.getActiveTab()
+      && MktCanvas.getActiveTab().config
+      && MktCanvas.getActiveTab().config.mkt3XType
+      && MktCanvas.getActiveTab().config.accessZoneId
+      && typeof (MktPage) !== "undefined"
+      && MktPage
+      && MktPage.savedState
+      && MktPage.savedState.custPrefix) {
+
+      if (MktPage.savedState.custPrefix.search(mktoAccountStringsMatch) != -1
+        && MktCanvas.getActiveTab().config.mkt3XType == "analyticsHome"
+        && MktCanvas.getActiveTab().config.accessZoneId == mktoDefaultWorkspaceId
+        && MktCanvas.getActiveTab().el
+        && MktCanvas.getActiveTab().el.dom
+        && MktCanvas.getActiveTab().el.dom.childNodes
+        && MktCanvas.getActiveTab().el.dom.childNodes[0]
+        && MktCanvas.getActiveTab().el.dom.childNodes[0].childNodes
+        && MktCanvas.getActiveTab().el.dom.childNodes[0].childNodes[1]
+        && MktCanvas.getActiveTab().el.dom.childNodes[0].childNodes[1].childNodes
+        && MktCanvas.getActiveTab().el.dom.childNodes[0].childNodes[1].childNodes[0]
+        && MktCanvas.getActiveTab().el.dom.childNodes[0].childNodes[1].childNodes[0].childNodes
+        && MktCanvas.getActiveTab().el.dom.childNodes[0].childNodes[1].childNodes[0].childNodes[0]
+        && MktCanvas.getActiveTab().el.dom.childNodes[0].childNodes[1].childNodes[0].childNodes[0].childNodes
+        && MktCanvas.getActiveTab().el.dom.childNodes[0].childNodes[1].childNodes[0].childNodes[0].childNodes[0]
+        && MktCanvas.getActiveTab().el.dom.childNodes[0].childNodes[1].childNodes[0].childNodes[0].childNodes[0].childNodes
+        && MktCanvas.getActiveTab().el.dom.childNodes[0].childNodes[1].childNodes[0].childNodes[0].childNodes[0].childNodes[0]
+        && MktCanvas.getActiveTab().el.dom.childNodes[0].childNodes[1].childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes) {
+
+        var container = MktCanvas.getActiveTab().el.dom.childNodes[0].childNodes[1].childNodes[0].childNodes[0].childNodes[0].childNodes[0],
+          tiles = container.childNodes,
+          performanceInsightsTileExists = false;
+        var toBeRemoved = [],piRepeat=false,epRepeat=false,ppRepeat=false,wpRepeat=false,oiRepeat=false,paRepeat=false,spRepeat=false,eiRepeat=false,
+                        esRepeat=false,proRepeat=false,elRepeat=false,prRepeat=false,lpRepeat=false,psRepeat=false,cwRepeat=false,sieRepeat=false;
+
+        for (var ii = 0; ii < tiles.length; ii++) {
+          if (tiles[ii]
+            && tiles[ii].outerHTML
+            && tiles[ii].textContent) {
+            var tileHTML = tiles[ii].outerHTML;
+
+            switch (tiles[ii].textContent) {
+              case "Performance Insights":
+                var hrefMatch = new RegExp(' href=\"[^\"]*\" ', 'g');
+                if(piRepeat){
+                  toBeRemoved.push(tiles[ii]);
+                }
+                else{piRepeat=true;
+                  tiles[ii].outerHTML = tileHTML.replace(hrefMatch, ' href=\"' + mktoPerformanceInsightsLink + '\" ');
+                }
+                performanceInsightsTileExists = true;
+                break;
+
+              case "Email Performance":
+                if(epRepeat){
+                  toBeRemoved.push(tiles[ii]);
+                }
+                else{epRepeat=true;
+                  tiles[ii].outerHTML = '<a href="/#' + mktoEmailPerformanceReport + '">' + tileHTML + '</a>';
+                }
+                break;
+
+              case "People Performance":
+                if(ppRepeat){
+                  toBeRemoved.push(tiles[ii]);
+                }
+                else{ppRepeat=true;
+                  tiles[ii].outerHTML = '<a href="/#' + mktoPeoplePerformanceReport + '">' + tileHTML + '</a>';
+                }
+                break;
+
+              case "Web Page Activity":
+                if(wpRepeat){
+                  toBeRemoved.push(tiles[ii]);
+                }
+                else{wpRepeat=true;
+                  tiles[ii].outerHTML = '<a href="/#' + mktoWebPageActivityReport + '">' + tileHTML + '</a>';
+                }
+                break;
+
+              case "Opportunity Influence Analyzer":
+                if(oiRepeat){
+                  toBeRemoved.push(tiles[ii]);
+                }
+                else{oiRepeat=true;
+                  tiles[ii].outerHTML = '<a href="/#' + mktoOpportunityInfluenceAnalyzer + '">' + tileHTML + '</a>';
+                }
+                break;
+
+              case "Program Analyzer":
+                if(paRepeat){
+                  toBeRemoved.push(tiles[ii]);
+                }
+                else{paRepeat=true;
+                 tiles[ii].outerHTML = '<a href="/#' + mktoProgramAnalyzer + '">' + tileHTML + '</a>';
+                }
+                break;
+
+              case "Success Path Analyzer":
+                if(spRepeat){
+                  toBeRemoved.push(tiles[ii]);
+                }
+                else{spRepeat=true;
+                  tiles[ii].outerHTML = '<a href="/#' + mktoSuccessPathAnalyzer + '">' + tileHTML + '</a>';
+                }
+                break;
+
+              case "Email Insights":
+                if (!restoreEmailInsights) {
+                  var hrefMatch = new RegExp(' href=\"[^\"]*\" ', 'g');
+                  if(eiRepeat){
+                    toBeRemoved.push(tiles[ii]);
+                  }
+                  else{eiRepeat=true;
+                    tiles[ii].outerHTML = tileHTML.replace(hrefMatch, ' href=\"' + mktoEmailInsightsLink + '\" ');
+                  }
+                }
+                break;
+
+              case "Engagement Stream Performance":
+                if(esRepeat){
+                  toBeRemoved.push(tiles[ii]);
+                }
+                else{esRepeat=true;
+                  tiles[ii].outerHTML = '<a href="/#' + mktoEngagmentStreamPerformaceReport + '">' + tileHTML + '</a>';
+                }
+                break;
+
+              case "Program Performance":
+                if(proRepeat){
+                  toBeRemoved.push(tiles[ii]);
+                }
+                else{proRepeat=true;
+                  tiles[ii].outerHTML = '<a href="/#' + mktoProgramPerformanceReport + '">' + tileHTML + '</a>';
+                }
+                break;
+
+              case "Email Link Performance":
+                if(elRepeat){
+                  toBeRemoved.push(tiles[ii]);
+                }
+                else{elRepeat=true;
+                  tiles[ii].outerHTML = '<a href="/#' + mktoEmailLinkPerformanceReport + '">' + tileHTML + '</a>';
+                }
+                break;
+
+              case "People By Revenue Stage":
+                if(prRepeat){
+                  toBeRemoved.push(tiles[ii]);
+                }
+                else{prRepeat=true;
+                  tiles[ii].outerHTML = '<a href="/#' + mktoPeopleByRevenueStageReport + '">' + tileHTML + '</a>';
+                }
+                break;
+
+              case "Landing Page Performance":
+                if(lpRepeat){
+                  toBeRemoved.push(tiles[ii]);
+                }
+                else{lpRepeat=true;
+                  tiles[ii].outerHTML = '<a href="/#' + mktoLandingPagePerformanceReport + '">' + tileHTML + '</a>';
+                }
+                break;
+
+              case "People By Status":
+                if(psRepeat){
+                  toBeRemoved.push(tiles[ii]);
+                }
+                else{psRepeat=true;
+                 tiles[ii].outerHTML = '<a href="/#' + mktoPeopleByStatusReport + '">' + tileHTML + '</a>';
+                }
+                break;
+
+              case "Company Web Activity":
+                if(cwRepeat){
+                  toBeRemoved.push(tiles[ii]);
+                }
+                else{cwRepeat=true;
+                  tiles[ii].outerHTML = '<a href="/#' + mktoCompanyWebActivityReport + '">' + tileHTML + '</a>';
+                }
+                break;
+
+              case "Sales Insight Email Performance":
+                if(sieRepeat){
+                  toBeRemoved.push(tiles[ii]);
+                }
+                else{sieRepeat=true;
+                  tiles[ii].outerHTML = '<a href="/#' + mktoSalesInsightEmailPerformanceReport + '">' + tileHTML + '</a>';
+                }
+                break;
+            }
+          }
+        }
+        debugger;
+        for(var x = 0; x < toBeRemoved.length; x++){
+          toBeRemoved[x].remove();
+        }
+        if (!performanceInsightsTileExists) {
+          var performanceInsightsTileOuterHTML = '<div class="x4-btn mkt3-analyticsTile mkt3-analyticsHomeTile x4-btn-default-small x4-icon-text-left x4-btn-icon-text-left x4-btn-default-small-icon-text-left" id="analyticsTile-1068"><em id="analyticsTile-1068-btnWrap"><a id="analyticsTile-1068-btnEl" href="' + mktoPerformanceInsightsLink + '" class="x4-btn-center" target="_blank" role="link" style="height: 160px;"><span id="analyticsTile-1068-btnInnerEl" class="x4-btn-inner">Performance Insights</span><span id="analyticsTile-1068-btnIconEl" class="x4-btn-icon mki3-mpi-logo-svg"></span></a></em></div>',
+            idMatch = new RegExp("analyticsTile-1068", "g"),
+            spareTileClone = MktCanvas.lookupComponent(container.childNodes[container.childNodes.length - 1]).cloneConfig();
+
+          spareTileClone.el.dom.outerHTML = performanceInsightsTileOuterHTML.replace(idMatch, spareTileClone.id);
+          container.appendChild(spareTileClone.el.dom);
+        }
+      }
+    }
 };
 
 /**************************************************************************************
@@ -10877,20 +11121,13 @@ var isMktPageApp = window.setInterval(function () {
   
     console.log("Marketo App > Window: Resize");
     currentUrl = window.location.href;
-    //                    console.log("Marketo App > Window: URL = " + currentUrl);
-    // Getting the URL fragment, the part after the #
 
-    if (currentUrl.indexOf(mktoMyMarketoFragment)  >= 0) {
-      //if(!resizeFirstCall){
-      //resizeFirstCall = true;
+    if (currentUrl.indexOf(mktoMyMarketoFragment) >= 0) {
       setTimeout(APP.overrideHomeTilesResize, 1000);
-      //}
-    }/*else if (currUrlFragment.search(mktoAnalyticsHomeFragment) != -1) {
-      //if(!resizeFirstCall){
-      //  resizeFirstCall = true;
-        setTimeout(APP.overrideAnalyticsTiles, 2000);
-      //}
-    }*/
+
+    }else if (currentUrl.indexOf(mktoAnalyticsHomeFragment) >= 0) {
+        setTimeout(APP.overrideAnalyticsTilesResize, 1000);
+    }
   }
 
     window.onhashchange = function () {
