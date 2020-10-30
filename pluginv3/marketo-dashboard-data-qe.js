@@ -11,7 +11,7 @@ console.log("Marketo Dashboards > Running");
  *
  **************************************************************************************/
 
-var URL_PATH = "m3",
+var URL_PATH = "m3-dev",
 
 PROGRAM_ANALYZER = "https://marketolive.com/" + URL_PATH + "/pluginv3/dashboards/program-analyzer-data.min.js",
 NURTURE_PROGRAM = "https://marketolive.com/" + URL_PATH + "/pluginv3/dashboards/nurture-dashboard-data.min.js",
@@ -20,7 +20,6 @@ EMAIL_DASHBOARD = "https://marketolive.com/" + URL_PATH + "/pluginv3/dashboards/
 //EMAIL_ASSET= "https://marketolive.com/" + URL_PATH + "/pluginv3/dashboards/email-asset-data.min.js",
 
 mktoAccountStringMaster = "mktodemolivemaster",
-mktoAccountStringABDemoMaster = "mktodemoaccount544",
 
 DASHBOARD = DASHBOARD || {};
 
@@ -61,7 +60,7 @@ var isMktPageDashboards = window.setInterval(function () {
       
       window.clearInterval(isMktPageDashboards);
       
-      if (accountString == mktoAccountStringMaster || accountString == mktoAccountStringABDemoMaster) {
+      if (accountString == mktoAccountStringMaster) {
         DASHBOARD.loadScript(PROGRAM_ANALYZER);
         DASHBOARD.loadScript(SOCIAL_APP);
       } else {

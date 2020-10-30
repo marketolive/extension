@@ -11,25 +11,25 @@ console.log("Marketo Global App > Running");
  *
  **************************************************************************************/
 
-var URL_PATH = "m3",
+var URL_PATH = "m3-dev",
 
-  MARKETO_LIVE_APP = "https://marketolive.com/" + URL_PATH + "/pluginv3/marketo-app.min.js",
-  MARKETO_LIVE_APP_ADMIN = "https://marketolive.com/" + URL_PATH + "/pluginv3/marketo-app-admin.min.js",
-  MARKETO_DEMO_APP = "https://marketolive.com/" + URL_PATH + "/pluginv3/marketo-demo-app.min.js",
-  POD_SCRIPT = "https://marketolive.com/" + URL_PATH + "/pluginv3/pods.min.js",
-  DASHBOARD_DATA = "https://marketolive.com/" + URL_PATH + "/pluginv3/marketo-dashboard-data.min.js",
+  MARKETO_LIVE_APP = "https://marketolive.com/" + URL_PATH + "/pluginv3/marketo-app-qe.js",
+  MARKETO_LIVE_APP_ADMIN = "https://marketolive.com/" + URL_PATH + "/pluginv3/marketo-app-admin-qe.js",
+  MARKETO_DEMO_APP = "https://marketolive.com/" + URL_PATH + "/pluginv3/marketo-demo-app-qe.js",
+  POD_SCRIPT = "https://marketolive.com/" + URL_PATH + "/pluginv3/pods-qe.js",
+  DASHBOARD_DATA = "https://marketolive.com/" + URL_PATH + "/pluginv3/marketo-dashboard-data-qe.js",
   HEAP_ANALYTICS = "https://marketolive.com/" + URL_PATH + "/pluginv3/heap-analytics.min.js",
   HEAP_ANALYTICS_DEMO = "https://marketolive.com/" + URL_PATH + "/pluginv3/heap-analytics-demo.min.js",
 
   mktoDemoAccountStringDynamics = "mktodemoaccount408",
-  mktoDemoAccountMatch = "^(mktodemoaccount[0-9][0-9][0-9]|mktodemoaccount36|mktodemoaccount134|mktodemoaccount232|mktodemoaccount264|mktodemoaccount295|scdynamics1|mktodemoinfor01|mktodemoaccount390dev1)$",
+  mktoDemoAccountMatch = "^(mktodemoaccount[0-9][0-9][0-9]|mktodemoaccount36|mktodemoaccount134|srcempty_case1|mktodemoaccount232|mktodemoaccount264|mktodemoaccount295|scdynamics1|mktodemoinfor01|mktodemoaccount390dev1)$",
   mktoAccountStringsMatch106 = "^(mktodemoaccount106|mktodemoaccount106d)$",
-  mktoAccountStringsMatchMasterAnd106 = "^(mktodemolivemaster|mktodemoaccount106|mktodemoaccount106d|mktodemoaccount544)$",//TODO added for testing 451 as MarketoLive
-  mktoAccountStringsMatchMasterAnd106AndQe = "^(mktodemolivemaster|mktodemoaccount408|mktodemoaccount106|mktodemoaccount106d|globalsales|mktodemoaccount544)$",//TODO added for testing 451 as MarketoLive
-  mktoAccountStringsMatch = "^(mktodemoaccount106|mktodemoaccount106d|mktodemolivemaster|mktodemoaccount408|globalsales|mktodemoaccount544)$",//TODO added for testing 451 as MarketoLive
+  mktoAccountStringsMatchMasterAnd106 = "^(mktodemolivemaster|mktodemoaccount106|mktodemoaccount106d)$",
+  mktoAccountStringsMatchMasterAnd106AndQe = "^(mktodemolivemaster|mktodemoaccount408|mktodemoaccount106|mktodemoaccount106d|globalsales)$",
+  mktoAccountStringsMatch = "^(mktodemoaccount106|mktodemoaccount106d|mktodemolivemaster|mktodemoaccount408|globalsales)$",
 
   mktoDesignDomain = "^https://.*\.marketodesigner\.com/",
-  mktoWizardDomain = "^https://app-[a-z0-9]+\.marketo\.com/m#",
+  mktoWizardDomain = "^https://engage-[a-z0-9]+\.marketo\.com/m#",
 
   adminUserNamesMatch = "^(mktodemolivemaster@marketo\.com$|admin(\.[a-z0-9]+)*@(marketolive\.com$|mktodemoaccount)|mktodemoaccount[a-z0-9]*@marketo\.com$|marketodemo.*@gmail\.com$)",
 

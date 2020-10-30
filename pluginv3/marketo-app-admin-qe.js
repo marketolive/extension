@@ -11,12 +11,11 @@ console.log("Marketo App Admin > Running");
  *
  **************************************************************************************/
 
-var URL_PATH = "m3",
+var URL_PATH = "m3-dev",
 
-MARKETO_LIVE_APP = "https://marketolive.com/" + URL_PATH + "/pluginv3/marketo-app.min.js",
+MARKETO_LIVE_APP = "https://marketolive.com/" + URL_PATH + "/pluginv3/marketo-app-qe.js",
 
-mktoAccountStringMaster = "mktodemolivemaster",
-mktoAccountStringABDemoMaster = "mktodemoaccount544",
+mktoAccountStringMaster = "srcempty_case1",
 mktoAccountString106 = "mktodemoaccount106",
 mktoAccountString106d = "mktodemoaccount106d",
 
@@ -641,7 +640,7 @@ ADMIN.createUserWorkspace = function (workspace, callback, args) {
 ADMIN.getUserRoles = function (userWorkspace, workspaces) {
   var roles;
   
-  if (accountString == mktoAccountStringMaster || accountString == mktoAccountStringABDemoMaster) {
+  if (accountString == mktoAccountStringMaster) {
     if (!userWorkspace.none) {
       for (var ii = 0; ii < workspaces.data.length; ii++) {
         var workspace = workspaces.data[ii];
@@ -831,7 +830,7 @@ ADMIN.inviteUser = function (user) {
     ADMIN.getAllWorkspaces(getUserWorkspaceId);
   }
   
-  if (accountString == mktoAccountStringMaster || accountString == mktoAccountStringABDemoMaster) {
+  if (accountString == mktoAccountStringMaster) {
     if (user.ownWorkspace == false) {
       userWorkspace.none = true;
     }
@@ -982,7 +981,7 @@ ADMIN.editUser = function (user) {
     });
   }
   
-  if (accountString == mktoAccountStringMaster || accountString == mktoAccountStringABDemoMaster) {
+  if (accountString == mktoAccountStringMaster) {
     if (user.ownWorkspace == false) {
       userWorkspace.none = true;
     }

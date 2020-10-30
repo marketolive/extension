@@ -270,116 +270,6 @@ APP.overrideSuperballMenuItems = function () {
   }
 };
 
-
-APP.overrideHomeTilesResize = function (){
-  //resizeFirstCall = false;
-  var container = MktCanvas.getEl().dom.nextSibling.childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[0],
-      tilesTextContent = container.getElementsByTagName('span'),
-      hrefMatch = new RegExp(" href=\"[^\"]*\" ", "g"),
-      performanceInsightsTile,
-      emailInsightsTile,
-      hiddenTile1,
-      hiddenTile2,
-      mpiRepeat = false,
-      eiRepeat = false,
-      toBeRemoved = [];
-
-  for (let ii = 0; ii < tilesTextContent.length; ii++) {
-      let tile = tilesTextContent[ii];
-      switch (tile.textContent) {
-        case "Performance Insights":
-          if (tile.parentNode.parentNode.parentNode.style.display != "none") {
-            if(mpiRepeat){
-              toBeRemoved.push(tile.parentNode.parentNode.parentNode);
-            }
-            else{
-              mpiRepeat = true;
-              performanceInsightsTile = tile.parentNode.parentNode.parentNode;
-            }
-          }
-          break;
-
-        case "Email Insights":
-          if(eiRepeat){
-              toBeRemoved.push(tile.parentNode.parentNode.parentNode);
-            }
-            else{
-              eiRepeat = true;
-              emailInsightsTile = tile.parentNode.parentNode.parentNode;
-            }
-          
-            break;
-      }
-    }
-
-    for(var x = 0; x < toBeRemoved.length; x++){
-      toBeRemoved[x].remove();
-    }
-    if (performanceInsightsTile) {
-      performanceInsightsTile.outerHTML = performanceInsightsTile.outerHTML.replace(hrefMatch, " href=\"" + mktoPerformanceInsightsLink + "\" ");
-
-      document.getElementById(performanceInsightsTile.id).onclick = function () {
-        APP.heapTrack("track", {
-          name: "Performance Insights",
-          assetArea: "Performance Insights",
-          assetName: "Demo App",
-          assetType: "Home Tile"
-        });
-      };
-    } else {
-      let performanceInsightsTileEl = document.createElement('div');
-      performanceInsightsTileEl.className = "x4-btn mkt3-homeTile x4-btn-default-small x4-icon-text-left x4-btn-icon-text-left x4-btn-default-small-icon-text-left";
-      performanceInsightsTileEl.style = "height: 150px;";
-      performanceInsightsTileEl.id = "performanceInsightsTile";
-      performanceInsightsTileEl.innerHTML = '<em id="performanceInsightsTile-btnWrap"><a id="performanceInsightsTile-btnEl" href="' + mktoPerformanceInsightsLink + '" class="x4-btn-center" target="_blank" role="link" style="width: 150px; height: 150px;"><span id="performanceInsightsTile-btnInnerEl" class="x4-btn-inner" style="width: 150px; height: 150px; line-height: 150px;">Performance Insights</span><span id="performanceInsightsTile-btnIconEl" class="x4-btn-icon mki3-mpi-logo-svg"></span></a></em>';
-
-      container.insertBefore(performanceInsightsTileEl, container.childNodes[container.childNodes.length - 1]);
-      document.getElementById("performanceInsightsTile").onclick = function () {
-        APP.heapTrack("track", {
-          name: "Performance Insights",
-          assetArea: "Performance Insights",
-          assetName: "Demo App",
-          assetType: "Home Tile"
-        });
-      };
-    }
-    if (emailInsightsTile) { 
-        emailInsightsTile.outerHTML = emailInsightsTile.outerHTML.replace(hrefMatch, " href=\"" + mktoEmailInsightsLink + "\" ");
-        document.getElementById(emailInsightsTile.id).onclick = function () {
-          APP.heapTrack("track", {
-            name: "Email Insights",
-            assetArea: "Email Insights",
-            assetName: "Home",
-            assetType: "Home Tile"
-          });
-        };
-    } else {
-      let emailInsightsTileEl = document.createElement('div');
-      emailInsightsTileEl.className = "x4-btn mkt3-homeTile x4-btn-default-small x4-icon-text-left x4-btn-icon-text-left x4-btn-default-small-icon-text-left x-panel";
-      emailInsightsTileEl.style = "height: 150px;";
-      emailInsightsTileEl.id = "emailInsightsTile";
-      emailInsightsTileEl.innerHTML = '<em id="emailInsightsTile-btnWrap"><a id="emailInsightsTile-btnEl" href="' + mktoEmailInsightsLink + '" class="x4-btn-center" target="_blank" role="link" style="width: 150px; height: 150px;"><span id="emailInsightsTile-btnInnerEl" class="x4-btn-inner" style="width: 150px; height: 150px; line-height: 150px;">Email Insights</span><span id="emailInsightsTile-btnIconEl" class="x4-btn-icon mki3-email-insights-svg"></span></a></em><div class="x-panel-bwrap" id="ext-gen164"><div class="x-panel-body x-panel-body-noheader" id="ext-gen165"></div></div>';
-      console.log('**********INSIDE ELSE emailInsightsTile ' + emailInsightsTile);
-      container.insertBefore(emailInsightsTileEl, container.childNodes[container.childNodes.length - 1]);
-      document.getElementById("emailInsightsTile").onclick = function () {
-        APP.heapTrack("track", {
-          name: "Email Insights",
-          assetArea: "Email Insights",
-          assetName: "Demo App",
-          assetType: "Home Tile"
-        });
-      };
-    }
-
-    hiddenTile1 = container.querySelector('div[role="presentation"]')
-    hiddenTile2 = container.querySelector('div[class="x-panel-bwrap x-panel"]')
-    if (hiddenTile1) {
-      hiddenTile1.remove();
-    }
-    if (hiddenTile2) {
-      hiddenTile2.remove();
-    }
-};
 /**************************************************************************************
  *
  *  This function overrides the target links for the Deliverability Tools and Email
@@ -424,6 +314,7 @@ APP.overrideHomeTiles = function () {
     performanceInsightsTile,
     emailInsightsTile,
     deliverabilityToolsTile,
+    nextGenUxTile,
     hiddenTile1,
     hiddenTile2;
     
@@ -442,6 +333,14 @@ APP.overrideHomeTiles = function () {
       
       case "Deliverability Tools":
         deliverabilityToolsTile = tile.parentNode.parentNode.parentNode;
+        break;
+      
+      case "Marketo Sky (Beta)":
+        nextGenUxTile = tile.parentNode.parentNode.parentNode;
+        break;
+      
+      case "Marketo Sky":
+        nextGenUxTile = tile.parentNode.parentNode.parentNode;
         break;
       }
     }
@@ -528,6 +427,24 @@ APP.overrideHomeTiles = function () {
           name: "Deliverability Tools",
           assetArea: "Deliverability Tools",
           assetName: "Demo Account",
+          assetType: "Home Tile"
+        });
+      };
+    }
+    
+    if (!nextGenUxTile) {
+      let nextGenUxTileEl = document.createElement('div');
+      nextGenUxTileEl.className = "x4-btn mkt3-homeTile x4-btn-default-small x4-icon-text-left x4-btn-icon-text-left x4-btn-default-small-icon-text-left";
+      nextGenUxTileEl.style = "height: 150px;";
+      nextGenUxTileEl.id = "nextGenUxTile";
+      nextGenUxTileEl.innerHTML = '<em id="nextGenUxTile-btnWrap"><a id="nextGenUxTile-btnEl" href="' + mktoNextGenUxLink + '" class="x4-btn-center" target="_blank" role="link" style="width: 150px; height: 150px;"><span id="nextGenUxTile-btnInnerEl" class="x4-btn-inner" style="width: 150px; height: 150px; line-height: 150px;">Marketo Sky (Beta)</span><span id="nextGenUxTile-btnIconEl" class="x4-btn-icon mki3-mercury-svg"></span></a></em>';
+      
+      container.insertBefore(nextGenUxTileEl, container.childNodes[container.childNodes.length - 1]);
+      document.getElementById("nextGenUxTile").onclick = function () {
+        APP.heapTrack("track", {
+          name: "Mercury UX",
+          assetArea: "Mercury UX",
+          assetName: "InVision App",
           assetType: "Home Tile"
         });
       };
@@ -1704,7 +1621,7 @@ APP.applyMassClone = function (forceReload) {
     }
     
     Ext.menu.Menu.prototype.showAt = function (xy, parentMenu) {
-      massClone.apply(this, arguments);//TODO changes here Hunter
+      massClone.apply(this, arguments);
       origMenuShowAtFunc.apply(this, arguments);
     };
   } else {
@@ -3432,7 +3349,7 @@ var isMktPageDemoApp = window.setInterval(function () {
          && currUrlFragment.search(mktoAnalyticsFragmentMatch) == -1
          && (!currCompFragment
            || (currCompFragment.search(mktoAbmFragmentMatch) == -1
-             && currCompFragment.search(mktoDesignersFragmentMatch) == -1))) {//TODO put the MF hash hunter
+             && currCompFragment.search(mktoDesignersFragmentMatch) == -1))) {
         APP.applyMassClone();
       } else if (currCompFragment
          && currCompFragment.search(mktoDesignersFragmentMatch) != -1
@@ -3498,26 +3415,6 @@ var isMktPageDemoApp = window.setInterval(function () {
            */
         }
       }
-      
-      window.onresize = function () {
-  
-    console.log("Marketo App > Window: Resize");
-    currentUrl = window.location.href;
-    //                    console.log("Marketo App > Window: URL = " + currentUrl);
-    // Getting the URL fragment, the part after the #
-
-    if (currentUrl.indexOf(mktoMyMarketoFragment)  >= 0) {
-      //if(!resizeFirstCall){
-      //resizeFirstCall = true;
-      setTimeout(APP.overrideHomeTilesResize, 1000);
-      //}
-    }/*else if (currUrlFragment.search(mktoAnalyticsHomeFragment) != -1) {
-      //if(!resizeFirstCall){
-      //  resizeFirstCall = true;
-        setTimeout(APP.overrideAnalyticsTiles, 2000);
-      //}
-    }*/
-  }
       
       window.onhashchange = function () {
         var isNewUrlDemoFragment = window.setInterval(function () {

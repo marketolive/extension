@@ -11,17 +11,16 @@ console.log("Global Landing Page > Running");
  *
  **************************************************************************************/
 
-var URL_PATH = "m3",
+var URL_PATH = "m3-dev",
 
-MARKETO_LIVE_LANDING_PAGE = "https://marketolive.com/" + URL_PATH + "/pluginv3/marketo-live-landing-page.min.js",
+MARKETO_LIVE_LANDING_PAGE = "https://marketolive.com/" + URL_PATH + "/pluginv3/marketo-live-landing-page-qe.js",
 
 mktoLiveProdLandingPageDomain = "http://pages\.marketolive\.com",
 mktoLiveDevLandingPageDomain = "http://dev\.pages\.marketolive\.com",
-mktoLiveLandingPageHostsMatch = "http://na-sjdemo1\.marketo\.com",
-mktoLiveDevMunchkinId = "685-BTN-772",
-mktoLiveProdMunchkinId = "185-NGX-811",
-mktoLiveNewPodMunchkinId = "924-LFC-514",
-mktoLiveMunchkinIdsMatch = "(" + mktoLiveProdMunchkinId + "|" + mktoLiveDevMunchkinId + "|" + mktoLiveNewPodMunchkinId + ")",
+mktoLiveLandingPageHostsMatch = "http://na-sjqe\.marketo\.com",
+mktoLiveDevMunchkinId = "610-QES-817",
+mktoLiveProdMunchkinId = "610-QES-817",
+mktoLiveMunchkinIdsMatch = "(" + mktoLiveProdMunchkinId + "|" + mktoLiveDevMunchkinId + ")",
 mktoLiveLandingPageDomainMatch = "^(" + mktoLiveProdLandingPageDomain + "|" + mktoLiveDevLandingPageDomain + "|" + mktoLiveLandingPageHostsMatch + "\/lp\/" + mktoLiveMunchkinIdsMatch + ")/",
 
 GLOBAL_LPAGE = GLOBAL_LPAGE || {};
