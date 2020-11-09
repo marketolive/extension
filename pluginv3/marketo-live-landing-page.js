@@ -484,7 +484,8 @@ if (!origCookie) {
                     }
                     
                     if (submit == "true") {
-                      form.submit();
+                      console.log('submitting form after 3 secs');
+                      setTimeout(function(){ form.submit(); }, 3000);
                     }
                   });
                 } else {
@@ -671,7 +672,8 @@ if (!origCookie) {
                   }
                   
                   if (submit == "true") {
-                    form.submit();
+                    console.log('submitting form after 3 secs');
+                    setTimeout(function(){ form.submit(); }, 3000);
                   }
                 }
               } else if (submit == "false") {
