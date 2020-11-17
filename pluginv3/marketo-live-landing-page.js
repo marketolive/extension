@@ -485,7 +485,7 @@ if (!origCookie) {
                     }
                     
                     if (submit == "true") {
-                      form.submit();
+                      setTimeout(function(){ form.submit(); }, 3000);
                     }
                   });
                 } else {
@@ -672,7 +672,7 @@ if (!origCookie) {
                   }
                   
                   if (submit == "true") {
-                    form.submit();
+                    setTimeout(function(){ form.submit(); }, 3000);
                   }
                 }
               } else if (submit == "false") {
