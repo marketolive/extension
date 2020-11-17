@@ -484,7 +484,6 @@ if (!origCookie) {
                     }
                     
                     if (submit == "true") {
-                      console.log('submitting form after 3 secs');
                       setTimeout(function(){ form.submit(); }, 3000);
                     }
                   });
@@ -672,7 +671,6 @@ if (!origCookie) {
                   }
                   
                   if (submit == "true") {
-                    console.log('submitting form after 3 secs');
                     setTimeout(function(){ form.submit(); }, 3000);
                   }
                 }
