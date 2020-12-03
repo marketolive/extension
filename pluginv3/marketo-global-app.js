@@ -22,7 +22,7 @@ var URL_PATH = "m3-dev",
   HEAP_ANALYTICS_DEMO = "https://marketolive.com/" + URL_PATH + "/pluginv3/heap-analytics-demo.min.js",
 
   mktoDemoAccountStringDynamics = "mktodemoaccount408",
-  mktoDemoAccountMatch = "^(mktodemoaccount[0-9][0-9][0-9]|mktodemoaccount36|mktodemoaccount134|mktodemoaccount232|mktodemoaccount264|mktodemoaccount295|scdynamics1|mktodemoinfor01|mktodemoaccount390dev1)$",
+  mktoDemoAccountMatch = "^(adobedemoaccount[0-9][0-9][0-9]|mktodemoaccount[0-9][0-9][0-9]|mktodemoaccount36|mktodemoaccount134|mktodemoaccount232|mktodemoaccount264|mktodemoaccount295|scdynamics1|mktodemoinfor01|mktodemoaccount390dev1)$",
   mktoAccountStringsMatch106 = "^(mktodemoaccount106|mktodemoaccount106d)$",
   mktoAccountStringsMatchMasterAnd106 = "^(mktodemolivemaster|mktodemoaccount106|mktodemoaccount106d|mktodemoaccount544)$",//TODO added for testing 451 as MarketoLive
   mktoAccountStringsMatchMasterAnd106AndQe = "^(mktodemolivemaster|mktodemoaccount408|mktodemoaccount106|mktodemoaccount106d|globalsales|mktodemoaccount544)$",//TODO added for testing 451 as MarketoLive
