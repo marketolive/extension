@@ -60,7 +60,7 @@ APP.waitForResults = function (callback) {
   var isGoogleSearchDone = window.setInterval(function () {
     if (document.getElementById("rso")
       || document.getElementById("tads")
-      && document.getElementById("tads").getElementsByTagName("ol").length > 0) {
+      && document.getElementById("tads").getElementsByClassName("uEierd").length > 0) {
       window.clearInterval(isGoogleSearchDone);
 
       if (typeof (callback) === "function") {
@@ -94,30 +94,31 @@ APP.insertAd = function (ad) {
   if (document.getElementById("tads")) {
     console.log("Google Search > Inserting: Top Ad");
 
-    var adSection = document.getElementById("tads").getElementsByTagName("ol")[0],
-      topAd = document.createElement("li"),
-      adHtml = '<div class="ad_cclk"><a class="V0MxL r-iPBS6cATlTjA"><br><h3 class="sA5rQ"><a href="' + ad.link + '" id="ad-link" class="r-iClGEAjvi27Y">' + ad.title + '</a></h3><div class="ads-visurl"><span class="VqFMTc p8AiDd">Ad<span style="padding:0 5px">·</span></span><cite id="ad-link-text" class="UdQCqe">' + ad.linkText + '</cite>&lrm;<span class=""><span class="e1ycic"><span class="aii"><div class="action-menu YMEk9e TxG06d"><span class="mn-dwn-arw"></span></div></span></span></span></div></a></div><div id="ad-main-text" class="ads-creative">' + adTextSplit[0] + '</div>',
-      bottomLinksHtml = '';
+    var adSection = document.getElementById("tads").getElementsByClassName("uEierd")[0],
+      topAd = document.createElement("div"),
+      adHtml = '<div><div class="cUezCb luh4tb O9g5cc uUPGi"><div class="d5oMvf"><a class="Krnil" href="' + ad.link + '"><br><div class="cfxYMc JfZTW c4Djg MUxGbd v0nnCb" role="heading">' + ad.title + '</div><div class="abuKkc"><span class="jpu5Q VqFMTc p8AiDd">Ad<span style="padding:0 5px">·</span></span><span class="Zu0yb LWAWHf qzEoUe">' + ad.linkText + '</span><span class="NVWord e1ycic"></span></div></a><div class="abuKkc zMz9yb"><span class="jpu5Q NVWord VqFMTc p8AiDd">Ad<span style="padding:0 5px">·</span></span><span class="Zu0yb LWAWHf NVWord qzEoUe">' + ad.linkText + '</span><span class="e1ycic"><span jscontroller="PekE8b" id="aiis1" class="aii"><g-dropdown-menu jscontroller="DqdCgd"><g-popup><div jsname="oYxtQd" class="rIbAWc hide-focus-ring"><div class="YMEk9e TxG06d" title="Why this ad?" aria-label="Why this ad?" role="button" tabindex="0"><span class="YauQSc"></span></div></div></g-popup></g-dropdown-menu></span></span></div></div><div><div class="MUxGbd yDYNvb lyLwlc"><span>' + ad.text + '</span ></div ></div ></div ></div >';
+    /*adHtml = '<div class="ad_cclk"><a class="V0MxL r-iPBS6cATlTjA"><br><h3 class="sA5rQ"><a href="' + ad.link + '" id="ad-link" class="r-iClGEAjvi27Y">' + ad.title + '</a></h3><div class="ads-visurl"><span class="VqFMTc p8AiDd">Ad<span style="padding:0 5px">·</span></span><cite id="ad-link-text" class="UdQCqe">' + ad.linkText + '</cite>&lrm;<span class=""><span class="e1ycic"><span class="aii"><div class="action-menu YMEk9e TxG06d"><span class="mn-dwn-arw"></span></div></span></span></span></div></a></div><div id="ad-main-text" class="ads-creative">' + adTextSplit[0] + '</div>',
+    bottomLinksHtml = '';
 
-    for (var ii = 1; ii < adTextSplit.length; ii++) {
-      adHtml += '<div class="ellip">' + adTextSplit[ii] + '</div>';
+  for (var ii = 1; ii < adTextSplit.length; ii++) {
+    adHtml += '<div class="ellip">' + adTextSplit[ii] + '</div>';
+  }
+
+  for (var ii = 0; ii < adTitleSplit.length; ii++) {
+    var adBottomLink = adTitleSplit[ii];
+
+    if (adBottomLink != "-"
+      && adBottomLink != "|") {
+      bottomLinksHtml += '<li><a href="' + ad.link + '">' + adBottomLink + '</a></li>';
+      numOfBottomLinks++;
     }
+  }
 
-    for (var ii = 0; ii < adTitleSplit.length; ii++) {
-      var adBottomLink = adTitleSplit[ii];
+  if (numOfBottomLinks > 0) {
+    adHtml += '<ul class="OkkX2d">' + bottomLinksHtml + '</ul>';
+  }*/
 
-      if (adBottomLink != "-"
-        && adBottomLink != "|") {
-        bottomLinksHtml += '<li><a href="' + ad.link + '">' + adBottomLink + '</a></li>';
-        numOfBottomLinks++;
-      }
-    }
-
-    if (numOfBottomLinks > 0) {
-      adHtml += '<ul class="OkkX2d">' + bottomLinksHtml + '</ul>';
-    }
-
-    topAd.className = "ads-ad";
+    topAd.className = "uEierd";
     topAd.innerHTML = adHtml;
     adSection.insertBefore(topAd, adSection.childNodes[0]);
   } else if (document.getElementById("rso")) {
