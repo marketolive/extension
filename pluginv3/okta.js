@@ -86,10 +86,10 @@ OKTA.getOktaUser = function () {
       response = JSON.parse(response);
       oktaUser = {
         action: 'setOktaUser',
-        username: response.email.split('@')[0],
+        username: response.login.split('@')[0],
         firstName: response.firstName,
         lastName: response.lastName,
-        email: response.email
+        email: response.login
       };
 
       chrome.runtime.sendMessage(extensionId, oktaUser, function (response) {
