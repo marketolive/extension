@@ -9045,7 +9045,6 @@ APP.overrideSaving = function () {
             Mkt3.Synchronizer.sync(this);
           } else {
             //this is called on the calendar 
-            if(!)
             this.callParent(arguments);
           }
         } else {
