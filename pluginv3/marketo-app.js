@@ -9008,7 +9008,7 @@ APP.overrideSaving = function () {
   console.log("Marketo App > Overriding: Saving for Nurture Streams");
 
   if (typeof (Mkt3) !== "undefined"
-    && Mkt3f
+    && Mkt3
     && Mkt3.data
     && Mkt3.data.Store
     && Mkt3.data.Store.prototype
