@@ -34,7 +34,6 @@ var devExtensionId = "dokkjhbgengdlccldgjnbilajdbjlnhm",
   mktoMyMarketoFragment = "MM0A1",
   mktoMyMarketoSuperballFragment = "MM",
   mktoCalendarFragment = "CAL",
-  mktoCalendarPresentationFragment = "PR0A1",
   mktoAnalyticsFragment = "AR",
   mktoReportFragmentRegex = new RegExp("^AR[^!]+!$", "i"),
   mktoModelerFragmentRegex = new RegExp("^RCM[^!]+!$", "i"),
@@ -9017,9 +9016,8 @@ APP.overrideSaving = function () {
     Mkt3.data.Store.prototype.sync = function () {
       //console.log("Marketo App > Executing: Override Saving for Nurture Streams (sync)");
 
-      if (this.storeId == "CalendarView"
+      if (this.storeId == "CalendarView" || this.storeId == "CalendarViewList" //CalendarViewList is for the presentation
         || window.location.href.search("\/#" + mktoCalendarFragment) != -1
-        || window.location.href.search("\/#" + mktoCalendarPresentationFragment) != -1 //added for the presentation in calendar
         || ((window.location.href.search("\/#" + mktoAccountBasedMarketingFragment) != -1) && !this.storeId)) {//added to take care of the error on the edit view in Named Accounts
         console.log("Marketo App > Restoring: Original sync Function");
         prevDataStoreSync.apply(this, arguments);
