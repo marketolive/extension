@@ -1,0 +1,8 @@
+{
+  "devDependencies": {
+    "prettier": "2.3.2"
+  },
+  "scripts": {
+    "prettier": "./node_modules/prettier/bin-prettier.js --config .prettierrc.json --write ."
+  }
+}
