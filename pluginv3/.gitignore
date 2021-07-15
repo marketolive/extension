@@ -2,3 +2,4 @@
 css/*.min.css
 dashboards/*.min.js
 data/*.min.json
+node_modules
