@@ -1,0 +1,11 @@
+map_local:
+  - "|pluginv3/marketo-global-app.min.js|~/Documents/marketo/marketo-ext-github/pluginv3/marketo-global-app.js"
+  - "|pluginv3/marketo-app.min.js|~/Documents/marketo/marketo-ext-github/pluginv3/marketo-app.js"
+  - "|pluginv3/heap-analytics.min.js|~/Documents/marketo/marketo-ext-github/pluginv3/heap-analytics.js"
+  - "|pluginv3/dashboard-data.min.js|~/Documents/marketo/marketo-ext-github/pluginv3/dashboard-data.js"
+  - "|pluginv3/program-analyzer-data.min.js|~/Documents/marketo/marketo-ext-github/pluginv3/social-dashboard-data.js"
+  - "|pluginv3/social-dashboard-data.min.js|~/Documents/marketo/marketo-ext-github/pluginv3/program-analyzer-data.js"
+view_filter: "! ~d googleapis.com & ! ~d gstatic.com & ! ~d googleusercontent.com & ! ~d accounts.google.com"
+console_mouse: false
+console_focus_follow: true
+console_palette: dark
