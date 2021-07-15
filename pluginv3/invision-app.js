@@ -1,4 +1,4 @@
-console.log("InVision App > Running");
+console.log('InVision App > Running')
 
 /**************************************************************************************
  *
@@ -13,7 +13,7 @@ console.log("InVision App > Running");
  *
  **************************************************************************************/
 
-var INVISION = INVISION || {};
+var INVISION = INVISION || {}
 
 /**************************************************************************************
  *
@@ -26,58 +26,58 @@ var INVISION = INVISION || {};
  **************************************************************************************/
 
 INVISION.login = function (feature) {
-  console.log("InVision App > Login: App");
-  
-  var password;
-  
+  console.log('InVision App > Login: App')
+
+  var password
+
   switch (feature) {
     // ABM & New Capabilities > Account Insight
-  case "P9BBA0KDS":
-    password = "@mktgnation2017";
-    break;
-    
+    case 'P9BBA0KDS':
+      password = '@mktgnation2017'
+      break
+
     // ABM > Comprehensive Account View
-  case "TVBBAV9WU":
-    password = "@mktgnation2017";
-    break;
-    
+    case 'TVBBAV9WU':
+      password = '@mktgnation2017'
+      break
+
     // Analytics & New Capabilities > CMO Insights & Marketing Insights
-  case "PYBBDHHDU":
-    password = "@mktgnation2017";
-    break;
-    
+    case 'PYBBDHHDU':
+      password = '@mktgnation2017'
+      break
+
     // Analytics & New Capabilities > Web Insights
-  case "M4BAV7W6F":
-    password = "@mktgnation2017";
-    break;
-    
+    case 'M4BAV7W6F':
+      password = '@mktgnation2017'
+      break
+
     // Engagement Platform & New Capabilities > Systems Monitoring
-  case "93BD9WQJX":
-    password = "@mktgnation2017";
-    break;
-    
+    case '93BD9WQJX':
+      password = '@mktgnation2017'
+      break
+
     // Engagement Platform & New Capabilities > Mktg Performance Benchmark
-  case "KFBBABWHJ":
-    password = "@mktgnation2017";
-    break;
-    
+    case 'KFBBABWHJ':
+      password = '@mktgnation2017'
+      break
+
     // New Capabilities > Adaptive Engagement
-  case "P3BBAZ3CS":
-    password = "@mktgnation2017";
-    break;
-    
+    case 'P3BBAZ3CS':
+      password = '@mktgnation2017'
+      break
+
     // Marketing Performance Insights
-  case "52C0GAGD4":
-    password = "@mktgnation2017";
-    break;
-    
-  default:
-    password = "@mktgnation2017";
-    break;
+    case '52C0GAGD4':
+      password = '@mktgnation2017'
+      break
+
+    default:
+      password = '@mktgnation2017'
+      break
   }
-  
-  document.getElementById("password").value = password;
-  document.getElementsByClassName("primary button")[0].click();
+
+  document.getElementById('password').value = password
+  document.getElementsByClassName('primary button')[0].click()
 }
 
 /**************************************************************************************
@@ -86,8 +86,10 @@ INVISION.login = function (feature) {
  *
  **************************************************************************************/
 
-if (document.getElementById("password")
-   && document.getElementsByClassName("primary button")[0]
-   && window.location.href.search("^https://marketo\.invisionapp\.com/share/") != -1) {
-  INVISION.login(window.location.href.split("/share/")[1].split("#/")[0]);
+if (
+  document.getElementById('password') &&
+  document.getElementsByClassName('primary button')[0] &&
+  window.location.href.search('^https://marketo.invisionapp.com/share/') != -1
+) {
+  INVISION.login(window.location.href.split('/share/')[1].split('#/')[0])
 }

@@ -1,8 +1,8 @@
 function loadData() {
-  console.log("Marketo Dashboards > Loading: Social Dashboard Data");
-  
-  var data = {};
-  
+  console.log('Marketo Dashboards > Loading: Social Dashboard Data')
+
+  var data = {}
+
   data[0] = {
     social_visits: 3152,
     social_interactions: 1421,
@@ -16,31 +16,29 @@ function loadData() {
     social_share_rate: 124,
     social_clickback_rate: 10,
     social_lift: 125
-  };
-  
-  if (typeof(Mkt3) !== 'undefined') {
+  }
+
+  if (typeof Mkt3 !== 'undefined') {
     Mkt3.controller.socialApp.Dashboard.prototype.getSocialApp = function () {
-      
       var canvas = this.getCanvas(),
-      dashboard = this.getDashboard(),
-      socialApp = dashboard.socialApp;
+        dashboard = this.getDashboard(),
+        socialApp = dashboard.socialApp
       if (!socialApp) {
-        var socialAppId = canvas.compId;
-        socialApp = this.getSocialAppStore().getById(socialAppId);
-        dashboard.socialApp = socialApp;
+        var socialAppId = canvas.compId
+        socialApp = this.getSocialAppStore().getById(socialAppId)
+        dashboard.socialApp = socialApp
       }
-      
-      var x;
-      
+
+      var x
+
       if (data[canvas.compId]) {
-        x = data[canvas.compId];
+        x = data[canvas.compId]
       } else {
-        x = data[0];
+        x = data[0]
       }
-      
-      var stats = socialApp && socialApp.stats().first();
+
+      var stats = socialApp && socialApp.stats().first()
       if (stats) {
-        
         stats.set({
           visits: x.social_visits,
           interactions: x.social_interactions,
@@ -51,26 +49,26 @@ function loadData() {
           resultingClicksPercent: Math.floor((x.social_clicks / x.social_shares) * 100),
           registrations: x.social_registrations,
           registrationsPercent: Math.floor((x.social_registrations / x.social_clicks) * 100),
-          
+
           totalProfiles: x.total_profiles,
-          
+
           influencers: x.social_influencers,
           influencersPercent: null,
           socialReach: x.social_reach,
           socialReachPercent: null,
           socialImpressions: x.social_impressions,
           socialImpressionsPercent: null,
-          
+
           shareRate: x.social_share_rate,
           shareRatePercent: null,
           clickbackRate: x.social_clickback_rate,
           clickbackRatePercent: null,
           socialLift: x.social_lift,
           socialLiftPercent: null
-        });
+        })
       }
-      return socialApp;
-    };
+      return socialApp
+    }
   }
 }
 
@@ -80,4 +78,4 @@ function loadData() {
  *
  **************************************************************************************/
 
-loadData();
+loadData()

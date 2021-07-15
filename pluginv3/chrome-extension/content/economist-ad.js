@@ -1,4 +1,4 @@
-console.log('Economist Ad > Running');
+console.log('Economist Ad > Running')
 
 /**************************************************************************************
  *
@@ -11,7 +11,7 @@ console.log('Economist Ad > Running');
  *
  **************************************************************************************/
 
-var APP = APP || {};
+var APP = APP || {}
 
 /**************************************************************************************
  *
@@ -26,37 +26,37 @@ var APP = APP || {};
  **************************************************************************************/
 
 APP.getUrlParam = function (param) {
-  console.log('Getting: URL Parameter: ' + param);
-  
-  let paramString = window.location.href.split('?')[1];
-  
+  console.log('Getting: URL Parameter: ' + param)
+
+  let paramString = window.location.href.split('?')[1]
+
   if (paramString) {
     let params = paramString.split('&'),
-    paramPair,
-    paramName,
-    paramValue;
-    
+      paramPair,
+      paramName,
+      paramValue
+
     for (let ii = 0; ii < params.length; ii++) {
-      paramPair = params[ii].split('=');
-      paramName = paramPair[0];
-      paramValue = paramPair[1];
-      
+      paramPair = params[ii].split('=')
+      paramName = paramPair[0]
+      paramValue = paramPair[1]
+
       if (paramName == param) {
-        paramValue = decodeURIComponent(paramValue);
+        paramValue = decodeURIComponent(paramValue)
         if (paramValue.search(/^http(s)?:\/\//) == -1) {
-          paramValue = paramValue.replace(/\+/g, " ");
+          paramValue = paramValue.replace(/\+/g, ' ')
         }
-        console.log('URL Parameter: ' + paramName + ' = ' + paramValue);
-        return paramValue;
+        console.log('URL Parameter: ' + paramName + ' = ' + paramValue)
+        return paramValue
       }
     }
   }
-  return false;
-};
+  return false
+}
 
 /**************************************************************************************
  *
- *  This function waits for the Google display ad to load and then executes the given 
+ *  This function waits for the Google display ad to load and then executes the given
  *  callback function.
  *
  *  @Author Brian Fisher
@@ -69,15 +69,15 @@ APP.getUrlParam = function (param) {
 
 APP.waitForGoogleAd = function (callback) {
   var isGoogleAd = window.setInterval(function () {
-      if (document.getElementsByClassName('ad-panel__googlead')[0]) {
-        window.clearInterval(isGoogleAd);
-        
-        if (typeof(callback) === 'function') {
-          callback();
-        }
+    if (document.getElementsByClassName('ad-panel__googlead')[0]) {
+      window.clearInterval(isGoogleAd)
+
+      if (typeof callback === 'function') {
+        callback()
       }
-    }, 0);
-};
+    }
+  }, 0)
+}
 
 /**************************************************************************************
  *
@@ -97,14 +97,21 @@ APP.waitForGoogleAd = function (callback) {
 
 APP.insertAd = function (ad) {
   let adElement = document.getElementsByClassName('ad-panel__googlead')[0],
-  topAd = document.createElement('div');
-  
-  topAd.id = 'topGoogleAd';
-  topAd.style = 'width: 970px; height: 250px;';
-  topAd.innerHTML = '<a target="_blank" href="'+ad.link+'" style="text-decoration: none;"><div style="z-index: 0; width: 100%; height: 100%; background-image: linear-gradient(rgb(238, 238, 238) 3%, rgb(17, 17, 17) 50%);"><div style="width: 100%; height: 100%; background-image: url(\''+ad.image+'\'); background-size: cover; opacity: 0.7;"></div></div><div style="z-index: 1; position: relative; top: -137px; left: 35px; width: 900px; height: 40px; color: #ffffff; font-family: Roboto, Helvetica Neue, Helvetica, Arial, sans-serif; font-weight: normal; font-size: 24px; text-align: center;">'+ad.title+'</div></a>';
-  adElement.parentElement.style.width = '';
-  adElement.replaceWith(topAd);
-};
+    topAd = document.createElement('div')
+
+  topAd.id = 'topGoogleAd'
+  topAd.style = 'width: 970px; height: 250px;'
+  topAd.innerHTML =
+    '<a target="_blank" href="' +
+    ad.link +
+    '" style="text-decoration: none;"><div style="z-index: 0; width: 100%; height: 100%; background-image: linear-gradient(rgb(238, 238, 238) 3%, rgb(17, 17, 17) 50%);"><div style="width: 100%; height: 100%; background-image: url(\'' +
+    ad.image +
+    '\'); background-size: cover; opacity: 0.7;"></div></div><div style="z-index: 1; position: relative; top: -137px; left: 35px; width: 900px; height: 40px; color: #ffffff; font-family: Roboto, Helvetica Neue, Helvetica, Arial, sans-serif; font-weight: normal; font-size: 24px; text-align: center;">' +
+    ad.title +
+    '</div></a>'
+  adElement.parentElement.style.width = ''
+  adElement.replaceWith(topAd)
+}
 
 /**************************************************************************************
  *
@@ -117,14 +124,14 @@ APP.insertAd = function (ad) {
  **************************************************************************************/
 
 APP.getAdInfo = function () {
-  let ad = {};
-  
-  ad.title = APP.getUrlParam('title');
-  ad.link = APP.getUrlParam('link');
-  ad.image = APP.getUrlParam('image');
-  
-  return ad;
-};
+  let ad = {}
+
+  ad.title = APP.getUrlParam('title')
+  ad.link = APP.getUrlParam('link')
+  ad.image = APP.getUrlParam('image')
+
+  return ad
+}
 
 /**************************************************************************************
  *
@@ -132,8 +139,8 @@ APP.getAdInfo = function () {
  *
  **************************************************************************************/
 
-let ad = APP.getAdInfo();
+let ad = APP.getAdInfo()
 
-window.addEventListener("load", function () {
-  APP.waitForGoogleAd(APP.insertAd(ad));
-});
+window.addEventListener('load', function () {
+  APP.waitForGoogleAd(APP.insertAd(ad))
+})

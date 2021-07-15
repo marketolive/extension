@@ -1,4 +1,4 @@
-console.log("InVision App > Running");
+console.log('InVision App > Running')
 
 /**************************************************************************************
  *
@@ -11,11 +11,9 @@ console.log("InVision App > Running");
  *
  **************************************************************************************/
 
-var URL_PATH = "m3-dev",
-
-INVISION_APP = "https://marketolive.com/" + URL_PATH + "/pluginv3/invision-app.min.js",
-
-APP = APP || {};
+var URL_PATH = 'm3-dev',
+  INVISION_APP = 'https://marketolive.com/' + URL_PATH + '/pluginv3/invision-app.min.js',
+  APP = APP || {}
 
 /**************************************************************************************
  *
@@ -30,13 +28,13 @@ APP = APP || {};
  **************************************************************************************/
 
 APP.loadScript = function (scriptSrc) {
-  console.log("Loading: Script: " + scriptSrc);
-  
-  var scriptElement = document.createElement("script");
-  scriptElement.async = true;
-  scriptElement.src = scriptSrc;
-  document.getElementsByTagName("head")[0].appendChild(scriptElement);
-};
+  console.log('Loading: Script: ' + scriptSrc)
+
+  var scriptElement = document.createElement('script')
+  scriptElement.async = true
+  scriptElement.src = scriptSrc
+  document.getElementsByTagName('head')[0].appendChild(scriptElement)
+}
 
 /**************************************************************************************
  *
@@ -45,5 +43,5 @@ APP.loadScript = function (scriptSrc) {
  **************************************************************************************/
 
 window.onload = function () {
-  APP.loadScript(INVISION_APP);
-};
+  APP.loadScript(INVISION_APP)
+}

@@ -1,4 +1,4 @@
-console.log("250ok > Running");
+console.log('250ok > Running')
 
 /**************************************************************************************
  *
@@ -17,11 +17,10 @@ console.log("250ok > Running");
  *
  **************************************************************************************/
 
-var devExtensionId = "dokkjhbgengdlccldgjnbilajdbjlnhm",
-prodExtensionId = "onibnnoghllldiecboelbpcaeggfiohl",
-extensionId = devExtensionId,
-
-DELIVERABILITY = DELIVERABILITY || {};
+var devExtensionId = 'dokkjhbgengdlccldgjnbilajdbjlnhm',
+  prodExtensionId = 'onibnnoghllldiecboelbpcaeggfiohl',
+  extensionId = devExtensionId,
+  DELIVERABILITY = DELIVERABILITY || {}
 
 /**************************************************************************************
  *
@@ -40,24 +39,20 @@ DELIVERABILITY = DELIVERABILITY || {};
  **************************************************************************************/
 
 DELIVERABILITY.webRequest = function (url, params, method, async, responseType, callback) {
-  console.log("Web Request > " + url + "\n" + params);
+  console.log('Web Request > ' + url + '\n' + params)
   var xmlHttp = new XMLHttpRequest(),
-  result;
+    result
   xmlHttp.onreadystatechange = function () {
-    if (typeof(callback) === "function"
-       && xmlHttp.readyState == 4
-       && xmlHttp.status == 200)
-      result = callback(xmlHttp.response);
+    if (typeof callback === 'function' && xmlHttp.readyState == 4 && xmlHttp.status == 200) result = callback(xmlHttp.response)
   }
-  if (async
-     && xmlHttp.responseType) {
-    xmlHttp.responseType = responseType;
+  if (async && xmlHttp.responseType) {
+    xmlHttp.responseType = responseType
   }
-  xmlHttp.open(method, url, async); // true for asynchronous
-  xmlHttp.setRequestHeader("Content-type", "application/json; charset=utf-8");
-  xmlHttp.send(params);
-  return result;
-};
+  xmlHttp.open(method, url, async) // true for asynchronous
+  xmlHttp.setRequestHeader('Content-type', 'application/json; charset=utf-8')
+  xmlHttp.send(params)
+  return result
+}
 
 /**************************************************************************************
  *
@@ -70,16 +65,16 @@ DELIVERABILITY.webRequest = function (url, params, method, async, responseType, 
  **************************************************************************************/
 
 DELIVERABILITY.login = function () {
-  console.log("250ok > Login: App");
-  
+  console.log('250ok > Login: App')
+
   // jQuery returns an array even though an id is selected, which
   // is why there is a [0] on the email and password selectors.
-  $("#email")[0].value = "";
-  $("#password")[0].value = "";
+  $('#email')[0].value = ''
+  $('#password')[0].value = ''
   // This needs to change if another button is ever added to the login
   // page. Currently, the submit button is the only one.
-  $("button")[0].click();
-};
+  $('button')[0].click()
+}
 
 /**************************************************************************************
  *
@@ -103,25 +98,24 @@ DELIVERABILITY.login = function () {
 DELIVERABILITY.removeGenericButton = function (buttons, property, target) {
   // If buttons is empty, than the selector must be malformed.
   if (buttons.length == 0) {
-    console.log("250ok > Error: removeGenericButton() received an empty selector.");
-    return;
+    console.log('250ok > Error: removeGenericButton() received an empty selector.')
+    return
   }
-  
+
   // There is no break inside the loop because some pages have multiple
   // buttons that need to be deleted.
   for (var ii = 0; ii < buttons.length; ++ii) {
-    if (property
-       && target) {
+    if (property && target) {
       if ($(buttons[ii]).attr(property) == null) {
-        continue;
+        continue
       } else if ($(buttons[ii]).attr(property).search(target) != -1) {
-        $(buttons[ii]).remove();
+        $(buttons[ii]).remove()
       }
     } else {
-      $(buttons[ii]).remove();
+      $(buttons[ii]).remove()
     }
   }
-};
+}
 
 /**************************************************************************************
  *
@@ -136,18 +130,18 @@ DELIVERABILITY.removeGenericButton = function (buttons, property, target) {
  **************************************************************************************/
 
 DELIVERABILITY.removeDeleteButtons = function () {
-  console.log("250ok > Removing: Delete Buttons");
-  
-  $("#btndelete").remove();
-  DELIVERABILITY.removeGenericButton($(".action_copy"));
-  DELIVERABILITY.removeGenericButton($(".action_delete"));
-  DELIVERABILITY.removeGenericButton($(".btn.copy"));
-  DELIVERABILITY.removeGenericButton($(".btn.delete"));
-  DELIVERABILITY.removeGenericButton($(".btn.btn-success"), "value", /(save|update|create|upload|import)/i);
-  DELIVERABILITY.removeGenericButton($("button"), "value", /delete/i);
-  DELIVERABILITY.removeGenericButton($(".btn"), "onclick", "^return confirm\\(");
+  console.log('250ok > Removing: Delete Buttons')
+
+  $('#btndelete').remove()
+  DELIVERABILITY.removeGenericButton($('.action_copy'))
+  DELIVERABILITY.removeGenericButton($('.action_delete'))
+  DELIVERABILITY.removeGenericButton($('.btn.copy'))
+  DELIVERABILITY.removeGenericButton($('.btn.delete'))
+  DELIVERABILITY.removeGenericButton($('.btn.btn-success'), 'value', /(save|update|create|upload|import)/i)
+  DELIVERABILITY.removeGenericButton($('button'), 'value', /delete/i)
+  DELIVERABILITY.removeGenericButton($('.btn'), 'onclick', '^return confirm\\(')
   //DELIVERABILITY.removeGenericButton($(".btn"), "href", /action=delete/i);
-};
+}
 
 /**************************************************************************************
  *
@@ -162,16 +156,16 @@ DELIVERABILITY.removeDeleteButtons = function () {
  **************************************************************************************/
 
 DELIVERABILITY.removeSubmitButtons = function () {
-  console.log("250ok > Removing: Submit Buttons");
-  
-  $("#add_widget").remove();
-  $("#new_dashboard").remove();
-  $("#change_dashboard").remove();
-  $("#create-campaign-anchor").remove();
-  $("#saveFilters").remove();
-  $("#tour-design-add-anchor").remove();
-  $("#create_alert").remove();
-};
+  console.log('250ok > Removing: Submit Buttons')
+
+  $('#add_widget').remove()
+  $('#new_dashboard').remove()
+  $('#change_dashboard').remove()
+  $('#create-campaign-anchor').remove()
+  $('#saveFilters').remove()
+  $('#tour-design-add-anchor').remove()
+  $('#create_alert').remove()
+}
 
 /**************************************************************************************
  *
@@ -187,16 +181,20 @@ DELIVERABILITY.removeSubmitButtons = function () {
  **************************************************************************************/
 
 DELIVERABILITY.toRemoveSubmitButtons = function (minVersion) {
-  chrome.runtime.sendMessage(extensionId, {
-    action: "checkExtensionVersion",
-    minVersion: minVersion
-  }, null, function (response) {
-    if (response == null
-       || !response.isValidExtension) {
-      DELIVERABILITY.removeSubmitButtons();
+  chrome.runtime.sendMessage(
+    extensionId,
+    {
+      action: 'checkExtensionVersion',
+      minVersion: minVersion
+    },
+    null,
+    function (response) {
+      if (response == null || !response.isValidExtension) {
+        DELIVERABILITY.removeSubmitButtons()
+      }
     }
-  });
-};
+  )
+}
 
 /**************************************************************************************
  *
@@ -204,26 +202,30 @@ DELIVERABILITY.toRemoveSubmitButtons = function (minVersion) {
  *
  **************************************************************************************/
 
-var userId = "marketolive@marketo.com",
-extensionMinVersion = "5.1.2";
+var userId = 'marketolive@marketo.com',
+  extensionMinVersion = '5.1.2'
 
-if (window.location.href === "https://250ok.com/login?submit=true" || (window.location.href === 'https://250ok.com/login/marketo-parent-account?r=' && document.referrer.indexOf('https://250ok.com/app') === -1)) {
+if (
+  window.location.href === 'https://250ok.com/login?submit=true' ||
+  (window.location.href === 'https://250ok.com/login/marketo-parent-account?r=' &&
+    document.referrer.indexOf('https://250ok.com/app') === -1)
+) {
   //DELIVERABILITY.login();
-} else if ($("#email").length == 1) {
-  if ($("#email")[0].value == userId) {
-    DELIVERABILITY.removeDeleteButtons();
-    DELIVERABILITY.toRemoveSubmitButtons(extensionMinVersion);
+} else if ($('#email').length == 1) {
+  if ($('#email')[0].value == userId) {
+    DELIVERABILITY.removeDeleteButtons()
+    DELIVERABILITY.toRemoveSubmitButtons(extensionMinVersion)
   }
 } else {
   DELIVERABILITY.webRequest('/app/account', null, 'GET', true, 'document', function (response) {
-    var el = document.createElement("html"),
-    email;
-    
-    el.innerHTML = response;
-    email = el.querySelector("#email").value;
+    var el = document.createElement('html'),
+      email
+
+    el.innerHTML = response
+    email = el.querySelector('#email').value
     if (email == userId) {
-      DELIVERABILITY.removeDeleteButtons();
-      DELIVERABILITY.toRemoveSubmitButtons(extensionMinVersion);
+      DELIVERABILITY.removeDeleteButtons()
+      DELIVERABILITY.toRemoveSubmitButtons(extensionMinVersion)
     }
-  });
+  })
 }

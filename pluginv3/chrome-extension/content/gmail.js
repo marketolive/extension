@@ -1,8 +1,8 @@
-console.log("Gmail > Running");
+console.log('Gmail > Running')
 
 /**************************************************************************************
  *
- *  This module contains all of the functionality needed for manipulating the DOM on 
+ *  This module contains all of the functionality needed for manipulating the DOM on
  *  gmail.
  *
  *  @Author Brian Fisher
@@ -11,7 +11,7 @@ console.log("Gmail > Running");
  *
  **************************************************************************************/
 
-var APP = APP || {};
+var APP = APP || {}
 
 /**************************************************************************************
  *
@@ -25,22 +25,22 @@ var APP = APP || {};
 
 APP.removeToutAppBanner = function () {
   var startTime = new Date(),
-  isToutAppBanner = window.setInterval(function () {
-      var currTime = new Date();
-      
-      if (document.getElementById("mailToolbarDiv")) {
-        console.log("Gmail > Removing: ToutApp Banner");
-        
-        window.clearInterval(isToutAppBanner);
-        
-        document.getElementById("mailToolbarDiv").remove();
+    isToutAppBanner = window.setInterval(function () {
+      var currTime = new Date()
+
+      if (document.getElementById('mailToolbarDiv')) {
+        console.log('Gmail > Removing: ToutApp Banner')
+
+        window.clearInterval(isToutAppBanner)
+
+        document.getElementById('mailToolbarDiv').remove()
       } else if (parseInt((currTime - startTime) / 1000) > 5) {
-        console.log("Gmail > NOT Removing: ToutApp Banner");
-        
-        window.clearInterval(isToutAppBanner);
+        console.log('Gmail > NOT Removing: ToutApp Banner')
+
+        window.clearInterval(isToutAppBanner)
       }
-    });
-};
+    })
+}
 
 /**************************************************************************************
  *
@@ -48,6 +48,6 @@ APP.removeToutAppBanner = function () {
  *
  **************************************************************************************/
 
-window.addEventListener("load", function () {
-  APP.removeToutAppBanner();
-});
+window.addEventListener('load', function () {
+  APP.removeToutAppBanner()
+})

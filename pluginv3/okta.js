@@ -1,4 +1,4 @@
-console.log("OKTA > Running");
+console.log('OKTA > Running')
 
 /**************************************************************************************
  *
@@ -7,71 +7,69 @@ console.log("OKTA > Running");
  *
  **************************************************************************************/
 
-var devExtensionId = "dokkjhbgengdlccldgjnbilajdbjlnhm",
-prodExtensionId = "onibnnoghllldiecboelbpcaeggfiohl",
-extensionId = devExtensionId,
-
-ME_URL = 'https://adobe.okta.com/api/internal/enduser/home',
-
-OKTA = OKTA || {};
+var devExtensionId = 'dokkjhbgengdlccldgjnbilajdbjlnhm',
+  prodExtensionId = 'onibnnoghllldiecboelbpcaeggfiohl',
+  extensionId = devExtensionId,
+  ME_URL = 'https://adobe.okta.com/api/internal/enduser/home',
+  OKTA = OKTA || {}
 
 OKTA.webRequest = function (url, params, headers, method) {
   if (!url) {
-    throw new Error('Missing required argument: url');
+    throw new Error('Missing required argument: url')
   }
 
   return new Promise(function (resolve, reject) {
     let req = new XMLHttpRequest(),
-    data = '';
+      data = ''
 
-    params = (typeof(params) === 'object') ? params : '';
-    headers = (typeof(headers) === 'object') ? headers : '';
-    method = (typeof(method) === 'string') ? method : 'GET';
+    params = typeof params === 'object' ? params : ''
+    headers = typeof headers === 'object' ? headers : ''
+    method = typeof method === 'string' ? method : 'GET'
 
     try {
       for (let i = 0; i < Object.entries(params).length; i++) {
-        let param = Object.entries(params)[i];
+        let param = Object.entries(params)[i]
 
         if (data.length > 0) {
-          data += '&';
+          data += '&'
         }
 
-        data += encodeURIComponent(param[0].toString()) + '=' + encodeURIComponent(param[1].toString());
+        data += encodeURIComponent(param[0].toString()) + '=' + encodeURIComponent(param[1].toString())
       }
     } catch (e) {
-      console.error(e);
+      console.error(e)
     }
 
-    req.open(method, url);
+    req.open(method, url)
 
     if (headers) {
       try {
         for (let i = 0; i < Object.entries(headers); i++) {
-          let header = Object.entries(headers)[i];
+          let header = Object.entries(headers)[i]
 
-          req.setRequestHeader(header[0].toString(), header[1].toString());
+          req.setRequestHeader(header[0].toString(), header[1].toString())
         }
       } catch (e) {
-        console.error(e);
+        console.error(e)
       }
     }
 
     req.onload = function () {
       if (req.status == 200) {
-        resolve(req.response);
+        resolve(req.response)
       } else {
-        reject(Error(req.statusText));
+        reject(Error(req.statusText))
       }
-    };
+    }
 
     req.onerror = function () {
-      reject(Error('Network Error'));
-    };
+      reject(Error('Network Error'))
+    }
 
-    req.withCredentials = true;
-    req.send(data);
-  });
-};
+    req.withCredentials = true
+    req.send(data)
+  })
+}
 
 /**************************************************************************************
  *
@@ -81,31 +79,34 @@ OKTA.webRequest = function (url, params, headers, method) {
  **************************************************************************************/
 
 OKTA.getOktaUser = function () {
-  return OKTA.webRequest(ME_URL).then(function (response) {
-    try {
-      response = JSON.parse(response);
-      oktaUser = {
-        action: 'setOktaUser',
-        username: response.login.split('@')[0],
-        firstName: response.firstName,
-        lastName: response.lastName,
-        email: response.login
-      };
+  return OKTA.webRequest(ME_URL).then(
+    function (response) {
+      try {
+        response = JSON.parse(response)
+        oktaUser = {
+          action: 'setOktaUser',
+          username: response.login.split('@')[0],
+          firstName: response.firstName,
+          lastName: response.lastName,
+          email: response.login
+        }
 
-      chrome.runtime.sendMessage(extensionId, oktaUser, function (response) {
-        console.log("OKTA > Receiving: Message Response from Background: " + response);
+        chrome.runtime.sendMessage(extensionId, oktaUser, function (response) {
+          console.log('OKTA > Receiving: Message Response from Background: ' + response)
 
-        return response;
-      });
-    } catch (e) {
-      console.error(e);
+          return response
+        })
+      } catch (e) {
+        console.error(e)
+      }
+
+      return response
+    },
+    function (e) {
+      console.error(e)
     }
-
-    return response;
-  }, function (e) {
-    console.error(e);
-  });
-};
+  )
+}
 
 /**************************************************************************************
  *
@@ -113,4 +114,4 @@ OKTA.getOktaUser = function () {
  *
  **************************************************************************************/
 
-OKTA.getOktaUser();
+OKTA.getOktaUser()

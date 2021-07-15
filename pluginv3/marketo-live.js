@@ -1,4 +1,4 @@
-console.log("MarketoLive > Running");
+console.log('MarketoLive > Running')
 
 /**************************************************************************************
  *
@@ -15,16 +15,15 @@ console.log("MarketoLive > Running");
  *
  **************************************************************************************/
 
-var tilePage = "^.*\/(go-agile|jp)\/[a-zA-Z0-9]*\.html",
-pod = null,
-
-LIVE = LIVE || {};
+var tilePage = '^.*/(go-agile|jp)/[a-zA-Z0-9]*.html',
+  pod = null,
+  LIVE = LIVE || {}
 
 LIVE.injectLink = function (e) {
   //    console.log($(this).context.id);
   //    console.log(pod[$(this).context.id]);
-  window.open(pod[$(this).context.id]);
-  return false;
+  window.open(pod[$(this).context.id])
+  return false
 }
 
 /**************************************************************************************
@@ -43,20 +42,19 @@ LIVE.injectLink = function (e) {
  **************************************************************************************/
 
 LIVE.insertDeepLinks = function (pod) {
-  
   if (pod == null) {
-    $(".image-sizing.deeplink").click(function (e) {
-      window.open("https://login.marketo.com");
+    $('.image-sizing.deeplink').click(function (e) {
+      window.open('https://login.marketo.com')
       //            LIVE.displayModalWindow();
-      return false;
-    });
+      return false
+    })
   } else {
-    console.log("MarketoLive > Inserting: Deep Links for: " + pod.id);
-    $(".image-sizing.deeplink").click(LIVE.injectLink);
+    console.log('MarketoLive > Inserting: Deep Links for: ' + pod.id)
+    $('.image-sizing.deeplink').click(LIVE.injectLink)
   }
-  
-  console.log("MarketoLive > Inserting: Static Links");
-  $(".image-sizing.staticlink").click(LIVE.injectLink);
+
+  console.log('MarketoLive > Inserting: Static Links')
+  $('.image-sizing.staticlink').click(LIVE.injectLink)
 }
 
 /**************************************************************************************
@@ -74,12 +72,12 @@ LIVE.insertDeepLinks = function (pod) {
  **************************************************************************************/
 
 LIVE.displayModalWindow = function () {
-  console.log("MarketoLive > Displaying Modal Window")
-  
-  $("#modal-background")[0].style.display = "block";
-  $("#secret-passage").click(function () {
-    $("#modal-background")[0].style.display = "none";
-  });
+  console.log('MarketoLive > Displaying Modal Window')
+
+  $('#modal-background')[0].style.display = 'block'
+  $('#secret-passage').click(function () {
+    $('#modal-background')[0].style.display = 'none'
+  })
 }
 
 /**************************************************************************************
@@ -89,14 +87,14 @@ LIVE.displayModalWindow = function () {
  **************************************************************************************/
 
 $(document).ready(function () {
-  var podString = PODS.getCookie("userPod");
-  pod = new PODS.Pod(podString);
-  
+  var podString = PODS.getCookie('userPod')
+  pod = new PODS.Pod(podString)
+
   if (window.location.href.search(tilePage) != -1) {
     if (!podString) {
-      LIVE.insertDeepLinks(null);
+      LIVE.insertDeepLinks(null)
     } else {
-      LIVE.insertDeepLinks(pod);
+      LIVE.insertDeepLinks(pod)
     }
   }
-});
+})
